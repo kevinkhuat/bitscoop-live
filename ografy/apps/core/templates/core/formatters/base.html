@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>{{ title }}</title>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'core/css/activefonts.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
+
+		<script type="text/javascript" src="{% static 'lib/jquery/jquery-2.0.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/moment/moment-2.3.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/d3/d3-3.3.11.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/lodash/lodash-2.4.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/tastydata/tastydata.js' %}"></script>
+
+		<script type="text/javascript">
+			var api = odata('/odata/v1');
+			models = api.models;
+		</script>
+	</head>
+	<body>
+		<div class="flex flex-column space-between full-height">
+			<header>
+				<div class="lockwidth centered flex space-between">
+					<a id="title" href="/">
+						<span>Smoke</span><span class="blue">Signal</span>
+					</a>
+					<a href="/login" class="flex flex-column space-around">Login</a>
+				</div>
+			</header>
+			
+			<section id="content" class="flex space-between lockwidth centered full-height">
+				<section class="full-height">
+					{% block content %}{% endblock %}
+					Test Section
+				</section>
+				<aside class="full-height">
+					{% block aside %}{% endblock %}
+					Test Aside
+				</aside>
+			</section>
+			
+			<footer>
+				<div class="lockwidth centered center">
+					&copy; SmokeSignal, LLC 2013. All rights reserved.
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
