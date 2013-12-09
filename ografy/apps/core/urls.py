@@ -11,5 +11,8 @@ odata_v1.register(AccountResource())
 odata_v1.register(EntryResource())
 
 urlpatterns = patterns('',
-    url(r'^/?$', views.index)
+    url(r'^/?$', views.index),
+    url(r'^getting-started/?$', views.getting_started),
+    url(r'^docs/?$', views.documentation),
+    url(r'^blog/?$', views.blog),
 )
