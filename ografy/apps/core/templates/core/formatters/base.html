@@ -16,8 +16,12 @@
 		<script type="text/javascript" src="{% static 'lib/lodash/lodash-2.4.1.min.js' %}"></script>
 		<!--<script type="text/javascript" src="{% static 'lib/tastydata/tastydata.js' %}"></script>-->
 		
+		<script type="text/javascript" src="{% static 'plugins/jquery/jquery.scrollTo.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'plugins/jquery/waypoints-2.0.3.min.js' %}"></script>
-
+		<!--<script type="text/javascript" src="{% static 'plugins/jquery/jquery.parallax.min.js' %}"></script>-->
+		
+		<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>
+		
 		<!--<script type="text/javascript">
 			var api = odata('/odata/v1');
 			models = api.models;
@@ -26,6 +30,7 @@
 	<body>
 		<header id="header">
 			<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
+			{% block header %}{% endblock %}
 		</header>
 		
 		<section id="content">
@@ -37,5 +42,9 @@
 				&copy; SmokeSignal, LLC 2013. All rights reserved.
 			</div>
 		</footer>-->
+		
+		<footer id="footer">
+			{% block footer %}{% endblock %}
+		</footer>
 	</body>
 </html>

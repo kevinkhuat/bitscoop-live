@@ -1,7 +1,18 @@
 {% extends 'core/formatters/dispatcher.html' %}
 
 {% block content %}
-	<section>
+	<section id="sign-up center" style="width:300px;border:2px solid green;border-radius:5px;">
+		<form class="center" action="placeholder" method="POST">
+			<input class="txt-artsy" type="text" name="username" placeholder="Your Username" />
+			<input class="txt-artsy" type="text" name="email" placeholder="Email Address" />
+			<input class="txt-artsy" type="password" name="password" placeholder="Your Password" />
+			
+			
+			<input class="btn-artsy centered" type="submit" value="Get Started" />
+		</form>
+	</section>
+	
+	<section id="create-account" class="waypoint">
 		<h1>Create an Account</h1>
 		
 		<p>Sign up with an OpenID.</p>
@@ -9,7 +20,7 @@
 		<p>But you'll continue to use your OpenID to sign in.</p>
 	</section>
 	
-	<section>
+	<section id="edit-settings" class="waypoint">
 		<h1>Edit Basic Settings</h1>
 		
 		<p>You can input any additional information you'd like that wasn't required for the sign-up process.</p>
@@ -19,7 +30,7 @@
 		<p>These settings can always be changed and will update immediately.</p>
 	</section>
 	
-	<section>
+	<section id="connect-accounts" class="waypoint">
 		<h1>Connect Your Accounts</h1>
 		
 		<p>You can authorize Ografy to view your other accounts and collect data on your behalf.</p>
@@ -30,14 +41,14 @@
 		<p>We'll be sure to let you know if we add, modify, or remove support for any of these services in the future.</p>
 	</section>
 	
-	<section>
+	<section id="select-data" class="waypoint">
 		<h1>Select Your Data</h1>
 		<p>You can configure each account and specify the data that will be retrieved.</p>
 		<p>Ografy will quantify and categorize the information it gathers and suggest formats.</p>
 		<p>You can override the assumptions Ografy makes about certain data types</p>
 	</section>
 	
-	<section>
+	<section id="publish-yourself" class="waypoint">
 		<h1>Publish Yourself</h1>
 		
 		<p>You can group gathered data and visualize it with the Ografy visualization engine.</p>
@@ -45,7 +56,7 @@
 		<p>You can share these infographics on your personal website, blog, or social network feeds.</p>
 	</section>
 	
-	<section>
+	<section id="relax" class="waypoint">
 		<h1>Sit Back, Relax!</h1>
 		
 		<p>Based on your configuration settings, your Ografy account will continue to collect data from your connected accounts.</p>
@@ -54,7 +65,18 @@
 		<p>We'll take care of any cached information and your infographics will update within minutes.</p>
 	</section>
 	
-	<section>
+	<section style="height:1000px;">
 		
 	</section>
+{% endblock %}
+
+{% block footer %}
+<nav class="steps">
+	<a href="#create-account"></a>
+	<a href="#edit-settings"></a>
+	<a href="#connect-accounts"></a>
+	<a href="#select-data"></a>
+	<a href="#publish-yourself"></a>
+	<a href="#relax"></a>
+</nav>
 {% endblock %}
