@@ -9,12 +9,6 @@ def index(request):
     })
 
 
-def getting_started(request):
-    return render(request, 'core/getting_started.html', {
-        'title': 'Ografy - Getting Started',
-    })
-
-
 def blog(request):
     return render(request, 'core/blog/index.html', {
         'title': 'Ografy - Development Blog'
