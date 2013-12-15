@@ -1,8 +1,14 @@
 * {
 	box-sizing: border-box;
+	margin: 0; padding: 0;
 }
 
-html { font: 10px Helvetica, Arial, sans-serif; }
+html {
+	font: 10px 'Open Sans', Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	color: #111;
+	height: 100%;
+}
 
 body {
 	font-size: 1.85em;
@@ -14,25 +20,68 @@ body {
 
 h1, h2, h3, p { margin: 0; }
 h1, h2 {
-	font-family: Nevis, Arial, sans-serif;
-	font-weight: bold;
+	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+	font-weight: 700;
 	text-transform: uppercase;
 }
 
 h1 {
 	font-size: 1.85em;
-	margin: 0;
+	margin-bottom: 0.5em;
 }
-p {
-	line-height: 150%;
+h2 {
+	font-size: 1.65em;
+	margin-bottom: 0.5em;
 }
+p { line-height: 150%; }
 
+
+a {
+	color: #FF7538;
+	text-decoration: none;
+}
 
 
 
 
 .center { text-align: center !important; }
 .centered { margin-left: auto !important; margin-right: auto !important; }
+.lock-width {
+	width: 1000px;
+	margin: 0 auto;
+}
+.half-width { width: 50%; }
+.quarter-width { width: 25%; }
+.third-width { width: 33.33%; }
+.pad15 { padding: 15px; }
+.pad25 { padding: 25px; }
+
+.white { color: #FFF !important; }
+
+.bg-light { background-color: #FFF; }
+.bg-gray { background-color: #A0A0A0; }
+.bg-green {
+	color: #FFF;
+	background-color: #0E9D58;
+}
+.bg-blue {
+	color: #FFF;
+	background-color: #1F75FE;
+}
+.bg-orange {
+	color: #111;
+	background-color: #FF7538;
+}
+.bg-dark {
+	color: #FFF;
+	background-color: #222;
+}
+
+
+div.table { display: table; }
+.table > div { display: table-row; }
+.table > div > div { display: table-cell; }
+.table > div > div.middle { vertical-align: middle; }
 
 
 #header {
@@ -42,44 +91,53 @@ p {
 	
 	padding: 5px 10px 1px 10px;
 	
-	background-color: rgba(0,0,0,0.9);
-	
-	/*box-shadow: 0 0 3px 0 rgba(0,0,0,0.9);*/
+	background-color: rgba(17,17,17,0.9);
+	border-bottom: 10px solid #707070;
 }
-
 
 
 #content > section {
-	padding: 15px;
-}
-
-#content > section:nth-child(odd) {
-	background-color: #FFF;
-}
-#content > section:nth-child(6n+2) {
-	background-color: #1CAC78; /* Crayola Green */
-}
-#content > section:nth-child(6n+4) {
-	background-color: #1F75FE; /* Crayola Blue */
-}
-#content > section:nth-child(6n+6) {
-	background-color: #FF7538; /* Crayola Lemon Yellow */
+	padding: 25px;
 }
 
 
 #footer {
-	position: fixed;
-	bottom: 0; left: 0;
-	width: 100%;
-	
-	padding: 8px;
-	background-color: black;
-	opacity: 0.9;
+	font-size: 0.9em;
+	padding: 25px;
+	text-align: center;
+	border-top: 10px solid #707070;
 }
 
+
 input, select, textarea {
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	font-weight: 300;
 	margin: 5px 0;
+	outline: none;
+	border: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+	border-radius: 0;
+	box-shadow: 0 0 5px 2px #1F75FE;
+}
+
+
+input[type="button"],
+input[type="submit"], 
+input[type="reset"] {
+	-webkit-transition: text-shadow 50ms ease;
+}
+
+input[type="button"]:active,
+input[type="submit"]:active, 
+input[type="reset"]:active {
+	text-shadow: 0 0 10px #FFF;
+	border-style: inset;
 }
 
 input.btn-artsy {
@@ -89,25 +147,34 @@ input.btn-artsy {
 	cursor: pointer;
 	
 	color: white;
-	font-weight: bold;
 	font-size: 0.85em;
-	background-color: #179C13;
-	border: 5px solid #55BA3C;
-	border-radius: 5px;
+	background-color: #444;
+	border: 5px solid #444;
 	outline: none;
 	
-	text-shadow: 0 0 10px #55BA3C;
+	text-shadow: 0 0 10px #000;
 }
 
 input.txt-artsy {
 	width: 100%;
-	padding: 5px;
+	padding: 8px;
 }
 
 
+.signup { display: none; }
+
+#signup-footer {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	background-color: #222;
+	padding: 10px;
+	border-top: 10px solid #707070;
+}
 
 .steps {
 	text-align: center;
+	top: 50%; right: 0;
 }
 
 .steps > a {
@@ -121,13 +188,12 @@ input.txt-artsy {
 	
 	background-color: #FFF;
 	
-	border: 5px solid #55BA3C;
+	border: 5px solid #0E9D58;
 	border-radius: 20px;
-	box-shadow: 0 0 5px 2px #0A0A0A;
 	
 	-webkit-transition: box-shadow 75ms ease, border-color 150ms ease, background-color 150ms ease;
 }
-.steps > a.finished { background-color: #55BA3C; }
+.steps > a.finished { background-color: #0E9D58; }
 .steps > a:active,
 .steps > a.active { box-shadow: 0 0 5px 2px rgba(10,10,10,0); }
 .steps > a:after {

@@ -6,8 +6,8 @@
 
 		<title>{{ title }}</title>
 		<link rel="shortcut icon" href="{% static 'assets/favicon.png' %}" />
-
-		<link rel="stylesheet" type="text/css" href="{% static 'core/css/activefonts.css' %}" />
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
 
 		<script type="text/javascript" src="{% static 'lib/jquery/jquery-2.0.3.min.js' %}"></script>
@@ -29,22 +29,20 @@
 	</head>
 	<body>
 		<header id="header">
-			<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
-			{% block header %}{% endblock %}
+			<div class="lock-width">
+				<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
+				{% block header %}{% endblock %}
+			</div>
 		</header>
 		
 		<section id="content">
 			{% block content %}{% endblock %}
 		</section>
-		
-		<!--<footer>
-			<div class="lockwidth centered center">
-				&copy; SmokeSignal, LLC 2013. All rights reserved.
+
+		<footer id="footer" class="bg-dark">
+			<div class="lock-width center">
+				&copy 2013-2014 Ografy, LLC.
 			</div>
-		</footer>-->
-		
-		<footer id="footer">
-			{% block footer %}{% endblock %}
 		</footer>
 	</body>
 </html>
