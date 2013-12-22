@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     url(r'^/?$', views.index),
     url(r'^docs/?$', views.documentation),
     url(r'^blog/?$', views.blog),
+    url(r'^dashboard/?$', views.dashboard),
 )

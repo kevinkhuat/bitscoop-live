@@ -8,7 +8,7 @@
 		<link rel="shortcut icon" href="{% static 'assets/favicon.png' %}" />
 		
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'core/css/dashboard.css' %}" />
 
 		<script type="text/javascript" src="{% static 'lib/jquery/jquery-2.0.3.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/moment/moment-2.3.1.min.js' %}"></script>
@@ -19,9 +19,10 @@
 		<script type="text/javascript" src="{% static 'plugins/jquery/jquery.scrollTo.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'plugins/jquery/waypoints-2.0.3.min.js' %}"></script>
 		<!--<script type="text/javascript" src="{% static 'plugins/jquery/jquery.parallax.min.js' %}"></script>-->
-		
-		<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>
-		
+
+		<script type="text/javascript" src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'core/js/dashboard.js' %}"></script>
+
 		{% block scripts %}{% endblock %}
 		
 		<!--<script type="text/javascript">
@@ -31,20 +32,31 @@
 	</head>
 	<body>
 		<header id="header">
-			<div class="lock-width">
+			<div>
 				<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
 				{% block header %}{% endblock %}
 			</div>
 		</header>
-		
+
+		<aside id="settings">
+			<ul>
+				<li>
+					<input type="checkbox" data-filter=".social" checked>Social</input>
+				</li>
+				<li>
+					<input type="checkbox" data-filter=".professional" checked>Professional</input>
+				</li>
+				<li>
+					<input type="checkbox" data-filter=".financial" checked>Financial</input>
+				</li>
+				<li>
+					<input type="checkbox" data-filter=".summary" checked>Summary</input>
+				</li>
+			</ul>
+		</aside>
+
 		<section id="content">
 			{% block content %}{% endblock %}
 		</section>
-
-		<footer id="footer" class="bg-dark">
-			<div class="lock-width center">
-				&copy 2013-2014 Ografy, LLC.
-			</div>
-		</footer>
 	</body>
 </html>

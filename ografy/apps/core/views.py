@@ -9,6 +9,12 @@ def index(request):
     })
 
 
+def dashboard(request):
+    return render(request, 'core/dashboard.html', {
+        'title': 'Ografy - Dashboard'
+    })
+
+
 def blog(request):
     return render(request, 'core/blog/index.html', {
         'title': 'Ografy - Development Blog'
