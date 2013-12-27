@@ -1,43 +1,85 @@
 {% extends 'core/formatters/dashboard.html' %}
 
 {% block content %}
-	<div class="item professional">
-		Professional Chart
-	</div>
+<style type="text/css">
+.bubble {
+	border-radius: 32px;
+	border: 4px solid #FFAA00;
+	overflow: hidden;
+	box-shadow: 0 0 10px #FFF;
+	background-color: #222;
+	display: inline-block;
+	width: 40px; height: 40px;
+}
 
-	<div class="item social">
-		Social Chart
-	</div>
+.inline { display: inline-block; }
 
-	<div class="item financial">
-		Financial Chart
-	</div>
+.spaced { margin: 10px; }
+</style>
 
-	<div class="item professional">
-		Professional Chart
-	</div>
+<div class="item professional">
+	<img src="/static/demo/skills.svg" style="display:block;width:95%;margin:0 auto;" />
+</div>
 
-	<div class="item w2 summary">
-		Summary
-	</div>
+<div class="item social center">
+	<div style="display:table;width:100%;height:100%;">
+		<div style="display:table-row;">
+			<div style="display:table-cell;vertical-align:middle;">
+				<h1>Recently Played</h1>
 
-	<div class="item financial">
-		Financial Chart
-	</div>
+				<a class="inline spaced" href="#" title="Rocksmith 2014">
+					<img class="bubble" src="/static/demo/rs.jpg">
+				</a>
 
-	<div class="item w2 summary">
-		Summary
-	</div>
+				<a class="inline spaced" href="#" title="Terraria">
+					<img class="bubble" src="/static/demo/terraria.jpg">
+				</a>
 
-	<div class="item professional">
-		Professional Chart
-	</div>
+				<a class="inline spaced" href="http://en.wikipedia.org/wiki/Richard_Burns_Rally" title="Richard Burns Rally">
+					<img class="bubble" src="/static/demo/rbr.png">
+				</a>
 
-	<div class="item professional">
-		Professional Chart
-	</div>
+				<a class="inline spaced" href="http://us.battle.net/sc2/en/" title="Starcraft II">
+					<img class="bubble" src="/static/demo/sc2.png">
+				</a>
 
-	<div class="item social">
-		Social Chart
+				<h2>5 Hours</h2>
+				<h2>Past 2 Weeks</h2>
+			</div>
+		</div>
 	</div>
+</div>
+
+<div class="item financial">
+	<svg id="chart3"></svg>
+</div>
+
+<div class="item professional">
+	<svg id="chart6"></svg>
+</div>
+
+<div class="item w2 summary">
+	<svg id="chart1"></svg>
+</div>
+
+<div class="item financial">
+	<svg id="chart7"></svg>
+</div>
+
+<div class="item w2 summary">
+	<svg id="chart2"></svg>
+</div>
+
+<div class="item professional">
+	<svg id="chart4"></svg>
+</div>
+
+<div class="item professional">
+	<svg id="chart5"></svg>
+</div>
+
+<div class="item social">
+	<h1 class="center">Lived <span style="color:#FFAA00;">In</span></h1>
+	<img src="/static/demo/map.svg" style="display:block;width:95%;margin:0 auto;position:relative;top:5%;" />
+</div>
 {% endblock %}

@@ -23,6 +23,9 @@
 		<script type="text/javascript" src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'core/js/dashboard.js' %}"></script>
 
+		<script type="text/javascript" src="{% static 'lib/nvd3/nv.d3.min.js' %}"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'lib/nvd3/nv.d3.css' %}" />
+
 		{% block scripts %}{% endblock %}
 		
 		<!--<script type="text/javascript">
@@ -54,6 +57,8 @@
 				</li>
 			</ul>
 		</aside>
+
+		<img id="menu-toggle" src="/static/demo/menu2.svg" />
 
 		<section id="content">
 			{% block content %}{% endblock %}
