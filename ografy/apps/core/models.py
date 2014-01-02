@@ -45,23 +45,41 @@ class Account(models.Model):
         name: The name of the linked service.
         root_url: A URL locator for the root of the connected Account.
         username: (Encrypted) The username login credential used for accessing the connected Account.
+        remote_id: The ID of the account in the remote system. Used as a reference for API methods.
         password: (Encrypted) The password credential used for accessing the connected Account.
+        api_key: The API key used to authenticate against foreign APIs.
     """
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User)
     name = models.CharField(max_length=50)
     root_url = models.CharField(max_length=2048)
-    # FIXME: Hash username/passwords with salts.
+    # FIXME: Hash username/passwords with salts. Or cache OAuth credentials (preferred).
     username = models.CharField(max_length=50)
+    remote_id = models.IntegerField()
     password = models.CharField(max_length=256)
+    api_key = models.CharField(max_length=256)
     
     def __unicode__(self):
         return u'<ACCOUNT_{0}: {1}@{2}>'.format(self.id, self.user.display_name, self.name)
-        
-        
+
+
+class Metric(models.Model):
+    """
+    Entity representing a sampled statistic from an Account data-source.
+    """
+    id = models.AutoField(primary_key=True)
+    account = models.ForeignKey(Account)
+    url = models.TextField(max_length=2048)
+    update_date = models.DateTimeField(auto_now=True, db_index=True)
+
+    def __unicode__(self):
+        # TODO: Entity Unicode formatting
+        return u'<METRIC: {0}>'.format('TODO')
+
+
 class Entry(models.Model):
     """
-    Entity representing a retrieval from an Account datasource.
+    Entity representing a event-based retrieval from an Account data-source.
     
     Attributes:
         id: A unique database descriptor obtained when saving an Entry.
@@ -103,10 +121,10 @@ class Entry(models.Model):
         
 class Event(Entry):
     """
-    Entity representing an occurance. Abstracted from Entry provided that the retrieved core can be categorized as an Event.
+    Entity representing an occurrence. Abstracted from Entry provided that the retrieved core can be categorized as an Event.
     
     Attributes:
-        location: The location of the event stored as a parsable string. (i.e. Latitutde/longitude, IP address, or street address)
+        location: The location of the event stored as a parsable string. (i.e. Latitude/longitude, IP address, or street address)
         location_format: The regex parser to extract core from the location field into a container Location object.
     
     TODO:
