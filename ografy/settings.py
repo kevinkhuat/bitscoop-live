@@ -83,6 +83,7 @@ INSTALLED_APPS = (
     'tastydata',
 
     'ografy.apps.core',
+    'ografy.apps.signals',
 )
 
 
@@ -205,4 +206,13 @@ REST_FRAMEWORK = {
         'rest_framework_msgpack.parsers.MessagePackParser',
         'rest_framework_csv.parsers.CSVParser',
     ),
+}
+
+
+SIGNALS = {
+    'steam': 'http://static.ografy.io/steam.js',
+    'riot': 'riot.js',
+    'facebook': 'facebook.js',
+
+    #'mycoolsite': 'https://mycoolsite.com/myapi.js'
 }
