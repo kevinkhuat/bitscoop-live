@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'ografy.apps.util.middleware.format.RenderFormat',
+    'ografy.util.middleware.format.RenderFormat',
 )
 
 
@@ -73,7 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 
@@ -83,13 +83,14 @@ INSTALLED_APPS = (
     'tastydata',
 
     'ografy.apps.core',
+    'ografy.apps.signals',
 )
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ografy/databases/test.db',  # Or path to database file if using sqlite3.
+        'NAME': os.path.join(ROOT_PATH, '..', 'databases', 'test.db'),  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -205,4 +206,13 @@ REST_FRAMEWORK = {
         'rest_framework_msgpack.parsers.MessagePackParser',
         'rest_framework_csv.parsers.CSVParser',
     ),
+}
+
+
+SIGNALS = {
+    'steam': 'http://static.ografy.io/steam.js',
+    'riot': 'riot.js',
+    'facebook': 'facebook.js',
+
+    #'mycoolsite': 'https://mycoolsite.com/myapi.js'
 }

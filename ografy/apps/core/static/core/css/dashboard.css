@@ -13,7 +13,7 @@ html {
 
 body {
 	font-size: 1.85em;
-	padding: 95px 35px; margin: 0;
+	padding: 95px 45px; margin: 0;
 	overflow-x: hidden; overflow-y: scroll;
 	height: 100%;
 }
@@ -101,13 +101,13 @@ a {
 
 #settings {
 	position: fixed;
-	width: 500px; height: 100%;
+	width: 225px; height: 100%;
 	
-	top: 65px; left: -500px; z-index: 10;
+	top: 65px; left: -225px; z-index: 10;
 	
 	background-color: #707070;
 	
-	padding: 25px 0 0 25px;
+	padding: 35px 0 0 25px;
 	
 	-webkit-transition: left 150ms ease;
 }
@@ -120,10 +120,24 @@ a {
 	cursor: pointer;
 }
 
+#menu-toggle {
+	position: fixed;
+	top: 70px; left: 5px; z-index: 12;
+	
+	cursor: pointer;
+	
+	width: 20px; height: 20px;
+	
+	-webkit-transition: -webkit-transform 150ms ease;
+}
+
+body.settings #menu-toggle {
+	-webkit-transform: rotate(360deg);
+}
 
 
 body.settings #settings { left: 0; }
-body.settings #content { left: 500px; }
+/*body.settings #content { left: 500px; }*/
 
 
 input, select, textarea {
