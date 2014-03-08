@@ -32,15 +32,32 @@ DATABASES = {
     },
 }
 
+# Authentication
+AUTH_USER_MODEL = 'core.User'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+
+    'ografy.apps.keyauth.backends.TokenBackend',
+)
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+)
+
+
 # Installed component configuration
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'ografy.util.middleware.MobileFlag',
     'ografy.util.middleware.XhrFlag',
@@ -64,6 +81,7 @@ INSTALLED_APPS = (
 
     'ografy.apps.core',
     'ografy.apps.signals',
+    'ografy.apps.keyauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
