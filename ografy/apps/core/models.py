@@ -54,10 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.handle = self.email
 
 
-class Person(models.Model):
-    name = models.CharField(max_length=256)
-    id = models.AutoField(primary_key=True)
-
 class Account(models.Model):
     """
     Entity representing an integrated Account.
