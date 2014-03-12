@@ -1,15 +1,21 @@
-Django==1.6
+Django==1.6.2
+bcrypt==1.0.2
+cffi==0.8.2
 django-cors-headers==0.12
 django-filter==0.7
 django-haystack==2.1.0
+-e git+https://github.com/sjberry/tastydata.git@3a5d199746864847656e73de313480c32133b432#egg=django_tastydata-origin/HEAD
 django-tastypie==0.11.0
-msgpack-python==0.4.0
-oauthlib==0.6.0
+msgpack-python==0.4.1
+oauthlib==0.6.1
+pycparser==2.10
 python-dateutil==2.2
 python-mimeparse==0.1.4
 python-openid==2.2.5
-python-social-auth==0.1.17
+python-social-auth==0.1.22
 python3-openid==3.0.3
-requests==2.1.0
+pytz==2013.9
+requests==2.2.1
 requests-oauthlib==0.4.0
-six==1.4.1
+six==1.5.2
+-e git+https://github.com/sjberry/smokesignal.git@d043a63058626243b68de45331aa20d16fcbc22d#egg=smokesignal-origin/HEAD
