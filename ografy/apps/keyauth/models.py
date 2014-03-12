@@ -1,11 +1,14 @@
 from __future__ import unicode_literals
+from datetime import timedelta
 import hmac
 import uuid
 
 from django.conf import settings
 from django.db import models
 from django.db.utils import IntegrityError
+from django.utils.timezone import now
 
+from ografy.apps.keyauth.managers import KeyManager
 from ografy.util.decorators import autoconnect
 
 try:
@@ -18,12 +21,18 @@ except ImportError:
 class Key(models.Model):
     id = models.AutoField(primary_key=True)
     digest = models.CharField(db_index=True, max_length=128)
-    whois = models.CharField(max_length=128)
     login_count = models.IntegerField(default=0)
     last_login = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    expires = models.DateTimeField(null=True, blank=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    objects = KeyManager()
+
+    @property
+    def is_valid(self):
+        return self.expires is None or self.expires > now()
 
     def put_address(self, ip):
         """
@@ -39,6 +48,10 @@ class Key(models.Model):
         else:
             # Update the `last_access` field.
             address.save()
+
+    def set_expiration(self, delta=None):
+        if delta is not None:
+            self.expires = now() + timedelta(0, delta)
 
     def pre_save(self):
         if not self.digest or self.digest == '':
