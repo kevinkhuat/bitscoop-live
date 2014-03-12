@@ -1,0 +1,10 @@
+{
+  "Account": {
+    "name": "string",
+    "id": "int"
+  },
+  "Person": {
+    "name": "string",
+    "id": "int"
+  }
+}
