@@ -42,6 +42,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    @property
+    def identifier(self):
+        return self.handle or self.email
+
+    @staticmethod
+    def get_identifier_filter(email=None, handle=None, both=None):
+        if both is not None:
+            return models.Q(email_iexact=both) | models.Q(handle_iexact=both)
+        elif email is not None:
+            return models.Q(email_iexact=email)
+        elif handle is not None:
+            return models.Q(handle_iexact=handle)
+
     def get_full_name(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
 
