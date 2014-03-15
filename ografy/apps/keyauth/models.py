@@ -28,6 +28,11 @@ class Key(models.Model):
 
     objects = KeyManager()
 
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('digest', None)
+        super(Key, self).__init__(*args, **kwargs)
+        self.digest = hmac.new(uuid.uuid4().bytes, digestmod=sha1).hexdigest()
+
     @property
     def is_valid(self):
         return self.expires is None or self.expires > now()
@@ -43,10 +48,6 @@ class Key(models.Model):
         else:
             # Update the `last_access` field.
             address.save()
-
-    def pre_save(self):
-        if not self.digest:
-            self.digest = hmac.new(uuid.uuid4().bytes, digestmod=sha1).hexdigest()
 
 
 class Address(models.Model):
