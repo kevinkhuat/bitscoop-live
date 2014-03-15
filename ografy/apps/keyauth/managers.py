@@ -6,12 +6,9 @@ from django.utils.timezone import now
 
 class KeyManager(BaseManager):
     def valid(self):
-        time = now()
-        expression = Q(expires__gt=time) | Q(expires__isnull=True)
+        expression = Q(expires__gt=now()) | Q(expires__isnull=True)
 
         return self.filter(expression)
 
     def invalid(self):
-        time = now()
-
-        return self.filter(expires__lte=time)
+        return self.filter(expires__lte=now())
