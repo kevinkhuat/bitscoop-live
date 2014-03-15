@@ -15,7 +15,7 @@ def token_required(view_fn, exception=PermissionDenied):
     def _wrapped_view(request, *args, **kwargs):
         token = request.REQUEST.get('token')
         # TODO: Can this be memcached? Probably... take a look into Django cache middleware.
-        key = Key.objects.filter(key__exact=token).first()
+        key = Key.objects.filter(digest__exact=token).first()
 
         if key is None or not key.is_valid:
             raise exception
@@ -36,15 +36,10 @@ def key_login(view_fn, persist=False, track=True, exception=PermissionDenied):
         token = request.REQUEST.get('token')
 
         user = authenticate(token=token)
-        if user is None or not user.is_verified or not user.is_active:
+        if user is None or not user.is_valid:
             raise exception
 
-        # We have a double hit here, see `.backends` module for additional comments/reasoning.
-        key = Key.objects.filter(digest__exact=token).first()
-        if key is None or not key.is_valid:
-            raise exception
-
-        login(request, user, key, persist, track)
+        login(request, user, persist=persist, track=track)
 
         return view_fn(request, *args, **kwargs)
 

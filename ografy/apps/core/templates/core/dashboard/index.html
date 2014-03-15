@@ -1,6 +1,8 @@
-{% extends 'core/formatters/dashboard.html' %}
+{% extends 'dashboard/base.html' %}
 
-{% block content %}
+{% block static %}
+{{ block.super }}
+
 <style type="text/css">
 .bubble {
 	border-radius: 32px;
@@ -16,7 +18,10 @@
 
 .spaced { margin: 10px; }
 </style>
+{% endblock %}
 
+
+{% block content %}
 <div class="item professional">
 	<img src="/static/demo/skills.svg" style="display:block;width:95%;margin:0 auto;" />
 </div>

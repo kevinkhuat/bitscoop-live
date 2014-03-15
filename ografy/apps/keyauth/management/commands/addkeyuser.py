@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import uuid
 
 from django.core.management.base import BaseCommand
 
@@ -22,6 +23,9 @@ class Command(BaseCommand):
         first_name = input('First Name: ')
         last_name = input('Last Name: ')
 
+        if not email:
+            email = '{0}@dummy.ografy.io'.format(uuid.uuid4().hex)
+
         key_user = User(
             email=email,
             handle=handle,
@@ -31,3 +35,5 @@ class Command(BaseCommand):
         )
         key_user.set_unusable_password()  # Make sure the key user can never log in traditionally.
         key_user.save()
+
+        self.stdout.write('User created.')

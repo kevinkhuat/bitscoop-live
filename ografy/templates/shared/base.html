@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>{% load staticfiles %}
+		<meta charset="utf-8" />
+
+		{% block meta %}
+		<title>{{ title }}</title>
+		<link rel="shortcut icon" href="{% static 'assets/favicon.png' %}" />
+		{% endblock %}
+
+		{% block static %}
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,300" />
+		<script type="text/javascript" src="{% static 'lib/jquery/jquery-2.0.3.min.js' %}"></script>
+		{% endblock %}
+	</head>
+	<body class="{{ body_class }}{% if request.mobile %} mobile{% endif %}">
+		{% block body %}{% endblock %}
+	</body>
+</html>

@@ -1,7 +1,7 @@
 import re
 
 
-class MobileFlag(object):
+class SetMobileFlag(object):
     """
     Modifies the request with flags indicating
         - mobile: Mobile request
@@ -11,20 +11,28 @@ class MobileFlag(object):
 
     def process_request(self, request):
         user_agent = request.META['HTTP_USER_AGENT']
-        browser = MobileFlag.BROWSER_REGEXP.search(user_agent)
-        version = MobileFlag.VERSION_REGEXP.search(user_agent[0:4])
+        browser = SetMobileFlag.BROWSER_REGEXP.search(user_agent)
+        version = SetMobileFlag.VERSION_REGEXP.search(user_agent[0:4])
 
         request.mobile = browser or version
 
         return None
 
 
-class XhrFlag(object):
+class SetXhrFlag(object):
     """
     Modifies the request with flags indicating
         - xhr: XMLHttpRequest request access specified by X-Requested-With
     """
     def process_request(self, request):
-        request.xhr = request.is_ajax()
+        request.xhr = request.is_ajax() or request.REQUEST.get('X-Requested-With') == 'XMLHttpRequest'
+
+        return None
+
+
+class SetAnonymousTestCookie(object):
+    def process_request(self, request):
+        if not request.user.is_authenticated():
+            request.session.set_test_cookie()
 
         return None
