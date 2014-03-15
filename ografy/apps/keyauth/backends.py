@@ -14,3 +14,8 @@ class TokenBackend(RemoteUserBackend):
             return key.user
 
         return None
+
+
+class DummyTokenBackend(TokenBackend):
+    def authenticate(self, *args, **kwargs):
+        pass
