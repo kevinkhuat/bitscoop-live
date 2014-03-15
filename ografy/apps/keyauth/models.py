@@ -37,18 +37,6 @@ class Key(models.Model):
     def is_valid(self):
         return self.expires is None or self.expires > now()
 
-    def put_address(self, ip):
-        """
-        Add an address and pass on any database constraint exceptions.
-        """
-        address = self.addresses.filter(ip__exact=ip).first()
-
-        if address is None:
-            self.addresses.create(ip=ip)
-        else:
-            # Update the `last_access` field.
-            address.save()
-
 
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
