@@ -5,10 +5,9 @@ SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 
 # Site setting configuration
-SITE_ID = 1
 ROOT_URLCONF = 'ografy.urls'
 WSGI_APPLICATION = 'ografy.wsgi.application'  # Python dotted path to the WSGI application used by Django's runserver.
-SECRET_KEY = '+9@@kylo*(yq-g%kx@6hhyqnenuv)$^=*!$micrn7xs_6#t7#^'
+SECRET_KEY = '+9@@kylo*(yq-g%kx@6hhyqnenuv)$^=*!$micrn7xs_6#t7#^'  # TODO: Make this actually secure and don't version control it.
 ADMINS = (
     ('Steven Berry', 'sberry@ografy.io'),
     ('Liam Broza', 'lbroza@ografy.io'),
@@ -37,7 +36,7 @@ AUTH_USER_MODEL = 'core.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 
-    'ografy.apps.keyauth.backends.TokenBackend',
+    'ografy.apps.keyauth.backends.DummyTokenBackend',
 )
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -59,14 +58,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'ografy.util.middleware.MobileFlag',
-    'ografy.util.middleware.XhrFlag',
+    'ografy.util.middleware.SetMobileFlag',  # Set Mobile request yes/no flag for all requests.
+    'ografy.util.middleware.SetXhrFlag',  # Set XMLHttpRequest yes/no flag for all requests.
+    'ografy.util.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
 )
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
@@ -106,28 +105,10 @@ STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'build', 'static'))
 # Contrib Settings
 TASTYDATA_PAGE_LIMIT = 30
 
-REST_FRAMEWORK = {
-    'PAGINATE_BY': 15,
-    'PAGINATE_BY_PARAM': 'page_size',
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework_msgpack.renderers.MessagePackRenderer',
-        'rest_framework_csv.renderers.CSVRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': (
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
-        'rest_framework.parsers.JSONParser',
-        'rest_framework_msgpack.parsers.MessagePackParser',
-        'rest_framework_csv.parsers.CSVParser',
-    ),
-}
-
 SIGNALS = {
     'steam': 'http://static.ografy.io/steam.js',
     'riot': 'riot.js',
     'facebook': 'facebook.js',
 
-    #'mycoolsite': 'https://mycoolsite.com/myapi.js'
+    #'mycoolsite': 'https://mycoolsite.com/myapi.js',
 }
