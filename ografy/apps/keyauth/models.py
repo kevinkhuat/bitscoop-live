@@ -1,11 +1,9 @@
 from __future__ import unicode_literals
-from datetime import timedelta
 import hmac
 import uuid
 
 from django.conf import settings
 from django.db import models
-from django.db.utils import IntegrityError
 from django.utils.timezone import now
 
 from ografy.apps.keyauth.managers import KeyManager
@@ -41,20 +39,13 @@ class Key(models.Model):
         address = self.addresses.filter(ip__exact=ip).first()
 
         if address is None:
-            try:
-                self.addresses.create(ip=ip)
-            except IntegrityError:
-                pass
+            self.addresses.create(ip=ip)
         else:
             # Update the `last_access` field.
             address.save()
 
-    def set_expiration(self, delta=None):
-        if delta is not None:
-            self.expires = now() + timedelta(0, delta)
-
     def pre_save(self):
-        if not self.digest or self.digest == '':
+        if not self.digest:
             self.digest = hmac.new(uuid.uuid4().bytes, digestmod=sha1).hexdigest()
 
 
