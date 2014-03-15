@@ -43,6 +43,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     @property
+    def is_valid(self):
+        return self.is_active and self.is_verified
+
+    @property
     def identifier(self):
         return self.handle or self.email
 
