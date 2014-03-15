@@ -1,0 +1,29 @@
+{% extends 'shared/base.html' %}
+{% load staticfiles %}
+
+{% block static %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
+<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+<header id="header">
+	<div class="lock-width">
+		<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
+		{% block header %}{% endblock %}
+	</div>
+</header>
+
+<section id="content">
+	{% block content %}{% endblock %}
+	<div class="push"></div>
+</section>
+
+<footer id="footer" class="bg-dark">
+	<div class="lock-width center">
+		&copy 2013-2014 Ografy, LLC.
+	</div>
+</footer>
+{% endblock %}

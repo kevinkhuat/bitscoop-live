@@ -1,0 +1,200 @@
+{% extends 'core/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block static %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'plugins/jquery/waypoints-2.0.3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/jquery/jquery.scrollTo.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="bg-green">
+	<div class="table lock-width">
+		<div>
+			<div class="middle" style="padding-right:20px;">
+				<h2>Discover your data.</h2>
+				<p>Connect your with your accounts and data and publish yourself to the world.</p>
+				<p>Need to do more? Check out Ografy+ upgraded plans.</p>
+			</div>
+
+			<div class="bg-gray center middle" style="width:25%;padding:15px;">
+				<form id="sign-up">
+					<input class="txt-artsy" type="text" name="identifier" placeholder="Username or Email" />
+					<input class="txt-artsy" type="password" name="password" placeholder="Password" />
+					<input id="btn-login" class="btn-artsy centered" type="submit" value="Get Started" />
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div id="signup-footer" class="signup">
+	<nav class="steps">
+		<a href="#create-account"></a>
+		<a href="#edit-settings"></a>
+		<a href="#connect-accounts"></a>
+		<a href="#select-data"></a>
+		<a href="#publish-yourself"></a>
+		<a href="#relax"></a>
+	</nav>
+</div>
+
+<section id="welcome" class="bg-light center signup" style="border-top:10px solid #707070;">
+	<h2>Looks like you're new</h2>
+	<p>No worries. Welcome to Ografy!</p>
+	<p>Let's get you up to speed.</p>
+</section>
+
+<section id="create-account" class="bg-blue waypoint signup">
+	<h1 class="center">Create an Account</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="bg-gray middle" style="width:25%;padding:15px;">
+				<input class="txt-artsy" type="text" name="username" placeholder="Username" />
+				<input class="txt-artsy" type="text" name="email" placeholder="Email Address" />
+				<input class="txt-artsy" type="password" name="password" placeholder="Password" />
+				<input class="txt-artsy" type="password" name="confirm_password" placeholder="Confirm Password" />
+			</div>
+
+			<div class="middle" style="padding-left:20px;">
+				<p>You can sign up with the info you entered up top, or you can change it now.</p>
+				<p>You can also sign up with an OpenID.</p>
+				<p>We'll create an account for you with us and maintain some basic information.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="edit-settings" class="bg-dark waypoint signup">
+	<h1 class="center">Edit Basic Settings</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="middle">
+				<p>If you'd like to fill out your profile a bit more you can now enter some basic info.</p>
+				<p>None of this info is required, but it help to share with friends.</p>
+				<p>By default all of your personal information is hidden in your public profile.</p>
+				<p>You're free to decide what to show.</p>
+				<p>These settings can always be changed and will update immediately.</p>
+			</div>
+
+			<div class="bg-gray middle" style="width:25%;padding:15px;">
+				<input class="txt-artsy" type="text" name="first_name" placeholder="First Name" />
+				<input class="txt-artsy" type="text" name="last_name" placeholder="Last Name" />
+				<input class="txt-artsy" type="text" name="location" placeholder="Home Location" />
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<section id="connect-accounts" class="bg-green waypoint signup">
+	<h1 class="center">Connect Your Accounts</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="middle center">
+				<p>You can authorize Ografy to view your other accounts and collect data on your behalf.</p>
+				<p>You can start collecting your data from each connected account immediately.</p>
+				<p>You'll have to add each connected account separately.</p>
+				<p>We'll let you know exactly what information will be sent and received.</p>
+				<p>The accounts we support are listed explicitly <a href="">here</a>.</p>
+				<p>We'll be sure to let you know if we add, modify, or remove support for any of these services in the future.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="select-data" class="bg-dark waypoint signup">
+	<h1 class="center">Select Your Data</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="middle center">
+				<p>You can configure each account and specify the data that will be retrieved.</p>
+				<p>Ografy will quantify and categorize the information it gathers and suggest formats.</p>
+				<p>You can override the assumptions Ografy makes about certain data types</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="publish-yourself" class="bg-blue waypoint signup">
+	<h1 class="center">Publish Yourself</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="middle center">
+				<p>You can group gathered data and visualize it with the Ografy visualization engine.</p>
+				<p>You can annotate visualizations, adjust color schemes, and import graphic assets to create custom infographics.</p>
+				<p>You can share these infographics on your personal website, blog, or social network feeds.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="relax" class="waypoint signup" style="border-bottom:10px solid #707070;">
+	<h1 class="center">Sit Back, Relax!</h1>
+
+	<div class="table lock-width">
+		<div class="middle center">
+			<p>Continue spending time with the accounts you already use!</p>
+			<p>Ografy will continue to collect data from your connected accounts.</p>
+			<p>You can disconnect an account at any time.</p>
+			<p>Simply login and update your connection settings.</p>
+			<p>We'll be sure to delete any residual data.</p>
+		</div>
+	</div>
+</section>
+
+<section class="bg-dark">
+	<h1 class="center">How It Works</h1>
+
+	<div class="table lock-width" style="margin-bottom:15px;">
+		<div>
+			<div class="half-width middle">
+				<p>Ografy collects the information you generate.</p>
+				<p>Your data is re-streamed in a single place.</p>
+			</div>
+
+			<div class="half-width middle">
+				<figure>INSERT THE COLLECTION ASSET IMAGE HERE.</figure>
+			</div>
+		</div>
+	</div>
+
+	<div class="table lock-width" style="margin-bottom:15px;">
+		<div>
+			<div class="half-width middle">
+				<figure>INSERT THE PUBLISHING ASSET IMAGE HERE.</figure>
+			</div>
+
+			<div class="half-width middle">
+				<p>You can automatically track your activity and easily share cool stats with your friends and the world.</p>
+			</div>
+		</div>
+	</div>
+
+	<p class="center">You can easily manage how your data is tracked and published.</p>
+</section>
+
+<section class="bg-blue">
+	<h1 class="center">What's Next?</h1>
+
+	<div class="table lock-width">
+		<div>
+			<div class="half-width middle pad15">
+				<p>Ografy was designed to minimize the learning curve.</p>
+				<p>However, more advanced features are available for users who'd like to spend more time.</p>
+				<p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a>.</p>
+			</div>
+
+			<div class="half-width middle pad15">
+				<p>Ografy is continually updated with new features.</p>
+				<p>If you'd like to check in on the team's status and the planned features, be sure to check out the <a href="/blog">development blog</a>.</p>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
