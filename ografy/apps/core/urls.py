@@ -12,7 +12,9 @@ odata_v1.register(EntryResource())
 
 urlpatterns = patterns('',
     url(r'^/?$', views.index),
+    url(r'^demo/?$', views.demo),
     url(r'^docs/?$', views.documentation),
     url(r'^blog/?$', views.blog),
     url(r'^dashboard/?$', views.dashboard),
+    url(r'^debug/?$', views.debug),
 )
