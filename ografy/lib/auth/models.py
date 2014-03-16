@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.timezone import now
 
-from ografy.apps.keyauth.managers import AddressManager, KeyManager
+from ografy.lib.auth.managers import AddressManager, KeyManager
 
 try:
     from hashlib import sha1

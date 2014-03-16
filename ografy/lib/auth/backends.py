@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
 from django.contrib.auth.backends import RemoteUserBackend
 
-from ografy.apps.keyauth.models import Key
+from ografy.lib.auth.models import Key
 
 
 class TokenBackend(RemoteUserBackend):

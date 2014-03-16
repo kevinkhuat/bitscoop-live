@@ -1,10 +1,11 @@
+from __future__ import unicode_literals
 from functools import wraps
 
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import available_attrs
 
-from ografy.apps.keyauth import authenticate, login
-from ografy.apps.keyauth.models import Key
+from ografy.lib.auth import authenticate, login
+from ografy.lib.auth.models import Key
 
 
 def token_required(view_fn, exception=PermissionDenied):

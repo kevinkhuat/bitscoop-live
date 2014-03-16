@@ -5,9 +5,9 @@ from django.contrib.auth.signals import user_login_failed
 from django.core.exceptions import PermissionDenied
 
 from ografy.util import get_client_ip
-from ografy.apps.keyauth.backends import TokenBackend, DummyTokenBackend
-from ografy.apps.keyauth.models import Key
-from ografy.apps.keyauth.util import put_address
+from ografy.lib.auth.backends import TokenBackend, DummyTokenBackend
+from ografy.lib.auth.models import Key
+from ografy.lib.auth.util import put_address
 
 
 def authenticate(**credentials):
