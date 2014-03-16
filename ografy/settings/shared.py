@@ -36,7 +36,7 @@ AUTH_USER_MODEL = 'core.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 
-    'ografy.apps.keyauth.backends.DummyTokenBackend',
+    'ografy.lib.auth.backends.DummyTokenBackend',
 )
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -74,9 +74,14 @@ INSTALLED_APPS = (
     'tastypie',
     'tastydata',
 
+    'ografy.apps.api',
+    'ografy.apps.blog',
     'ografy.apps.core',
+    'ografy.apps.demo',
+    'ografy.apps.documentation',
     'ografy.apps.signals',
-    'ografy.apps.keyauth',
+
+    'ografy.lib.auth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
