@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
-from ografy.apps.keyauth.decorators import key_login
+from django.views.generic import View
 
 
 def index(request):
@@ -12,37 +11,24 @@ def index(request):
     })
 
 
-@key_login
-def demo(request):
-    print(request.user)
-
-    return render(request, 'core/demo/index.html', {
-        'title': 'Ografy - Demo'
-    })
-
-
+@login_required
 def dashboard(request):
     return render(request, 'core/dashboard/index.html', {
         'title': 'Ografy - Dashboard'
     })
 
 
-def blog(request):
-    return render(request, 'core/blog/index.html', {
-        'title': 'Ografy - Development Blog'
-    })
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'core/user/login.html', {
+            'title': 'Ografy - Login'
+        })
 
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        print(args)
+        print(kwargs)
 
-def documentation(request):
-    return render(request, 'core/documentation/index.html', {
-        'title': 'Ografy - Documentation'
-    })
-
-
-def debug(request):
-    print(request.session.session_key)
-    print(request.user)
-
-    return render(request, 'core/demo/index.html', {
-        'title': 'Ografy - Debug'
-    })
+        return render(request, 'core/user/login.html', {
+            'title': 'Ografy - Loggged in!'
+        })
