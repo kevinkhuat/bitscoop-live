@@ -7,7 +7,6 @@ from ografy.apps.core.managers import UserManager
 from ografy.util.decorators import autoconnect
 
 
-@autoconnect
 class User(AbstractBaseUser, PermissionsMixin):
     """
     Entity representing a User.
@@ -29,8 +28,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=256, blank=False, unique=True, db_index=True)
     # FIXME: Make the handle case insensitive unique.
     handle = models.CharField(max_length=20, unique=True, db_index=True)
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     password_date = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
@@ -38,8 +37,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
     objects = UserManager()
 
     @property
@@ -64,11 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.handle or self.first_name
-
-    def pre_save(self):
-        self.email = self.email.lower()
-        if not self.handle:
-            self.handle = self.email
 
 
 class Account(models.Model):
