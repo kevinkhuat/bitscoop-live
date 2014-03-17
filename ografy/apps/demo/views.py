@@ -13,7 +13,14 @@ def index(request):
     })
 
 
-#@login_required
+@login_required
+def dashboard(request):
+    return render(request, 'demo/dashboard.html', {
+        'title': 'Ografy - Dashboard'
+    })
+
+
+@login_required
 def debug(request):
     return render(request, 'demo/index.html', {
         'title': 'Ografy - Debug'

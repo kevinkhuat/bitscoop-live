@@ -11,12 +11,6 @@ def index(request):
     })
 
 
-@login_required
-def dashboard(request):
-    return render(request, 'core/dashboard/index.html', {
-        'title': 'Ografy - Dashboard'
-    })
-
 
 class LoginView(View):
     def get(self, request):
