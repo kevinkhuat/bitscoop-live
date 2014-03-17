@@ -6,5 +6,5 @@ from ografy.apps.documentation import views
 
 
 urlpatterns = patterns('',
-    url(r'^/?$', views.index),
+    url(r'^/?$', views.index, name='documentation_index'),
 )

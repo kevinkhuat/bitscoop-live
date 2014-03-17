@@ -6,6 +6,7 @@ from ografy.apps.demo import views
 
 
 urlpatterns = patterns('',
-    url(r'^/?$', views.index),
-    url(r'^debug/?$', views.debug),
+    url(r'^/?$', views.index, name='demo_index'),
+    url(r'^/dashboard/?$', views.dashboard, name='demo_dashboard'),
+    url(r'^/debug/?$', views.debug, name='demo_debug'),
 )

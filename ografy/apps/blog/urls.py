@@ -6,5 +6,5 @@ from ografy.apps.blog import views
 
 
 urlpatterns = patterns('',
-    url(r'^/?$', views.index),
+    url(r'^/?$', views.index, name='blog_index'),
 )
