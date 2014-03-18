@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
     url(r'^docs', include('ografy.apps.documentation.urls')),
+    url(r'^extensions', include('ografy.apps.extensions.urls')),
+    url(r'^nexus', include('ografy.apps.nexus.urls')),
     url(r'^signals', include('ografy.apps.signals.urls')),
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."

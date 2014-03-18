@@ -35,8 +35,7 @@ DATABASES = {
 # Authentication
 AUTH_USER_MODEL = 'core.User'
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-
+    'ografy.lib.auth.backends.IdentifierBackend',
     'ografy.lib.auth.backends.DummyTokenBackend',
 )
 LOGIN_URL = '/login/'
@@ -83,6 +82,8 @@ INSTALLED_APPS = (
     'ografy.apps.core',
     'ografy.apps.demo',
     'ografy.apps.documentation',
+    'ografy.apps.extensions',
+    'ografy.apps.nexus',
     'ografy.apps.signals',
 
     'ografy.lib.auth',
