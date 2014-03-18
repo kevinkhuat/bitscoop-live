@@ -4,26 +4,59 @@
 {% block static %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
-<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>
+<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
 {% endblock %}
 
 
 {% block body %}
-<header id="header">
-	<div class="lock-width">
-		<img src="{% static 'assets/logo.png' %}" style="width:150px;" />
-		{% block header %}{% endblock %}
-	</div>
-</header>
+<main>
+	<header id="header" style="background-color:#EEE;border-bottom:1px solid #CCC;">
+		<div class="table lockwidth centered full-height">
+			<div>
+				<div class="left middle">
+					<nav>
+						<ul>
+							<li><a href="{% url 'core_index' %}">Home</a></li>
+							<!--<li><a href="">Features</a></li>-->
+							<li><a href="{% url 'nexus_index' %}">Nexus</a></li>
+							<li><a href="{% url 'documentation_index' %}">Get Started</a></li>
+							<li><a href="{% url 'extensions_index' %}">Extensions</a></li>
+							<li><a href="{% url 'blog_index' %}">Blog</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="right middle">
+					<nav>
+						<ul>
+							{% if request.user.is_authenticated %}
+							<li><a href="">{{ request.user.identifier }}</a></li>
+							<li><a href="">Settings</a></li>
+							<li><a href="{% url 'core_logout' %}">Logout</a></li>
+							{% else %}
+							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
+							<li><a href="{% url 'core_login' %}">Log In</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
 
-<section id="content">
+	<div id="content">
 	{% block content %}{% endblock %}
-	<div class="push"></div>
-</section>
+	</div>
 
-<footer id="footer" class="bg-dark">
-	<div class="lock-width center">
-		&copy 2013-2014 Ografy, LLC.
+	<div class="push"></div>
+</main>
+
+<footer id="footer" class="center">
+	<div class="table lockwidth centered full-height">
+		<div>
+			<div class="center middle">
+				&copy 2014 Ografy, LLC.
+			</div>
+		</div>
 	</div>
 </footer>
 {% endblock %}
