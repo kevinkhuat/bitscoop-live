@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import BaseUserManager
+from django.db.models import Q
 
 
 class UserManager(BaseUserManager):
@@ -23,3 +24,15 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+
+    def by_identifier(self, email=None, handle=None, both=None):
+        if both is not None:
+            expr = Q(email__iexact=both) | Q(handle__iexact=both)
+        elif email is not None:
+            expr = Q(email__iexact=email)
+        elif handle is not None:
+            expr = Q(handle__iexact=handle)
+        else:
+            expr = Q()
+
+        return self.filter(expr)
