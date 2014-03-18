@@ -8,7 +8,7 @@ from ografy.apps.core.models import User
 
 class Command(BaseCommand):
     args = '<user identifier>'
-    help = 'Creates an application key for the specified user name.'
+    help = 'Deactivates a user and revokes all keys associated with the account.'
 
     def handle(self, *args, **options):
         if len(args) == 0:

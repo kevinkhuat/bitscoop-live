@@ -10,7 +10,7 @@ from ografy.util.datetime import offset
 
 class Command(BaseCommand):
     args = '<user identifier>'
-    help = 'Creates an application key for the specified user name.'
+    help = 'Creates an application key for the specified user.'
     opts = (
         make_option(
             '-s',
@@ -67,9 +67,7 @@ class Command(BaseCommand):
             return
 
         identifier = args[0]
-        user = User.objects.filter(handle__iexact=identifier).first()
-        if user is None:
-            user = User.objects.filter(email__iexact=identifier).first()
+        user = User.objects.by_identifier(both=identifier).first()
 
         if user is not None:
             time_data = {}
