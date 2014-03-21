@@ -1,0 +1,79 @@
+{% extends 'core/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<section class="bg-dark">
+	<div class="table lockwidth centered">
+		<div>
+			<div class="middle">
+				<h1>Discover your data.</h1>
+				<p>Connect your with your existing accounts and publish yourself around the world.</p>
+				<p>Need to do more? Check out Ografy+ upgraded plans.</p>
+			</div>
+			<div>
+				<form action="{% url 'core_signup' %}" method="POST">
+					{% csrf_token %}
+					<input type="text" name="email" placeholder="Email Address" />
+					<input type="text" name="handle" placeholder="Username" />
+					<input type="password" name="password" placeholder="Password" />
+					<input type="submit" value="Sign Up" />
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section>
+	<h1 class="center">How It Works</h1>
+
+	<div class="table lockwidth centered">
+		<div>
+			<div class="middle">
+				<p>Ografy collects the information you generate.</p>
+				<p>Your data is re-streamed in a single place.</p>
+			</div>
+
+			<div class="middle">
+				<figure>INSERT THE COLLECTION ASSET IMAGE HERE.</figure>
+			</div>
+		</div>
+	</div>
+
+	<div class="table lockwidth centered">
+		<div>
+			<div class="middle">
+				<figure>INSERT THE PUBLISHING ASSET IMAGE HERE.</figure>
+			</div>
+
+			<div class="middle">
+				<p>You can automatically track your activity and easily share cool stats with your friends and the world.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="bg-dark">
+	<h1 class="center">You can easily manage how your data is tracked and published.</h1>
+</section>
+
+<section>
+	<h1 class="center">What's Next?</h1>
+
+	<div class="table lockwidth centered">
+		<div>
+			<div class="middle">
+				<p>Ografy was designed to minimize the learning curve.</p>
+				<p>However, more advanced features are available for users who'd like to spend more time.</p>
+				<p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a>.</p>
+			</div>
+
+			<div class="middle">
+				<p>Ografy is continually updated with new features.</p>
+				<p>If you'd like to check in on the team's status and the planned features, be sure to check out the <a href="/blog">development blog</a>.</p>
+			</div>
+		</div>
+	</div>
+
+	<p class="lockwidth centered center">In short we're just getting started and we'd love to incorporate the features you'd like to see most. Be sure to connect with us!</p>
+</section>
+{% endblock %}

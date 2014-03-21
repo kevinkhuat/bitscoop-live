@@ -1,0 +1,11 @@
+{% extends 'core/dispatcher.html' %}
+
+{% block content %}
+<form action="{% url 'core_login' %}" method="POST">
+	{% csrf_token %}
+	<input type="text" name="identifier" placeholder="Email or handle" />
+	<input type="password" name="password" placeholder="Password" />
+	<label><input type="checkbox" name="remember_me" value="1" />Remember Me</label>
+	<input type="submit" value="Login" />
+</form>
+{% endblock %}

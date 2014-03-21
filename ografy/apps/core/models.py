@@ -25,12 +25,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         is_active: Flag indicating whether or not the account is active.
     """
     id = models.AutoField(primary_key=True)
-    # FIXME: Make the email case insensitive unique. Defer to a hacky pre_save for now.
     email = models.EmailField(max_length=256, blank=False, unique=True, db_index=True)
-    # FIXME: Make the handle case insensitive unique.
+    upper_email = models.EmailField(max_length=256, blank=False, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
     handle = models.CharField(max_length=20, unique=True, db_index=True)
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
+    upper_handle = models.CharField(max_length=20, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     password_date = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
@@ -38,8 +38,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
     objects = UserManager()
 
     @property
@@ -50,25 +48,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     def identifier(self):
         return self.handle or self.email
 
-    @staticmethod
-    def get_identifier_filter(email=None, handle=None, both=None):
-        if both is not None:
-            return models.Q(email_iexact=both) | models.Q(handle_iexact=both)
-        elif email is not None:
-            return models.Q(email_iexact=email)
-        elif handle is not None:
-            return models.Q(handle_iexact=handle)
-
     def get_full_name(self):
-        return '{0} {1}'.format(self.first_name, self.last_name)
+        return '{0} {1}'.format(self.first_name, self.last_name).strip()
 
     def get_short_name(self):
         return self.handle or self.first_name
 
     def pre_save(self):
-        self.email = self.email.lower()
-        if not self.handle:
-            self.handle = self.email
+        self.upper_email = self.email.upper()
+        self.upper_handle = self.handle.upper()
 
 
 class Person(models.Model):

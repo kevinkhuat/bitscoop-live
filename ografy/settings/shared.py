@@ -6,6 +6,7 @@ ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 
 # Site setting configuration
 ROOT_URLCONF = 'ografy.urls'
+APPEND_SLASH = False
 WSGI_APPLICATION = 'ografy.wsgi.application'  # Python dotted path to the WSGI application used by Django's runserver.
 SECRET_KEY = '+9@@kylo*(yq-g%kx@6hhyqnenuv)$^=*!$micrn7xs_6#t7#^'  # TODO: Make this actually secure and don't version control it.
 ADMINS = (
@@ -34,10 +35,10 @@ DATABASES = {
 # Authentication
 AUTH_USER_MODEL = 'core.User'
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-
-    'ografy.apps.keyauth.backends.DummyTokenBackend',
+    'ografy.lib.auth.backends.IdentifierBackend',
+    'ografy.lib.auth.backends.DummyTokenBackend',
 )
+LOGIN_URL = '/login/'
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.BCryptPasswordHasher',
@@ -47,6 +48,7 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
     'django.contrib.auth.hashers.CryptPasswordHasher',
 )
+SESSION_LIMIT = 1209600  # Session limit in seconds. Can also use timedelta.
 
 
 # Installed component configuration
@@ -71,12 +73,20 @@ INSTALLED_APPS = (
 
     #'mptt',
     #'rest_framework',
+    'smokesignal',
     'tastypie',
     'tastydata',
 
+    'ografy.apps.api',
+    'ografy.apps.blog',
     'ografy.apps.core',
+    'ografy.apps.demo',
+    'ografy.apps.documentation',
+    'ografy.apps.extensions',
+    'ografy.apps.nexus',
     'ografy.apps.signals',
-    'ografy.apps.keyauth',
+
+    'ografy.lib.auth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
