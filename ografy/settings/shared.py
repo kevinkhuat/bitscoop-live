@@ -115,10 +115,10 @@ STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'build', 'static'))
 # Contrib Settings
 TASTYDATA_PAGE_LIMIT = 30
 
-SIGNALS = {
-    'steam': 'http://static.ografy.io/steam.js',
-    'riot': 'riot.js',
-    'facebook': 'facebook.js',
-
-    #'mycoolsite': 'https://mycoolsite.com/myapi.js',
-}
+# SIGNALS = {
+#     'steam': 'http://static.ografy.io/steam.js',
+#     'riot': 'riot.js',
+#     'facebook': 'facebook.js',
+#
+#     #'mycoolsite': 'https://mycoolsite.com/myapi.js',
+# }
