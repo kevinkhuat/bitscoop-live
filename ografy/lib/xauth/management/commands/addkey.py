@@ -4,7 +4,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 
 from ografy.apps.core.models import User
-from ografy.lib.auth.models import Key
+from ografy.lib.xauth.models import Key
 from ografy.util.datetime import offset
 
 
@@ -67,7 +67,7 @@ class Command(BaseCommand):
             return
 
         identifier = args[0]
-        user = User.objects.by_identifier(both=identifier).first()
+        user = User.objects.by_identifier(identifier).first()
 
         if user is not None:
             time_data = {}
