@@ -20,7 +20,7 @@ def rand_string(length=15):
     return ''.join(random.choice(BANK) for x in range(length))
 
 
-from ografy.apps.core.models import User, Account, Metric, Entry
+from ografy.apps.core.models import User, Account, Metric, Entry, Message
 from smokesignal.parsers import Parser
 
 
@@ -81,28 +81,28 @@ def parse_twitter(account):
 
     friends_list = twitter_parser.friends_list(twitter_friends_List)
     entry_friends = []
-    for friend in friends_list.get('friendList'):
-        entry_friend = Entry(account=account, url='steam.com', datetime=datetime.datetime.now(),
-                             entry_name='lastlogoff', data=friend.get('name'),
+    for friend in friends_list.get('users'):
+        entry_friend = Entry(account=account, url='twitter.com', datetime=datetime.datetime.now(),
+                             entry_name='screen_name', data=friend.get('screen_name'),
                              vid=rand_string(), update_date=datetime.datetime.now())
         entry_friends.append(entry_friend)
         return_list.append(model_to_dict(entry_friend))
         entry_friend.save()
 
-    played_game_list = twitter_parser.status_user_timeline(twitter_status_user_timeline)
+    tweet_list = twitter_parser.status_user_timeline(twitter_status_user_timeline)
     entry_games = []
-    for game in played_game_list.get('games'):
-        entry_game = Entry(account=account, url='steam.com', datetime=datetime.datetime.now(),
-                           entry_name='name', data=game.get('name'),
+    for tweet in tweet_list.get('users'):
+        message_tweet = Message(account=account, url='twitter.com', datetime=datetime.datetime.now(),
+                           entry_name='text', data=tweet.get('text'),
                            vid=rand_string(), update_date=datetime.datetime.now())
-        entry_games.append(entry_game)
-        return_list.append(model_to_dict(entry_game))
-        entry_game.save()
+        entry_games.append(message_tweet)
+        return_list.append(model_to_dict(message_tweet))
+        message_tweet.save()
 
 
     pprint('Dynamic Twitter Parser Testing')
-    pprint(twitter_parser.friends_list(twitter_friends_List))
-    pprint(twitter_parser.status_user_timeline(twitter_status_user_timeline))
+    pprint(entry_friends)
+    pprint(entry_games)
 
     return return_list
 
@@ -125,7 +125,8 @@ def index(request):
     # return HttpResponse(json.dumps(config), content_type='application/json')
 
 
-    user = User(first_name=rand_string(), last_name=rand_string(), email=rand_string())
+    user = User(first_name=rand_string(), last_name=rand_string(), email=rand_string(),
+                upper_handle=rand_string(), upper_email=rand_string(), handle=rand_string())
     user.save()
     account = Account(user=user, name='steam', root_url='')
     account.save()
