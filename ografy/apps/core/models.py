@@ -1,62 +1,10 @@
+from __future__ import unicode_literals
 import uuid
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.conf import settings
 from django.db import models
 
-from ografy.apps.core.managers import UserManager
 from ografy.util.decorators import autoconnect
-
-
-@autoconnect
-class User(AbstractBaseUser, PermissionsMixin):
-    """
-    Entity representing a User.
-
-    Attributes:
-        id: Entity identifier.
-        password: (Inherited) The salted and hashed password value.
-        email: Entity-specified email address.
-        handle: Entity-specified username.
-        first_name: Entity-specified given name.
-        last_name: Entity-specified inherited name.
-        last_login: (Inherited) The date of last login.
-        password_date: The date of the last password change.
-        is_verified: Flag indicating whether or not the account has been verified.
-        is_active: Flag indicating whether or not the account is active.
-    """
-    id = models.AutoField(primary_key=True)
-    email = models.EmailField(max_length=256, blank=False, unique=True, db_index=True)
-    upper_email = models.EmailField(max_length=256, blank=False, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
-    handle = models.CharField(max_length=20, unique=True, db_index=True)
-    upper_handle = models.CharField(max_length=20, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    password_date = models.DateTimeField(auto_now_add=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    is_staff = models.BooleanField(default=False)
-    is_verified = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
-    USERNAME_FIELD = 'email'
-    objects = UserManager()
-
-    @property
-    def is_valid(self):
-        return self.is_active and self.is_verified
-
-    @property
-    def identifier(self):
-        return self.handle or self.email
-
-    def get_full_name(self):
-        return '{0} {1}'.format(self.first_name, self.last_name).strip()
-
-    def get_short_name(self):
-        return self.handle or self.first_name
-
-    def pre_save(self):
-        self.upper_email = self.email.upper()
-        self.upper_handle = self.handle.upper()
 
 
 class Account(models.Model):
@@ -74,7 +22,7 @@ class Account(models.Model):
         api_key: The API key used to authenticate against foreign APIs.
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=50)
     root_url = models.CharField(max_length=2048)
     # FIXME: Hash username/passwords with salts. Or cache OAuth credentials (preferred).
