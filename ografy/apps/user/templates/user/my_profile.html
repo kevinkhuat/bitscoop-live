@@ -1,0 +1,17 @@
+{% extends 'core/dispatcher.html' %}
+
+{% block content %}
+<section class="lockwidth centered">
+	<h1>User</h1>
+
+	<p style="margin-bottom:2em;">
+		<b>Note:</b> We'll support changing all of this information very soon.
+		For now it's just displayed for your records.
+	</p>
+
+	<p><b>Email:</b> {{ user.email }}</p>
+	<p><b>Handle:</b> {{ user.handle }}</p>
+	<p><b>First Name:</b> {{ user.first_name }}</p>
+	<p><b>Last Name:</b> {{ user.last_name }}</p>
+</section>
+{% endblock %}
