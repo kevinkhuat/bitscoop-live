@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<section class="bg-dark">
+<section class="bg-dark padded">
 	<div class="table lockwidth centered">
 		<div>
 			<div class="middle">
@@ -10,20 +10,20 @@
 				<p>Connect your with your existing accounts and publish yourself around the world.</p>
 				<p>Need to do more? Check out Ografy+ upgraded plans.</p>
 			</div>
-			<div>
+			<div class="middle center">
 				<form action="{% url 'core_signup' %}" method="POST">
 					{% csrf_token %}
-					<input type="text" name="email" placeholder="Email Address" />
-					<input type="text" name="handle" placeholder="Username" />
-					<input type="password" name="password" placeholder="Password" />
-					<input type="submit" value="Sign Up" />
+					<div><input type="text" name="email" placeholder="Email Address" /></div>
+					<div><input type="text" name="handle" placeholder="Username" /></div>
+					<div><input type="password" name="password" placeholder="Password" /></div>
+					<input class="ui button positive" type="submit" value="Sign Up" />
 				</form>
 			</div>
 		</div>
 	</div>
 </section>
 
-<section>
+<section class="padded">
 	<h1 class="center">How It Works</h1>
 
 	<div class="table lockwidth centered">
@@ -52,11 +52,11 @@
 	</div>
 </section>
 
-<section class="bg-dark">
+<section class="bg-dark padded">
 	<h1 class="center">You can easily manage how your data is tracked and published.</h1>
 </section>
 
-<section>
+<section class="padded">
 	<h1 class="center">What's Next?</h1>
 
 	<div class="table lockwidth centered">
