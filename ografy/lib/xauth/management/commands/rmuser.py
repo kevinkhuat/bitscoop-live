@@ -18,9 +18,7 @@ class Command(BaseCommand):
             return
 
         identifier = args[0]
-        user = User.objects.filter(handle__iexact=identifier).first()
-        if user is None:
-            user = User.objects.filter(email__iexact=identifier).first()
+        user = User.objects.by_identifier(identifier).first()
 
         if user is not None:
             user.is_active = False

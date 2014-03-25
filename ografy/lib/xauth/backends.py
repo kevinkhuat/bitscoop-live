@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend, RemoteUserBackend
 
-from ografy.lib.auth.models import Key
+from ografy.lib.xauth.models import Key
 
 
 class IdentifierBackend(ModelBackend):
     def authenticate(self, identifier=None, password=None, **kwargs):
         UserModel = get_user_model()
-        user = UserModel.objects.by_identifier(both=identifier).first()
+        user = UserModel.objects.by_identifier(identifier).first()
 
         if user is not None and user.check_password(password):
             return user

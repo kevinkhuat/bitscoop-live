@@ -1,7 +1,28 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import BaseUserManager
-from django.db.models import Q
+from django.db.models import Manager as BaseManager, Q
+from django.utils.timezone import now
+
+
+class AddressManager(BaseManager):
+    def valid(self):
+        expression = Q(expires__isnull=True) | Q(expires__gt=now())
+
+        return self.filter(expression)
+
+    def invalid(self):
+        return self.filter(expires__lte=now())
+
+
+class KeyManager(BaseManager):
+    def valid(self):
+        expression = Q(expires__isnull=True) | Q(expires__gt=now())
+
+        return self.filter(expression)
+
+    def invalid(self):
+        return self.filter(expires__lte=now())
 
 
 class UserManager(BaseUserManager):
@@ -25,14 +46,14 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
 
-    def by_identifier(self, email=None, handle=None, both=None):
-        if both is not None:
-            expr = Q(email__iexact=both) | Q(handle__iexact=both)
-        elif email is not None:
-            expr = Q(email__iexact=email)
-        elif handle is not None:
-            expr = Q(handle__iexact=handle)
-        else:
-            expr = Q()
+    def by_oid(self, oid):
+        try:
+            id = int(oid)
+            expr = Q(pk=id)
+        except ValueError:
+            expr = Q(handle__iexact=oid)
 
         return self.filter(expr)
+
+    def by_identifier(self, identifier):
+        return self.filter(Q(email__iexact=identifier) | Q(handle__iexact=identifier))

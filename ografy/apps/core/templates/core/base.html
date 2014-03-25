@@ -10,17 +10,14 @@
 
 {% block body %}
 <main>
-	<header id="header" style="background-color:#EEE;border-bottom:1px solid #CCC;">
+	<header id="header" class="bg-offwhite border-bottom">
 		<div class="table lockwidth centered full-height">
-			<div>
+			<div class="middle">
 				<div class="left middle">
 					<nav>
 						<ul>
-							<li><a href="{% url 'core_index' %}">Home</a></li>
-							<!--<li><a href="">Features</a></li>-->
-							<li><a href="{% url 'nexus_index' %}">Nexus</a></li>
+							<li><a href="{% url 'core_index' %}">Ografy</a></li>
 							<li><a href="{% url 'documentation_index' %}">Get Started</a></li>
-							<li><a href="{% url 'extensions_index' %}">Extensions</a></li>
 							<li><a href="{% url 'blog_index' %}">Blog</a></li>
 						</ul>
 					</nav>
@@ -29,8 +26,7 @@
 					<nav>
 						<ul>
 							{% if request.user.is_authenticated %}
-							<li><a href="">{{ request.user.identifier }}</a></li>
-							<li><a href="">Settings</a></li>
+							<li><a href="{% url 'user_profile' request.user.oid %}">{{ request.user.identifier }}</a></li>
 							<li><a href="{% url 'core_logout' %}">Logout</a></li>
 							{% else %}
 							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
@@ -43,18 +39,19 @@
 		</div>
 	</header>
 
-	<div id="content">
+	<div id="content" class="{{ content_class }}">
 	{% block content %}{% endblock %}
 	</div>
 
 	<div class="push"></div>
 </main>
 
-<footer id="footer" class="center">
+<footer id="footer" class="bg-offwhite border-top center">
 	<div class="table lockwidth centered full-height">
 		<div>
 			<div class="center middle">
-				&copy 2014 Ografy, LLC.
+				&copy 2014 Ografy, LLC.<br/>
+				<a href="{% url 'core_contact' %}">Contact Us</a>
 			</div>
 		</div>
 	</div>

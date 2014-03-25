@@ -2,12 +2,14 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate, login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, get_user_model, login, logout as auth_logout
 from django.shortcuts import redirect, render
 from django.views.generic import View
 
-from ografy.apps.core.models import User
+from ografy.apps.core.forms import LoginForm, SignUpForm
+
+
+User = get_user_model()
 
 
 def index(request):
@@ -16,7 +18,9 @@ def index(request):
         context = {}
     else:
         template = 'core/index.html'
-        context = {}
+        context = {
+            'content_class': 'no-vertical-pad'
+        }
 
     return render(request, template, context)
 
@@ -28,18 +32,29 @@ class LoginView(View):
         })
 
     def post(self, request):
-        user = authenticate(identifier=request.POST.get('identifier'), password=request.POST.get('password'))
-        if user is not None:
+        user = None
+        form = LoginForm(request.POST)
+        form.full_clean()
+
+        if form.is_valid():
+            user = authenticate(**form.cleaned_data)
+
+        if user is None:
+            form.add_error('Invalid username or password.')
+
+            return render(request, 'core/login.html', {
+                'title': 'Ografy - Login',
+                'form': form
+            })
+        else:
             login(request, user)
 
-            if not request.POST.get('remember_me', None):
+            if not form.cleaned_data['remember_me']:
                 request.session.set_expiry(0)
             else:
                 request.session.set_expiry(settings.SESSION_LIMIT)
 
             return redirect(reverse('core_index'))
-        else:
-            return redirect(reverse('core_login'))
 
 
 def logout(request):
@@ -55,20 +70,37 @@ class SignupView(View):
         })
 
     def post(self, request):
-        user = User(
-            email=request.POST.get('email'),
-            handle=request.POST.get('handle', None),
-            first_name=request.POST.get('first_name', None),
-            last_name=request.POST.get('last_name', None)
-        )
-        user.set_password(request.POST.get('password'))
-        user.save()
+        user = None
+        form = SignUpForm(request.POST)
+        form.full_clean()
 
-        user = authenticate(identifier=user.email, password=request.POST.get('password'))
-        if user is not None:
+        email = form.cleaned_data.get('email')
+        if email is not None:
+            email_count = User.objects.by_identifier(email).count()
+            if email_count > 0:
+                form.add_error('Email is in use.', field='email')
+
+        handle = form.cleaned_data.get('handle')
+        if handle is not None:
+            handle_count = User.objects.by_identifier(handle).count()
+            if handle_count > 0:
+                form.add_error('Handle is in use.', field='handle')
+
+        if form.is_valid():
+            user = User(**form.cleaned_data)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            user = authenticate(identifier=user.email, password=form.cleaned_data.get('password'))
+
+        if user is None:
+            return render(request, 'core/signup.html', {
+                'title': 'Ografy - Signup',
+                'form': form
+            })
+        else:
             login(request, user)
 
-        return redirect(reverse('core_index'))
+            return redirect(reverse('core_index'))
 
 
 def contact(request):

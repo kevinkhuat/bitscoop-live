@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import os
 
 
@@ -33,10 +35,10 @@ DATABASES = {
 }
 
 # Authentication
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'xauth.User'
 AUTHENTICATION_BACKENDS = (
-    'ografy.lib.auth.backends.IdentifierBackend',
-    'ografy.lib.auth.backends.DummyTokenBackend',
+    'ografy.lib.xauth.backends.IdentifierBackend',
+    'ografy.lib.xauth.backends.DummyTokenBackend',
 )
 LOGIN_URL = '/login/'
 PASSWORD_HASHERS = (
@@ -49,6 +51,16 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.CryptPasswordHasher',
 )
 SESSION_LIMIT = 1209600  # Session limit in seconds. Can also use timedelta.
+RESERVED_HANDLES = {
+    'blog',
+    'login',
+    'logout',
+    'nexus',
+    'settings',
+    'user',
+}
+PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
+INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
 
 
 # Installed component configuration
@@ -73,20 +85,21 @@ INSTALLED_APPS = (
 
     #'mptt',
     #'rest_framework',
-    'smokesignal',
-    'tastypie',
-    'tastydata',
+    #'smokesignal',
+    #'tastypie',
+    #'tastydata',
 
-    'ografy.apps.api',
+    #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
     'ografy.apps.demo',
     'ografy.apps.documentation',
-    'ografy.apps.extensions',
-    'ografy.apps.nexus',
-    'ografy.apps.signals',
+    #'ografy.apps.extensions',
+    #'ografy.apps.nexus',
+    #'ografy.apps.signals',
+    'ografy.apps.user',
 
-    'ografy.lib.auth',
+    'ografy.lib.xauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',

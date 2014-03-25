@@ -7,4 +7,5 @@ from ografy.apps.blog import views
 
 urlpatterns = patterns('',
     url(r'^/?$', views.index, name='blog_index'),
+    url(r'^/(?P<slug>[^/]+)/?$', views.post, name='blog_post'),
 )

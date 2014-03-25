@@ -4,8 +4,8 @@ from functools import wraps
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import available_attrs
 
-from ografy.lib.auth import authenticate, login
-from ografy.lib.auth.models import Key
+from ografy.lib.xauth import authenticate, login
+from ografy.lib.xauth.models import Key
 
 
 def token_required(view_fn, exception=PermissionDenied):

@@ -1,11 +1,25 @@
 {% extends 'core/dispatcher.html' %}
 
 {% block content %}
-<form action="{% url 'core_login' %}" method="POST">
-	{% csrf_token %}
-	<input type="text" name="identifier" placeholder="Email or handle" />
-	<input type="password" name="password" placeholder="Password" />
-	<label><input type="checkbox" name="remember_me" value="1" />Remember Me</label>
-	<input type="submit" value="Login" />
-</form>
+<section class="lockwidth centered">
+	<div class="table centered backfill padded" style="width:40rem;">
+		<div>
+			<div class="center">
+				Login to Ografy
+			</div>
+		</div>
+		<div>
+			<div>
+				<form action="{% url 'core_login' %}" method="POST">
+					{% csrf_token %}
+					<div><input class="full-width" type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" autofocus /></div>
+					<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
+					<div>{{ form.non_field_errors }}</div>
+					<div><label><input type="checkbox" name="remember_me" value="1" />Remember me</label></div>
+					<div class="center"><input class="ui button positive" type="submit" value="Log In" /></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}
