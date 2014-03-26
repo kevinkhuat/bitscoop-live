@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
-from ografy.apps.core.models import User
+User = get_user_model()
 
 
 class Command(BaseCommand):
@@ -14,8 +15,7 @@ class Command(BaseCommand):
         if len(args) == 0:
             self.stderr.write('No user identified.')
             self.stderr.write('Use the --help flag to view appropriate uses for this command.')
-
-            return
+            raise Exception
 
         identifier = args[0]
         user = User.objects.by_identifier(identifier).first()
