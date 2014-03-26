@@ -82,6 +82,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.handle or self.first_name
 
+    def member_of(self, group_name):
+        return self.groups.filter(name__iexact=group_name).exists()
+
     def pre_save(self):
         self._upper_email = self.email.upper()
 
