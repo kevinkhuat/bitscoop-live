@@ -12,6 +12,8 @@ TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),
 )
 STATIC_URL = 'https://static.ografy.io/'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Database configuration
 DATABASES = {
