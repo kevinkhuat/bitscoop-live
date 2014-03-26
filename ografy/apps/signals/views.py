@@ -7,10 +7,12 @@ import random
 import string
 
 from pprint import pprint
-from django.core import serializers
-from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse
 from django.forms.models import model_to_dict
+from ografy.apps.core.models import Account, Metric, Entry, Message
+from ografy.lib.xauth.models import User
+from smokesignal.parsers import Parser
+
 
 #TODO: Conform to https://docs.djangoproject.com/en/dev/topics/serialization/
 
@@ -19,9 +21,6 @@ BANK = string.ascii_uppercase + string.ascii_lowercase + string.digits
 def rand_string(length=15):
     return ''.join(random.choice(BANK) for x in range(length))
 
-
-from ografy.apps.core.models import User, Account, Metric, Entry, Message
-from smokesignal.parsers import Parser
 
 
 def parse_steam(account):
@@ -125,10 +124,7 @@ def index(request):
     # return HttpResponse(json.dumps(config), content_type='application/json')
 
 
-    user = User(first_name=rand_string(), last_name=rand_string(), email=rand_string(),
-                upper_handle=rand_string(), upper_email=rand_string(), handle=rand_string())
-    user.save()
-    account = Account(user=user, name='steam', root_url='')
+    account = Account(name='steam', root_url='')
     account.save()
     parse_steam_response = parse_steam(account)
 
