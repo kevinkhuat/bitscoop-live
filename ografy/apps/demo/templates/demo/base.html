@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+
+{% block navlinks %}
+{{ block.super }}
+<li>|</li>
+<li><a href="{% url 'demo_info' %}">Info</a></li>
+<li><a href="{% url 'demo_plan' %}">Plan</a></li>
+<li><a href="{% url 'demo_examples' %}">Examples</a></li>
+{% endblock %}
