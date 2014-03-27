@@ -15,10 +15,13 @@ User = get_user_model()
 def index(request):
     if request.user.is_authenticated():
         template = 'core/home.html'
-        context = {}
+        context = {
+            'title': 'Ografy - Home'
+        }
     else:
         template = 'core/index.html'
         context = {
+            'title': 'Ografy',
             'content_class': 'no-vertical-pad'
         }
 
