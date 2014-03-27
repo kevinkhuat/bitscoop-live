@@ -34,3 +34,9 @@ def dashboard(request):
     return render(request, 'demo/dashboard.html', {
         'title': 'Ografy - Dashboard'
     })
+
+
+@membership_required('Investors')
+@login_required
+def infographic(request):
+    return render(request, 'demo/infographic.html')
