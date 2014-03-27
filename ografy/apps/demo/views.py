@@ -8,7 +8,7 @@ from ografy.lib.xauth.decorators import key_login, membership_required
 
 
 @key_login
-def index(request):
+def login(request):
     return redirect(reverse('demo_info'))
 
 
@@ -30,8 +30,16 @@ def plan(request):
 
 @membership_required('Investors')
 @login_required
+def examples(request):
+    return render(request, 'demo/examples.html', {
+        'title': 'Ografy - Examples'
+    })
+
+
+@membership_required('Investors')
+@login_required
 def dashboard(request):
-    return render(request, 'demo/dashboard.html', {
+    return render(request, 'dashboard/dashboard.html', {
         'title': 'Ografy - Dashboard'
     })
 
