@@ -10,7 +10,7 @@ ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 ROOT_URLCONF = 'ografy.urls'
 APPEND_SLASH = False
 WSGI_APPLICATION = 'ografy.wsgi.application'  # Python dotted path to the WSGI application used by Django's runserver.
-SECRET_KEY = '+9@@kylo*(yq-g%kx@6hhyqnenuv)$^=*!$micrn7xs_6#t7#^'  # TODO: Make this actually secure and don't version control it.
+SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'  # TODO: Make this actually secure and don't version control it.
 ADMINS = (
     ('Steven Berry', 'sberry@ografy.io'),
     ('Liam Broza', 'lbroza@ografy.io'),
@@ -42,10 +42,13 @@ AUTHENTICATION_BACKENDS = (
 )
 LOGIN_URL = '/login/'
 PASSWORD_HASHERS = (
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    # TODO: Move bcrypt up when not on Dreamhost.
+    # 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    # 'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.SHA1PasswordHasher',
     'django.contrib.auth.hashers.MD5PasswordHasher',
     'django.contrib.auth.hashers.CryptPasswordHasher',
