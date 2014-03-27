@@ -1,0 +1,4 @@
+Django==1.6.2
+python-bcrypt==0.3.2
+pytz==2014.2
+six==1.6.1
