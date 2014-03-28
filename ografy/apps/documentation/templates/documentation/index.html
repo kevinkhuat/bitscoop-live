@@ -1,9 +1,91 @@
 {% extends 'core/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block static %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
+{% endblock %}
 
 {% block content %}
-<section class="lockwidth centered">
-	<h1>Documentation</h1>
 
-	<p>Coming soon!</p>
-</section>
+	<style>
+		.i-grid {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			width: 600px;
+		}
+
+		.i-grid-container {
+			margin-left: 100px;
+		}
+
+		.i-grid-cells {
+			width: 200px;
+			outline: 0px;
+			float: left;
+			height: 40px
+		}
+
+		.fs1 {
+			vertical-align: middle;
+			font-size: 32px;
+			width: 30px
+		}
+
+		.centered > .i-grid-footer > h2 {
+			display: inline-block;
+			margin-left: auto;
+			margin-right: auto;
+			width: 800px;
+		}
+	</style>
+	<div class="lockwidth centered center">
+		<h1>Share What You Want</h1>
+
+		<h2>Sign in to any account you wish to search and explore</h2>
+
+		<h2>We Support the Following Services:</h2>
+	</div>
+	<section class="lockwidth centered">
+		<div class="i-grid-container">
+			<div class="i-grid">
+				<div class="i-grid-cells"><i class="fs1 icon-facebook"></></i> Facebook</div>
+				<div class="i-grid-cells"><i class="fs1 icon-twitter"></></i> Twitter</div>
+				<div class="i-grid-cells"><i class="fs1 icon-youtube"></></i> YouTube</div>
+				<div class="i-grid-cells"><i class="fs1 icon-steam2"></></i> Steam</div>
+				<div class="i-grid-cells"><i class="fs1 icon-dropbox"></></i> Dropbox</div>
+				<div class="i-grid-cells"><i class="fs1 icon-github3"></></i> github</div>
+			</div>
+		</div>
+		<div class="centered center i-grid-footer">
+			<h2>We Will Support the Following Services:</h2>
+		</div>
+		<div class="i-grid-container">
+			<div class="i-grid">
+			<div class="i-grid-cells"><i class="fs1 icon-googleplus"></></i> Google+</div>
+			<div class="i-grid-cells"><i class="fs1 icon-google-drive"></></i> Google Drive</div>
+			<div class="i-grid-cells"><i class="fs1 icon-instagram"></></i> Instagram</div>
+			<div class="i-grid-cells"><i class="fs1 icon-vimeo"></></i> Vimeo</div>
+			<div class="i-grid-cells"><i class="fs1 icon-flickr"></></i> Flickr</div>
+			<div class="i-grid-cells"><i class="fs1 icon-wordpress"></></i> WordPress</div>
+			<div class="i-grid-cells"><i class="fs1 icon-blogger"></></i> Blogger</div>
+			<div class="i-grid-cells"><i class="fs1 icon-tumblr"></></i> tumblr</div>
+			<div class="i-grid-cells"><i class="fs1 icon-skype"></></i> Skype</div>
+			<div class="i-grid-cells"><i class="fs1 icon-reddit"></></i> reddit</div>
+			<div class="i-grid-cells"><i class="fs1 icon-linkedin"></></i> LinkedIn</div>
+			<div class="i-grid-cells"><i class="fs1 icon-lastfm"></></i> lastfm</div>
+			<div class="i-grid-cells"><i class="fs1 icon-stumbleupon2"></></i> stumbleUpon</div>
+			<div class="i-grid-cells"><i class="fs1 icon-stackoverflow"></></i> Stack Overflow</div>
+			<div class="i-grid-cells"><i class="fs1 icon-pinterest"></></i> Pinterest</div>
+			<div class="i-grid-cells"><i class="fs1 icon-foursquare2"></></i> foursquare</div>
+			<div class="i-grid-cells"><i class="fs1 icon-soundcloud"></></i> SoundCloud</div>
+			<div class="i-grid-cells"><i class="fs1 icon-spotify"></></i> Spotify</div>
+			</div>
+		</div>
+		<div class="centered center i-grid-footer">
+			<h2>When you're ready, just <a href="{% url 'core_signup' %}">Sign Up</a></h2>
+		</div>
+	</section>
+
 {% endblock %}
