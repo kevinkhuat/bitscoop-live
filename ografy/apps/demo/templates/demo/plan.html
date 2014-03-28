@@ -1,5 +1,6 @@
 {% extends 'demo/dispatcher.html' %}
 {% load staticfiles %}
+
 {% block content %}
 <section class="lockwidth centered">
 	<h1>Plan &amp; Outlook</h1>
@@ -10,8 +11,8 @@
 		The Ografy Engine is a unique software technology segmented into three workflow components.
 	</p>
 
-	<object data="{% static 'assets/ografy-engine-workflow.svg' %}" type="image/svg+xml">
-		<img src="{% static 'assets/ografy-engine-workflow.svg' %}"/>
+	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
 	</object>
 
 	<p>
@@ -43,8 +44,8 @@
 		These products will not be considered for development for the next 4 to 5 years, but are serve as an example of the future road map.
 	</p>
 
-	<object style="width: 75%; margin-right: auto; margin-left: auto; margin-bottom: 30px; display: block" data="{% static 'assets/product-timeline.svg' %}" type="image/svg+xml">
-		<img src="{% static 'assets/product-timeline.svg' %}"/>
+	<object style="width: 75%; margin-right: auto; margin-left: auto; margin-bottom: 30px; display: block" data="{% static 'demo/img/product-timeline.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
 	</object>
 
 	<h3>Ografy Analytics</h3>
@@ -67,6 +68,9 @@
 		This is done through multiple distributed data servers (DDS) and distributed data clients (DC) which is a powerful way to combine semantic datasets and realize the semantic web’s “web of data” vision.
 	</p>
 
-	<h2>When you're ready, continue to the <a href="{% url 'demo_examples' %}">Examples</a></h2>
+	<div class="center" style="margin-top:3em;">
+		<h2>Continue to next section</h2>
+		<a class="ui button positive" href="{% url 'demo_examples' %}">Examples</a>
+	</div>
 </section>
 {% endblock %}
