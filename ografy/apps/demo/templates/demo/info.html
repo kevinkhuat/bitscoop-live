@@ -1,5 +1,49 @@
-{% extends 'core/dispatcher.html' %}
+{% extends 'demo/dispatcher.html' %}
 
 {% block content %}
-<p>Detailed Info</p>
+
+<section class="lockwidth centered">
+	<h1>Detailed Info</h1>
+
+	<p>
+		At the core of all Ografy products is the Ografy Engine.
+		The Ografy Engine is based on a semantic data structure to leverage the advantages of semantic data representation.
+		The meta input API adds data sources to the semantically linked data structure.
+		The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
+	</p>
+
+	<p>
+		Ografy Infografic is a dynamic web based infographic builder and is the first product to be built on the Ografy Engine, which is intended as an exclusive consumer product.
+		This product is an easy-to-use workflow that takes in the user’s social network data, inputs it into the Ografy Engine, and then renders the output using a suite of template visualizations.
+	</p>
+
+	<p>
+		Users first create an account on Ografy.
+		We'll eventually be supporting OAuth sign ups with a user's existing Facebook, Twitter, LinkedIn or Google credentials as well.
+		Ografy then stores the core account information of full name and email address as the basis for the user profile.
+		The workflow then takes the user to the infographic creator page where they are able to connect to online accounts from the list of available sources.
+		The Ografy Engine quickly parses data from the source APIs, such as Facebook, when credential data becomes available for the user’s account.
+	</p>
+
+	<p>
+		Pre-generated visualization, such as activity charts and location maps, populate the infographic palate when information from the data structure allows them to be generated.
+		There are two primary types of infographics shown on the palate.
+		One type relates to a single data source, such as only showing recent Twitter data, while the other relates to data aggregated from all sources, such as showing a top friends list across all social networks.
+		The user then selects the visualizations of their choosing and drags them to the grid canvas manipulating them to their satisfaction.
+	</p>
+
+ 	<p>
+		Once a user has completed populating a canvas with visualizations, they can click publish.
+		Then a list of share charms for sites such as Facebook and Twitter, a URL, and an “embed code snippet” appear in a dialog.
+		The user can then share a link to the published infographic or embed an iFrame on a webpage of their choosing, such as Tumblr.
+		When anyone views the link or embedded infographic, the Ografy Engine will update the data sources keeping the information in the infographic "live."
+ 	</p>
+
+	<p>
+		Users with Ografy+ account subscriptions have access to an extended set of features, such as expanded canvas size, custom color palettes, enhanced theming and customization, and private sharing.
+		The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as providing a compelling way to summarize and share a person’s life.
+	</p>
+
+	<h2>When you're ready, continue to the <a href="{% url 'demo_plan' %}">Plan</a></h2>
+</section>
 {% endblock %}

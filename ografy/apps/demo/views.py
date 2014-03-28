@@ -4,14 +4,15 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from ografy.lib.xauth.decorators import key_login
+from ografy.lib.xauth.decorators import key_login, membership_required
 
 
 @key_login
-def index(request):
+def login(request):
     return redirect(reverse('demo_info'))
 
 
+@membership_required('Investors')
 @login_required
 def info(request):
     return render(request, 'demo/info.html', {
@@ -19,6 +20,7 @@ def info(request):
     })
 
 
+@membership_required('Investors')
 @login_required
 def plan(request):
     return render(request, 'demo/plan.html', {
@@ -26,8 +28,23 @@ def plan(request):
     })
 
 
+@membership_required('Investors')
+@login_required
+def examples(request):
+    return render(request, 'demo/examples.html', {
+        'title': 'Ografy - Examples'
+    })
+
+
+@membership_required('Investors')
 @login_required
 def dashboard(request):
-    return render(request, 'demo/dashboard.html', {
+    return render(request, 'dashboard/dashboard.html', {
         'title': 'Ografy - Dashboard'
     })
+
+
+@membership_required('Investors')
+@login_required
+def infographic(request):
+    return render(request, 'demo/infographic.html')

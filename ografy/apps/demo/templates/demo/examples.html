@@ -1,0 +1,23 @@
+{% extends 'demo/dispatcher.html' %}
+
+{% block content %}
+<section class="lockwidth centered">
+	<h2>Infographic (<a href="{% url 'demo_infographic' %}" target="_blank">Link</a>)</h2>
+	<p>This is an initial prototype of an infographic created using a few of Steven's data sources:</p>
+	<ul>
+		<li>Steam</li>
+		<li>Personal website</li>
+	</ul>
+	<p>We're still working on our plotting and visualization library which would enhance the functionality shown here.</p>
+
+	<h2>Dashboard (<a href="{% url 'demo_dashboard' %}" target="_blank">Link</a>)</h2>
+	<p>This is an experimental dashboard UI we used to test categorizing and filtering charts.</p>
+	<p>
+		We explored using <a href="http://nvd3.org/" target="_blank">NVD3</a> for charts, but it didn't offer us enough flexibility or documentation.
+		For now the charts displayed are placeholders and are using dummy data.
+	</p>
+	<p>However a few of the square regions replicate the functionality from the infographic.</p>
+
+	<h2>When you're ready, check out how to <a href="{% url 'documentation_index' %}">Get Started</a></h2>
+</section>
+{% endblock %}
