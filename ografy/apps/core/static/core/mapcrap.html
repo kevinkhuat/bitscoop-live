@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8/>
+	<title>Multiple Marker Filters</title>
+
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet'/>
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		#map-ui {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			z-index: 100;
+			padding: 10px;
+			background: rgba(255, 255, 255, 0.75);
+			border-radius: 3px;
+		}
+
+		#map-ui ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#info {
+			background: rgba(255, 255, 255, 0.75);
+			border: 1px solid #fff;
+			position: absolute;
+			width: 260px;
+			top: 10px;
+			left: 10px;
+			z-index: 100;
+			padding: 10px;
+			border-radius: 3px;
+		}
+	</style>
+</head>
+<body>
+	<div id='map-ui'>
+		<ul id='filters'>
+		</ul>
+	</div>
+	<div id='map'></div>
+	<div id='info'></div>
+
+	<script>
+		var map = L.mapbox.map('map', 'liambroza.hl4bi8d0', {zoomControl: false})
+		    .setView([40.767, -73.988], 16);
+		var featureLayer = L.mapbox.featureLayer()
+		    .loadURL('/static/core/geoMark.geojson')
+            .addTo(map);
+
+		//var map = L.mapbox.map('map', 'liambroza.hl46f2ok', {zoomControl: false});
+
+		// find and store a variable reference to the list of filters
+		var filters = document.getElementById('filters');
+
+		// Wait until the marker layer is loaded in order to build a list of possible
+		// types. If you are doing this with another featureLayer, you should change
+		// map.featureLayer to the variable you have assigned to your featureLayer
+		map.featureLayer.on('ready', function () {
+			// collect the types of symbols in this layer. you can also just
+			// hardcode an array of types if you know what you want to filter on,
+			// like
+			// var types = ['foo', 'bar'];
+			var typesObj = {}, types = [];
+			var features = map.featureLayer.getGeoJSON().features;
+			for (var i = 0; i < features.length; i++) {
+				typesObj[features[i].properties['marker-symbol']] = true;
+			}
+
+			// disable drag and zoom handlers
+			map.dragging.disable();
+			map.touchZoom.disable();
+			map.doubleClickZoom.disable();
+			map.scrollWheelZoom.disable();
+			// disable tap handler, if present.
+			if (map.tap) map.tap.disable();
+
+
+			// Listen for individual marker clicks
+			map.featureLayer.on('click', function (e) {
+				// Force the popup closed.
+				e.layer.closePopup();
+
+				var feature = e.layer.feature;
+				var info = '<h2>' + feature.properties.title + '</h2>' +
+						'<p>' + feature.properties.description + '</p>';
+
+				document.getElementById('info').innerHTML = info;
+
+				//var marker = L.marker(e);
+
+				//var t = 0;
+				//window.setInterval(function() {
+				    // making a lissajous curve here just for fun. this isn't necessary
+				    // Reassign the features
+				  //  marker.setLatLng(L.latLng(
+				      //  Math.cos(t * 0.5) * 50,
+				    //    Math.sin(t) * 50));
+				    //t += 0.1;
+				//}, 50);
+
+				//marker.addTo(map);
+			});
+
+			for (var k in typesObj) types.push(k);
+
+			var checkboxes = [];
+			// create a filter interface
+			for (var i = 0; i < types.length; i++) {
+				// create an <li> list element for each type, and add an input checkbox
+				// and label inside
+				var li = filters.appendChild(document.createElement('li'));
+				var checkbox = li.appendChild(document.createElement('input'));
+				var label = li.appendChild(document.createElement('label'));
+				checkbox.type = 'checkbox';
+				checkbox.id = types[i];
+				checkbox.checked = true;
+				// create a label to the right of the checkbox with explanatory text
+				label.innerHTML = types[i];
+				label.setAttribute('for', types[i]);
+				// whenever a person clicks on this checkbox, call the update() function
+				// below
+				checkbox.addEventListener('change', update);
+				checkboxes.push(checkbox);
+			}
+
+			// this function is called whenever someone clicks on a checkbox and changes
+			// the selection of markers to be displayed
+			function update() {
+				var enabled = {};
+				// run through each checkbox and record whether it is checked. If it is,
+				// add it to the object of types to display, otherwise do not.
+				for (var i = 0; i < checkboxes.length; i++) {
+					if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+				}
+				map.featureLayer.setFilter(function (feature) {
+					// if this symbol is in the list, return true. if not, return false.
+					// the 'in' operator in javascript does exactly that: given a string
+					// or number, it says if that is in a object
+					// 2 in { 2: true } // true
+					// 2 in { } // false
+					return (feature.properties['marker-symbol'] in enabled);
+				});
+			}
+		});
+	</script>
+</body>
+</html>
