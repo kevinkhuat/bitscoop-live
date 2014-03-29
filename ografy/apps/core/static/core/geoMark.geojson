@@ -31,12 +31,14 @@
         "type": "LineString"
       },
       "properties": {
-        "description": "5:28 - 5:42 pm - Duration 14 min",
+        "description": "from Home to Columbus Coffee",
         "id": "marker-htbzz7b90",
         "stroke": "#a3e46b",
         "stroke-opacity": 1,
         "stroke-width": 13,
-        "title": "Trip walking from Home to Columbus Coffee"
+        "title": "Walking Trip",
+        "data-type": "Movement",
+        "data-time": "5:28 - 5:42 pm Duration 14 min"
       },
       "type": "Feature"
     },
@@ -49,12 +51,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "5:31 pm - Ellen is at W56TH ST and 8Th AVE",
+        "description": "Ellen is at W56TH ST and 8Th AVE",
         "id": "marker-htbzzpcz1",
         "marker-color": "#1087bf",
         "marker-size": "large",
         "marker-symbol": "telephone",
-        "title": "Call from Ellen"
+        "title": "Call from Ellen",
+        "data-type": "Call",
+        "data-time": "5:31 pm"
       },
       "type": "Feature"
     },
@@ -72,7 +76,9 @@
         "marker-color": "#c5e96f",
         "marker-size": "large",
         "marker-symbol": "",
-        "title": "Home"
+        "title": "Home",
+        "data-type": "Movement",
+        "data-time": "Now"
       },
       "type": "Feature"
     },
@@ -85,12 +91,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "5:32 pm - Ellen is at W57TH ST and 8Th AVE",
+        "description": "Ellen is at W57TH ST and 8Th AVE",
         "id": "marker-htc09zbv3",
         "marker-color": "#1087bf",
         "marker-size": "large",
         "marker-symbol": "emergency-telephone",
-        "title": "Call from Ellen Ended"
+        "title": "Call from Ellen Ended",
+        "data-type": "Call",
+        "data-time": "5:32 pm"
       },
       "type": "Feature"
     },
@@ -103,12 +111,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "5:38 pm - Sbj: Happy Birthday ",
+        "description": "Subject: Happy Birthday ",
         "id": "marker-htc0b3074",
         "marker-color": "#f5c272",
         "marker-size": "large",
         "marker-symbol": "post",
-        "title": "Email to James"
+        "title": "Email to James",
+        "data-type": "Message",
+        "data-time": "5:38 pm"
       },
       "type": "Feature"
     },
@@ -121,12 +131,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "5:42 pm",
+        "description": "Trip ended at Columbus Coffee",
         "id": "marker-htc0dzeu5",
         "marker-color": "#f86767",
         "marker-size": "large",
         "marker-symbol": "",
-        "title": "Trip ended at Columbus Coffee"
+        "title": "Trip Ended",
+        "data-type": "Movement",
+        "data-time": "5:42 pm"
       },
       "type": "Feature"
     },
@@ -139,12 +151,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "4:40 pm - Steven is at W56TH ST and 11Th AVE - Desc: We nailed it! <img src='https://docs.djangoproject.com/s/img/site/hdr_logo.b19c5e60269d.gif' />",
+        "description": "Steven shared a Photo with you on Facebook - Description: We nailed it! - Steven is at W56TH ST and 11Th AVE ",
         "id": "marker-htc0glld6",
         "marker-color": "#9c89cc",
         "marker-size": "large",
         "marker-symbol": "camera",
-        "title": "Steven shared a Photo with you on Facebook"
+        "title": "Photo Shared",
+        "data-type": "Message",
+        "data-time": "4:40 pm",
+        "data-image-uri": "https://docs.djangoproject.com/s/img/site/hdr_logo.b19c5e60269d.gif"
       },
       "type": "Feature"
     },
@@ -157,12 +172,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "5:50 pm",
+        "description": "You checked in to Columbus Coffee on Foursquare",
         "id": "marker-htc0j31h7",
         "marker-color": "#f1f075",
         "marker-size": "large",
         "marker-symbol": "polling-place",
-        "title": "You checked in to Columbus Coffee on Foursquare"
+        "title": "Check-In",
+        "data-type": "Event",
+        "data-time": "5:50 pm"
       },
       "type": "Feature"
     },
@@ -175,12 +192,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Now",
+        "description": "Ellen Doe - 0.2 miles away",
         "id": "marker-htc1h2ha0",
         "marker-color": "#d27591",
         "marker-size": "large",
         "marker-symbol": "e",
-        "title": "Ellen"
+        "title": "Ellen",
+        "data-type": "Person",
+        "data-time": "Now"
       },
       "type": "Feature"
     },
@@ -193,12 +212,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Now",
+        "description": "Steve Silver - 0.65 miles away",
         "id": "marker-htc1t4i60",
         "marker-color": "#677da7",
         "marker-size": "large",
         "marker-symbol": "s",
-        "title": "Steven"
+        "title": "Steven",
+        "data-type": "Person",
+        "data-time": "Now"
       },
       "type": "Feature"
     }
