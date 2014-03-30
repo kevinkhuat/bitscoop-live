@@ -38,7 +38,7 @@
         "stroke-width": 13,
         "title": "Walking Trip",
         "data-type": "Movement",
-        "data-time": "5:28 - 5:42 pm Duration 14 min"
+        "data-time": "5:28 - 5:42 pm Duration 14 minutes"
       },
       "type": "Feature"
     },
@@ -71,7 +71,7 @@
         "type": "Point"
       },
       "properties": {
-        "description": "1104 W53RD ST - Leaving 5:28 pm for Work",
+        "description": "1104 W53RD ST - Leaving 5:28 pm for Columbus Coffee",
         "id": "marker-htc035r12",
         "marker-color": "#c5e96f",
         "marker-size": "large",
@@ -91,14 +91,14 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Ellen is at W57TH ST and 8Th AVE",
+        "description": "Duration 3 minutes - Ellen is at W57TH ST and 8Th AVE",
         "id": "marker-htc09zbv3",
         "marker-color": "#1087bf",
         "marker-size": "large",
         "marker-symbol": "emergency-telephone",
         "title": "Call from Ellen Ended",
         "data-type": "Call",
-        "data-time": "5:32 pm"
+        "data-time": "5:36 pm"
       },
       "type": "Feature"
     },
@@ -111,14 +111,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Subject: Happy Birthday ",
+        "description": "Subject: Happy Birthday",
         "id": "marker-htc0b3074",
         "marker-color": "#f5c272",
         "marker-size": "large",
         "marker-symbol": "post",
         "title": "Email to James",
         "data-type": "Message",
-        "data-time": "5:38 pm"
+        "data-time": "5:44 pm",
+        "data-image-uri": "https://docs.djangoproject.com/s/img/site/hdr_logo.b19c5e60269d.gif"
       },
       "type": "Feature"
     },
@@ -151,7 +152,7 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Steven shared a Photo with you on Facebook - Description: We nailed it! - Steven is at W56TH ST and 11Th AVE ",
+        "description": "Steven shared a Photo with you on Facebook - Description: We nailed it! - Steven is at W56TH ST and 11Th AVE",
         "id": "marker-htc0glld6",
         "marker-color": "#9c89cc",
         "marker-size": "large",
@@ -179,7 +180,7 @@
         "marker-symbol": "polling-place",
         "title": "Check-In",
         "data-type": "Event",
-        "data-time": "5:50 pm"
+        "data-time": "5:54 pm"
       },
       "type": "Feature"
     },
