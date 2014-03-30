@@ -28,6 +28,43 @@
 		.bottom-space {
 			margin-bottom: 3em;
 		}
+
+		.wrapper {
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+
+			-webkit-flex-flow: row wrap;
+			text-align: center;
+		}
+
+		.wrapper > * {
+			padding: 10px;
+			flex: 1 100%;
+		}
+
+		@media all and (min-width: 600px) {
+			.aside {
+				flex: 1 auto;
+			}
+		}
+
+		@media all and (min-width: 800px) {
+			.aside-1 {
+				order: 1;
+			}
+
+			.aside-2 {
+				order: 2;
+			}
+		}
+
+		.middle-text {
+			margin-top: 8%;
+		}
+
 	</style>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
@@ -107,97 +144,114 @@
 				You can see your interaction with others across services over time. Click through the timeline.
 			</p>
 		</div>
-		<div id="chartContainer">
-			<script type="text/javascript">
-				var svg = dimple.newSvg("#chartContainer", 590, 400);
-				d3.tsv("{% static 'core/chart/shopping_habits.tsv' %}", function (data) {
-					var myChart = new dimple.chart(svg, data);
-					myChart.setBounds(60, 30, 500, 330)
-					myChart.addMeasureAxis("x", "Total");
-					myChart.addMeasureAxis("y", "Number of Items Purchased");
-					myChart.addMeasureAxis("z", "Hours Spent Shopping");
-					myChart.addSeries(["Month", "Merchant"], dimple.plot.bubble);
-					myChart.addLegend(200, 10, 360, 20, "right");
-					myChart.draw(2000);
-				});
-			</script>
-		</div>
-		<div id="chartContainer2">
-			<script type="text/javascript">
-				var svg2 = dimple.newSvg("#chartContainer2", 590, 400);
-				d3.tsv("{% static 'core/chart/conversation.tsv' %}", function (data) {
-					var myChart2 = new dimple.chart(svg2, data);
-					myChart2.setBounds(75, 30, 480, 330)
-					myChart2.addPctAxis("x", "Message %");
-					var y = myChart2.addCategoryAxis("y", "Date");
-					y.addOrderRule("Day");
-					myChart2.addSeries("Person", dimple.plot.bar);
-					myChart2.addLegend(60, 10, 510, 20, "right");
-					myChart2.draw(2000);
-				});
-			</script>
-		</div>
-		<div id="chartContainer3">
-			<script type="text/javascript">
-				var svg3 = dimple.newSvg("#chartContainer3", 1600, 400);
-				d3.tsv("{% static 'core/chart/friends_messages.tsv' %}", function (data) {
-					var myChart3 = new dimple.chart(svg3, data);
-					var x = myChart3.addCategoryAxis("x", "Number of Friends");
-					x.addOrderRule("Number of Friends");
-					myChart3.addMeasureAxis("y", "Mentions and Likes")
-					x.overrideMin = 50;
-					x.overrideMax = 100;
-					myChart3.addSeries("Service", dimple.plot.line);
-					myChart3.addLegend(60, 10, 500, 20, "right");
-					myChart3.draw();
-				});
-			</script>
-		</div>
-		<div id="chartContainer4">
-			<script type="text/javascript">
-				var svg4 = dimple.newSvg("#chartContainer4", 590, 400);
-				d3.tsv("{% static 'core/chart/time_spent_alt.tsv' %}", function (data) {
-					var myChart4 = new dimple.chart(svg4, data);
-					myChart4.setBounds(60, 30, 505, 305);
-					var x = myChart4.addCategoryAxis("x", "Day");
-					x.addOrderRule("Date");
-					myChart4.addPctAxis("y", "Percentage");
-					myChart4.addSeries("Action", dimple.plot.bar);
-					myChart4.addLegend(0, 0, 600, 20, "right");
-					myChart4.draw();
-				});
-			</script>
-		</div>
-		<div id="chartContainer5">
-			<script type="text/javascript">
-				var svg5 = dimple.newSvg("#chartContainer5", 800, 400);
-				d3.tsv("{% static 'core/chart/friends_messages.tsv' %}", function (data) {
-					var myChart5 = new dimple.chart(svg5, data);
-					//myChart3.setBounds(60, 30, 505, 305);
-					var x = myChart5.addTimeAxis("x", "Date", "%m/%d/%Y", "%m/%y");
-					x.addOrderRule("Date");
-					x.timePeriod = d3.time.months;
-					myChart5.addMeasureAxis("y", "Mentions and Likes");
-					myChart5.addSeries("Service", dimple.plot.line);
-					myChart5.addLegend(60, 10, 500, 20, "right");
-					myChart5.draw();
-				});
-			</script>
-		</div>
-		<div id="chartContainer6">
-			<script type="text/javascript">
-				var svg6 = dimple.newSvg("#chartContainer6", 590, 400);
-				d3.tsv("{% static 'core/chart/friends_messages.tsv' %}", function (data) {
-					var myChart = new dimple.chart(svg6, data);
-					myChart.setBounds(60, 30, 500, 330)
-					myChart.addMeasureAxis("x", "Message Count");
-					myChart.addMeasureAxis("y", "Mentions and Likes");
-					myChart.addSeries(["Date", "Service"], dimple.plot.bubble);
-					myChart.addLegend(180, 10, 360, 20, "right");
-					myChart.draw();
-				});
-			</script>
-		</div>
+	</section>
+	<div class="wrapper">
+		<aside class="aside aside-1">
+			<div id="chartContainer">
+				<script type="text/javascript">
+					var svg = dimple.newSvg("#chartContainer", 590, 400);
+					d3.tsv("{% static 'core/chart/shopping_habits.tsv' %}", function (data) {
+						var myChart = new dimple.chart(svg, data);
+						myChart.setBounds(60, 30, 500, 330)
+						myChart.addMeasureAxis("x", "Total");
+						myChart.addMeasureAxis("y", "Number of Items Purchased");
+						myChart.addMeasureAxis("z", "Hours Spent Shopping");
+						myChart.addSeries(["Month", "Merchant"], dimple.plot.bubble);
+						myChart.addLegend(200, 10, 360, 20, "right");
+						myChart.draw(4000);
+					});
+				</script>
+			</div>
+		</aside>
+		<aside class="aside aside-2">
+			<section class="centered center middle-text">
+				<h2>Track the trends in your purchases</h2>
+				<p>See where you spend, how you spend, and when you spend.</p>
+				<p>Compare Merchants, see the number of things you buy, and how much it costs you.</p>
+			</section>
+		</aside>
+	</div>
+	<div class="wrapper">
+		<aside class="aside aside-1">
+			<section class="centered center middle-text">
+				<h2>Bring Perspective to Conversations</h2>
+				<p>Watch your conversations change over time.</p>
+				<p>Find out who is the master communicator.</p>
+			</section>
+		</aside>
+		<aside class="aside aside-2">
+			<div id="chartContainer2">
+				<script type="text/javascript">
+					var svg2 = dimple.newSvg("#chartContainer2", 590, 400);
+					d3.tsv("{% static 'core/chart/conversation.tsv' %}", function (data) {
+						var myChart2 = new dimple.chart(svg2, data);
+						myChart2.setBounds(75, 30, 480, 330)
+						myChart2.addPctAxis("x", "Message %");
+						var y = myChart2.addCategoryAxis("y", "Date");
+						y.addOrderRule("Day");
+						myChart2.addSeries("Person", dimple.plot.bar);
+						myChart2.addLegend(60, 10, 510, 20, "right");
+						myChart2.draw(4000);
+					});
+				</script>
+			</div>
+		</aside>
+	</div>
+	<div class="wrapper">
+		<aside class="aside aside-1">
+			<div id="chartContainer5">
+				<script type="text/javascript">
+					var svg5 = dimple.newSvg("#chartContainer5", 800, 400);
+					d3.tsv("{% static 'core/chart/friends_messages.tsv' %}", function (data) {
+						var myChart5 = new dimple.chart(svg5, data);
+						//myChart3.setBounds(60, 30, 505, 305);
+						var x = myChart5.addTimeAxis("x", "Date", "%m/%d/%Y", "%m/%y");
+						x.addOrderRule("Date");
+						x.timePeriod = d3.time.months;
+						myChart5.addMeasureAxis("y", "Mentions and Likes");
+						myChart5.addSeries("Service", dimple.plot.line);
+						myChart5.addLegend(60, 10, 500, 20, "right");
+						myChart5.draw(4000);
+					});
+				</script>
+			</div>
+		</aside>
+		<aside class="aside aside-2">
+			<section class="centered center middle-text">
+				<h2>Become a master of your messages</h2>
+				<p>Direct your path to social media stardom.</p>
+				<p>See how messages resonate on all of your networks.</p>
+			</section>
+		</aside>
+	</div>
+	<div class="wrapper">
+		<aside class="aside aside-1">
+			<section class="centered center middle-text">
+				<h2>Analyze how you spend your day</h2>
+				<p>Are you a Workaholic? Media Junkie? or Insomniac?</p>
+				<p>Make the most of your time.</p>
+			</section>
+		</aside>
+		<aside class="aside aside-2">
+			<div id="chartContainer4">
+				<script type="text/javascript">
+					var svg4 = dimple.newSvg("#chartContainer4", 590, 400);
+					d3.tsv("{% static 'core/chart/time_spent_alt.tsv' %}", function (data) {
+						var myChart4 = new dimple.chart(svg4, data);
+						myChart4.setBounds(60, 30, 505, 305);
+						var x = myChart4.addCategoryAxis("x", "Day");
+						x.addOrderRule("Date");
+						myChart4.addPctAxis("y", "Percentage");
+						myChart4.addSeries("Action", dimple.plot.bar);
+						myChart4.addLegend(0, 0, 600, 20, "right");
+						myChart4.draw(4000);
+					});
+				</script>
+			</div>
+		</aside>
+	</div>
+
+	<section class="centered center" style="display: block">
 		<h2>If you'd like to get started just</h2>
 		<a class="ui button positive" href="{% url 'core_signup' %}">Sign Up</a></h2>
 	</section>
