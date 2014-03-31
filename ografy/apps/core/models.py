@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 import uuid
 
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 from ografy.util.decorators import autoconnect
@@ -44,8 +43,6 @@ class Metric(models.Model):
     account = models.ForeignKey(Account)
     url = models.TextField(max_length=2048)
     update_date = models.DateTimeField(auto_now=True, db_index=True)
-    stat_name = models.CharField(max_length=50)
-    stat_value = models.CharField(max_length=50)
 
     def __unicode__(self):
         # TODO: Entity Unicode formatting
@@ -67,9 +64,7 @@ class Entry(models.Model):
     """
     id = models.AutoField(primary_key=True)
     account = models.ForeignKey(Account)
-    url = models.TextField(max_length=2048)
     datetime = models.DateTimeField(auto_now_add=True, db_index=True)
-    entry_name = models.CharField(max_length=50)
     data = models.TextField()
     vid = models.CharField(max_length=32)
     update_date = models.DateTimeField(auto_now=True, db_index=True)
