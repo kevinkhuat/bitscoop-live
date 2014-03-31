@@ -2,9 +2,9 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models
-from django.utils.text import slugify
 
 from ografy.util.decorators import autoconnect
+from ografy.util.encoding import slugify
 
 
 @autoconnect

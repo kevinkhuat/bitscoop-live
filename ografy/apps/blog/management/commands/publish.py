@@ -4,9 +4,9 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from django.utils.text import slugify
 
 from ografy.apps.blog.models import Article, Tag
+from ografy.util.encoding import slugify
 
 User = get_user_model()
 
