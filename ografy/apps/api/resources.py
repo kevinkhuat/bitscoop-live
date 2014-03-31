@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from tastypie import fields
 from tastydata.resources import Resource
 
-from ografy.apps.core.models import Account, Event, User
+from ografy.apps.core.models import Account, Entry, User
 
 
 class UserResource(Resource):
@@ -24,5 +24,5 @@ class EntryResource(Resource):
     account = fields.ForeignKey(AccountResource, 'account')
 
     class Meta:
-        queryset = Event.objects.all()
+        queryset = Entry.objects.all()
         allowed_methods = ['get']
