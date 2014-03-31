@@ -10,7 +10,7 @@
 		<p>We don't have anything posted quite yet. Check back soon!</p>
 	{% endfor %}
 
-	{% if not all and articles|length > 0 %}
+	{% if not all and articles|length > 5 %}
 		<hr/>
 		<p class="center"><a href="{% url 'blog_index' %}?all=1">Show All</a></p>
 	{% endif %}
