@@ -3,171 +3,171 @@
 {% load staticfiles %}
 
 {% block content %}
-	<style>
-		.wrapper {
-			display: -webkit-box;
-			display: -moz-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
-			display: flex;
+<style>
+.wrapper {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
 
-			-webkit-flex-flow: row wrap;
-			text-align: center;
-		}
+	-webkit-flex-flow: row wrap;
+	text-align: center;
+}
 
-		.wrapper > * {
-			padding: 10px;
-			flex: 1 100%;
-		}
+.wrapper > * {
+	padding: 10px;
+	flex: 1 100%;
+}
 
-		@media all and (min-width: 600px) {
-			.aside {
-				flex: 1 auto;
-			}
-		}
+@media all and (min-width: 600px) {
+	.aside {
+		flex: 1 auto;
+	}
+}
 
-		@media all and (min-width: 800px) {
-			.aside-1 {
-				order: 1;
-			}
+@media all and (min-width: 800px) {
+	.aside-1 {
+		order: 1;
+	}
 
-			.aside-2 {
-				order: 2;
-			}
-		}
+	.aside-2 {
+		order: 2;
+	}
+}
 
-		.bottom-space {
-			margin-bottom: 3em;
-		}
-	</style>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
-	<section class="centered bottom-space" style="width: 1400px">
+.bottom-space {
+	margin-bottom: 3em;
+}
+</style>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
+<section class="centered bottom-space" style="width: 1400px">
 
-		<h1 class="center">Dashboard Infografic Demo</h1>
-		<article class="backfill padded">
-			<iframe width='100%' height='500px' frameBorder='0' src='/static/demo/map/mapDemo.html'></iframe>
+	<h1 class="center">Dashboard Infografic Demo</h1>
+	<article class="backfill padded">
+		<iframe width='100%' height='500px' frameBorder='0' src='/static/demo/map/mapDemo.html'></iframe>
 
-			<iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400'
-			        width='100%' height='400' frameborder='0'></iframe>
+		<iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400'
+		        width='100%' height='400' frameborder='0'></iframe>
 
-			<div class="wrapper">
-				<aside class="aside aside-1">
-					<div id="chartContainer">
+		<div class="wrapper">
+			<aside class="aside aside-1">
+				<div id="chartContainer">
 					<section class="centered center">
 						<h2>Finance - Merchants</h2>
 					</section>
-						<script type="text/javascript">
-							var svg = dimple.newSvg("#chartContainer", 600, 400);
-							d3.tsv("{% static '/static/demo/chart/shopping_habits.tsv' %}", function (data) {
-								var myChart = new dimple.chart(svg, data);
-								myChart.setBounds(60, 30, 500, 330)
-								myChart.addMeasureAxis("x", "Total");
-								myChart.addMeasureAxis("y", "Number of Items Purchased");
-								myChart.addMeasureAxis("z", "Hours Spent Shopping");
-								myChart.addSeries(["Month", "Merchant"], dimple.plot.bubble);
-								myChart.addLegend(220, 10, 360, 20, "right");
-								myChart.draw(4000);
-							});
-						</script>
-					</div>
-				</aside>
-				<aside class="aside aside-2">
-					<div id="chartContainer5">
-						<section class="centered center">
-							<h2>Social - Mentions & Likes</h2>
-						</section>
-						<script type="text/javascript">
-							var svg5 = dimple.newSvg("#chartContainer5", 600, 400);
-							d3.tsv("{% static '/static/demo/chart/friends_messages.tsv' %}", function (data) {
-								var myChart5 = new dimple.chart(svg5, data);
-								var x = myChart5.addTimeAxis("x", "Date", "%m/%d/%Y", "%m/%y");
-								x.addOrderRule("Date");
-								x.timePeriod = d3.time.months;
-								myChart5.addMeasureAxis("y", "Mentions and Likes");
-								myChart5.addSeries("Service", dimple.plot.line);
-								myChart5.addLegend(0, 10, 500, 20, "right");
-								myChart5.draw(4000);
-							});
-						</script>
-					</div>
-				</aside>
-			</div>
-			<div class="wrapper">
-				<aside class="aside aside-1">
-					<div id="chartContainer4">
-						<section class="centered center">
-							<h2>General - Activity</h2>
-						</section>
-						<script type="text/javascript">
-							var svg4 = dimple.newSvg("#chartContainer4", 600, 400);
-							d3.tsv("{% static '/static/demo/chart/time_spent_alt.tsv' %}", function (data) {
-								var myChart4 = new dimple.chart(svg4, data);
-								myChart4.setBounds(60, 30, 505, 305);
-								var x = myChart4.addCategoryAxis("x", "Day");
-								x.addOrderRule("Date");
-								myChart4.addPctAxis("y", "Percentage");
-								myChart4.addSeries("Action", dimple.plot.bar);
-								myChart4.addLegend(0, 0, 600, 20, "right");
-								myChart4.draw(4000);
-							});
-						</script>
-					</div>
-				</aside>
-				<aside class="aside aside-2">
-					<div id="chartContainer2">
-						<section class="centered center">
-							<h2>Social - Ellen & Liam</h2>
-						</section>
-						<script type="text/javascript">
-							var svg2 = dimple.newSvg("#chartContainer2", 600, 400);
-							d3.tsv("{% static '/static/demo/chart/conversation.tsv' %}", function (data) {
-								var myChart2 = new dimple.chart(svg2, data);
-								myChart2.setBounds(75, 30, 480, 330)
-								myChart2.addPctAxis("x", "Messages");
-								var y = myChart2.addCategoryAxis("y", "Date");
-								y.addOrderRule("Date");
-								myChart2.addSeries("Person", dimple.plot.bar);
-								myChart2.addLegend(60, 10, 510, 20, "right");
-								myChart2.draw(4000);
-							});
-						</script>
-					</div>
-				</aside>
-			</div>
-		</article>
-
-	</section>
-	<section class="lockwidth centered">
-		<h1 class="center">Older Prototypes</h1>
-
-		<h2>Infographic <span style="font-size:70%;">(<a href="{% url 'demo_infographic' %}"
-		                                                 target="_blank">Link</a>)</span></h2>
-
-		<p>This is an initial prototype of an infographic created using a few of Steven's data sources:</p>
-		<ul>
-			<li>Steam</li>
-			<li>Personal website</li>
-		</ul>
-		<p>We're still working on our plotting and visualization library which would enhance the functionality shown
-			here.</p>
-
-		<h2>Dashboard <span style="font-size:70%;">(<a href="{% url 'demo_dashboard' %}"
-		                                               target="_blank">Link</a>)</span></h2>
-
-		<p>This is an experimental dashboard UI we used to test categorizing and filtering charts.</p>
-
-		<p>
-			We explored using <a href="http://nvd3.org/" target="_blank">NVD3</a> for charts, but it didn't offer us
-			enough flexibility or documentation.
-			For now the charts displayed are placeholders and are using dummy data.
-		</p>
-
-		<p>However a few of the square regions replicate the functionality from the infographic.</p>
-
-		<div class="center" style="margin-top:3em;">
-			<h2>Continue to next section</h2>
-			<a class="ui button positive" href="{% url 'documentation_index' %}">Get Started</a>
+					<script type="text/javascript">
+						var svg = dimple.newSvg("#chartContainer", 600, 400);
+						d3.tsv("{% static '/static/demo/chart/shopping_habits.tsv' %}", function (data) {
+							var myChart = new dimple.chart(svg, data);
+							myChart.setBounds(60, 30, 500, 330)
+							myChart.addMeasureAxis("x", "Total");
+							myChart.addMeasureAxis("y", "Number of Items Purchased");
+							myChart.addMeasureAxis("z", "Hours Spent Shopping");
+							myChart.addSeries(["Month", "Merchant"], dimple.plot.bubble);
+							myChart.addLegend(220, 10, 360, 20, "right");
+							myChart.draw(4000);
+						});
+					</script>
+				</div>
+			</aside>
+			<aside class="aside aside-2">
+				<div id="chartContainer5">
+					<section class="centered center">
+						<h2>Social - Mentions & Likes</h2>
+					</section>
+					<script type="text/javascript">
+						var svg5 = dimple.newSvg("#chartContainer5", 600, 400);
+						d3.tsv("{% static '/static/demo/chart/friends_messages.tsv' %}", function (data) {
+							var myChart5 = new dimple.chart(svg5, data);
+							var x = myChart5.addTimeAxis("x", "Date", "%m/%d/%Y", "%m/%y");
+							x.addOrderRule("Date");
+							x.timePeriod = d3.time.months;
+							myChart5.addMeasureAxis("y", "Mentions and Likes");
+							myChart5.addSeries("Service", dimple.plot.line);
+							myChart5.addLegend(0, 10, 500, 20, "right");
+							myChart5.draw(4000);
+						});
+					</script>
+				</div>
+			</aside>
 		</div>
-	</section>
+		<div class="wrapper">
+			<aside class="aside aside-1">
+				<div id="chartContainer4">
+					<section class="centered center">
+						<h2>General - Activity</h2>
+					</section>
+					<script type="text/javascript">
+						var svg4 = dimple.newSvg("#chartContainer4", 600, 400);
+						d3.tsv("{% static '/static/demo/chart/time_spent_alt.tsv' %}", function (data) {
+							var myChart4 = new dimple.chart(svg4, data);
+							myChart4.setBounds(60, 30, 505, 305);
+							var x = myChart4.addCategoryAxis("x", "Day");
+							x.addOrderRule("Date");
+							myChart4.addPctAxis("y", "Percentage");
+							myChart4.addSeries("Action", dimple.plot.bar);
+							myChart4.addLegend(0, 0, 600, 20, "right");
+							myChart4.draw(4000);
+						});
+					</script>
+				</div>
+			</aside>
+			<aside class="aside aside-2">
+				<div id="chartContainer2">
+					<section class="centered center">
+						<h2>Social - Ellen & Liam</h2>
+					</section>
+					<script type="text/javascript">
+						var svg2 = dimple.newSvg("#chartContainer2", 600, 400);
+						d3.tsv("{% static '/static/demo/chart/conversation.tsv' %}", function (data) {
+							var myChart2 = new dimple.chart(svg2, data);
+							myChart2.setBounds(75, 30, 480, 330)
+							myChart2.addPctAxis("x", "Messages");
+							var y = myChart2.addCategoryAxis("y", "Date");
+							y.addOrderRule("Date");
+							myChart2.addSeries("Person", dimple.plot.bar);
+							myChart2.addLegend(60, 10, 510, 20, "right");
+							myChart2.draw(4000);
+						});
+					</script>
+				</div>
+			</aside>
+		</div>
+	</article>
+
+</section>
+<section class="lockwidth centered">
+	<h1 class="center">Older Prototypes</h1>
+
+	<h2>Infographic <span style="font-size:70%;">(<a href="{% url 'demo_infographic' %}"
+	                                                 target="_blank">Link</a>)</span></h2>
+
+	<p>This is an initial prototype of an infographic created using a few of Steven's data sources:</p>
+	<ul>
+		<li>Steam</li>
+		<li>Personal website</li>
+	</ul>
+	<p>We're still working on our plotting and visualization library which would enhance the functionality shown
+		here.</p>
+
+	<h2>Dashboard <span style="font-size:70%;">(<a href="{% url 'demo_dashboard' %}"
+	                                               target="_blank">Link</a>)</span></h2>
+
+	<p>This is an experimental dashboard UI we used to test categorizing and filtering charts.</p>
+
+	<p>
+		We explored using <a href="http://nvd3.org/" target="_blank">NVD3</a> for charts, but it didn't offer us
+		enough flexibility or documentation.
+		For now the charts displayed are placeholders and are using dummy data.
+	</p>
+
+	<p>However a few of the square regions replicate the functionality from the infographic.</p>
+
+	<div class="center" style="margin-top:3em;">
+		<h2>Continue to next section</h2>
+		<a class="ui button positive" href="{% url 'documentation_index' %}">Get Started</a>
+	</div>
+</section>
 {% endblock %}
