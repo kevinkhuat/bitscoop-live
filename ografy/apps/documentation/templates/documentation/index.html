@@ -59,6 +59,7 @@
 		.middle-text { margin-top: 8%; }
 
 		iframe { border: none; }
+
 		.svg-backfill > svg {
 			border: 2px solid #7A7A7A;
 			box-shadow: 0 0 10px -3px #3A3A3A;
@@ -67,86 +68,86 @@
 {% endblock %}
 
 {% block content %}
-	<section class="lockwidth centered center">
-		<div class="bottom-space">
-			<h1>Getting up to speed with Ografy</h1>
+<section class="lockwidth centered center">
+	<div class="bottom-space">
+		<h1>Getting up to speed with Ografy</h1>
 
-			<p>
-				With Ografy you can share what you want.
-				You can connect the accounts that we support to search and explore your data.
-			</p>
+		<p>
+			With Ografy you can share what you want.
+			You can connect the accounts that we support to search and explore your data.
+		</p>
+	</div>
+
+	<div class="bottom-space">
+		<h2>We have immediate plans to support:</h2>
+
+		<div class="i-grid centered">
+			<div><i class="fs1 icon-facebook"></i> Facebook</div>
+			<div><i class="fs1 icon-twitter"></i> Twitter</div>
+			<div><i class="fs1 icon-youtube"></i> YouTube</div>
+			<div><i class="fs1 icon-steam2"></i> Steam</div>
+			<div><i class="fs1 icon-dropbox"></i> Dropbox</div>
+			<div><i class="fs1 icon-github3"></i> github</div>
 		</div>
+	</div>
 
-		<div class="bottom-space">
-			<h2>We have immediate plans to support:</h2>
+	<div class="bottom-space">
+		<h2>We have long term plans to support:</h2>
 
-			<div class="i-grid centered">
-				<div><i class="fs1 icon-facebook"></i> Facebook</div>
-				<div><i class="fs1 icon-twitter"></i> Twitter</div>
-				<div><i class="fs1 icon-youtube"></i> YouTube</div>
-				<div><i class="fs1 icon-steam2"></i> Steam</div>
-				<div><i class="fs1 icon-dropbox"></i> Dropbox</div>
-				<div><i class="fs1 icon-github3"></i> github</div>
-			</div>
+		<div class="i-grid centered">
+			<div><i class="fs1 icon-googleplus"></i> Google+</div>
+			<div><i class="fs1 icon-google-drive"></i> Google Drive</div>
+			<div><i class="fs1 icon-instagram"></i> Instagram</div>
+			<div><i class="fs1 icon-vimeo"></i> Vimeo</div>
+			<div><i class="fs1 icon-flickr"></i> Flickr</div>
+			<div><i class="fs1 icon-wordpress"></i> WordPress</div>
+			<div><i class="fs1 icon-blogger"></i> Blogger</div>
+			<div><i class="fs1 icon-tumblr"></i> tumblr</div>
+			<div><i class="fs1 icon-skype"></i> Skype</div>
+			<div><i class="fs1 icon-reddit"></i> reddit</div>
+			<div><i class="fs1 icon-linkedin"></i> LinkedIn</div>
+			<div><i class="fs1 icon-lastfm"></i> lastfm</div>
+			<div><i class="fs1 icon-stumbleupon2"></i> stumbleUpon</div>
+			<div><i class="fs1 icon-stackoverflow"></i> Stack Overflow</div>
+			<div><i class="fs1 icon-pinterest"></i> Pinterest</div>
+			<div><i class="fs1 icon-foursquare2"></i> foursquare</div>
+			<div><i class="fs1 icon-soundcloud"></i> SoundCloud</div>
+			<div><i class="fs1 icon-spotify"></i> Spotify</div>
 		</div>
+	</div>
 
-		<div class="bottom-space">
-			<h2>We have long term plans to support:</h2>
+	<div class="bottom-space">
+		<p>
+			Don't see something you'd like to see supported?
+			<a href="{% url 'core_contact' %}">Let us know</a>.
+			We'd be happy to hear your suggestions.
+		</p>
+	</div>
 
-			<div class="i-grid centered">
-				<div><i class="fs1 icon-googleplus"></i> Google+</div>
-				<div><i class="fs1 icon-google-drive"></i> Google Drive</div>
-				<div><i class="fs1 icon-instagram"></i> Instagram</div>
-				<div><i class="fs1 icon-vimeo"></i> Vimeo</div>
-				<div><i class="fs1 icon-flickr"></i> Flickr</div>
-				<div><i class="fs1 icon-wordpress"></i> WordPress</div>
-				<div><i class="fs1 icon-blogger"></i> Blogger</div>
-				<div><i class="fs1 icon-tumblr"></i> tumblr</div>
-				<div><i class="fs1 icon-skype"></i> Skype</div>
-				<div><i class="fs1 icon-reddit"></i> reddit</div>
-				<div><i class="fs1 icon-linkedin"></i> LinkedIn</div>
-				<div><i class="fs1 icon-lastfm"></i> lastfm</div>
-				<div><i class="fs1 icon-stumbleupon2"></i> stumbleUpon</div>
-				<div><i class="fs1 icon-stackoverflow"></i> Stack Overflow</div>
-				<div><i class="fs1 icon-pinterest"></i> Pinterest</div>
-				<div><i class="fs1 icon-foursquare2"></i> foursquare</div>
-				<div><i class="fs1 icon-soundcloud"></i> SoundCloud</div>
-				<div><i class="fs1 icon-spotify"></i> Spotify</div>
-			</div>
-		</div>
+	<div class="bottom-space">
+		<h2>See what you do as you move</h2>
+		<iframe class="full-width backfill" src="{% url 'demo_map' %}" style="height:500px"></iframe>
+		<p>
+			You can see your interaction with others across services on one map.
+			Click on a marker and explore any point in detail.
+		</p>
+	</div>
 
-		<div class="bottom-space">
-			<p>
-				Don't see something you'd like to see supported?
-				<a href="{% url 'core_contact' %}">Let us know</a>.
-				We'd be happy to hear your suggestions.
-			</p>
-		</div>
-
-		<div class="bottom-space">
-			<h2>See what you do as you move</h2>
-			<iframe class="full-width backfill" src="{% url 'demo_map' %}" style="height:500px"></iframe>
-			<p>
-				You can see your interaction with others across services on one map.
-				Click on a marker and explore any point in detail.
-			</p>
-		</div>
-
-		<div class="bottom-space">
-			<h2>View Your Interactions on a Timeline</h2>
-			<iframe class="full-width backfill" src="{% url 'demo_timeline' %}" style="height:500px;"></iframe>
-			<p>
-				You can see your interaction with others across services over time.
-				Click through the timeline.
-			</p>
-		</div>
-	</section>
+	<div class="bottom-space">
+		<h2>View Your Interactions on a Timeline</h2>
+		<iframe class="full-width backfill" src="{% url 'demo_timeline' %}" style="height:500px;"></iframe>
+		<p>
+			You can see your interaction with others across services over time.
+			Click through the timeline.
+		</p>
+	</div>
 
 	<div class="wrapper">
 		<aside class="aside aside-1">
-			<div id="chartContainer" class="svg-backfill" data-source="{% static 'demo/data/shopping_habits.tsv' %}"></div>
+			<div id="chartContainer" class="svg-backfill"
+			     data-source="{% static 'demo/data/shopping_habits.tsv' %}"></div>
 		</aside>
-		<aside class="aside aside-2">
+		<aside class="aside aside-2 text-desc">
 			<section class="centered center middle-text">
 				<h2>Track the trends in your purchases</h2>
 				<p>See where you spend, how you spend, and when you spend.</p>
@@ -156,23 +157,25 @@
 	</div>
 
 	<div class="wrapper">
-		<aside class="aside aside-1">
+		<aside class="aside aside-1 text-desc">
 			<section class="centered center middle-text">
 				<h2>Bring Perspective to Conversations</h2>
 				<p>Watch your conversations change over time.</p>
-				<p>Find out who is the master communicator.</p>
+				<p>Don't loose touch with your important contacts.</p>
 			</section>
 		</aside>
 		<aside class="aside aside-2">
-			<div id="chartContainer2" class="svg-backfill" data-source="{% static 'demo/data/conversation.tsv' %}"></div>
+			<div id="chartContainer2" class="svg-backfill"
+			     data-source="{% static 'demo/data/conversation.tsv' %}"></div>
 		</aside>
 	</div>
 
 	<div class="wrapper">
 		<aside class="aside aside-1">
-			<div id="chartContainer5" class="svg-backfill" data-source="{% static 'demo/data/friends_messages.tsv' %}"></div>
+			<div id="chartContainer5" class="svg-backfill"
+			     data-source="{% static 'demo/data/friends_messages.tsv' %}"></div>
 		</aside>
-		<aside class="aside aside-2">
+		<aside class="aside aside-2 text-desc">
 			<section class="centered center middle-text">
 				<h2>Become a master of your messages</h2>
 				<p>Direct your path to social media stardom.</p>
@@ -181,21 +184,20 @@
 		</aside>
 	</div>
 
-	<div class="wrapper">
-		<aside class="aside aside-1">
+	<div class="wrapper bottom-space">
+		<aside class="aside aside-1 text-desc">
 			<section class="centered center middle-text">
 				<h2>Analyze how you spend your day</h2>
-				<p>Are you a workaholic? Media junkie? Insomniac?</p>
 				<p>Make the most of your time.</p>
+				<p>Are you a workaholic? Media junkie? Insomniac?</p>
 			</section>
 		</aside>
 		<aside class="aside aside-2">
-			<div id="chartContainer4" class="svg-backfill" data-source="{% static 'demo/data/time_spent_alt.tsv' %}"></div>
+			<div id="chartContainer4" class="svg-backfill"
+			     data-source="{% static 'demo/data/time_spent_alt.tsv' %}"></div>
 		</aside>
 	</div>
-
-	<section class="centered center" style="display: block">
-		<h2>If you'd like to get started just</h2>
-		<a class="ui button positive" href="{% url 'core_signup' %}">Sign Up</a></h2>
-	</section>
+	<h2>If you'd like to get started just</h2>
+	<a class="ui button positive" href="{% url 'core_signup' %}">Sign Up</a></h2>
+</section>
 {% endblock %}
