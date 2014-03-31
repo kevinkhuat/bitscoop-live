@@ -46,7 +46,7 @@
 
 		<h1 class="center">Dashboard Infografic Demo</h1>
 		<article class="backfill padded">
-			<iframe width='100%' height='500px' frameBorder='0' src='/static/core/mapcrap.html'></iframe>
+			<iframe width='100%' height='500px' frameBorder='0' src='/static/demo/map/mapDemo.html'></iframe>
 
 			<iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400'
 			        width='100%' height='400' frameborder='0'></iframe>
@@ -54,9 +54,12 @@
 			<div class="wrapper">
 				<aside class="aside aside-1">
 					<div id="chartContainer">
+					<section class="centered center">
+						<h2>Finance - Merchants</h2>
+					</section>
 						<script type="text/javascript">
 							var svg = dimple.newSvg("#chartContainer", 600, 400);
-							d3.tsv("{% static 'core/chart/shopping_habits.tsv' %}", function (data) {
+							d3.tsv("{% static '/static/demo/chart/shopping_habits.tsv' %}", function (data) {
 								var myChart = new dimple.chart(svg, data);
 								myChart.setBounds(60, 30, 500, 330)
 								myChart.addMeasureAxis("x", "Total");
@@ -71,9 +74,12 @@
 				</aside>
 				<aside class="aside aside-2">
 					<div id="chartContainer5">
+						<section class="centered center">
+							<h2>Social - Mentions & Likes</h2>
+						</section>
 						<script type="text/javascript">
 							var svg5 = dimple.newSvg("#chartContainer5", 600, 400);
-							d3.tsv("{% static 'core/chart/friends_messages.tsv' %}", function (data) {
+							d3.tsv("{% static '/static/demo/chart/friends_messages.tsv' %}", function (data) {
 								var myChart5 = new dimple.chart(svg5, data);
 								//myChart3.setBounds(60, 30, 505, 305);
 								var x = myChart5.addTimeAxis("x", "Date", "%m/%d/%Y", "%m/%y");
@@ -91,9 +97,12 @@
 			<div class="wrapper">
 				<aside class="aside aside-1">
 					<div id="chartContainer4">
+						<section class="centered center">
+							<h2>General - Activity</h2>
+						</section>
 						<script type="text/javascript">
 							var svg4 = dimple.newSvg("#chartContainer4", 600, 400);
-							d3.tsv("{% static 'core/chart/time_spent_alt.tsv' %}", function (data) {
+							d3.tsv("{% static '/static/demo/chart/time_spent_alt.tsv' %}", function (data) {
 								var myChart4 = new dimple.chart(svg4, data);
 								myChart4.setBounds(60, 30, 505, 305);
 								var x = myChart4.addCategoryAxis("x", "Day");
@@ -108,14 +117,17 @@
 				</aside>
 				<aside class="aside aside-2">
 					<div id="chartContainer2">
+						<section class="centered center">
+							<h2>Social - Ellen & Liam</h2>
+						</section>
 						<script type="text/javascript">
 							var svg2 = dimple.newSvg("#chartContainer2", 600, 400);
-							d3.tsv("{% static 'core/chart/conversation.tsv' %}", function (data) {
+							d3.tsv("{% static '/static/demo/chart/conversation.tsv' %}", function (data) {
 								var myChart2 = new dimple.chart(svg2, data);
 								myChart2.setBounds(75, 30, 480, 330)
 								myChart2.addPctAxis("x", "Message %");
 								var y = myChart2.addCategoryAxis("y", "Date");
-								y.addOrderRule("Day");
+								y.addOrderRule("Date");
 								myChart2.addSeries("Person", dimple.plot.bar);
 								myChart2.addLegend(60, 10, 510, 20, "right");
 								myChart2.draw(4000);

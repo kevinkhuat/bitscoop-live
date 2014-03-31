@@ -51,14 +51,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Ellen is at W56TH ST and 8Th AVE",
+        "description": "Lisa is at W56TH ST and 8Th AVE",
         "id": "marker-htbzzpcz1",
         "marker-color": "#1087bf",
         "marker-size": "large",
         "marker-symbol": "telephone",
-        "title": "Call from Ellen",
+        "title": "Call from Lisa",
         "data-type": "Call",
-        "data-time": "5:31 pm"
+        "data-time": "5:31 pm",
+        "data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
       },
       "type": "Feature"
     },
@@ -91,14 +92,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Duration 3 minutes - Ellen is at W57TH ST and 8Th AVE",
+        "description": "Duration 3 minutes - Lisa is at W57TH ST and 8Th AVE",
         "id": "marker-htc09zbv3",
         "marker-color": "#1087bf",
         "marker-size": "large",
         "marker-symbol": "emergency-telephone",
-        "title": "Call from Ellen Ended",
+        "title": "Call from Lisa Ended",
         "data-type": "Call",
-        "data-time": "5:36 pm"
+        "data-time": "5:36 pm",
+        "data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
       },
       "type": "Feature"
     },
@@ -119,7 +121,7 @@
         "title": "Email to James",
         "data-type": "Message",
         "data-time": "5:44 pm",
-        "data-image-uri": "https://docs.djangoproject.com/s/img/site/hdr_logo.b19c5e60269d.gif"
+        "data-image-uri": "/static/demo/portraits/james-portrait.jpg"
       },
       "type": "Feature"
     },
@@ -152,7 +154,7 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Steven shared a Photo with you on Facebook - Description: We nailed it! - Steven is at W56TH ST and 11Th AVE",
+        "description": "Steve shared a Photo with you on Facebook - Description: We nailed it! - Steve is at W56TH ST and 11Th AVE",
         "id": "marker-htc0glld6",
         "marker-color": "#9c89cc",
         "marker-size": "large",
@@ -160,7 +162,7 @@
         "title": "Photo Shared",
         "data-type": "Message",
         "data-time": "4:40 pm",
-        "data-image-uri": "https://docs.djangoproject.com/s/img/site/hdr_logo.b19c5e60269d.gif"
+        "data-image-uri": "/static/demo/portraits/we-did-it.jpg"
       },
       "type": "Feature"
     },
@@ -193,14 +195,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Ellen Doe - 0.2 miles away",
+        "description": "Lisa Doe - 0.2 miles away",
         "id": "marker-htc1h2ha0",
         "marker-color": "#d27591",
         "marker-size": "large",
-        "marker-symbol": "e",
-        "title": "Ellen",
+        "marker-symbol": "l",
+        "title": "Lisa",
         "data-type": "Person",
-        "data-time": "Now"
+        "data-time": "Now",
+        "data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
       },
       "type": "Feature"
     },
@@ -213,14 +216,15 @@
         "type": "Point"
       },
       "properties": {
-        "description": "Steve Silver - 0.65 miles away",
+        "description": "Steve Wood - 0.65 miles away",
         "id": "marker-htc1t4i60",
         "marker-color": "#677da7",
         "marker-size": "large",
         "marker-symbol": "s",
-        "title": "Steven",
+        "title": "Steve",
         "data-type": "Person",
-        "data-time": "Now"
+        "data-time": "Now",
+        "data-image-uri": "/static/demo/portraits/steve-portrait.jpg"
       },
       "type": "Feature"
     }

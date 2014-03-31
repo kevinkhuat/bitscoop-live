@@ -2,8 +2,6 @@
 <html>
 <head>
 	<meta charset=utf-8/>
-	<title>Multiple Marker Filters</title>
-
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
 	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
 	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet'/>
@@ -79,8 +77,6 @@
 			vertical-align: middle;
 			outline: none;
 			border: none;
-			background-color: #FAFAFA;
-			color: #808080;
 			margin: 0.25em 0;
 			padding: 0.4em 1em;
 			text-transform: uppercase;
@@ -89,6 +85,8 @@
 			font-style: normal;
 			text-align: center;
 			text-decoration: none;
+			color: #808080;
+			background-color: #FAFAFA;
 			background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
 			background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
 			background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
@@ -136,22 +134,13 @@
 	var map = L.mapbox.map('map', 'liambroza.hl4bi8d0', {zoomControl: false})
 			.setView([40.768, -73.988], 16);
 	map.featureLayer = L.mapbox.featureLayer()
-			.loadURL('/static/core/geoMark.geojson')
+			.loadURL('/static/demo/map/demoMark.geojson')
 			.addTo(map);
-
-	//var map = L.mapbox.map('map', 'liambroza.hl46f2ok', {zoomControl: false});
 
 	// find and store a variable reference to the list of filters
 	var filters = document.getElementById('filters');
 
-	// Wait until the marker layer is loaded in order to build a list of possible
-	// types. If you are doing this with another featureLayer, you should change
-	// map.featureLayer to the variable you have assigned to your featureLayer
 	map.featureLayer.on('ready', function () {
-		// collect the types of symbols in this layer. you can also just
-		// hardcode an array of types if you know what you want to filter on,
-		// like
-		// var types = ['foo', 'bar'];
 		var typesObj = {}, types = [];
 		var features = map.featureLayer.getGeoJSON().features;
 		for (var i = 0; i < features.length; i++) {
@@ -180,8 +169,6 @@
 				info += '<img src=' + feature.properties['data-image-uri'] + ' />';
 			}
 			document.getElementById('info').innerHTML = info;
-
-
 		});
 
 		for (var k in typesObj) types.push(k);
@@ -227,11 +214,9 @@
 			});
 		}
 
-		var i = 0;                     //  set your counter to 1
-
-		function cycleCheckboxes (interval) {           //  create a loop function
-		   setTimeout(function () {    //  call a 3s setTimeout when the loop is called
-
+		var i = 0;//  set your counter to 1
+		function cycleCheckboxes (interval) {  //  create a loop function
+		   setTimeout(function () { //  call a 3s setTimeout when the loop is called
 			   if (0 == i % checkboxes.length && i > 0){
 					for (var j = 1; j < checkboxes.length; j++) {
 						checkboxes[j].checked = false;
@@ -241,17 +226,14 @@
 					checkboxes[i % checkboxes.length].checked = true;
 				    update()
 				}
-
-		      i++;                     //  increment the counter
-		      if (i < 40) {            //  if the counter < 10, call the loop function
-		         cycleCheckboxes(interval);             //  ..  again which will trigger another
-		      }                        //  ..  setTimeout()
+		      i++; //  increment the counter
+		      if (i < 25) {  //  if the counter < 10, call the loop function
+		         cycleCheckboxes(interval);  //  ..  again which will trigger another
+		      } //  ..  setTimeout()
 		   }, interval)
 		}
-
 		update();
-		cycleCheckboxes(3000);
-
+		cycleCheckboxes(2500);
 
 	});
 </script>
