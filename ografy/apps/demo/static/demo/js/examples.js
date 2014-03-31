@@ -25,7 +25,7 @@ $(document).ready(function() {
 		y = chart.addCategoryAxis('y', 'Date');
 		y.addOrderRule('Date');
 		chart.addSeries('Person', dimple.plot.bar);
-		chart.addLegend(100, 10, 510, 20, 'right');
+		chart.addLegend(85, 10, 510, 20, 'right');
 		chart.draw(4000);
 	});
 
