@@ -39,73 +39,62 @@
 </style>
 {% endblock %}
 
-	<h1 class="center">Dashboard Infografic Demo</h1>
-	<article class="backfill padded">
 
+{% block content %}
+<section class="centered bottom-space" style="width:1400px">
+	<h1 class="center">Dashboard Infographic Demo</h1>
+	<div class="backfill padded">
 		<iframe class="full-width" src="{% static 'demo/data/mapDemo.html' %}" style="height:500px;"></iframe>
 		<iframe class="full-width" src="http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400" style="height:400px;"></iframe>
 
 		<div class="wrapper">
 			<aside class="aside aside-1">
-				<div id="chartContainer">
-					<section class="centered center">
-						<h2>Finance - Merchants</h2>
-					</section>
+				<div id="chartContainer" data-source="{% static 'demo/data/shopping_habits.tsv' %}">
+					<h2 class="center">Finance - Merchants</h2>
 				</div>
 			</aside>
+
 			<aside class="aside aside-2">
-				<div id="chartContainer5">
-					<section class="centered center">
-						<h2>Social - Mentions & Likes</h2>
-					</section>
+				<div id="chartContainer5" data-source="{% static 'demo/data/friends_messages.tsv' %}">
+					<h2 class="center">Social - Mentions & Likes</h2>
 				</div>
 			</aside>
 		</div>
+
 		<div class="wrapper">
 			<aside class="aside aside-1">
-				<div id="chartContainer4">
-					<section class="centered center">
-						<h2>General - Activity</h2>
-					</section>
+				<div id="chartContainer4" data-source="{% static 'demo/data/time_spent_alt.tsv' %}">
+					<h2 class="center">General - Activity</h2>
 				</div>
 			</aside>
+
 			<aside class="aside aside-2">
-				<div id="chartContainer2">
-					<section class="centered center">
-						<h2>Social - Ellen & Liam</h2>
-					</section>
+				<div id="chartContainer2" data-source="{% static 'demo/data/conversation.tsv' %}">
+					<h2 class="center">Social - Ellen & Liam</h2>
 				</div>
 			</aside>
 		</div>
-	</article>
-
+	</div>
 </section>
+
 <section class="lockwidth centered">
 	<h1 class="center">Older Prototypes</h1>
 
-	<h2>Infographic <span style="font-size:70%;">(<a href="{% url 'demo_infographic' %}"
-	                                                 target="_blank">Link</a>)</span></h2>
-
+	<h2>Infographic <span style="font-size:70%;">(<a href="{% url 'demo_infographic' %}" target="_blank">Link</a>)</span></h2>
 	<p>This is an initial prototype of an infographic created using a few of Steven's data sources:</p>
 	<ul>
 		<li>Steam</li>
 		<li>Personal website</li>
 	</ul>
-	<p>We're still working on our plotting and visualization library which would enhance the functionality shown
-		here.</p>
+	<p>We're still working on our plotting and visualization library which would enhance the functionality shown here.</p>
 
-	<h2>Dashboard <span style="font-size:70%;">(<a href="{% url 'demo_dashboard' %}"
-	                                               target="_blank">Link</a>)</span></h2>
-
+	<h2>Dashboard <span style="font-size:70%;">(<a href="{% url 'demo_dashboard' %}" target="_blank">Link</a>)</span></h2>
 	<p>This is an experimental dashboard UI we used to test categorizing and filtering charts.</p>
-
 	<p>
-		We explored using <a href="http://nvd3.org/" target="_blank">NVD3</a> for charts, but it didn't offer us
-		enough flexibility or documentation.
+		We explored using <a href="http://nvd3.org/" target="_blank">NVD3</a> for charts, but it didn't offer us enough flexibility or documentation.
 		For now the charts displayed are placeholders and are using dummy data.
+		However a few of the square regions replicate the functionality from the infographic.
 	</p>
-
-	<p>However a few of the square regions replicate the functionality from the infographic.</p>
 
 	<div class="center" style="margin-top:3em;">
 		<h2>Continue to next section</h2>
