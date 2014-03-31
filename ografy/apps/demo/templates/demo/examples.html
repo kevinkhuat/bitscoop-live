@@ -1,49 +1,43 @@
 {% extends 'demo/dispatcher.html' %}
-
 {% load staticfiles %}
 
-{% block content %}
-<style>
-.wrapper {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-
-	-webkit-flex-flow: row wrap;
-	text-align: center;
-}
-
-.wrapper > * {
-	padding: 10px;
-	flex: 1 100%;
-}
-
-@media all and (min-width: 600px) {
-	.aside {
-		flex: 1 auto;
+{% block static %}
+{{ block.super }}
 <script type="text/javascript" src="{% static 'lib/d3/d3-3.3.11.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'lib/dimple/dimple-1.1.5.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'demo/js/examples.js' %}"></script>
-	}
-}
 
-@media all and (min-width: 800px) {
-	.aside-1 {
-		order: 1;
+<style type="text/css">
+	.wrapper {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+
+		-webkit-flex-flow: row wrap;
+		text-align: center;
 	}
 
-	.aside-2 {
-		order: 2;
+	.wrapper > * {
+		padding: 10px;
+		flex: 1 100%;
 	}
-}
 
-.bottom-space {
-	margin-bottom: 3em;
-}
+	@media all and (min-width: 600px) {
+		.aside { flex: 1 auto; }
+	}
+
+	@media all and (min-width: 800px) {
+		.aside-1 { order: 1; }
+		.aside-2 { order: 2; }
+	}
+
+	.bottom-space { margin-bottom: 3em; }
+
+	iframe { border: none; }
 </style>
-<section class="centered bottom-space" style="width: 1400px">
+{% endblock %}
 
 	<h1 class="center">Dashboard Infografic Demo</h1>
 	<article class="backfill padded">

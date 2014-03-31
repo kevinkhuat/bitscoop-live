@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="{% static 'lib/dimple/dimple-1.1.5.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'demo/js/examples.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
+
 	<style type="text/css">
 		.i-grid {
 			width: 600px;
@@ -28,9 +29,7 @@
 			width: 30px
 		}
 
-		.bottom-space {
-			margin-bottom: 3em;
-		}
+		.bottom-space { margin-bottom: 3em; }
 
 		.wrapper {
 			display: -webkit-box;
@@ -49,25 +48,17 @@
 		}
 
 		@media all and (min-width: 600px) {
-			.aside {
-				flex: 1 auto;
-			}
+			.aside { flex: 1 auto; }
 		}
 
 		@media all and (min-width: 800px) {
-			.aside-1 {
-				order: 1;
-			}
-
-			.aside-2 {
-				order: 2;
-			}
+			.aside-1 { order: 1; }
+			.aside-2 { order: 2; }
 		}
 
-		.middle-text {
-			margin-top: 8%;
-		}
+		.middle-text { margin-top: 8%; }
 
+		iframe { border: none; }
 	</style>
 {% endblock %}
 
