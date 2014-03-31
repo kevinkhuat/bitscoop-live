@@ -3,6 +3,8 @@
 
 {% block static %}
 	{{ block.super }}
+	<script type="text/javascript" src="{% static 'lib/d3/d3-3.3.11.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/dimple/dimple-1.1.5.min.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
 	<style type="text/css">
 		.i-grid {
@@ -66,8 +68,6 @@
 		}
 
 	</style>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
 {% endblock %}
 
 {% block content %}
