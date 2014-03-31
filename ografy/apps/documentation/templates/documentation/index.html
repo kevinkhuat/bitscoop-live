@@ -186,7 +186,7 @@
 					d3.tsv("{% static '/static/demo/chart/conversation.tsv' %}", function (data) {
 						var myChart2 = new dimple.chart(svg2, data);
 						myChart2.setBounds(75, 30, 480, 330)
-						myChart2.addPctAxis("x", "Message %");
+						myChart2.addPctAxis("x", "Messages");
 						var y = myChart2.addCategoryAxis("y", "Date");
 						y.addOrderRule("Date");
 						myChart2.addSeries("Person", dimple.plot.bar);
