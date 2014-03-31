@@ -14,4 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^/dashboard/?$', views.dashboard, name='demo_dashboard'),
     url(r'^/infographic/?$', views.infographic, name='demo_infographic'),
+
+    url(r'^/map/?$', views.map, name='demo_map'),
+    url(r'^/timeline/?$', views.timeline, name='demo_timeline'),
 )

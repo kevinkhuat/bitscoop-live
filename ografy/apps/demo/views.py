@@ -48,3 +48,11 @@ def dashboard(request):
 @login_required
 def infographic(request):
     return render(request, 'demo/infographic.html')
+
+
+def map(request):
+    return render(request, 'demo/map.html')
+
+
+def timeline(request):
+    return render(request, 'demo/timeline.html')

@@ -125,7 +125,7 @@
 
 		<div class="bottom-space">
 			<h2>See what you do as you move</h2>
-			<iframe class="full-width backfill" src="{% static 'demo/data/mapDemo.html' %}" style="height:500px;"></iframe>
+			<iframe class="full-width backfill" src="{% url 'demo_map' %}" style="height:500px"></iframe>
 			<p>
 				You can see your interaction with others across services on one map.
 				Click on a marker and explore any point in detail.
@@ -134,7 +134,7 @@
 
 		<div class="bottom-space">
 			<h2>View Your Interactions on a Timeline</h2>
-			<iframe class="full-width backfill" src="http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400" style="height:400px;"></iframe>
+			<iframe class="full-width backfill" src="{% url 'demo_timeline' %}" style="height:500px;"></iframe>
 			<p>
 				You can see your interaction with others across services over time.
 				Click through the timeline.

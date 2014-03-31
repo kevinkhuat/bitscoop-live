@@ -44,8 +44,8 @@
 <section class="centered bottom-space" style="width:1400px">
 	<h1 class="center">Dashboard Infographic Demo</h1>
 	<div class="backfill padded">
-		<iframe class="full-width" src="{% static 'demo/data/mapDemo.html' %}" style="height:500px;"></iframe>
-		<iframe class="full-width" src="http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjKE34VMWj7JdE55ZzJnRFJBVkxBVk9ELVFFcmg1ZFE&font=Lekton-Molengo&maptype=toner&lang=en&height=400" style="height:400px;"></iframe>
+		<iframe class="full-width" src="{% url 'demo_map' %}" style="height:500px;"></iframe>
+		<iframe class="full-width" src="{% url 'demo_timeline' %}" style="height:500px;"></iframe>
 
 		<div class="wrapper">
 			<aside class="aside aside-1">
