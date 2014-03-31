@@ -47,7 +47,7 @@ $(document).ready(function() {
 
 		chart.addPctAxis('y', 'Percentage');
 		chart.addSeries('Action', dimple.plot.bar);
-		chart.addLegend(0, 0, 600, 20, 'right');
+		chart.addLegend(0, 10, 600, 20, 'right');
 		chart.draw(4000);
 	});
 
