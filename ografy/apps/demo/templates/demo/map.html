@@ -1,3 +1,5 @@
+
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
@@ -164,7 +166,7 @@
 					"title": "Call from Lisa",
 					"data-type": "Call",
 					"data-time": "5:31 pm",
-					"data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
+					"data-image-uri": "{% static '/static/demo/img/lisa-portrait.jpg' %}"
 				  },
 				  "type": "Feature"
 				},
@@ -199,7 +201,7 @@
 					"title": "Call from Lisa Ended",
 					"data-type": "Call",
 					"data-time": "5:36 pm",
-					"data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
+					"data-image-uri": "{% static '/static/demo/img/lisa-portrait.jpg' %}"
 				  },
 				  "type": "Feature"
 				},
@@ -217,7 +219,7 @@
 					"title": "Email to James",
 					"data-type": "Message",
 					"data-time": "5:44 pm",
-					"data-image-uri": "/static/demo/portraits/james-portrait.jpg"
+					"data-image-uri": "{% static '/static/demo/img/james-portrait.jpg' %}"
 				  },
 				  "type": "Feature"
 				},
@@ -252,7 +254,7 @@
 					"title": "Photo Shared",
 					"data-type": "Message",
 					"data-time": "4:40 pm",
-					"data-image-uri": "/static/demo/portraits/we-did-it.jpg"
+					"data-image-uri": "{% static '/static/demo/img/we-did-it.jpg' %}"
 				  },
 				  "type": "Feature"
 				},
@@ -287,7 +289,7 @@
 					"title": "Lisa",
 					"data-type": "Person",
 					"data-time": "Now",
-					"data-image-uri": "/static/demo/portraits/lisa-portrait.jpg"
+					"data-image-uri": "{% static '/static/demo/img/lisa-portrait.jpg' %}"
 				  },
 				  "type": "Feature"
 				},
@@ -305,7 +307,7 @@
 					"title": "Steve",
 					"data-type": "Person",
 					"data-time": "Now",
-					"data-image-uri": "/static/demo/portraits/steve-portrait.jpg"
+					"data-image-uri": "{% static '/static/demo/img/steve-portrait.jpg' %}"
 				  },
 				  "type": "Feature"
 				}
@@ -325,101 +327,100 @@
 				// find and store a variable reference to the list of filters
 				var filters = document.getElementById('filters');
 
-				map.featureLayer.on('ready', function () {
-					var typesObj = {}, types = [];
-					var features = map.featureLayer.getGeoJSON().features;
-					for (var i = 0; i < features.length; i++) {
-						typesObj[features[i].properties['data-type']] = true;
+				// disable drag and zoom handlers
+				map.dragging.disable();
+				map.touchZoom.disable();
+				map.doubleClickZoom.disable();
+				map.scrollWheelZoom.disable();
+				// disable tap handler, if present.
+				if (map.tap) map.tap.disable();
+
+
+				var typesObj = {}, types = [];
+				var features = map.featureLayer.getGeoJSON().features;
+				for (var i = 0; i < features.length; i++) {
+					typesObj[features[i].properties['data-type']] = true;
+				}
+
+				// Listen for individual marker clicks
+				map.featureLayer.on('mouseover', function (e) {
+					// Force the popup closed.
+					e.layer.closePopup();
+
+					var feature = e.layer.feature;
+					var info = '<h2>' + feature.properties.title + '</h2>' +
+							'<h3>' + feature.properties['data-time'] + '</h3>' +
+							'<p>' + feature.properties.description + '</p>';
+
+					if (feature.properties['data-image-uri'] !== undefined) {
+						info += '<img src=' + feature.properties['data-image-uri'] + ' />';
 					}
-
-					// disable drag and zoom handlers
-					map.dragging.disable();
-					map.touchZoom.disable();
-					map.doubleClickZoom.disable();
-					map.scrollWheelZoom.disable();
-					// disable tap handler, if present.
-					if (map.tap) map.tap.disable();
-
-					// Listen for individual marker clicks
-					map.featureLayer.on('mouseover', function (e) {
-						// Force the popup closed.
-						e.layer.closePopup();
-
-						var feature = e.layer.feature;
-						var info = '<h2>' + feature.properties.title + '</h2>' +
-								'<h3>' + feature.properties['data-time'] + '</h3>' +
-								'<p>' + feature.properties.description + '</p>';
-
-						if (feature.properties['data-image-uri'] !== undefined) {
-							info += '<img src=' + feature.properties['data-image-uri'] + ' />';
-						}
-						document.getElementById('info').innerHTML = info;
-					});
-
-					for (var k in typesObj) types.push(k);
-
-					var checkboxes = [];
-					// create a filter interface
-					for (var i = 0; i < types.length; i++) {
-						// create an <li> list element for each type, and add an input checkbox
-						// and label inside
-						var li = filters.appendChild(document.createElement('li'));
-						var checkbox = li.appendChild(document.createElement('input'));
-						var label = li.appendChild(document.createElement('label'));
-						checkbox.type = 'checkbox';
-						checkbox.id = types[i];
-						checkbox.checked = false;
-						checkbox.classList.add("css-checkbox")
-						// create a label to the right of the checkbox with explanatory text
-						label.innerHTML = types[i];
-						label.classList.add("css-label")
-						label.setAttribute('for', types[i]);
-						// whenever a person clicks on this checkbox, call the update() function
-						// below
-						checkbox.addEventListener('change', update);
-						checkboxes.push(checkbox);
-					}
-
-					// this function is called whenever someone clicks on a checkbox and changes
-					// the selection of markers to be displayed
-					function update() {
-						var enabled = {};
-						// run through each checkbox and record whether it is checked. If it is,
-						// add it to the object of types to display, otherwise do not.
-						for (var i = 0; i < checkboxes.length; i++) {
-							if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-						}
-						map.featureLayer.setFilter(function (feature) {
-							// if this symbol is in the list, return true. if not, return false.
-							// the 'in' operator in javascript does exactly that: given a string
-							// or number, it says if that is in a object
-							// 2 in { 2: true } // true
-							// 2 in { } // false
-							return (feature.properties['data-type'] in enabled);
-						});
-					}
-
-					var i = 0;//  set your counter to 1
-					function cycleCheckboxes (interval) {  //  create a loop function
-					   setTimeout(function () { //  call a 3s setTimeout when the loop is called
-						   if (0 == i % checkboxes.length && i > 0){
-								for (var j = 1; j < checkboxes.length; j++) {
-									checkboxes[j].checked = false;
-								}
-								update()
-							}else{
-								checkboxes[i % checkboxes.length].checked = true;
-								update()
-							}
-						  i++; //  increment the counter
-						  if (i < 25) {  //  if the counter < 10, call the loop function
-							 cycleCheckboxes(interval);  //  ..  again which will trigger another
-						  } //  ..  setTimeout()
-					   }, interval)
-					}
-					update();
-					cycleCheckboxes(2500);
+					document.getElementById('info').innerHTML = info;
 				});
+
+				for (var k in typesObj) types.push(k);
+
+				var checkboxes = [];
+				// create a filter interface
+				for (var i = 0; i < types.length; i++) {
+					// create an <li> list element for each type, and add an input checkbox
+					// and label inside
+					var li = filters.appendChild(document.createElement('li'));
+					var checkbox = li.appendChild(document.createElement('input'));
+					var label = li.appendChild(document.createElement('label'));
+					checkbox.type = 'checkbox';
+					checkbox.id = types[i];
+					checkbox.checked = false;
+					checkbox.classList.add("css-checkbox")
+					// create a label to the right of the checkbox with explanatory text
+					label.innerHTML = types[i];
+					label.classList.add("css-label")
+					label.setAttribute('for', types[i]);
+					// whenever a person clicks on this checkbox, call the update() function
+					// below
+					checkbox.addEventListener('change', update);
+					checkboxes.push(checkbox);
+				}
+
+				// this function is called whenever someone clicks on a checkbox and changes
+				// the selection of markers to be displayed
+				function update() {
+					var enabled = {};
+					// run through each checkbox and record whether it is checked. If it is,
+					// add it to the object of types to display, otherwise do not.
+					for (var i = 0; i < checkboxes.length; i++) {
+						if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+					}
+					map.featureLayer.setFilter(function (feature) {
+						// if this symbol is in the list, return true. if not, return false.
+						// the 'in' operator in javascript does exactly that: given a string
+						// or number, it says if that is in a object
+						// 2 in { 2: true } // true
+						// 2 in { } // false
+						return (feature.properties['data-type'] in enabled);
+					});
+				}
+
+				var i = 0;//  set your counter to 1
+				function cycleCheckboxes (interval) {  //  create a loop function
+				   setTimeout(function () { //  call a 3s setTimeout when the loop is called
+					   if (0 == i % checkboxes.length && i > 0){
+							for (var j = 1; j < checkboxes.length; j++) {
+								checkboxes[j].checked = false;
+							}
+							update()
+						}else{
+							checkboxes[i % checkboxes.length].checked = true;
+							update()
+						}
+					  i++; //  increment the counter
+					  if (i < 25) {  //  if the counter < 10, call the loop function
+						 cycleCheckboxes(interval);  //  ..  again which will trigger another
+					  } //  ..  setTimeout()
+				   }, interval)
+				}
+				update();
+				cycleCheckboxes(2500);
 			}
 		</script>
 	</head>

@@ -125,7 +125,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'build', 'static'))
+STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'timelinejs', 'static'))
 
 
 # Contrib Settings
