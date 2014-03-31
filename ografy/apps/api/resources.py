@@ -1,9 +1,12 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth import get_user_model
 from tastypie import fields
 from tastydata.resources import Resource
 
-from ografy.apps.core.models import Account, Entry, User
+from ografy.apps.core.models import Account, Entry
+
+User = get_user_model()
 
 
 class UserResource(Resource):
