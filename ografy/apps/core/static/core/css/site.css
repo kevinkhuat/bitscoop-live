@@ -148,8 +148,13 @@ input:focus {
 
 header { padding: 20px 0; }
 main { background-color: #FFF; }
+#logo {
+	position: relative;
+	top: 2px;
+	display: inline-block;
+	width: 32px; height: 32px;
 }
-
+#logo > img { width: 32px; height: 32px; }
 #content {
 	position: relative;
 	padding: 35px 0;
