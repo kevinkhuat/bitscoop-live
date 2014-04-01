@@ -29,35 +29,6 @@
 			width: 30px
 		}
 
-		.bottom-space { margin-bottom: 3em; }
-
-		.wrapper {
-			display: -webkit-box;
-			display: -moz-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
-			display: flex;
-
-			-webkit-flex-flow: row wrap;
-			text-align: center;
-		}
-
-		.wrapper > * {
-			padding: 10px;
-			flex: 1 100%;
-		}
-
-		@media all and (min-width: 600px) {
-			.aside { flex: 1 auto; }
-		}
-
-		@media all and (min-width: 800px) {
-			.aside-1 { order: 1; }
-			.aside-2 { order: 2; }
-		}
-
-		.middle-text { margin-top: 8%; }
-
 		iframe { border: none; }
 
 		.svg-backfill > svg {
@@ -134,70 +105,70 @@
 	</div>
 
 	<div class="bottom-space">
-		<h2>View Your Interactions on a Timeline</h2>
+		<h2>View your interactions on timelines</h2>
 		<iframe class="full-width backfill" src="{% url 'demo_timeline' %}" style="height:500px;"></iframe>
 		<p>
 			You can see your interaction with others across services over time.
-			Click through the timeline.
+			Click on events to get more detailed information.
 		</p>
 	</div>
 
-	<div class="wrapper">
-		<aside class="aside aside-1">
-			<div id="chartContainer" class="svg-backfill"
-			     data-source="{% static 'demo/data/shopping_habits.tsv' %}"></div>
-		</aside>
-		<aside class="aside aside-2 text-desc">
-			<section class="centered center middle-text">
+	<div class="bottom-space">
+		<h2>Easily analyze data</h2>
+		<p>You can plot quantifiable information on charts and get unique insights.</p>
+	</div>
+</section>
+
+<section class="centered" style="width: 1350px;">
+	<div class="table full-width bottom-space">
+		<div>
+			<div style="width: 50%;">
+				<div id="chartContainer" class="svg-backfill" data-source="{% static 'demo/data/shopping_habits.tsv' %}"></div>
+			</div>
+			<div class="center middle padded" style="width: 50%;">
 				<h2>Track the trends in your purchases</h2>
 				<p>See where you spend, how you spend, and when you spend.</p>
 				<p>Compare merchants, see the number of things you buy, and how much it costs you.</p>
-			</section>
-		</aside>
-	</div>
+			</div>
+		</div>
 
-	<div class="wrapper">
-		<aside class="aside aside-1 text-desc">
-			<section class="centered center middle-text">
+		<div>
+			<div class="center middle padded">
 				<h2>Bring Perspective to Conversations</h2>
 				<p>Watch your conversations change over time.</p>
-				<p>Don't loose touch with your important contacts.</p>
-			</section>
-		</aside>
-		<aside class="aside aside-2">
-			<div id="chartContainer2" class="svg-backfill"
-			     data-source="{% static 'demo/data/conversation.tsv' %}"></div>
-		</aside>
-	</div>
+				<p>Don't lose touch with your important contacts.</p>
+			</div>
+			<div>
+				<div id="chartContainer2" class="svg-backfill" data-source="{% static 'demo/data/conversation.tsv' %}"></div>
+			</div>
+		</div>
 
-	<div class="wrapper">
-		<aside class="aside aside-1">
-			<div id="chartContainer5" class="svg-backfill"
-			     data-source="{% static 'demo/data/friends_messages.tsv' %}"></div>
-		</aside>
-		<aside class="aside aside-2 text-desc">
-			<section class="centered center middle-text">
+		<div>
+			<div>
+				<div id="chartContainer5" class="svg-backfill" data-source="{% static 'demo/data/friends_messages.tsv' %}"></div>
+			</div>
+			<div class="center middle padded">
 				<h2>Become a master of your messages</h2>
 				<p>Direct your path to social media stardom.</p>
 				<p>See how messages resonate on all of your networks.</p>
-			</section>
-		</aside>
-	</div>
+			</div>
+		</div>
 
-	<div class="wrapper bottom-space">
-		<aside class="aside aside-1 text-desc">
-			<section class="centered center middle-text">
+		<div>
+			<div class="center middle padded">
 				<h2>Analyze how you spend your day</h2>
 				<p>Make the most of your time.</p>
-				<p>Are you a workaholic? Media junkie? Insomniac?</p>
-			</section>
-		</aside>
-		<aside class="aside aside-2">
-			<div id="chartContainer4" class="svg-backfill"
-			     data-source="{% static 'demo/data/time_spent_alt.tsv' %}"></div>
-		</aside>
+				<p>Are you a workaholic? A media junkie? An insomniac?</p>
+			</div>
+			<div>
+				<div id="chartContainer4" class="svg-backfill" data-source="{% static 'demo/data/time_spent_alt.tsv' %}"></div>
+			</div>
+		</div>
 	</div>
-	<h2>If you'd like to get started just</h2>
-	<a class="ui button positive" href="{% url 'core_signup' %}">Sign Up</a></h2>
+
+	<div class="center">
+		<h2>If you'd like to get started just</h2>
+		<a class="ui button positive" href="{% url 'core_signup' %}">Sign Up</a>
+	</div>
 </section>
 {% endblock %}
