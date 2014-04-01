@@ -72,9 +72,9 @@ input {
 	margin: 0.4em;
 }
 input:focus {
-	-moz-box-shadow: 0 0 6px -2px #0E9D58;
-	-webkit-box-shadow: 0 0 6px -2px #0E9D58;
-	box-shadow: 0 0 6px -2px #0E9D58;
+	-moz-box-shadow: 0 0 6px -1px #0E9D58;
+	-webkit-box-shadow: 0 0 6px -1px #0E9D58;
+	box-shadow: 0 0 6px -1px #0E9D58;
 }
 .ui.button {
 	min-width: 150px; min-height: 1em;
