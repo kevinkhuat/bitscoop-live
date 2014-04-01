@@ -69,7 +69,7 @@ def logout(request):
 class SignupView(View):
     def get(self, request):
         return render(request, 'core/signup.html', {
-            'title': 'Ografy - Signup'
+            'title': 'Ografy - Sign Up'
         })
 
     def post(self, request):
