@@ -179,7 +179,7 @@ footer { font-size: 0.85em; }
 
 /* STICKY FOOTER */
 html, body { height: 100%; }
-main {
+#main {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
