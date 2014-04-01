@@ -34,7 +34,7 @@
 					<nav>
 						<ul>
 							{% if request.user.is_authenticated %}
-							<li><a href="{% url 'user_profile' request.user.oid %}">{{ request.user.identifier }}</a></li>
+							<li><a href="{% url 'user_my_profile' %}">{{ request.user.identifier }}</a></li>
 							<li><a href="{% url 'core_logout' %}">Logout</a></li>
 							{% else %}
 							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>

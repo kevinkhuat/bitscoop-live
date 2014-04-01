@@ -4,17 +4,17 @@
 <section class="lockwidth centered">
 	<h1>User</h1>
 
-	<p>
-		You're seeing all this information because this is your profile.
-		Your public profile is accessible at this same URL for others, but for now only your user handle will be visible.
-		If you did not pick a user handle your automatically assigned Ografy ID will be displayed instead.
-	</p>
-	<p style="margin-bottom:2em;">
+	<p>You're seeing all this information because this is your profile.</p>
+	{% if user.handle %}
+	<p>Your public profile is accessible <a href="{% url 'user_profile' user.handle %}">here</a>.</p>
+	{% else %}
+	<p>You do not have a public profile URL because you have not yet chosen a handle.</p>
+	{% endif %}
+	<p class="bottom-space">
 		<b>Note:</b> We'll support changing all of this information very soon.
 		For now it's just displayed for your records.
 	</p>
 
-	<p><b>Ografy ID:</b> {{ user.id }}</p>
 	<p><b>Email:</b> {{ user.email }}</p>
 	<p><b>Handle:</b> {{ user.handle }}</p>
 	<p><b>First Name:</b> {{ user.first_name }}</p>

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
 
@@ -8,24 +9,27 @@ from django.shortcuts import render
 User = get_user_model()
 
 
-def index(request):
-    return render(request, 'user/index.html', {
-        'title': 'Ografy - User'
+@login_required
+def my_profile(request):
+    return render(request, 'user/my_profile.html', {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'user': request.user
     })
 
 
-def profile(request, oid):
-    user = User.objects.by_oid(oid).first()
+def profile(request, handle):
+    user = User.objects.filter(handle__iexact=handle).first()
 
     if user is None:
         raise Http404
 
-    if user == request.user:
-        template = 'user/my_profile.html'
-    else:
-        template = 'user/profile.html'
+    template = 'user/profile.html'
+    # if user == request.user:
+    #     template = 'user/my_profile.html'
+    # else:
+    #     template = 'user/profile.html'
 
     return render(request, template, {
-        'title': 'Ografy - ' + user.identifier,
+        'title': 'Ografy - {0}'.format(user.handle),
         'user': user
     })

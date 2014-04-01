@@ -6,6 +6,6 @@ from ografy.apps.user import views
 
 
 urlpatterns = patterns('',
-    url(r'^/(?P<oid>\w+)/?$', views.profile, name='user_profile'),
-    url(r'^/?$', views.index, name='user_index'),
+    url(r'^/(?P<handle>\w+)/?$', views.profile, name='user_profile'),
+    url(r'^/?$', views.my_profile, name='user_my_profile'),
 )
