@@ -122,6 +122,10 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
+
+	.uppercase-info {
+		text-transform: uppercase;
+	}
 </style>
 
 <script type="text/javascript">
@@ -367,7 +371,7 @@ var jsonMarkers = {
 			e.layer.closePopup();
 
 			var feature = e.layer.feature;
-			var info = '<h2>' + feature.properties.title + '</h2>' +
+			var info = '<h2 class="uppercase-info">' + feature.properties.title + '</h2>' +
 					'<h3>' + feature.properties['data-time'] + '</h3>' +
 					'<p>' + feature.properties.description + '</p>';
 
@@ -450,7 +454,7 @@ var jsonMarkers = {
 </div>
 <div id="map"></div>
 <div id="info">
-	<h2>Take a Trip</h2>
+	<h2 class="uppercase-info">Take a Trip</h2>
 
 	<h3>Select a Marker</h3>
 </div>
