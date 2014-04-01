@@ -239,7 +239,7 @@ input.full-width {
 .rounded { border-radius: 2px; }
 .padded { padding: 2rem; }
 .errorlist { color: #0E9D58; }
-
+.bottom-space { margin-bottom: 3em; }
 
 /* TABLES */
 div.table { display: table; }
