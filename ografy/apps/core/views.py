@@ -47,7 +47,8 @@ class LoginView(View):
 
             return render(request, 'core/login.html', {
                 'title': 'Ografy - Login',
-                'form': form
+                'form': form,
+                'autofocus': 'identifier' in form.cleaned_data
             })
         else:
             login(request, user)
@@ -98,7 +99,8 @@ class SignupView(View):
         if user is None:
             return render(request, 'core/signup.html', {
                 'title': 'Ografy - Signup',
-                'form': form
+                'form': form,
+                'autofocus': 'username' in form.cleaned_data
             })
         else:
             login(request, user)
