@@ -10,7 +10,7 @@
 html {
 	font: 10px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 	font-weight: 400;
-	background-color: #F3F3F3;
+	background-color: #FFF;
 }
 
 body {
@@ -67,9 +67,14 @@ input {
 	padding: 0.4em;
 	border-radius: 0.1em;
 	border: 1px solid #999;
-	outline-color: #0E9D58;
+	outline: none;
 
 	margin: 0.4em;
+}
+input:focus {
+	-moz-box-shadow: 0 0 6px -2px #0E9D58;
+	-webkit-box-shadow: 0 0 6px -2px #0E9D58;
+	box-shadow: 0 0 6px -2px #0E9D58;
 }
 .ui.button {
 	min-width: 150px; min-height: 1em;
@@ -141,13 +146,8 @@ input {
 }
 
 
-
-header {
-	padding: 20px 0;
-}
-
-main {
-	background-color: #FFF;
+header { padding: 20px 0; }
+main { background-color: #FFF; }
 }
 
 #content {
@@ -228,7 +228,7 @@ input.full-width {
 	color: #555;
 }
 .backfill {
-	border: 2px solid #7A7A7A;
+	border: 1px solid #7A7A7A;
 	box-shadow: 0 0 10px -3px #3A3A3A;
 }
 .rounded { border-radius: 2px; }
