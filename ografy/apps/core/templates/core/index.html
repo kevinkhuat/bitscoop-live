@@ -2,59 +2,121 @@
 {% load staticfiles %}
 
 {% block content %}
-<section class="bg-dark padded">
-	<div class="table lockwidth centered">
+<style>
+.bg1 {
+    background:url({% static 'core/img/bg1.png' %}) left top;
+}
+.bg2 {
+    background:url({% static 'core/img/bg2.png' %}) left top;
+}
+.bg3 {
+    background:url({% static 'core/img/bg3.png' %}) left top;
+}
+.bg4 {
+    background:url({% static 'core/img/bg4.png' %}) left top;
+}
+.bg5 {
+    background:url({% static 'core/img/bg5.png' %}) left top;
+}
+.largeIcon {
+	vertical-align: middle;
+	font-size: 48px;
+	width: 100px;
+	float: left;
+	margin: .3em 0;
+}
+.icon-facebook:hover {
+  color: #1F75FE;
+}
+.icon-twitter:hover {
+  color: #6495ed;
+}
+.icon-googleplus:hover {
+  color: #d62728;
+}
+.icon-linkedin:hover {
+  color: #005580;
+}
+.largeIconRow {
+	display: inline-block;
+	width: 400px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
+<div class="bgParent bg1">
+	<section class="lockwidth centered padded bgblack">
 		<div>
-			<div class="middle">
-				<h1>Discover your data.</h1>
-				<p>Search and explore your data no matter where it is.</p>
-				<p>Connect with your existing accounts and publish yourself around the world.</p>
-			</div>
-			<div class="bg-light middle center backfill padded rounded">
-				<form action="{% url 'core_signup' %}" method="POST">
-					{% csrf_token %}
-					<div><input class="full-width" type="text" name="email" placeholder="Email Address" /></div>
-					<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
-					<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
-					<input class="ui button positive" type="submit" value="Sign Up" />
-				</form>
+			<div>
+				<div class="bg-light backfill padded center rounded" style="float: right; vertical-align: middle; width: 30%">
+					<form action="{% url 'core_signup' %}" method="POST" >
+						{% csrf_token %}
+						<div><input class="full-width" type="text" name="email" placeholder="Email Address" /></div>
+						<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
+						<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
+						<input class="ui button positive" type="submit" value="Sign Up" />
+					</form>
+				</div>
+				<div class="center" style="width: 70%">
+					<h1 style="font-size: 4em; margin: 0">Ografy</h1>
+					<h1>lets you discover your data</h1>
+					<p>Search and explore your data no matter where it is</p>
+					<p>Connect with your existing accounts and publish yourself around the world</p>
+					<p>Get more out of your favorite applications and services</p>
+					<p>See what you care about and in a brand new way</p>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
-
-<section class="padded">
-	<div class="lockwidth centered center">
-		<h1>Ografy gets services working together.</h1>
-		<p>Define custom streams and timelines.</p>
-		<p>Plot data as charts and on maps.</p>
-		<p>Filter and search by service, time, and location.</p>
-		<p>Your data can be re-streamed in a single place.</p>
-	</div>
-</section>
-
-<section class="bg-dark padded">
-	<div class="lockwidth centered center">
+	</section>
+</div>
+<div class="bgParent bg2">
+	<section class="lockwidth centered center padded bgwhite">
+		<h1>Get services working together</h1>
+		<p>Define custom streams across all of your information sources</p>
+		<p>Plot data as different types of charts</p>
+		<p>Create interactive timelines</p>
+		<p>Place your activity and favorite locations on maps</p>
+		<p>Filter and search by service, time, and location</p>
+	</section>
+</div>
+<div class="bgParent bg3">
+	<section class="lockwidth centered center padded bgblack">
 		<h1>Easily re-stream your data.</h1>
-		<p>You can track your activity and easily share cool stats.</p>
-		<p>It's easy to control what you collect and who can see it.</p>
-	</div>
-</section>
-
-<section class="padded">
-	<div class="lockwidth centered center">
+		<p>You can track your activity as you use the internet</p>
+		<p>It's easy to control what you collect and who can see it</p>
+		<p>Share useful and cool stats in any format you choose</p>
+		<p>Find the narrative in your life through data</p>
+		<p>You no longer have to scour multiple available applications to get all of the capabilities they want</p>
+		<p>We collect, index, and display your data with superior ease and accuracy</p>
+	</section>
+</div>
+<div class="bgParent bg4">
+	<section class="lockwidth centered center padded bgwhite">
 		<h1>What's next?</h1>
-		<p>Ografy was designed to be simple to use.</p>
-		<p>However, more advanced features are available for users who'd like to spend more time.</p>
-		<p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a>.</p>
-	</div>
-</section>
-
-<section class="bg-dark padded">
-	<div class="lockwidth centered center">
+		<p>Ografy was designed to be simple to use</p>
+		<p>However, more advanced features are available for users who'd like to spend more time</p>
+		<p>We are starting by supporting a core set of well loved services</p>
+		<p>And we have plans to support many more</p>
+		<p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a></p>
+		<p>When you are ready, sign up and start connecting your data</p>
+	</section>
+</div>
+<div class="bgParent bg5">
+	<section class="lockwidth centered center padded bgblack">
 		<h1>Connect with us!</h1>
-		<p>If you'd like to check in on some of our planned features and read about our values be sure to check out our <a href="/blog">blog</a>.</p>
-		<p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a>. We'd love to hear from you!</p>
-	</div>
-</section>
+		<p>Become our friend on social networks</p>
+		<div class="largeIconRow">
+			<div><a href="https://www.facebook.com/Ografy">
+				<i class="largeIcon icon-facebook"></i></a></div>
+			<div><a href="https://twitter.com/ografy">
+				<i class="largeIcon icon-twitter"></i></a></div>
+			<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
+				<i class="largeIcon icon-googleplus"></i></a></div>
+			<div><a href="https://www.linkedin.com/company/ografy">
+				<i class="largeIcon icon-linkedin"></i></a></div>
+		</div>
+		<p>If you'd like to check in on some of our planned features and read about our values be sure to check out our <a href="/blog">blog</a></p>
+		<p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a></p>
+		<p>We'd love to hear from you!</p>
+	</section>
+</div>
 {% endblock %}

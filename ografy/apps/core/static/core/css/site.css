@@ -240,8 +240,20 @@ input.full-width {
 .padded { padding: 2rem; }
 .errorlist { color: #0E9D58; }
 .bottom-space { margin-bottom: 3em; }
+.bgwhite {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+.bgblack {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
 
+.bgParent {
+    background-size:100% auto;
+}
 /* TABLES */
 div.table { display: table; }
 div.table > div { display: table-row; }
 div.table > div > div { display: table-cell; }
+
