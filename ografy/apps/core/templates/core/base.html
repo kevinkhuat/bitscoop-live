@@ -2,30 +2,30 @@
 {% load staticfiles %}
 
 {% block static %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
-<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}"/>
+	<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
 {% endblock %}
-
 
 {% block body %}
 <div id="main">
 	<header id="header" class="bg-offwhite border-bottom">
 		<div class="table lockwidth centered full-height">
-			<div class="middle">
+			<div class="middle head-text">
 				<div class="middle" style="width: 50px;">
 					<nav>
 						<ul>
-							<li><a id="logo" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a></li>
+							<li><a id="logo" href="{% url 'core_index' %}"><img
+									src="{% static 'assets/logo_240.png' %}" alt="Ografy"/></a></li>
 						</ul>
 					</nav>
 				</div>
-				<div class="left middle">
+				<div class="left middle left-head">
 					<nav>
 						<ul>
 							{% block navlinks %}
-							<li><a href="{% url 'documentation_index' %}">Get Started</a></li>
-							<li><a href="{% url 'blog_index' %}">Blog</a></li>
+								<li><a href="{% url 'documentation_index' %}">Get Started</a></li>
+								<li><a href="{% url 'blog_index' %}">Blog</a></li>
 							{% endblock %}
 						</ul>
 					</nav>
@@ -34,11 +34,11 @@
 					<nav>
 						<ul>
 							{% if request.user.is_authenticated %}
-							<li><a href="{% url 'user_my_profile' %}">{{ request.user.identifier }}</a></li>
-							<li><a href="{% url 'core_logout' %}">Logout</a></li>
+								<li><a href="{% url 'user_my_profile' %}">{{ request.user.identifier }}</a></li>
+								<li><a href="{% url 'core_logout' %}">Logout</a></li>
 							{% else %}
-							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
-							<li><a href="{% url 'core_login' %}">Log In</a></li>
+								<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
+								<li><a href="{% url 'core_login' %}">Log In</a></li>
 							{% endif %}
 						</ul>
 					</nav>
@@ -46,21 +46,27 @@
 			</div>
 		</div>
 	</header>
-
 	<div id="content" class="{{ content_class }}">
-	{% block content %}{% endblock %}
+		{% block content %}{% endblock %}
 	</div>
-
 	<div class="push"></div>
 </div>
 
 <footer id="footer" class="bg-offwhite border-top center">
-	<div class="table lockwidth centered full-height">
-		<div>
-			<div class="center middle">
-				&copy 2014 Ografy, LLC.<br/>
-				<a href="{% url 'core_contact' %}">Contact Us</a>
+	<div class="centered full-height">
+		<div class="footerRow center middle">
+			<div class="footerRowItem">&copy 2014 Ografy, LLC.</div>
+			<div class="footerRowItem">
+				<a href="{% url 'core_contact' %}">Contact Us </a>
 			</div>
+			<div><a href="https://www.facebook.com/Ografy">
+				<i class="smallIcon icon-facebook"></i></a></div>
+			<div><a href="https://twitter.com/ografy">
+				<i class="smallIcon icon-twitter"></i></a></div>
+			<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
+				<i class="smallIcon icon-googleplus"></i></a></div>
+			<div><a href="https://www.linkedin.com/company/ografy">
+				<i class="smallIcon icon-linkedin"></i></a></div>
 		</div>
 	</div>
 </footer>
