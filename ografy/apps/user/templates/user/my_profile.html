@@ -16,7 +16,7 @@
 	</p>
 
 	<p><b>Email:</b> {{ user.email }}</p>
-	<p><b>Handle:</b> {{ user.handle }}</p>
+	<p><b>Handle:</b> {{ user.handle|default_if_none:'' }}</p>
 	<p><b>First Name:</b> {{ user.first_name }}</p>
 	<p><b>Last Name:</b> {{ user.last_name }}</p>
 </section>
