@@ -3,115 +3,154 @@
 
 {% block content %}
 <section class="lockwidth centered">
-	<h1>Plan &amp; Outlook</h1>
+<h1>Plan &amp; Outlook</h1>
 
-	<h2>Ografy Engine</h2>
+<h2>Ografy Engine</h2>
 
-	<p>
-		At the core of all Ografy products is the Ografy Engine.
-		The Ografy Engine is based on a semantic data structure to leverage the advantages of semantic data representation.
-		The meta input API adds data sources to the semantically linked data structure.
-		The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
-	</p>
+<p>
+	At the core of all Ografy products is the Ografy Engine.
+	The Ografy Engine is based on a semantic data structure to leverage the advantages of semantic data
+	representation.
+	The meta input API adds data sources to the semantically linked data structure.
+	The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
+</p>
 
-	<p>
-		The Ografy Engine has a self-describing API to interact with the Engine’s data structure.
-		This self-describing API uses an OData-like format and is superior to W3C’s RTF, Microsoft’s OData, Google’s GData, and other existing self-describing semantic API formats.
-		The Ografy Engine is a unique software technology segmented into three workflow components.
-	</p>
+<p>
+	The Ografy Engine has a self-describing API to interact with the Engine’s data structure.
+	This self-describing API uses an OData-like format and is superior to W3C’s RTF, Microsoft’s OData, Google’s
+	GData, and other existing self-describing semantic API formats.
+	The Ografy Engine is a unique software technology segmented into three workflow components.
+</p>
 
-	<p>
-		The first component is the meta API, which can take in information from three distinct types of data sources.
-		First are the API connectors that link to existing product APIs, such as the Facebook, Twitter, Reddit, LinkedIn or Google.
-		The second type of data source comes from a suite of web and file scraping tools able to access data on sites like Mint.com, BankofAmerica.com, VerizionWireless.com, or MyTracks KML location files.
-		The third is our developer source API that allows for new data sources to be integrated into the meta API layer.
-		From these sources, the meta API layer normalizes the input data so it can be stored in the secure Ografy data structure.
-	</p>
+<p>
+	The first component is the meta API, which can take in information from three distinct types of data sources.
+	First are the API connectors that link to existing product APIs, such as the Facebook, Twitter, Reddit, LinkedIn
+	or Google.
+	The second type of data source comes from a suite of web and file scraping tools able to access data on sites
+	like Mint.com, BankofAmerica.com, VerizionWireless.com, or MyTracks KML location files.
+	The third is our developer source API that allows for new data sources to be integrated into the meta API layer.
+	From these sources, the meta API layer normalizes the input data so it can be stored in the secure Ografy data
+	structure.
+</p>
 
-	<p>
-		The middle component, the Ografy data structure, is a data collection that relates discrete entries by time and location.
-		This means that no matter what format a data point might take, all entries can be related because they all share the attributes of a date-time and a geolocation point.
-		This time and location information is typically sourced from information being passively collected from the user’s applications which generates data points.
-		The data structure is able to store all information collected by the meta API and then uses the data source to identify the type of information stored such as a message, a purchase, a web post, or geographic travel.
-	</p>
+<p>
+	The middle component, the Ografy data structure, is a data collection that relates discrete entries by time and
+	location.
+	This means that no matter what format a data point might take, all entries can be related because they all share
+	the attributes of a date-time and a geolocation point.
+	This time and location information is typically sourced from information being passively collected from the
+	user’s applications which generates data points.
+	The data structure is able to store all information collected by the meta API and then uses the data source to
+	identify the type of information stored such as a message, a purchase, a web post, or geographic travel.
+</p>
 
-	<p>
-		The self-described API is the third component of the Ografy Engine.
-		This externally-facing component has no web interface, but rather, it is a RESTful application interface that is accessed through a single login.
-		This self-described interface exposes the current schema of the internal Ografy data structure and restricts the login user visibility to only data the user has access rights to.
-		All Ografy products interface with the Ografy Engine using this self-described API.
-	</p>
+<p>
+	The self-described API is the third component of the Ografy Engine.
+	This externally-facing component has no web interface, but rather, it is a RESTful application interface that is
+	accessed through a single login.
+	This self-described interface exposes the current schema of the internal Ografy data structure and restricts the
+	login user visibility to only data the user has access rights to.
+	All Ografy products interface with the Ografy Engine using this self-described API.
+</p>
 
-	<p>
-		Ografy Infografic is a dynamic web based infographic builder and is the first product to be built on the Ografy Engine, which is intended as an exclusive consumer product.
-		This product is an easy-to-use workflow that takes in the user’s social network data, inputs it into the Ografy Engine, and then renders the output using a suite of template visualizations.
-	</p>
+<p>
+	Ografy Infografic is a dynamic web based infographic builder and is the first product to be built on the Ografy
+	Engine, which is intended as an exclusive consumer product.
+	This product is an easy-to-use workflow that takes in the user’s social network data, inputs it into the Ografy
+	Engine, and then renders the output using a suite of template visualizations.
+</p>
 
-	<p>
-		Users first create an account on Ografy.
-		We'll eventually be supporting OAuth sign ups with a user's existing Facebook, Twitter, LinkedIn or Google credentials as well.
-		Ografy then stores the core account information of full name and email address as the basis for the user profile.
-		The workflow then takes the user to the infographic creator page where they are able to connect to online accounts from the list of available sources.
-		The Ografy Engine quickly parses data from the source APIs, such as Facebook, when credential data becomes available for the user’s account.
-	</p>
+<p>
+	Users first create an account on Ografy.
+	We'll eventually be supporting OAuth sign ups with a user's existing Facebook, Twitter, LinkedIn or Google
+	credentials as well.
+	Ografy then stores the core account information of full name and email address as the basis for the user
+	profile.
+	The workflow then takes the user to the infographic creator page where they are able to connect to online
+	accounts from the list of available sources.
+	The Ografy Engine quickly parses data from the source APIs, such as Facebook, when credential data becomes
+	available for the user’s account.
+</p>
 
-	<p>
-		Pre-generated visualization, such as activity charts and location maps, populate the infographic palate when information from the data structure allows them to be generated.
-		There are two primary types of infographics shown on the palate.
-		One type relates to a single data source, such as only showing recent Twitter data, while the other relates to data aggregated from all sources, such as showing a top friends list across all social networks.
-		The user then selects the visualizations of their choosing and drags them to the grid canvas manipulating them to their satisfaction.
-	</p>
+<p>
+	Pre-generated visualization, such as activity charts and location maps, populate the infographic palate when
+	information from the data structure allows them to be generated.
+	There are two primary types of infographics shown on the palate.
+	One type relates to a single data source, such as only showing recent Twitter data, while the other relates to
+	data aggregated from all sources, such as showing a top friends list across all social networks.
+	The user then selects the visualizations of their choosing and drags them to the grid canvas manipulating them
+	to their satisfaction.
+</p>
 
- 	<p>
-		Once a user has completed populating a canvas with visualizations, they can click publish.
-		Then a list of share charms for sites such as Facebook and Twitter, a URL, and an “embed code snippet” appear in a dialog.
-		The user can then share a link to the published infographic or embed an iFrame on a webpage of their choosing, such as Tumblr.
-		When anyone views the link or embedded infographic, the Ografy Engine will update the data sources keeping the information in the infographic "live."
- 	</p>
+<p>
+	Once a user has completed populating a canvas with visualizations, they can click publish.
+	Then a list of share charms for sites such as Facebook and Twitter, a URL, and an “embed code snippet” appear in
+	a dialog.
+	The user can then share a link to the published infographic or embed an iFrame on a webpage of their choosing,
+	such as Tumblr.
+	When anyone views the link or embedded infographic, the Ografy Engine will update the data sources keeping the
+	information in the infographic "live."
+</p>
 
-	<p>
-		Users with Ografy+ account subscriptions have access to an extended set of features, such as expanded canvas size, custom color palettes, enhanced theming and customization, and private sharing.
-		The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as providing a compelling way to summarize and share a person’s life.
-	</p>
+<p>
+	Users with Ografy+ account subscriptions have access to an extended set of features, such as expanded canvas
+	size, custom color palettes, enhanced theming and customization, and private sharing.
+	The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as
+	providing a compelling way to summarize and share a person’s life.
+</p>
 
-	<h2>Future Products</h2>
+<h2>Future Products</h2>
 
-	<p>
-		This section is added to show the potential of the Ografy Engine and how the suite of Ografy products can be expanded to offer an array of tools for cutting-edge business applications.
-		These products will not be considered for development for the next 4 to 5 years, but are serve as an example of the future road map.
-	</p>
+<p>
+	This section is added to show the potential of the Ografy Engine and how the suite of Ografy products can be
+	expanded to offer an array of tools for cutting-edge business applications.
+	These products will not be considered for development for the next 4 to 5 years, but are serve as an example of
+	the future road map.
+</p>
 
-	<h3>Ografy Analytics</h3>
-	<p>
-		Ografy Analytics is an application that exposes the Ografy meta API layer through a powerful web-based query and report interface.
-		The tool allows for a user to find answers to questions in the form of queries from data in the Ografy Engine data structure.
-		Lists of questions, or queries, can be collected into reports.
-		This product is targeted to power consumer users and businesses who want real time responses to important questions answerable by their data.
-	</p>
+<h3>Ografy Analytics</h3>
 
-	<h3>Ografy Prediction</h3>
-	<p>
-		Ografy Prediction is an intelligent personal assistant developed on the Ografy Engine which uses a natural language user interface to answer questions, make recommendations, and perform actions by delegating requests to connected web services.
-		The Prediction suite will passively deliver information to the user that it predicts they will want based on their habits.
-	</p>
+<p>
+	Ografy Analytics is an application that exposes the Ografy meta API layer through a powerful web-based query and
+	report interface.
+	The tool allows for a user to find answers to questions in the form of queries from data in the Ografy Engine
+	data structure.
+	Lists of questions, or queries, can be collected into reports.
+	This product is targeted to power consumer users and businesses who want real time responses to important
+	questions answerable by their data.
+</p>
 
-	<h3>Ografy Network</h3>
-	<p>
-		Ografy Network is an extension of the Ografy Engine allowing for sharing, synchronization, and querying across multiple Ografy Engine instances.
-		This is done through multiple distributed data servers (DDS) and distributed data clients (DC) which is a powerful way to combine semantic datasets and realize the semantic web’s “web of data” vision.
-	</p>
+<h3>Ografy Prediction</h3>
 
-	<h3>Ografy Business Plan</h3>
+<p>
+	Ografy Prediction is an intelligent personal assistant developed on the Ografy Engine which uses a natural
+	language user interface to answer questions, make recommendations, and perform actions by delegating requests to
+	connected web services.
+	The Prediction suite will passively deliver information to the user that it predicts they will want based on
+	their habits.
+</p>
 
-	<p>
-		If you would like a copy of the Ografy Business Plan, or if you would like details on the topics below, please contact us
-		<a href="mailto:executives@ografy.io?Subject=Ografy%20Business%20Plan" target="_top">here</a>.
-	</p>
+<h3>Ografy Network</h3>
 
-	<p>
-		The following are a list of major topics in the business plan.
-	</p>
-	<ol>
+<p>
+	Ografy Network is an extension of the Ografy Engine allowing for sharing, synchronization, and querying across
+	multiple Ografy Engine instances.
+	This is done through multiple distributed data servers (DDS) and distributed data clients (DC) which is a
+	powerful way to combine semantic datasets and realize the semantic web’s “web of data” vision.
+</p>
+
+<h3>Ografy Business Plan</h3>
+
+<p>
+	If you would like a copy of the Ografy Business Plan, or if you would like details on the topics below, please
+	contact us
+	<a href="mailto:executives@ografy.io?Subject=Ografy%20Business%20Plan" target="_top">here</a>.
+</p>
+
+<p>
+	The following are a list of major topics in the business plan.
+</p>
+<ol>
 	<li>Executive Summary</li>
 	<li>Company Description
 		<ol>
@@ -272,8 +311,9 @@
 	</li>
 </ol>
 
-	<div class="center" style="margin-top:3em;">
-		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
-	</div>
+<div class="center" style="margin-top:3em;">
+	<h2>Continue to next section</h2>
+	<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
+</div>
 </section>
 {% endblock %}
