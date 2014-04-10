@@ -2,17 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
-<section class="lockwidth centered">
+<section class="lockwidth centered bottom-space">
+	<h2 class="center">Ografy Introduction Video</h2>
 
 	<div class="centered bottom-space" style="width: 1000px;">
 		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
 	</div>
+</section>
 
-	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
-	</div>
-
-	<h1>Simplify Your Information</h1>
+<section class="lockwidth centered backfill padded bottom-space">
+	<h2 class="center">Simplify Your Information with Ografy</h2>
 
 	<ul>
 		<li>Users settle for an inelegant, partial solution to the issue of fractured data
@@ -28,12 +27,10 @@
 			</ul>
 		</li>
 	</ul>
+</section>
 
-	<h1>Potential of the Ografy Engine</h1>
-
-	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" class="bottom-space" type="image/svg+xml">
-		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
-	</object>
+<section class="lockwidth centered backfill padded bottom-space">
+	<h2 class="center">Potential of the Ografy Engine</h2>
 
 	<ul>
 		<li>Our company is built on the Ografy Engine which
@@ -48,7 +45,13 @@
 		<li>We have flexibility to pivot if a particular product fails to capture enough market share</li>
 	</ul>
 
-	<h1>Our Target Market</h1>
+	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
+	</object>
+</section>
+
+<section class="lockwidth centered backfill padded bottom-space">
+	<h2 class="center">Our Target Market</h2>
 
 	<ul>
 		<li>Social media users who use a variety of applications and services on a daily basis</li>
@@ -60,47 +63,43 @@
 		</li>
 		<li>Initially serving a niche market with the potential to scale into a more widely adopted service</li>
 		<li>Estimated market saturation of 25M-35M users</li>
-		<li>MEstimated 10% conversion to paying customer</li>
+		<li>Estimated 10% conversion to paying customer</li>
 	</ul>
+</section>
 
-	<h1>Amenable to Partnership</h1>
+<section class="lockwidth centered backfill padded bottom-space">
+	<h2 class="center">Amenable to Partnership</h2>
 
 	<ul>
 		<li>Ografy offers a unique platform that inherently interfaces with many online services
 			<ul>
-				<li><h4>Social</h4>Facebook, Twitter, LinkedIn</li>
-				<li><h4>Financial</h4>Quicken, Mint</li>
-				<li><h4>Analytics</h4>Adobe Marketing, Google Analytics</li>
-				<li><h4>Wearables</h4>Android Wear, FitBit</li>
-				<li><h4>Media</h4>Hulu, Spotify</li>
+				<li><b>Social</b> - Facebook, Twitter, LinkedIn</li>
+				<li><b>Financial</b> - Quicken, Mint</li>
+				<li><b>Analytics</b> - Adobe Marketing, Google Analytics</li>
+				<li><b>Wearables</b> - Android Wear, FitBit</li>
+				<li><b>Media</b> - Hulu, Spotify</li>
 			</ul>
 		</li>
 		<li>Several companies provide solutions that could be valuable to Ografy customers
 			<ul>
-				<li><h4>Scraping services</h4>import.io, Kimono</li>
+				<li><b>Scraping services</b> - import.io, Kimono</li>
 				<li>Developer Driven APIs</li>
 			</ul>
 		</li>
 		<li>Applications Built On or Integrated with the Ografy Engine</li>
 	</ul>
+</section>
 
-	<h1>Company Vision</h1>
+<section class="lockwidth centered backfill padded bottom-space" style="position: relative;">
+	<h2 class="center">Company Vision</h2>
 
-	<div class="center" style="margin-top:3em;">
-		<h3>Search and explore your data no matter where it is</h3>
-	</div>
-
-	<object style="width: 75%; margin-right: auto; margin-left: auto; margin-bottom: 30px; display: block" data="{% static 'demo/img/product-timeline.svg' %}" type="image/svg+xml">
-		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
-	</object>
-
-	<ul>
-		<li><h4>Build initial consumer product</h4>
+	<ul style="position: absolute; top: 8em;">
+		<li><b>Build initial consumer product</b>
 			<ul>
 				<li>Infographic builder and data explorer</li>
 			</ul>
 		</li>
-		<li><h4>Expand with future products</h4>
+		<li><b>Expand with future products</b>
 			<ul>
 				<li>Analytics for businesses</li>
 				<li>Extensible API for developers</li>
@@ -110,15 +109,22 @@
 		</li>
 	</ul>
 
-	<h1>Ografy Business Plan & Investor Pitch Deck</h1>
+	<object style="margin-top: -3em;" data="{% static 'demo/img/product-timeline.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
+	</object>
+</section>
 
-	<p>
-		If you would like a copy of the Ografy Business Plan, Investor Pitch Deck, or would like details on related topics, please
-		contact us at <a href="mailto:executives@ografy.io?Subject=Investment%20Inquiry" target="_top">executives@ografy.io</a>.
-	</p>
+<section class="lockwidth centered bottom-space">
+	<h2 class="center">Product Demo Video</h2>
 
+	<div class="centered bottom-space" style="width: 1000px;">
+		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
+	</div>
+</section>
+
+<section class="lockwidth centered">
 	<div class="center" style="margin-top:3em;">
-		<h2>Continue to the Demo</h2>
+		<h2>Continue to the live demo</h2>
 		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
 	</div>
 </section>

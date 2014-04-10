@@ -28,18 +28,26 @@ def examples(request):
     })
 
 
+# @membership_required('Investors')
+# @login_required
+# def dashboard(request):
+#     return render(request, 'dashboard/dashboard.html', {
+#         'title': 'Ografy - Dashboard'
+#     })
+#
+#
+# @membership_required('Investors')
+# @login_required
+# def infographic(request):
+#     return render(request, 'demo/infographic.html')
+
+
 @membership_required('Investors')
 @login_required
-def dashboard(request):
-    return render(request, 'dashboard/dashboard.html', {
-        'title': 'Ografy - Dashboard'
+def resources(request):
+    return render(request, 'demo/resources.html', {
+        'title': 'Ografy - Resources'
     })
-
-
-@membership_required('Investors')
-@login_required
-def infographic(request):
-    return render(request, 'demo/infographic.html')
 
 
 def map(request):
