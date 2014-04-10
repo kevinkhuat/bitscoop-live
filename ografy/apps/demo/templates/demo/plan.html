@@ -5,83 +5,7 @@
 <section class="lockwidth centered">
 	<h1>Plan &amp; Outlook</h1>
 
-	<p>
-		The Ografy Engine has a self-describing API to interact with the Engine’s data structure.
-		This self-describing API uses an OData-like format and is superior to W3C’s RTF, Microsoft’s OData, Google’s GData, and other existing self-describing semantic API formats.
-		The Ografy Engine is a unique software technology segmented into three workflow components.
-	</p>
-
-	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
-		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
-	</object>
-
-	<p>
-		The first component is the meta API, which can take in information from three distinct types of data sources.
-		First are the API connectors that link to existing product APIs, such as the Facebook, Twitter, Reddit, LinkedIn or Google.
-		The second type of data source comes from a suite of web and file scraping tools able to access data on sites like Mint.com, BankofAmerica.com, VerizionWireless.com, or MyTracks KML location files.
-		The third is our developer source API that allows for new data sources to be integrated into the meta API layer.
-		From these sources, the meta API layer normalizes the input data so it can be stored in the secure Ografy data structure.
-	</p>
-
-	<p>
-		The middle component, the Ografy data structure, is a data collection that relates discrete entries by time and location.
-		This means that no matter what format a data point might take, all entries can be related because they all share the attributes of a date-time and a geolocation point.
-		This time and location information is typically sourced from information being passively collected from the user’s applications which generates data points.
-		The data structure is able to store all information collected by the meta API and then uses the data source to identify the type of information stored such as a message, a purchase, a web post, or geographic travel.
-	</p>
-
-	<p>
-		The self-described API is the third component of the Ografy Engine.
-		This externally-facing component has no web interface, but rather, it is a RESTful application interface that is accessed through a single login.
-		This self-described interface exposes the current schema of the internal Ografy data structure and restricts the login user visibility to only data the user has access rights to.
-		All Ografy products interface with the Ografy Engine using this self-described API.
-	</p>
-
-	<h2>Future Products</h2>
-
-	<p>
-		This section is added to show the potential of the Ografy Engine and how the suite of Ografy products can be expanded to offer an array of tools for cutting-edge business applications.
-		These products will not be considered for development for the next 4 to 5 years, but are serve as an example of the future road map.
-	</p>
-
-	<object style="width: 75%; margin-right: auto; margin-left: auto; margin-bottom: 30px; display: block" data="{% static 'demo/img/product-timeline.svg' %}" type="image/svg+xml">
-		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
-	</object>
-
-	<h3>Ografy Analytics</h3>
-	<p>
-		Ografy Analytics is an application that exposes the Ografy meta API layer through a powerful web-based query and report interface.
-		The tool allows for a user to find answers to questions in the form of queries from data in the Ografy Engine data structure.
-		Lists of questions, or queries, can be collected into reports.
-		This product is targeted to power consumer users and businesses who want real time responses to important questions answerable by their data.
-	</p>
-
-	<h3>Ografy Prediction</h3>
-	<p>
-		Ografy Prediction is an intelligent personal assistant developed on the Ografy Engine which uses a natural language user interface to answer questions, make recommendations, and perform actions by delegating requests to connected web services.
-		The Prediction suite will passively deliver information to the user that it predicts they will want based on their habits.
-	</p>
-
-	<h3>Ografy Network</h3>
-	<p>
-		Ografy Network is an extension of the Ografy Engine allowing for sharing, synchronization, and querying across multiple Ografy Engine instances.
-		This is done through multiple distributed data servers (DDS) and distributed data clients (DC) which is a powerful way to combine semantic datasets and realize the semantic web’s “web of data” vision.
-	</p>
-
-	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
-	</div>
-
-{#	<iframe src="https://docs.google.com/a/ografy.io/presentation/d/1fgLqwBd7B6W3noTDQNlaZ05fCZTTucsvIu9-kGV8gWo/embed?start=true&loop=true&delayms=15000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>#}
-
-	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="800" src="{% static 'demo/img/Ografy_Investor_Deck.pdf' %}" frameborder="0" allowfullscreen></iframe>
-	</div>
-
-	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
-	</div>
-	<h1>Ografy Engine</h1>
+	<h2>Ografy Engine</h2>
 
 	<p>
 		At the core of all Ografy products is the Ografy Engine.
@@ -95,10 +19,6 @@
 		This self-describing API uses an OData-like format and is superior to W3C’s RTF, Microsoft’s OData, Google’s GData, and other existing self-describing semantic API formats.
 		The Ografy Engine is a unique software technology segmented into three workflow components.
 	</p>
-
-	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
-		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
-	</object>
 
 	<p>
 		The first component is the meta API, which can take in information from three distinct types of data sources.
@@ -154,13 +74,203 @@
 		The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as providing a compelling way to summarize and share a person’s life.
 	</p>
 
-
 	<h2>Future Products</h2>
 
 	<p>
 		This section is added to show the potential of the Ografy Engine and how the suite of Ografy products can be expanded to offer an array of tools for cutting-edge business applications.
 		These products will not be considered for development for the next 4 to 5 years, but are serve as an example of the future road map.
 	</p>
+
+	<h3>Ografy Analytics</h3>
+	<p>
+		Ografy Analytics is an application that exposes the Ografy meta API layer through a powerful web-based query and report interface.
+		The tool allows for a user to find answers to questions in the form of queries from data in the Ografy Engine data structure.
+		Lists of questions, or queries, can be collected into reports.
+		This product is targeted to power consumer users and businesses who want real time responses to important questions answerable by their data.
+	</p>
+
+	<h3>Ografy Prediction</h3>
+	<p>
+		Ografy Prediction is an intelligent personal assistant developed on the Ografy Engine which uses a natural language user interface to answer questions, make recommendations, and perform actions by delegating requests to connected web services.
+		The Prediction suite will passively deliver information to the user that it predicts they will want based on their habits.
+	</p>
+
+	<h3>Ografy Network</h3>
+	<p>
+		Ografy Network is an extension of the Ografy Engine allowing for sharing, synchronization, and querying across multiple Ografy Engine instances.
+		This is done through multiple distributed data servers (DDS) and distributed data clients (DC) which is a powerful way to combine semantic datasets and realize the semantic web’s “web of data” vision.
+	</p>
+
+	<h3>Ografy Business Plan</h3>
+
+	<p>
+		If you would like a copy of the Ografy Business Plan, or if you would like details on the topics below, please contact us
+		<a href="mailto:executives@ografy.io?Subject=Ografy%20Business%20Plan" target="_top">here</a>.
+	</p>
+
+	<p>
+		The following are a list of major topics in the business plan.
+	</p>
+	<ol>
+	<li>Executive Summary</li>
+	<li>Company Description
+		<ol>
+			<li>Solutions and Release Plans</li>
+			<li>Product Advantages</li>
+			<li>Target Market</li>
+			<li>Company Advantages</li>
+		</ol>
+	</li>
+	<li>Market Analysis
+		<ol>
+			<li>Semantic Data and the Current Web</li>
+			<li>Decade IT Innovation Cycle</li>
+			<li>The Data Overload Problem</li>
+			<li>Target Market
+				<ol>
+					<li>Consumer Market</li>
+					<li>Business Market</li>
+					<li>Direct and Indirect Competitors</li>
+				</ol>
+			</li>
+			<li>Pricing Tier</li>
+			<li>Competitive Analysis of Companies and Product Lines</li>
+			<li>Risks and Restrictions</li>
+		</ol>
+	</li>
+	<li>Product Line
+		<ol>
+			<li>Technologies
+				<ol>
+					<li>Ografy Engine</li>
+					<li>Ografy Visual Nexus Examples</li>
+				</ol>
+			</li>
+			<li>Current Product Line
+				<ol>
+					<li>Ografy Infografic</li>
+					<li>Ografy Analytics</li>
+				</ol>
+			</li>
+			<li>Future Products
+				<ol>
+					<li>Ografy Prediction</li>
+					<li>Ografy Network</li>
+				</ol>
+			</li>
+			<li>Intellectual Property</li>
+			<li>Legal Ramifications</li>
+			<li>Research and Development Activities</li>
+		</ol>
+	</li>
+	<li>Organization and Management
+		<ol>
+			<li>Organization
+				<ol>
+					<li>Business Functions</li>
+					<li>Development Functions</li>
+				</ol>
+			</li>
+			<li>Incorporation, Management and Members
+				<ol>
+					<li>William David Collins-Broza</li>
+					<li>Steven James Berry</li>
+				</ol>
+			</li>
+			<li>Supporting Staff</li>
+			<li>Advisors</li>
+		</ol>
+	</li>
+	<li>Marketing, Sales, and Engagement
+		<ol>
+			<li>Marketing Strategy
+				<ol>
+					<li>Customer Engagement</li>
+					<li>Contact Database</li>
+					<li>Social Networks Engagement</li>
+					<li>User Groups</li>
+					<li>Target Power Brokers
+						<ol>
+							<li>Example Pitch to Bloggers and Journalists</li>
+						</ol>
+					</li>
+					<li>Marketing Budget</li>
+				</ol>
+			</li>
+			<li>Sales
+				<ol>
+					<li>Consumer Product: Ografy Infografic</li>
+					<li>Business Product: Ografy Analytics and Ografy Prediction</li>
+					<li>Changing Sales Over Time</li>
+					<li>Customer Retention</li>
+					<li>Contracts</li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+	<li>Financial Status
+		<ol>
+			<li>Budget</li>
+			<li>Historical Financial Data</li>
+			<li>Estimated Financial Data of Competitors for Projections Comparison</li>
+		</ol>
+	</li>
+	<li>Financial Projections and Funding Request
+		<ol>
+			<li>Summarized Timeline for Ografy Infografic
+				<ol>
+					<li>Launch Timeline Analysis</li>
+				</ol>
+			</li>
+			<li>Prospective Financial Data</li>
+			<li>Income Projections
+				<ol>
+					<li>Targets Schedule of Gross Margins</li>
+				</ol>
+			</li>
+			<li>Estimated Income Benchmarks</li>
+			<li>Funding Request
+				<ol>
+					<li>Funding Requirements</li>
+					<li>Funding Schedule</li>
+				</ol>
+			</li>
+			<li>Strategic Financial Plans</li>
+		</ol>
+	</li>
+	<li>Appendix
+		<ol>
+			<li>Financial Projections and Funding Schedule
+				<ol>
+					<li>Ografy Financial Projections and Funding Schedule</li>
+					<li>Alternative Financial Projections and Funding Schedules</li>
+				</ol>
+			</li>
+			<li>Chart of Accounts</li>
+			<li>Balance Sheet</li>
+			<li>Statement of Cash Flow</li>
+			<li>Income and Expense Report</li>
+			<li>Product Pictures</li>
+			<li>Resumes
+				<ol>
+					<li>Steven Berry</li>
+					<li>William Broza</li>
+				</ol>
+			</li>
+			<li>Credit History
+				<ol>
+					<li>Personal
+						<ol>
+							<li>Steven Berry</li>
+							<li>William Broza</li>
+						</ol>
+					</li>
+					<li>Business</li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+</ol>
 
 	<div class="center" style="margin-top:3em;">
 		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
