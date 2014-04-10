@@ -22,14 +22,6 @@ def info(request):
 
 @membership_required('Investors')
 @login_required
-def plan(request):
-    return render(request, 'demo/plan.html', {
-        'title': 'Ografy - Plan'
-    })
-
-
-@membership_required('Investors')
-@login_required
 def examples(request):
     return render(request, 'demo/examples.html', {
         'title': 'Ografy - Examples'

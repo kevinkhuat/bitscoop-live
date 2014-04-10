@@ -1,56 +1,125 @@
 {% extends 'demo/dispatcher.html' %}
+{% load staticfiles %}
 
 {% block content %}
 <section class="lockwidth centered">
 
 	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="563"src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
+		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
 	</div>
 
-	<h1>Detailed Info</h1>
+	<div class="centered bottom-space" style="width: 1000px;">
+		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
+	</div>
+
+	<h1>Simplify Your Information</h1>
+
+	<ul>
+		<li>Users settle for an inelegant, partial solution to the issue of fractured data
+			<ul>
+				<li>Information is stored in a variety of online systems</li>
+				<li>Users have to scour each application they use if they want to get a coherent picture of their activity</li>
+			</ul>
+		</li>
+		<li>Ografy is based on a data correlation engine that gets disparate services working together
+			<ul>
+				<li>Unify and index your data</li>
+				<li>Make your information easily searchable and explorable</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h1>Potential of the Ografy Engine</h1>
+
+	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" class="bottom-space" type="image/svg+xml">
+		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
+	</object>
+
+	<ul>
+		<li>Our company is built on the Ografy Engine which
+			<ul>
+				<li>Correlates data across systems</li>
+				<li>Indexes and updates in real time</li>
+				<li>Can be queried like a database</li>
+				<li>Keeps our products adaptable</li>
+			</ul>
+		</li>
+		<li>Our core technology has the potential to power products that appeal to consumers, developers, and businesses</li>
+		<li>We have flexibility to pivot if a particular product fails to capture enough market share</li>
+	</ul>
+
+	<h1>Our Target Market</h1>
+
+	<ul>
+		<li>Social media users who use a variety of applications and services on a daily basis</li>
+		<li>Eventual progression to
+			<ul>
+				<li>Business and enterprise markets</li>
+				<li>Opening up our API extensibility to developers</li>
+			</ul>
+		</li>
+		<li>Initially serving a niche market with the potential to scale into a more widely adopted service</li>
+		<li>Estimated market saturation of 25M-35M users</li>
+		<li>MEstimated 10% conversion to paying customer</li>
+	</ul>
+
+	<h1>Amenable to Partnership</h1>
+
+	<ul>
+		<li>Ografy offers a unique platform that inherently interfaces with many online services
+			<ul>
+				<li><h4>Social</h4>Facebook, Twitter, LinkedIn</li>
+				<li><h4>Financial</h4>Quicken, Mint</li>
+				<li><h4>Analytics</h4>Adobe Marketing, Google Analytics</li>
+				<li><h4>Wearables</h4>Android Wear, FitBit</li>
+				<li><h4>Media</h4>Hulu, Spotify</li>
+			</ul>
+		</li>
+		<li>Several companies provide solutions that could be valuable to Ografy customers
+			<ul>
+				<li><h4>Scraping services</h4>import.io, Kimono</li>
+				<li>Developer Driven APIs</li>
+			</ul>
+		</li>
+		<li>Applications Built On or Integrated with the Ografy Engine</li>
+	</ul>
+
+	<h1>Company Vision</h1>
+
+	<div class="center" style="margin-top:3em;">
+		<h3>Search and explore your data no matter where it is</h3>
+	</div>
+
+	<object style="width: 75%; margin-right: auto; margin-left: auto; margin-bottom: 30px; display: block" data="{% static 'demo/img/product-timeline.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
+	</object>
+
+	<ul>
+		<li><h4>Build initial consumer product</h4>
+			<ul>
+				<li>Infographic builder and data explorer</li>
+			</ul>
+		</li>
+		<li><h4>Expand with future products</h4>
+			<ul>
+				<li>Analytics for businesses</li>
+				<li>Extensible API for developers</li>
+				<li>Trend prediction</li>
+				<li>Cross-user network and sharing</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h1>Ografy Business Plan & Investor Pitch Deck</h1>
 
 	<p>
-		At the core of all Ografy products is the Ografy Engine.
-		The Ografy Engine is based on a semantic data structure to leverage the advantages of semantic data representation.
-		The meta input API adds data sources to the semantically linked data structure.
-		The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
-	</p>
-
-	<p>
-		Ografy Infografic is a dynamic web based infographic builder and is the first product to be built on the Ografy Engine, which is intended as an exclusive consumer product.
-		This product is an easy-to-use workflow that takes in the user’s social network data, inputs it into the Ografy Engine, and then renders the output using a suite of template visualizations.
-	</p>
-
-	<p>
-		Users first create an account on Ografy.
-		We'll eventually be supporting OAuth sign ups with a user's existing Facebook, Twitter, LinkedIn or Google credentials as well.
-		Ografy then stores the core account information of full name and email address as the basis for the user profile.
-		The workflow then takes the user to the infographic creator page where they are able to connect to online accounts from the list of available sources.
-		The Ografy Engine quickly parses data from the source APIs, such as Facebook, when credential data becomes available for the user’s account.
-	</p>
-
-	<p>
-		Pre-generated visualization, such as activity charts and location maps, populate the infographic palate when information from the data structure allows them to be generated.
-		There are two primary types of infographics shown on the palate.
-		One type relates to a single data source, such as only showing recent Twitter data, while the other relates to data aggregated from all sources, such as showing a top friends list across all social networks.
-		The user then selects the visualizations of their choosing and drags them to the grid canvas manipulating them to their satisfaction.
-	</p>
-
- 	<p>
-		Once a user has completed populating a canvas with visualizations, they can click publish.
-		Then a list of share charms for sites such as Facebook and Twitter, a URL, and an “embed code snippet” appear in a dialog.
-		The user can then share a link to the published infographic or embed an iFrame on a webpage of their choosing, such as Tumblr.
-		When anyone views the link or embedded infographic, the Ografy Engine will update the data sources keeping the information in the infographic "live."
- 	</p>
-
-	<p>
-		Users with Ografy+ account subscriptions have access to an extended set of features, such as expanded canvas size, custom color palettes, enhanced theming and customization, and private sharing.
-		The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as providing a compelling way to summarize and share a person’s life.
+		If you would like a copy of the Ografy Business Plan, Investor Pitch Deck, or would like details on related topics, please
+		contact us at <a href="mailto:executives@ografy.io?Subject=Investment%20Inquiry" target="_top">executives@ografy.io</a>.
 	</p>
 
 	<div class="center" style="margin-top:3em;">
-		<h2>Continue to next section</h2>
-		<a class="ui button positive" href="{% url 'demo_plan' %}">Development Plan</a>
+		<h2>Continue to the Demo</h2>
+		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
 	</div>
 </section>
 {% endblock %}
