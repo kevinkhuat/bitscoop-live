@@ -1,13 +1,23 @@
 {% extends 'demo/dispatcher.html' %}
+{% load staticfiles %}
 
 {% block content %}
 <section class="lockwidth centered">
 
 	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="563"src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
+		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
 	</div>
 
-	<h1>Detailed Info</h1>
+{#	<iframe src="https://docs.google.com/a/ografy.io/presentation/d/1fgLqwBd7B6W3noTDQNlaZ05fCZTTucsvIu9-kGV8gWo/embed?start=true&loop=true&delayms=15000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>#}
+
+	<div class="centered bottom-space" style="width: 1000px;">
+		<iframe width="1000" class="backfill" height="800" src="{% static 'demo/img/Ografy_Investor_Deck.pdf' %}" frameborder="0" allowfullscreen></iframe>
+	</div>
+
+	<div class="centered bottom-space" style="width: 1000px;">
+		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
+	</div>
+	<h1>Ografy Engine</h1>
 
 	<p>
 		At the core of all Ografy products is the Ografy Engine.
@@ -16,41 +26,17 @@
 		The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
 	</p>
 
-	<p>
-		Ografy Infografic is a dynamic web based infographic builder and is the first product to be built on the Ografy Engine, which is intended as an exclusive consumer product.
-		This product is an easy-to-use workflow that takes in the user’s social network data, inputs it into the Ografy Engine, and then renders the output using a suite of template visualizations.
-	</p>
-
-	<p>
-		Users first create an account on Ografy.
-		We'll eventually be supporting OAuth sign ups with a user's existing Facebook, Twitter, LinkedIn or Google credentials as well.
-		Ografy then stores the core account information of full name and email address as the basis for the user profile.
-		The workflow then takes the user to the infographic creator page where they are able to connect to online accounts from the list of available sources.
-		The Ografy Engine quickly parses data from the source APIs, such as Facebook, when credential data becomes available for the user’s account.
-	</p>
-
-	<p>
-		Pre-generated visualization, such as activity charts and location maps, populate the infographic palate when information from the data structure allows them to be generated.
-		There are two primary types of infographics shown on the palate.
-		One type relates to a single data source, such as only showing recent Twitter data, while the other relates to data aggregated from all sources, such as showing a top friends list across all social networks.
-		The user then selects the visualizations of their choosing and drags them to the grid canvas manipulating them to their satisfaction.
-	</p>
-
- 	<p>
-		Once a user has completed populating a canvas with visualizations, they can click publish.
-		Then a list of share charms for sites such as Facebook and Twitter, a URL, and an “embed code snippet” appear in a dialog.
-		The user can then share a link to the published infographic or embed an iFrame on a webpage of their choosing, such as Tumblr.
-		When anyone views the link or embedded infographic, the Ografy Engine will update the data sources keeping the information in the infographic "live."
- 	</p>
-
-	<p>
-		Users with Ografy+ account subscriptions have access to an extended set of features, such as expanded canvas size, custom color palettes, enhanced theming and customization, and private sharing.
-		The Ografy Infografic Builder offers a unique viewpoint into a user’s social network activity, as well as providing a compelling way to summarize and share a person’s life.
-	</p>
+	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
+		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
+	</object>
 
 	<div class="center" style="margin-top:3em;">
 		<h2>Continue to next section</h2>
-		<a class="ui button positive" href="{% url 'demo_plan' %}">Development Plan</a>
+		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
+	</div>
+	<div class="center" style="margin-top:3em;">
+		<h2>If you would like more information</h2>
+		<a class="ui button positive" href="{% url 'demo_plan' %}">More Details</a>
 	</div>
 </section>
 {% endblock %}
