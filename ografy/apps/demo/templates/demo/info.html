@@ -8,35 +8,114 @@
 		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/AyKu920Tvu8" frameborder="0" allowfullscreen></iframe>
 	</div>
 
-{#	<iframe src="https://docs.google.com/a/ografy.io/presentation/d/1fgLqwBd7B6W3noTDQNlaZ05fCZTTucsvIu9-kGV8gWo/embed?start=true&loop=true&delayms=15000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>#}
-
-	<div class="centered bottom-space" style="width: 1000px;">
-		<iframe width="1000" class="backfill" height="800" src="{% static 'demo/img/Ografy_Investor_Deck.pdf' %}" frameborder="0" allowfullscreen></iframe>
-	</div>
-
 	<div class="centered bottom-space" style="width: 1000px;">
 		<iframe width="1000" class="backfill" height="563" src="//www.youtube-nocookie.com/embed/TdRyXom4wcE" frameborder="0" allowfullscreen></iframe>
 	</div>
-	<h1>Ografy Engine</h1>
 
-	<p>
-		At the core of all Ografy products is the Ografy Engine.
-		The Ografy Engine is based on a semantic data structure to leverage the advantages of semantic data representation.
-		The meta input API adds data sources to the semantically linked data structure.
-		The Ografy Engine delivers on the promise of semantic data with no direct effort from the user.
-	</p>
+	<h1>Simplify Your Information</h1>
 
-	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" type="image/svg+xml">
+	<ul>
+		<li>Users settle for an inelegant, partial solution to the issue of fractured data
+			<ul>
+				<li>Information is stored in a variety of online systems</li>
+				<li>Users have to scour each application they use if they want to get a coherent picture of their activity</li>
+			</ul>
+		</li>
+		<li>Ografy is based on a data correlation engine that gets disparate services working together
+			<ul>
+				<li>Unify and index your data</li>
+				<li>Make your information easily searchable and explorable</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h1>Potential of the Ografy Engine</h1>
+
+	<object data="{% static 'demo/img/ografy-engine-workflow.svg' %}" class="bottom-space" type="image/svg+xml">
 		<img src="{% static 'demo/img/ografy-engine-workflow.svg' %}"/>
 	</object>
 
+	<ul>
+		<li>Our company is built on the Ografy Engine which
+			<ul>
+				<li>Correlates data across systems</li>
+				<li>Indexes and updates in real time</li>
+				<li>Can be queried like a database</li>
+				<li>Keeps our products adaptable</li>
+			</ul>
+		</li>
+		<li>Our core technology has the potential to power products that appeal to consumers, developers, and businesses</li>
+		<li>We have flexibility to pivot if a particular product fails to capture enough market share</li>
+	</ul>
+
+	<h1>Our Target Market</h1>
+
+	<ul>
+		<li>Social media users who use a variety of applications and services on a daily basis</li>
+		<li>Eventual progression to
+			<ul>
+				<li>Business and enterprise markets</li>
+				<li>Opening up our API extensibility to developers</li>
+			</ul>
+		</li>
+		<li>Initially serving a niche market with the potential to scale into a more widely adopted service</li>
+		<li>Estimated market saturation of 25M-35M users</li>
+		<li>MEstimated 10% conversion to paying customer</li>
+	</ul>
+
+	<h1>Amenable to Partnership</h1>
+
+	<ul>
+		<li>Ografy offers a unique platform that inherently interfaces with many online services
+			<ul>
+				<li><h4>Social</h4>Facebook, Twitter, LinkedIn</li>
+				<li><h4>Financial</h4>Quicken, Mint</li>
+				<li><h4>Analytics</h4>Adobe Marketing, Google Analytics</li>
+				<li><h4>Wearables</h4>Android Wear, FitBit</li>
+				<li><h4>Media</h4>Hulu, Spotify</li>
+			</ul>
+		</li>
+		<li>Several companies provide solutions that could be valuable to Ografy customers
+			<ul>
+				<li><h4>Scraping services</h4>import.io, Kimono</li>
+				<li>Developer Driven APIs</li>
+			</ul>
+		</li>
+		<li>Applications Built On or Integrated with the Ografy Engine</li>
+	</ul>
+
+	<h1>Company Vision</h1>
+
+	<object data="{% static 'demo/img/product-timeline.svg' %}" style="width: 500px" class="bottom-space" type="image/svg+xml">
+		<img src="{% static 'demo/img/product-timeline.svg' %}"/>
+	</object>
+
+	<h3>Search and explore your data no matter where it is</h3>
+
+	<ul>
+		<li>Our company is built on the Ografy Engine which
+			<ul>
+				<li>Correlates data across systems</li>
+				<li>Indexes and updates in real time</li>
+				<li>Can be queried like a database</li>
+				<li>Keeps our products adaptable</li>
+			</ul>
+		</li>
+		<li>Our core technology has the potential to power products that appeal to consumers, developers, and businesses</li>
+		<li>We have flexibility to pivot if a particular product fails to capture enough market share</li>
+	</ul>
+
+
+	<h1>Ografy Business Plan & Investor Pitch Deck</h1>
+
+	<p>
+		If you would like a copy of the Ografy Business Plan, Investor Pitch Deck, or would like details on related topics, please
+		contact us at <a href="mailto:executives@ografy.io?Subject=Investment%20Inquiry" target="_top">executives@ografy.io</a>.
+	</p>
+
 	<div class="center" style="margin-top:3em;">
-		<h2>Continue to next section</h2>
+		<h2>Continue to the Demo</h2>
 		<a class="ui button positive" href="{% url 'demo_examples' %}">Demo</a>
-	</div>
-	<div class="center" style="margin-top:3em;">
-		<h2>If you would like more information</h2>
-		<a class="ui button positive" href="{% url 'demo_plan' %}">More Details</a>
 	</div>
 </section>
 {% endblock %}
