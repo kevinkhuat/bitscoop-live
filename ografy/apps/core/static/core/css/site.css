@@ -240,6 +240,7 @@ input.full-width {
 	border: 1px solid #7A7A7A;
 	box-shadow: 0 0 10px -3px #3A3A3A;
 }
+
 .rounded { border-radius: 2px; }
 .padded { padding: 2rem; }
 .errorlist { color: #0E9D58; }
