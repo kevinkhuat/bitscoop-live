@@ -31,10 +31,6 @@ Thumbs.db
 #################
 build
 
-# setup.py folders #
-####################
-django_tastydata.egg-info
-
 # Databases #
 #############
 *.db
