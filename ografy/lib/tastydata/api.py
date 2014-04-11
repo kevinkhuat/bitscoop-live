@@ -7,7 +7,7 @@ import tastypie.fields
 from tastypie.api import Api as BaseApi
 from tastypie.utils.mime import determine_format, build_content_type
 
-from tastydata.serializers import Serializer
+from ografy.lib.tastydata.serializers import Serializer
 
 
 class Api(BaseApi):

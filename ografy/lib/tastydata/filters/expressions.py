@@ -7,7 +7,7 @@ from django.db.models.constants import LOOKUP_SEP
 from tastypie.exceptions import InvalidFilterError
 import six
 
-import tastydata.util as util
+import ografy.lib.tastydata.util as util
 
 
 # OData Filter Spec
