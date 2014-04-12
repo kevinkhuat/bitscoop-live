@@ -1,0 +1,945 @@
+{
+	"Steam": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		},
+		"FriendsList": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			],
+			"Associations": [
+				{
+					"id": 1,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 2,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 3,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 2,
+					"nodeBId": 3,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				}
+			]
+		},
+		"Achivements": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"GamesPlayed": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"GamesOwned": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			]
+		}
+	},
+	"Twitter": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		},
+		"Timeline": {
+			"Messages": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"ReTweets": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"Mentions": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"FriendsList": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			],
+			"Associations": [
+				{
+					"id": 1,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 2,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 3,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 2,
+					"nodeBId": 3,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				}
+			]
+		}
+	},
+	"Google Docs": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		}
+	},
+	"Linked-In": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		},
+		"Posts": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"Messages": [
+			{
+				"id": 1,
+				"name": "50 Points!",
+				"location": "38.889202100000006,-77.0859875",
+				"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"blobId": 1,
+				"blob": {
+					"id": 1,
+					"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"sourceId": 2
+				}
+			},
+			{
+				"id": 2,
+				"name": "150 Points!",
+				"location": "138.889202100000006,-77.0859875",
+				"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"blobId": 1,
+				"blob": {
+					"id": 1,
+					"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"sourceId": 2
+				}
+			}
+		],
+		"FriendsList": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			],
+			"Associations": [
+				{
+					"id": 1,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 2,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 3,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 2,
+					"nodeBId": 3,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				}
+			]
+		}
+	},
+	"Mint": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		},
+		"Transactions": [
+			{
+				"id": 1,
+				"name": "50 Points!",
+				"location": "38.889202100000006,-77.0859875",
+				"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"blobId": 1,
+				"blob": {
+					"id": 1,
+					"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"sourceId": 2
+				}
+			},
+			{
+				"id": 2,
+				"name": "150 Points!",
+				"location": "138.889202100000006,-77.0859875",
+				"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"blobId": 1,
+				"blob": {
+					"id": 1,
+					"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"sourceId": 2
+				}
+			}
+		]
+	},
+	"Facebook": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		},
+		"Posts": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"FriendsList": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			],
+			"Associations": [
+				{
+					"id": 1,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 2,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 3,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 2,
+					"nodeBId": 3,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				}
+			]
+		}
+	},
+	"Reddit": {
+		"FriendsList": {
+			"Entities": [
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"name": "testName",
+					"entityType": 1,
+					"lastLocation": "38.889202100000006,-77.0859875",
+					"blobId": 1,
+					"blob": "testBlob",
+					"entityTypeId": 1,
+					"EntityType": {
+						"id": 2,
+						"start": "38.889202100000006,-77.0859875",
+						"end": "38.889202100000006,-77.0859875",
+						"name": "Human"
+					}
+				}
+			],
+			"Associations": [
+				{
+					"id": 1,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 2,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 2,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 1,
+					"nodeBId": 3,
+					"associationTypeId": 1,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				},
+				{
+					"id": 3,
+					"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"nodeAId": 2,
+					"nodeBId": 3,
+					"associationType": {
+						"id": 1,
+						"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"name": "Friendship"
+					}
+				}
+			]
+		},
+		"Comments": {
+			"Messages": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"Posts": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"Likes": {
+			"Events": [
+				{
+					"id": 1,
+					"name": "50 Points!",
+					"location": "38.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				},
+				{
+					"id": 2,
+					"name": "150 Points!",
+					"location": "138.889202100000006,-77.0859875",
+					"timeStamp": "Thu, 23 Jan 2014 09:18:49 GMT",
+					"blobId": 1,
+					"blob": {
+						"id": 1,
+						"data": "Thu, 23 Jan 2014 09:18:49 GMT",
+						"sourceId": 2
+					}
+				}
+			]
+		},
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		}
+	},
+	"Aggregate": {
+		"Account": {
+			"Entity": {
+				"id": 1,
+				"start": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"end": "Thu, 23 Jan 2014 09:18:49 GMT",
+				"name": "testName",
+				"entityType": 1,
+				"lastLocation": "38.889202100000006,-77.0859875",
+				"blobId": "1",
+				"blob": "",
+				"entityTypeId": 1,
+				"EntityType": {
+					"id": 1,
+					"start": "38.889202100000006,-77.0859875",
+					"end": "38.889202100000006,-77.0859875",
+					"name": "Online Service"
+				}
+			}
+		}
+	}
+}

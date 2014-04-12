@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     #'tastypie',
     #'tastydata',
 
+    'ografy.apps.account',
     #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',

@@ -1,0 +1,48 @@
+{
+	"response": {
+		"total_count": 5,
+		"games": [
+			{
+				"appid": 213670,
+				"name": "South Park™: The Stick of Truth™",
+				"playtime_2weeks": 536,
+				"playtime_forever": 536,
+				"img_icon_url": "afad8295902080fb2aedd9aaabb3e21c10eecc85",
+				"img_logo_url": "659c39e8727258477a5fab408ed0cf0c79b67fbc"
+			},
+			{
+				"appid": 225080,
+				"name": "Brothers - A Tale of Two Sons",
+				"playtime_2weeks": 49,
+				"playtime_forever": 49,
+				"img_icon_url": "9d6e8bcae597582734b382d8da93e5fa7b1c640b",
+				"img_logo_url": "12f5c3aaa2b1d69d0786e1d09e0b77e2da6f8980"
+			},
+			{
+				"appid": 262590,
+				"name": "Chucks Challenge 3D",
+				"playtime_2weeks": 18,
+				"playtime_forever": 18,
+				"img_icon_url": "e6a72dcf533a17b89d205dd5c8583a49082104a9",
+				"img_logo_url": "ee0704e1e39c38d309b1809fd9cac03c743fd32d"
+			},
+			{
+				"appid": 262150,
+				"name": "Vanguard Princess",
+				"playtime_2weeks": 12,
+				"playtime_forever": 12,
+				"img_icon_url": "afd5895ec03d562a24001f37a91307189742e10c",
+				"img_logo_url": "3f01516a44624ad2c0ac67d3b183ba47903a0914"
+			},
+			{
+				"appid": 235210,
+				"name": "Strider",
+				"playtime_2weeks": 1,
+				"playtime_forever": 2,
+				"img_icon_url": "363d62e4943638e09dfbd991ffffb6d401859749",
+				"img_logo_url": "dd5f5ed41ebc12d5c0b20ce8073dfd163bf83c90"
+			}
+		]
+
+	}
+}

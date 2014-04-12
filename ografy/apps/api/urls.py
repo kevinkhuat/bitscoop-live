@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 
-from tastydata.api import Api as ODataApi
-
 from ografy.apps.api.resources import AccountResource, EntryResource, UserResource
+from ografy.lib.tastydata.api import Api as ODataApi
 
 
 odata_v1 = ODataApi(api_name='v1')

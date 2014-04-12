@@ -58,6 +58,10 @@ class FormMixin(object):
             if field_name in self.cleaned_data:
                 del self.cleaned_data[field_name]
 
+    def remove_errors(self, field):
+        # FIXME: Get this to actually work with the `is_invalid` method. Right now it appears to return `False` even when you remove all errors.
+        self._errors[field] = self.error_class()
+
 
 class Form(BaseForm, FormMixin):
     """

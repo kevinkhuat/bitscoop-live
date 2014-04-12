@@ -12,11 +12,19 @@
 			<div>
 				<form action="{% url 'core_login' %}" method="POST">
 					{% csrf_token %}
-					<div><input class="full-width" type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/></div>
-					<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
+					<div>
+						<input class="full-width" type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>
+					</div>
+					<div>
+						<input class="full-width" type="password" name="password" placeholder="Password" />
+					</div>
 					<div>{{ form.non_field_errors }}</div>
-					<div><label><input type="checkbox" name="remember_me" value="1" />Remember me</label></div>
-					<div class="center"><input class="ui button positive" type="submit" value="Log In" /></div>
+					<div>
+						<label><input type="checkbox" name="remember_me" value="1" />Remember me</label>
+					</div>
+					<div class="center">
+						<input class="ui button positive" type="submit" value="Log In" />
+					</div>
 				</form>
 			</div>
 		</div>
