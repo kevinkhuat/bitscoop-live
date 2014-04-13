@@ -147,6 +147,9 @@ input:focus {
 
 
 header { padding: 5px 0; }
+.head-text {
+	font-size: 1.5em;
+}
 main { background-color: #FFF; }
 #logo {
 	position: relative;
@@ -154,7 +157,8 @@ main { background-color: #FFF; }
 	display: inline-block;
 	width: 32px; height: 32px;
 }
-#logo > img { width: 32px; height: 32px; }
+.left-head { padding: 0 0 0 20px }
+#logo > img { width: 48px; height: 48px; }
 #content {
 	position: relative;
 	padding: 35px 0;
@@ -190,7 +194,10 @@ html, body { height: 100%; }
 	height: 100%;
 	margin-bottom: -75px;
 }
-footer, .push { height: 75px; }
+footer, .push {
+    height: 75px;
+    clear:both;
+}
 
 
 /* REFERENCE CLASSES */
@@ -236,12 +243,143 @@ input.full-width {
 	border: 1px solid #7A7A7A;
 	box-shadow: 0 0 10px -3px #3A3A3A;
 }
+
 .rounded { border-radius: 2px; }
 .padded { padding: 2rem; }
 .errorlist { color: #0E9D58; }
 .bottom-space { margin-bottom: 3em; }
+.bgwhite {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+.bgblack {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+.bgParent {
+    background-size:100% auto;
+}
+.largeIcon {
+	vertical-align: middle;
+	font-size: 48px;
+	width: 48px;
+	float: left;
+	margin: .3em 10px;
+    color: #AAA;
+}
+a > .icon-facebook:hover {
+  color: #4862A3;
+}
+a > .icon-twitter:hover {
+  color: #55ACEE;
+}
+a > .icon-googleplus:hover {
+  color: #d94734;
+}
+a > .icon-linkedin:hover {
+  color: #1684BB;
+}
+.largeIconRow {
+	display: inline-block;
+	width: 280px;
+}
+.smallIcon {
+	vertical-align: middle;
+	font-size: 24px;
+	width: 50px;
+	float: left;
+	margin: .3em 0;
+}
+.footerRow {
+    vertical-align: middle;
+	display: inline-block;
+	width: 450px;
+    margin: 15px;
+}
+.footerRowItem {
+    float: left;
+    margin: 0 10px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(50%);
+    -ms-transform: translateY(50%);
+    transform: translateY(50%);
+}
+.box-list {
+	min-height: 800px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.box-list-cells .fa {
+	vertical-align:middle;
+	width: 30px
+}
+.box-list-cells{
+    width: 500px;
+	height: 370px;
+    outline: 0px;
+    float: left;
+	border:1px solid #CCC;
+	border-radius: 2px;
+	margin: 40px 25px 10px 25px;
+	background: #eee;
+}
+.box-list-header {
+	display: block;
 
+	height: 60px;
+	width: 60px;
+	line-height: 60px;
+	margin: -35px auto;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+
+	background-color: #0E9D58;
+	color: white;
+	text-align: center;
+	font-size: 2em;
+}
+.icon-list > [class^="icon-"], [class*=" icon-"] {
+	padding-left: 10px;
+	margin-top: 4px;
+}
+.icon-list > largeIconRow > [class^="icon-"], [class*=" icon-"] {
+	padding: 0;
+	margin-top: 0;
+}
+.icon-list {
+	margin-top: 35px;
+	padding: 15px;
+	text-align: left;
+}
+.icon-list > h3 {
+	text-transform: uppercase;
+	text-align: center;
+}
+.icon-list > p {
+	float: left; width: 90%
+}
+.icon-list > i {
+	float: left; width: 10%
+}
+.icon-element {
+	padding-top: 12px;
+}
+.superLargeIcon {
+	font-size: 150px;
+	width: 200px;
+	height: 200px;
+	float: left;
+}
+.padding-top-cell{
+	height: 30px; width: 100%; float: left
+}
+.padding-bottom-cell{
+	height: 50px; width: 100%; float: left
+}
 /* TABLES */
 div.table { display: table; }
 div.table > div { display: table-row; }
 div.table > div > div { display: table-cell; }
+
