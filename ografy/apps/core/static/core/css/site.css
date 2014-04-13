@@ -194,7 +194,10 @@ html, body { height: 100%; }
 	height: 100%;
 	margin-bottom: -75px;
 }
-footer, .push { height: 75px; }
+footer, .push {
+    height: 75px;
+    clear:both;
+}
 
 
 /* REFERENCE CLASSES */
@@ -259,25 +262,26 @@ input.full-width {
 .largeIcon {
 	vertical-align: middle;
 	font-size: 48px;
-	width: 100px;
+	width: 48px;
 	float: left;
-	margin: .3em 0;
+	margin: .3em 10px;
+    color: #AAA;
 }
 a > .icon-facebook:hover {
-  color: #1F75FE;
+  color: #4862A3;
 }
 a > .icon-twitter:hover {
-  color: #6495ed;
+  color: #55ACEE;
 }
 a > .icon-googleplus:hover {
-  color: #d62728;
+  color: #d94734;
 }
 a > .icon-linkedin:hover {
-  color: #005580;
+  color: #1684BB;
 }
 .largeIconRow {
 	display: inline-block;
-	width: 400px;
+	width: 280px;
 }
 .smallIcon {
 	vertical-align: middle;
@@ -300,6 +304,79 @@ a > .icon-linkedin:hover {
     -webkit-transform: translateY(50%);
     -ms-transform: translateY(50%);
     transform: translateY(50%);
+}
+.box-list {
+	min-height: 800px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.box-list-cells .fa {
+	vertical-align:middle;
+	width: 30px
+}
+.box-list-cells{
+    width: 500px;
+	height: 370px;
+    outline: 0px;
+    float: left;
+	border:1px solid #CCC;
+	border-radius: 2px;
+	margin: 40px 25px 10px 25px;
+	background: #eee;
+}
+.box-list-header {
+	display: block;
+
+	height: 60px;
+	width: 60px;
+	line-height: 60px;
+	margin: -35px auto;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+
+	background-color: #0E9D58;
+	color: white;
+	text-align: center;
+	font-size: 2em;
+}
+.icon-list > [class^="icon-"], [class*=" icon-"] {
+	padding-left: 10px;
+	margin-top: 4px;
+}
+.icon-list > largeIconRow > [class^="icon-"], [class*=" icon-"] {
+	padding: 0;
+	margin-top: 0;
+}
+.icon-list {
+	margin-top: 35px;
+	padding: 15px;
+	text-align: left;
+}
+.icon-list > h3 {
+	text-transform: uppercase;
+	text-align: center;
+}
+.icon-list > p {
+	float: left; width: 90%
+}
+.icon-list > i {
+	float: left; width: 10%
+}
+.icon-element {
+	padding-top: 12px;
+}
+.superLargeIcon {
+	font-size: 150px;
+	width: 200px;
+	height: 200px;
+	float: left;
+}
+.padding-top-cell{
+	height: 30px; width: 100%; float: left
+}
+.padding-bottom-cell{
+	height: 50px; width: 100%; float: left
 }
 /* TABLES */
 div.table { display: table; }

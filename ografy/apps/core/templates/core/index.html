@@ -6,91 +6,6 @@
 .bg1 {
     background:url({% static 'core/img/bg1.png' %}) left top;
 }
-.bg2 {
-    background:url({% static 'core/img/bg2.png' %}) left top;
-}
-.bg3 {
-    background:url({% static 'core/img/bg3.png' %}) left top;
-}
-.bg4 {
-    background:url({% static 'core/img/bg4.png' %}) left top;
-}
-.bg5 {
-    background:url({% static 'core/img/bg5.png' %}) left top;
-}
-
-.icon-grid {
-	min-height: 800px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.icon-grid-cells .fa {
-	vertical-align:middle;
-	width: 30px
-}
-
-.icon-grid-cells{
-    width: 500px;
-    outline: 0px;
-    float: left;
-	border:2px solid #0E9D58;
-	border-radius: 2px;
-	margin: 40px 25px 10px 25px;
-}
-
-.icon-grid-header {
-	display: block;
-
-	height: 60px;
-	width: 60px;
-	line-height: 60px;
-	margin: -35px auto;
-	-moz-border-radius: 30px;
-	border-radius: 30px;
-
-	background-color: #0E9D58;
-	color: white;
-	text-align: center;
-	font-size: 2em;
-}
-
-.icon-grid-body > [class^="icon-"], [class*=" icon-"] {
-	padding-left: 10px;
-	margin-top: 4px;
-}
-
-.icon-grid-body {
-	margin-top: 35px;
-	padding: 15px;
-	text-align: left;
-}
-
-.icon-grid-body > h3 {
-	text-transform: uppercase;
-	text-align: center;
-}
-
-.icon-grid-body > p {
-	float: left; width: 90%
-}
-
-.icon-grid-body > i {
-	float: left; width: 10%
-}
-
-.icon-element {
-	padding-top: 12px;
-}
-
-.superLargeIcon {
-	font-size: 150px;
-	width: 200px;
-	height: 200px;
-	float: left;
-}
-
 </style>
 <link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
 <div class="bgParent bg1">
@@ -123,72 +38,68 @@
 		</div>
 	</section>
 </div>
-<div class="bgParent">
-	<section class="lockwidth centered center bgwhite">
-		<div class="icon-grid">
-			<div class="icon-grid-cells">
-				<span class="icon-grid-header">
-					<div class="icon-element"><i class="icon-location4"></i></div>
-				</span>
-				<div class="icon-grid-body">
-					<h3>Get services working together</h3>
-					<i class="icon-chat-alt-stroke"></i><p> Define custom streams across all of your information sources</p>
-					<i class="icon-chart-alt"></i><p>Plot data as different types of charts</p>
-					<i class="icon-clock"></i><p>Create beautiful interactive timelines</p>
-					<i class="icon-map3"></i><p>Place your activity and favorite locations on maps</p>
-					<i class="icon-magnifying-glass"></i><p>Filter and search by service, time, and location</p>
-				</div>
-			</div>
-			<div class="icon-grid-cells">
-				<span class="icon-grid-header">
-					<div class="icon-element"><i class="icon-statistics"></i></div>
-				</span>
-				<div class="icon-grid-body">
-					<h3>Easily re-stream your data</h3>
-					<i class="icon-globe3"></i><p>You can track your activity as you use the internet</p>
-					<i class="icon-target2"></i><p>It's easy to control what you collect and who can see it</p>
-					<i class="icon-share2"></i><p>Share useful and cool stats in any format you choose</p>
-					<i class="icon-pin2"></i><p>Find the narrative in your life through data</p>
-					<i class="icon-domain2"></i><p>You no longer have to scour multiple available applications to get all of the capabilities they want</p>
-					<i class="icon-uniF79C"></i><p>We collect, index, and display your data with superior ease and accuracy</p>
-				</div>
-			</div>
-			<div class="icon-grid-cells">
-				<span class="icon-grid-header">
-					<div class="icon-element"><i class="icon-globe"></i></div>
-				</span>
-				<div class="icon-grid-body">
-					<h3>What's next?</h3>
-					<i class="icon-uniF68A"></i><p> Ografy was designed to be simple to use</p>
-					<i class="icon-bars-alt"></i><p> However, more advanced features are available for users who'd like to spend more time</p>
-					<i class="icon-uniF75F"></i><p>We are starting by supporting a core set of well loved services</p>
-					<i class="icon-uniF62C"></i><p>And we have plans to support many more</p>
-					<i class="icon-bars2"></i><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a></p>
-					<i class="icon-bars3"></i><p>When you are ready, sign up and start connecting your data</p>
-				</div>
-			</div>
-			<div class="icon-grid-cells">
-				<span class="icon-grid-header">
-					<div class="icon-element"><i class="icon-link"></i></div>
-				</span>
-				<div class="icon-grid-body">
-					<h3>Connect with us!</h3>
-					<i class="icon-rss-alt"></i><p>Become our friend on social networks</p>
-					<i class="icon-cube"></i><p>If you'd like to check in on some of our planned features and read about our values be sure to check out our <a href="/blog">blog</a></p>
-					<i class="icon-comment-stroke"></i><p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a>. We'd love to hear from you!</p>
-				</div>
+<section class="lockwidth centered center">
+	<div class="box-list">
+		<div class="padding-top-cell"></div>
+		<div class="box-list-cells">
+			<span class="box-list-header">
+				<div class="icon-element"><i class="icon-location4"></i></div>
+			</span>
+			<div class="icon-list">
+				<h3>Get services working together</h3>
+				<i class="icon-chat-alt-stroke"></i><p> Define custom streams across all of your information sources</p>
+				<i class="icon-chart-alt"></i><p>Plot data as different types of charts</p>
+				<i class="icon-clock"></i><p>Create beautiful interactive timelines</p>
+				<i class="icon-map3"></i><p>Place your activity at locations on maps</p>
+				<i class="icon-magnifying-glass"></i><p>Filter and search by service, time, and location</p>
 			</div>
 		</div>
-		<div class="largeIconRow" style="width: 800px">
-			<div><a href="https://www.facebook.com/Ografy">
-				<i class="largeIcon icon-facebook"></i></a></div>
-			<div><a href="https://twitter.com/ografy">
-				<i class="largeIcon icon-twitter"></i></a></div>
-			<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
-				<i class="largeIcon icon-googleplus"></i></a></div>
-			<div><a href="https://www.linkedin.com/company/ografy">
-				<i class="largeIcon icon-linkedin"></i></a></div>
+		<div class="box-list-cells">
+			<span class="box-list-header">
+				<div class="icon-element"><i class="icon-statistics"></i></div>
+			</span>
+			<div class="icon-list">
+				<h3>Easily re-stream your data</h3>
+				<i class="icon-target2"></i><p>You can track your activity as you use the internet because it's easy to control what you collect and who can see it</p>
+				<i class="icon-pin2"></i><p>Share useful and cool stats in any format you choose and find the narrative in your life through data</p>
+				<i class="icon-domain2"></i><p>You no longer have to scour multiple available applications to get all of the capabilities they want</p>
+			</div>
 		</div>
-	</section>
-</div>
+		<div class="box-list-cells">
+			<span class="box-list-header">
+				<div class="icon-element"><i class="icon-globe"></i></div>
+			</span>
+			<div class="icon-list">
+				<h3>What's next?</h3>
+				<i class="icon-uniF68A"></i><p>Ografy was designed to be simple to use and more advanced features are available for users who'd like to spend more time</p>
+				<i class="icon-uniF75F"></i><p>We are starting by supporting a core set of well loved services and we have plans to support many more</p>
+				<i class="icon-bars2"></i><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a></p>
+			</div>
+		</div>
+		<div class="box-list-cells">
+			<span class="box-list-header">
+				<div class="icon-element"><i class="icon-link"></i></div>
+			</span>
+			<div class="icon-list">
+				<h3>Connect with us!</h3>
+				<i class="icon-rss-alt"></i><p>Become our friend on social networks</p>
+				<div style="width: 100%;text-align: center;">
+					<div class="largeIconRow" >
+						<div><a href="https://www.facebook.com/Ografy">
+							<i class="largeIcon icon-facebook"></i></a></div>
+						<div><a href="https://twitter.com/ografy">
+							<i class="largeIcon icon-twitter"></i></a></div>
+						<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
+							<i class="largeIcon icon-googleplus"></i></a></div>
+						<div><a href="https://www.linkedin.com/company/ografy">
+							<i class="largeIcon icon-linkedin"></i></a></div>
+					</div>
+				</div>
+				<i class="icon-cube"></i><p>If you'd like to check in on some of our planned features and read about our values be sure to check out our <a href="/blog">blog</a></p>
+				<i class="icon-comment-stroke"></i><p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a>. We'd love to hear from you!</p>
+			</div>
+		</div>
+		<div class="padding-bottom-cell"></div>
+	</div>
+</section>
 {% endblock %}
