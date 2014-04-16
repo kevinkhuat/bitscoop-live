@@ -16,7 +16,9 @@
 				<div class="middle" style="width: 50px;">
 					<nav>
 						<ul>
+							{% block logo %}
 							<li><a id="logo" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a></li>
+							{% endblock %}
 						</ul>
 					</nav>
 				</div>
