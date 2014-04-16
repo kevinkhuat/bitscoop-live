@@ -1,105 +1,185 @@
 {% extends 'core/dispatcher.html' %}
 {% load staticfiles %}
 
-{% block content %}
-<style>
-.bg1 {
-    background:url({% static 'core/img/bg1.png' %}) left top;
-}
+{% block static %}
+{{ block.super }}
+<style type="text/css">
+	.bg1 {
+		background:url({% static 'core/img/bg1.png' %}) left top;
+	}
+
+	a > .icon-facebook:hover { color: #4862A3; }
+	a > .icon-twitter:hover { color: #55ACEE; }
+	a > .icon-googleplus:hover { color: #d94734; }
+	a > .icon-linkedin:hover { color: #1684BB; }
+
+	.square-set {
+		border: 1px solid #CCC;
+		border-radius: 2px;
+		background: #EEE;
+		margin-bottom: 2em;
+	}
+	.square-set > .header {
+		text-align: center;
+		position: relative;
+		top: -2.25em;
+	}
+	.square-set > .header > i {
+		font-size: 2.5em;
+		background-color: #0E9D58;
+		color: #FFF;
+		padding: 0.35em;
+		border: 2px solid #CCC;
+		border-radius: 1em;
+	}
+	.square-set .bullet { padding-right: 1em; }
+
+	.social-links > a {
+		text-decoration: none;
+		color: #AAA !important;
+	}
 </style>
-<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
-<div class="bgParent bg1">
-	<section class="lockwidth centered padded bgblack big-backfill" style="height: 400px">
-		<div>
+<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+{% endblock %}
+
+{% block logo %}
+<li><a href="{% url 'core_index' %}" style="font-weight: bold; text-transform: uppercase; font-size: 110%;">Ografy</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="bg1 bg-img-full bottom-space">
+	<div class="bg-black lockwidth centered" style="padding: 2em;">
+		<div class="table full-width">
 			<div>
-				<div class="bg-light backfill padded center rounded" style="float: right; vertical-align: middle; width: 30%">
-					<form action="{% url 'core_signup' %}" method="POST" >
-						{% csrf_token %}
-						<div><input class="full-width" type="text" name="email" placeholder="Email Address" /></div>
-						<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
-						<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
-						<input class="ui button positive" type="submit" value="Sign Up" />
-					</form>
+				<div class="middle" style="width: 240px;">
+					<img src="{% static 'assets/logo_light_240.png' %}" />
 				</div>
-				<div class="center" style="width: 70%">
-					<h1 style="font-size: 4em; margin: 0">Ografy</h1>
-					<h1>lets you discover your data</h1>
-					<div style="float: left; width: 30%">
-						<i class="superLargeIcon icon-share"></i>
-					</div>
-					<div style="text-align: left">
-						<p style="float: left; width: 70%">Search and explore your data no matter where it is</p>
-						<p style="float: left; width: 70%">Connect with your existing accounts and publish yourself around the world</p>
-						<p style="float: left; width: 70%">Get more out of your favorite applications and services</p>
-						<p style="float: left; width: 70%">See what you care about and in a brand new way</p>
+				<div class="middle center">
+					<h1>Discover your data</h1>
+					<p>Search and explore your data no matter where it is.</p>
+					<p>Get more out of your favorite applications and services.</p>
+				</div>
+				<div class="middle" style="width: 240px;">
+					<div class="bg-light padded center rounded">
+						<form action="{% url 'core_signup' %}" method="POST" >
+							{% csrf_token %}
+							<div><input class="full-width" type="text" name="email" placeholder="Email address" /></div>
+							<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
+							<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
+							<input class="ui button positive" type="submit" value="Sign Up" />
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </div>
-<section class="lockwidth centered center">
-	<div class="box-list">
-		<div class="padding-top-cell"></div>
-		<div class="box-list-cells">
-			<span class="box-list-header">
-				<div class="icon-element"><i class="icon-location4"></i></div>
-			</span>
-			<div class="icon-list">
-				<h3>Get services working together</h3>
-				<i class="icon-chat-alt-stroke"></i><p> Define custom streams across all of your information sources</p>
-				<i class="icon-chart-alt"></i><p>Plot data as different types of charts</p>
-				<i class="icon-clock"></i><p>Create beautiful interactive timelines</p>
-				<i class="icon-map3"></i><p>Place your activity at locations on maps</p>
-				<i class="icon-magnifying-glass"></i><p>Filter and search by service, time, and location</p>
-			</div>
-		</div>
-		<div class="box-list-cells">
-			<span class="box-list-header">
-				<div class="icon-element"><i class="icon-statistics"></i></div>
-			</span>
-			<div class="icon-list">
-				<h3>Easily re-stream your data</h3>
-				<i class="icon-target2"></i><p>You can track your activity as you use the internet because it's easy to control what you collect and who can see it</p>
-				<i class="icon-pin2"></i><p>Share useful and cool stats in any format you choose and find the narrative in your life through data</p>
-				<i class="icon-domain2"></i><p>You no longer have to scour multiple available applications to get all of the capabilities they want</p>
-			</div>
-		</div>
-		<div class="box-list-cells">
-			<span class="box-list-header">
-				<div class="icon-element"><i class="icon-globe"></i></div>
-			</span>
-			<div class="icon-list">
-				<h3>What's next?</h3>
-				<i class="icon-uniF68A"></i><p>Ografy was designed to be simple to use and more advanced features are available for users who'd like to spend more time</p>
-				<i class="icon-uniF75F"></i><p>We are starting by supporting a core set of well loved services and we have plans to support many more</p>
-				<i class="icon-bars2"></i><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="/docs">documentation</a></p>
-			</div>
-		</div>
-		<div class="box-list-cells">
-			<span class="box-list-header">
-				<div class="icon-element"><i class="icon-link"></i></div>
-			</span>
-			<div class="icon-list">
-				<h3>Connect with us!</h3>
-				<i class="icon-rss-alt"></i><p>Become our friend on social networks</p>
-				<div style="width: 100%;text-align: center;">
-					<div class="largeIconRow" >
-						<div><a href="https://www.facebook.com/Ografy">
-							<i class="largeIcon icon-facebook"></i></a></div>
-						<div><a href="https://twitter.com/ografy">
-							<i class="largeIcon icon-twitter"></i></a></div>
-						<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
-							<i class="largeIcon icon-googleplus"></i></a></div>
-						<div><a href="https://www.linkedin.com/company/ografy">
-							<i class="largeIcon icon-linkedin"></i></a></div>
+
+<section class="lockwidth centered">
+	<div class="table full-width">
+		<div>
+			<div class="padded" style="width: 50%;">
+				<div class="square-set padded" style="height: 371px;">
+					<div class="header"><i class="icon-share"></i></div>
+					<h2 class="green center">Bring Services Together</h2>
+					<div class="table">
+						<div>
+							<div class="bullet"><i class="icon-chat-alt-stroke"></i></div>
+							<div><p>Define custom streams.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-chart-alt"></i></div>
+							<div><p>Plot data as different types of charts.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-clock"></i></div>
+							<div><p>Create interactive timelines.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-map3"></i></div>
+							<div><p>Locate your activity on maps.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-magnifying-glass"></i></div>
+							<div><p>Filter and search data by service, time, and location.</p></div>
+						</div>
 					</div>
 				</div>
-				<i class="icon-cube"></i><p>If you'd like to check in on some of our planned features and read about our values be sure to check out our <a href="/blog">blog</a></p>
-				<i class="icon-comment-stroke"></i><p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a>. We'd love to hear from you!</p>
+			</div>
+			<div class="padded">
+				<div class="square-set padded" style="height: 371px;">
+					<div class="header"><i class="icon-statistics"></i></div>
+					<h2 class="green center">Easily Re-stream Your Data</h2>
+					<div class="table">
+						<div>
+							<div class="bullet"><i class="icon-target2"></i></div>
+							<div><p>It's easy to control what you collect and who can see it</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-pin2"></i></div>
+							<div><p>Find the narrative in your life and share share useful and cool stats.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-domain2"></i></div>
+							<div><p>You don't have to scour applications to get all of information you want.</p></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="padding-bottom-cell"></div>
+		<div>
+			<div class="padded">
+				<div class="square-set padded" style="height: 371px;">
+					<div class="header"><i class="icon-domain3"></i></div>
+					<h2 class="green center">What's Next?</h2>
+					<div class="table">
+						<div>
+							<div class="bullet"><i class="icon-uniF68A"></i></div>
+							<div><p>Ografy was designed to be simple to use. If you'd like to spend more time, more advanced features will be available.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-uniF75F"></i></div>
+							<div><p>We will initially support a core set of well-loved services. We have plans to support many more.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-bars2"></i></div>
+							<div><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="{% url 'documentation_index' %}">documentation</a>.</p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="padded">
+				<div class="square-set padded" style="height: 371px;">
+					<div class="header"><i class="icon-link"></i></div>
+					<h2 class="green center">Connect with us!</h2>
+					<div class="table">
+						<div>
+							<div class="bullet"><i class="icon-rss-alt"></i></div>
+							<div><p>Touch base with us on social networks:</p></div>
+						</div>
+						<div>
+							<div class="bullet"></div>
+							<div>
+								<div class="social-links center" style="font-size: 2em; position: relative; left: -21px; margin-bottom: 0.1em;">
+									<a href="https://www.facebook.com/Ografy"><i class="icon-facebook"></i></a>
+									<a href="https://twitter.com/ografy"><i class="icon-twitter"></i></a>
+									<a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958"><i class="icon-googleplus"></i></a>
+									<a href="https://www.linkedin.com/company/ografy"><i class="icon-linkedin"></i></a>
+								</div>
+							</div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-cube"></i></div>
+							<div><p>Be sure to check out our <a href="{% url 'blog_index' %}">blog</a> for development updates.</p></div>
+						</div>
+						<div>
+							<div class="bullet"><i class="icon-comment-stroke"></i></div>
+							<div><p>If you need to contact us directly, try our <a href="{% url 'core_contact' %}">contact page</a>. We'd love to hear from you!</p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </section>
 {% endblock %}

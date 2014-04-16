@@ -1,29 +1,41 @@
 {% extends 'core/dispatcher.html' %}
 {% load staticfiles %}
+
+{% block static %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+<style type="text/css">
+	a > .icon-facebook:hover { color: #4862A3; }
+	a > .icon-twitter:hover { color: #55ACEE; }
+	a > .icon-googleplus:hover { color: #D94734; }
+	a > .icon-linkedin:hover { color: #1684BB; }
+
+	.social-links > a {
+		text-decoration: none;
+		color: #AAA !important;
+		display: inline-block;
+		font-size: 2.5em;
+		margin: 0 0.25em;
+	}
+</style>
+{% endblock %}
+
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'core/css/fonticons.css' %}"/>
 <section class="lockwidth centered">
 	<h1 class="center">Contact Us</h1>
 
 	<p>If you have questions, comments, or concerns we would love to hear from you.</p>
 
 	<h2>Direct</h2>
-
 	<p><b>Email:</b> <a href="mailto:support@ografy.io">support@ografy.io</a></p>
-
-	<p><b>Phone:</b> (571) 933-6149</p>
+	<p><b>Phone:</b> +1 (571) 933-6149</p>
 
 	<h2>Social Networks</h2>
-
-	<div class="largeIconRow">
-		<div><a href="https://www.facebook.com/Ografy">
-			<i class="largeIcon icon-facebook"></i></a></div>
-		<div><a href="https://twitter.com/ografy">
-			<i class="largeIcon icon-twitter"></i></a></div>
-		<div><a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958">
-			<i class="largeIcon icon-googleplus"></i></a></div>
-		<div><a href="https://www.linkedin.com/company/ografy">
-			<i class="largeIcon icon-linkedin"></i></a></div>
+	<div class="social-links">
+		<a href="https://www.facebook.com/Ografy"><i class="icon-facebook"></i></a>
+		<a href="https://twitter.com/ografy"><i class="icon-twitter"></i></a>
+		<a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958"><i class="icon-googleplus"></i></a>
+		<a href="https://www.linkedin.com/company/ografy"><i class="icon-linkedin"></i></a>
 	</div>
 </section>
 {% endblock %}
