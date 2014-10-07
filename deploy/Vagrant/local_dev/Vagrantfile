@@ -1,7 +1,12 @@
 =begin
 Arguments Required:
 
-NAME_PW='name:password' vagrant up
+Set environment variable:
+export NAME_PW='name:password'
+vagrant up
+
+Clear bash history:
+cat /dev/null > ~/.bash_history
 
 @Authors Kyle Baran & William Broza
 =end
