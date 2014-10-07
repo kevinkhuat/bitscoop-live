@@ -36,11 +36,10 @@ def setup():
             )
         with cd('ografy/ografy'):
             run('pip install -r requirements.txt')
-            run('pip install -r requirements.txt')
             run('manage.py syncdb')
             run('manage.py validate')
             #Do some South-based database upgrade nonsense
             #Set some connector arguments to hook up to PostgreSQL server
-            run('manage.py collectstatic')
-            run('manage.py runserver')
+            #Todo Figure out how to break apart serving of static files and the web server
+            #Todo Start Phusion process
     yield
