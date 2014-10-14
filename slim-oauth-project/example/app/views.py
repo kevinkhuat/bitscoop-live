@@ -1,18 +1,18 @@
 import json
-import requests
 
+import requests
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout, login
-
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.backends.google import GooglePlusAuth
 from social.backends.utils import load_backends
 from social.apps.django_app.utils import psa
 
 from example.app.decorators import render_to
+from example.app.models import Account
 
 
 def logout(request):
@@ -31,9 +31,6 @@ def context(**extra):
 
 @render_to('home.html')
 def home(request):
-    """Home view, displays login mechanism"""
-    if request.user.is_authenticated():
-        return redirect('done')
     return context()
 
 
@@ -75,9 +72,19 @@ def ajax_auth(request, backend):
     return HttpResponse(json.dumps(data), mimetype='application/json')
 
 
+# import requests
+#
+# user = User.objects.get(...)
+# social = user.social_auth.get(provider='google-oauth2')
+# response = requests.get(
+# 'https://www.googleapis.com/plus/v1/people/me/people/visible',
+# params={'access_token': social.extra_data['access_token']}
+# )
+# friends = response.json()['items']
+
 @login_required
 def ajax_auth_call(request, backend):
-    #user = Account.objects.get(request.REQUEST.get('user_id'))
+    user = Account.objects.get(request.REQUEST.get('user_id'))
     provider = request.REQUEST.get('provider')
     url = request.REQUEST.get('api_call_url')
     social = Account.social_auth.get(provider=provider)
@@ -90,28 +97,14 @@ def ajax_auth_call(request, backend):
     return response.json()
 
 def ajax_logged_in_backends(request):
-    #user = Account.objects.get(request.REQUEST.get('user_id'))
-    provider = request.REQUEST.get('provider')
-    url = request.REQUEST.get('api_call_url')
-    social = Account.social_auth.get(provider=provider)
+    if request.user.is_authenticated():
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
+        backends = Account.social_auth.get(user=user)
+        return backends.json()
+    return context()
 
-    # TODO: Fix custom scope to work here
 
-    response = requests.get(
-        url, params={'access_token': social.extra_data['access_token']}
-    )
-    return response.json()
-
-# import requests
-#
-# user = User.objects.get(...)
-# social = user.social_auth.get(provider='google-oauth2')
-# response = requests.get(
-#     'https://www.googleapis.com/plus/v1/people/me/people/visible',
-#     params={'access_token': social.extra_data['access_token']}
-# )
-# friends = response.json()['items']
-
+# TODO: Fix custom scope to work here
 # Todo: Remove to other library.
 class CustomOScopeAuth2(BaseOAuth2):
     def get_scope(self, scope):

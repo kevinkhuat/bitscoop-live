@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'example.app.views.logout'),
     url(r'^done/$', 'example.app.views.done', name='done'),
     url(r'^ajax-auth/(?P<backend>[^/]+)/$', 'example.app.views.ajax_auth', name='ajax-auth'),
+    url(r'^ajax-logged-in-backends/$', 'example.app.views.ajax_logged_in_backends', name='ajax-logged-in-backends'),
     url(r'^ajax-auth-call/(?P<backend>[^/]+)/$', 'example.app.views.ajax_auth_call', name='ajax-auth-call'),
     url(r'^email/$', 'example.app.views.require_email', name='require_email'),
     url(r'', include('social.apps.django_app.urls', namespace='social'))

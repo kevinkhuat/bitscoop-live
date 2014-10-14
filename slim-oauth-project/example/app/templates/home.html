@@ -25,7 +25,7 @@
 <div class="buttons">
     {% if user.is_authenticated %}
     <div class="user-details">
-        You are logged in as <code>{{ user.username }}</code>!
+        You are logged in as <code>{{ user.email }}</code>!
     </div>
     {% endif %}
 
@@ -35,14 +35,16 @@
             {% for name, backend in sublist %}
             {% associated backend %}
             {% if association %}
-            <form class="disconnect-form col-md-2" action="{% url "social:disconnect_individual" backend=association.provider association_id=association.id %}" method="post">{% csrf_token %}
+            <form class="disconnect-form col-md-2" action="{% url " social:disconnect_individual
+            " backend=association.provider association_id=association.id %}" method="post">{% csrf_token %}
             <a class="btn btn-danger" name="{{ backend|backend_class }}" href="#">
                 <i class="fa fa-{{ name|icon_name }}"></i>
                 Disconnect {{ backend|backend_name }}
             </a>
             </form>
             {% else %}
-            <a class="col-md-2 btn btn-default" name="{{ backend|backend_class }}" href="{% url "social:begin" backend=name %}">
+            <a class="col-md-2 btn btn-default" name="{{ backend|backend_class }}" href="{% url " social:begin "
+            backend=name %}">
             <i class="fa fa-{{ name|icon_name }}"></i>
             {{ backend|backend_name }}
             </a>
@@ -56,14 +58,15 @@
         {% for name, backend in available_backends|legacy_backends %}
         {% associated backend %}
         {% if association %}
-        <form class="disconnect-form" action="{% url "social:disconnect_individual" backend=association.provider association_id=association.id %}" method="post">{% csrf_token %}
+        <form class="disconnect-form" action="{% url " social:disconnect_individual
+        " backend=association.provider association_id=association.id %}" method="post">{% csrf_token %}
         <a class="btn btn-danger" name="{{ backend|backend_class }}" href="#">
             <i class="fa fa-{{ name|icon_name }}"></i>
             Disconnect {{ backend|backend_name }}
         </a>
         </form>
         {% else %}
-        <a class="btn btn-default" name="{{ backend|backend_class }}" href="{% url "social:begin" backend=name %}">
+        <a class="btn btn-default" name="{{ backend|backend_class }}" href="{% url " social:begin" backend=name %}">
         <i class="fa fa-{{ name|icon_name }}"></i>
         {{ backend|backend_name }}
         </a>
@@ -90,7 +93,8 @@
 </div>
 
 <div id="username-modal" class="modal fade">
-    <form action="{% url "social:complete" "username" %}" method="post" role="form">{% csrf_token %}
+    <form action="{% url " social:complete
+    " "username" %}" method="post" role="form">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,17 +105,17 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label" for="username">Username:</label>
-                    <input class="form-control" id="username" type="text" name="username" value="" />
+                    <input class="form-control" id="username" type="text" name="username" value=""/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="password">Password:</label>
-                    <input class="form-control" id="password" type="password" name="password" value="" />
+                    <input class="form-control" id="password" type="password" name="password" value=""/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="fullname">Full name:</label>
-                    <input class="form-control" id="fullname" type="text" name="fullname" value="" />
+                    <input class="form-control" id="fullname" type="text" name="fullname" value=""/>
                 </div>
             </div>
 
@@ -125,7 +129,8 @@
 </div>
 
 <div id="email-modal" class="modal fade">
-    <form action="{% url "social:complete" "email" %}" method="post" role="form">{% csrf_token %}
+    <form action="{% url " social:complete
+    " "email" %}" method="post" role="form">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -136,17 +141,17 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label" for="email">Email address:</label>
-                    <input class="form-control" id="email" type="email" name="email" value="" />
+                    <input class="form-control" id="email" type="email" name="email" value=""/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="password">Password:</label>
-                    <input class="form-control" id="password" type="password" name="password" value="" />
+                    <input class="form-control" id="password" type="password" name="password" value=""/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="fullname">Full name:</label>
-                    <input class="form-control" id="fullname" type="text" name="fullname" value="" />
+                    <input class="form-control" id="fullname" type="text" name="fullname" value=""/>
                 </div>
             </div>
 
@@ -160,7 +165,8 @@
 </div>
 
 <div id="livejournal-modal" class="modal fade">
-    <form action="{% url "social:begin" "livejournal" %}" method="post" role="form">{% csrf_token %}
+    <form action="{% url " social:begin
+    " "livejournal" %}" method="post" role="form">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -171,7 +177,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label" for="openid_lj_identifier">LiveJournal ID:</label>
-                    <input class="form-control" id="openid_lj_identifier" type="text" value="" name="openid_lj_user" />
+                    <input class="form-control" id="openid_lj_identifier" type="text" value="" name="openid_lj_user"/>
                 </div>
             </div>
 
@@ -185,7 +191,8 @@
 </div>
 
 <div id="openid-modal" class="modal fade">
-    <form action="{% url "social:begin" backend="openid" %}" method="post" role="form">{% csrf_token %}
+    <form action="{% url " social:begin
+    " backend="openid" %}" method="post" role="form">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,7 +203,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label" for="openid_identifier">OpenId Provider:</label>
-                    <input class="form-control" id="openid_identifier" type="text" value="" name="openid_identifier" />
+                    <input class="form-control" id="openid_identifier" type="text" value="" name="openid_identifier"/>
                 </div>
             </div>
 
@@ -238,23 +245,29 @@
 
                     <div class="form-group">
                         <label class="control-label" for="access_token">Access token:</label>
-                        <input class="form-control" id="access_token" name="access_token" type="text" value="" placeholder="OAuth1 or OAuth2 access token">
+                        <input class="form-control" id="access_token" name="access_token" type="text" value=""
+                               placeholder="OAuth1 or OAuth2 access token">
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="access_token_secret">Access token secret:</label>
-                        <input class="form-control" id="access_token_secret" name="access_token_secret" type="text" value="" placeholder="OAuth1 access token secret">
+                        <input class="form-control" id="access_token_secret" name="access_token_secret" type="text"
+                               value="" placeholder="OAuth1 access token secret">
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="api_call_url">Call URL:</label>
-                        <input class="form-control" id="api_call_url" name="api_call_url" type="text" value="https://graph.facebook.com/v2.1/me?fields=friends" placeholder="OAuth Signed API Call URL">
+                        <input class="form-control" id="api_call_url" name="api_call_url" type="text"
+                               value="https://graph.facebook.com/v2.1/me?fields=friends"
+                               placeholder="OAuth Signed API Call URL">
                     </div>
                 </form>
 
                 <div class="login-result" style="display: none;">
                     <p><strong>User Id:</strong><span class="user-id"></span></p>
+
                     <p><strong>Username:</strong><span class="user-username"></span></p>
+
                     <p><strong>AJAX API Result Data:</strong><span class="ajax-API-result-data"></span></p>
                 </div>
             </div>
@@ -289,18 +302,22 @@
 
                     <div class="form-group">
                         <label class="control-label" for="access_token">Access token:</label>
-                        <input class="form-control" id="access_token" name="access_token" type="text" value="" placeholder="OAuth1 or OAuth2 access token">
+                        <input class="form-control" id="access_token" name="access_token" type="text" value=""
+                               placeholder="OAuth1 or OAuth2 access token">
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="access_token_secret">Access token secret:</label>
-                        <input class="form-control" id="access_token_secret" name="access_token_secret" type="text" value="" placeholder="OAuth1 access token secret">
+                        <input class="form-control" id="access_token_secret" name="access_token_secret" type="text"
+                               value="" placeholder="OAuth1 access token secret">
                     </div>
                 </form>
 
                 <div class="login-result" style="display: none;">
                     <p><strong>User Id:</strong><span class="user-id"></span></p>
+
                     <p><strong>Username:</strong><span class="user-username"></span></p>
+
                     <p>This page will be reloaded in 10s and the user should be logged in.</p>
                 </div>
             </div>
@@ -314,7 +331,8 @@
 </div>
 
 <div id="persona-modal" class="modal fade">
-    <form action="{% url "social:complete" backend="persona" %}" method="post">{% csrf_token %}
+    <form action="{% url " social:complete
+    " backend="persona" %}" method="post">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -324,7 +342,7 @@
 
             <div class="modal-body">
                 <p>Login with Mozilla Persona by clicking the <code>Login</code> button below.</p>
-                <input type="hidden" name="assertion" value="" />
+                <input type="hidden" name="assertion" value=""/>
             </div>
 
             <div class="modal-footer">
@@ -338,7 +356,8 @@
 
 {% if backend %}
 <div id="email-required-modal" class="modal fade">
-    <form action="{% url "social:complete" backend=backend %}" method="post" role="form">{% csrf_token %}
+    <form action="{% url " social:complete
+    " backend=backend %}" method="post" role="form">{% csrf_token %}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -348,9 +367,10 @@
 
             <div class="modal-body">
                 <p>An email address is required.</p>
+
                 <div class="form-group">
                     <label class="control-label" for="email">Email address:</label>
-                    <input class="form-control" id="email" type="email" name="email" value="" />
+                    <input class="form-control" id="email" type="email" name="email" value=""/>
                 </div>
             </div>
 
@@ -374,6 +394,7 @@
 
             <div class="modal-body">
                 <p>An email validation was sent{% if email %} to <code>{{ email }}</code>{% endif %}.</p>
+
                 <p>Click the link sent to finish the authentication process.</p>
             </div>
 
@@ -385,9 +406,10 @@
 </div>
 
 {% if plus_id %}
-<form id="google-plus" method="post" action="{% url "social:complete" backend="google-plus" %}">{% csrf_token %}
-<input id="at" type="hidden" name="access_token" value="" />
-<input id="code" type="hidden" name="code" value="" />
+<form id="google-plus" method="post" action="{% url " social:complete
+" backend="google-plus" %}">{% csrf_token %}
+<input id="at" type="hidden" name="access_token" value=""/>
+<input id="code" type="hidden" name="code" value=""/>
 
 <div id="signinButton">
         <span class="g-signin" data-scope="{{ plus_scope }}"
@@ -417,7 +439,7 @@
           }
       };
 
-      var modalDialog = function (modalId, modalLinkName, submitHandler) {
+      var modalDialog = function (modalId, modalLinkName, submitHandler, openHandler) {
         var $modal;
 
         $modal = $(modalId).modal({show: false});
@@ -431,6 +453,10 @@
           $('a[name="' + modalLinkName + '"]').on('click', function (event) {
             event.preventDefault();
             $modal.modal('toggle');
+
+            if (openHandler) {
+                openHandler();
+            }
           });
         }
 
@@ -471,7 +497,17 @@
             $result.show();
             setTimeout(function () { window.location = '/'; }, 10000);
           });
-        });
+        },
+        function (event) {
+            $modaldialog = $(this).closest('.modal');
+            $logged_in_backend = $modaldialog.find('[name="logged-in-backend"]');
+
+            $.get('/ajax-logged-in-backends/', {}).done(
+            function (data, xhr, response) {
+                $result.find('backends').html();
+              });
+            }
+        );
 
         modalDialog('#ajax-login-modal', 'ajax-login', function (event) {
           var $backend, $accessToken, $accessTokenSecret, $fields, $result;
@@ -524,6 +560,10 @@
           $emailRequired.modal('show');
         {% endif %}
       });
-    </script>
+
+
+
+
+</script>
 </body>
 </html>
