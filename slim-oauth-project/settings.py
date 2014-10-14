@@ -200,7 +200,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_USER_MODEL = 'app.CustomUser'
+AUTH_USER_MODEL = 'app.Account'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/done/'

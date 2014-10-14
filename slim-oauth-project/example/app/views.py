@@ -89,6 +89,18 @@ def ajax_auth_call(request, backend):
     )
     return response.json()
 
+def ajax_logged_in_backends(request):
+    #user = Account.objects.get(request.REQUEST.get('user_id'))
+    provider = request.REQUEST.get('provider')
+    url = request.REQUEST.get('api_call_url')
+    social = Account.social_auth.get(provider=provider)
+
+    # TODO: Fix custom scope to work here
+
+    response = requests.get(
+        url, params={'access_token': social.extra_data['access_token']}
+    )
+    return response.json()
 
 # import requests
 #
