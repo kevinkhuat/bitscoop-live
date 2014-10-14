@@ -12,7 +12,6 @@ from social.backends.utils import load_backends
 from social.apps.django_app.utils import psa
 
 from example.app.decorators import render_to
-from example.app.models import Account
 
 
 def logout(request):
@@ -72,33 +71,25 @@ def ajax_auth(request, backend):
     return HttpResponse(json.dumps(data), mimetype='application/json')
 
 
-# import requests
-#
-# user = User.objects.get(...)
-# social = user.social_auth.get(provider='google-oauth2')
-# response = requests.get(
-# 'https://www.googleapis.com/plus/v1/people/me/people/visible',
-# params={'access_token': social.extra_data['access_token']}
-# )
-# friends = response.json()['items']
-
 @login_required
 def ajax_auth_call(request, backend):
-    user = Account.objects.get(request.REQUEST.get('user_id'))
-    provider = request.REQUEST.get('provider')
-    url = request.REQUEST.get('api_call_url')
-    social = Account.social_auth.get(provider=provider)
+    if request.user.is_authenticated():
+        backend_id = request.REQUEST.get('backend_id', '')
+        api_call_url = request.REQUEST.get('api_call_url', '')
+        if backend_id:
+            social = request.user.social_auth.get(id=backend_id, provider=backend)
+            response = requests.get(
+                api_call_url, params={'access_token': social.extra_data['access_token']}
+            )
+            # response.content.user_id = request.user.id
+            # response.content.username = request.user.email
+            return HttpResponse(response)
+        return context()
+    return context()
 
-    # TODO: Fix custom scope to work here
-
-    response = requests.get(
-        url, params={'access_token': social.extra_data['access_token']}
-    )
-    return response.json()
 
 def ajax_logged_in_backends(request):
     if request.user.is_authenticated():
-        # user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         backend_list = []
         for e in list(request.user.social_auth.all()):
             backend_list.append({'id': e.id, 'provider': e.provider})
