@@ -98,11 +98,12 @@ def ajax_auth_call(request, backend):
 
 def ajax_logged_in_backends(request):
     if request.user.is_authenticated():
-        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
-        backends = Account.social_auth.get(user=user)
-        return backends.json()
+        # user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
+        backend_list = []
+        for e in list(request.user.social_auth.all()):
+            backend_list.append({'id': e.id, 'provider': e.provider})
+        return HttpResponse(json.dumps(backend_list), content_type='application/json')
     return context()
-
 
 # TODO: Fix custom scope to work here
 # Todo: Remove to other library.

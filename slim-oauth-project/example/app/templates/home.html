@@ -43,7 +43,7 @@
             </a>
             </form>
             {% else %}
-            <a class="col-md-2 btn btn-default" name="{{ backend|backend_class }}" href="{% url " social:begin "
+            <a class="col-md-2 btn btn-default" name="{{ backend|backend_class }}" href="{% url " social:begin"
             backend=name %}">
             <i class="fa fa-{{ name|icon_name }}"></i>
             {{ backend|backend_name }}
@@ -229,7 +229,6 @@
                     <div class="form-group">
                         <label class="control-label">Logged-in Backend:</label>
                         <select class="form-control" name="logged-in-backend">
-                            <option value=""></option>
                         </select>
                     </div>
 
@@ -455,7 +454,7 @@
             $modal.modal('toggle');
 
             if (openHandler) {
-                openHandler();
+                openHandler($modal);
             }
           });
         }
@@ -498,14 +497,16 @@
             setTimeout(function () { window.location = '/'; }, 10000);
           });
         },
-        function (event) {
-            $modaldialog = $(this).closest('.modal');
-            $logged_in_backend = $modaldialog.find('[name="logged-in-backend"]');
-
+        function ($modal) {
             $.get('/ajax-logged-in-backends/', {}).done(
-            function (data, xhr, response) {
-                $result.find('backends').html();
-              });
+                function (data, xhr, response) {
+                     $logged_in_backend = $modal.find('[name="logged-in-backend"]');
+                     $.each(data, function (index, item) {
+                         $logged_in_backend.append(
+                              $('<option></option>').val(item.id).html(item.provider)
+                          );
+                    });
+                });
             }
         );
 
@@ -560,9 +561,6 @@
           $emailRequired.modal('show');
         {% endif %}
       });
-
-
-
 
 </script>
 </body>
