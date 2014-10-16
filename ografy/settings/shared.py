@@ -220,8 +220,6 @@ SIGNALS = {
     #'mycoolsite': 'https://mycoolsite.com/myapi.js',
 }
 
-AUTH_USER_MODEL = 'app.CustomUser'
-
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/done/'
 URL_PATH = ''
@@ -246,7 +244,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.get_username',
     'example.app.pipeline.require_email',
     'social.pipeline.mail.mail_validation',
-    'social.pipeline.user.create_user',
+    # 'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.debug.debug',
     'social.pipeline.social_auth.load_extra_data',

@@ -1,17 +1,14 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import admin
-
-
-admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'example.app.views.home'),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^email-sent/', 'example.app.views.validation_sent'),
-    url(r'^login/$', 'example.app.views.home'),
-    url(r'^logout/$', 'example.app.views.logout'),
-    url(r'^done/$', 'example.app.views.done', name='done'),
-    url(r'^ajax-auth/(?P<backend>[^/]+)/$', 'example.app.views.ajax_auth',
-        name='ajax-auth'),
-    url(r'^email/$', 'example.app.views.require_email', name='require_email')
+    url(r'^$', 'views.home', name='allauth_home'),
+    url(r'^email-sent/', 'views.validation_sent', name='allauth_validation_sent'),
+    url(r'^login/$', 'views.home', name='allauth_login'),
+    url(r'^logout/$', 'views.logout', name='allauth_logout'),
+    url(r'^done/$', 'views.done', name='allauth_done'),
+    url(r'^ajax-auth/(?P<backend>[^/]+)/$', 'views.ajax_auth', name='allauth_ajax-auth'),
+    url(r'^ajax-logged-in-backends/$', 'views.ajax_logged_in_backends',
+       name='allauth_ajax-logged-in-backends'),
+    url(r'^ajax-auth-call/(?P<backend>[^/]+)/$', 'views.ajax_auth_call', name='allauth_ajax-auth-call'),
+    url(r'^email/$', 'views.require_email', name='allauth_require_email')
 )

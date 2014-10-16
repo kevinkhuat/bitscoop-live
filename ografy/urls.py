@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
-
+from django.contrib import admin
 from django.conf.urls import include, patterns, url
 
+admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^allauth', include('ografy.apps.allauth.urls')),
     #url(r'^api', include('ografy.apps.api.urls')),
     url(r'^blog', include('ografy.apps.blog.urls')),

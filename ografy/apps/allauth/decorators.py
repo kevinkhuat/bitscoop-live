@@ -12,5 +12,6 @@ def render_to(tpl):
             if isinstance(out, dict):
                 out = render_to_response(tpl, out, RequestContext(request))
             return out
+
         return wrapper
     return decorator

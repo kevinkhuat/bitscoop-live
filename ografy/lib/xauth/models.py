@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
+from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 
 from ografy.lib.xauth.managers import AddressManager, KeyManager, UserManager
@@ -18,7 +19,6 @@ try:
     from hashlib import sha1
 except ImportError:
     import sha.sha as sha1
-
 
 @autoconnect
 class User(AbstractBaseUser, PermissionsMixin):
@@ -38,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         is_active: Flag indicating whether or not the account is active.
     """
     id = models.AutoField(primary_key=True)
-    email = models.EmailField(max_length=256, unique=True, db_index=True)
+    email = models.EmailField(_('email address'), max_length=256, unique=True, db_index=True)
     handle = NullCharField(
         max_length=20, blank=True, null=True, unique=True, db_index=True,
         help_text=_('Required. 3-20 characters. Letters, numbers, underscore and periods permitted. At least one letter.'),
@@ -50,19 +50,27 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     password_date = models.DateTimeField(auto_now_add=True)
 
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now, auto_now_add=True)
 
-    is_staff = models.BooleanField(default=False)
-    is_verified = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(_('staff status'), default=False,
+        help_text=_('Designates whether the user can log into this admin '
+                    'site.'))
+    is_active = models.BooleanField(_('active'), default=True,
+        help_text=_('Designates whether this user should be treated as '
+                    'active. Unselect this instead of deleting accounts.'))
+    is_verified = models.BooleanField(_('verified'), default=False)
 
     _upper_email = models.EmailField(max_length=256, blank=True, null=True, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
     _upper_handle = NullCharField(max_length=20, blank=True, null=True, unique=True, db_index=True)  # Non DBMS-specific case-insensitive unique.
 
     USERNAME_FIELD = 'email'
     objects = UserManager()
+
+    #Todo: Flush out for user page
+    def get_absolute_url(self):
+        return "/users/%s/" % urlquote(self.email)
 
     @property
     def is_valid(self):
@@ -81,6 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.handle or self.first_name
+
+    #Todo: wire up to email server for email verification and password reset
+    def email_user(self, subject, message, from_email=None):
+        pass
 
     def member_of(self, group_name):
         return self.groups.filter(name__iexact=group_name).exists()
