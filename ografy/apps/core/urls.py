@@ -1,7 +1,5 @@
+import ografy.apps.core.views as views
 from django.conf.urls import patterns, url
-
-from ografy.apps.core import views
-
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),

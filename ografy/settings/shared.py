@@ -157,6 +157,7 @@ MIDDLEWARE_CLASSES = (
     'ografy.util.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
 )
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -164,13 +165,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
 
-    #'mptt',
-    #'rest_framework',
-    #'smokesignal',
-    #'tastypie',
-    #'tastydata',
-
     'ografy.apps.account',
+    'ografy.apps.allauth',
     #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
@@ -185,6 +181,7 @@ INSTALLED_APPS = (
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
 )
@@ -220,21 +217,24 @@ SIGNALS = {
     #'mycoolsite': 'https://mycoolsite.com/myapi.js',
 }
 
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/done/'
-URL_PATH = ''
+# Python Social Auth Configuration
+
+# LOGIN_REDIRECT_URL = '/allauth/done/'
+# URL_PATH = ''
+
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
-SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
+
 # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
-SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'example.app.mail.send_validation'
+SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.allauth.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
+
 # SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'
 SOCIAL_AUTH_USERNAME_FORM_HTML = 'username_signup.html'
+
+# SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['first_name', 'last_name', 'email', 'username']
+# TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
@@ -249,5 +249,23 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.debug.debug',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    #'social.pipeline.debug.debug'
 )
+
+# Python Social Auth Backend Configuration
+
+# Google
+SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+# Faceook Auth
+SOCIAL_AUTH_FACEBOOK_APP_KEY = '296338707043090'
+SOCIAL_AUTH_FACEBOOK_APP_SECRET = '358004e6e35ed720761aaff7b487375d'
+SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
+
+# Facebook App Graph API Auth
+SOCIAL_AUTH_FACEBOOK_KEY = '296338707043090'
+SOCIAL_AUTH_FACEBOOK_SECRET = '358004e6e35ed720761aaff7b487375d'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','read_friendlists']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}

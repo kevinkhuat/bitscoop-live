@@ -2,8 +2,6 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from django.conf.urls import include, patterns, url
 
-admin.autodiscover()
-
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^admin/', include(admin.site.urls)),
@@ -20,5 +18,5 @@ urlpatterns = patterns('',
     # So this pattern will always match and forward to "core."
     # Just be sure to put it last so it doesn't cut off the other included apps.
     url(r'^', include('ografy.apps.core.urls')),
-    url(r'', include('social.apps.django_app.urls', namespace='social'))
+    # url(r'', include('social.apps.django_app.urls', namespace='social'))
 )
