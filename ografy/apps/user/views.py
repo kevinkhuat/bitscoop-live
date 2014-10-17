@@ -6,9 +6,6 @@ from django.http import Http404
 from django.shortcuts import render
 
 
-User = get_user_model()
-
-
 @login_required
 def my_profile(request):
     return render(request, 'user/my_profile.html', {
@@ -18,6 +15,8 @@ def my_profile(request):
 
 
 def profile(request, handle):
+    User = get_user_model()
+
     user = User.objects.filter(handle__iexact=handle).first()
 
     if user is None:

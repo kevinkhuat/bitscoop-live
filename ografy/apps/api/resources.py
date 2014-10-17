@@ -6,11 +6,10 @@ from tastypie import fields
 from ografy.apps.core.models import Account, Entry
 from ografy.lib.tastydata.resources import Resource
 
-User = get_user_model()
-
 
 class UserResource(Resource):
     class Meta:
+        User = get_user_model()
         queryset = User.objects.all()
         allowed_methods = ['get']
 

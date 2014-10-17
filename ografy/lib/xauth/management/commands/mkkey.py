@@ -7,8 +7,6 @@ from django.core.management.base import BaseCommand
 from ografy.lib.xauth.models import Key
 from ografy.util.datetime import offset
 
-User = get_user_model()
-
 
 class Command(BaseCommand):
     args = '<user identifier>'
@@ -69,6 +67,7 @@ class Command(BaseCommand):
             return
 
         identifier = args[0]
+        User = get_user_model()
         user = User.objects.by_identifier(identifier).first()
 
         if user is not None:

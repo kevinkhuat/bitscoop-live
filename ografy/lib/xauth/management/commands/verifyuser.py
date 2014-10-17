@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-User = get_user_model()
-
 
 class Command(BaseCommand):
     args = '<user identifier>'
@@ -17,6 +15,7 @@ class Command(BaseCommand):
             raise Exception
 
         identifier = args[0]
+        User = get_user_model()
         user = User.objects.by_identifier(identifier).first()
 
         if user is not None:
