@@ -9,9 +9,6 @@ from django.views.generic import View
 from ografy.apps.core.forms import LoginForm, SignUpForm
 
 
-User = get_user_model()
-
-
 def index(request):
     if request.user.is_authenticated():
         template = 'core/home.html'
@@ -74,6 +71,8 @@ class SignupView(View):
         })
 
     def post(self, request):
+        User = get_user_model()
+
         user = None
         form = SignUpForm(request.POST)
         form.full_clean()

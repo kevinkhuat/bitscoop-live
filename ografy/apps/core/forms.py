@@ -6,8 +6,6 @@ from django.contrib.auth import get_user_model
 from ografy.lib.xauth.fields import PasswordField
 from ografy.util.forms import Form, ModelForm
 
-User = get_user_model()
-
 
 class LoginForm(Form):
     identifier = forms.CharField(max_length=150)
@@ -19,5 +17,5 @@ class SignUpForm(ModelForm):
     password = PasswordField()
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ['email', 'handle', 'first_name', 'last_name']

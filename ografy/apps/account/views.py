@@ -11,8 +11,6 @@ from ografy.apps.account.forms import UpdateDetailsForm, UpdatePasswordForm
 from ografy.util import update
 from ografy.util.response import redirect_by_name
 
-User = get_user_model()
-
 
 @login_required
 def index(request):
@@ -44,6 +42,8 @@ class DetailsView(View):
         })
 
     def post(self, request):
+        User = get_user_model()
+
         user = request.user
         form = UpdateDetailsForm(request.POST)
         form.full_clean()

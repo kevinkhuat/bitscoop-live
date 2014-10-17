@@ -8,8 +8,6 @@ from django.core.management.base import BaseCommand
 from ografy.apps.blog.models import Article, Tag
 from ografy.util.encoding import slugify
 
-User = get_user_model()
-
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
@@ -63,6 +61,7 @@ class Command(BaseCommand):
             self.stdout.write('Tags: {0}'.format(properties['tags']))
 
             if 'author' in properties:
+                User = get_user_model()
                 author = User.objects.by_identifier(properties['author']).first()
             else:
                 author = None
