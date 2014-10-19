@@ -481,7 +481,7 @@
           $call_url = $modaldialog.find('[name="api_call_url"]');
           $result = $modaldialog.find('.login-result');
 
-          $.get('/ajax-auth-call/' + $backend.text().trim() + '/', {
+          $.get('/call/' + $backend.text().trim() + '/', {
             backend_id: $backend.val(),
 	        api_call_url: $call_url.val()
           }).done(function (data, xhr, response) {
@@ -494,7 +494,7 @@
           });
         },
         function ($modal) {
-            $.get('/ajax-logged-in-backends/', {}).done(
+            $.get('/signals/', {}).done(
                 function (data, xhr, response) {
                      $logged_in_backend = $modal.find('[name="logged-in-backend"]');
                      $.each(data, function (index, item) {
@@ -517,7 +517,7 @@
           $accessTokenSecret = $modal.find('[name="access_token_secret"]');
           $result = $modal.find('.login-result');
 
-          $.get('/ajax-auth-call/' + $backend.val() + '/', {
+          $.get('/associate/' + $backend.val() + '/', {
             access_token: $accessToken.val(),
             access_token_secret: $accessTokenSecret.val(),
           }, function (data, xhr, response) {

@@ -4,7 +4,7 @@ from optparse import make_option
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-from ografy.lib.xauth.models import Key
+from ografy.apps.auth.models import Key
 from ografy.util.datetime import offset
 
 

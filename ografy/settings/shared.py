@@ -35,7 +35,7 @@ DATABASES = {
 }
 
 # Authentication
-AUTH_USER_MODEL = 'xauth.User'
+AUTH_USER_MODEL = 'auth.User'
 AUTHENTICATION_BACKENDS = (
     'social.backends.amazon.AmazonOAuth2',
     'social.backends.angel.AngelOAuth2',
@@ -114,8 +114,8 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.email.EmailAuth',
     'social.backends.username.UsernameAuth',
     'django.contrib.auth.backends.ModelBackend',
-    'ografy.lib.xauth.backends.IdentifierBackend',
-    'ografy.lib.xauth.backends.DummyTokenBackend',
+    'ografy.apps.auth.backends.IdentifierBackend',
+    'ografy.apps.auth.backends.DummyTokenBackend',
 )
 LOGIN_URL = '/login/'
 PASSWORD_HASHERS = (
@@ -166,7 +166,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
 
     'ografy.apps.account',
-    'ografy.apps.allauth',
+    'ografy.apps.auth',
     #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
@@ -176,8 +176,6 @@ INSTALLED_APPS = (
     #'ografy.apps.nexus',
     #'ografy.apps.signals',
     'ografy.apps.user',
-
-    'ografy.lib.xauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -219,7 +217,7 @@ SIGNALS = {
 
 # Python Social Auth Configuration
 
-# LOGIN_REDIRECT_URL = '/allauth/done/'
+# LOGIN_REDIRECT_URL = '/auth/done/'
 # URL_PATH = ''
 
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
@@ -227,7 +225,7 @@ SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
 # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
-SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.allauth.mail.send_validation'
+SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.auth.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
 
 # SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'

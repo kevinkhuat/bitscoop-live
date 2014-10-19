@@ -5,7 +5,7 @@ from django.conf.urls import include, patterns, url
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^allauth', include('ografy.apps.allauth.urls')),
+    url(r'^auth', include('ografy.apps.auth.urls')),
     #url(r'^api', include('ografy.apps.api.urls')),
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),

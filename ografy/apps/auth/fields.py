@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.forms import CharField, PasswordInput
 
-from ografy.lib.xauth.validators import PasswordValidator
+from ografy.apps.auth.validators import PasswordValidator
 
 
 class PasswordField(CharField):

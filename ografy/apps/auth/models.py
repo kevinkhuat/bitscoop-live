@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from django.utils.translation import ugettext_lazy as _
 
-from ografy.lib.xauth.managers import AddressManager, KeyManager, UserManager
+from ografy.apps.auth.managers import AddressManager, KeyManager, UserManager
 from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
 
