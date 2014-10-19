@@ -13,10 +13,14 @@ urlpatterns = patterns('',
     #url(r'^extensions', include('ografy.apps.extensions.urls')),
     #url(r'^nexus', include('ografy.apps.nexus.urls')),
     #url(r'^signals', include('ografy.apps.signals.urls')),
+
+    # All test apps to be prepended with /tests/
+    url(r'^tests/auth', include('ografy.tests.auth.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
+
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."
     # Just be sure to put it last so it doesn't cut off the other included apps.
     url(r'^', include('ografy.apps.core.urls')),
-    # url(r'', include('social.apps.django_app.urls', namespace='social'))
+    url(r'', include('social.apps.django_app.urls', namespace='social'))
 )

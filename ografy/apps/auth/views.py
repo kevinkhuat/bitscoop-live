@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+    ografy.ografy.auth.views
+    ~~~~~~~~~~~~~~~~~~
+
+    Logic for the auth view endpoints
+
+    :AUTHORS: Liam Broza
+"""
 import json
 import requests
 from django.conf import settings
@@ -17,6 +26,10 @@ from ografy.apps.auth.forms import LoginForm
 
 # Ografy Account specific login/logout
 class LoginView(View):
+    """
+    Directs the user to login view template mapped to the auth.user model.
+    """
+
     def get(self, request):
         return render(request, 'auth/login.html', {
             'title': 'Ografy - Login'
@@ -50,14 +63,32 @@ class LoginView(View):
 
 
 def logout(request):
+    """
+    User logout and redirection to the main page.
+    """
     auth_logout(request)
 
     return redirect(reverse('core_index'))
 
 
 # Python Social Auth Specific Workflow
+
 @psa('social:complete')
 def associate(request, backend):
+    """This rest call endpoint complete the authorization workflow and have the server associate a signal with the logged in user.
+    For this function to run properly, the application must start the Oauth 1/2/OpenID worflow and an authorization
+    callback must be recieved from the signal's API by the server.
+
+    #. *request* a request object must contain the variables:
+
+        #. access_token
+        #. access_token_secret
+
+    #. *backend* the name of the backend
+
+    * returns: returns the user who the backend signal was associated with or an error.
+    """
+
     if request.user.is_authenticated():
         if isinstance(backend, BaseOAuth1):
             token = {
@@ -79,6 +110,18 @@ def associate(request, backend):
 
 @login_required
 def call(request, backend):
+    """This rest endpoint will add an authorization signature to an API call and make the call on the server.
+
+    #. *request* a request object must contain the variables:
+
+        #. backend_id
+        #. api_call_url
+
+    #. *backend* the name of the backend
+
+    * returns: returns the response from the call or an error.
+    """
+
     backend_id = request.REQUEST.get('backend_id', '')
     api_call_url = request.REQUEST.get('api_call_url', '')
 
@@ -95,6 +138,11 @@ def call(request, backend):
 
 @login_required
 def signals(request):
+    """This rest endpoint will all logged in singal backends for the logged in user.
+
+    * returns: returns the list of backends and their ids or an error.
+    """
+
     backend_list = []
 
     for e in list(request.user.social_auth.all()):
@@ -107,6 +155,15 @@ def signals(request):
 
 @login_required
 def proxy(request):
+    """This rest endpoint will manke an API call on the server.
+
+    #. *request* a request object must contain the variable:
+
+        #. api_call_url
+
+    * returns: returns the response from the call or an error.
+    """
+
     api_call_url = request.REQUEST.get('api_call_url', '')
     response = requests.get(api_call_url)
 
@@ -114,6 +171,18 @@ def proxy(request):
 
 @login_required
 def signature(request, backend):
+    """This rest endpoint will add an authorization signature to an API call and pass the access token for that call back to the client.
+
+    #. *request* a request object must contain the variables:
+
+        #. backend_id
+        #. api_call_url
+
+    #. *backend* the name of the backend
+
+    * returns: returns the response from the call or an error.
+    """
+
     backend_id = request.REQUEST.get('backend_id', '')
     api_call_url = request.REQUEST.get('api_call_url', '')
 
