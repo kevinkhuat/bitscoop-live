@@ -70,7 +70,7 @@
 					{% associated backend %}
 					{% if association %}
 						<form class="disconnect-form col-md-2"
-						      action="{% url " social:disconnect_individual" backend=association.provider association_id=association.id %}"
+						      action="{% url "social:disconnect_individual" backend=association.provider association_id=association.id %}"
 						      method="post">{% csrf_token %}
 							<a class="btn btn-danger" name="{{ backend|backend_class }}" href="#">
 								<i class="fa fa-{{ name|icon_name }}"></i>
@@ -79,7 +79,7 @@
 						</form>
 					{% else %}
 						<a class="col-md-2 btn btn-default" name="{{ backend|backend_class }}"
-						   href="{% url " social:begin" backend=name %}">
+						   href="{% url "social:begin" backend=name %}">
 							<i class="fa fa-{{ name|icon_name }}"></i>
 							{{ backend|backend_name }}
 						</a>
@@ -103,7 +103,7 @@
 				</form>
 			{% else %}
 				<a class="btn btn-default" name="{{ backend|backend_class }}"
-				   href="{% url " social:begin" backend=name %}">
+				   href="{% url "social:begin" backend=name %}">
 					<i class="fa fa-{{ name|icon_name }}"></i>
 					{{ backend|backend_name }}
 				</a>
@@ -130,7 +130,7 @@
 </div>
 
 <div id="username-modal" class="modal fade">
-	<form action="{% url " social:complete" "username" %}" method="post" role="form">{% csrf_token %}
+	<form action="{% url "social:complete" "username" %}" method="post" role="form">{% csrf_token %}
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -418,7 +418,7 @@
 
 {% if plus_id %}
 	<form id="google-plus" method="post"
-	      action="{% url " social:complete" backend="google-plus" %}">{% csrf_token %}
+	      action="{% url "social:complete" backend="google-plus" %}">{% csrf_token %}
 		<input id="at" type="hidden" name="access_token" value=""/>
 		<input id="code" type="hidden" name="code" value=""/>
 
@@ -493,7 +493,7 @@
 					$call_url = $modaldialog.find('[name="api_call_url"]');
 					$result = $modaldialog.find('.login-result');
 
-					$.get('/call/' + $backend.text().trim() + '/', {
+					$.get('/auth/call/' + $backend.text().trim() + '/', {
 						backend_id: $backend.val(),
 						api_call_url: $call_url.val()
 					}).done(function(data, xhr, response) {
@@ -508,7 +508,7 @@
 					});
 				},
 				function($modal) {
-					$.get('/signals/', {}).done(
+					$.get('/auth/signals/', {}).done(
 							function(data, xhr, response) {
 								$logged_in_backend = $modal.find('[name="logged-in-backend"]');
 								$.each(data, function(index, item) {
@@ -531,7 +531,7 @@
 			$accessTokenSecret = $modal.find('[name="access_token_secret"]');
 			$result = $modal.find('.login-result');
 
-			$.get('/associate/' + $backend.val() + '/', {
+			$.get('/auth/associate/' + $backend.val() + '/', {
 				access_token: $accessToken.val(),
 				access_token_secret: $accessTokenSecret.val()
 			}, function(data, xhr, response) {

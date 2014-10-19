@@ -5,7 +5,7 @@ from django.conf.urls import include, patterns, url
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^auth', include('ografy.apps.auth.urls')),
+    url(r'^auth', include('ografy.apps.xauth.urls')),
     #url(r'^api', include('ografy.apps.api.urls')),
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     #url(r'^signals', include('ografy.apps.signals.urls')),
 
     # All test apps to be prepended with /tests/
-    url(r'^tests/auth', include('ografy.tests.auth.urls')),
+    url(r'^tests/auth', include('ografy.tests.xauth.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".

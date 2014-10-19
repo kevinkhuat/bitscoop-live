@@ -2,8 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from ografy.apps.core.models import User
-from ografy.apps.auth.models import Key, Address
+from ografy.apps.xauth.models import User, Key, Address
 
 
 class UserAdmin(admin.ModelAdmin):

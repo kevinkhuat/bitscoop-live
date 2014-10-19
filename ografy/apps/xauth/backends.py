@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend, RemoteUserBackend
 
-from ografy.apps.auth.models import Key
+from ografy.apps.xauth.models import Key
 
 
 class IdentifierBackend(ModelBackend):

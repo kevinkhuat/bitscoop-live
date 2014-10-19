@@ -35,7 +35,7 @@ DATABASES = {
 }
 
 # Authentication
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'xauth.User'
 AUTHENTICATION_BACKENDS = (
     'social.backends.amazon.AmazonOAuth2',
     'social.backends.angel.AngelOAuth2',
@@ -114,10 +114,10 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.email.EmailAuth',
     'social.backends.username.UsernameAuth',
     'django.contrib.auth.backends.ModelBackend',
-    'ografy.apps.auth.backends.IdentifierBackend',
-    'ografy.apps.auth.backends.DummyTokenBackend',
+    'ografy.apps.xauth.backends.IdentifierBackend',
+    'ografy.apps.xauth.backends.DummyTokenBackend',
 )
-LOGIN_URL = '/login/'
+LOGIN_URL = '/auth/login/'
 PASSWORD_HASHERS = (
     # TODO: Move bcrypt up when not on Dreamhost.
     # 'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -166,7 +166,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
 
     'ografy.apps.account',
-    'ografy.apps.auth',
+    'ografy.apps.xauth',
     #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
@@ -176,6 +176,8 @@ INSTALLED_APPS = (
     #'ografy.apps.nexus',
     #'ografy.apps.signals',
     'ografy.apps.user',
+
+    'ografy.tests.xauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -217,7 +219,7 @@ SIGNALS = {
 
 # Python Social Auth Configuration
 
-# LOGIN_REDIRECT_URL = '/auth/done/'
+# LOGIN_REDIRECT_URL = '/xauth/done/'
 # URL_PATH = ''
 
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
@@ -225,7 +227,7 @@ SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
 # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
-SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.auth.mail.send_validation'
+SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.xauth.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
 
 # SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'
@@ -240,7 +242,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
-    'example.app.pipeline.require_email',
     'social.pipeline.mail.mail_validation',
     # 'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',

@@ -1,9 +1,10 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 
-import ografy.apps.auth.views as views
+import ografy.tests.xauth.views as views
 
 
 urlpatterns = patterns('',
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', views.home, name='allauth_home'),
     url(r'^done/$', views.done, name='allauth_done'),
     url(r'^email/$', views.require_email, name='allauth_require_email'),

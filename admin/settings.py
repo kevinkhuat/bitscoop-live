@@ -6,7 +6,7 @@ ROOT_URLCONF = 'admin.urls'
 WSGI_APPLICATION = 'admin.wsgi.application'  # Python dotted path to the WSGI application used by Django's runserver.
 
 # Authentication
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'xauth.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )

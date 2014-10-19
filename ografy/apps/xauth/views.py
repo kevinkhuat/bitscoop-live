@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    ografy.ografy.auth.views
+    ografy.apps.xauth.views
     ~~~~~~~~~~~~~~~~~~
 
-    Logic for the auth view endpoints
+    Logic for the xauth view endpoints
 
     :AUTHORS: Liam Broza
 """
@@ -21,17 +21,17 @@ from django.views.generic import View
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.apps.django_app.utils import psa
 
-from ografy.apps.auth.forms import LoginForm
+from ografy.apps.xauth.forms import LoginForm
 
 
 # Ografy Account specific login/logout
 class LoginView(View):
     """
-    Directs the user to login view template mapped to the auth.user model.
+    Directs the user to login view template mapped to the xauth.user model.
     """
 
     def get(self, request):
-        return render(request, 'auth/login.html', {
+        return render(request, 'xauth/login.html', {
             'title': 'Ografy - Login'
         })
 
@@ -46,7 +46,7 @@ class LoginView(View):
         if user is None:
             form.add_error('Invalid username or password.')
 
-            return render(request, 'auth/login.html', {
+            return render(request, 'xauth/login.html', {
                 'title': 'Ografy - Login',
                 'form': form,
                 'autofocus': 'identifier' in form.cleaned_data

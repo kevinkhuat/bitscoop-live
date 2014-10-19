@@ -5,8 +5,8 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import available_attrs
 
-from ografy.apps.auth import authenticate, login
-from ografy.apps.auth.models import Key
+from ografy.apps.xauth import authenticate, login
+from ografy.apps.xauth.models import Key
 
 
 def token_required(view_fn, exception=PermissionDenied):
