@@ -108,6 +108,7 @@ def associate(request, backend):
 
     return Context()
 
+
 @login_required
 def call(request, backend):
     """This rest endpoint will add an authorization signature to an API call and make the call on the server.
@@ -136,6 +137,7 @@ def call(request, backend):
 
     return Context()
 
+
 @login_required
 def signals(request):
     """This rest endpoint will all logged in singal backends for the logged in user.
@@ -153,6 +155,7 @@ def signals(request):
 
     return HttpResponse(json.dumps(backend_list), content_type='application/json')
 
+
 @login_required
 def proxy(request):
     """This rest endpoint will manke an API call on the server.
@@ -168,6 +171,7 @@ def proxy(request):
     response = requests.get(api_call_url)
 
     return HttpResponse(response)
+
 
 @login_required
 def signature(request, backend):
