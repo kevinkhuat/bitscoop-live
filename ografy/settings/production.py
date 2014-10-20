@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from ografy.settings.shared import *
+from ografy.settings.signals import *
 
 
 DEBUG = False
