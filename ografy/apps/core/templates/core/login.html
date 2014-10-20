@@ -10,7 +10,7 @@
 		</div>
 		<div>
 			<div>
-				<form action="{% url 'core_login' %}" method="POST">
+				<form action="{% url 'xauth_login' %}" method="POST">
 					{% csrf_token %}
 					<div>
 						<input class="full-width" type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>

@@ -5,14 +5,14 @@ import ografy.apps.xauth.views as views
 
 urlpatterns = patterns('',
     # Ografy Account specific login/logout
-    url(r'^/login/?$', views.LoginView.as_view(), name='core_login'),
-    url(r'^/logout/?$', views.logout, name='core_logout'),
+    url(r'^/login/?$', views.LoginView.as_view(), name='xauth_login'),
+    url(r'^/logout/?$', views.logout, name='xauth_logout'),
 
     # Python Social Auth Specific Workflow
-    url(r'^/associate/(?P<backend>[^/]+)/$', views.associate, name='auth_associate'),
-    url(r'^/call/(?P<backend>[^/]+)/$', views.call, name='auth_call'),
-    url(r'^/signals/?$', views.signals, name='auth_signals'),
-    url(r'^/proxy/?$', views.proxy, name='auth_proxy'),
-    url(r'^/signature/(?P<backend>[^/]+)/$', views.signature, name='auth_signature'),
+    url(r'^/associate/(?P<backend>[^/]+)/$', views.associate, name='xauth_associate'),
+    url(r'^/call/(?P<backend>[^/]+)/$', views.call, name='xauth_call'),
+    url(r'^/signals/?$', views.signals, name='xauth_signals'),
+    url(r'^/proxy/?$', views.proxy, name='xauth_proxy'),
+    url(r'^/signature/(?P<backend>[^/]+)/$', views.signature, name='xauth_signature'),
     url(r'', include('social.apps.django_app.urls', namespace='social'))
 )
