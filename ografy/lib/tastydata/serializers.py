@@ -4,7 +4,7 @@ import json
 
 from django.core.serializers import json as djangojson
 from django.template.loader import render_to_string
-import msgpack
+# import msgpack
 from tastypie.serializers import Serializer as BaseSerializer
 
 try:
@@ -46,11 +46,11 @@ class Serializer(BaseSerializer):
         """
         return json.loads(content)
 
-    def to_msgpack(self, data, options=None):
-        return msgpack.packb(self.to_simple(data, options or {}))
-
-    def from_msgpack(self, content):
-        return msgpack.unpackb(content)
+    # def to_msgpack(self, data, options=None):
+    #     return msgpack.packb(self.to_simple(data, options or {}))
+    #
+    # def from_msgpack(self, content):
+    #     return msgpack.unpackb(content)
 
     def to_urlencoded(self, content):
         pass
