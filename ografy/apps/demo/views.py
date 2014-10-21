@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from ografy.lib.xauth.decorators import key_login, membership_required
+from ografy.apps.xauth.decorators import key_login, membership_required
 
 
 @key_login

@@ -1,12 +1,11 @@
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate, get_user_model, login, logout as auth_logout
+from django.contrib.auth import authenticate, get_user_model, login
 from django.shortcuts import redirect, render
 from django.views.generic import View
 
-from ografy.apps.core.forms import LoginForm, SignUpForm
+from ografy.apps.core.forms import SignUpForm
 
 
 def index(request):
@@ -23,45 +22,6 @@ def index(request):
         }
 
     return render(request, template, context)
-
-
-class LoginView(View):
-    def get(self, request):
-        return render(request, 'core/login.html', {
-            'title': 'Ografy - Login'
-        })
-
-    def post(self, request):
-        user = None
-        form = LoginForm(request.POST)
-        form.full_clean()
-
-        if form.is_valid():
-            user = authenticate(**form.cleaned_data)
-
-        if user is None:
-            form.add_error('Invalid username or password.')
-
-            return render(request, 'core/login.html', {
-                'title': 'Ografy - Login',
-                'form': form,
-                'autofocus': 'identifier' in form.cleaned_data
-            })
-        else:
-            login(request, user)
-
-            if not form.cleaned_data['remember_me']:
-                request.session.set_expiry(0)
-            else:
-                request.session.set_expiry(settings.SESSION_LIMIT)
-
-            return redirect(reverse('core_index'))
-
-
-def logout(request):
-    auth_logout(request)
-
-    return redirect(reverse('core_index'))
 
 
 class SignupView(View):
