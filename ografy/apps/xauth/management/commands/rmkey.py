@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.utils.timezone import now
 
-from ografy.lib.xauth.models import Key
+from ografy.apps.xauth.models import Key
 
 
 class Command(BaseCommand):

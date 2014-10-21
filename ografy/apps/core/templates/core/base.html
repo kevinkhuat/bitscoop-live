@@ -38,10 +38,10 @@
 							{% if request.user.is_authenticated %}
 							<li><a href="{% url 'user_my_profile' %}">{{ request.user.identifier }}</a></li>
 							<li><a href="{% url 'account_index' %}">Account</a></li>
-							<li><a href="{% url 'core_logout' %}">Logout</a></li>
+							<li><a href="{% url 'xauth_logout' %}">Logout</a></li>
 							{% else %}
 							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
-							<li><a href="{% url 'core_login' %}">Log In</a></li>
+							<li><a href="{% url 'xauth_login' %}">Log In</a></li>
 							{% endif %}
 						</ul>
 					</nav>
