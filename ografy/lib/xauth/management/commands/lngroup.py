@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-User = get_user_model()
-
 
 class Command(BaseCommand):
     args = '<user identifier> <group name>'
@@ -19,6 +17,7 @@ class Command(BaseCommand):
 
         identifier = args[0]
         group_name = args[1]
+        User = get_user_model()
         user = User.objects.by_identifier(identifier).first()
         group = Group.objects.filter(name__iexact=group_name).first()
 
