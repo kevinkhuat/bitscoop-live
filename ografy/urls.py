@@ -5,7 +5,7 @@ from django.conf.urls import include, patterns, url
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^auth', include('ografy.apps.xauth.urls')),
+    url(r'^auth/', include('ografy.apps.xauth.urls')),
     #url(r'^api', include('ografy.apps.api.urls')),
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
@@ -21,6 +21,5 @@ urlpatterns = patterns('',
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."
     # Just be sure to put it last so it doesn't cut off the other included apps.
-    url(r'^', include('ografy.apps.core.urls')),
-    url(r'', include('social.apps.django_app.urls', namespace='social'))
+    url(r'^', include('ografy.apps.core.urls'))
 )

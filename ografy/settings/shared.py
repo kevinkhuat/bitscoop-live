@@ -117,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
     'ografy.apps.xauth.backends.IdentifierBackend',
     'ografy.apps.xauth.backends.DummyTokenBackend',
 )
-LOGIN_URL = '/login/'
+LOGIN_URL = '/applogin/'
 PASSWORD_HASHERS = (
     # TODO: Move bcrypt up when not on Dreamhost.
     # 'django.contrib.xauth.hashers.BCryptSHA256PasswordHasher',

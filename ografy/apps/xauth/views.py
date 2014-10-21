@@ -31,7 +31,7 @@ class LoginView(View):
     """
 
     def get(self, request):
-        return render(request, 'xauth/login.html', {
+        return render(request, 'xauth/applogin.html', {
             'title': 'Ografy - Login'
         })
 
@@ -46,7 +46,7 @@ class LoginView(View):
         if user is None:
             form.add_error('Invalid username or password.')
 
-            return render(request, 'xauth/login.html', {
+            return render(request, 'xauth/applogin.html', {
                 'title': 'Ografy - Login',
                 'form': form,
                 'autofocus': 'identifier' in form.cleaned_data

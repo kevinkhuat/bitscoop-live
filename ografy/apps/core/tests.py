@@ -22,7 +22,6 @@ class TestCoreViews(SimpleTestCase):
                     'password': 'Foxtrot1234'
                 }
             },
-
             {
                 'valid': False,
                 'signup_form_info': {
