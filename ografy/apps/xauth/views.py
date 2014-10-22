@@ -31,7 +31,7 @@ class LoginView(View):
     """
 
     def get(self, request):
-        return render(request, 'xauth/applogin.html', {
+        return render(request, 'xauth/login.html', {
             'title': 'Ografy - Login'
         })
 
@@ -44,9 +44,9 @@ class LoginView(View):
             user = authenticate(**form.cleaned_data)
 
         if user is None:
-            form.add_error('Invalid username or password.')
+            form.add_error(None, 'Invalid username or password.')
 
-            return render(request, 'xauth/applogin.html', {
+            return render(request, 'xauth/login.html', {
                 'title': 'Ografy - Login',
                 'form': form,
                 'autofocus': 'identifier' in form.cleaned_data
@@ -76,8 +76,8 @@ def logout(request):
 @psa('social:complete')
 def associate(request, backend):
     """This rest call endpoint complete the authorization workflow and have the server associate a signal with the logged in user.
-    For this function to run properly, the application must start the Oauth 1/2/OpenID worflow and an authorization
-    callback must be recieved from the signal's API by the server.
+    For this function to run properly, the application must start the Oauth 1/2/OpenID workflow and an authorization
+    callback must be received from the signal's API by the server.
 
     #. *request* a request object must contain the variables:
 
@@ -89,24 +89,28 @@ def associate(request, backend):
     * returns: returns the user who the backend signal was associated with or an error.
     """
 
-    if request.user.is_authenticated():
-        if isinstance(backend, BaseOAuth1):
-            token = {
-                'oauth_token': request.REQUEST.get('access_token'),
-                'oauth_token_secret': request.REQUEST.get('access_token_secret'),
-            }
-        elif isinstance(request.backend, BaseOAuth2):
-            token = request.REQUEST.get('access_token')
-        else:
-            raise HttpResponseBadRequest('Wrong backend type')
+    try:
+        if request.user.is_authenticated():
+            if isinstance(backend, BaseOAuth1):
+                token = {
+                    'oauth_token': request.REQUEST.get('access_token'),
+                    'oauth_token_secret': request.REQUEST.get('access_token_secret'),
+                }
+            elif isinstance(request.backend, BaseOAuth2):
+                token = request.REQUEST.get('access_token')
+            else:
+                raise HttpResponseBadRequest('Wrong backend type')
 
-        user = request.backend.do_auth(token, ajax=True)
-        login(request, user)
-        data = {'id': user.id, 'username': user.username}
+            user = request.backend.do_auth(token, ajax=True)
+            login(request, user)
+            data = {'id': user.id, 'username': user.username}
 
-        return HttpResponse(json.dumps(data), mimetype='application/json')
+            return HttpResponse(json.dumps(data), mimetype='application/json')
 
-    return Context()
+        return Context()
+
+    except requests.RequestException:
+        return HttpResponseBadRequest()
 
 
 @login_required
@@ -126,39 +130,47 @@ def call(request, backend):
     backend_id = request.REQUEST.get('backend_id', '')
     api_call_url = request.REQUEST.get('api_call_url', '')
 
-    if backend_id:
-        social = request.user.social_auth.get(id=backend_id, provider=backend)
-        response = requests.get(
-            api_call_url, params={'access_token': social.extra_data['access_token']}
-        )
-        # response.content.user_id = request.user.id
-        # response.content.username = request.user.email
-        return HttpResponse(response)
+    try:
+        if backend_id:
+            social = request.user.social_auth.get(id=backend_id, provider=backend)
+            response = requests.get(
+                api_call_url, params={'access_token': social.extra_data['access_token']}
+            )
+            # response.content.user_id = request.user.id
+            # response.content.username = request.user.email
+            return HttpResponse(response)
 
-    return Context()
+        return Context()
+
+    except requests.RequestException:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def signals(request):
-    """This rest endpoint will all logged in singal backends for the logged in user.
+    """This rest endpoint will be all logged in signal backends for the logged in user.
 
     * returns: returns the list of backends and their ids or an error.
     """
 
     backend_list = []
 
-    for e in list(request.user.social_auth.all()):
-        backend_list.append({
-            'id': e.id,
-            'provider': e.provider
-        })
+    try:
+        for e in list(request.user.social_auth.all()):
+            backend_list.append({
+                'id': e.id,
+                'provider': e.provider
+            })
 
-    return HttpResponse(json.dumps(backend_list), content_type='application/json')
+        return HttpResponse(json.dumps(backend_list), content_type='application/json')
+
+    except requests.RequestException:
+        return HttpResponseBadRequest()
 
 
 @login_required
 def proxy(request):
-    """This rest endpoint will manke an API call on the server.
+    """This rest endpoint will make an API call on the server.
 
     #. *request* a request object must contain the variable:
 
@@ -166,11 +178,14 @@ def proxy(request):
 
     * returns: returns the response from the call or an error.
     """
+    try:
+        api_call_url = request.REQUEST.get('api_call_url', '')
+        response = requests.get(api_call_url)
 
-    api_call_url = request.REQUEST.get('api_call_url', '')
-    response = requests.get(api_call_url)
+        return HttpResponse(response)
 
-    return HttpResponse(response)
+    except requests.RequestException:
+        return HttpResponseBadRequest()
 
 
 @login_required
@@ -187,16 +202,20 @@ def signature(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    backend_id = request.REQUEST.get('backend_id', '')
-    api_call_url = request.REQUEST.get('api_call_url', '')
+    try:
+        backend_id = request.REQUEST.get('backend_id', '')
+        api_call_url = request.REQUEST.get('api_call_url', '')
 
-    if backend_id:
-        social = request.user.social_auth.get(id=backend_id, provider=backend)
-        signed = {
-            'api_call_url': api_call_url,
-            'access_token': social.extra_data['access_token']
-        }
+        if backend_id:
+            social = request.user.social_auth.get(id=backend_id, provider=backend)
+            signed = {
+                'api_call_url': api_call_url,
+                'access_token': social.extra_data['access_token']
+            }
 
-        return HttpResponse(signed)
+            return HttpResponse(signed)
 
-    return Context()
+        return Context()
+
+    except requests.RequestException:
+        return HttpResponseBadRequest()

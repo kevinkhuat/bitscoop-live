@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 
 from ografy.apps.xauth.fields import PasswordField
-from ografy.util.forms import ModelForm
+from django.forms import ModelForm
 
 
 class SignUpForm(ModelForm):

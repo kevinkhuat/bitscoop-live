@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 
 from ografy.apps.xauth.fields import PasswordField
-from ografy.util.forms import Form
+from django.forms import Form
 
 
 class UpdateDetailsForm(Form):

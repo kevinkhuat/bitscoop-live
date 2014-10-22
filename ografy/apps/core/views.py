@@ -41,13 +41,13 @@ class SignupView(View):
         if email is not None:
             email_count = User.objects.by_identifier(email).count()
             if email_count > 0:
-                form.add_error('Email is in use.', field='email')
+                form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
         if handle is not None:
             handle_count = User.objects.by_identifier(handle).count()
             if handle_count > 0:
-                form.add_error('Handle is in use.', field='handle')
+                form.add_error('handle', 'Handle is in use.')
 
         if form.is_valid():
             user = User(**form.cleaned_data)

@@ -3,7 +3,7 @@ import json
 
 import six
 
-from smokesignal.util.importlib import import_module
+from ografy.lib.smokesignal.util.importlib import import_module
 
 
 def from_json(data):
@@ -67,7 +67,7 @@ def parse_json_submapping(submapping, json_dict):
 class Parser(object):
     @staticmethod
     def create(name, parser_name=None, mapping={}):
-        module = import_module('smokesignal.parsers.' + name.lower())
+        module = import_module('ografy.lib.smokesignal.parsers.' + name.lower())
         mapping_dict = from_json(mapping)
 
         if parser_name is None:
@@ -86,7 +86,7 @@ class Parser(object):
 
     def parse(self, submapping):
         def _parse(self, json_data):
-            json_dict = from_json(json_data)
+            # json_dict = from_json(json_data)
             output_to_return = {}
 
             if isinstance(submapping, dict):

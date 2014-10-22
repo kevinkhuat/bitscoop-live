@@ -15,4 +15,4 @@ class Signal(object):
         return response.read()
 
 
-from smokesignal.signals.steam import Steam
+from ografy.lib.smokesignal.signals.steam import Steam

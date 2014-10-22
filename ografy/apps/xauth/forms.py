@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django import forms
 
-from ografy.util.forms import Form
+from django.forms import Form
 
 
 class LoginForm(Form):

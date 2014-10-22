@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from smokesignal.parsers import Parser
+from ografy.lib.smokesignal.parsers import Parser
 
 
 class Steam(Parser):

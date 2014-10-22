@@ -52,13 +52,13 @@ class DetailsView(View):
         if email is not None:
             email_count = User.objects.filter(email__iexact=email).exclude(id=user.id).count()
             if email_count > 0:
-                form.add_error('Email is in use.', field='email')
+                form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
         if handle is not None:
             handle_count = User.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
             if handle_count > 0:
-                form.add_error('Handle is in use.', field='handle')
+                form.add_error('handle', 'Handle is in use.')
 
         if form.is_valid():
             update(user, **form.cleaned_data)
@@ -91,7 +91,7 @@ class PasswordView(View):
         form.full_clean()
 
         if not request.user.check_password(form.cleaned_data['password']):
-            form.add_error('Invalid password.', 'password')
+            form.add_error('password', 'Invalid password.')
 
         if form.is_valid():
             user.set_password(form.cleaned_data['new_password'])
