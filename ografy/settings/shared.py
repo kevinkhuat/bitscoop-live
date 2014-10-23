@@ -117,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
     'ografy.apps.xauth.backends.IdentifierBackend',
     'ografy.apps.xauth.backends.DummyTokenBackend',
 )
-LOGIN_URL = '/applogin/'
+LOGIN_URL = '/auth/applogin/'
 PASSWORD_HASHERS = (
     # TODO: Move bcrypt up when not on Dreamhost.
     # 'django.contrib.xauth.hashers.BCryptSHA256PasswordHasher',
@@ -216,3 +216,7 @@ SIGNALS = {
 
     #'mycoolsite': 'https://mycoolsite.com/myapi.js',
 }
+
+FIXTURE_DIRS = (
+   '/ografy/apps/xauth/fixtures',
+)

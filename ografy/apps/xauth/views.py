@@ -18,7 +18,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.template import Context
 from django.views.generic import View
-from social.backends.oauth import BaseOAuth1, BaseOAuth2
+from social.backends.oauth import BaseOAuth1, BaseOAuth2, OAuthAuth
 from social.apps.django_app.utils import psa
 
 from ografy.apps.xauth.forms import LoginForm
@@ -91,7 +91,7 @@ def associate(request, backend):
 
     try:
         if request.user.is_authenticated():
-            if isinstance(backend, BaseOAuth1):
+            if isinstance(request.backend, BaseOAuth1):
                 token = {
                     'oauth_token': request.REQUEST.get('access_token'),
                     'oauth_token_secret': request.REQUEST.get('access_token_secret'),
@@ -99,7 +99,7 @@ def associate(request, backend):
             elif isinstance(request.backend, BaseOAuth2):
                 token = request.REQUEST.get('access_token')
             else:
-                raise HttpResponseBadRequest('Wrong backend type')
+                return HttpResponseBadRequest('Wrong backend type')
 
             user = request.backend.do_auth(token, ajax=True)
             login(request, user)
