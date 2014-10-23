@@ -9,6 +9,7 @@
 """
 import json
 import requests
+import social.backends as social_backends
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -18,7 +19,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.template import Context
 from django.views.generic import View
-from social.backends.oauth import BaseOAuth1, BaseOAuth2, OAuthAuth
+from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.apps.django_app.utils import psa
 
 from ografy.apps.xauth.forms import LoginForm
@@ -127,24 +128,33 @@ def call(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    backend_id = request.REQUEST.get('backend_id', '')
-    api_call_url = request.REQUEST.get('api_call_url', '')
-
     try:
-        if backend_id:
-            social = request.user.social_auth.get(id=backend_id, provider=backend)
+        backend_id = request.REQUEST.get('backend_id', '')
+        api_call_url = request.REQUEST.get('api_call_url', '')
+        backend_module = eval('social_backends.' + backend)
+        social = request.user.social_auth.get(id=backend_id, provider=backend)
+
+        if hasattr(backend_module, 'BaseOAuth2'):
             response = requests.get(
                 api_call_url, params={'access_token': social.extra_data['access_token']}
             )
-            # response.content.user_id = request.user.id
-            # response.content.username = request.user.email
-            return HttpResponse(response)
-
-        return Context()
+        elif hasattr(backend_module, 'BaseOAuth1'):
+            response = requests.get(
+                api_call_url, params={'access_token': social.extra_data['access_token']}
+            )
+        #Todo: Add functionality for known OAuth backends such as Steam to append developer keys as parameters for calls
+        else:
+            response = requests.get(
+                api_call_url
+            )
+        # response.content.user_id = request.user.id
+        # response.content.username = request.user.email
+        return HttpResponse(response)
 
     except requests.RequestException:
         return HttpResponseBadRequest()
 
+    return Context()
 
 @login_required
 def signals(request):

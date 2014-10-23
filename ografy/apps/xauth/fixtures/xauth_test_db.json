@@ -1,84 +1,113 @@
 [
 {
-  "model": "sessions.session",
   "fields": {
-    "session_data": "MWI4NmQzY2ZlMjQzOGFiZTE0ZmIyYTUyNmNjNzIyZjFkNTcyNzM0Njp7InRlc3Rjb29raWUiOiJ3b3JrZWQifQ==",
-    "expire_date": "2014-11-05T18:55:40.898Z"
+    "expire_date": "2014-11-06T20:00:05.037Z",
+    "session_data": "YTk4ZWQ5OTA2YmM5MGQzM2UyMzkxMDJkZmRhYjMyOTU5ZDg4YmE3NDp7ImZhY2Vib29rX3N0YXRlIjoiVFpnVlRxOEZoM1RBeGt2ZEVZczhjWnBneUZDYzRLdTIiLCJfYXV0aF91c2VyX2hhc2giOiJiNzNmOTZkMGQxODNlY2JlM2FmMGUxY2U4ZjJmMzkxOGJiYTUxYzczIiwidHdpdHRlcl9zdGF0ZSI6ImMwUHlJcFJaeVk5aTFJYWNRRDl3SFI2cE9Gb2djM0ZUIiwiX2F1dGhfdXNlcl9pZCI6MSwib3BlbmlkIjp7fSwidGVzdGNvb2tpZSI6IndvcmtlZCIsInR3aXR0ZXJ1bmF1dGhvcml6ZWRfdG9rZW5fbmFtZSI6W10sIl9hdXRoX3VzZXJfYmFja2VuZCI6Im9ncmFmeS5hcHBzLnhhdXRoLmJhY2tlbmRzLklkZW50aWZpZXJCYWNrZW5kIiwiZ29vZ2xlLW9hdXRodW5hdXRob3JpemVkX3Rva2VuX25hbWUiOltdfQ=="
   },
-  "pk": "4kwqu559xovjecyi6gte8t157h1451gx"
+  "model": "sessions.session",
+  "pk": "ay57f6j8nqlqfse9fzj5wyqlyp27ei7m"
 },
 {
-  "model": "sessions.session",
   "fields": {
-    "session_data": "ZTM2MTQyZDYzMjRkYjkzMDBhZTkyN2YxYmE4MjM3NDllOTk4NmU5NTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6Im9ncmFmeS5hcHBzLnhhdXRoLmJhY2tlbmRzLklkZW50aWZpZXJCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiZWNiZThkNTlhNmZjNGU1MzI0MDI3N2MwYmE1Y2UzZjBkNGVkNTRmMSIsImZhY2Vib29rX3N0YXRlIjoieGN5MTU3enRtS0JDdlNlNmFxamIzZ1l1MnZFczRLTjAiLCJvcGVuaWQiOnt9LCJfYXV0aF91c2VyX2lkIjoxLCJ0ZXN0Y29va2llIjoid29ya2VkIn0=",
-    "expire_date": "2014-11-05T18:55:58.076Z"
+    "server_url": "https://open.login.yahooapis.com/openid/op/auth",
+    "salt": "M3mZzrurU6MR5W3EumMyxk7oT8o4TrCy.Q--",
+    "timestamp": 1414094365
   },
-  "pk": "l3dbrkyh2atkfxwep667pkitpez1xoki"
+  "model": "default.nonce",
+  "pk": 1
 },
 {
-  "model": "sessions.session",
   "fields": {
-    "session_data": "ZjkxNGQzN2I1MDAyNjRhMTRmZTY3ZDIyMmQ5NTRiOWYwNTBhYjNlNzp7ImZhY2Vib29rX3N0YXRlIjoiY01ndU9YS3RTSnFubTZTcHZVOWg4ZWdHN1Z0d1VHZ2EiLCJfYXV0aF91c2VyX2lkIjoxLCJ0ZXN0Y29va2llIjoid29ya2VkIiwiX3Nlc3Npb25fZXhwaXJ5IjoxMjA5NjAwLCJvcGVuaWQiOnt9LCJ0d2l0dGVydW5hdXRob3JpemVkX3Rva2VuX25hbWUiOltdLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJvZ3JhZnkuYXBwcy54YXV0aC5iYWNrZW5kcy5JZGVudGlmaWVyQmFja2VuZCIsInR3aXR0ZXJfc3RhdGUiOiJKSE1KZHprSmxOUGtmbWZJY2lxODh1TUhaTWZ2clBpeCIsIl9hdXRoX3VzZXJfaGFzaCI6ImVjYmU4ZDU5YTZmYzRlNTMyNDAyNzdjMGJhNWNlM2YwZDRlZDU0ZjEifQ==",
-    "expire_date": "2014-11-05T19:00:15.799Z"
+    "server_url": "https://open.login.yahooapis.com/openid/op/auth",
+    "handle": "cMqiP05fW.EjJewC0Pl8SNyvFPFx_aXjmmSthAKdpaFMSFoLNLGX6Y63L4whIm6rDMtaXaBMVUs.H.3DBuRnQnuuomgGjuI3lo7JzHvZxzHZPqgDnDuZgVcIcYs1zvUeoO795g--",
+    "secret": "ESes4mwgnY1P/SDdDzsUZmBkglE=\n",
+    "issued": 1414094363,
+    "lifetime": 14400,
+    "assoc_type": "HMAC-SHA1"
   },
-  "pk": "ttksd8x0ro544ofwc9f5n9uyguaoyo3f"
+  "model": "default.association",
+  "pk": 1
 },
 {
-  "model": "xauth.user",
   "fields": {
-    "email": "barankyle30@gmail.com",
-    "handle": "kbaran",
-    "_upper_handle": "KBARAN",
-    "is_active": true,
-    "date_joined": "2014-10-22T18:55:35.449Z",
-    "password_date": "2014-10-22T18:55:35.449Z",
-    "password": "pbkdf2_sha256$12000$dHU6WHPspbhz$BWFOnaKP1zn7reVG9FISK19CamBBZyHtKgfAVn7q8j4=",
+    "groups": [],
+    "password": "pbkdf2_sha256$12000$BGNGhjghHvfb$D/rKBeZT/bC/GvDbR62rIOyTihNpBpgxlfvDVV128YA=",
     "first_name": "Kyle",
-    "is_superuser": false,
-    "last_login": "2014-10-22T18:59:26.203Z",
-    "last_name": "Baran",
+    "email": "barankyle30@gmail.com",
     "is_staff": false,
     "_upper_email": "BARANKYLE30@GMAIL.COM",
+    "is_verified": false,
+    "last_login": "2014-10-23T18:13:14.682Z",
+    "is_active": true,
+    "_upper_handle": "KBARAN",
+    "is_superuser": false,
+    "date_joined": "2014-10-23T18:13:14.293Z",
+    "password_date": "2014-10-23T18:13:14.292Z",
+    "handle": "kbaran",
     "user_permissions": [],
-    "groups": [],
-    "is_verified": false
+    "last_name": "Baran"
   },
+  "model": "xauth.user",
   "pk": 1
 },
 {
-  "model": "default.usersocialauth",
   "fields": {
-    "extra_data": "{\"player\": {\"personaname\": \"barankyle\", \"avatarmedium\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg\", \"personastate\": 0, \"communityvisibilitystate\": 3, \"profileurl\": \"http://steamcommunity.com/profiles/76561198113101106/\", \"avatarfull\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg\", \"personastateflags\": 0, \"timecreated\": 1383361489, \"steamid\": \"76561198113101106\", \"avatar\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg\", \"primaryclanid\": \"103582791429521408\", \"lastlogoff\": 1394744200}}",
-    "uid": "76561198113101106",
     "user": [
       "barankyle30@gmail.com"
     ],
-    "provider": "steam"
+    "extra_data": "{\"id\": \"1574877199406710\", \"access_token\": \"CAAENhLtd0xIBADfieuaKeOh1Ngi4E3e3NfZB46sp51oZA83HtGZA5zvD6rhPTCjRCqiTZAppw2mcg71w8ipS6ZCjDr7qzvYcPFlbraqR5D9e3ZCjvayYcylunWjrpKYZAGxffaxW5niTAl3InRS5GwZC8HCgKswEnWUaEE4zoSZBYgsJLXuW499AZBhqPFyANoXlZBLojJXdk1q67G6gFkZC3tGA\", \"expires\": \"5183880\"}",
+    "provider": "facebook",
+    "uid": "1574877199406710"
   },
+  "model": "default.usersocialauth",
   "pk": 1
 },
 {
-  "model": "default.usersocialauth",
   "fields": {
-    "extra_data": "{\"expires\": \"5107081\", \"id\": \"1574877199406710\", \"access_token\": \"CAAENhLtd0xIBANORRXQtIZAfL4kfYTpSWeaUJIP3fej26YySrpSyCDv2xq5TPP0J879rFZCYe8U32YQRNTNAlNPtHCviGSQWMWnQAZB9cIiRFbyhktJCZCxBQgYxJBuVFo26gLdJ7lJrbbUiiVoiSPuYZBsEJbGyjy50ZB8CqK7t66BSqIdVcEi0jREPTSEyy0n4xetVdfASuZCgadf9R0h\"}",
-    "uid": "1574877199406710",
     "user": [
       "barankyle30@gmail.com"
     ],
-    "provider": "facebook"
+    "extra_data": "{}",
+    "provider": "yahoo",
+    "uid": "https://me.yahoo.com/a/kFJGIJ4Y1uOoKgoJ72cuONkYFoWJqw--#91aae"
   },
+  "model": "default.usersocialauth",
   "pk": 2
 },
 {
-  "model": "default.usersocialauth",
   "fields": {
-    "extra_data": "{\"access_token\": {\"screen_name\": \"kbaran7\", \"oauth_token\": \"2840684163-s1g1ESQuOzlnoWuXjIvl6fgEiUvqcYuwjrIGZxf\", \"oauth_token_secret\": \"I3oxSTvEaQ09DcLaHwZ2vUcyyT5EUyMX6ckB0xJdrbHoY\", \"user_id\": \"2840684163\"}, \"id\": 2840684163}",
-    "uid": "2840684163",
     "user": [
       "barankyle30@gmail.com"
     ],
-    "provider": "twitter"
+    "extra_data": "{\"id\": 2840684163, \"access_token\": {\"user_id\": \"2840684163\", \"oauth_token\": \"2840684163-s1g1ESQuOzlnoWuXjIvl6fgEiUvqcYuwjrIGZxf\", \"screen_name\": \"kbaran7\", \"oauth_token_secret\": \"I3oxSTvEaQ09DcLaHwZ2vUcyyT5EUyMX6ckB0xJdrbHoY\"}}",
+    "provider": "twitter",
+    "uid": "2840684163"
   },
+  "model": "default.usersocialauth",
   "pk": 3
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"access_token\": {\"oauth_token\": \"1/7UykvTKaB_qhDrWRe21cnyKpviz2Y8ShlGzD0meIAtAMEudVrK5jSpoR30zcRFq6\", \"oauth_token_secret\": \"L41hAi-_jM_jUKjqmm6dKFta\"}}",
+    "provider": "google-oauth",
+    "uid": "barankyle30@gmail.com"
+  },
+  "model": "default.usersocialauth",
+  "pk": 4
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"player\": {\"avatarfull\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg\", \"communityvisibilitystate\": 3, \"steamid\": \"76561198113101106\", \"personastateflags\": 0, \"personastate\": 0, \"primaryclanid\": \"103582791429521408\", \"avatar\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg\", \"timecreated\": 1383361489, \"avatarmedium\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg\", \"profileurl\": \"http://steamcommunity.com/profiles/76561198113101106/\", \"personaname\": \"barankyle\", \"lastlogoff\": 1394744200}}",
+    "provider": "steam",
+    "uid": "76561198113101106"
+  },
+  "model": "default.usersocialauth",
+  "pk": 5
 }
 ]
