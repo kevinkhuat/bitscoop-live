@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 import json
 
 class TestXAuthViews(SimpleTestCase):
-
     fixtures = ['xauth_test_db']
 
     #Test that you can sign up, then logout
@@ -30,9 +29,8 @@ class TestXAuthViews(SimpleTestCase):
         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
         self.assertEqual(response.status_code, 302)
 
-    #Test that you can sign up, log out, then log in
     def test_LoginView(self):
-
+        #Test that you can sign up, log out, then log in
         signup_form_info = {
             'email': 'barankyle11@yahoo.com',
             'handle': 'kyletest11',
@@ -112,7 +110,6 @@ class TestXAuthViews(SimpleTestCase):
         response = self.client.post(reverse('core_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
         self.assertEqual(response.status_code, 302)
-
 
         json_data=open('ografy/apps/xauth/tests/xauth.json')
         test = json.load(json_data)

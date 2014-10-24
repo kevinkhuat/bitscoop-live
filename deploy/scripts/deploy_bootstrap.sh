@@ -21,5 +21,5 @@ mkdir "ografy"
 cd ografy
 git clone 'https://'$1'@github.com/sjberry/ografy.git'
 pip install -r requirements.txt
-python3.4 manage.py syncdb
+python3.4 manage.py migrate
 python3.4 manage.py validate
