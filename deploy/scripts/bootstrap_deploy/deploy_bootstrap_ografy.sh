@@ -1,10 +1,11 @@
 #!/bin/sh
-# This file bootstraps deployment from vagrantfile for dev test and production
 # @authors Kyle Baran, Liam Broza
-curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python3.4 -
-mkdir "ografy"
-cd ografy
-git clone 'https://'$1'@github.com/sjberry/ografy.git'
-pip install -r requirements.txt 
-python3.4 manage.py migrate
-python3.4 manage.py validate
+cd /ografy
+sudo curl -L -u mrhegemon:ntsupport5806 https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz | sudo tar zx
+sudo chown -R kbaran:kbaran /ografy
+sudo chmod a+x /ografy
+cd /ografy/ografy-0.1.0
+yes | sudo /ografy/prod_env/bin/pip  install -r ografy/ografy-0.1.0/requirements/all.txt 
+python manage.py migrate
+python manage.py validate
+python manage.py collectstatic
