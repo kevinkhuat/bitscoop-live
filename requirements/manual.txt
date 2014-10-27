@@ -1,0 +1,7 @@
+django
+django-filter
+django-haystack
+django-tastypie
+python-bcrypt
+python-social-auth
+six
