@@ -31,7 +31,7 @@ class LoginView(View):
     """
 
     def get(self, request):
-        return render(request, 'xauth/applogin.html', {
+        return render(request, 'xauth/login.html', {
             'title': 'Ografy - Login'
         })
 
