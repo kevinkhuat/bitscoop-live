@@ -1,22 +1,21 @@
 =begin
-Arguments Required:
+Arguments Required to be updated in file:
 
-Set environment variable:
-export NAME_PW='name:password'
-vagrant up
-
-Clear bash history:
-cat /dev/null > ~/.bash_history
+Gitubh
+Name, Password
 
 @Authors Kyle Baran & William Broza
 =end
 
 Vagrant.configure('2') do |config|
- config.vm.provider :virtualbox do |vb, override|
+	config.vm.provider :virtualbox do |vb, override|
 		config.vm.box = "chef/centos-6.5"
 		config.vm.network "private_network", ip: "192.168.33.10"
-		config.vm.synced_folder "../", "/vagrant_data"
+		config.vm.synced_folder "../../../", "/ografy_source"
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
-		config.vm.provision "shell", path: "../../deployment_scripts/deploy_bootstrap.sh", args: ENV['NAME_PW']
-  end
+		config.vm.provision "shell" do |s|
+			s.path = "../../deployment_scripts/manage_deploy_bootstrap.sh"
+			s.args = ["NAME", "PASSWORD"]
+		end
+	end
 end

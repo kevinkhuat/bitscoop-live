@@ -13,4 +13,3 @@ sudo curl http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.ta
 sudo tar xzvf passenger.tar.gz
 cd passenger-4.0.53/
 yes | sudo ./bin/passenger-install-nginx-module
-cd /
