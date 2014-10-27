@@ -10,8 +10,9 @@ yes | sudo ./configure
 yes | sudo make && sudo make altinstall
 export PATH="$PATH:/usr/local/bin/python3.4"
 # curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python3.4 -
-yes | wget https://bootstrap.pypa.io/ez_setup.py -O - | sudo python3.4
-yes | sudo /usr/local/bin/easy_install pip
+sudo wget https://bootstrap.pypa.io/ez_setup.py
+sudo /usr/local/bin/python3.4 ez_setup.py
+sudo /usr/local/bin/easy_install pip
 sudo mkdir /ografy
 yes | sudo /usr/local/bin/pip install virtualenv
 cd /ografy/
