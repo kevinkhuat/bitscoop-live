@@ -1,7 +1,7 @@
 #!/bin/sh
 # @authors Kyle Baran, Liam Broza
 cd /
-sudo yum install sqlite-devel
+yes | sudo yum install sqlite-devel
 sudo wget https://www.python.org/ftp/python/3.4.1/Python-3.4.1.tar.xz
 sudo xz -d Python-3.4.1.tar.xz
 sudo tar -xvf Python-3.4.1.tar
