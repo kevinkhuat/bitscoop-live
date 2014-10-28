@@ -1,24 +1,25 @@
 #!/bin/sh
 # @authors Kyle Baran, Liam Broza
+# $1 argument is github username:password
 
 # Update OS
-yes | sudo yum update
+sudo yum update -y
 
 # Install necessary development tools
 #yes | sudo yum groupinstall -y development
-yes | sudo yum install wget
-yes | sudo yum install gcc
-yes | sudo yum install openssl-devel
-yes | sudo yum install zlib-devel
-yes | sudo yum install sqlite-devel
-yes | sudo yum install libcurl-devel
-yes | sudo yum install git
+sudo yum install -y wget
+sudo yum install -y gcc
+sudo yum install -y openssl-devel
+sudo yum install -y zlib-devel
+sudo yum install -y sqlite-devel
+sudo yum install -y libcurl-devel
+sudo yum install -y git
 
 # Get ografy code and put it in the home dir
 mkdir ~/sites
 mkdir ~/sites/ografy.io
 mkdir ~/sites/ografy.io/www
-# sudo curl -L -u mrhegemon:p https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz > ografy.tar.gz
+# sudo curl -L -u $1 https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz > ografy.tar.gz
 tar -xzf ografy.tar.gz ~/sites/ografy.io/www
 
 # install Python
@@ -54,11 +55,11 @@ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/ografy.io
 
 # Passenger dependances
-yes | sudo yum install ruby rubygem-rake
-yes | sudo yum install zlib-devel
-yes | sudo yum install ruby-devel
-yes | sudo /usr/bin/gem install rack
-yes | sudo /usr/bin/gem install daemon_controller
+sudo yum install -y ruby rubygem-rake
+sudo yum install -y zlib-devel
+sudo yum install -y ruby-devel
+sudo /usr/bin/gem install -y rack
+sudo /usr/bin/gem install -y daemon_controller
 
 # install passenger
 sudo mkdir /opt/passenger
