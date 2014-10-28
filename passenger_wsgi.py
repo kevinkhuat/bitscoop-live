@@ -2,12 +2,12 @@ import os
 import sys
 
 
-# VENV = 'ografy_env'
-# BASEDIR = os.path.join(os.environ['HOME'], 'bin', 'python27', 'environments', VENV)
-# INTERP = os.path.expanduser(os.path.join(BASEDIR, 'bin', 'python'))
+VENV = 'ografy_env'
+BASEDIR = os.path.join(os.environ['HOME'], VENV)
+INTERP = os.path.expanduser(os.path.join(BASEDIR, 'bin', 'python'))
 
-BASEDIR = '~/ografy_env/'
-INTERP = '~/ografy_env/bin/python3.4'
+# BASEDIR = '~/ografy_env/'
+# INTERP = '~/ografy_env/bin/python3.4'
 
 if sys.executable != INTERP:
     os.execl(INTERP, INTERP, *sys.argv)
