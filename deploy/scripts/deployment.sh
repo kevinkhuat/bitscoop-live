@@ -44,8 +44,8 @@ sudo yum install -y zlib-devel
 
 
 # Additional Passenger gem dependances
-sudo /usr/bin/gem install -y daemon_controller
-sudo /usr/bin/gem install -y rack
+yes | sudo /usr/bin/gem install daemon_controller
+yes | sudo /usr/bin/gem install rack
 
 
 # Download source tarballs and signatures
@@ -76,10 +76,10 @@ gpg --verify Python-3.4.2.tgz.asc
 # Configure Python install, build binaries from source, and install
 tar -xzf Python-3.4.2.tgz
 cd Python-3.4.2
-./configure
+./configure --with-ensurepip=install
 make
 # Install package with the `with-ensurepip` flag set to install pip with Python (works with Python 3.4+)
-sudo make altinstall --with-ensurepip=install
+sudo make altinstall
 # Ensure pip package manager is up to date
 sudo /usr/local/bin/pip3.4 install pip
 # Install virtualenv to manage virtual Python environments
@@ -97,16 +97,16 @@ cd ..
 
 
 # Copy in Passenger and nginx configurations
-sudo cp -r ografy/deploy/scripts/files/nginx /etc/init.d
-sudo chmod +x /etc/init.d/nginx
+# sudo cp ografy/deploy/scripts/files/nginx /etc/init.d
+# sudo chmod +x /etc/init.d/nginx
 sudo mkdir /opt/nginx/conf
-sudo cp -r ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
+sudo cp ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
 
 
 # Create Python virtual environments
 mkdir environments
 cd environments
-virtualenv --no-site-packages ografy.dev-3.4
+/usr/local/bin/virtualenv --no-site-packages ografy.dev-3.4
 #virtualenv --no-site-packages ografy.test-3.4
 #virtualenv --no-site-packages ografy.prod-3.4
 cd ..
@@ -123,12 +123,14 @@ mv ografy sites/ografy.io/www
 
 # Install Ografy dependencies with pip and set up application
 source environments/ografy.dev-3.4/bin/activate
-pip install -r ografy/requirements/manual.txt
+cd sites/ografy.io/www/ografy/
+pip install -r requirements/manual.txt
 yes | python manage.py migrate
 yes | python manage.py validate
-yes | python manage.py collectstatic
+yes yes | python manage.py collectstatic
 deactivate
-mv build/static/* sites/ografy.io/www/public
+mv build/static/* ../public
+cd ../../../..
 
 
 # Cleanup install script cruft
