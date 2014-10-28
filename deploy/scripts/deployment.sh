@@ -89,11 +89,13 @@ cd ..
 
 # Install Passenger w/ nginx
 tar -xzf passenger-4.0.53.tar.gz
-cd passenger-4.0.53
 sudo mkdir /opt/passenger
+sudo mv passenger-4.0.53 /opt/passenger/
+cd /opt/passenger/passenger-4.0.53
 yes | sudo ./bin/passenger-install-nginx-module --languages python
 export PATH="$PATH:/opt/nginx/sbin"
-cd ..
+# TODO: Move back to where this block began
+cd ~/
 
 
 # Copy in Passenger and nginx configurations
