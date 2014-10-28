@@ -1,5 +1,6 @@
 #!/bin/sh
 # @authors Kyle Baran, Liam Broza
+
 yes | sudo yum update
 # Install necessary development tool compiler for C compiler and install Python 3 for production virtual environment
 #yes | sudo yum groupinstall -y development
@@ -16,3 +17,4 @@ mkdir ~/sites/ografy.io/www
 tar -xzf ografy.tar.gz ~/sites/ografy.io/www
 cd ~/sites/ografy.io/www/deploy/scripts/bootstrap_deploy
 sh 2_deploy_bootstrap_passenger.sh
+
