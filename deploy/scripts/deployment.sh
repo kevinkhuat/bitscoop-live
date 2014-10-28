@@ -1,6 +1,5 @@
 #!/bin/bash
 # @authors Kyle Baran, Liam Broza
-# $1 argument is github username:password
 
 
 # Prep SSL by manually executing these commands on host machine and copying in the certs to www root
@@ -71,7 +70,7 @@ gpg --recv-keys 6A45C816 36580288 7D9DC8D2 18ADD4FF A4135B38 A74B06BF EA5BBD71 E
 # Verify downloaded files where possible
 # TODO: Fail on bad condition
 gpg --verify Python-3.4.2.tgz.asc
-# TODO: Verify Passernger tarball?
+# TODO: Verify Passenger tarball?
 
 
 # Configure Python install, build binaries from source, and install
@@ -79,16 +78,13 @@ tar -xzf Python-3.4.2.tgz
 cd Python-3.4.2
 ./configure
 make
+# Install package with the `with-ensurepip` flag set to install pip with Python (works with Python 3.4+)
 sudo make altinstall --with-ensurepip=install
-cd ..
-
-
-# Ensure pip is up to date
+# Ensure pip package manager is up to date
 sudo /usr/local/bin/pip3.4 install pip
-
-
 # Install virtualenv to manage virtual Python environments
 sudo /usr/local/bin/pip3.4 install virtualenv
+cd ..
 
 
 # Install Passenger w/ nginx
@@ -125,7 +121,7 @@ mkdir sites/ografy.io/www/tmp
 mv ografy sites/ografy.io/www
 
 
-# Install Ografy dependencies with pip
+# Install Ografy dependencies with pip and set up application
 source environments/ografy.dev-3.4/bin/activate
 pip install -r ografy/requirements/manual.txt
 yes | python manage.py migrate
