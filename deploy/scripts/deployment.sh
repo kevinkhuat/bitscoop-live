@@ -44,99 +44,131 @@ sudo yum install -y zlib-devel
 
 
 # Additional Passenger gem dependances
-sudo /usr/bin/gem install -y daemon_controller
-sudo /usr/bin/gem install -y rack
+[ ! -n "`gem list | grep daemon_controller`" ] && yes | sudo /usr/bin/gem install daemon_controller
+[ ! -n "`gem list | grep rack`" ] && yes | sudo /usr/bin/gem install rack
 
 
 # Download source tarballs and signatures
-# TODO: Check file for existence (e.g. we don't want a Python-3.4.2.tgz.1)
 # FIXME: For now scp a tar'd copy of the local working Ografy repo into virtual machine.
+[ ! -f ografy.tar.gz ] && echo "File ografy.tar.gz not found. Aborting..." && exit 1
 #curl -L -u 18412743985:DolfinParty9 https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz > ografy.tar.gz
-wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
-wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
-wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz.asc
+[ ! -f passenger-4.0.53.tar.gz ] && wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
+[ ! -f Python-3.4.2.tgz ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
+#[ ! -f Python-3.4.2.tgz.asc ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz.asc
 
 
-# Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
-tar -xzf ografy.tar.gz
-
-
-# Import Python release manager/verifier PGP keys
+# Import PGP keys
+# TODO: Don't reimport if you've already retrieved keys.
 # TODO: Fail on bad condition
-gpg --recv-keys 6A45C816 36580288 7D9DC8D2 18ADD4FF A4135B38 A74B06BF EA5BBD71 ED9D77D5 E6DF025C 6F5E1540 F73C700D
-# TODO: Import other PGP keys as required.
+# Python release managers/verifiers
+#gpg --recv-keys 6A45C816 36580288 7D9DC8D2 18ADD4FF A4135B38 A74B06BF EA5BBD71 ED9D77D5 E6DF025C 6F5E1540 F73C700D
+# TODO: Import Passenger PGP keys.
+# TODO: Import our own PGP key?
 
 
 # Verify downloaded files where possible
+# TODO: Don't reverify if you've already verified.
 # TODO: Fail on bad condition
-gpg --verify Python-3.4.2.tgz.asc
+#gpg --verify Python-3.4.2.tgz.asc
 # TODO: Verify Passenger tarball?
+# TODO: Verify Ografy tarball? Do we care about signing our own source? How paranoid do we want to get?
+
+
+# Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
+[ ! -d ografy ] && tar -xzf ografy.tar.gz
+
+
+# Create checkpoints folder.
+[ ! -d checkpoints ] && mkdir checkpoints
 
 
 # Configure Python install, build binaries from source, and install
-tar -xzf Python-3.4.2.tgz
-cd Python-3.4.2
-./configure
-make
-# Install package with the `with-ensurepip` flag set to install pip with Python (works with Python 3.4+)
-sudo make altinstall --with-ensurepip=install
-# Ensure pip package manager is up to date
-sudo /usr/local/bin/pip3.4 install pip
-# Install virtualenv to manage virtual Python environments
-sudo /usr/local/bin/pip3.4 install virtualenv
-cd ..
+if [ ! -f checkpoints/python ]
+then
+    [ -d Python-3.4.2 ] &&  rm -rf Python-3.4.2
+
+    tar -xzf Python-3.4.2.tgz
+    cd Python-3.4.2
+    # Configure install with the `with-ensurepip` flag set to install pip with Python (works with Python 3.4+)
+    ./configure --with-ensurepip=install
+    make
+    sudo make altinstall
+    # Ensure pip package manager is up to date
+    sudo /usr/local/bin/pip3.4 install pip
+    # Install virtualenv to manage virtual Python environments
+    sudo /usr/local/bin/pip3.4 install virtualenv
+    cd ..
+
+    touch checkpoints/python
+fi
 
 
 # Install Passenger w/ nginx
-tar -xzf passenger-4.0.53.tar.gz
-cd passenger-4.0.53
-sudo mkdir /opt/passenger
-yes | sudo ./bin/passenger-install-nginx-module --languages python
-export PATH="$PATH:/opt/nginx/sbin"
-cd ..
+if [ ! -f checkpoints/passenger ]
+then
+    [ -d passenger-4.0.53 ] && rm -rf passenger-4.0.53
+
+    tar -xzf passenger-4.0.53.tar.gz
+    cd passenger-4.0.53
+    [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
+    yes | sudo ./bin/passenger-install-nginx-module --languages python
+    export PATH="$PATH:/opt/nginx/sbin"
+    cd ..
+
+    touch checkpoints/passenger
+fi
 
 
-# Copy in Passenger and nginx configurations
-sudo cp -r ografy/deploy/scripts/files/nginx /etc/init.d
+# Configure Passenger install in Passenger and nginx configurations
+sudo cp ografy/deploy/scripts/files/nginx /etc/init.d
 sudo chmod +x /etc/init.d/nginx
-sudo mkdir /opt/nginx/conf
-sudo cp -r ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
+[ ! -d /opt/nginx/conf ] && sudo mkdir /opt/nginx/conf
+sudo cp ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
 
 
 # Create Python virtual environments
-mkdir environments
-cd environments
-virtualenv --no-site-packages ografy.dev-3.4
-#virtualenv --no-site-packages ografy.test-3.4
-#virtualenv --no-site-packages ografy.prod-3.4
-cd ..
-
-
-# Prepare Ografy project
-mkdir sites
-mkdir sites/ografy.io
-mkdir sites/ografy.io/www
-mkdir sites/ografy.io/www/public
-mkdir sites/ografy.io/www/tmp
-mv ografy sites/ografy.io/www
+if [ ! -d environments ]
+then
+    mkdir environments
+    cd environments
+    # TODO: Environment toggle.
+    /usr/local/bin/virtualenv --no-site-packages ografy.dev-3.4
+    #/usr/local/bin/virtualenv --no-site-packages ografy.test-3.4
+    #/usr/local/bin/virtualenv --no-site-packages ografy.prod-3.4
+    cd ..
+fi
 
 
 # Install Ografy dependencies with pip and set up application
 source environments/ografy.dev-3.4/bin/activate
 pip install -r ografy/requirements/manual.txt
-yes | python manage.py migrate
-yes | python manage.py validate
-yes | python manage.py collectstatic
+yes | python ografy/manage.py migrate
+yes | python ografy/manage.py validate
+yes yes | python ografy/manage.py collectstatic
 deactivate
-mv build/static/* sites/ografy.io/www/public
 
 
-# Cleanup install script cruft
-#rm Python-3.4.2.tgz
-#rm Python-3.4.2.tgz.asc
-#rm -rf Python-3.4.2
+# Deploy Ografy project
+[ ! -d sites ] && mkdir sites
+[ ! -d sites/ografy.io ] && mkdir sites/ografy.io
+[ ! -d sites/ografy.io/www ] && mkdir sites/ografy.io/www
+[ ! -d sites/ografy.io/www/public ] && mkdir sites/ografy.io/www/public
+[ ! -d sites/ografy.io/www/tmp ] && mkdir sites/ografy.io/www/tmp
+mv -f ografy/build/static/* sites/ografy.io/www/public
+cp -r ografy sites/ografy.io/www && mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
 
 # Knock down the house of cards
-sudo systemctl daemon-reload
-sudo /etc/init.d/nginx start
+#sudo systemctl daemon-reload
+#sudo /etc/init.d/nginx start
+
+
+# Cleanup install script cruft if everything succeeds
+#rm ografy.tar.gz
+#rm -rf ografy
+#rm passenger-4.0.53.tar.gz
+#rm -rf passenger-4.0.53
+#rm Python-3.4.2.tgz
+#rm Python-3.4.2.tgz.asc
+#rm -rf Python-3.4.2
+#rm -rf checkpoints
