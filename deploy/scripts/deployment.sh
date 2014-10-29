@@ -110,8 +110,8 @@ then
 
     tar -xzf passenger-4.0.53.tar.gz
     [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
-    sudo cp -R passenger-4.0.53 /opt/passenger
-    yes | sudo ./opt/passenger/passenger-4.0.53/bin/passenger-install-nginx-module --languages python
+    sudo cp -r passenger-4.0.53 /opt/passenger
+    yes | sudo /opt/passenger/passenger-4.0.53/bin/passenger-install-nginx-module --languages python
     export PATH="$PATH:/opt/nginx/sbin"
 
     touch checkpoints/passenger
@@ -153,12 +153,6 @@ deactivate
 [ ! -d sites/ografy.io/www ] && mkdir sites/ografy.io/www
 [ ! -d sites/ografy.io/www/public ] && mkdir sites/ografy.io/www/public
 [ ! -d sites/ografy.io/www/tmp ] && mkdir sites/ografy.io/www/tmp
-sudo chmod g+x,o+x /home
-sudo chmod g+x,o+x /home/ografy
-sudo chmod g+x,o+x /home/ografy/sites
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www/passenger_wsgi.py
 mv -f ografy/build/static/* sites/ografy.io/www/public
 cp -r ografy sites/ografy.io/www && mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
