@@ -164,8 +164,7 @@ cp -r ografy sites/ografy.io/www && mv sites/ografy.io/www/ografy/passenger_wsgi
 
 
 # Knock down the house of cards
-#sudo systemctl daemon-reload
-#sudo /etc/init.d/nginx start
+sudo /opt/nginx/sbin/nginx -s reload
 
 
 # Cleanup install script cruft if everything succeeds
