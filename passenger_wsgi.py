@@ -14,5 +14,5 @@ sys.path.append(os.path.join(os.getcwd(), 'ografy'))
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.production'
 
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
+import django.core.wsgi
+application = django.core.wsgi.get_wsgi_application()
