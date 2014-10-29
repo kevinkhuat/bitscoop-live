@@ -153,6 +153,12 @@ deactivate
 [ ! -d sites/ografy.io/www ] && mkdir sites/ografy.io/www
 [ ! -d sites/ografy.io/www/public ] && mkdir sites/ografy.io/www/public
 [ ! -d sites/ografy.io/www/tmp ] && mkdir sites/ografy.io/www/tmp
+sudo chmod g+x,o+x /home
+sudo chmod g+x,o+x /home/ografy
+sudo chmod g+x,o+x /home/ografy/sites
+sudo chmod g+x,o+x /home/ografy/sites/ografy.io/
+sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www
+sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www/passenger_wsgi.py
 mv -f ografy/build/static/* sites/ografy.io/www/public
 cp -r ografy sites/ografy.io/www && mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
