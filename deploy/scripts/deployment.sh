@@ -109,11 +109,10 @@ then
     [ -d passenger-4.0.53 ] && rm -rf passenger-4.0.53
 
     tar -xzf passenger-4.0.53.tar.gz
-    cd passenger-4.0.53
     [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
-    yes | sudo ./bin/passenger-install-nginx-module --languages python
+    sudo cp -r passenger-4.0.53 /opt/passenger
+    yes | sudo /opt/passenger/passenger-4.0.53/bin/passenger-install-nginx-module --languages python
     export PATH="$PATH:/opt/nginx/sbin"
-    cd ..
 
     touch checkpoints/passenger
 fi
