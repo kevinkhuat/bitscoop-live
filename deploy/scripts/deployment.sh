@@ -148,22 +148,30 @@ deactivate
 
 
 # Deploy Ografy project
-[ ! -d sites ] && mkdir sites
-[ ! -d sites/ografy.io ] && mkdir sites/ografy.io
-[ ! -d sites/ografy.io/www ] && mkdir sites/ografy.io/www
-[ ! -d sites/ografy.io/www/public ] && mkdir sites/ografy.io/www/public
-[ ! -d sites/ografy.io/www/tmp ] && mkdir sites/ografy.io/www/tmp
-sudo chmod g+x,o+x /home
-sudo chmod g+x,o+x /home/ografy
-sudo chmod g+x,o+x /home/ografy/sites
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www
-sudo chmod g+x,o+x /home/ografy/sites/ografy.io/www/passenger_wsgi.py
-mv -f ografy/build/static/* sites/ografy.io/www/public
-cp -r ografy sites/ografy.io/www && mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
+[ -d sites ] && rm -rf sites
+mkdir sites
+mkdir sites/ografy.io
+mkdir sites/ografy.io/www
+mkdir sites/ografy.io/www/public
+mkdir sites/ografy.io/www/tmp
+#chmod g+x,o+x
+#chmod g+x,o+x ..
+#chmod g+x,o+x sites
+#chmod g+x,o+x sites/ografy.io/
+#chmod g+x,o+x sites/ografy.io/www
+#chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
+cp -r ografy sites/ografy.io/www
+mv ografy/build/static/* sites/ografy.io/www/public
+mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
 
 # Knock down the house of cards
+# FIXME: This conditional is necessary to handle a known bug of the nginx version installed with Passenger.
+if [ ! -f /opt/nginx/logs/nginx.pid ]
+then
+    sudo systemctl daemon-reload
+    sudo /etc/init.d/nginx start
+fi
 sudo /opt/nginx/sbin/nginx -s reload
 
 
