@@ -7,7 +7,7 @@ from ografy.settings.signals import *
 DEBUG = False
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['.ografy.io']
+ALLOWED_HOSTS = ['.ografy.io', 'localhost']
 
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', TEMPLATE_LOADERS),

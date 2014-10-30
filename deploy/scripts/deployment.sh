@@ -170,7 +170,7 @@ mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 if [ ! -f /opt/nginx/logs/nginx.pid ]
 then
     sudo systemctl daemon-reload
-    sudo /etc/init.d/nginx start
+    sudo /etc/init.d/nginx start &
 fi
 sudo /opt/nginx/sbin/nginx -s reload
 
