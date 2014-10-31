@@ -50,6 +50,9 @@ sudo yum install -y zlib-devel
 
 # Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
 [ ! -d ografy ] && tar -xzf ografy.tar.gz
+# Create empty folders for logs and databases
+[ ! -d ografy/databases ] && mkdir ografy/databases
+[ ! -d ografy/logs ] && mkdir ografy/logs
 
 
 # Create checkpoints folder.
@@ -93,13 +96,13 @@ fi
 
 
 # Configure Passenger install in Passenger and nginx configurations
-sudo cp ografy/deploy/scripts/files/nginx /etc/init.d
+sudo cp ografy/deploy/files/nginx/nginx /etc/init.d
 sudo chmod +x /etc/init.d/nginx
 [ ! -d /opt/nginx/conf ] && sudo mkdir /opt/nginx/conf
-sudo cp ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
+sudo cp ografy/deploy/files/nginx/nginx.conf /opt/nginx/conf
 [ ! -d /opt/nginx/conf/certs ] && sudo mkdir /opt/nginx/conf/certs
-sudo cp ografy/deploy/certs/server.crt /opt/nginx/conf/certs
-sudo cp ografy/deploy/certs/server.key /opt/nginx/conf/certs
+sudo cp ografy/deploy/files/certs/server.crt /opt/nginx/conf/certs
+sudo cp ografy/deploy/files/certs/server.key /opt/nginx/conf/certs
 
 
 # Create Python virtual environments
@@ -107,20 +110,17 @@ if [ ! -d environments ]
 then
     mkdir environments
     cd environments
-    # TODO: Environment toggle.
-    /usr/local/bin/virtualenv --no-site-packages ografy.dev-3.4
-    #/usr/local/bin/virtualenv --no-site-packages ografy.test-3.4
-    #/usr/local/bin/virtualenv --no-site-packages ografy.prod-3.4
+    /usr/local/bin/virtualenv --no-site-packages ografy-3.4
     cd ..
 fi
 
 
 # Install Ografy dependencies with pip and set up application
-source environments/ografy.dev-3.4/bin/activate
+source environments/ografy-3.4/bin/activate
 pip install -r ografy/requirements/manual.txt
-yes | python ografy/manage.py migrate
-yes | python ografy/manage.py validate
-yes yes | python ografy/manage.py collectstatic
+yes | python ografy/manage_virtual.py migrate
+yes | python ografy/manage_virtual.py validate
+yes yes | python ografy/manage_virtual.py collectstatic
 deactivate
 
 
@@ -136,7 +136,7 @@ mkdir sites/ografy.io/static/public
 mv ografy/build/static/* sites/ografy.io/static/public
 rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
-mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
+cp ografy/deploy/files/passenger/virtual/passenger_wsgi.py sites/ografy.io/www
 
 # Move certificates
 
