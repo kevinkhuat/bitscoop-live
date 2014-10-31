@@ -24,8 +24,6 @@ DATABASES = {
     },
 }
 
-print(ROOT_PATH)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
