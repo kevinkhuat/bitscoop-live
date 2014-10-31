@@ -3,14 +3,16 @@ import sys
 
 
 VENV = 'ografy.dev-3.4'
-BASEDIR = os.path.join(os.environ['HOME'], 'environments', VENV)
-INTERP = os.path.expanduser(os.path.join(BASEDIR, 'bin', 'python'))
+HOME = os.path.expanduser('~')
+BASEDIR = os.path.join(HOME, 'environments', VENV)
+INTERP = os.path.join(BASEDIR, 'bin', 'python')
+CWD = os.getcwd()
 
 if sys.executable != INTERP:
     os.execl(INTERP, INTERP, *sys.argv)
 
-sys.path.append(os.path.expanduser(BASEDIR))
-sys.path.append(os.path.join(os.getcwd(), 'ografy'))
+sys.path.append(BASEDIR)
+sys.path.append(os.path.join(CWD, 'ografy'))
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.production'
 

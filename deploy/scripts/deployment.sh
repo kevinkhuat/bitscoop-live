@@ -2,16 +2,6 @@
 # @authors Kyle Baran, Liam Broza
 
 
-# Prep SSL by manually executing these commands on host machine and copying in the certs to www root
-# TODO: Make programatic / add real signed certs
-# sudo openssl genrsa -des3 -out server.key 1024
-# sudo openssl req -new -key server.key -out server.csr
-# sudo cp server.key server.key.org
-# sudo openssl rsa -in server.key.org -out server.key
-# sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-# TODO: Copy certs to correct dir
-
-
 # Update OS
 sudo yum update -y
 
@@ -26,6 +16,8 @@ sudo yum install -y gcc-c++
 #sudo yum install -y git
 # Passenger bindings
 sudo yum install -y libcurl-devel
+# Needed to sync time with global time
+sudo yum install -y ntp ntpdate ntp-doc
 # Required for the installation of `pip` with Python make and SSL signing
 # CentOS equivalent of `libssl-devel`
 sudo yum install -y openssl-devel
@@ -55,23 +47,6 @@ sudo yum install -y zlib-devel
 [ ! -f passenger-4.0.53.tar.gz ] && wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
 [ ! -f Python-3.4.2.tgz ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
 #[ ! -f Python-3.4.2.tgz.asc ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz.asc
-
-
-# Import PGP keys
-# TODO: Don't reimport if you've already retrieved keys.
-# TODO: Fail on bad condition
-# Python release managers/verifiers
-#gpg --recv-keys 6A45C816 36580288 7D9DC8D2 18ADD4FF A4135B38 A74B06BF EA5BBD71 ED9D77D5 E6DF025C 6F5E1540 F73C700D
-# TODO: Import Passenger PGP keys.
-# TODO: Import our own PGP key?
-
-
-# Verify downloaded files where possible
-# TODO: Don't reverify if you've already verified.
-# TODO: Fail on bad condition
-#gpg --verify Python-3.4.2.tgz.asc
-# TODO: Verify Passenger tarball?
-# TODO: Verify Ografy tarball? Do we care about signing our own source? How paranoid do we want to get?
 
 
 # Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
@@ -123,6 +98,9 @@ sudo cp ografy/deploy/scripts/files/nginx /etc/init.d
 sudo chmod +x /etc/init.d/nginx
 [ ! -d /opt/nginx/conf ] && sudo mkdir /opt/nginx/conf
 sudo cp ografy/deploy/scripts/files/nginx.conf /opt/nginx/conf
+[ ! -d /opt/nginx/conf/certs ] && sudo mkdir /opt/nginx/conf/certs
+sudo cp ografy/deploy/certs/server.crt /opt/nginx/conf/certs
+sudo cp ografy/deploy/certs/server.key /opt/nginx/conf/certs
 
 
 # Create Python virtual environments
@@ -154,33 +132,15 @@ mkdir sites/ografy.io
 mkdir sites/ografy.io/www
 mkdir sites/ografy.io/www/public
 mkdir sites/ografy.io/www/tmp
-#chmod g+x,o+x
-#chmod g+x,o+x ..
-#chmod g+x,o+x sites
-#chmod g+x,o+x sites/ografy.io/
-#chmod g+x,o+x sites/ografy.io/www
-#chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
 cp -r ografy sites/ografy.io/www
 mv ografy/build/static/* sites/ografy.io/www/public
 mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
+# Move certificates
 
-# Knock down the house of cards
-# FIXME: This conditional is necessary to handle a known bug of the nginx version installed with Passenger.
-if [ ! -f /opt/nginx/logs/nginx.pid ]
-then
-    sudo systemctl daemon-reload
-    sudo /etc/init.d/nginx start &
-fi
-sudo /opt/nginx/sbin/nginx -s reload
-
-
-# Cleanup install script cruft if everything succeeds
-#rm ografy.tar.gz
-#rm -rf ografy
-#rm passenger-4.0.53.tar.gz
-#rm -rf passenger-4.0.53
-#rm Python-3.4.2.tgz
-#rm Python-3.4.2.tgz.asc
-#rm -rf Python-3.4.2
-#rm -rf checkpoints
+# Set the permissions on the created Ografy folder tree
+chmod g+x,o+x .
+chmod g+x,o+x sites
+chmod g+x,o+x sites/ografy.io
+chmod g+x,o+x sites/ografy.io/www
+chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
