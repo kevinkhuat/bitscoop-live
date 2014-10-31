@@ -136,6 +136,7 @@ mkdir sites/ografy.io/static/public
 mv ografy/build/static/* sites/ografy.io/static/public
 rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
+mkdir sites/ografy.io/www/ografy/logs
 mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
 # Move certificates
