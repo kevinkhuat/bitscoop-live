@@ -2,7 +2,7 @@ import os
 import sys
 
 
-VENV = 'ografy.dev-3.4'
+VENV = 'ografy-3.4'
 HOME = os.path.expanduser('~')
 BASEDIR = os.path.join(HOME, 'environments', VENV)
 INTERP = os.path.join(BASEDIR, 'bin', 'python')
@@ -14,7 +14,7 @@ if sys.executable != INTERP:
 sys.path.append(BASEDIR)
 sys.path.append(os.path.join(CWD, 'ografy'))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.production'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.virtual'
 
 import django.core.wsgi
 application = django.core.wsgi.get_wsgi_application()
