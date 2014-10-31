@@ -24,14 +24,16 @@ DATABASES = {
     },
 }
 
+print(ROOT_PATH)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'logs/debug.log',
+            'filename': os.path.abspath(os.path.join(ROOT_PATH, '..', 'logs', 'debug.log')),
         },
     },
     'loggers': {

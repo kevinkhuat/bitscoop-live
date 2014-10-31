@@ -215,5 +215,5 @@ SIGNALS = {
 }
 
 FIXTURE_DIRS = (
-   '/ografy/apps/xauth/fixtures',
+   os.path.abspath(os.path.join(ROOT_PATH, '/ografy/apps/xauth/fixtures')),
 )
