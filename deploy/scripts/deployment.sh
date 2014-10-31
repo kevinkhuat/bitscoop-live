@@ -46,7 +46,6 @@ sudo yum install -y zlib-devel
 #curl -L -u 18412743985:DolfinParty9 https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz > ografy.tar.gz
 [ ! -f passenger-4.0.53.tar.gz ] && wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
 [ ! -f Python-3.4.2.tgz ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
-#[ ! -f Python-3.4.2.tgz.asc ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz.asc
 
 
 # Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
@@ -60,7 +59,7 @@ sudo yum install -y zlib-devel
 # Configure Python install, build binaries from source, and install
 if [ ! -f checkpoints/python ]
 then
-    [ -d Python-3.4.2 ] &&  rm -rf Python-3.4.2
+    [ -d Python-3.4.2 ] && rm -rf Python-3.4.2
 
     tar -xzf Python-3.4.2.tgz
     cd Python-3.4.2
@@ -69,7 +68,7 @@ then
     make
     sudo make altinstall
     # Ensure pip package manager is up to date
-    sudo /usr/local/bin/pip3.4 install pip
+    sudo /usr/local/bin/pip3.4 install pip --upgrade
     # Install virtualenv to manage virtual Python environments
     sudo /usr/local/bin/pip3.4 install virtualenv
     cd ..
@@ -132,8 +131,11 @@ mkdir sites/ografy.io
 mkdir sites/ografy.io/www
 mkdir sites/ografy.io/www/public
 mkdir sites/ografy.io/www/tmp
+mkdir sites/ografy.io/static
+mkdir sites/ografy.io/static/public
+mv ografy/build/static/* sites/ografy.io/static/public
+rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
-mv ografy/build/static/* sites/ografy.io/www/public
 mv sites/ografy.io/www/ografy/passenger_wsgi.py sites/ografy.io/www
 
 # Move certificates
