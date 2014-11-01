@@ -91,13 +91,17 @@ fi
 if [ ! -f checkpoints/passenger ]
 then
     [ -d passenger-4.0.53 ] && rm -rf passenger-4.0.53
+    [ -d nginx-1.7.7 ] && rm -rf nginx-1.7.7
 
     tar -xzf passenger-4.0.53.tar.gz
+    tar -xzf nginx-1.7.7.tar.gz
+
     [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
-    sudo cp -r passenger-4.0.53 /opt/passenger
-    yes | sudo /opt/passenger/passenger-4.0.53/bin/passenger-install-nginx-module --languages python
+    sudo cp -r passenger-4.0.53/* /opt/passenger
+    sudo /opt/passenger/bin/passenger-install-nginx-module --auto --languages python --nginx-source-dir=./nginx-1.7.7
 
     touch checkpoints/passenger
+    touch checkpoints/nginx
 fi
 
 
