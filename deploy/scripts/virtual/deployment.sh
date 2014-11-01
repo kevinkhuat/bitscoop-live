@@ -44,8 +44,9 @@ sudo yum install -y zlib-devel
 # FIXME: For now scp a tar'd copy of the local working Ografy repo into virtual machine.
 [ ! -f ografy.tar.gz ] && echo "File ografy.tar.gz not found. Aborting..." && exit 1
 #curl -L -u 18412743985:DolfinParty9 https://github.com/sjberry/ografy/archive/v0.1.0.tar.gz > ografy.tar.gz
-[ ! -f passenger-4.0.53.tar.gz ] && wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
 [ ! -f Python-3.4.2.tgz ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
+[ ! -f passenger-4.0.53.tar.gz ] && wget https://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz
+[ ! -f nginx-1.7.7 ] && wget http://nginx.org/download/nginx-1.7.7.tar.gz
 
 
 # Extract Ografy tarball (there are development cert files and configurations necessary for other build steps)
