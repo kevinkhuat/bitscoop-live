@@ -9,7 +9,8 @@ export TIME_STYLE=long-iso
 
 
 export PATH=$HOME/bin:$PATH
-export PATH=$PATH:/opt/passenger/passenger-4.0.53/bin
+export PATH=$PATH:/opt/nginx/sbin
+export PATH=$PATH:/opt/passenger/bin
 
 
 alias ls="ls --color"

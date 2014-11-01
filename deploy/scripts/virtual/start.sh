@@ -4,8 +4,8 @@
 # TODO: Find out why this doesn't work.
 #sudo /etc/init.d/ntpd start
 
-# FIXME: These two lines are necessary to handle a known bug of the nginx version installed with Passenger.
 sudo systemctl daemon-reload
-sudo /etc/init.d/nginx start
 
+# Only fresh start the nginx process if it doesn't already exist.
+[ ! -n "`pgrep -fl /opt/nginx/sbin/nginx`" ] && sudo service nginx start &
 sudo /opt/nginx/sbin/nginx -s reload
