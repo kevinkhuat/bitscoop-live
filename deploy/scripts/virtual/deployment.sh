@@ -53,6 +53,13 @@ sudo yum install -y zlib-devel
 # Create empty folders for logs and databases
 [ ! -d ografy/databases ] && mkdir ografy/databases
 [ ! -d ografy/logs ] && mkdir ografy/logs
+# Pull up profiles from the deploy folder (bash and vim)
+cp ografy/deploy/files/profiles/.bash_profile .
+cp ografy/deploy/files/profiles/.vimrc .
+# Pull up deploy scripts from the deploy folder if they haven't been explicitly scp'd yet.
+cp -n ografy/deploy/scripts/virtual/*.sh .
+# Give deploy scripts proper permissions.
+chmod +x *.sh
 
 
 # Create checkpoints folder.
