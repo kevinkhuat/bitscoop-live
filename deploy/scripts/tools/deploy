@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd $HOME/DEV/Repos
+tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea' 
+rm -rf $HOME/DEV/Packages/*
+mv ografy.tar.gz $HOME/DEV/Packages
+cp $HOME/DEV/Repos/ografy/deploy/scripts/virtual/deployment.sh $HOME/DEV/Packages
+cp $HOME/DEV/Repos/ografy/deploy/scripts/virtual/cleanup.sh $HOME/DEV/Packages
+cp $HOME/DEV/Repos/ografy/deploy/scripts/virtual/settings.sh $HOME/DEV/Packages
+cp $HOME/DEV/Repos/ografy/deploy/scripts/virtual/start.sh $HOME/DEV/Packages
+chmod +x $HOME/DEV/Packages/*
+scp $HOME/DEV/Packages/* ografy@192.168.1.13:~
