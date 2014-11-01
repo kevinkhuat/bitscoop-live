@@ -96,7 +96,6 @@ then
     [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
     sudo cp -r passenger-4.0.53 /opt/passenger
     yes | sudo /opt/passenger/passenger-4.0.53/bin/passenger-install-nginx-module --languages python
-    export PATH="$PATH:/opt/nginx/sbin"
 
     touch checkpoints/passenger
 fi
