@@ -12,7 +12,7 @@ APPEND_SLASH = False
 WSGI_APPLICATION = 'ografy.wsgi.application'  # Python dotted path to the WSGI application used by Django's runserver.
 SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'  # TODO: Make this actually secure and don't version control it.
 ADMINS = (
-    ('Webmaster', 'webmaster+errors@ografy.io'),
+    ('Webmaster', 'webmaster+logging@ografy.io'),
 )
 MANAGERS = ADMINS
 
