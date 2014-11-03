@@ -8,6 +8,8 @@ sudo yum update -y
 
 # Install package dependencies
 
+# Needed to decompress some pip dependencies.
+sudo yum install -y bzip2-devel
 # Compiles C packages (e.g. Python) from source
 sudo yum install -y gcc
 # Compiles C++ (e.g. Passenger) from source
