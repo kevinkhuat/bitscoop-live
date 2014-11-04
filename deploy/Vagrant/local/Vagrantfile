@@ -1,21 +1,19 @@
 =begin
 Arguments Required to be updated in file:
 
-Gitubh
-Name, Password
+Root Password
 
 @Authors Kyle Baran & William Broza
 =end
 
 Vagrant.configure('2') do |config|
 	config.vm.provider :virtualbox do |vb, override|
-		config.vm.box = "chef/centos-6.5"
-		config.vm.network "private_network", ip: "192.168.33.10"
-		config.vm.synced_folder "../../../", "/ografy_source"
+		config.vm.box = "chef/centos-7.0"
+		config.vm.synced_folder "../../../../", "/ografy_source"
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
 		config.vm.provision "shell" do |s|
-			s.path = "../../deployment_scripts/manage_deploy_bootstrap.sh"
-			s.args = ["NAME", "PASSWORD"]
+			s.path = "../../scripts/virtual/deployment.sh"
+			s.args = ["vagrant"]
 		end
 	end
 end
