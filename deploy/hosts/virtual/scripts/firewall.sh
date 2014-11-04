@@ -25,8 +25,3 @@ sudo iptables -P INPUT DROP
 
 # Save firewall rules
 sudo iptables-save | sudo tee /etc/sysconfig/iptables
-
-# Turn on time server
-sudo chkconfig ntpd on
-# Sync time
-sudo ntpdate pool.ntp.org
