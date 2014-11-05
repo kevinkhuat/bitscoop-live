@@ -39,7 +39,7 @@ tar -czf $PKG/deploy.tar.gz --exclude .git --exclude .idea deploy
 if [ "$1" = "production" ]
 then
     scp -i $KEYS/ec2-user.pem $PKG/deploy.tar.gz ec2-user@ografy.io:~
-    scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz ografy@ografy.io:~
+    scp -i $KEYS/ografy.pem $PKG/deploy.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
 else
     scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 fi
