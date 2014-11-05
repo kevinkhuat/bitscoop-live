@@ -1,19 +1,22 @@
 =begin
 Arguments Required to be updated in file:
 
-Root Password
+Gitubh
+Name, Password
 
-@Authors Kyle Baran & William Broza
+@Authors William Broza
 =end
 
 Vagrant.configure('2') do |config|
 	config.vm.provider :virtualbox do |vb, override|
-		config.vm.box = "chef/centos-7.0"
-		config.vm.synced_folder "../../../../", "/ografy_source"
+		config.vm.box = 'centos6-64'
+		config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box'
+		config.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
-		config.vm.provision "shell" do |s|
-			s.path = "../../scripts/virtual/deployment.sh"
-			s.args = ["vagrant"]
+		config.vm.provision :puppet do |puppet|
+			puppet.module_path = "../../puppet/virtual/modules"
+			puppet.manifests_path = "../../puppet/virtual/manifests"
+			puppet.manifest_file  = "init.pp"
 		end
 	end
 end

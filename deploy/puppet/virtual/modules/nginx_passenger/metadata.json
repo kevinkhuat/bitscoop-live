@@ -1,0 +1,33 @@
+{
+  "name": "kbatra-nginx_passenger",
+  "version": "0.1.5",
+  "source": "git://github.com/kbatra/puppet-nginx-passenger.git",
+  "author": "Karan Batra",
+  "license": "MIT",
+  "summary": "Puppet module for Nginx through Passenger",
+  "description": "Module for Nginx configuration",
+  "project_page": "https://github.com/kbatra/puppet-nginx-passenger",
+  "dependencies": [
+    {
+      "name": "maestrodev/rvm",
+      "version_requirement": ">= 1.1.8"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "CHANGELOG": "99c58a433fd9597a15c346ab738a1861",
+    "LICENSE": "74abf11eaff0af0b3a41eef1a615b6a7",
+    "Modulefile": "6e7677d0821fb6518ddbd27ce917cc08",
+    "README.markdown": "8156f41b3363a80797507f5e680741bd",
+    "manifests/init.pp": "865a5fbdff3271f311403f4c7d3a859c",
+    "manifests/params.pp": "bf5f416a40c77ecf82f7a1a388f35f7e",
+    "manifests/vhost.pp": "1f6378fd89de44d573c1fd7c59b8a156",
+    "templates/nginx.conf.erb": "f65fa87b9147c930afd5057bcccf8dd2",
+    "templates/nginx.init.erb": "44d0c8187d1e450ddee3a6069b4240f3",
+    "templates/proxy.conf.erb": "ae879ad3d9f8f1145d490f3aae393c93",
+    "templates/vhost.erb": "977fcdf5d27ce8de0798d6055a61c966",
+    "templates/vhost.rails.erb": "c52125f64dd3bbd31bf6a2fe95bb74a0"
+  }
+}

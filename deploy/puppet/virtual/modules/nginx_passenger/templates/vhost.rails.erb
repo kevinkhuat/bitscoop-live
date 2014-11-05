@@ -1,0 +1,25 @@
+server {
+
+      charset utf-8;
+      listen <%= @port %>;
+			<% if @ssl == 'on' %>
+      listen <%= @ssl_port %> <%= 'default_server' if @ssl_default_server %> ssl;
+      <% end %>
+      server_name <%= @server_name %>;
+      root <%= @root %>/current/public;
+
+      passenger_enabled on;
+      passenger_base_uri /;
+
+      access_log <%= scope['nginx_passenger::logdir'] %>/<%= @host %>_access.log;
+      error_log  <%= scope['nginx_passenger::logdir'] %>/<%= @host %>_error.log;
+
+      <% if @ssl == 'on' %>
+      # SSL Configuration
+      ssl_certificate <%= @ssl_certificate %>;
+      ssl_certificate_key <%= @ssl_certificate_key %>;
+      if ($scheme = http) {
+        return 301 https://$server_name$request_uri;
+      }
+      <% end %>
+}

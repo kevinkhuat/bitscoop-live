@@ -1,0 +1,6 @@
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'puppetlabs/nginx'
+mod 'puppetlabs/passenger'
+mod 'kbatra/nginx_passenger'
+mod 'stankevich/python'

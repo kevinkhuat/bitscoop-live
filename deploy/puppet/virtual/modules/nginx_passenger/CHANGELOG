@@ -1,0 +1,31 @@
+2014-03-12 - Version 0.1.5
+
+Summary:
+- Adds SSL support for vhosts.
+- Adds configuration parameter for app environment.
+
+Bugfixes:
+- Thorough fixes to proxy configuration. Look at git commits for details.
+
+2013-10-09 - Version 0.1.4
+
+Summary:
+Bump default passenger version to "4.0.23", which brings node.js and meteor support.
+
+2013-10-09 - Version 0.1.2
+
+Summary:
+Some bugfixes.
+
+Bugfixes:
+- Quote extra configure arguments for nginx to passenger module call.
+
+2013-10-09 - Version 0.1.1
+
+Summary:
+
+This release introduces custom installation of nginx using passenger. This would be useful if you wish to have additional nginx modules. The new class parameters for this are $nginx_source_dir and $nginx_extra_configure_flags. See README.markdown for additional details.
+
+Bugfixes:
+- Converts old puppet code to 3.0
+
