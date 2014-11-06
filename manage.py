@@ -4,7 +4,9 @@ import sys
 
 
 if __name__ == '__main__':
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.development'
+
+    # if os.environ['DJANGO_SETTINGS_MODULE'] is None:
+    #     os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.production'
 
     from django.core.management import execute_from_command_line
 

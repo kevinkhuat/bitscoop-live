@@ -7,10 +7,10 @@ Vagrant.configure('2') do |config|
 	config.vm.provider :virtualbox do |vb, override|
 		config.vm.box = 'chef/centos-7.0'
 		config.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
-		config.vm.synced_folder "~/DEV/Packages", "/home/vagrant"
+		config.vm.synced_folder "~/Development/Packages", "/home/vagrant"
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
 		config.vm.provision "shell" do |s|
-			s.path = "~/DEV/Repos/ografy/deploy/scripts/dependencies.sh"
+			s.path = "~/Development/Repositories/ografy/deploy/shared/web/web.sh"
 			s.args = ["virtual"]
 		end
 	end

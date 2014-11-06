@@ -23,6 +23,9 @@ esac
 # Install Passenger w/ nginx
 if [ ! -f checkpoints/passenger ]
 then
+
+    cd ~/packages
+
     [ -d passenger-4.0.53 ] && rm -rf passenger-4.0.53
     [ -d nginx-1.7.7 ] && rm -rf nginx-1.7.7
 
@@ -32,6 +35,8 @@ then
     [ ! -d /opt/passenger ] && sudo mkdir /opt/passenger
     sudo cp -r passenger-4.0.53/* /opt/passenger
     sudo /opt/passenger/bin/passenger-install-nginx-module --auto --languages python --nginx-source-dir=./nginx-1.7.7
+
+    cd ~/
 
     touch checkpoints/passenger
     touch checkpoints/nginx

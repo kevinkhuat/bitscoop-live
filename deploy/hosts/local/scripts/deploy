@@ -45,7 +45,7 @@ then
     scp -i $KEYS/ec2-user.pem $PKG/deploy.tar.gz ec2-user@ografy.io:~
     scp -i $KEYS/ografy.pem $PKG/deploy.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
 else
-    scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
+    # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 
     cd $REPO
     tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
@@ -60,7 +60,7 @@ else
     chmod +x $PKG/web.sh
     chmod +x $PKG/scripts/*
 
-    cd $REPO/ografy/deploy/vagrant/local
+    cd $REPO/ografy/deploy/vagrant/virtual/web
     vagrant up
 
     vagrant ssh

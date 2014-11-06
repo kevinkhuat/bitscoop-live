@@ -2,6 +2,10 @@ from __future__ import unicode_literals
 
 import os
 
+from ografy.settings.signals import *
+
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
@@ -24,14 +28,6 @@ USE_L10N = True  # Format dates, numbers and calendars according to current loca
 # DATETIME_FORMAT = 'Y/m/d'  # Use if not using L10N
 # DATE_FORMAT = 'Y/m/d'  # Use if not using L10N
 USE_TZ = True  # Use timezone-aware datetimes.
-
-# Database configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.abspath(os.path.join(ROOT_PATH, '..', 'databases', 'data.db')),
-    },
-}
 
 # Authentication
 AUTH_USER_MODEL = 'xauth.User'
@@ -209,8 +205,6 @@ SIGNALS = {
     'steam': 'http://static.ografy.io/steam.js',
     'riot': 'riot.js',
     'facebook': 'facebook.js',
-
-    #'mycoolsite': 'https://mycoolsite.com/myapi.js',
 }
 
 FIXTURE_DIRS = (

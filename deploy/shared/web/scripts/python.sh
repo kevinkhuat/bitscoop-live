@@ -30,6 +30,9 @@ fi
 # Configure Python install, build binaries from source, and install
 if [ ! -f checkpoints/python ]
 then
+
+    cd ~/packages
+
     [ -d Python-3.4.2 ] && rm -rf Python-3.4.2
 
     # Download source tarballs and signatures
@@ -45,7 +48,8 @@ then
     sudo /usr/local/bin/pip3.4 install pip --upgrade
     # Install virtualenv to manage virtual Python environments
     sudo /usr/local/bin/pip3.4 install virtualenv
-    cd ..
+
+    cd ~/
 
     touch checkpoints/python
 fi
