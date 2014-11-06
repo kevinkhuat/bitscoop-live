@@ -15,4 +15,4 @@ vagrant up
 
 vagrant ssh
 cd /home/vagrant
-sh site.sh virtual
+./site.sh virtual

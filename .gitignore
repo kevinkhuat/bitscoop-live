@@ -38,14 +38,14 @@ build
 # NodeJS #
 ##########
 node_modules
-deploy/puppet/local_db/.librarian/puppet/config
-deploy/vagrant/local_db/.vagrant/machines/default/virtualbox/action_provision
-deploy/vagrant/local_db/.vagrant/machines/default/virtualbox/action_set_name
-deploy/vagrant/local_db/.vagrant/machines/default/virtualbox/id
-deploy/vagrant/local_db/.vagrant/machines/default/virtualbox/index_uuid
-deploy/vagrant/local_db/.vagrant/machines/default/virtualbox/synced_folders
-deploy/vagrant/local/.vagrant/machines/default/virtualbox/action_provision
-deploy/vagrant/local/.vagrant/machines/default/virtualbox/action_set_name
-deploy/vagrant/local/.vagrant/machines/default/virtualbox/id
-deploy/vagrant/local/.vagrant/machines/default/virtualbox/index_uuid
-deploy/vagrant/local/.vagrant/machines/default/virtualbox/synced_folders
+deploy/vagrant/prototypes/puppet/virtual/db/.librarian/puppet/config
+deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/action_provision
+deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/action_set_name
+deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/id
+deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/index_uuid
+deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/synced_folders
+deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_provision
+deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_set_name
+deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/id
+deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/index_uuid
+deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/synced_folders
