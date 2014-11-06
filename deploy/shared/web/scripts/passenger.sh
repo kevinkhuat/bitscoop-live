@@ -11,7 +11,7 @@ case "$1" in
         echo Using virtual settings.
         ;;
     *)
-        echo $"Usage: $0 {production|virtual}"
+        echo $"Usage: $0 {aws|virtual}"
         exit 2
         ;;
 esac

@@ -14,16 +14,16 @@
 
 # Establish variables
 case "$1" in
-    production)
-        MANAGE=ografy/manage_production.py
-        echo Using production settings.
+    aws)
+        MANAGE=ografy/manage_aws.py
+        echo Using aws settings.
         ;;
     virtual)
         MANAGE=ografy/manage_virtual.py
         echo Using virtual settings.
         ;;
     *)
-        echo $"Usage: $0 {production|virtual}"
+        echo $"Usage: $0 {aws|virtual}"
         exit 2
         ;;
 esac

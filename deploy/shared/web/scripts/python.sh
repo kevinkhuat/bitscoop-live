@@ -4,14 +4,14 @@
 
 # Establish variables
 case "$1" in
-    production)
-        echo Using production settings.
+    aws)
+        echo Using aws settings.
         ;;
     virtual)
         echo Using virtual settings.
         ;;
     *)
-        echo $"Usage: $0 {production|virtual}"
+        echo $"Usage: $0 {aws|virtual}"
         exit 2
         ;;
 esac
