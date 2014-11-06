@@ -49,7 +49,7 @@ deactivate
 
 
 # Deploy Ografy project
-[ -d sites ] && rm -rf sites
+[ -d sites ] && sudo rm -rf sites
 mkdir sites
 mkdir sites/ografy.io
 mkdir sites/ografy.io/static
@@ -58,9 +58,9 @@ mkdir sites/ografy.io/www
 mkdir sites/ografy.io/www/public
 mkdir sites/ografy.io/www/tmp
 mv ografy/build/static/* sites/ografy.io/static/public
-rm -rf ografy/build
+sudo rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
-cp deploy/hosts/$1/conf/passenger/passenger_wsgi.py sites/ografy.io/www
+cp ografy/deploy/hosts/$1/conf/passenger/passenger_wsgi.py sites/ografy.io/www
 
 
 # Set the permissions on the created Ografy folder tree

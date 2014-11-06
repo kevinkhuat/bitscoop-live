@@ -1,22 +1,17 @@
 =begin
-Arguments Required to be updated in file:
-
-Gitubh
-Name, Password
 
 @Authors William Broza
 =end
 
 Vagrant.configure('2') do |config|
 	config.vm.provider :virtualbox do |vb, override|
-		config.vm.box = 'centos6-64'
-		config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box'
+		config.vm.box = 'chef/centos-7.0'
 		config.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
+		config.vm.synced_folder "~/DEV/Packages", "/home/vagrant"
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
-		config.vm.provision :puppet do |puppet|
-			puppet.module_path = "../../puppet/virtual/modules"
-			puppet.manifests_path = "../../puppet/virtual/manifests"
-			puppet.manifest_file  = "init.pp"
+		config.vm.provision "shell" do |s|
+			s.path = "~/DEV/Repos/ografy/deploy/scripts/dependencies.sh"
+			s.args = ["virtual"]
 		end
 	end
 end

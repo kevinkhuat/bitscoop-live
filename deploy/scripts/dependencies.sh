@@ -50,6 +50,8 @@ sudo yum install -y sqlite-devel
 sudo yum install -y wget
 # Passenger bindings
 sudo yum install -y zlib-devel
+# PostgreSQL tools
+sudo yum install -y postgresql-devel
 
 
 # Additional Passenger gem dependances

@@ -5,9 +5,9 @@ class { 'python' :
   virtualenv => true,
 }
 
-python::virtualenv { '/var/www/project1' :
+python::virtualenv { '~/enviroments/ografy-3.4' :
   ensure       => present,
-  version      => 'system',
+  version      => latest,
   requirements => '/var/www/project1/requirements.txt',
   proxy        => 'http://proxy.domain.com:3128',
   systempkgs   => true,
@@ -27,10 +27,7 @@ class ografy_dep_script {
     }
 }
 
-python::requirements { '/var/www/project1/requirements.txt' :
-  virtualenv => '/var/www/project1',
-  proxy      => 'http://proxy.domain.com:3128',
-  owner      => 'appuser',
-  group      => 'apps',
+exec { "dependencies.sh":
+  command => "sh ~/dependences.sh",
+  creates => "~/sites"
 }
-
