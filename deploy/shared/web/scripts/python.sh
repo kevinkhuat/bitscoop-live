@@ -18,17 +18,17 @@ esac
 
 
 # Create Python virtual environments
-if [ ! -d environments ]
+if [ ! -d ~/environments ]
 then
-    mkdir environments
-    cd environments
+    mkdir ~/environments
+    cd ~/environments
     /usr/local/bin/virtualenv --no-site-packages ografy-3.4
     cd ..
 fi
 
 
 # Configure Python install, build binaries from source, and install
-if [ ! -f checkpoints/python ]
+if [ ! -f ~/checkpoints/python ]
 then
 
     cd ~/packages
@@ -51,5 +51,5 @@ then
 
     cd ~/
 
-    touch checkpoints/python
+    touch ~/checkpoints/python
 fi

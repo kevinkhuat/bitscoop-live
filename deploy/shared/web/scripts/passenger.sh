@@ -21,7 +21,7 @@ esac
 [ ! -f nginx-1.7.7.tar.gz ] && wget http://nginx.org/download/nginx-1.7.7.tar.gz
 
 # Install Passenger w/ nginx
-if [ ! -f checkpoints/passenger ]
+if [ ! -f ~/checkpoints/passenger ]
 then
 
     cd ~/packages
@@ -36,12 +36,12 @@ then
     sudo cp -r passenger-4.0.53/* /opt/passenger
     sudo /opt/passenger/bin/passenger-install-nginx-module --auto --languages python --nginx-source-dir=./nginx-1.7.7
 
-    cd ~/
+    touch ~/checkpoints/passenger
+    touch ~/checkpoints/nginx
 
-    touch checkpoints/passenger
-    touch checkpoints/nginx
 fi
 
+cd ~/
 
 # Create log directories
 [ ! -d /opt/nginx/logs/ografy.io ] && sudo mkdir /opt/nginx/logs/ografy.io
@@ -63,20 +63,20 @@ then
     tar -xzf deploy.tar.gz
 
     # Install nginx scripts and configurations
-    sudo cp deploy/scripts/install/web/nginx /etc/init.d
+    sudo cp deploy/shared/web/install/nginx /etc/init.d
     sudo chmod +x /etc/init.d/nginx
 
-    if [ -f $"deploy/hosts/$1/conf/nginx/nginx.conf" ]
+    if [ -f $"deploy/hosts/$1/web/nginx/nginx.conf" ]
     then
-        sudo cp deploy/hosts/$1/conf/nginx/nginx.conf /opt/nginx/conf
+        sudo cp deploy/hosts/$1/web/nginx/nginx.conf /opt/nginx/conf
     else
         echo No nginx config found.
     fi
 
-    if [ -d $"deploy/hosts/$1/certs" ]
+    if [ -d $"deploy/hosts/$1/web/certs" ]
     then
-        sudo cp deploy/hosts/$1/certs/* /security/certs/ografy.io/static
-        sudo cp deploy/hosts/$1/certs/* /security/certs/ografy.io/www
+        sudo cp deploy/hosts/$1/web/certs/* /security/certs/ografy.io/static
+        sudo cp deploy/hosts/$1/web/certs/* /security/certs/ografy.io/www
     else
         echo No certificates found.
     fi

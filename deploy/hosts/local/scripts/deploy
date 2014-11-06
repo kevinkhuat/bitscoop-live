@@ -48,8 +48,8 @@ else
     # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 
     cd $REPO
-    tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
     rm -rf $PKG/*
+    tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
     mv ografy.tar.gz $PKG
 
     cp $REPO/ografy/deploy/shared/web/web.sh $PKG
@@ -64,7 +64,5 @@ else
     vagrant up
 
     vagrant ssh
-    cd /home/vagrant
-    ./site.sh virtual
 
 fi

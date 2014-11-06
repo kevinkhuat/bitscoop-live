@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ~/
 
 # FIXME: For now scp a tar'd copy of the local working Ografy repo into virtual machine.
 [ ! -f ografy.tar.gz ] && echo File ografy.tar.gz not found. Aborting... && exit 1
@@ -30,7 +31,7 @@ esac
 
 
 # Install Ografy dependencies with pip and set up application
-source environments/ografy-3.4/bin/activate
+source ~/environments/ografy-3.4/bin/activate
 pip install -r ografy/requirements/manual.txt
 yes | python $MANAGE migrate
 yes | python $MANAGE validate
