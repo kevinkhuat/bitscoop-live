@@ -1,14 +1,13 @@
 #!/bin/bash
 
-
 # Set this to the folder where the "ografy" folder lives.
 REPO=$HOME/Development/Repositories
 # Set this to the directory where the tarballs should be created.
 PKG=$HOME/Development/Packages
 
 case "$1" in
-    production)
-        echo "Are you sure you want to deploy tarballs to production?"
+    aws)
+        echo "Are you sure you want to deploy tarballs to aws?"
         select yn in "No" "Yes"; do
             case $yn in
                 Yes) break;;
@@ -17,7 +16,7 @@ case "$1" in
         done
 
         KEYS=~/Desktop/Security/ssh/ografy.io
-        echo Using production settings.
+        echo Using aws settings.
         ;;
     virtual)
         KEYS=~/Desktop/Security/ssh/virtual.ografy.io
@@ -42,4 +41,25 @@ then
     scp -i $KEYS/ografy.pem $PKG/deploy.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
 else
     scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
+
+
+
+
+    cd $HOME/DEV/Repos
+    tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
+    rm -rf $HOME/DEV/Packages/*
+    mv ografy.tar.gz $HOME/DEV/Packages
+
+    cp $HOME/DEV/Repos/ografy/deploy/scripts/dependencies.sh $HOME/DEV/Packages
+    cp $HOME/DEV/Repos/ografy/deploy/scripts/site.sh $HOME/DEV/Packages
+
+    chmod +x $HOME/DEV/Packages/*
+
+    cd $HOME/DEV/Repos/ografy/deploy/vagrant/local
+    vagrant up
+
+    vagrant ssh
+    cd /home/vagrant
+    ./site.sh virtual
+
 fi

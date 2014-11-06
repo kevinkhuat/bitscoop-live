@@ -29,16 +29,6 @@ case "$1" in
 esac
 
 
-# Create Python virtual environments
-if [ ! -d environments ]
-then
-    mkdir environments
-    cd environments
-    /usr/local/bin/virtualenv --no-site-packages ografy-3.4
-    cd ..
-fi
-
-
 # Install Ografy dependencies with pip and set up application
 source environments/ografy-3.4/bin/activate
 pip install -r ografy/requirements/manual.txt

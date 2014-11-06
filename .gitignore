@@ -39,11 +39,11 @@ build
 ##########
 node_modules
 deploy/vagrant/prototypes/puppet/virtual/db/.librarian/puppet/config
-deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/action_provision
-deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/action_set_name
-deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/id
-deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/index_uuid
-deploy/vagrant/virtual/db/.vagrant/machines/default/virtualbox/synced_folders
+deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/action_provision
+deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/action_set_name
+deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/id
+deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/index_uuid
+deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/synced_folders
 deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_provision
 deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_set_name
 deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/id
