@@ -3,7 +3,7 @@
 
 
 # Create installed checkpoints folder.
-[ ! -d /installed ] && sudo mkdir /installed
+[ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
 
 
 # Update OS
@@ -46,4 +46,4 @@ sudo yum install -y postgresql-devel
 [ ! -n "`gem list | grep daemon_controller`" ] && yes | sudo /usr/bin/gem install daemon_controller
 [ ! -n "`gem list | grep rack`" ] && yes | sudo /usr/bin/gem install rack
 
-touch /installed/yum-update
+sudo touch /installed/yum-update

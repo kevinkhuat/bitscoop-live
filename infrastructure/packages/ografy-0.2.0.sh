@@ -4,17 +4,25 @@
 # Establish variables
 case "$1" in
     aws)
-        echo Using aws settings.
+        echo Using aws settings for ografy.
         ;;
+
     virtual)
-        echo Using virtual settings.
+        echo Using virtual settings for ografy.
         ;;
+
     *)
         echo $"Usage: $0 {aws|virtual}"
         exit 2
         ;;
+
 esac
 
+# Create installed checkpoints folder.
+[ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
+
+# Create packages folder.
+[ ! -d /packages ] && sudo mkdir /packages && sudo chmod -R 777 /packages
 
 cd ~/
 
@@ -106,3 +114,5 @@ chmod g+x,o+x sites
 chmod g+x,o+x sites/ografy.io
 chmod g+x,o+x sites/ografy.io/www
 chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
+
+sudo touch /installed/ografy-0.2.0

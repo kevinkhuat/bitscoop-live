@@ -3,18 +3,21 @@
 
 
 # Create installed checkpoints folder.
-[ ! -d /installed ] && sudo mkdir /installed
+[ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
 
-[ -f /installed/Python-3.4.2 && $1 != "force" ] && echo Python-3.4.2 already installed. && exit 0
+# Create packages folder.
+[ ! -d /packages ] && sudo mkdir /packages && sudo chmod -R 777 /packages
+
+[ -f /installed/Python-3.4.2 ] && echo Python-3.4.2 already installed. && exit 0
 
 # Create packages folder.
 [ ! -d /packages ] && sudo mkdir /packages
 
 # Download source tarballs and signatures
-[ ! -f Python-3.4.2.tgz ] && wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz /packages
+[ ! -f /packages/Python-3.4.2.tgz ] && sudo wget -P /packages https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
 
 # TODO: check hash of python tar
-tar -xzf /packages/Python-3.4.2.tgz
+tar -xzf /packages/Python-3.4.2.tgz -C /packages
 cd /packages/Python-3.4.2
 # Configure install with the `with-ensurepip` flag set to install pip with Python (works with Python 3.4+)
 sudo ./configure --with-ensurepip=install
@@ -25,4 +28,4 @@ sudo /usr/local/bin/pip3.4 install pip --upgrade
 # Install virtualenv to manage virtual Python environments
 sudo /usr/local/bin/pip3.4 install virtualenv
 
-touch /installed/Python-3.4.2
+sudo touch /installed/Python-3.4.2
