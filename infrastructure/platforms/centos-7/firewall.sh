@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+# Create installed checkpoints folder.
+[ ! -d /installed ] && sudo mkdir /installed
+
+
 # Flush iptables
 sudo iptables -F
 # Block all null packets
@@ -25,3 +29,6 @@ sudo iptables -P INPUT DROP
 
 # Save firewall rules
 sudo iptables-save | sudo tee /etc/sysconfig/iptables
+
+
+touch /installed/firewall
