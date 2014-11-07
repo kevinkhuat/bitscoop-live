@@ -33,31 +33,25 @@ case "$1" in
         ;;
 esac
 
+# Remove files from previous run
+rm -rf $PKG/*
 
+# Create ografy and deploy script
 cd $REPO
-tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/deploy ografy
+tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure ografy
 
 cd ografy
-tar -czf $PKG/deploy.tar.gz --exclude .git --exclude .idea deploy
+tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
 if [ "$1" = "aws" ]
 then
     scp -i $KEYS/ec2-user.pem $PKG/deploy.tar.gz ec2-user@ografy.io:~
     scp -i $KEYS/ografy.pem $PKG/deploy.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
 else
+    # TODO: Create custom CentOS 7 box for vagrant that has user ec2-user and connects using ssh keys instead of passwords. This is to more closely mimmic production
     # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 
-    cd $REPO
-    rm -rf $PKG/*
-    tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
-    mv ografy.tar.gz $PKG
-
-    mkdir
-    cp $REPO/ografy/infastructure/modules/ $PKG
-
-    cd $REPO/ografy/infastructure/provision/virtual/web
+    cd $REPO/ografy/infrastructure/provision/virtual/web
     vagrant up
-
-    vagrant ssh
 
 fi

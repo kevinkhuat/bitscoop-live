@@ -10,7 +10,7 @@ Vagrant.configure('2') do |config|
 		config.vm.synced_folder "~/Development/Packages", "/home/vagrant"
 		vb.customize ["modifyvm", :id, "--memory", "1024"]
 		config.vm.provision "shell" do |s|
-			s.path = "~/Development/Repositories/ografy/deploy/shared/web/web.sh"
+			s.path = "~/Development/Repositories/ografy/infrastructure/provision/virtual/web/web.sh"
 			s.args = ["virtual"]
 		end
 	end

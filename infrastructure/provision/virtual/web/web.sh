@@ -35,13 +35,6 @@ case "$1" in
         # Create packages folder.
         [ ! -d ~/packages ] && mkdir ~/packages
 
-        sh scripts/os.sh virtual
-        sh scripts/python.sh virtual
-        sh scripts/passenger.sh virtual
-        sh scripts/firewall.sh virtual
-        sh scripts/time.sh virtual
-        sh scripts/ografy.sh virtual
-
         ;;
     *)
         echo $"Usage: $0 {aws|virtual}"
