@@ -52,15 +52,10 @@ else
     tar -czf ografy.tar.gz ografy --exclude-vcs --exclude-backups --exclude='.idea'
     mv ografy.tar.gz $PKG
 
-    cp $REPO/ografy/deploy/shared/web/web.sh $PKG
+    mkdir
+    cp $REPO/ografy/infastructure/modules/ $PKG
 
-    mkdir $PKG/scripts
-    cp $REPO/ografy/deploy/shared/web/scripts/* $PKG/scripts
-
-    chmod +x $PKG/web.sh
-    chmod +x $PKG/scripts/*
-
-    cd $REPO/ografy/deploy/vagrant/virtual/web
+    cd $REPO/ografy/infastructure/provision/virtual/web
     vagrant up
 
     vagrant ssh

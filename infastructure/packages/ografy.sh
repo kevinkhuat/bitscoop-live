@@ -2,6 +2,16 @@
 
 cd ~/
 
+# Create Python virtual environments
+if [ ! -d ~/environments ]
+then
+    mkdir ~/environments
+    cd ~/environments
+    /usr/local/bin/virtualenv --no-site-packages ografy-3.4
+    cd ..
+fi
+
+
 # FIXME: For now scp a tar'd copy of the local working Ografy repo into virtual machine.
 [ ! -f ografy.tar.gz ] && echo File ografy.tar.gz not found. Aborting... && exit 1
 
@@ -16,11 +26,9 @@ cd ~/
 # Establish variables
 case "$1" in
     aws)
-        MANAGE=ografy/manage_aws.py
         echo Using aws settings.
         ;;
     virtual)
-        MANAGE=ografy/manage_virtual.py
         echo Using virtual settings.
         ;;
     *)
@@ -32,10 +40,10 @@ esac
 
 # Install Ografy dependencies with pip and set up application
 source ~/environments/ografy-3.4/bin/activate
-pip install -r ografy/requirements/manual.txt
-yes | python $MANAGE migrate
-yes | python $MANAGE validate
-yes yes | python $MANAGE collectstatic
+pip install -r ~/sites/ografy.io/www/ografy/requirements/manual.txt
+yes | python ~/sites/ografy.io/www/ografy/manage.py migrate
+yes | python ~/sites/ografy.io/www/ografy/manage.py validate
+yes yes | python ~/sites/ografy.io/www/ografy/manage.py collectstatic
 deactivate
 
 
@@ -51,7 +59,7 @@ mkdir sites/ografy.io/www/tmp
 mv ografy/build/static/* sites/ografy.io/static/public
 sudo rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
-cp ografy/deploy/hosts/$1/conf/passenger/passenger_wsgi.py sites/ografy.io/www
+cp ografy/deploy/hosts/$1/web/passenger/passenger_wsgi.py sites/ografy.io/www
 
 
 # Set the permissions on the created Ografy folder tree

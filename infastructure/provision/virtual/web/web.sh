@@ -30,7 +30,7 @@ case "$1" in
         cd /home/vagrant
 
         # Create checkpoints folder.
-        [ ! -d ~/checkpoints ] && mkdir ~/checkpoints
+        [ ! -d /installed ] && sudo mkdir /installed
 
         # Create packages folder.
         [ ! -d ~/packages ] && mkdir ~/packages
