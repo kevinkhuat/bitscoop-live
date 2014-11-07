@@ -47,13 +47,15 @@ cd $REPO
 tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure ografy
 
 cd ografy
+chmod -R +x infrastructure/packages/*
+chmod -R +x infrastructure/platforms/*
 tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
 if [ "$1" = "aws" ]
 then
 
-    scp -i $KEYS/ec2-user.pem $PKG/deploy.tar.gz ec2-user@ografy.io:~
-    scp -i $KEYS/ografy.pem $PKG/deploy.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
+    scp -i $KEYS/ec2-user.pem $PKG/infrastructure.tar.gz ec2-user@ografy.io:~
+    scp -i $KEYS/ografy.pem $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
 
 else
 

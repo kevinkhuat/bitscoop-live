@@ -24,27 +24,29 @@ esac
 # Create packages folder.
 [ ! -d /packages ] && sudo mkdir /packages && sudo chmod -R 777 /packages
 
-cd ~/
+
+# Install Ografy
+[ -f /installed/ografy-0.2.0 ] && [ "$1" != "force" ] && echo ografy-0.2.0 already installed. && exit 0
+
+cd $HOME/
 
 # Create Python virtual environments
-if [ ! -d ~/environments ]
+if [ ! -d $HOME/environments ]
 then
-    mkdir ~/environments
-    cd ~/environments
+    mkdir $HOME/environments
+    cd $HOME/environments
     /usr/local/bin/virtualenv --no-site-packages ografy-3.4
     cd ..
 fi
 
-
-# FIXME: For now scp a tar'd copy of the local working Ografy repo into virtual machine.
-[ ! -f ~/ografy.tar.gz ] && echo File ografy.tar.gz not found. Aborting... && exit 1
+[ ! -f $HOME/ografy.tar.gz ] && echo File ografy.tar.gz not found. Aborting... && exit 1
 
 
 # Extract Ografy tarball
-[ ! -d ~/ografy ] && tar -xzf ografy.tar.gz ~/ografy
+[ ! -d $HOME/ografy ] && tar -xzf -P $HOME/ ografy.tar.gz
 # Create empty folders for logs and databases
-[ ! -d ~/ografy/databases ] && mkdir ~/ografy/databases
-[ ! -d ~/ografy/logs ] && mkdir ~/ografy/logs
+[ ! -d $HOME/ografy/databases ] && mkdir $HOME/ografy/databases
+[ ! -d $HOME/ografy/logs ] && mkdir $HOME/ografy/logs
 
 
 # Create log directories
@@ -61,24 +63,24 @@ fi
 [ ! -d /security/certs/ografy.io/www ] && sudo mkdir /security/certs/ografy.io/www
 
 
-if [ -d ~/infrastructure ]
+if [ -d $HOME/infrastructure ]
 then
 
     # Install nginx scripts and configurations
-    sudo cp ~/infrastructure/scripts/init.d/nginx /etc/init.d
+    sudo cp $HOME/infrastructure/scripts/init.d/nginx /etc/init.d
     sudo chmod +x /etc/init.d/nginx
 
-    if [ -f $"~/infrastructure/hosts/$1/nginx/nginx.conf" ]
+    if [ -f $"$HOME/infrastructure/hosts/$1/nginx/nginx.conf" ]
     then
-        sudo cp ~/infrastructure/hosts/$1/nginx/nginx.conf /opt/nginx/conf
+        sudo cp $HOME/infrastructure/hosts/$1/nginx/nginx.conf /opt/nginx/conf
     else
         echo No nginx config found.
     fi
 
-    if [ -d $"~/infrastructure/hosts/$1/certs" ]
+    if [ -d $"$HOME/infrastructure/hosts/$1/certs" ]
     then
-        sudo cp ~/infrastructure/hosts/$1/certs/* /security/certs/ografy.io/static
-        sudo cp ~/infrastructure/hosts/$1/certs/* /security/certs/ografy.io/www
+        sudo cp $HOME/infrastructure/hosts/$1/certs/* /security/certs/ografy.io/static
+        sudo cp $HOME/infrastructure/hosts/$1/certs/* /security/certs/ografy.io/www
     else
         echo No certificates found.
     fi
@@ -86,11 +88,11 @@ fi
 
 
 # Install Ografy dependencies with pip and set up application
-source ~/environments/ografy-3.4/bin/activate
-pip install -r ~/sites/ografy.io/www/ografy/requirements/manual.txt
-yes | python ~/sites/ografy.io/www/ografy/manage.py migrate
-yes | python ~/sites/ografy.io/www/ografy/manage.py validate
-yes yes | python ~/sites/ografy.io/www/ografy/manage.py collectstatic
+source $HOME/environments/ografy-3.4/bin/activate
+pip install -r $HOME/sites/ografy.io/www/ografy/requirements/manual.txt
+yes | python $HOME/sites/ografy.io/www/ografy/manage.py migrate
+yes | python $HOME/sites/ografy.io/www/ografy/manage.py validate
+yes yes | python $HOME/sites/ografy.io/www/ografy/manage.py collectstatic
 deactivate
 
 # Deploy Ografy project
@@ -105,7 +107,7 @@ mkdir sites/ografy.io/www/tmp
 mv ografy/build/static/* sites/ografy.io/static/public
 sudo rm -rf ografy/build
 cp -r ografy sites/ografy.io/www
-cp ~/infrastructure/hosts/$1/passenger/passenger_wsgi.py sites/ografy.io/www
+cp $HOME/infrastructure/hosts/$1/passenger/passenger_wsgi.py sites/ografy.io/www
 
 
 # Set the permissions on the created Ografy folder tree
@@ -115,4 +117,4 @@ chmod g+x,o+x sites/ografy.io
 chmod g+x,o+x sites/ografy.io/www
 chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
 
-sudo touch /installed/ografy-0.2.0
+touch /installed/ografy-0.2.0

@@ -8,7 +8,7 @@
 # Create packages folder.
 [ ! -d /packages ] && sudo mkdir /packages && sudo chmod -R 777 /packages
 
-[ -f /installed/Python-3.4.2 ] && echo Python-3.4.2 already installed. && exit 0
+[ -f /installed/Python-3.4.2 ] && [ "$1" != "force" ] && echo Python-3.4.2 already installed. && exit 0
 
 # Create packages folder.
 [ ! -d /packages ] && sudo mkdir /packages
@@ -28,4 +28,4 @@ sudo /usr/local/bin/pip3.4 install pip --upgrade
 # Install virtualenv to manage virtual Python environments
 sudo /usr/local/bin/pip3.4 install virtualenv
 
-sudo touch /installed/Python-3.4.2
+touch /installed/Python-3.4.2

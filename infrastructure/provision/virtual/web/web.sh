@@ -5,13 +5,12 @@
 # Establish variables
 case "$1" in
     aws)
-
         echo Using aws settings for web config.
+
+        CUSR=ec2-usr
 
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.production'
-
-        cd /home/ec2-user
 
         ;;
 
@@ -19,11 +18,11 @@ case "$1" in
 
         echo Using virtual settings for web config.
 
+        # TODO: Change to ec2-usr to match production more closely
+        CUSR=vagrant
+
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
-
-        # TODO: Change to ec2-user to match aws
-        cd /home/vagrant
 
         ;;
 
@@ -33,7 +32,6 @@ case "$1" in
         ;;
 esac
 
-
 case "$2" in
     force)
 
@@ -42,21 +40,23 @@ case "$2" in
         [ -d /installed ] && sudo rm -rf /installed
         [ -d /packages ] && sudo rm -rf /packages
 
+        /bin/su - $CUSR -c "sudo rm -rf /home/$CUSR/infrastructure"
+
         ;;
 
     *)
         ;;
 esac
 
-sudo tar -xf ~/infrastructure.tar.gz
+/bin/su - $CUSR -c "sudo tar -xf /home/$CUSR/infrastructure.tar.gz"
 
 # Create installed checkpoints folder.
-[ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
+[ ! -d /installed ] && mkdir /installed && chmod -R 777 /installed
 
 # Create packages folder.
-[ ! -d /packages ] && sudo mkdir /packages && sudo chmod -R 777 /packages
+[ ! -d /packages ] && mkdir /packages && chmod -R 777 /packages
 
-sh ~/infrastructure/packages/yum-update.sh
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/yum-update.sh"
 
 case "$1" in
     aws)
@@ -66,12 +66,12 @@ case "$1" in
     virtual)
 
         # sh ~/infrastructure/platforms/centos-7/ografy-user.sh
-        sh ~/infrastructure/platforms/centos-7/firewall.sh
-        sh ~/infrastructure/platforms/centos-7/time.sh
+        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/firewall.sh"
+        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/time.sh"
 
         ;;
 esac
 
-sh ~/infrastructure/packages/Python-3.4.2.sh
-sh ~/infrastructure/packages/passenger-3.0.53.sh
-sh ~/infrastructure/packages/ografy-0.2.0.sh virtual
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/Python-3.4.2.sh"
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/passenger-4.0.53.sh"
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/ografy-0.2.0.sh virtual"
