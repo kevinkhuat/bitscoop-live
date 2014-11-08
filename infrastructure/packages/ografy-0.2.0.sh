@@ -5,10 +5,18 @@
 case "$1" in
     aws)
         echo Using aws settings for ografy.
+
+        # Set environment variable for django
+        export DJANGO_SETTINGS_MODULE='ografy.settings.production'
+
         ;;
 
     virtual)
         echo Using virtual settings for ografy.
+
+        # Set environment variable for django
+        export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
+
         ;;
 
     *)
@@ -18,6 +26,12 @@ case "$1" in
 
 esac
 
+if [ "$3" == "light" ]
+then
+    # Set environment variable for django
+    export DJANGO_SETTINGS_MODULE='ografy.settings.light'
+fi
+
 # Create installed checkpoints folder.
 [ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
 
@@ -26,7 +40,7 @@ esac
 
 
 # Install Ografy
-[ -f /installed/ografy-0.2.0 ] && [ "$1" != "force" ] && echo ografy-0.2.0 already installed. && exit 0
+[ -f /installed/ografy-0.2.0 ] && [ "$2" != "force" ] && echo ografy-0.2.0 already installed. && exit 0
 
 cd $HOME/
 
@@ -43,7 +57,7 @@ fi
 
 
 # Extract Ografy tarball
-[ ! -d $HOME/ografy ] && tar -xzf -P $HOME/ ografy.tar.gz
+[ ! -d $HOME/ografy ] && tar -xzf ografy.tar.gz -C /$HOME
 # Create empty folders for logs and databases
 [ ! -d $HOME/ografy/databases ] && mkdir $HOME/ografy/databases
 [ ! -d $HOME/ografy/logs ] && mkdir $HOME/ografy/logs
@@ -56,7 +70,7 @@ fi
 
 
 # Create certificate directory structure
-[ ! -d /security ] && sudo mkdir /security
+[ ! -d /security ] && sudo mkdir /security && sudo chmod -R 777 /security
 [ ! -d /security/certs ] && sudo mkdir /security/certs
 [ ! -d /security/certs/ografy.io ] && sudo mkdir /security/certs/ografy.io
 [ ! -d /security/certs/ografy.io/static ] && sudo mkdir /security/certs/ografy.io/static
@@ -66,13 +80,13 @@ fi
 if [ -d $HOME/infrastructure ]
 then
 
-    # Install nginx scripts and configurations
+    # Install conf scripts and configurations
     sudo cp $HOME/infrastructure/scripts/init.d/nginx /etc/init.d
     sudo chmod +x /etc/init.d/nginx
 
-    if [ -f $"$HOME/infrastructure/hosts/$1/nginx/nginx.conf" ]
+    if [ -f $"$HOME/infrastructure/hosts/$1/conf/nginx.conf" ]
     then
-        sudo cp $HOME/infrastructure/hosts/$1/nginx/nginx.conf /opt/nginx/conf
+        sudo cp $HOME/infrastructure/hosts/$1/conf/nginx.conf /opt/nginx/conf
     else
         echo No nginx config found.
     fi
@@ -87,6 +101,21 @@ then
 fi
 
 
+# Deploy Ografy project
+[ -d $HOME/sites ] && sudo rm -rf sites
+mkdir $HOME/sites
+mkdir $HOME/sites/ografy.io
+mkdir $HOME/sites/ografy.io/static
+mkdir $HOME/sites/ografy.io/static/public
+mkdir $HOME/sites/ografy.io/www
+mkdir $HOME/sites/ografy.io/www/public
+mkdir $HOME/sites/ografy.io/www/tmp
+mv $HOME/ografy/build/static/* sites/ografy.io/static/public
+sudo rm -rf $HOME/ografy/build
+cp -r ografy sites/ografy.io/www
+cp $HOME/sites/ografy.io/www/ografy/passenger_wsgi.py $HOME/sites/ografy.io/www
+
+
 # Install Ografy dependencies with pip and set up application
 source $HOME/environments/ografy-3.4/bin/activate
 pip install -r $HOME/sites/ografy.io/www/ografy/requirements/manual.txt
@@ -95,26 +124,12 @@ yes | python $HOME/sites/ografy.io/www/ografy/manage.py validate
 yes yes | python $HOME/sites/ografy.io/www/ografy/manage.py collectstatic
 deactivate
 
-# Deploy Ografy project
-[ -d sites ] && sudo rm -rf sites
-mkdir sites
-mkdir sites/ografy.io
-mkdir sites/ografy.io/static
-mkdir sites/ografy.io/static/public
-mkdir sites/ografy.io/www
-mkdir sites/ografy.io/www/public
-mkdir sites/ografy.io/www/tmp
-mv ografy/build/static/* sites/ografy.io/static/public
-sudo rm -rf ografy/build
-cp -r ografy sites/ografy.io/www
-cp $HOME/infrastructure/hosts/$1/passenger/passenger_wsgi.py sites/ografy.io/www
-
 
 # Set the permissions on the created Ografy folder tree
-chmod g+x,o+x .
-chmod g+x,o+x sites
-chmod g+x,o+x sites/ografy.io
-chmod g+x,o+x sites/ografy.io/www
-chmod g+x,o+x sites/ografy.io/www/passenger_wsgi.py
+chmod g+x,o+x $HOME
+chmod g+x,o+x $HOME/sites
+chmod g+x,o+x $HOME/sites/ografy.io
+chmod g+x,o+x $HOME/sites/ografy.io/www
+chmod g+x,o+x $HOME/sites/ografy.io/www/passenger_wsgi.py
 
 touch /installed/ografy-0.2.0

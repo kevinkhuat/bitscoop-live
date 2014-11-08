@@ -14,7 +14,5 @@ if sys.executable != INTERP:
 sys.path.append(BASEDIR)
 sys.path.append(os.path.join(CWD, 'ografy'))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ografy.settings.aws'
-
 import django.core.wsgi
 application = django.core.wsgi.get_wsgi_application()

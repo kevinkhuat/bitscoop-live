@@ -9,21 +9,13 @@ case "$1" in
 
         CUSR=ec2-usr
 
-        # Set environment variable for django
-        export DJANGO_SETTINGS_MODULE='ografy.settings.production'
-
         ;;
 
     virtual)
-
         echo Using virtual settings for web config.
 
         # TODO: Change to ec2-usr to match production more closely
         CUSR=vagrant
-
-        # Set environment variable for django
-        export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
-
         ;;
 
     *)
@@ -75,3 +67,5 @@ esac
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/Python-3.4.2.sh"
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/passenger-4.0.53.sh"
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/ografy-0.2.0.sh virtual"
+
+sudo /etc/init.d/./nginx start

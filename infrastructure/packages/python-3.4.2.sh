@@ -14,7 +14,7 @@
 [ ! -d /packages ] && sudo mkdir /packages
 
 # Download source tarballs and signatures
-[ ! -f /packages/Python-3.4.2.tgz ] && sudo wget -P /packages https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
+[ ! -f /packages/Python-3.4.2.tgz ] && wget -P /packages https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
 
 # TODO: check hash of python tar
 tar -xzf /packages/Python-3.4.2.tgz -C /packages

@@ -12,7 +12,6 @@ KEY=$HOME/Development/Security/ssh
 
 case "$1" in
     aws)
-
         echo "Are you sure you want to deploy tarballs to aws?"
         select yn in "No" "Yes"; do
             case $yn in
@@ -26,13 +25,11 @@ case "$1" in
         ;;
 
     virtual)
-
         KEYS=$KEY/virtual.ografy.io
         echo Using virtual settings to deploy.
         ;;
 
     *)
-
         echo $"Usage: deploy {aws|virtual}"
         exit 2
         ;;
