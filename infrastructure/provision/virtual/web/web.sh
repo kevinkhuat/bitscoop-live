@@ -8,7 +8,6 @@ case "$1" in
         echo Using aws settings for web config.
 
         CUSR=ec2-usr
-
         ;;
 
     virtual)
@@ -26,14 +25,12 @@ esac
 
 case "$2" in
     force)
-
         echo Forcing all packages to reinstall
 
         [ -d /installed ] && sudo rm -rf /installed
         [ -d /packages ] && sudo rm -rf /packages
 
         /bin/su - $CUSR -c "sudo rm -rf /home/$CUSR/infrastructure"
-
         ;;
 
     *)
@@ -51,16 +48,10 @@ esac
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/yum-update.sh"
 
 case "$1" in
-    aws)
-
-        ;;
-
     virtual)
-
         # sh ~/infrastructure/platforms/centos-7/ografy-user.sh
         /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/firewall.sh"
         /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/time.sh"
-
         ;;
 esac
 

@@ -32,4 +32,3 @@ sudo /opt/passenger/bin/passenger-install-nginx-module --auto --languages python
 
 touch /installed/passenger-4.0.53
 touch /installed/nginx-1.7.7
-

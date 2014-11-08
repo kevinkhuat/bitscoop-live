@@ -8,7 +8,6 @@ case "$1" in
 
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.production'
-
         ;;
 
     virtual)
@@ -16,7 +15,6 @@ case "$1" in
 
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
-
         ;;
 
     *)
