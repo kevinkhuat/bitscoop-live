@@ -8,6 +8,14 @@ case "$1" in
 
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.production'
+
+        # Add to non login shell
+        $EDITOR ~/.bashrc
+            export DJANGO_SETTINGS_MODULE='ografy.settings.production'
+
+        # Add to login shell
+        $EDITOR ~/.bash_profile
+            export DJANGO_SETTINGS_MODULE='ografy.settings.production'
         ;;
 
     virtual)
@@ -15,6 +23,14 @@ case "$1" in
 
         # Set environment variable for django
         export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
+
+        # Add to non login shell
+        $EDITOR ~/.bashrc
+            export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
+
+        # Add to login shell
+        $EDITOR ~/.bash_profile
+            export DJANGO_SETTINGS_MODULE='ografy.settings.virtual'
         ;;
 
     *)
@@ -28,6 +44,14 @@ if [ "$3" == "light" ]
 then
     # Set environment variable for django
     export DJANGO_SETTINGS_MODULE='ografy.settings.light'
+
+    # Add to non login shell
+    $EDITOR ~/.bashrc
+        export DJANGO_SETTINGS_MODULE='ografy.settings.light'
+
+    # Add to login shell
+    $EDITOR ~/.bash_profile
+        export DJANGO_SETTINGS_MODULE='ografy.settings.light'
 fi
 
 # Create installed checkpoints folder.
