@@ -1,14 +1,20 @@
 =begin
-
 @Authors William Broza
 =end
 
 Vagrant.configure('2') do |config|
-	config.vm.provider :virtualbox do |vb, override|
+	config.vm.provider :vmware_fusion do |v, override|
+
+=begin
 		config.vm.box = 'chef/centos-7.0'
-		config.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
 		config.vm.synced_folder "~/Development/Packages", "/home/vagrant"
-		vb.customize ["modifyvm", :id, "--memory", "1024"]
+=end
+
+		config.vm.box = '~/Development/Vagrant/VirtualCentOS7AMI.box'
+		config.ssh.username = 'ec2-user'
+		config.ssh.password = 'foxtrot1234'
+		config.vm.synced_folder "~/Development/Packages", "/home/ec2-user"
+
 		config.vm.provision "shell" do |s|
 			s.path = "~/Development/Repositories/ografy/infrastructure/provision/virtual/web/web.sh"
 			s.args = ["virtual"]
