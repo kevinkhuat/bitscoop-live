@@ -38,14 +38,7 @@ build
 # NodeJS #
 ##########
 node_modules
-infastructure/deployment/deploy/vagrant/prototypes/puppet/virtual/db/.librarian/puppet/config
-infastructure/deployment/deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/action_provision
-infastructure/deployment/deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/action_set_name
-infastructure/deployment/deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/id
-infastructure/deployment/deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/index_uuid
-infastructure/deployment/deploy/vagrant/virtual/postgresql/.vagrant/machines/default/virtualbox/synced_folders
-infastructure/deployment/deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_provision
-infastructure/deployment/deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/action_set_name
-infastructure/deployment/deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/id
-infastructure/deployment/deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/index_uuid
-infastructure/deployment/deploy/vagrant/virtual/web/.vagrant/machines/default/virtualbox/synced_folders
+
+# Vagrant #
+###########
+*.vagrant
