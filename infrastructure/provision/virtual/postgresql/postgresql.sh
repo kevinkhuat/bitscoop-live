@@ -9,7 +9,7 @@ case "$1" in
 
         cd /home/ec2-user
 
-        # Create checkpoints folder.
+         # Create checkpoints folder.
         [ ! -d checkpoints ] && mkdir checkpoints
 
         sh os.sh aws
