@@ -7,13 +7,13 @@ case "$1" in
     aws)
         echo Using aws settings for web config.
 
-        CUSR=ec2-usr
+        CUSR=ec2-user
         ;;
 
     virtual)
         echo Using virtual settings for web config.
 
-        # TODO: Change to ec2-usr to match production more closely
+        # TODO: Change to ec2-user to match production more closely
         CUSR=vagrant
         ;;
 
