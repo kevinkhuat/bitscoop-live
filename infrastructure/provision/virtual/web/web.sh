@@ -39,12 +39,6 @@ esac
 
 /bin/su - $CUSR -c "sudo tar -xf /home/$CUSR/infrastructure.tar.gz"
 
-# Create installed checkpoints folder.
-[ ! -d /installed ] && mkdir /installed && chmod -R 777 /installed
-
-# Create packages folder.
-[ ! -d /packages ] && mkdir /packages && chmod -R 777 /packages
-
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/yum-update.sh"
 
 case "$1" in
