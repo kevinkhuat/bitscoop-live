@@ -1,12 +1,6 @@
 #!/bin/bash
 
 
-# Create installed checkpoints folder.
-[ ! -d /installed ] && sudo mkdir /installed
-
-[ -f /installed/firewall ] && [ "$1" != "force" ] && echo firewall already installed. && exit 0
-
-
 # Flush iptables
 sudo iptables -F
 # Block all null packets
@@ -31,5 +25,3 @@ sudo iptables -P INPUT DROP
 
 # Save firewall rules
 sudo iptables-save | sudo tee /etc/sysconfig/iptables
-
-touch /installed/firewall
