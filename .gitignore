@@ -38,3 +38,7 @@ build
 # NodeJS #
 ##########
 node_modules
+
+# Vagrant #
+###########
+*.vagrant

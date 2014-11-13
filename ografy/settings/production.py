@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from ografy.settings.shared import *
-from ografy.settings.signals import *
 
 
 DEBUG = False
@@ -15,14 +14,6 @@ TEMPLATE_LOADERS = (
 STATIC_URL = 'https://static.ografy.io/'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-
-# Database configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.abspath(os.path.join(ROOT_PATH, '..', 'databases', 'production.db')),
-    },
-}
 
 LOGGING = {
     'version': 1,
@@ -41,4 +32,15 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ografy_db',
+        'USER': 'ografy_db_user',
+        'PASSWORD': 'foxtrot1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
