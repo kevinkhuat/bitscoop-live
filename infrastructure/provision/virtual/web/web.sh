@@ -7,13 +7,13 @@ case "$1" in
     aws)
         echo Using aws settings for web config.
 
-        CUSR=ec2-usr
+        CUSR=ec2-user
         ;;
 
     virtual)
         echo Using virtual settings for web config.
 
-        # TODO: Change to ec2-usr to match production more closely
+        # TODO: Change to ec2-user to match production more closely
         CUSR=vagrant
         ;;
 
@@ -38,12 +38,6 @@ case "$2" in
 esac
 
 /bin/su - $CUSR -c "sudo tar -xf /home/$CUSR/infrastructure.tar.gz"
-
-# Create installed checkpoints folder.
-[ ! -d /installed ] && mkdir /installed && chmod -R 777 /installed
-
-# Create packages folder.
-[ ! -d /packages ] && mkdir /packages && chmod -R 777 /packages
 
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/yum-update.sh"
 

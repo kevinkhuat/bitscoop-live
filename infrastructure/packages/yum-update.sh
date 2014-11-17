@@ -1,12 +1,6 @@
 #!/bin/bash
 # @authors Kyle Baran, Liam Broza
 
-
-# Create installed checkpoints folder.
-[ ! -d /installed ] && sudo mkdir /installed && sudo chmod -R 777 /installed
-
-[ -f /installed/yum-update ] && [ "$1" != "force" ] && echo yum-update already installed. && exit 0
-
 # Update OS
 sudo yum update -y
 
@@ -46,5 +40,3 @@ sudo yum install -y postgresql-devel
 # Additional Passenger gem dependances
 [ ! -n "`gem list | grep daemon_controller`" ] && yes | sudo /usr/bin/gem install daemon_controller
 [ ! -n "`gem list | grep rack`" ] && yes | sudo /usr/bin/gem install rack
-
-touch /installed/yum-update
