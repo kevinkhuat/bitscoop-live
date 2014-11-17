@@ -2,6 +2,7 @@ django
 django-filter
 django-haystack
 django-tastypie
+pymongo
 psycopg2
 python-social-auth
 six
