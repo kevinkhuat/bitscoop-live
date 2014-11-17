@@ -3,15 +3,21 @@
 
 class Resource(object):
 
-    def get(self, request, **kwargs):
+    def get(self, **kwargs):
         return NotImplemented()
 
-    def update(self, request, **kwargs):
+    def update(self, **kwargs):
         return NotImplemented()
 
-    def delete(self, request, **kwargs):
+    def delete(self, **kwargs):
         return NotImplemented()
 
-    def put(self, request, **kwargs):
+    def put(self, **kwargs):
+        return NotImplemented()
+
+    def index(self, **kwargs):
+        return NotImplemented()
+
+    def map(self, **kwargs):
         return NotImplemented()
 

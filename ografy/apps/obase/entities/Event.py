@@ -1,7 +1,8 @@
 import pymongo
 from ografy.apps.obase.entities import Resource
+from django.conf import settings
 
-Events = pymongo.Connection("localhost", 27017)["ografy"]["events"]
+Events = pymongo.Connection(settings.MONGODB_SERVERNAME, settings.MONGODB_SERVERPORT)[settings.MONGODB_DBNAME]["events"]
 
 
 class Event(Resource):
