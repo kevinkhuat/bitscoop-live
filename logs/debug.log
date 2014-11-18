@@ -1,0 +1,323 @@
+Not Found: /asdfasd
+Not Found: /favicon.ico
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /test
+Not Found: /asdf
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /static/core/css/site.css
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /asdf
+Not Found: /static/assets/logo_240.png
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /asdf
+Not Found: /static/assets/logo_light_240.png
+Not Found: /static/lib/icomoon/fonticons.css
+Not Found: /static/core/css/site.css
+Not Found: /static/core/img/bg1.png
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /static/core/css/site.css
+Not Found: /static/lib/icomoon/fonticons.css
+Not Found: /static/assets/logo_light_240.png
+Not Found: /static/core/img/bg1.png
+Not Found: /static/core/css/site.css
+Not Found: /static/lib/icomoon/fonticons.css
+Not Found: /static/core/img/bg1.png
+Not Found: /static/assets/logo_light_240.png
+Not Found: /asdf
+Not Found: /asdf
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/assets/logo_240.png
+Not Found: /static/core/css/site.css
+Not Found: /static/core/css/site.css
+Not Found: /static/lib/icomoon/fonticons.css
+Not Found: /static/core/css/site.css
+Not Found: /static/assets/logo_light_240.png
+Not Found: /static/core/img/bg1.png
+Not Found: /static/lib/icomoon/fonticons.css
+Not Found: /static/assets/logo_240.png
+Not Found: /static/core/css/site.css
+Not Found: /asdf
+Not Found: /favicon.ico
+Not Found: /tests/obase
+Not Found: /tests/obase/form
+Not Found: /tests/obase/
+Not Found: /tests/obase/
+Not Found: /tests/obase/form
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'tests/obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: tests/obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'test.obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: test.obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'tests/obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: tests/obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 204, in get_response
+    response = middleware_method(request, response)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/middleware/clickjacking.py", line 31, in process_response
+    if response.get('X-Frame-Options', None) is not None:
+AttributeError: 'function' object has no attribute 'get'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/decorators.py", line 13, in wrapper
+    out = render_to_response(tpl, out, RequestContext(request))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 23, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/decorators.py", line 13, in wrapper
+    out = render_to_response(tpl, out, RequestContext(request))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 23, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/decorators.py", line 13, in wrapper
+    out = render_to_response(tpl, out, RequestContext(request))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 23, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1282, in import_library
+    return mod.register
+AttributeError: 'module' object has no attribute 'register'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/defaulttags.py", line 1115, in load
+    lib = get_library(taglib)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1336, in get_library
+    lib = import_library(taglib_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1286, in import_library
+    taglib_module)
+django.template.base.InvalidTemplateLibrary: Template library ografy.tests.obase.templatetags.backend_utils does not have a variable named 'register'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/decorators.py", line 13, in wrapper
+    out = render_to_response(tpl, out, RequestContext(request))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 23, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 132, in find_template
+    source, display_name = loader(name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 44, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 50, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 132, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 162, in compile_string
+    return parser.parse()
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 290, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/defaulttags.py", line 1119, in load
+    (taglib, e))
+django.template.base.TemplateSyntaxError: 'backend_utils' is not a valid tag library: Template library ografy.tests.obase.templatetags.backend_utils does not have a variable named 'register'
+Internal Server Error: /tests/obase/list
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1282, in import_library
+    return mod.register
+AttributeError: 'module' object has no attribute 'register'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/defaulttags.py", line 1115, in load
+    lib = get_library(taglib)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1336, in get_library
+    lib = import_library(taglib_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 1286, in import_library
+    taglib_module)
+django.template.base.InvalidTemplateLibrary: Template library ografy.tests.obase.templatetags.backend_utils does not have a variable named 'register'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/decorators.py", line 13, in wrapper
+    out = render_to_response(tpl, out, RequestContext(request))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 23, in render_to_response
+    return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 132, in find_template
+    source, display_name = loader(name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 44, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 50, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 132, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 162, in compile_string
+    return parser.parse()
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 290, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/defaulttags.py", line 1119, in load
+    (taglib, e))
+django.template.base.TemplateSyntaxError: 'backend_utils' is not a valid tag library: Template library ografy.tests.obase.templatetags.backend_utils does not have a variable named 'register'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'tests/obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: tests/obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/obase/views.py", line 8, in form
+    return render(request, 'obase/form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
+    raise TemplateDoesNotExist(name)
+django.template.base.TemplateDoesNotExist: obase/form.html

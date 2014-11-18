@@ -158,7 +158,6 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
 
     'ografy.apps.account',
-    'ografy.apps.xauth',
     #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
@@ -167,8 +166,11 @@ INSTALLED_APPS = (
     #'ografy.apps.extensions',
     #'ografy.apps.nexus',
     #'ografy.apps.signals',
+    'ografy.apps.obase',
     'ografy.apps.user',
+    'ografy.apps.xauth',
 
+    'ografy.tests.obase',
     'ografy.tests.xauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (

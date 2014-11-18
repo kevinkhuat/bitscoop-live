@@ -2,6 +2,13 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from django.conf.urls import include, patterns, url
 
+import ografy.apps.core.errors as errors
+
+handler400 = errors.view400
+handler403 = errors.view403
+handler404 = errors.view404
+handler500 = errors.view500
+
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^admin/', include(admin.site.urls)),
@@ -16,6 +23,7 @@ urlpatterns = patterns('',
 
     # All test apps to be prepended with /tests/
     url(r'^tests/auth', include('ografy.tests.xauth.urls')),
+    url(r'^tests/obase/', include('ografy.tests.obase.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".

@@ -1,4 +1,3 @@
-{% load backend_utils %}
 <!doctype html>
 <html>
 <head>
@@ -13,52 +12,23 @@
 		$form.submit(submitHandeler);
 	}
 
+    var eventSubmitHandler = function(Event) {
+        $form = $(this).closest('form');
+        $.post('/obase/event', {
+            'id' : $('event-id'),
+            'signal_id' : $('event-signal-id'),
+            'user_id' : $('event-used-id'),
+            'provider_id' : $('event-provider-id'),
+            'provider_name' : $('event-provider-name')
+        }).done(function(data, xhr, response){
+            $.('event-result')
+        });
+    }
+
 	$(function() {
 
-		formPost()
+		formPost('event-form', eventSubmitHandler)
 
-		modalDialog('#livejournal-modal', 'livejournal');
-		modalDialog('#openid-modal', 'openid');
-		modalDialog('#email-modal', 'email');
-		modalDialog('#username-modal', 'username');
-		$validationModal = modalDialog('#validation-sent-modal');
-		$emailRequired = modalDialog('#email-required-modal');
-
-		modalDialog('#ajax-call-modal', 'ajax-call', function(event) {
-					var $backend, $result, $form;
-					event.preventDefault();
-					$modaldialog = $(this).closest('.modal');
-					$form = $modaldialog.find('form');
-					$backend = $modaldialog.find('[name="logged-in-backend"]');
-					$call_url = $modaldialog.find('[name="api_call_url"]');
-					$result = $modaldialog.find('.login-result');
-
-					$.get('/auth/call/' + $backend.text().trim() + '/', {
-						backend_id: $backend.val(),
-						api_call_url: $call_url.val()
-					}).done(function(data, xhr, response) {
-						$result.find('.user-id').html(data.user_id);
-						$result.find('.user-username').html(data.username);
-						$result.find('.ajax-API-result-data').html(data);
-						$form.hide();
-						$result.show();
-						setTimeout(function() {
-							window.location = '/';
-						}, 10000);
-					});
-				},
-				function($modal) {
-					$.get('/auth/signals/', {}).done(
-							function(data, xhr, response) {
-								$logged_in_backend = $modal.find('[name="logged-in-backend"]');
-								$.each(data, function(index, item) {
-									$logged_in_backend.append(
-											$('<option></option>').val(item.id).html(item.provider)
-									);
-								});
-							});
-				}
-		);
 	};
 </script>
 </head>
@@ -67,30 +37,30 @@
 
 <h4>Event</h4>
 
-<form action="#" method="post">{% csrf_token %}
+<form action="#" method="post" id="event-form">{% csrf_token %}
 	<div>
 		<label>Signal ID:</label>
 		<select id="event-signal-id" name="event-signal-id" type="text" value="1">
 		</select>
 	</div>
 	<div>
-		<label>Signal ID:</label>
-		<select id="event-signal-id" name="event-signal-id" type="text" value="1">
+		<label>User ID:</label>
+		<select id="event-user-id" name="event-user-id" type="text" value="1">
 		</select>
 	</div>
 	<div>
-		<label>Signal ID:</label>
-		<select id="event-signal-id" name="event-signal-id" type="text" value="1">
+		<label>Provider ID:</label>
+		<select id="event-provider-id" name="event-provider-id" type="text" value="1">
 		</select>
 	</div>
 	<div>
-		<label>Signal ID:</label>
-		<select id="event-signal-id" name="event-signal-id" type="text" value="1">
+		<label>Provider Name:</label>
+		<select id="event-provider-name" name="event-provider-name" type="text" value="1">
 		</select>
 	</div>
-	<div>
-		<label>Signal ID:</label>
-		<select id="event-signal-id" name="event-signal-id" type="text" value="1">
+    	<div>
+		<label>Data:</label>
+		<select id="event-data" name="event-data" type="text" value="1">
 		</select>
 	</div>
 

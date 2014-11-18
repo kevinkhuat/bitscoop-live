@@ -1,2 +1,2 @@
 
-default_app_config = 'ografy.tests.xauth.app.AuthConfig'
+default_app_config = 'ografy.tests.obase.app.OBaseConfig'
