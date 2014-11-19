@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 
-import ografy.tests.obase.views as views
+import ografy.tests.test_obase.views as views
 
 
 urlpatterns = patterns('',

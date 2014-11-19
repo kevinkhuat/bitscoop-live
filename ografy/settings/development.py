@@ -38,3 +38,9 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+MONGODB_SERVERNAME = 'localhost'
+
+MONGODB_SERVERPORT = 27017
+
+MONGODB_DBNAME = 'ografy_db'

@@ -17,13 +17,14 @@ urlpatterns = patterns('',
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
     url(r'^docs', include('ografy.apps.documentation.urls')),
+    url(r'^obase/', include('ografy.apps.obase.urls')),
     #url(r'^extensions', include('ografy.apps.extensions.urls')),
     #url(r'^nexus', include('ografy.apps.nexus.urls')),
     #url(r'^signals', include('ografy.apps.signals.urls')),
 
     # All test apps to be prepended with /tests/
-    url(r'^tests/auth', include('ografy.tests.xauth.urls')),
-    url(r'^tests/obase/', include('ografy.tests.obase.urls')),
+    url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
+    url(r'^tests/obase/', include('ografy.tests.test_obase.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".

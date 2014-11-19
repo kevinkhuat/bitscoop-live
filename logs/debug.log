@@ -321,3 +321,624 @@ Traceback (most recent call last):
   File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 136, in find_template
     raise TemplateDoesNotExist(name)
 django.template.base.TemplateDoesNotExist: obase/form.html
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 20, in <module>
+    url(r'^obase', include('ografy.apps.obase.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/urls.py", line 3, in <module>
+    import ografy.apps.obase.views as views
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 7, in <module>
+    from ografy.apps.obase.entities import Event
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/entities/Event.py", line 5, in <module>
+    Events = pymongo.Connection(settings.MONGODB_SERVERNAME, settings.MONGODB_SERVERPORT)[settings.MONGODB_DBNAME]["events"]
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/__init__.py", line 47, in __getattr__
+    return getattr(self._wrapped, name)
+AttributeError: 'Settings' object has no attribute 'MONGODB_SERVERNAME'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 20, in <module>
+    url(r'^obase', include('ografy.apps.obase.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/urls.py", line 3, in <module>
+    import ografy.apps.obase.views as views
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 7, in <module>
+    from ografy.apps.obase.entities import Event
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/entities/Event.py", line 8, in <module>
+    class Event(Resource):
+TypeError: module.__init__() takes at most 2 arguments (3 given)
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 20, in <module>
+    url(r'^obase', include('ografy.apps.obase.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/urls.py", line 3, in <module>
+    import ografy.apps.obase.views as views
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 7, in <module>
+    from ografy.apps.obase.entities import Event
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/entities/Event.py", line 8, in <module>
+    class Event(Resource):
+TypeError: module.__init__() takes at most 2 arguments (3 given)
+Not Found: /tests/obase/event
+Not Found: /tests/obase/
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2189, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2201, in _find_and_load_unlocked
+ImportError: No module named 'ografy.tests.xauth'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 374, in url_patterns
+    iter(patterns)
+TypeError: 'module' object is not iterable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 381, in url_patterns
+    raise ImproperlyConfigured(msg.format(name=self.urlconf_name))
+django.core.exceptions.ImproperlyConfigured: The included urlconf 'ografy.urls' does not appear to have any patterns in it. If you see valid patterns in the file then the issue is probably caused by a circular import.
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.test-xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test-xauth/urls.py", line 3, in <module>
+    import ografy.tests.xauth.views as views
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+ImportError: No module named 'ografy.tests.xauth'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.test-xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test-xauth/urls.py", line 3, in <module>
+    import ografy.tests.xauth.views as views
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+ImportError: No module named 'ografy.tests.xauth'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.test-xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test-xauth/urls.py", line 3, in <module>
+    import ografy.tests.xauth.views as views
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+ImportError: No module named 'ografy.tests.xauth'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.test-xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1444, in exec_module
+  File "<frozen importlib._bootstrap>", line 1549, in get_code
+  File "<frozen importlib._bootstrap>", line 1509, in source_to_code
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test-xauth/urls.py", line 3
+    import ografy.tests.test-xauth.views as views
+                            ^
+SyntaxError: invalid syntax
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 364, in urlconf_module
+    return self._urlconf_module
+AttributeError: 'RegexURLResolver' object has no attribute '_urlconf_module'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 98, in get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 343, in resolve
+    for pattern in self.url_patterns:
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 372, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/urlresolvers.py", line 366, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/urls.py", line 26, in <module>
+    url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/conf/urls/__init__.py", line 28, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/importlib/__init__.py", line 109, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 2231, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 2214, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 2203, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1200, in _load_unlocked
+  File "<frozen importlib._bootstrap>", line 1129, in _exec
+  File "<frozen importlib._bootstrap>", line 1448, in exec_module
+  File "<frozen importlib._bootstrap>", line 321, in _call_with_frames_removed
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test_xauth/urls.py", line 3, in <module>
+    import ografy.tests.test_xauth.views as views
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test_xauth/views.py", line 8, in <module>
+    from ografy.tests.xauth.decorators import render_to
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+  File "/usr/bin/pycharm-community-138.2401/helpers/pydev/third_party/pluginbase.py", line 443, in plugin_import
+    fromlist, level)
+ImportError: No module named 'ografy.tests.xauth'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 286, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test_obase/views.py", line 8, in form
+    return render(request, 'form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 132, in find_template
+    source, display_name = loader(name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 44, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 50, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 132, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 162, in compile_string
+    return parser.parse()
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 288, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 344, in invalid_block_tag
+    raise self.error(token, "Invalid block tag: '%s'" % command)
+django.template.base.TemplateSyntaxError: Invalid block tag: 'static'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 286, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test_obase/views.py", line 8, in form
+    return render(request, 'form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 132, in find_template
+    source, display_name = loader(name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 44, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 50, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 132, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 162, in compile_string
+    return parser.parse()
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 290, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader_tags.py", line 175, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 288, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 343, in invalid_block_tag
+    (command, get_text_list(["'%s'" % p for p in parse_until])))
+django.template.base.TemplateSyntaxError: Invalid block tag: 'static', expected 'endblock'
+Internal Server Error: /tests/obase/form
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 286, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/tests/test_obase/views.py", line 8, in form
+    return render(request, 'form.html')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/shortcuts.py", line 48, in render
+    return HttpResponse(loader.render_to_string(*args, **kwargs),
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 170, in render_to_string
+    t = get_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 144, in get_template
+    template, origin = find_template(template_name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 132, in find_template
+    source, display_name = loader(name, dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 44, in __call__
+    return self.load_template(template_name, template_dirs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 50, in load_template
+    template = get_template_from_string(source, origin, template_name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader.py", line 156, in get_template_from_string
+    return Template(source, origin, name)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 132, in __init__
+    self.nodelist = compile_string(template_string, origin)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 162, in compile_string
+    return parser.parse()
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 290, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/loader_tags.py", line 175, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 288, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/template/base.py", line 343, in invalid_block_tag
+    (command, get_text_list(["'%s'" % p for p in parse_until])))
+django.template.base.TemplateSyntaxError: Invalid block tag: 'static', expected 'endblock'
+Not Found: /obase/event
+Not Found: /obase/event
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 15, in get
+    return HttpResponse(json.dumps(data), mimetype='applications/json')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/http/response.py", line 318, in __init__
+    super(HttpResponse, self).__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'mimetype'
+Forbidden (CSRF token missing or incorrect.): /obase/event
+Forbidden (CSRF token missing or incorrect.): /obase/event
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 15, in get
+    return HttpResponse(json.dumps(data), mimetype='applications/json')
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/http/response.py", line 318, in __init__
+    super(HttpResponse, self).__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'mimetype'
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 18, in post
+    return HttpResponse(json.dumps(Event.post(request.POST.data)), mimetype='applications/json')
+AttributeError: 'module' object has no attribute 'post'
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 18, in post
+    return HttpResponse(json.dumps(Event.post(request.POST.data)), mimetype='applications/json')
+AttributeError: 'module' object has no attribute 'post'
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 18, in post
+    return HttpResponse(json.dumps(Event.post(request.POST.data)), mimetype='applications/json')
+AttributeError: 'module' object has no attribute 'post'
+Internal Server Error: /obase/event
+Traceback (most recent call last):
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/core/handlers/base.py", line 111, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/kyle/dev/envs/ografy/lib/python3.4/site-packages/django/views/generic/base.py", line 87, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/kyle/dev/mrhegemon/ografy/ografy/apps/obase/views.py", line 18, in post
+    return HttpResponse(json.dumps(Event.post(request.POST.data)), mimetype='applications/json')
+AttributeError: 'module' object has no attribute 'post'

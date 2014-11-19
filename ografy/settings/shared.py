@@ -170,8 +170,8 @@ INSTALLED_APPS = (
     'ografy.apps.user',
     'ografy.apps.xauth',
 
-    'ografy.tests.obase',
-    'ografy.tests.xauth',
+    'ografy.tests.test_obase',
+    'ografy.tests.test_xauth',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
