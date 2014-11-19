@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<title>Ografy oBase Input Test Forms</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    {% block static %}
+    <script type="text/javascript" src="{% static 'test_obase/form.js' %}"></script>
+    {% endblock %}
+</head>
+<body>
+<h1>Ografy oBase Input Test Forms</h1>
+
+<h4>Event</h4>
+
+<form action="#" method="post" id="event-form">{% csrf_token %}
+	<div>
+		<label>Signal ID:</label>
+		<input id="event-signal-id" name="event-signal-id" type="text" value="101">
+		</input>
+	</div>
+	<div>
+		<label>User ID:</label>
+		<input id="event-user-id" name="event-user-id" type="text" value="202">
+		</input>
+	</div>
+	<div>
+		<label>Provider ID:</label>
+		<input id="event-provider-id" name="event-provider-id" type="text" value="303">
+		</input>
+	</div>
+	<div>
+		<label>Provider Name:</label>
+		<input id="event-provider-name" name="event-provider-name" type="text" value="Facebook">
+		</input>
+	</div>
+    	<div>
+		<label>Data:</label>
+		<input id="event-data" name="event-data" type="text" value="{'cool':'pants'}">
+		</input>
+	</div>
+
+	<input type="submit" value="Add Event" id="event-submit">
+</form>
+
+<p>
+	<strong>Add Event Result Data:</strong>
+	<span id="event-result"></span>
+</p>
+
+
+
+</body>
+</html>

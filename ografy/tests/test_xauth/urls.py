@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 
-import ografy.tests.xauth.views as views
+import ografy.tests.test_xauth.views as views
 
 
 urlpatterns = patterns('',

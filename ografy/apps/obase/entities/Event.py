@@ -1,32 +1,22 @@
 import pymongo
-from ografy.apps.obase.entities import Resource
 from django.conf import settings
 
 Events = pymongo.Connection(settings.MONGODB_SERVERNAME, settings.MONGODB_SERVERPORT)[settings.MONGODB_DBNAME]["events"]
 
 
-class Event(Resource):
+class Event(object):
 
-    def get(self, username):
+    def get(self, query):
         spec = {
-            "_id": username,
             "_meta.active": True
         }
         doc = Events.find_one(spec)
         if not doc:
             None
 
-    def put(self, data, username):
-        spec = {
-            "_id": username,
-            "_meta.active": True
-        }
-        operation = {
-            "$set": data.json,
-        }
-        doc = Events.update(spec, operation, new=True)
-        if not doc:
-            None
+    def post(self, data):
+        #Todo: clean data about to be inserted as an Event
+        return Events.insert(data)
 
     def _get_message(self, data):
         pass
