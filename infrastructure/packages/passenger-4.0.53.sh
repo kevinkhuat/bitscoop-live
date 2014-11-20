@@ -10,7 +10,7 @@
 # Install Passenger w/ conf
 [ -f /installed/passenger-4.0.53 ] && [ "$1" != "force" ] && echo passenger-4.0.53 w/ nginx-1.7.7.tar.gz already installed. && exit 0
 
-if  [ "$1" != "force" ]
+if [ "$1" != "force" ]
 then
     [ -d /packages/passenger-4.0.53 ] && rm -rf /packages/passenger-4.0.53
     [ -d /packages/nginx-1.7.7 ] && rm -rf /packages/nginx-1.7.7

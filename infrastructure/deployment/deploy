@@ -9,31 +9,36 @@ ENV=$HOME/Development/Environments
 # Key directory
 KEY=$HOME/Development/Security/ssh
 
+while getopts "s:v:p:" flag
+do
+	if [ $flag = "p" ]
+	then
+		case $OPTARG in
+		    aws)
+		        echo "Are you sure you want to deploy tarballs to aws?"
+		        select yn in "No" "Yes"; do
+		            case $yn in
+		                Yes) break;;
+		                No) exit 0;;
+		            esac
+		        done
 
-case "$1" in
-    aws)
-        echo "Are you sure you want to deploy tarballs to aws?"
-        select yn in "No" "Yes"; do
-            case $yn in
-                Yes) break;;
-                No) exit 0;;
-            esac
-        done
+		        KEYS=$KEY/ografy.io
+		        echo Using aws settings to deploy.
+		        ;;
 
-        KEYS=$KEY/ografy.io
-        echo Using aws settings to deploy.
-        ;;
+		    virtual)
+		        KEYS=$KEY/virtual.ografy.io
+		        echo Using virtual settings to deploy.
+		        ;;
 
-    virtual)
-        KEYS=$KEY/virtual.ografy.io
-        echo Using virtual settings to deploy.
-        ;;
-
-    *)
-        echo $"Usage: deploy {aws|virtual}"
-        exit 2
-        ;;
-esac
+		    *)
+		        echo $"Usage: deploy -p {aws|virtual}"
+		        exit 2
+		        ;;
+		esac
+	fi
+done
 
 # Remove files from previous run
 rm -rf $PKG/*
@@ -47,17 +52,51 @@ chmod -R +x infrastructure/packages/*
 chmod -R +x infrastructure/platforms/*
 tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
-if [ "$1" = "aws" ]
-then
-    scp -i $KEYS/ec2-user.pem $PKG/infrastructure.tar.gz ec2-user@ografy.io:~
-    scp -i $KEYS/ografy.pem $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
-else
-    # TODO: Create custom CentOS 7 box for vagrant that has user ec2-user and connects using ssh keys instead of passwords. This is to more closely mimmic production
-    # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
+#This resets to the first option
+#Need to do this if you're using the flag in multiple places, like we are here.
+OPTIND=1
 
-    # For diagnostic purposes
-    cp $REPO/ografy/infrastructure/provision/virtual/web/web.sh $PKG
+while getopts "s:p:v:" flag
+do
+	if [ $flag = "p" ] && [ $OPTARG = "aws" ]
+	then
+	    scp -i $KEYS/ec2-user.pem $PKG/infrastructure.tar.gz ec2-user@ografy.io:~
+	    scp -i $KEYS/ografy.pem $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
+	else
+	    # TODO: Create custom CentOS 7 box for vagrant that has user ec2-user and connects using ssh keys instead of passwords. This is to more closely mimmic production
+	    # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 
-    cd $REPO/ografy/infrastructure/provision/virtual/web
-    vagrant up
-fi
+		#scp -i $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz vagrant@ografy.io:~
+	    # For diagnostic purposes
+	    if [ $flag = "s" ]
+	    then
+	        if [ $OPTARG = "web" ]
+	        then
+			    cp $REPO/ografy/infrastructure/provision/virtual/web/web.sh $PKG
+
+			    cd $REPO/ografy/infrastructure/provision/virtual/web
+
+			elif [ $OPTARG = "postgresql" ]
+			then
+			    cp $REPO/ografy/infrastructure/provision/virtual/postgresql/postgresql.sh $PKG
+
+			    cd $REPO/ografy/infrastructure/provision/virtual/postgresql
+			elif [ $OPTARG = "mongodb" ]
+			then
+				cp $REPO/ografy/infrastructure/provision/virtual/mongodb/mongodb.sh $PKG
+
+			    cd $REPO/ografy/infrastructure/provision/virtual/mongodb
+			else
+				echo "Invalid service selection, exiting now"
+				exit 2
+			fi
+
+
+		fi
+
+		if [ $flag = "v" ]
+		then
+			vagrant up --provider $OPTARG
+		fi
+	fi
+done

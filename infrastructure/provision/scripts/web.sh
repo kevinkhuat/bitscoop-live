@@ -49,7 +49,7 @@ case "$1" in
         ;;
 esac
 
-/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/Python-3.4.2.sh"
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/python-3.4.2.sh"
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/passenger-4.0.53.sh"
 /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/ografy-0.2.0.sh virtual"
 
