@@ -41,4 +41,8 @@ node_modules
 
 # Vagrant #
 ###########
-*.vagrant
+.vagrant
+
+# Logs #
+########
+logs

@@ -5,10 +5,19 @@ from ografy.settings.shared import *
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'dev.ografy.io', 'developer.ografy.io', 'virtual.ografy.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ografy.io']
 
 STATIC_URL = '/static/'
 
+# Database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.abspath(os.path.join(ROOT_PATH, '..', 'databases', 'light.db')),
+    },
+}
+
+# Logging configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -27,20 +36,3 @@ LOGGING = {
         },
     },
 }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ografy_db',
-        'USER': 'ografy_db_user',
-        'PASSWORD': 'foxtrot1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
-MONGODB_SERVERNAME = 'localhost'
-
-MONGODB_SERVERPORT = 27017
-
-MONGODB_DBNAME = 'ografy_db'
