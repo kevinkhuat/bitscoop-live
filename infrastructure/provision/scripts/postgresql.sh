@@ -9,6 +9,8 @@ case "$1" in
 
         cd /home/ec2-user
 
+		CUSR=aws
+
          # Create checkpoints folder.
         [ ! -d checkpoints ] && mkdir checkpoints
 
@@ -21,11 +23,13 @@ case "$1" in
 
         cd /home/vagrant
 
+		CUSR=vagrant
+
         # Create checkpoints folder.
         [ ! -d checkpoints ] && mkdir checkpoints
 
-        sh os.sh virtual
-        sh postgresql.sh virtual
+        #sh os.sh virtual
+        #sh postgresql.sh virtual
 
         ;;
     *)
@@ -33,3 +37,25 @@ case "$1" in
         exit 2
         ;;
 esac
+
+case "$2" in
+    force)
+        echo Forcing all packages to reinstall
+
+        [ -d /installed ] && sudo rm -rf /installed
+        [ -d /packages ] && sudo rm -rf /packages
+
+        /bin/su - $CUSR -c "sudo rm -rf /home/$CUSR/infrastructure"
+        ;;
+
+    *)
+        ;;
+esac
+
+/bin/su - $CUSR -c "sudo tar -xf /home/$CUSR/infrastructure.tar.gz"
+
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos/firewall.sh"
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos/time.sh"
+
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/yum-update.sh"
+/bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/packages/postgresql.sh"

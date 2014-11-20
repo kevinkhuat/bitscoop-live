@@ -44,8 +44,8 @@ esac
 case "$1" in
     virtual)
         # sh ~/infrastructure/platforms/centos-7/ografy-user.sh
-        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/firewall.sh"
-        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos-7/time.sh"
+        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos/firewall.sh"
+        /bin/su - $CUSR -c "sh /home/$CUSR/infrastructure/platforms/centos/time.sh"
         ;;
 esac
 

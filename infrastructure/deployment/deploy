@@ -11,34 +11,44 @@ KEY=$HOME/Development/Security/ssh
 
 while getopts "s:v:p:" flag
 do
-	if [ $flag = "p" ]
-	then
-		case $OPTARG in
-		    aws)
-		        echo "Are you sure you want to deploy tarballs to aws?"
-		        select yn in "No" "Yes"; do
-		            case $yn in
-		                Yes) break;;
-		                No) exit 0;;
-		            esac
-		        done
-
-		        KEYS=$KEY/ografy.io
-		        echo Using aws settings to deploy.
-		        ;;
-
-		    virtual)
-		        KEYS=$KEY/virtual.ografy.io
-		        echo Using virtual settings to deploy.
-		        ;;
-
-		    *)
-		        echo $"Usage: deploy -p {aws|virtual}"
-		        exit 2
-		        ;;
-		esac
-	fi
+	case $flag in
+		p)
+			PLATFORM=$OPTARG
+			;;
+		s)
+			SERVICE=$OPTARG
+			;;
+		v)
+			PROVIDER=$OPTARG
+			;;
+	esac
 done
+
+
+case $PLATFORM in
+    aws)
+        echo "Are you sure you want to deploy tarballs to aws?"
+        select yn in "No" "Yes"; do
+            case $yn in
+                Yes) break;;
+                No) exit 0;;
+            esac
+        done
+
+        KEYS=$KEY/ografy.io
+        echo Using aws settings to deploy.
+        ;;
+
+    virtual)
+        KEYS=$KEY/virtual.ografy.io
+        echo Using virtual settings to deploy.
+        ;;
+
+    *)
+        echo $"Usage: deploy -p {aws|virtual}"
+        exit 2
+        ;;
+esac
 
 # Remove files from previous run
 rm -rf $PKG/*
@@ -56,47 +66,58 @@ tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructur
 #Need to do this if you're using the flag in multiple places, like we are here.
 OPTIND=1
 
-while getopts "s:p:v:" flag
-do
-	if [ $flag = "p" ] && [ $OPTARG = "aws" ]
-	then
+case $PLATFORM in
+	aws)
 	    scp -i $KEYS/ec2-user.pem $PKG/infrastructure.tar.gz ec2-user@ografy.io:~
 	    scp -i $KEYS/ografy.pem $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
-	else
+	    ;;
+	virtual)
 	    # TODO: Create custom CentOS 7 box for vagrant that has user ec2-user and connects using ssh keys instead of passwords. This is to more closely mimmic production
 	    # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
 
 		#scp -i $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz vagrant@ografy.io:~
 	    # For diagnostic purposes
-	    if [ $flag = "s" ]
-	    then
-	        if [ $OPTARG = "web" ]
-	        then
-			    cp $REPO/ografy/infrastructure/provision/virtual/web/web.sh $PKG
+	    case $SERVICE in
+	        cluster)
+	            echo "Haven't gotten to that yet"
+				;;
 
-			    cd $REPO/ografy/infrastructure/provision/virtual/web
+			mongodb)
+				cp $REPO/ografy/infrastructure/provision/scripts/mongodb.sh $PKG
 
-			elif [ $OPTARG = "postgresql" ]
-			then
-			    cp $REPO/ografy/infrastructure/provision/virtual/postgresql/postgresql.sh $PKG
+			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/mongodb
+			    ;;
 
-			    cd $REPO/ografy/infrastructure/provision/virtual/postgresql
-			elif [ $OPTARG = "mongodb" ]
-			then
-				cp $REPO/ografy/infrastructure/provision/virtual/mongodb/mongodb.sh $PKG
+			postgresql)
+			    cp $REPO/ografy/infrastructure/provision/scripts/postgresql.sh $PKG
 
-			    cd $REPO/ografy/infrastructure/provision/virtual/mongodb
-			else
+			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/postgresql
+			    ;;
+
+			web)
+			    cp $REPO/ografy/infrastructure/provision/scripts/web.sh $PKG
+
+			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/web
+			    ;;
+
+			*)
 				echo "Invalid service selection, exiting now"
 				exit 2
-			fi
+				;;
+		esac
+		;;
 
+	*)
+		echo "Invalid provider selection, exiting now"
+		exit 2
+		;;
+esac
 
-		fi
-
-		if [ $flag = "v" ]
-		then
-			vagrant up --provider $OPTARG
-		fi
-	fi
-done
+case $PLATFORM in
+	aws)
+		vagrant up
+		;;
+	virtual)
+		vagrant up --provider $PROVIDER
+		;;
+esac

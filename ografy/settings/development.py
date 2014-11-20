@@ -38,7 +38,5 @@ LOGGING = {
 }
 
 MONGODB_SERVERNAME = 'localhost'
-
 MONGODB_SERVERPORT = 27017
-
 MONGODB_DBNAME = 'ografy_db'
