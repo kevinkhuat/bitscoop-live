@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from ografy.settings.shared import *
 
 DEBUG = True
