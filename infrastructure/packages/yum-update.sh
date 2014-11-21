@@ -13,8 +13,6 @@ sudo yum install -y bzip2-devel
 sudo yum install -y gcc
 # Compiles C++ (e.g. Passenger) from source
 sudo yum install -y gcc-c++
-# Git clone Ografy repository
-sudo yum install -y git
 # Passenger bindings
 sudo yum install -y libcurl-devel
 # Needed to sync time with global time
@@ -38,5 +36,5 @@ sudo yum install -y zlib-devel
 sudo yum install -y postgresql-devel
 
 # Additional Passenger gem dependances
-[ ! -n "`gem list | grep daemon_controller`" ] && yes | sudo /usr/bin/gem install daemon_controller
-[ ! -n "`gem list | grep rack`" ] && yes | sudo /usr/bin/gem install rack
+yes | sudo /usr/bin/gem install daemon_controller
+yes | sudo /usr/bin/gem install rack
