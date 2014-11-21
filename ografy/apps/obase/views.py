@@ -2,9 +2,9 @@ import json
 import requests
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.generic import View
-from ografy.apps.obase.entities import Event
+from ografy.apps.obase.entities.Event import Event
 
 
 class EventView (View):
@@ -12,7 +12,10 @@ class EventView (View):
     def get(self, request):
         #Todo: event.get
         data = {}
-        return HttpResponse(json.dumps(data), mimetype='applications/json')
+        return JsonResponse(json.dumps(data))
 
     def post(self, request):
-        return HttpResponse(json.dumps(Event.post(request.POST.data)), mimetype='applications/json')
+        result = Event.post(dict(request.POST))
+        objectID = int.from_bytes(result._ObjectId__id, 'big')
+
+        return JsonResponse({'objectID' : objectID})

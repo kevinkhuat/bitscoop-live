@@ -6,7 +6,7 @@ Events = pymongo.Connection(settings.MONGODB_SERVERNAME, settings.MONGODB_SERVER
 
 class Event(object):
 
-    def get(self, query):
+    def get(query):
         spec = {
             "_meta.active": True
         }
@@ -14,12 +14,15 @@ class Event(object):
         if not doc:
             None
 
-    def post(self, data):
+    def get_all(self):
+        return Events.find()
+
+    def post(data):
         #Todo: clean data about to be inserted as an Event
         return Events.insert(data)
 
-    def _get_message(self, data):
+    def _get_message(data):
         pass
 
-    def _put_message(self, data):
+    def _put_message(data):
         pass

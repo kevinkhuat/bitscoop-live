@@ -1,6 +1,7 @@
+import jsonpickle
+
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout as auth_logout
+from ografy.apps.obase.entities.Event import Event
 
 
 # @login_required
@@ -9,4 +10,13 @@ def form(request):
 
 # @login_required
 def obase_list(request):
-    return render(request, 'list.html')
+    event_list = []
+
+    for event in Event.get_all():
+        #FIXME: Use a custom serializer
+        event['_id'] = int.from_bytes(event['_id']._ObjectId__id, 'big')
+        event_list.append(jsonpickle.encode(event))
+
+    return render(request, 'list.html', {
+        'event_list': event_list
+    })

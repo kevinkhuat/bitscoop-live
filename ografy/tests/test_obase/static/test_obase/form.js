@@ -67,7 +67,7 @@ function eventSubmitHandler() {
     };
     $.post('/obase/event', eventData).done(
         function(data, xhr, response){
-            $('event-result').html(data);
+            $('#event-result').html(JSON.stringify(data));
         });
 };
 
