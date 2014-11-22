@@ -91,7 +91,7 @@
 
 	<div class="legacy">
 		{% for name, backend in available_backends|legacy_backends %}
-			{% associated backend %}
+			{%  ociated backend %}
 			{% if association %}
 				<form class="disconnect-form"
 				      action="{% url "social:disconnect_individual" backend=association.provider association_id=association.id %}"

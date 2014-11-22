@@ -29,7 +29,7 @@ case "$1" in
         [ ! -d checkpoints ] && mkdir checkpoints
 
         #sh os.sh virtual
-        #sh postgresql.sh virtual
+        #sh postgresql-9.3.sh virtual
 
         ;;
     *)

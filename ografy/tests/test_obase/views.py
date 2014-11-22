@@ -1,7 +1,7 @@
 import jsonpickle
 
 from django.shortcuts import render
-from ografy.apps.obase.entities.Event import Event
+from ografy.apps.obase.entities.events import Event
 
 
 # @login_required
