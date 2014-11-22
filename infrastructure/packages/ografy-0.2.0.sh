@@ -71,11 +71,16 @@ yes yes | python ${WWW}/ografy/manage.py collectstatic
 deactivate
 
 
+# Copy static files to serve location.
 mv ${WWW}/ografy/build/static/* ${STATIC}/public
 rm -rf ${WWW}/ografy/build
+
+
+# Move passenger_wsgi file to appropriate location.
 mv ${WWW}/ografy/passenger_wsgi.py ${WWW}
 
 
+# Create Passenger restart file.
 touch ${WWW}/tmp/restart.txt
 ln -s ${WWW}/tmp/restart.txt ${HOME}/www.ografy.io
 
