@@ -82,6 +82,8 @@ mv ${WWW}/ografy/passenger_wsgi.py ${WWW}
 
 # Create Passenger restart file.
 touch ${WWW}/tmp/restart.txt
+
+
+# Create Passenger restart symlink.
+rm -rf ${HOME}/www.ografy.io
 ln -s ${WWW}/tmp/restart.txt ${HOME}/www.ografy.io
-
-
