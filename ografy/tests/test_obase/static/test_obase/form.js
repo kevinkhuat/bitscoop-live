@@ -1,3 +1,4 @@
+
 // using jQuery
 function getCookie(name) {
     var cookieValue = null;
@@ -58,14 +59,31 @@ function formPost(formId, submitId, submitHandler) {
 
 };
 
-function eventSubmitHandler() {
+function eventPostHandler() {
 	var eventData = {
         'signal_id' : $('#event-signal-id').val(),
-        'user_id' : $('#event-used-id').val(),
+        'user_id' : $('#event-user-id').val(),
         'provider_id' : $('#event-provider-id').val(),
         'provider_name' : $('#event-provider-name').val()
     };
-    $.post('/obase/event', eventData).done(
+    $.post('/obase/event', eventData, 'json').done(
+        function(data, xhr, response){
+            $('#event-result').html(JSON.stringify(data));
+        });
+};
+
+function eventUpdateHandler() {
+	var id = {
+		'_id' : $('#event-db-id').val()
+	};
+	var eventData = {
+		'id'
+        'signal_id' : $('#event-signal-id').val(),
+        'user_id' : $('#event-user-id').val(),
+        'provider_id' : $('#event-provider-id').val(),
+        'provider_name' : $('#event-provider-name').val()
+    };
+    $.post('/obase/event', {'id' : id, 'eventData' : eventData}, 'json').done(
         function(data, xhr, response){
             $('#event-result').html(JSON.stringify(data));
         });
@@ -73,6 +91,7 @@ function eventSubmitHandler() {
 
 $(function() {
 
-	formPost('event-form', 'event-submit', eventSubmitHandler);
+	formPost('event-form', 'event-post', eventPostHandler);
+	formPost('event-form', 'event-update', eventUpdateHandler);
 
 });
