@@ -6,7 +6,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     {% block static %}
-    <script type="text/javascript" src="{% static 'test_obase/form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'test_obase/test.js' %}"></script>
     {% endblock %}
 </head>
 <body>
@@ -14,34 +14,40 @@
 
 <h4>Event</h4>
 
-<form action="#" method="post" id="event-form">{% csrf_token %}
+<form id="event-form" class="action" action="#" method="POST">{% csrf_token %}
 	<div>
 		<label>Signal ID:</label>
-		<input id="event-signal-id" name="event-signal-id" type="text" value="101">
+		<input name="event-signal-id" type="text" value="101">
 		</input>
 	</div>
 	<div>
 		<label>User ID:</label>
-		<input id="event-user-id" name="event-user-id" type="text" value="202">
+		<input name="event-user-id" type="text" value="202">
 		</input>
 	</div>
 	<div>
 		<label>Provider ID:</label>
-		<input id="event-provider-id" name="event-provider-id" type="text" value="303">
+		<input name="event-provider-id" type="text" value="303">
 		</input>
 	</div>
 	<div>
 		<label>Provider Name:</label>
-		<input id="event-provider-name" name="event-provider-name" type="text" value="Facebook">
+		<input name="event-provider-name" type="text" value="Facebook">
 		</input>
 	</div>
-    	<div>
+    <div>
 		<label>Data:</label>
-		<input id="event-data" name="event-data" type="text" value="{'cool':'pants'}">
+		<input name="event-data" type="text" value="{'cool':'pants'}">
 		</input>
 	</div>
+    <div>
+        <label>Event ID:</label>
+        <input name="event-db-id" type="text" value="4">
+        </input>
+    </div>
 
-	<input type="submit" value="Add Event" id="event-submit">
+	<input type="submit" value="Post Event" data-method="POST" />
+    <input type="submit" value="Update Event" data-method="PUT" />
 </form>
 
 <p>

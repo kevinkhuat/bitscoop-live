@@ -14,12 +14,16 @@ class Event(object):
         if not doc:
             None
 
-    def get_all(self):
+    def get_all():
         return Events.find()
 
     def post(data):
         #Todo: clean data about to be inserted as an Event
         return Events.insert(data)
+
+    def put(id, data):
+        return Events.update(id, data)
+        #return Events.update({'_id': id}, data)
 
     def _get_message(data):
         pass
