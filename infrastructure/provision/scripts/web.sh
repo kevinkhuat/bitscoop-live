@@ -109,6 +109,7 @@ case ${TYPE} in
         CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
 
         sudo cp ${CUSR_HOME}/infrastructure/hosts/virtual/conf/nginx.conf /opt/nginx/conf
+
         sudo cp ${CUSR_HOME}/infrastructure/hosts/virtual/certs/* /security/certs/ografy.io/static
         sudo cp ${CUSR_HOME}/infrastructure/hosts/virtual/certs/* /security/certs/ografy.io/www
         ;;
@@ -152,9 +153,9 @@ then
     then
         echo "Forcing a fresh rebuild of packages."
 
-        [ -f ${CUSR_HOME}/Python-3.4.2 ] && sudo rm -rf ${CUSR_HOME}/Python-3.4.2
-        [ -f ${CUSR_HOME}/passenger-4.0.53 ] && sudo rm -rf ${CUSR_HOME}/passenger-4.0.53
-        [ -f ${CUSR_HOME}/nginx-1.7.7 ] && sudo rm -rf ${CUSR_HOME}/nginx-1.7.7
+        [ -d ${CUSR_HOME}/Python-3.4.2 ] && sudo rm -rf ${CUSR_HOME}/Python-3.4.2
+        [ -d ${CUSR_HOME}/passenger-4.0.53 ] && sudo rm -rf ${CUSR_HOME}/passenger-4.0.53
+        [ -d ${CUSR_HOME}/nginx-1.7.7 ] && sudo rm -rf ${CUSR_HOME}/nginx-1.7.7
     fi
 fi
 
@@ -191,4 +192,5 @@ sudo cp ${CUSR_HOME}/infrastructure/scripts/init.d/nginx /etc/init.d
 sudo chmod +x /etc/init.d/nginx
 
 # Start daemons.
-#sudo service nginx start
+sudo systemctl daemon-reload
+sudo service nginx start

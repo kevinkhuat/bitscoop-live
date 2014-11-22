@@ -15,7 +15,7 @@ BKDIR=${HOME}/backups/${DATETIME}
 if [ -d ${DATADIR} ]
 then
     mkdir -p ${BKDIR}
-    find ${HOME}/sites/ografy.io/www/ografy/databases -type f -exec cp {} ${BKDIR} \;
+    find ${DATADIR} -type f -exec cp {} ${BKDIR} \;
 fi
 
 
@@ -45,6 +45,7 @@ mkdir -p ${WWW}/ografy/logs
 if [ ! -f ${HOME}/environments/ografy-3.4/bin/activate ]
 then
     cd ${HOME}/environments
+    rm -rf ografy-3.4
     /usr/local/bin/virtualenv --no-site-packages ografy-3.4
     cd ..
 fi
@@ -53,6 +54,7 @@ fi
 # Install Ografy dependencies with pip and set up application
 source ${HOME}/environments/ografy-3.4/bin/activate
 pip install -r ${WWW}/ografy/requirements/manual.txt
+yes | python ${WWW}/ografy/manage.py makemigrations
 yes | python ${WWW}/ografy/manage.py migrate
 yes | python ${WWW}/ografy/manage.py validate
 yes yes | python ${WWW}/ografy/manage.py collectstatic
@@ -65,6 +67,7 @@ mv ${WWW}/ografy/passenger_wsgi.py ${WWW}
 
 
 touch ${WWW}/tmp/restart.txt
+ln -s ${WWW}/tmp/restart.txt ${HOME}/www.ografy.io
 
 
 # Set the permissions on the created Ografy folder tree
