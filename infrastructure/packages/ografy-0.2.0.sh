@@ -80,9 +80,3 @@ touch ${WWW}/tmp/restart.txt
 ln -s ${WWW}/tmp/restart.txt ${HOME}/www.ografy.io
 
 
-# Set the permissions on the created Ografy folder tree
-#chmod g+x,o+x ${HOME}
-#chmod g+x,o+x ${HOME}/sites
-#chmod g+x,o+x ${HOME}/sites/ografy.io
-#chmod g+x,o+x ${HOME}/sites/ografy.io/www
-#chmod g+x,o+x ${HOME}/sites/ografy.io/www/passenger_wsgi.py
