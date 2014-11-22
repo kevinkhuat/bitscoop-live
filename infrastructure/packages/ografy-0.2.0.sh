@@ -44,6 +44,13 @@ mkdir -p ${WWW}/ografy/databases
 mkdir -p ${WWW}/ografy/logs
 
 
+# If old databases were backed up, copy them back into the databases folder.
+if [ -d ${BKDIR} ]
+then
+    cp ${BKDIR}/* ${DATADIR}
+fi
+
+
 # Create Python environment for ografy
 if [ ! -f ${HOME}/environments/ografy-3.4/bin/activate ]
 then
