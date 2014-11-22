@@ -16,7 +16,9 @@ BKDIR=${HOME}/backups/${DATETIME}
 if [ `find sites/ografy.io/www/ografy/databases/ -type f | wc -l` -gt 0 ]
 then
     mkdir -p ${BKDIR}
-    find ${DATADIR} -type f -exec cp {} ${BKDIR} \;
+    # TODO: Is it a problem that we're moving the databases instead of copying?
+    # Technically we shouldn't be running this script on a "live" server and we won't even be using sqlite, so it's probably a moot point.
+    find ${DATADIR} -type f -exec mv {} ${BKDIR} \;
 fi
 
 
