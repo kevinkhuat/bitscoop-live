@@ -182,6 +182,10 @@ sudo chmod +x /home/ografy/ografy-0.2.0.sh
 # Install ografy package.
 sudo su - ografy "/home/ografy/ografy-0.2.0.sh"
 
+# Remove obsoleted files.
+sudo rm /home/ografy/ografy.tar.gz
+sudo rm /home/ografy/ografy-0.2.0.sh
+
 
 ###################
 # Install Scripts #
