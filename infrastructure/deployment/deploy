@@ -1,123 +1,56 @@
 #!/bin/bash
 
+
 # Set this to the folder where the "ografy" folder lives.
-REPO=$HOME/Development/Repositories
+REPO=${HOME}/Development/Repositories
 # Set this to the directory where the tarballs should be created.
-PKG=$HOME/Development/Packages
-# Set this to the directory where the environments.
-ENV=$HOME/Development/Environments
-# Key directory
-KEY=$HOME/Development/Security/ssh
-
-while getopts "s:v:p:" flag
-do
-	case $flag in
-		p)
-			PLATFORM=$OPTARG
-			;;
-		s)
-			SERVICE=$OPTARG
-			;;
-		v)
-			PROVIDER=$OPTARG
-			;;
-	esac
-done
+PKG=${HOME}/Development/Packages
+# Set this to the directory where ssh keys are stored.
+KEYDIR=${HOME}/Keys/ssh
 
 
-case $PLATFORM in
-    aws)
+case ${1} in
+    production)
         echo "Are you sure you want to deploy tarballs to aws?"
+
         select yn in "No" "Yes"; do
-            case $yn in
+            case ${yn} in
                 Yes) break;;
                 No) exit 0;;
             esac
         done
 
-        KEYS=$KEY/ografy.io
-        echo Using aws settings to deploy.
-        ;;
+        echo "Using aws settings to deploy."
 
+        KEY=${KEYDIR}/ografy.io.pem
+        USER=ec2-user
+        SERVER=ografy.io
+        ;;
     virtual)
-        KEYS=$KEY/virtual.ografy.io
-        echo Using virtual settings to deploy.
-        ;;
+        echo "Using virtual settings to deploy."
 
+        KEY=${KEYDIR}/virtual.ografy.io.pem
+        USER=ec2-user
+        SERVER=virtual.ografy.io
+        ;;
     *)
-        echo $"Usage: deploy -p {aws|virtual}"
+        echo "Usage: deploy {production|virtual}"
         exit 2
         ;;
 esac
 
-# Remove files from previous run
-rm -rf $PKG/*
 
-# Create ografy and deploy script
+# Remove tarballs from previous run.
+rm $PKG/ografy.tar.gz 2> /dev/null
+rm $PKG/infrastructure.tar.gz 2> /dev/null
+
+
+# Create ografy and deploy script tarballs.
 cd $REPO
-tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure ografy
+tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure --exclude __pycache__ --exclude *.pyc ografy
 
 cd ografy
-chmod -R +x infrastructure/packages/*
-chmod -R +x infrastructure/platforms/*
 tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
-#This resets to the first option
-#Need to do this if you're using the flag in multiple places, like we are here.
-OPTIND=1
 
-case $PLATFORM in
-	aws)
-	    scp -i $KEYS/ec2-user.pem $PKG/infrastructure.tar.gz ec2-user@ografy.io:~
-	    scp -i $KEYS/ografy.pem $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ografy@ografy.io:~
-	    ;;
-	virtual)
-	    # TODO: Create custom CentOS 7 box for vagrant that has user ec2-user and connects using ssh keys instead of passwords. This is to more closely mimmic production
-	    # scp -i $KEYS/ografy.pem $PKG/ografy.tar.gz $PKG/deploy.tar.gz ografy@virtual.ografy.io:~
-
-		#scp -i $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz vagrant@ografy.io:~
-	    # For diagnostic purposes
-	    case $SERVICE in
-	        cluster)
-	            echo "Haven't gotten to that yet"
-				;;
-
-			mongodb)
-				cp $REPO/ografy/infrastructure/provision/scripts/mongodb.sh $PKG
-
-			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/mongodb
-			    ;;
-
-			postgresql)
-			    cp $REPO/ografy/infrastructure/provision/scripts/postgresql.sh $PKG
-
-			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/postgresql
-			    ;;
-
-			web)
-			    cp $REPO/ografy/infrastructure/provision/scripts/web.sh $PKG
-
-			    cd $REPO/ografy/infrastructure/provision/vagrant/virtual/web
-			    ;;
-
-			*)
-				echo "Invalid service selection, exiting now"
-				exit 2
-				;;
-		esac
-		;;
-
-	*)
-		echo "Invalid provider selection, exiting now"
-		exit 2
-		;;
-esac
-
-case $PLATFORM in
-	aws)
-		vagrant up
-		;;
-	virtual)
-		vagrant up --provider $PROVIDER
-		;;
-esac
+scp -i ${KEY} $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ${USER}@${SERVER}:~
