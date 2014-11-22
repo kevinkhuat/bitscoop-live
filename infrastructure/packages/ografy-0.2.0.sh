@@ -12,7 +12,8 @@ DATETIME=$(date +%Y-%m-%dT%T%z)
 DATADIR=${HOME}/sites/ografy.io/www/ografy/databases
 BKDIR=${HOME}/backups/${DATETIME}
 
-if [ -d ${DATADIR} ]
+# If database directory exists, then back up existing databases.
+if [ `find sites/ografy.io/www/ografy/databases/ -type f | wc -l` -gt 0 ]
 then
     mkdir -p ${BKDIR}
     find ${DATADIR} -type f -exec cp {} ${BKDIR} \;
