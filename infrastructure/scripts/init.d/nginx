@@ -7,13 +7,13 @@
 
 
 NGINX="/opt/nginx/sbin/nginx"
-NAME=$(basename $NGINX)
+NAME=$(basename ${NGINX})
 CONF="/opt/nginx/conf/nginx.conf"
 LOCK="/var/lock/subsys/nginx"
 
 
 check() {
-  $NGINX -t -c $CONF
+    ${NGINX} -t -c ${CONF}
 }
 
 
@@ -22,7 +22,7 @@ reload() {
 
     echo -n $"Reloading $NAME"
 
-    killproc $NGINX -HUP
+    killproc ${NGINX} -HUP
     #$NGINX -s reload
     retval=$?
 
@@ -39,19 +39,19 @@ restart() {
 
 
 start() {
-    if [ ! -f $NGINX ]
+    if [ ! -f ${NGINX} ]
     then
         echo -n "$NGINX not found. Aborting..."
         exit 1
     fi
 
-    if [ ! -x $NGINX ]
+    if [ ! -x ${NGINX} ]
     then
         echo -n "$NGINX is not executable. Aborting..."
         exit 1
     fi
 
-    if [ ! -f $CONF ]
+    if [ ! -f ${CONF} ]
     then
         echo -n "$CONF does not exist. Aborting..."
         exit 1
@@ -59,45 +59,45 @@ start() {
 
     echo -n $"Starting $NAME: "
 
-    daemon $NGINX -c $CONF
+    daemon ${NGINX} -c ${CONF}
     retval=$?
     echo
-    [ $retval -eq 0 ] && touch $LOCK
+    [ ${retval} -eq 0 ] && touch ${LOCK}
 
-    return $retval
+    return ${retval}
 }
 
 
 stop() {
     echo -n $"Stopping $NAME: "
 
-    killproc $NAME -QUIT
+    killproc ${NAME} -QUIT
     retval=$?
     echo
-    [ $retval -eq 0 ] && rm -f $LOCK
+    [ ${retval} -eq 0 ] && rm -f ${LOCK}
 
-    return $retval
+    return ${retval}
 }
 
 
 case "$1" in
     start)
-        status $NAME >/dev/null 2>&1 && exit 0
-        $1
+        status ${NAME} >/dev/null 2>&1 && exit 0
+        ${1}
         ;;
     stop)
-        status $NAME >/dev/null 2>&1 || exit 0
-        $1
+        status ${NAME} >/dev/null 2>&1 || exit 0
+        ${1}
         ;;
     check|restart)
-        $1
+        ${1}
         ;;
     reload)
-        status $NAME >/dev/null 2>&1 || exit 1
-        $1
+        status ${NAME} >/dev/null 2>&1 || exit 1
+        ${1}
         ;;
     status)
-        status $NAME
+        status ${NAME}
         ;;
     *)
         echo "Usage: service nginx {check|reload|restart|start|status|stop}"
