@@ -28,7 +28,7 @@ EVENTS_SPEC = {
     'geolocation': {
         'type': string,
         'default': 'UNKNOWN',
-    },
+    }, 
     'parent': {
         'type': int,
         'default': -1
