@@ -170,7 +170,11 @@ sudo -u ${CUSR} $HOME/infrastructure/packages/passenger-4.0.53.sh
 #################
 
 # Add new user ografy if it doesn't already exist.
-[ -z `getent passwd ografy` ] && sudo adduser ografy
+if [ -z `getent passwd ografy` ]
+then
+    sudo adduser ografy
+    sudo passwd -l ografy
+fi
 
 # Copy specific CUSR files to ografy user.
 sudo cp ${CUSR_HOME}/ografy.tar.gz /home/ografy
