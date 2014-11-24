@@ -1,5 +1,7 @@
 import datetime
-from mongoengine import *
+from mongoengine import connect, Document, DateTimeField, \
+    IntField, StringField, ReferenceField, CASCADE, PointField, \
+    ListField, DynamicDocument, SortedListField
 from django.conf import settings
 
 connect(
