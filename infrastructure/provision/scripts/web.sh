@@ -133,6 +133,7 @@ echo "Setting environment variable DJANGO_SETTINGS_MODULE to \"${SETTINGS}\""
 TMP=`mktemp`
 echo "export DJANGO_SETTINGS_MODULE=\"${SETTINGS}\"" > ${TMP}
 sudo cp ${TMP} /etc/profile.d/django.sh
+sudo chmod 644 /etc/profile.d/django.sh
 rm ${TMP}
 
 
