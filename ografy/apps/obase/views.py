@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import View
 
-from ografy.apps.obase.entities.Event import Event
+from ografy.apps.obase.documents import Event
 
 
 class EventView(View):
