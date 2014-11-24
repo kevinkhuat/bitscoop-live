@@ -6,8 +6,8 @@ from django.conf import settings
 
 connect(
     settings.MONGODB_DBNAME,
-    settings.MONGODB_SERVERNAME,
-    settings.MONGODB_SERVERPORT
+    host=settings.MONGODB_SERVERNAME,
+    port=settings.MONGODB_SERVERPORT
 )
 
 
@@ -22,7 +22,7 @@ class Event(Document):
     provider_name = StringField(required=True)
 
     datetime = DateTimeField()
-    data = ReferenceField(Data, reverse_delete_rule=CASCADE)
+    # data = ReferenceField(Data, reverse_delete_rule=CASCADE)
     location = PointField()
 
     meta = {
@@ -51,8 +51,8 @@ class Event(Document):
 class Message(Document):
     event = ReferenceField(Event, reverse_delete_rule=CASCADE)
 
-    message_to = ListField(StringField())
-    message_from = ListField(StringField())
+    message_to = SortedListField(StringField())
+    message_from = SortedListField(StringField())
     message_body = StringField(required=True)
 
 
@@ -60,4 +60,4 @@ class Data(DynamicDocument):
     created = DateTimeField(default=datetime.datetime.now)
     updated = DateTimeField(default=datetime.datetime.now)
 
-    data_blob = SortedListField()
+    data_blob = SortedListField(StringField())

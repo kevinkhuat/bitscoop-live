@@ -236,7 +236,8 @@ INSTALLED_APPS = (
     #'ografy.apps.signals',
     'ografy.apps.user',
 
-    'ografy.tests.xauth',
+    'ografy.tests.test_obase',
+    'ografy.tests.test_xauth',
 )
 
 
