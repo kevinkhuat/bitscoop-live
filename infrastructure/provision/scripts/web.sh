@@ -123,7 +123,7 @@ case ${PLATFORM} in
     centos)
         echo "Executing centos platform configuration."
 
-        ${CUSR_HOME}/infrastructure/platforms/centos/firewall.sh
+        ${CUSR_HOME}/infrastructure/platforms/centos/firewalld.sh
         ;;
 esac
 
