@@ -87,3 +87,9 @@ touch ${WWW}/tmp/restart.txt
 # Create Passenger restart symlink.
 rm -rf ${HOME}/www.ografy.io
 ln -s ${WWW}/tmp/restart.txt ${HOME}/www.ografy.io
+
+
+# Set explicit permissions just in case a umask is set.
+chmod 755 ${HOME}
+find sites -type d -exec chmod 755 {} \;
+find sites -type f -exec chmod 644 {} \;
