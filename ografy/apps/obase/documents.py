@@ -1,35 +1,61 @@
-from ografy.apps.obase.managers import BaseManager
+import datetime
+from mongoengine import *
+from django.conf import settings
+
+connect(
+    settings.MONGODB_DBNAME,
+    settings.MONGODB_SERVERNAME,
+    settings.MONGODB_SERVERPORT
+)
 
 
-class Entity(object):
-    class Meta:
-        collection_name = 'entities'
-        manager_class = BaseManager
+class Event(Document):
+    created = DateTimeField(default=datetime.datetime.now)
+    updated = DateTimeField(default=datetime.datetime.now)
 
-    # When defining the class, need to instantiate an instance of BaseManager stored in Entity.objects.
-    # Figure out how metaclassing works in this scenario (check Django models).
+    event_id = IntField(required=True)
+    user_id = IntField(required=True)
+    signal_id = IntField(required=True)
+    provider_id = IntField(required=True)
+    provider_name = StringField(required=True)
 
-    id = fields.IntegerField()
+    datetime = DateTimeField()
+    data = ReferenceField(Data, reverse_delete_rule=CASCADE)
+    location = PointField()
+
+    meta = {
+        'indexes': [
+            'user_id',
+            'signal_id',
+            'provider_id',
+            (
+                'provider_id',
+                '+provider_name'
+            ),
+            [
+                (
+                    "location",
+                    "2dsphere"
+                ),
+                (
+                    "datetime",
+                    1
+                )
+            ]
+        ]
+    }
 
 
-    @classmethod
-    def parse(cls, data):
-        # parsed should actualy transform data into a 1:1 dict representation of an entity.
-        # This dict can then be unpacked into the Entity constructor.
+class Message(Document):
+    event = ReferenceField(Event, reverse_delete_rule=CASCADE)
 
-        # e.g.
-        #
-        # parsed = {
-        #   'id': 6
-        # }
-
-        parsed = data
-
-        return cls(**parsed)
+    message_to = ListField(StringField())
+    message_from = ListField(StringField())
+    message_body = StringField(required=True)
 
 
-class Events(Entities):
+class Data(DynamicDocument):
+    created = DateTimeField(default=datetime.datetime.now)
+    updated = DateTimeField(default=datetime.datetime.now)
 
-
-    collection = DB['events']
-    SPEC = EVENTS_SPEC
+    data_blob = SortedListField()
