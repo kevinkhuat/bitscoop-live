@@ -8,49 +8,95 @@ PKG=${HOME}/Development/Packages
 # Set this to the directory where ssh keys are stored.
 KEYDIR=${HOME}/Keys/ssh
 
+# Set this to the production ssh key.
+PROD_KEY=${KEYDIR}/ografy.io.pem
+# Set this to the virtual ssh key.
+VIRT_KEY=${KEYDIR}/virtual.ografy.io.pem
 
-case ${1} in
+
+usage() {
+cat << EOF
+usage: ${0} options
+
+OPTIONS:
+   [-i]  SSH key for remote login.
+   [-s]  Remote server address or shorthands `virtual` or `production`.
+   [-u]  Remote user, defaults to `ec2-user`.
+EOF
+}
+
+
+###################
+# PARSE ARGUMENTS #
+###################
+
+while getopts ":hi:s:u:" OPTION; do
+    case ${OPTION} in
+        h)
+            usage
+            exit 0
+            ;;
+        i)
+            KEY=${OPTARG}
+            ;;
+        s)
+            SERVER=${OPTARG}
+            ;;
+        u)
+            RUSR=${OPTARG}
+            ;;
+        ?)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+
+RUSR=${RUSR:="ec2-user"}
+
+
+case ${SERVER} in
     production)
-        echo "Are you sure you want to deploy tarballs to aws?"
+        echo "Using production settings to deploy."
 
-        select yn in "No" "Yes"; do
-            case ${yn} in
-                Yes) break;;
-                No) exit 0;;
-            esac
-        done
-
-        echo "Using aws settings to deploy."
-
-        KEY=${KEYDIR}/ografy.io.pem
-        USER=ec2-user
         SERVER=ografy.io
+        KEY=${KEY:=${PROD_KEY}}
         ;;
     virtual)
         echo "Using virtual settings to deploy."
 
-        KEY=${KEYDIR}/virtual.ografy.io.pem
-        USER=ec2-user
         SERVER=virtual.ografy.io
-        ;;
-    *)
-        echo "Usage: deploy {production|virtual}"
-        exit 2
+        KEY=${KEY:=${VIRT_KEY}}
         ;;
 esac
 
+[ -z ${SERVER+x} ] && echo "No server specified." && exit 1
+
 
 # Remove tarballs from previous run.
-rm $PKG/ografy.tar.gz 2> /dev/null
-rm $PKG/infrastructure.tar.gz 2> /dev/null
+rm -f ${PKG}/ografy.tar.gz
+rm -f ${PKG}/infrastructure.tar.gz
 
 
 # Create ografy and deploy script tarballs.
-cd $REPO
-tar -czf $PKG/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure --exclude __pycache__ --exclude *.pyc ografy
+cd ${REPO}
+tar -czf ${PKG}/ografy.tar.gz --exclude .git --exclude .idea --exclude ografy/infrastructure --exclude __pycache__ --exclude *.pyc ografy
 
 cd ografy
-tar -czf $PKG/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
+tar -czf ${PKG}/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
 
-scp -i ${KEY} $PKG/infrastructure.tar.gz $PKG/ografy.tar.gz ${USER}@${SERVER}:~
+# Perform secure copy based on settings.
+if [ ${KEY+x} ]
+then
+    echo "Deploying to ${RUSR}@${SERVER} using key ${KEY}..."
+    echo
+
+    scp -i ${KEY} ${PKG}/infrastructure.tar.gz ${PKG}/ografy.tar.gz ${RUSR}@${SERVER}:~
+else
+    echo "Deploying to ${RUSR}@${SERVER}..."
+    echo
+
+    scp ${PKG}/infrastructure.tar.gz ${PKG}/ografy.tar.gz ${RUSR}@${SERVER}:~
+fi
