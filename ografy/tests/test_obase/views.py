@@ -1,5 +1,4 @@
-import jsonpickle
-
+import json
 from django.shortcuts import render
 from ografy.apps.obase.documents import Event
 
@@ -8,6 +7,7 @@ from ografy.apps.obase.documents import Event
 def form(request):
     return render(request, 'form.html')
 
+
 # @login_required
 def obase_list(request):
     event_list = []
@@ -15,7 +15,7 @@ def obase_list(request):
     for event in Event.get_all():
         #FIXME: Use a custom serializer
         event['_id'] = int.from_bytes(event['_id']._ObjectId__id, 'big')
-        event_list.append(jsonpickle.encode(event))
+        event_list.append(json.encode(event))
 
     return render(request, 'list.html', {
         'event_list': event_list

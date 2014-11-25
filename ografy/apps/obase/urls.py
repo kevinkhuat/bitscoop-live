@@ -4,5 +4,6 @@ import ografy.apps.obase.views as views
 
 
 urlpatterns = patterns('',
-    url(r'^event$', views.EventView.as_view(), name='obase_event')
+    url(r'^event$', views.EventView.as_view(), name='obase_event'),
+    url(r'^test', views.test, name='obase_test'),
 )

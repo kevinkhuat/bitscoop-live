@@ -77,7 +77,6 @@ function eventUpdateHandler() {
 		'_id' : $('#event-db-id').val()
 	};
 	var eventData = {
-		'id'
         'signal_id' : $('#event-signal-id').val(),
         'user_id' : $('#event-user-id').val(),
         'provider_id' : $('#event-provider-id').val(),

@@ -1,0 +1,39 @@
+{
+	"GetPlayerSummaries": {
+		"submapping": {
+			"type":"list",
+			"outputName":"playerSummaries",
+			"schemaLocation":"players",
+			"dataMapping":
+				{
+					"name": "personaname",
+					"lastlogoff": "lastlogoff"
+				}
+		}
+	},
+	"GetFriendList": {
+		"submapping": {
+			"type":"list",
+			"outputName":"friendList",
+			"schemaLocation":"friendslist.friends",
+			"dataMapping":
+				{
+					"name": "steamid",
+					"friend_since": "friend_since"
+				}
+		}
+	},
+	"GetRecentlyPlayedGames": {
+		"submapping": {
+			"type":"list",
+			"outputName":"games",
+			"schemaLocation":"response.games",
+			"dataMapping":
+				{
+					"name": "name",
+					"playtime_2weeks": "playtime_2weeks",
+					"playtime_forever": "playtime_forever"
+				}
+		}
+	}
+}

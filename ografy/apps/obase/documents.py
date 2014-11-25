@@ -1,29 +1,35 @@
 import datetime
-from mongoengine import connect, Document, DateTimeField, \
-    IntField, StringField, ReferenceField, CASCADE, PointField, \
-    ListField, DynamicDocument, SortedListField
-from django.conf import settings
 
-connect(
+from django.conf import settings
+import mongoengine as mongo
+
+
+mongo.connect(
     settings.MONGODB_DBNAME,
     host=settings.MONGODB_SERVERNAME,
     port=settings.MONGODB_SERVERPORT
 )
 
 
-class Event(Document):
-    created = DateTimeField(default=datetime.datetime.now)
-    updated = DateTimeField(default=datetime.datetime.now)
+class Data(mongo.DynamicDocument):
+    created = mongo.DateTimeField(default=datetime.datetime.now)
+    updated = mongo.DateTimeField(default=datetime.datetime.now)
 
-    event_id = IntField(required=True)
-    user_id = IntField(required=True)
-    signal_id = IntField(required=True)
-    provider_id = IntField(required=True)
-    provider_name = StringField(required=True)
+    data_blob = mongo.SortedListField(mongo.StringField())
 
-    datetime = DateTimeField()
-    # data = ReferenceField(Data, reverse_delete_rule=CASCADE)
-    location = PointField()
+
+class Event(mongo.Document):
+    created = mongo.DateTimeField(default=datetime.datetime.now)
+    updated = mongo.DateTimeField(default=datetime.datetime.now)
+
+    user_id = mongo.IntField(required=True)
+    signal_id = mongo.IntField(required=True)
+    provider_id = mongo.IntField(required=True)
+    provider_name = mongo.StringField(required=True)
+
+    datetime = mongo.DateTimeField()
+    data = mongo.ReferenceField(Data, reverse_delete_rule=mongo.CASCADE)
+    location = mongo.PointField()
 
     meta = {
         'indexes': [
@@ -48,16 +54,9 @@ class Event(Document):
     }
 
 
-class Message(Document):
-    event = ReferenceField(Event, reverse_delete_rule=CASCADE)
+class Message(mongo.Document):
+    event = mongo.ReferenceField(Event, reverse_delete_rule=mongo.CASCADE)
 
-    message_to = SortedListField(StringField())
-    message_from = SortedListField(StringField())
-    message_body = StringField(required=True)
-
-
-class Data(DynamicDocument):
-    created = DateTimeField(default=datetime.datetime.now)
-    updated = DateTimeField(default=datetime.datetime.now)
-
-    data_blob = SortedListField(StringField())
+    message_to = mongo.SortedListField(mongo.StringField())
+    message_from = mongo.StringField()
+    message_body = mongo.StringField(required=True)

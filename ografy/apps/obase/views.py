@@ -1,7 +1,6 @@
 import json
 import requests
 import urllib.parse
-import jsonpickle
 
 from bson.objectid import ObjectId
 from django.shortcuts import render
@@ -9,6 +8,11 @@ from django.http import JsonResponse
 from django.views.generic import View
 
 from ografy.apps.obase.documents import Event
+
+
+# @login_required
+def test(request):
+    return render(request, 'test.html')
 
 
 class EventView(View):

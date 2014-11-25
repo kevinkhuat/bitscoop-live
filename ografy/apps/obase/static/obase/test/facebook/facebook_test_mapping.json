@@ -1,0 +1,85 @@
+{
+	"me": {
+		"submapping": {
+			"type":"dict",
+			"outputName":"me",
+			"schemaLocation":"",
+			"dataMapping":
+				{
+					"name": "name",
+					"gender": "gender",
+					"link": "link"
+				}
+		}
+	},
+	"me_friends": {
+		"submapping": {
+			"type":"list",
+			"outputName":"friends",
+			"schemaLocation":"data",
+			"dataMapping":
+				{
+					"name": "name"
+				}
+		}
+	},
+	"me_inbox": {
+		"submapping": {
+			"type":"list",
+			"outputName":"inbox_conversations",
+			"schemaLocation":"data",
+			"dataMapping":
+				{
+					"updated_time": "updated_time"
+				},
+			"submapping": {
+				"type":"list",
+				"outputName":"messages",
+				"schemaLocation":"comments.data",
+				"dataMapping":{
+					"created_time":"created_time",
+					"message":"message"
+				},
+				"submapping": {
+					"type":"dict",
+					"outputName":"from",
+					"schemaLocation":"from",
+					"dataMapping":
+						{
+							"name": "name"
+						}
+				}
+			}
+		}
+	},
+	"me_outbox": {
+		"submapping": {
+			"type":"list",
+			"outputName":"inbox_conversations",
+			"schemaLocation":"data",
+			"dataMapping":
+				{
+					"message": "message",
+					"updated_time": "updated_time"
+				},
+			"submapping": {
+				"type":"list",
+				"outputName":"messages",
+				"schemaLocation":"comments.data",
+				"dataMapping":{
+					"created_time":"created_time",
+					"message":"message"
+				},
+				"submapping": {
+					"type":"dict",
+					"outputName":"from",
+					"schemaLocation":"from",
+					"dataMapping":
+						{
+							"name": "name"
+						}
+				}
+			}
+		}
+	}
+}

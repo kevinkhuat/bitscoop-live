@@ -1,0 +1,37 @@
+{
+	"friends_list": {
+		"submapping": {
+			"type":"list",
+			"outputName":"friends_list",
+			"schemaLocation":"users",
+			"dataMapping":
+				{
+					"screen_name": "screen_name",
+					"created_at": "created_at",
+					"description": "description"
+				}
+		}
+	},
+	"status_user_timeline": {
+		"submapping": {
+			"type":"list",
+			"outputName":"status_user_timeline",
+			"schemaLocation":"users",
+			"dataMapping":
+				{
+					"coordinates": "coordinates",
+					"geo": "geo",
+					"created_at": "created_at",
+					"text": "text"
+				},
+			"submapping": {
+				"type":"list",
+				"outputName":"enteries_urls",
+				"schemaLocation":"entities.urls",
+				"dataMapping":{
+					"url":"url"
+				}
+			}
+		}
+	}
+}
