@@ -4,8 +4,9 @@ from django.conf.urls import include, patterns, url
 
 import ografy.apps.core.errors as errors
 
+
 handler400 = errors.view400
-handler403 = errors.view403
+handler403 = errors.view404
 handler404 = errors.view404
 handler500 = errors.view500
 
@@ -23,7 +24,7 @@ urlpatterns = patterns('',
     #url(r'^signals', include('ografy.apps.signals.urls')),
 
     # All test apps to be prepended with /tests/
-    url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
+    url(r'^tests/auth/', include('ografy.tests.test_xauth.urls')),
     url(r'^tests/obase/', include('ografy.tests.test_obase.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
 

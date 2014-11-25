@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
 def view400(request):
@@ -9,6 +10,7 @@ def view400(request):
 
     return render(request, template, context)
 
+
 def view403(request):
     template = 'core/403.html'
     context = {
@@ -16,6 +18,7 @@ def view403(request):
     }
 
     return render(request, template, context)
+
 
 def view404(request):
     template = 'core/404.html'
@@ -25,6 +28,7 @@ def view404(request):
 
     return render(request, template, context)
 
+
 def view500(request):
     template = 'core/500.html'
     context = {
@@ -32,4 +36,3 @@ def view500(request):
     }
 
     return render(request, template, context)
-
