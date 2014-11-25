@@ -1,6 +1,20 @@
 from ografy.settings import *
 
 
+#########
+# CACHE #
+#########
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'session': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+}
+
+
 ############
 # DATABASE #
 ############

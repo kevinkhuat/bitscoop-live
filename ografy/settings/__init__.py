@@ -15,12 +15,23 @@ ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 # CACHE #  https://docs.djangoproject.com/en/1.7/ref/settings/#cache
 #########
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#     }
-# }
-# CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379:0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+        },
+    },
+    'session': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379:1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+        },
+    }
+}
+CACHE_MIDDLEWARE_ALIAS = 'default'
 # CACHE_MIDDLEWARE_KEY_PREFIX = ''
 # CACHE_MIDDLEWARE_SECONDS = 600
 
@@ -219,9 +230,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+    #'django.contrib.sessions',
+    #'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'social.apps.django_app.default',
 
     'ografy.apps.account',
@@ -251,7 +263,8 @@ INSTALLED_APPS = (
 CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_AGE = 60 * 60 * 24 * 7 * 52
 # CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
-SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'  # TODO: Make this actually secure and don't version control it.
+# FIXME: Should we be version controlling this? Where does this setting manifest other than signed cookie sessions (which we aren't using)?
+SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'
 # X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
@@ -407,7 +420,7 @@ PASSWORD_HASHERS = (
 # SESSIONS #  https://docs.djangoproject.com/en/1.7/ref/settings/#sessions
 ############
 
-# SESSION_CACHE_ALIAS = 'default'
+SESSION_CACHE_ALIAS = 'session'
 # SESSION_COOKIE_NAME = 'sessionid'
 # SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
 # SESSION_COOKIE_DOMAIN = None
@@ -416,7 +429,7 @@ SESSION_COOKIE_SECURE = True
 # SESSION_COOKIE_HTTPONLY = True
 # SESSION_SAVE_EVERY_REQUEST = False
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-# SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # SESSION_FILE_PATH = None
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
