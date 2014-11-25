@@ -56,7 +56,7 @@ case ${TYPE} in
     virtual)
         ;;
     *)
-        echo "Invalid type: ${TYPE+x}"
+        echo "Invalid type: ${TYPE}"
         exit 1
         ;;
 esac
@@ -78,6 +78,24 @@ esac
 # BEGIN MAIN SCRIPT #
 #####################
 
+case ${TYPE} in
+    production)
+        echo "Using aws settings for web config."
+
+        CUSR=ec2-user
+        SETTINGS=${SETTINGS:="ografy.settings.production"}
+        CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
+        ;;
+    virtual)
+        echo "Using virtual settings for web config."
+
+        CUSR=ec2-user
+        SETTINGS=${SETTINGS:="ografy.settings.virtual"}
+        CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
+        ;;
+esac
+
+
 # Create log directory structure.
 sudo mkdir -p /var/log/nginx/ografy.io/static
 sudo mkdir -p /var/log/nginx/ografy.io/www
@@ -88,26 +106,46 @@ sudo mkdir -p /security/certs/ografy.io/static
 sudo mkdir -p /security/certs/ografy.io/www
 
 
+####################
+# INSTALL PACKAGES #
+####################
+
+# "Uninstall" relevant packages if force-related options are specified.
+if [ ${FORCE:+x} ]
+then
+    echo "Forcing reinstallation of packages."
+
+    [ -f /installed/Python-3.4.2 ] && sudo rm /installed/Python-3.4.2
+    [ -f /installed/passenger-4.0.53 ] && sudo rm /installed/passenger-4.0.53
+    [ -f /installed/nginx-1.7.7 ] && sudo rm /installed/nginx-1.7.7
+
+    if [ ${REBUILD:+x} ]
+    then
+        echo "Forcing a fresh rebuild of packages."
+
+        [ -d ${CUSR_HOME}/Python-3.4.2 ] && sudo rm -rf ${CUSR_HOME}/Python-3.4.2
+        [ -d ${CUSR_HOME}/passenger-4.0.53 ] && sudo rm -rf ${CUSR_HOME}/passenger-4.0.53
+        [ -d ${CUSR_HOME}/nginx-1.7.7 ] && sudo rm -rf ${CUSR_HOME}/nginx-1.7.7
+    fi
+fi
+
+# Install packages from source.
+sudo -u ${CUSR} $HOME/infrastructure/packages/Python-3.4.2.sh
+sudo -u ${CUSR} $HOME/infrastructure/packages/passenger-4.0.53.sh
+
+
+##################
+# APPLY SETTINGS #
+##################
+
 case ${TYPE} in
     production)
-        echo "Using aws settings for web config."
-
-        CUSR=ec2-user
-        SETTINGS=${SETTINGS:="ografy.settings.production"}
-        CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
-
         sudo cp ${CUSR_HOME}/infrastructure/hosts/production/conf/nginx.conf /opt/nginx/conf
 
         echo "SSL certificates have NOT been automatically installed."
         echo "These certificates must be manually deployed into production machines."
         ;;
     virtual)
-        echo "Using virtual settings for web config."
-
-        CUSR=ec2-user
-        SETTINGS=${SETTINGS:="ografy.settings.virtual"}
-        CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
-
         sudo cp ${CUSR_HOME}/infrastructure/hosts/virtual/conf/nginx.conf /opt/nginx/conf
 
         sudo cp ${CUSR_HOME}/infrastructure/hosts/virtual/certs/* /security/certs/ografy.io/static
@@ -137,36 +175,8 @@ sudo chmod 644 /etc/profile.d/django.sh
 rm ${TMP}
 
 
-####################
-# Install Packages #
-####################
-
-# "Uninstall" relevant packages if force-related options are specified.
-if [ ${FORCE:+x} ]
-then
-    echo "Forcing reinstallation of packages."
-
-    [ -f /installed/Python-3.4.2 ] && sudo rm /installed/Python-3.4.2
-    [ -f /installed/passenger-4.0.53 ] && sudo rm /installed/passenger-4.0.53
-    [ -f /installed/nginx-1.7.7 ] && sudo rm /installed/nginx-1.7.7
-
-    if [ ${REBUILD:+x} ]
-    then
-        echo "Forcing a fresh rebuild of packages."
-
-        [ -d ${CUSR_HOME}/Python-3.4.2 ] && sudo rm -rf ${CUSR_HOME}/Python-3.4.2
-        [ -d ${CUSR_HOME}/passenger-4.0.53 ] && sudo rm -rf ${CUSR_HOME}/passenger-4.0.53
-        [ -d ${CUSR_HOME}/nginx-1.7.7 ] && sudo rm -rf ${CUSR_HOME}/nginx-1.7.7
-    fi
-fi
-
-# Install packages from source.
-sudo -u ${CUSR} $HOME/infrastructure/packages/Python-3.4.2.sh
-sudo -u ${CUSR} $HOME/infrastructure/packages/passenger-4.0.53.sh
-
-
 #################
-# Deploy Ografy #
+# DEPLOY OGRAFY #
 #################
 
 # Add new user ografy if it doesn't already exist.
@@ -193,7 +203,7 @@ sudo rm /home/ografy/ografy-0.2.0.sh
 
 
 ###################
-# Install Scripts #
+# INSTALL SCRIPTS #
 ###################
 
 # Copy daemon scripts
