@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from tastypie import fields
 
 from ografy.apps.core.models import Account, Entry
-from ografy.lib.tastydata.resources import Resource
+from ografy.apps.tastydata.resources import Resource
 
 
 class UserResource(Resource):

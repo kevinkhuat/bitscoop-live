@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from tastypie.exceptions import InvalidFilterError
 import six
 
-from ografy.lib.tastydata.filters.expressions import tokenize, Symbol
+from ografy.apps.tastydata.filters.expressions import tokenize, Symbol
 
 
 def parse(string, inst):

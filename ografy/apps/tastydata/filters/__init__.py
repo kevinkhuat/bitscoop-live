@@ -1,1 +1,1 @@
-from ografy.lib.tastydata.filters.parsing import parse as parse_filter
+from ografy.apps.tastydata.filters.parsing import parse as parse_filter

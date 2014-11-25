@@ -5,7 +5,7 @@ from django.conf import settings
 from tastypie.exceptions import BadRequest
 from tastypie.paginator import Paginator as BasePaginator
 
-from ografy.lib.tastydata.util import get_query_string
+from ografy.apps.tastydata.util import get_query_string
 
 
 class Paginator(BasePaginator):

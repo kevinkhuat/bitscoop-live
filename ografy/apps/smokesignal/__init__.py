@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from ografy.lib.smokesignal.parsers import Parser
+from ografy.apps.smokesignal.parsers import Parser
 
 
 def parse_content(name, method_name, data, parser_name=None):

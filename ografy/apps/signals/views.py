@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from ografy.apps.core.models import Account, Metric, Entry, Message
-from ografy.lib.smokesignal.parsers import Parser
+from ografy.apps.smokesignal.parsers import Parser
 
 BANK = string.ascii_uppercase + string.ascii_lowercase + string.digits
 

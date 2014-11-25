@@ -1,4 +1,4 @@
-from ografy.lib.smokesignal.parsers import Parser
+from ografy.apps.smokesignal.parsers import Parser
 
 from pprint import pprint
 

@@ -10,10 +10,10 @@ from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.exceptions import NotFound, BadRequest, InvalidFilterError
 from tastypie.resources import ModelResource as BaseResource
 
-from ografy.lib.tastydata.filters import parse_filter
-from ografy.lib.tastydata.paginator import Paginator
-from ografy.lib.tastydata.serializers import Serializer
-from ografy.lib.tastydata.util import get_mime_format
+from ografy.apps.tastydata.filters import parse_filter
+from ografy.apps.tastydata.paginator import Paginator
+from ografy.apps.tastydata.serializers import Serializer
+from ografy.apps.tastydata.util import get_mime_format
 
 
 class Resource(BaseResource):
