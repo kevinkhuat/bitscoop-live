@@ -90,7 +90,8 @@ tar -czf ${PKG}/infrastructure.tar.gz --exclude .git --exclude .idea infrastruct
 # Perform secure copy based on settings.
 if [ ${KEY+x} ]
 then
-    echo "Deploying to ${RUSR}@${SERVER} using key ${KEY}..."
+    BASEKEY=`basename "${KEY}"`
+    echo "Deploying to ${RUSR}@${SERVER} using key ${BASEKEY}..."
     echo
 
     scp -i ${KEY} ${PKG}/infrastructure.tar.gz ${PKG}/ografy.tar.gz ${RUSR}@${SERVER}:~
