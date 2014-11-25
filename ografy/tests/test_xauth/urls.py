@@ -10,5 +10,7 @@ urlpatterns = patterns('',
     url(r'^email/$', views.require_email, name='allauth_require_email'),
     url(r'^email-sent/', views.validation_sent, name='allauth_validation_sent'),
     url(r'^login/$', views.home, name='allauth_login'),
-    url(r'^logout/$', views.logout, name='allauth_logout')
+    url(r'^logout/$', views.logout, name='allauth_logout'),
+    url(r'^error400', views.error400, name='Error 400 testing'),
+    url(r'^error403', views.error403, name='Error 403 testing'),
 )

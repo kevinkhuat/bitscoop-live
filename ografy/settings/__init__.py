@@ -279,11 +279,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 TEMPLATE_DIRS = (
     os.path.abspath(os.path.join(ROOT_PATH, 'templates')),
 )
-# TEMPLATE_LOADERS = (
-#     'django.template.loaders.filesystem.Loader',
-#     'django.template.loaders.app_directories.Loader',
-#     # 'django.template.loaders.eggs.Loader',
-# )
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
 # TEMPLATE_STRING_IF_INVALID = ''
 
 
