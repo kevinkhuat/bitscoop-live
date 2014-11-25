@@ -1,6 +1,7 @@
 django
 django-filter
 django-haystack
+django-redis
 django-tastypie
 pymongo
 psycopg2

@@ -11,6 +11,7 @@ export TIME_STYLE=long-iso
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:/opt/nginx/sbin
 export PATH=$PATH:/opt/passenger/bin
+export PATH=$PATH:/opt/redis/bin
 
 
 alias ls="ls --color"

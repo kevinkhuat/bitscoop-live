@@ -1,6 +1,22 @@
 from ografy.settings import *
 
 
+#########
+# CACHE #
+#########
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default',
+    },
+    'session': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'session',
+    },
+}
+
+
 ############
 # DATABASE #
 ############
@@ -24,24 +40,7 @@ DEBUG = True
 # LOGGING #
 ###########
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.abspath(os.path.join(ROOT_PATH, '..', 'logs', 'debug.log')),
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+LOGGING = {}
 
 ###########
 # MONGODB #

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+
+[ -f /etc/rc.d/init.d/functions ] && source /etc/rc.d/init.d/functions
+[ -f /etc/sysconfig/network ] && source /etc/sysconfig/network
+[ "$NETWORKING" = "no" ] && exit 0
+
+
+REDIS="/opt/redis/bin/redis-server"
+NAME=$(basename ${REDIS})
+
+
+case "${1}" in
+    start)
+        status ${NAME} >/dev/null 2>&1 && exit 0
+
+        echo -n $"Starting $NAME: "
+        sudo /opt/redis/bin/redis-server /opt/redis/conf/redis.conf
+        ;;
+    stop)
+        # FIXME: Sometimes this throws the redis daemon into an invalid state after it sucessfully stops. Can be restarted explicity, but not through `service redis start`. Why?
+        status ${NAME} >/dev/null 2>&1 || exit 0
+
+        echo -n $"Stopping $NAME: "
+        killproc ${NAME} -QUIT
+        ;;
+    status)
+        status ${NAME}
+        ;;
+    *)
+        echo "Usage: service redis {start|status|stop}"
+        exit 0
+        ;;
+esac
