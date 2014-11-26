@@ -1,19 +1,18 @@
 import json
 import requests
-import urllib.parse
+from urllib.parse import urlparse, parse_qs
+from bson import Binary, Code, json_util
 
 from bson.objectid import ObjectId
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import View
-
-from ografy.apps.obase.documents import Event
+from ografy.apps.obase.documents import Event, Data
 
 
 # @login_required
 def test(request):
     return render(request, 'test.html')
-
 
 class EventView(View):
 
@@ -26,17 +25,40 @@ class EventView(View):
         return JsonResponse(json.dumps(data))
 
     def post(self, request):
-        result = Event.post(dict(request.POST))
-        objectID = int.from_bytes(result._ObjectId__id, 'big')
+        result = request.POST
+        postedEvent = Event()
 
-        return JsonResponse({'objectID': objectID})
+        postedEvent.user_id = int(result['user-id'])
+        postedEvent.signal_id = int(result['signal-id'])
+        postedEvent.provider_id = int(result['provider-id'])
+        postedEvent.provider_name = result['provider-name']
+        postedEvent.datetime = result['datetime']
+        postedEvent.created = result['created']
+        postedEvent.updated = result['updated']
+        # postedEvent.location = int(result['location']
+
+        postedData = Data()
+        postedData.data_blob = [result['data']]
+        postedData.created = postedEvent.created
+        postedData.updated = postedEvent.created
+        postedEvent.data = postedData
+
+        postedData.save()
+        postedEvent.save()
+
+        eventObjectIdJson = json_util.dumps(postedEvent.id)
+
+        return JsonResponse(eventObjectIdJson, safe=False)
 
     def put(self, request):
-        dataDict = json.loads(request.body.decode('utf-8'))
-        dataDict['id'] = ObjectId(int.to_bytes(int(dataDict['id']), 12, 'big'))
-        objectID = {'_id': dataDict['id']}
+        # assuming request.body contains json data which is UTF-8 encoded
+        json_str = parse_qs(request.body)
 
-        result = Event.put(objectID, dataDict)
+        #{\"$oid\": \"54755eff4b7575528efc720d\"}
 
-        return JsonResponse({'objectID' : str(dataDict['id'])})
+        hexObjectID = hex(json_str['id'][0])
 
+        Event.objects(id=hexObjectID).update_one(provider_id=777)
+        # result = Event.put(objectID, dataDict)
+
+        return JsonResponse(Event.object(id=hexObjectID), safe=False)
