@@ -1,6 +1,6 @@
-from __future__ import unicode_literals
 from django.contrib import admin
 from django.conf.urls import include, patterns, url
+
 
 urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),

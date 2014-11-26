@@ -1,14 +1,7 @@
-from __future__ import unicode_literals
-
-import six
+import urllib.parse as urlparse
 
 import mimeparse
 from tastypie.exceptions import BadRequest, InvalidFilterError
-
-try:
-    import urllib.parse as urlparse
-except ImportError:
-    import urllib as urlparse
 
 
 CONTROL_PARAMS = {'$filter', '$set', '$skip', '$top'}
@@ -17,7 +10,7 @@ CONTROL_PARAMS = {'$filter', '$set', '$skip', '$top'}
 def get_query_string(kwargs={}):
     params = []
 
-    for key, value in six.iteritems(kwargs):
+    for key, value in kwargs.items():
         formatted_key = key if key in CONTROL_PARAMS else urlparse.quote(key)
         formatted_value = urlparse.quote(str(value))
         params.append('%s=%s' % (formatted_key, formatted_value))

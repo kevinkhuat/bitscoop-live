@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-import six
 from django.conf import settings
 from tastypie.exceptions import BadRequest
 from tastypie.paginator import Paginator as BasePaginator
@@ -61,7 +58,7 @@ class Paginator(BasePaginator):
             request_params = {}
 
             for key, value in self.request_data.items():
-                if isinstance(value, six.text_type):
+                if isinstance(value, str):
                     request_params[key] = value.encode('utf-8')
                 else:
                     request_params[key] = value

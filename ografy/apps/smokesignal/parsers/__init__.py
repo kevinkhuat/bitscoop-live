@@ -1,7 +1,5 @@
-from __future__ import unicode_literals
 import json
-
-import six
+import types
 
 from ografy.apps.smokesignal.util.importlib import import_module
 
@@ -79,7 +77,7 @@ class Parser(object):
             submapping_dict = mapping_dict.get(mapping_name)
             level_1_submapping = submapping_dict.get('submapping')
             func = Parser.parse
-            instance[mapping_name] = six.create_bound_method(func(func, level_1_submapping), instance)
+            instance[mapping_name] = types.MethodType(func(func, level_1_submapping), instance)
 
         return type(parser_name, (), instance)
 

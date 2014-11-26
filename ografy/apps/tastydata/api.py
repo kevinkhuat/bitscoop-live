@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.conf.urls import include, patterns, url
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponsePermanentRedirect

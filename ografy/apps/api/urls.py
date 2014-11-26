@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from ografy.apps.api.resources import AccountResource, EntryResource, UserResource
 from ografy.apps.tastydata.api import Api as ODataApi
 

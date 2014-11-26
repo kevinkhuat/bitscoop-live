@@ -1,7 +1,5 @@
-from __future__ import unicode_literals
 import copy
 import json
-import six
 import datetime
 import random
 import string

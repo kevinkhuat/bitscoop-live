@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.db.models.fields import CharField
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _

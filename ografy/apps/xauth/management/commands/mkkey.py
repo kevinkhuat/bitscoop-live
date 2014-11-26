@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from optparse import make_option
 
 from django.contrib.auth import get_user_model

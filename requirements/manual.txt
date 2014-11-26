@@ -5,4 +5,3 @@ django-redis
 django-tastypie
 psycopg2
 python-social-auth
-six

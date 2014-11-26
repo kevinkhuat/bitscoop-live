@@ -1,11 +1,9 @@
-from __future__ import unicode_literals
 import re
 import types
 
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 from tastypie.exceptions import InvalidFilterError
-import six
 
 import ografy.apps.tastydata.util as util
 
@@ -86,7 +84,7 @@ class Infix(Symbol):
         super(Infix, self).__init__(value, lbp)
 
         if callable(led):
-            self.led = six.create_bound_method(led, self)
+            self.led = types.MethodType(led, self)
 
 
 class Prefix(Symbol):
@@ -94,7 +92,7 @@ class Prefix(Symbol):
         super(Prefix, self).__init__(value, lbp)
 
         if callable(nud):
-            self.nud = six.create_bound_method(nud, self)
+            self.nud = types.MethodType(nud, self)
 
 
 def tokenize(string, inst):
