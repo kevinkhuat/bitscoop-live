@@ -2,6 +2,6 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'documentation/index.html', {
+    return render(request, 'helpr/index.html', {
         'title': 'Ografy - Documentation'
     })

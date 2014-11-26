@@ -230,23 +230,17 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    #'django.contrib.sessions',
-    #'django.contrib.messages',
     'django.contrib.staticfiles',
 
     'social.apps.django_app.default',
 
     'ografy.apps.account',
-    'ografy.apps.xauth',
-    #'ografy.apps.api',
     'ografy.apps.blog',
     'ografy.apps.core',
     'ografy.apps.demo',
-    'ografy.apps.documentation',
-    #'ografy.apps.extensions',
-    #'ografy.apps.nexus',
-    #'ografy.apps.signals',
+    #'ografy.apps.helpr',
     'ografy.apps.user',
+    'ografy.apps.xauth',
 
     'ografy.tests.xauth',
 )
