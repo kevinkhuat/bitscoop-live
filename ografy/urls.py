@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     url(r'^auth/', include('ografy.apps.xauth.urls')),
 
     # All test apps to be prepended with /tests/
-    url(r'^tests/auth', include('ografy.tests.xauth.urls')),
+    url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
+    url(r'^tests/auth', include('ografy.tests.test_obase.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."

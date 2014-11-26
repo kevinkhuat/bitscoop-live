@@ -130,7 +130,7 @@ def call(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    # TODO: Edit to use Signal id from obase.models instead of backend_id from PSA
+    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
 
     try:
         backend_id = request.REQUEST.get('backend_id', '')
@@ -173,7 +173,7 @@ def signals(request):
 
     try:
 
-        # TODO: Edit to include Signal and Provider information from obase.models
+        # TODO: Edit to include Signal and Provider information from test_obase.models
 
         for e in list(request.user.social_auth.all()):
             backend_list.append({
@@ -221,7 +221,7 @@ def signature(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    # TODO: Edit to use Signal id from obase.models instead of backend_id from PSA
+    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
 
     try:
         backend_id = request.REQUEST.get('backend_id', '')
