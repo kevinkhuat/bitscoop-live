@@ -19,7 +19,7 @@ $(document).ready(function() {
 	var csrftoken = getCookie('csrftoken');
 
 	$('#event-form')
-		.data('fields', ['signal-id', 'user-id', 'provider-id', 'provider-name'])
+		.data('fields', ['signal-id', 'user-id', 'provider-id', 'provider-name', 'datetime', 'created', 'updated', 'data', 'db-id'])
 		.data('post-data-cb', function() {
 			var data, fields, that = this;
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
 				val = that.find('input[name="event-' + name + '"]').val();
 				num = parseInt(val);
 
-				data[name] = isNaN(num) ? val : num;
+				data[name] = (isNaN(num) || val.charAt(4) == '-') ? val : num;
 			});
 
 			return data;
@@ -45,9 +45,9 @@ $(document).ready(function() {
 
 			id = parseInt(this.find('input[name="event-db-id"]').val());
 
-			if (isNaN(id)) {
-				throw new Error('PUTing requires an ID');
-			}
+//			if (isNaN(id)) {
+//				throw new Error('PUTing requires an ID');
+//			}
 
 			data['id'] = id;
 
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: '/obase/event',
 			type: method.toUpperCase(),
-			data: JSON.stringify(formData),
+			data: formData,
 			dataType: 'json',
 			headers: {"X-CSRFToken": csrftoken}
 		}).done(function(data, xhr, response) {

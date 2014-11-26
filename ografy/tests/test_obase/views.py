@@ -12,10 +12,10 @@ def form(request):
 def obase_list(request):
     event_list = []
 
-    for event in Event.get_all():
+    for event in Event.objects:
         #FIXME: Use a custom serializer
-        event['_id'] = int.from_bytes(event['_id']._ObjectId__id, 'big')
-        event_list.append(json.encode(event))
+        # event['id'] = int.from_bytes(event['id']._ObjectId__id, 'big')
+        event_list.append(int.from_bytes(event['id']._ObjectId__id, 'big'))
 
     return render(request, 'list.html', {
         'event_list': event_list

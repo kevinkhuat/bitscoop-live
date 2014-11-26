@@ -15,6 +15,11 @@
 <h4>Event</h4>
 
 <form id="event-form" class="action" action="#" method="POST">{% csrf_token %}
+    <div>
+        <label>Event ID:</label>
+        <input name="event-db-id" type="text" value="4">
+        </input>
+    </div>
 	<div>
 		<label>Signal ID:</label>
 		<input name="event-signal-id" type="text" value="101">
@@ -36,13 +41,28 @@
 		</input>
 	</div>
     <div>
-		<label>Data:</label>
-		<input name="event-data" type="text" value="{'cool':'pants'}">
+		<label>Datetime:</label>
+		<input name="event-datetime" type="datetime-local" value="2014-11-09T23:20">
 		</input>
 	</div>
     <div>
-        <label>Event ID:</label>
-        <input name="event-db-id" type="text" value="4">
+		<label>Created:</label>
+		<input name="event-created" type="datetime-local" value="2014-11-09T23:20">
+		</input>
+	</div>
+    <div>
+		<label>Updated:</label>
+		<input name="event-updated" type="datetime-local" value="2014-11-09T23:20">
+		</input>
+	</div>
+    <div>
+		<label>Data:</label>
+		<input name="event-data" type="text" value='{"cool":"pants"}'>
+		</input>
+	</div>
+    <div>
+        <label>Location:</label>
+        <input name="event-location" type="text" value="4">
         </input>
     </div>
 
