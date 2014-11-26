@@ -6,4 +6,3 @@ django-tastypie
 pymongo
 psycopg2
 python-social-auth
-six

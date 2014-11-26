@@ -1,10 +1,5 @@
-from __future__ import unicode_literals
-
-import six
-
-
 def update(obj, **kwargs):
-    for key, value in six.iteritems(kwargs):
+    for key, value in kwargs.items():
         setattr(obj, key, value)
 
 

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.contrib.auth import _clean_credentials, login as base_login
 from django.contrib.auth.signals import user_login_failed
 from django.core.exceptions import PermissionDenied

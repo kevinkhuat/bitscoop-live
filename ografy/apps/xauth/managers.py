@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.contrib.auth.models import BaseUserManager
 from django.db.models import Manager as BaseManager, Q
 from django.utils.timezone import now

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, get_user_model, login
 from django.shortcuts import redirect, render

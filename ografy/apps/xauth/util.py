@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-
 def put_address(user, ip):
     """
     Add an address and pass on any database constraint exceptions.

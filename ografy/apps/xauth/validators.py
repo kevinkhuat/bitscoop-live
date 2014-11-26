@@ -1,6 +1,4 @@
-from __future__ import unicode_literals
 import re
-import six
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -22,7 +20,7 @@ class PasswordValidator(object):
         self.code = code
 
         # Compile the regex if it was not passed pre-compiled.
-        if isinstance(self.regex, six.string_types):
+        if isinstance(self.regex, str):
             self.regex = re.compile(self.regex)
 
     def __call__(self, value):
