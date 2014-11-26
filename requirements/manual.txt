@@ -1,6 +1,4 @@
 django
-django-filter
-django-haystack
 django-redis
 django-tastypie
 psycopg2
