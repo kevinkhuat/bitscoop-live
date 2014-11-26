@@ -238,7 +238,7 @@ INSTALLED_APPS = (
     'ografy.apps.blog',
     'ografy.apps.core',
     'ografy.apps.demo',
-    #'ografy.apps.helpr',
+    'ografy.apps.helpr',
     'ografy.apps.user',
     'ografy.apps.xauth',
 

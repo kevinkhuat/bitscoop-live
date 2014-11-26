@@ -5,7 +5,7 @@ urlpatterns = patterns('',
     url(r'^account', include('ografy.apps.account.urls')),
     url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
-    #url(r'^help', include('ografy.apps.helpr.urls')),
+    url(r'^help', include('ografy.apps.helpr.urls')),
     url(r'^user', include('ografy.apps.user.urls')),
     url(r'^auth/', include('ografy.apps.xauth.urls')),
 
