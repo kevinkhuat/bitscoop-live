@@ -14,6 +14,7 @@ from ografy.apps.obase.documents import Event, Data
 def test(request):
     return render(request, 'test.html')
 
+
 class EventView(View):
 
     def delete(self):
@@ -26,22 +27,20 @@ class EventView(View):
 
     def post(self, request):
         result = request.POST
-        postedEvent = Event()
+        postedEvent = Event(**request.POST)
+        # postedEvent = Event(user_id = int(result['user-id']))
+        # postedEvent.signal_id = int(result['signal-id'])
+        # postedEvent.provider_id = int(result['provider-id'])
+        # postedEvent.provider_name = result['provider-name']
+        # postedEvent.datetime = result['datetime']
+        # postedEvent.created = result['created']
+        # postedEvent.updated = result['updated']
+        # # postedEvent.location = int(result['location']
 
-        postedEvent.user_id = int(result['user-id'])
-        postedEvent.signal_id = int(result['signal-id'])
-        postedEvent.provider_id = int(result['provider-id'])
-        postedEvent.provider_name = result['provider-name']
-        postedEvent.datetime = result['datetime']
-        postedEvent.created = result['created']
-        postedEvent.updated = result['updated']
-        # postedEvent.location = int(result['location']
-
-        postedData = Data()
-        postedData.data_blob = [result['data']]
-        postedData.created = postedEvent.created
-        postedData.updated = postedEvent.created
-        postedEvent.data = postedData
+        postedData = Data(**result['data'])
+        # postedData.created = postedEvent.created
+        # postedData.updated = postedEvent.created
+        # postedEvent.data = postedData
 
         postedData.save()
         postedEvent.save()
@@ -53,8 +52,6 @@ class EventView(View):
     def put(self, request):
         # assuming request.body contains json data which is UTF-8 encoded
         json_str = parse_qs(request.body)
-
-        #{\"$oid\": \"54755eff4b7575528efc720d\"}
 
         hexObjectID = hex(json_str['id'][0])
 
