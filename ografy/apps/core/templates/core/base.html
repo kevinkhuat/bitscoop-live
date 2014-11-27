@@ -26,8 +26,8 @@
 					<nav>
 						<ul>
 							{% block navlinks %}
-							<li><a href="{% url 'helpr_index' %}">Get Started</a></li>
-							<li><a href="{% url 'blog_index' %}">Blog</a></li>
+							<li><a href="{% url 'core_start' %}">Get Started</a></li>
+							<li><a href="http://blog.ografy.io">Blog</a></li>
 							{% endblock %}
 						</ul>
 					</nav>
@@ -36,12 +36,12 @@
 					<nav>
 						<ul>
 							{% if request.user.is_authenticated %}
-							<li><a href="{% url 'user_my_profile' %}">{{ request.user.identifier }}</a></li>
-							<li><a href="{% url 'account_index' %}">Account</a></li>
-							<li><a href="{% url 'xauth_logout' %}">Logout</a></li>
+							<li><a href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a></li>
+							<li><a href="{% url 'core_account_index' %}">Account</a></li>
+							<li><a href="{% url 'core_account_logout' %}">Logout</a></li>
 							{% else %}
-							<li><a href="{% url 'core_signup' %}">Sign Up</a></li>
-							<li><a href="{% url 'xauth_login' %}">Log In</a></li>
+							<li><a href="{% url 'core_account_signup' %}">Sign Up</a></li>
+							<li><a href="{% url 'core_account_login' %}">Log In</a></li>
 							{% endif %}
 						</ul>
 					</nav>

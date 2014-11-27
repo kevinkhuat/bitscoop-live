@@ -1,13 +1,14 @@
+from django.conf import settings
 from django.contrib.auth import _clean_credentials, login as base_login
 from django.contrib.auth.signals import user_login_failed
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 
 from ografy.util import get_client_ip
 from ografy.apps.xauth.backends import TokenBackend, DummyTokenBackend
 from ografy.apps.xauth.models import Key
 from ografy.apps.xauth.util import put_address
-
-default_app_config = 'ografy.apps.xauth.app.AuthConfig'
 
 
 def authenticate(**credentials):
@@ -36,3 +37,12 @@ def login(request, user, persist=False, track=False):
     if track:
         client_ip = get_client_ip(request)
         put_address(user, client_ip)
+
+
+def send_validation(strategy, backend, code):
+    url = '{0}?verification_code={1}'.format(
+        reverse('social:complete', args=(backend.name,)),
+        code.code
+    )
+    url = strategy.request.build_absolute_uri(url)
+    send_mail('Validate your account', 'Validate your account {0}'.format(url), settings.EMAIL_FROM, [code.email], fail_silently=False)

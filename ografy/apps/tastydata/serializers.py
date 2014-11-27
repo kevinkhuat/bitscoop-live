@@ -1,14 +1,10 @@
 import json
+import urllib.parse as urlparse
 
 from django.core.serializers import json as djangojson
 from django.template.loader import render_to_string
 # import msgpack
 from tastypie.serializers import Serializer as BaseSerializer
-
-try:
-    import urllib.parse as urlparse
-except ImportError:
-    import urlparse
 
 
 class Serializer(BaseSerializer):

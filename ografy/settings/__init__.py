@@ -234,17 +234,11 @@ INSTALLED_APPS = (
 
     'social.apps.django_app.default',
 
-    'ografy.apps.account',
-    'ografy.apps.blog',
     'ografy.apps.core',
     'ografy.apps.demo',
-    'ografy.apps.helpr',
-    'ografy.apps.obase',
-    'ografy.apps.user',
+    #'ografy.apps.helpr',
+    #'ografy.apps.obase',
     'ografy.apps.xauth',
-
-    'ografy.tests.test_obase',
-    'ografy.tests.test_xauth',
 )
 
 
@@ -258,7 +252,7 @@ INSTALLED_APPS = (
 # CSRF_COOKIE_PATH = '/'
 CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_AGE = 60 * 60 * 24 * 7 * 52
-# CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+CSRF_FAILURE_VIEW = 'ografy.errors.view403'
 # FIXME: Should we be version controlling this? Where does this setting manifest other than signed cookie sessions (which we aren't using)?
 SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'
 # X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -397,8 +391,8 @@ AUTHENTICATION_BACKENDS = (
     'ografy.apps.xauth.backends.DummyTokenBackend',
 )
 AUTH_USER_MODEL = 'xauth.User'
-# LOGIN_REDIRECT_URL = '/accounts/profile/'
-LOGIN_URL = '/auth/applogin/'
+LOGIN_REDIRECT_URL = ''
+LOGIN_URL = '/login'
 # LOGOUT_URL = '/accounts/logout/'
 # PASSWORD_RESET_TIMEOUT_DAYS = 3
 PASSWORD_HASHERS = (

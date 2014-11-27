@@ -1,4 +1,4 @@
-def update(obj, **kwargs):
+def update(obj, kwargs):
     for key, value in kwargs.items():
         setattr(obj, key, value)
 

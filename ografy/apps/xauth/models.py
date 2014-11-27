@@ -1,3 +1,4 @@
+from hashlib import sha1
 import hmac
 import re
 import uuid
@@ -13,11 +14,6 @@ from django.utils.translation import ugettext_lazy as _
 from ografy.apps.xauth.managers import AddressManager, KeyManager, UserManager
 from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
-
-try:
-    from hashlib import sha1
-except ImportError:
-    import sha.sha as sha1
 
 
 @autoconnect

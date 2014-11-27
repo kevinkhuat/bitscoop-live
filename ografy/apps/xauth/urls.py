@@ -4,10 +4,6 @@ import ografy.apps.xauth.views as views
 
 
 urlpatterns = patterns('',
-    # Ografy Account specific login/logout
-    url(r'^applogin/?$', views.LoginView.as_view(), name='xauth_login'),
-    url(r'^applogout/?$', views.logout, name='xauth_logout'),
-
     # Python Social Auth Specific Workflow
     url(r'^associate/(?P<backend>[^/]+)/$', views.associate, name='xauth_associate'),
     url(r'^call/(?P<backend>[^/]+)/$', views.call, name='xauth_call'),

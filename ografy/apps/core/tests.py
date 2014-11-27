@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 class TestCoreViews(SimpleTestCase):
     def test_SignupView(self):
 
-        response = self.client.get(reverse('core_signup'), HTTP_USER_AGENT='Mozilla/5.0')
+        response = self.client.get(reverse('core_account_signup'), HTTP_USER_AGENT='Mozilla/5.0')
         self.assertEqual(response.status_code, 200)
 
         signup_form_info_cases = [
@@ -38,7 +38,7 @@ class TestCoreViews(SimpleTestCase):
             if case.get('valid'):
                 signup_form = SignUpForm(case.get('signup_form_info'))
                 self.assertEqual(signup_form.is_valid(), True)
-                response = self.client.post(reverse('core_signup'), case.get('signup_form_info'), HTTP_USER_AGENT='Mozilla/5.0')
+                response = self.client.post(reverse('core_account_signup'), case.get('signup_form_info'), HTTP_USER_AGENT='Mozilla/5.0')
                 self.assertEqual(response.status_code, 302)
                 self.assertEqual(type(response) is HttpResponseRedirect, True)
                 self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
@@ -46,6 +46,6 @@ class TestCoreViews(SimpleTestCase):
             else:
                 signup_form = SignUpForm(case.get('signup_form_info'))
                 self.assertEqual(signup_form.is_valid(), False)
-                response = self.client.post(reverse('core_signup'), case.get('signup_form_info'), HTTP_USER_AGENT='Mozilla/5.0')
+                response = self.client.post(reverse('core_account_signup'), case.get('signup_form_info'), HTTP_USER_AGENT='Mozilla/5.0')
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(type(response) is HttpResponse, True)

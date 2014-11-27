@@ -1,7 +1,7 @@
 import urllib.parse as urlparse
 
-import mimeparse
-from tastypie.exceptions import BadRequest, InvalidFilterError
+from ografy.apps.tastydata.exceptions import InvalidFilterError
+from ografy.apps.tastydata.expressions import tokenize, Symbol
 
 
 CONTROL_PARAMS = {'$filter', '$set', '$skip', '$top'}
@@ -18,63 +18,34 @@ def get_query_string(kwargs={}):
     return '&'.join(params)
 
 
-def get_literal_value(value):
-    if value == 'True' or value == 'true':
-        return True
-    elif value == 'False' or value == 'false':
-        return False
-    elif value[0] == '\'' and value[-1] == '\'':
-        return value[1:-1]
+def parse_filter(string, **kwargs):
+    tokens = tokenize(string, **kwargs)
+    # We want this as a dictionary so we can pass it around by reference.
+    lookup = {
+        'token': next(tokens)
+    }
 
-    try:
-        return int(value)
-    except ValueError:
-        pass
+    def match(comp=None):
+        if comp and comp != lookup['token']:
+            raise SyntaxError('Expected `{0}`'.format(comp.value))
 
-    try:
-        return float(value)
-    except ValueError:
-        pass
+        lookup['token'] = next(tokens)
 
-    raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
+    def expression(rbp=0):
+        token = lookup['token']
+        lookup['token'] = next(tokens)
+        lhs = token.nud(expr=expression, match=match)
 
+        while rbp < lookup['token'].lbp:
+            token = lookup['token']
+            lookup['token'] = next(tokens)
+            lhs = token.led(lhs=lhs, expr=expression)
 
-def get_mime_format(request, serializer, default_format='application/json'):
-    """
-    Tries to "smartly" determine which output format is desired.
+        return lhs
 
-    First attempts to find a ``format`` override from the request and supplies
-    that if found.
+    result = expression()
 
-    If no request format was demanded, it falls back to ``mimeparse`` and the
-    ``Accepts`` header, allowing specification that way.
+    if lookup['token'] != Symbol.get('(end)'):
+        raise InvalidFilterError('Invalid token: `{0}`'.format(lookup['token'].value))
 
-    If still no format is found, returns the ``default_format`` (which defaults
-    to ``application/json`` if not provided).
-
-    NOTE: callers *must* be prepared to handle BadRequest exceptions due to
-          malformed HTTP request headers!
-    """
-    # First, check if they forced the format.
-    if request.GET.get('$format'):
-        if request.GET['$format'] in serializer.formats:
-            return serializer.get_mime_for_format(request.GET['$format'])
-
-    # Try to fallback on the Accepts header.
-    if request.META.get('HTTP_ACCEPT', '*/*') != '*/*':
-        formats = list(serializer.supported_formats) or []
-        # Reverse the list, because mimeparse is weird like that. See also
-        # https://github.com/toastdriven/django-tastypie/issues#issue/12 for
-        # more information.
-        formats.reverse()
-
-        try:
-            best_format = mimeparse.best_match(formats, request.META['HTTP_ACCEPT'])
-        except ValueError:
-            raise BadRequest('Invalid Accept header')
-
-        if best_format:
-            return best_format
-
-    # No valid 'Accept' header/formats. Sane default.
-    return default_format
+    return result

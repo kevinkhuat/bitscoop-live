@@ -1,0 +1,20 @@
+{% extends 'shared/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block static %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
+<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
+{% endblock %}
+
+{% block content %}
+<section>
+	<h2 class="center">400 (Bad Request)</h2>
+
+	<div class="center">
+		<p>
+			A bad request was sent to the server.
+		</p>
+	</div>
+</section>
+{% endblock %}
