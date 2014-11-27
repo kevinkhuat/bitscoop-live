@@ -1,16 +1,8 @@
-
-"""
-    ografy.apps.obase.documents
-    ~~~~~~~~~~~~~~~~~~
-
-    Logic for the obase mongodb models
-
-    :AUTHORS: Liam Broza
-"""
 import datetime
 
 from django.conf import settings
 import mongoengine as mongo
+
 
 """
 Connect to mongo as a DB connection instance.
@@ -23,7 +15,7 @@ mongo.connect(
 
 
 class Data(mongo.DynamicDocument):
-    """the data class for all uncategorizable data.
+    """The data class for all uncategorizable data.
 
     #. *created* the date created
     #. *updated* the date updated

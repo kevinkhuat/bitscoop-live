@@ -1,78 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-    ografy.apps.xauth.views
-    ~~~~~~~~~~~~~~~~~~
-
-    Logic for the xauth view endpoints
-
-    :AUTHORS: Liam Broza
-"""
 import json
 import requests
-import social.backends as social_backends
-from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseBadRequest
+
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Context
-from django.views.generic import View
-from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.apps.django_app.utils import psa
+from social.backends.oauth import BaseOAuth1, BaseOAuth2
 
-from ografy.apps.xauth.forms import LoginForm
-
-
-# Ografy Account specific login/logout
-class LoginView(View):
-    """
-    Directs the user to login view template mapped to the xauth.user model.
-    """
-
-    def get(self, request):
-        return render(request, 'xauth/login.html', {
-            'title': 'Ografy - Login'
-        })
-
-    def post(self, request):
-        user = None
-        form = LoginForm(request.POST)
-        form.full_clean()
-
-        if form.is_valid():
-            user = authenticate(**form.cleaned_data)
-
-        if user is None:
-            form.add_error(None, 'Invalid username or password.')
-
-            return render(request, 'xauth/login.html', {
-                'title': 'Ografy - Login',
-                'form': form,
-                'autofocus': 'identifier' in form.cleaned_data
-            })
-        else:
-            login(request, user)
-
-            if not form.cleaned_data['remember_me']:
-                request.session.set_expiry(0)
-            else:
-                request.session.set_expiry(settings.SESSION_COOKIE_AGE)
-
-            return redirect(reverse('core_index'))
-
-
-def logout(request):
-    """
-    User logout and redirection to the main page.
-    """
-    auth_logout(request)
-
-    return redirect(reverse('core_index'))
-
-
-# Python Social Auth Specific Workflow
 
 @psa('social:complete')
 def associate(request, backend):
@@ -161,6 +96,7 @@ def call(request, backend):
         return HttpResponseBadRequest()
 
     return Context()
+
 
 @login_required
 def signals(request):

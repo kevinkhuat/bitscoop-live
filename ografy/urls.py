@@ -1,6 +1,6 @@
 from django.conf.urls import include, patterns, url
 
-import ografy.apps.core.errors as errors
+import ografy.errors as errors
 
 
 handler400 = errors.view400
@@ -9,17 +9,10 @@ handler404 = errors.view404
 handler500 = errors.view500
 
 urlpatterns = patterns('',
-    url(r'^account', include('ografy.apps.account.urls')),
-    url(r'^blog', include('ografy.apps.blog.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
-    url(r'^help', include('ografy.apps.helpr.urls')),
-    url(r'^user', include('ografy.apps.user.urls')),
-    url(r'^auth/', include('ografy.apps.xauth.urls')),
-    url(r'^obase/', include('ografy.apps.obase.urls')),
-
-    # All test apps to be prepended with /tests/
-    url(r'^tests/obase/', include('ografy.tests.test_obase.urls')),
-    url(r'^tests/auth/', include('ografy.tests.test_xauth.urls')),
+    #url(r'^help', include('ografy.apps.helpr.urls')),
+    url(r'^auth', include('ografy.apps.xauth.urls')),
+    #url(r'^obase', include('ografy.apps.obase.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."

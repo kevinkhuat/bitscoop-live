@@ -1,4 +1,4 @@
-{% extends 'core/dispatcher.html' %}
+{% extends 'shared/dispatcher.html' %}
 {% load staticfiles %}
 
 {% block static %}
@@ -61,7 +61,7 @@
 				</div>
 				<div class="middle" style="width: 240px;">
 					<div class="bg-light padded center rounded">
-						<form action="{% url 'core_signup' %}" method="POST" >
+						<form action="{% url 'core_account_signup' %}" method="POST" >
 							{% csrf_token %}
 							<div><input class="full-width" type="text" name="email" placeholder="Email address" /></div>
 							<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
@@ -143,7 +143,7 @@
 						</div>
 						<div>
 							<div class="bullet"><i class="icon-bars2"></i></div>
-							<div><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="{% url 'helpr_index' %}">documentation</a>.</p></div>
+							<div><p>If you'd like more detailed control over how your data is visualized, be sure to check out the <a href="{% url 'core_start' %}">documentation</a>.</p></div>
 						</div>
 					</div>
 				</div>
@@ -170,7 +170,7 @@
 						</div>
 						<div>
 							<div class="bullet"><i class="icon-cube"></i></div>
-							<div><p>Be sure to check out our <a href="{% url 'blog_index' %}">blog</a> for development updates.</p></div>
+							<div><p>Be sure to check out our <a href="http://blog.ografy.io" target="_blank">blog</a> for development updates.</p></div>
 						</div>
 						<div>
 							<div class="bullet"><i class="icon-comment-stroke"></i></div>
