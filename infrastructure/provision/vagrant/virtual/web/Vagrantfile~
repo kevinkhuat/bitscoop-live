@@ -11,12 +11,12 @@ Vagrant.configure('2') do |config|
 =end
 
 		config.vm.box = 'chef/centos-7.0'
-		#config.ssh.username = 'ec2-user'
-		#config.ssh.password = 'foxtrot1234'
-		config.vm.synced_folder "~/Development/Packages", "/home/vagrant"
+		config.ssh.username = 'ec2-user'
+		config.ssh.password = 'foxtrot1234'
+		config.vm.synced_folder "~/Development/Packages", "/home/ec2-user"
 
 		config.vm.provision "shell" do |s|
-			s.path = "~/Development/Repositories/ografy/infrastructure/scripts/web.sh"
+			s.path = "~/Development/Repositories/ografy/infrastructure/provision/virtual/web/web.sh"
 			s.args = ["virtual"]
 		end
 	end

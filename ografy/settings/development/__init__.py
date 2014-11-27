@@ -42,7 +42,6 @@ DEBUG = True
 
 LOGGING = {}
 
-
 ############
 # SECURITY #
 ############
@@ -70,3 +69,11 @@ STATIC_URL = '/static/'
 
 SESSION_COOKIE_SECURE = False
 
+
+###########
+# MONGODB #
+###########
+
+MONGODB_DBNAME = 'ografy_db'
+MONGODB_SERVERNAME = 'localhost'
+MONGODB_SERVERPORT = 27017

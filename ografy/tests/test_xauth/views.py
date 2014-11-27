@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from social.backends.google import GooglePlusAuth
 from social.backends.utils import load_backends
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
 
-from ografy.tests.xauth.decorators import render_to
+from ografy.tests.test_xauth.decorators import render_to
 
 
 def logout(request):
@@ -48,5 +49,9 @@ def require_email(request):
     return context(email_required=True, backend=backend)
 
 
+def error400(request):
+    raise SuspiciousOperation()
 
 
+def error403(request):
+    raise PermissionDenied()

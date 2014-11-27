@@ -1,0 +1,18 @@
+[
+  {
+    "pk": 1,
+    "fields": {
+      "name": "facebook",
+      "backend_name": "facebook"
+    },
+    "model": "obase.provider"
+  },
+  {
+    "pk": 2,
+    "fields": {
+      "name": "twitter",
+      "backend_name": "twitter"
+    },
+    "model": "obase.provider"
+  }
+]

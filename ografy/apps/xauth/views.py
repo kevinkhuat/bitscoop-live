@@ -106,6 +106,8 @@ def associate(request, backend):
             login(request, user)
             data = {'id': user.id, 'username': user.username}
 
+            # TODO: Create a Signal entry with associated Provider
+
             return HttpResponse(json.dumps(data), mimetype='application/json')
 
         return Context()
@@ -128,6 +130,8 @@ def call(request, backend):
     * returns: returns the response from the call or an error.
     """
 
+    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
+
     try:
         backend_id = request.REQUEST.get('backend_id', '')
         api_call_url = request.REQUEST.get('api_call_url', '')
@@ -142,7 +146,9 @@ def call(request, backend):
             response = requests.get(
                 api_call_url, params={'access_token': social.extra_data['access_token']}
             )
-        #Todo: Add functionality for known OAuth backends such as Steam to append developer keys as parameters for calls
+
+        # TODO: Add functionality for known OAuth backends such as Steam to append developer keys as parameters for calls
+
         else:
             response = requests.get(
                 api_call_url
@@ -166,6 +172,9 @@ def signals(request):
     backend_list = []
 
     try:
+
+        # TODO: Edit to include Signal and Provider information from test_obase.models
+
         for e in list(request.user.social_auth.all()):
             backend_list.append({
                 'id': e.id,
@@ -211,6 +220,8 @@ def signature(request, backend):
 
     * returns: returns the response from the call or an error.
     """
+
+    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
 
     try:
         backend_id = request.REQUEST.get('backend_id', '')
