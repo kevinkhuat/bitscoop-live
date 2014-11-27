@@ -136,7 +136,8 @@ def proxy(request):
 
 @login_required
 def signature(request):
-    """This rest endpoint will add an authorization signature to an API call and pass the access token for that call back to the client.
+    """This rest endpoint will add an authorization signature to an API call and pass the access token for that call
+    back to the client.
 
     #. *request* a request object must contain the variables:
 
