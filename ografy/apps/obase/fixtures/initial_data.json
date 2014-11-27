@@ -14,5 +14,13 @@
       "backend_name": "twitter"
     },
     "model": "obase.provider"
+  },
+  {
+    "pk": 3,
+    "fields": {
+      "name": "steam",
+      "backend_name": "steam"
+    },
+    "model": "obase.provider"
   }
 ]

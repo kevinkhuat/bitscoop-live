@@ -58,4 +58,4 @@ class EventView(View):
         Event.objects(id=hexObjectID).update_one(provider_id=777)
         # result = Event.put(objectID, dataDict)
 
-        return JsonResponse(Event.object(id=hexObjectID), safe=False)
+        return JsonResponse(Event.object(id=hexObjectID))
