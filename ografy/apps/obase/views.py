@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import View
+
 from ografy.apps.obase.documents import Event, Data
 
 
@@ -16,7 +17,7 @@ def test(request):
 
 class EventView(View):
 
-    def delete(self):
+    def delete(self, id):
         pass
 
     def get(self, request):
