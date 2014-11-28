@@ -15,8 +15,8 @@ from ografy.apps.obase.documents import Event, Data
 def test(request):
     return render(request, 'test.html')
 
-class EventView(View):
 
+class EventView(View):
     def delete(self, id):
         pass
 
@@ -59,21 +59,25 @@ class EventView(View):
             if key in ['provider-id', 'signal-id', 'user-id']:
                 json_str[key] = int(json_str[key])
 
-        #{\"$oid\": \"54755eff4b7575528efc720d\"} "54755eff4b7575528efc720d"
+        # {\"$oid\": \"54755eff4b7575528efc720d\"} "54755eff4b7575528efc720d"
 
         ObjectID = json_str['db-id'].replace('"', '')
 
         updateDocument = Event.objects(id=ObjectID)
 
-        updateData = Data.objects(id=hex(int(ObjectID, 16)-1))
+        updateData = Data.objects(id=hex(int(ObjectID, 16) - 1))
         updateData.update_one(set__data_blob=json_str['data'])
         updateData.get().reload()
 
-        updateDocument.update(set__created=json_str['created'], set__datetime=json_str['datetime'],
-                              set__db_id=['db_id'], set__provider_id=json_str['provider-id'],
-                              set__provider_name=json_str['provider_name'], set__signal_id=json_str['signal-id'],
-                              set__updated=json_str['updated'], set__user_id=json_str['user-id']
-                              )
+        updateDocument.update(
+            set__created=json_str['created'],
+            set__datetime=json_str['datetime'],
+            set__db_id=['db_id'],
+            set__provider_id=json_str['provider-id'],
+            set__provider_name=json_str['provider_name'],
+            set__signal_id=json_str['signal-id'],
+            set__updated=json_str['updated'],
+            set__user_id=json_str['user-id'])
         updateDocument.update()
         updateDocument.get().reload()
         # result = Event.put(objectID, dataDict)
