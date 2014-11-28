@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /
+
 #Install the PostgreSQL 9.3 YUM repository and then install the PostgreSQL packages
 sudo yum install -y http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 sudo yum install -y postgresql93-server postgresql93-contrib
