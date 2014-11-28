@@ -78,7 +78,6 @@ class EventView(View):
             set__signal_id=json_str['signal-id'],
             set__updated=json_str['updated'],
             set__user_id=json_str['user-id'])
-        updateDocument.update()
         updateDocument.get().reload()
         # result = Event.put(objectID, dataDict)
 
