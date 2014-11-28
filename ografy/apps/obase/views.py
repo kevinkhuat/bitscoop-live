@@ -27,22 +27,20 @@ class EventView(View):
 
     def post(self, request):
         result = request.POST
-        postedEvent = Event()
+        postedEvent = Event(**request.POST)
+        # postedEvent = Event(user_id = int(result['user-id']))
+        # postedEvent.signal_id = int(result['signal-id'])
+        # postedEvent.provider_id = int(result['provider-id'])
+        # postedEvent.provider_name = result['provider-name']
+        # postedEvent.datetime = result['datetime']
+        # postedEvent.created = result['created']
+        # postedEvent.updated = result['updated']
+        # # postedEvent.location = int(result['location']
 
-        postedEvent.user_id = int(result['user-id'])
-        postedEvent.signal_id = int(result['signal-id'])
-        postedEvent.provider_id = int(result['provider-id'])
-        postedEvent.provider_name = result['provider-name']
-        postedEvent.datetime = result['datetime']
-        postedEvent.created = result['created']
-        postedEvent.updated = result['updated']
-        # postedEvent.location = int(result['location']
-
-        postedData = Data()
-        postedData.data_blob = [result['data']]
-        postedData.created = postedEvent.created
-        postedData.updated = postedEvent.created
-        postedEvent.data = postedData
+        postedData = Data(**result['data'])
+        # postedData.created = postedEvent.created
+        # postedData.updated = postedEvent.created
+        # postedEvent.data = postedData
 
         postedData.save()
         postedEvent.save()

@@ -1,13 +1,15 @@
 import json
 import requests
 
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.template import Context
 from social.apps.django_app.utils import psa
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 
+from ografy.apps.obase.models import Signal, Provider
+
+# TODO: Fix comments
 
 @psa('social:complete')
 def associate(request, backend):
@@ -26,33 +28,35 @@ def associate(request, backend):
     """
 
     try:
-        if request.user.is_authenticated():
-            if isinstance(request.backend, BaseOAuth1):
-                token = {
-                    'oauth_token': request.REQUEST.get('access_token'),
-                    'oauth_token_secret': request.REQUEST.get('access_token_secret'),
-                }
-            elif isinstance(request.backend, BaseOAuth2):
-                token = request.REQUEST.get('access_token')
-            else:
-                return HttpResponseBadRequest('Wrong backend type')
+        if isinstance(request.backend, BaseOAuth1):
+            token = {
+                'oauth_token': request.REQUEST.get('access_token'),
+                'oauth_token_secret': request.REQUEST.get('access_token_secret'),
+            }
+        elif isinstance(request.backend, BaseOAuth2):
+            token = request.REQUEST.get('access_token')
+        else:
+            return HttpResponseBadRequest('Wrong backend type')
 
-            user = request.backend.do_auth(token, ajax=True)
-            login(request, user)
-            data = {'id': user.id, 'username': user.username}
+        user = request.backend.do_auth(token, ajax=True)
+        associated_provider = Provider.objects.get(backend_name=backend)
+        associated_signal = Signal(user=user,
+                                   provider=associated_provider,
+                                   name=backend)
+        associated_signal.save()
 
-            # TODO: Create a Signal entry with associated Provider
+        ret = {'user_id': user.id,
+               'username': user.username,
+               'signal': associated_signal}
 
-            return HttpResponse(json.dumps(data), mimetype='application/json')
-
-        return Context()
+        return JsonResponse(ret)
 
     except requests.RequestException:
         return HttpResponseBadRequest()
 
 
 @login_required
-def call(request, backend):
+def call(request):
     """This rest endpoint will add an authorization signature to an API call and make the call on the server.
 
     #. *request* a request object must contain the variables:
@@ -65,25 +69,23 @@ def call(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
+    # TODO: Make part of signals.js or Add functionality for known OAuth backends such as Steam to append developer keys as parameters for calls
 
     try:
-        backend_id = request.REQUEST.get('backend_id', '')
+        signal_id = request.REQUEST.get('signal_id', '')
+        signal = Signal.objects.get(id=signal_id)
         api_call_url = request.REQUEST.get('api_call_url', '')
-        backend_module = eval('social_backends.' + backend)
-        social = request.user.social_auth.get(id=backend_id, provider=backend)
+        backend_module = eval('social_backends.' + signal.provider.backend_name)
+        social_auth = signal.get_social_auth()
 
         if hasattr(backend_module, 'BaseOAuth2'):
             response = requests.get(
-                api_call_url, params={'access_token': social.extra_data['access_token']}
+                api_call_url, params={'access_token': social_auth.extra_data['access_token']}
             )
         elif hasattr(backend_module, 'BaseOAuth1'):
             response = requests.get(
-                api_call_url, params={'access_token': social.extra_data['access_token']}
+                api_call_url, params={'access_token': social_auth.extra_data['access_token']}
             )
-
-        # TODO: Add functionality for known OAuth backends such as Steam to append developer keys as parameters for calls
-
         else:
             response = requests.get(
                 api_call_url
@@ -105,19 +107,8 @@ def signals(request):
     * returns: returns the list of backends and their ids or an error.
     """
 
-    backend_list = []
-
     try:
-
-        # TODO: Edit to include Signal and Provider information from test_obase.models
-
-        for e in list(request.user.social_auth.all()):
-            backend_list.append({
-                'id': e.id,
-                'provider': e.provider
-            })
-
-        return HttpResponse(json.dumps(backend_list), content_type='application/json')
+        return JsonResponse(Signal.get_social_auths_for_user(request.user))
 
     except requests.RequestException:
         return HttpResponseBadRequest()
@@ -144,8 +135,9 @@ def proxy(request):
 
 
 @login_required
-def signature(request, backend):
-    """This rest endpoint will add an authorization signature to an API call and pass the access token for that call back to the client.
+def signature(request):
+    """This rest endpoint will add an authorization signature to an API call and pass the access token for that call
+    back to the client.
 
     #. *request* a request object must contain the variables:
 
@@ -157,22 +149,17 @@ def signature(request, backend):
     * returns: returns the response from the call or an error.
     """
 
-    # TODO: Edit to use Signal id from test_obase.models instead of backend_id from PSA
-
     try:
-        backend_id = request.REQUEST.get('backend_id', '')
+        signal_id = request.REQUEST.get('signal_id', '')
         api_call_url = request.REQUEST.get('api_call_url', '')
 
-        if backend_id:
-            social = request.user.social_auth.get(id=backend_id, provider=backend)
-            signed = {
-                'api_call_url': api_call_url,
-                'access_token': social.extra_data['access_token']
-            }
+        signal = Signal.objects.get(id=signal_id)
+        signed = {
+            'api_call_url': api_call_url,
+            'access_token': signal.get_user_social_auth().extra_data['access_token']
+        }
 
-            return HttpResponse(signed)
-
-        return Context()
+        return JsonResponse(signed)
 
     except requests.RequestException:
         return HttpResponseBadRequest()

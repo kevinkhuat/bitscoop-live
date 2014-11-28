@@ -2,8 +2,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-
-# TODO: Add fixtures for PSA providers
+from social.apps.django_app.default.models import UserSocialAuth
 
 
 class Signal(models.Model):
@@ -20,9 +19,19 @@ class Signal(models.Model):
     provider = models.ForeignKey('Provider')
     name = models.CharField(max_length=50)
 
-    # TODO: FIX
-    PSA_A_ID = ''
-    PSA_USA_ID = ''
+    def get_user_social_auth(self):
+        return UserSocialAuth.get_social_auth(self.provider.backend_name, self.user.id)
+
+    @classmethod
+    def get_social_auth_for_user(cls, user, backend_name):
+        return UserSocialAuth.get_social_auth(backend_name, user.id)
+
+    @classmethod
+    def get_social_auths_for_user(cls, user):
+        try:
+            return UserSocialAuth.objects.get(uid=user.id)
+        except UserSocialAuth.DoesNotExist:
+            return None
 
     def __unicode__(self):
         return u'<SIGNAL_{0}: {1}@{2}>'.format(self.id, self.user.display_name, self.name)
