@@ -1,4 +1,3 @@
-import json
 from django.shortcuts import render
 from ografy.apps.obase.documents import Event
 

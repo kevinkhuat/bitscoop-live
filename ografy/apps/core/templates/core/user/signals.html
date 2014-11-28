@@ -1,0 +1,158 @@
+{% extends 'shared/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block static %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'core/js/signals.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
+
+	<style type="text/css">
+		.i-grid {
+			width: 600px;
+			position: relative;
+			left: 70px;
+			margin-bottom: 2em;
+		}
+
+		.i-grid > div {
+			width: 190px;
+			display: inline-block;
+			margin: 3px;
+			text-align: left;
+		}
+
+		.fs1 {
+			vertical-align: middle;
+			font-size: 32px;
+			width: 30px
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<h4>Connect Services</h4>
+
+<div>
+	<div>
+		<div>
+			<a name="facebook"><i class="fs1 icon-facebook"></i>Facebook</a>
+			<a name="twitter"><i class="fs1 icon-twitter"></i>Twitter</a>
+			<a name="steam"><i class="fs1 icon-spotify"></i>Steam</a>
+			<a name="amazon">Amazon</a>
+			<a name="dropbox"><i class="fs1 icon-dropbox"></i>Dropbox</a>
+			<a name="fitbit">FitBit</a>
+			<a name="foursquare"><i class="fs1 icon-foursquare2"></i>FourSquare</a>
+			<a name="github"><i class="fs1 icon-github3"></i>GitHub</a>
+			<a name="google"><i class="fs1 icon-googleplus"></i>Google</a>
+			<a name="instagram">Instagram</a>
+			<a name="linkedin">LinkedIn</a>
+			<a name="reddit">reddit</a>
+			<a name="spotify">Spotify</a>
+			<a name="stackoverflow">Stack Overflow</a>
+			<a name="steam">Steam</a>
+			<a name="tumblr">Tumblr</a>
+			<a name="viemo">Viemo</a>
+		</div>
+	</div>
+
+	<div class="legacy">
+		<a class="btn btn-info" name="ajax-login" href="#">
+			<i class="fa fa-refresh"></i>
+			Ajax
+		</a>
+
+		<a class="btn btn-info" name="ajax-call" href="#">
+			<i class="fa fa-refresh"></i>
+			Ajax API Calls
+		</a>
+	</div>
+</div>
+
+<div id="ajax-call-modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">OAuth Signed API Call</h4>
+			</div>
+
+			<div class="modal-body">
+				<form action="#" method="post" class="form-horizontal" role="form">{% csrf_token %}
+					<div class="form-group">
+						<label class="control-label">Logged-in Backend:</label>
+						<select class="form-control" name="logged-in-backend">
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="api_call_url">Call URL:</label>
+						<input class="form-control" id="api_call_url" name="api_call_url" type="text"
+						       value="https://graph.facebook.com/v2.1/me?fields=friends"
+						       placeholder="OAuth Signed API Call URL">
+					</div>
+				</form>
+
+				<div class="login-result" style="display: none;">
+					<p><strong>User Id:</strong><span class="user-id"></span></p>
+
+					<p><strong>Username:</strong><span class="user-username"></span></p>
+
+					<p><strong>AJAX API Result Data:</strong><span class="ajax-API-result-data"></span></p>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Call</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="ajax-login-modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Ajax Authentication by AccessToken</h4>
+			</div>
+
+			<div class="modal-body">
+				<form action="#" method="post" class="form-horizontal" role="form">{% csrf_token %}
+					<div class="form-group">
+						<label class="control-label" for="backend">Backend:</label>
+						<select class="form-control" name="backend">
+							<option value=""></option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="access_token">Access token:</label>
+						<input class="form-control" id="access_token" name="access_token" type="text" value=""
+						       placeholder="OAuth1 or OAuth2 access token">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="access_token_secret">Access token secret:</label>
+						<input class="form-control" id="access_token_secret" name="access_token_secret" type="text"
+						       value="" placeholder="OAuth1 access token secret">
+					</div>
+				</form>
+
+				<div class="login-result" style="display: none;">
+					<p><strong>User Id:</strong><span class="user-id"></span></p>
+
+					<p><strong>Username:</strong><span class="user-username"></span></p>
+
+					<p>This page will be reloaded in 10s and the user should be logged in.</p>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Login</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
