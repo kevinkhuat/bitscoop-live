@@ -3,8 +3,8 @@ from ografy.util.api import BaseApi
 
 
 class Signal(BaseApi):
-    model = models.Address
+    model = models.Signal
 
 
 class Provider(BaseApi):
-    model = models.Key
+    model = models.Provider
