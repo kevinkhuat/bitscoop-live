@@ -239,8 +239,6 @@ INSTALLED_APPS = (
     #'ografy.apps.helpr',
     'ografy.apps.obase',
     'ografy.apps.xauth',
-
-    # 'ografy.tests.test_xauth',
 )
 
 
