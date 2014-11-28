@@ -19,7 +19,7 @@ $(document).ready(function() {
 	var csrftoken = getCookie('csrftoken');
 
 	$('#event-form')
-		.data('fields', ['signal-id', 'user-id', 'provider-id', 'provider-name', 'datetime', 'created', 'updated', 'data', 'db-id'])
+		.data('fields', ['created', 'data', 'datetime', 'db-id', 'provider-id', 'provider-name', 'signal-id', 'updated', 'user-id'])
 		.data('post-data-cb', function() {
 			var data, fields, that = this;
 

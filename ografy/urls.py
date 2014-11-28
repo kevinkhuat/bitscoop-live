@@ -17,5 +17,5 @@ urlpatterns = patterns('',
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."
     # Just be sure to put it last so it doesn't cut off the other included apps.
-    url(r'^', include('ografy.apps.core.urls'))
+    url(r'^', include('ografy.apps.core.urls')),
 )
