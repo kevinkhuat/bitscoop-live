@@ -72,12 +72,10 @@ class TestOBase(SimpleTestCase):
         assert(getData.data_blob == ["{'hot': 'dog'}"])
         assert(getData.created == datetime(2011, 5, 15, 15, 12, 40))
 
-
         # DELETE the entry and check that the response is True,
         # which means the request was successful
         deleteData = ObaseApi.Data.delete(dataId)
         assert(deleteData == True)
-
 
         # Test the group GET function
         # It should return an object of type 'QuerySet'
@@ -89,7 +87,6 @@ class TestOBase(SimpleTestCase):
         assert (len(getGroupData._result_cache) > 0)
 
         return HttpResponse(True)
-
 
     def test_OBase_Event(self):
 
