@@ -9,25 +9,25 @@ from ografy.apps.obase.api import Event as EventApi, Data as DataApi, Message as
 
 class SignalSingleView(View):
 
-    def get(self, request, id):
+    def get(self, id):
         return HttpResponse(serializers.serialize(SignalApi.get(val=id)))
 
 
 class SignalGroupView(View):
 
-    def get(self, request):
+    def get(self):
         return HttpResponse(serializers.serialize(SignalApi.get()))
 
 
 class ProviderSingleView(View):
 
-    def get(self, request, id):
+    def get(self, id):
         return HttpResponse(serializers.serialize((ProviderApi.get(val=id))))
 
 
 class ProviderGroupView(View):
 
-    def get(self, request):
+    def get(self):
         return HttpResponse(serializers.serialize(ProviderApi.get()))
 
 
@@ -130,16 +130,13 @@ class MessageGroupView(View):
             data_dict = message_list_item['data']
             event_dict = message_list_item['event']
             message_dict = message_list_item['message']
-
             saved_data = DataApi.post(Data.from_json(data_dict))
 
             # TODO: Test?
             event_dict['data'] = saved_data.id
-
             saved_event = EventApi.post(Event.from_json(event_dict))
 
             message_dict['event'] = saved_event.id
-
             saved_message_list.append(MessageApi.post(Message.from_json(message_dict)))
 
         return HttpResponse(saved_message_list.to_json())
@@ -163,16 +160,13 @@ class MessageSingleView(View):
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         message_dict = post_dict['message']
-
         saved_data = DataApi.post(Data.from_json(data_dict))
 
         # TODO: Test?
         event_dict['data'] = saved_data.id
-
         saved_event = EventApi.post(Event.from_json(event_dict))
 
         message_dict['event'] = saved_event.id
-
         saved_message = MessageApi.post(Message.from_json(message_dict))
 
         return HttpResponse(saved_message.to_json())
