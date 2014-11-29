@@ -42,7 +42,7 @@ class BaseApi(object):
         return inst
 
     @classmethod
-    def post(cls, data):
+    def post(cls, **data):
         # TODO: POST all? Check the link for manual transactions.
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         inst = cls.model(**data)
