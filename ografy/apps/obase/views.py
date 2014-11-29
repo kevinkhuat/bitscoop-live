@@ -2,14 +2,19 @@ import json
 import requests
 from urllib.parse import parse_qs
 from bson import json_util
+from datetime import datetime
+from ast import literal_eval
 
 from bson.objectid import ObjectId
+from django.core import serializers
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import View
+from mongoengine.queryset import QuerySet
+from django.http import HttpResponse
 
 from ografy.apps.obase.documents import Event, Data
-from ografy.apps.obase.api import Event as EventApi
+from ografy.apps.obase.api import Event as EventApi, Data as DataApi
 
 
 # @login_required
@@ -19,32 +24,42 @@ def test(request):
 class EventGroupView(View):
 
     def get(self, request):
-        return EventApi.get()
+        eventPostback = EventApi.get()
+
+        serializedEvent = eventPostback.to_json()
+
+        return HttpResponse(serializedEvent)
 
     def post(self, request):
+        result = dict(request.POST._iteritems())
 
-        result = request.POST
-        postedEvent = EventApi.post(**result)
-        # postedEvent = Event(user_id = int(result['user-id']))
-        # postedEvent.signal_id = int(result['signal-id'])
-        # postedEvent.provider_id = int(result['provider-id'])
-        # postedEvent.provider_name = result['provider-name']
-        # postedEvent.datetime = result['datetime']
-        # postedEvent.created = result['created']
-        # postedEvent.updated = result['updated']
-        # postedEvent.location = int(result['location'])
+        postedEventFields = {}
+        postedEventFields['user_id'] = int(result['user-id'])
+        postedEventFields['signal_id'] = int(result['signal-id'])
+        postedEventFields['provider_id'] = int(result['provider-id'])
+        postedEventFields['datetime'] = datetime.strptime(result['datetime'], "%Y-%m-%dT%H:%M:%S")
+        postedEventFields['created'] = datetime.strptime(result['created'], "%Y-%m-%dT%H:%M:%S")
+        postedEventFields['updated'] = datetime.strptime(result['updated'], "%Y-%m-%dT%H:%M:%S")
+        postedEventFields['provider_name'] = result['provider-name']
+        postedEventFields['data'] = result['data']
 
-        postedData = Data(**result['data'])
-        # postedData.created = postedEvent.created
-        # postedData.updated = postedEvent.created
-        # postedEvent.data = postedData
+        postedDataFields = {
+            'created': postedEventFields['created'],
+            'updated': postedEventFields['updated'],
+            'data_blob': [postedEventFields['data']]
+        }
 
-        postedData.save()
-        postedEvent.save()
+        postedData = DataApi.post(**postedDataFields)
 
-        eventObjectIdJson = json_util.dumps(postedEvent.id)
+        postedEventFields['data'] = postedData
 
-        return JsonResponse(eventObjectIdJson, safe=False)
+        eventPostback = EventApi.post(**postedEventFields)
+
+        serializedEvent = eventPostback.to_json()
+
+        # unserializedEvent = Event.from_json(serializedEvent)
+
+        return HttpResponse(serializedEvent)
 
 
 
