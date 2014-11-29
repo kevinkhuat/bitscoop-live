@@ -3,6 +3,8 @@ import requests
 
 from django.test import SimpleTestCase
 from django.core import serializers
+from django.http import HttpResponse
+from mongoengine.queryset.queryset import QuerySet
 
 from ografy.apps.obase import api as ObaseApi
 from ografy.apps.obase.documents import Message, Data, Event
@@ -66,9 +68,10 @@ class TestOBase(SimpleTestCase):
         # has been overwitten correctly and that 'created'
         # hasn't changed
         patchData = ObaseApi.Data.patch(dataId, testData)
-        gotData = ObaseApi.Data.get(dataId)
-        assert(gotData.data_blob == ["{'hot': 'dog'}"])
-        assert(gotData.created == datetime(2011, 5, 15, 15, 12, 40))
+        getData = ObaseApi.Data.get(dataId)
+        assert(getData.data_blob == ["{'hot': 'dog'}"])
+        assert(getData.created == datetime(2011, 5, 15, 15, 12, 40))
+
 
         # DELETE the entry and check that the response is True,
         # which means the request was successful
@@ -81,6 +84,12 @@ class TestOBase(SimpleTestCase):
         # and that object's length should be more than 0
         getGroupData = ObaseApi.Data.get()
         assert(len(getGroupData._result_cache) > 0)
+        assert isinstance(getGroupData, QuerySet)
+        assert isinstance(getGroupData._result_cache[0], Data)
+        assert (len(getGroupData._result_cache) > 0)
+
+        return HttpResponse(True)
+
 
     def test_OBase_Event(self):
 
@@ -92,6 +101,11 @@ class TestOBase(SimpleTestCase):
             'data_blob': ["{'cool': 'pants', 'hammer': 'time'}"]
         }
 
+        #POST the data and save the ID
+        postedData = ObaseApi.Data.post(testData)
+        dataId = postedData.id
+
+        #Create initial test Event field data
         testEvent = {
             'created': testTime,
             'updated': testTime,
@@ -100,7 +114,7 @@ class TestOBase(SimpleTestCase):
             'provider_id': 10591,
             'signal_id': 1812,
             'provider_name': 'TwitFace',
-            'data': testData,
+            'data': postedData.id,
             # 'location':
         }
 
@@ -148,7 +162,7 @@ class TestOBase(SimpleTestCase):
         # DELETE the entry and check that the response is True,
         # which means the request was successful
         deleteData = ObaseApi.Data.delete(dataId)
-        assertEqual(deleteData,True)
+        self.assertEqual(deleteData,True)
 
         # Test the group GET function
         # It should return an object of type 'QuerySet'
