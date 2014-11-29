@@ -3,20 +3,28 @@ import json
 import requests
 
 from django.test import SimpleTestCase, TransactionTestCase
+from django.core import serializers
 from django.http import HttpResponse
 from mongoengine.queryset.queryset import QuerySet
 
-from ografy.apps.obase.documents import Data, Event, Message
-import ografy.apps.obase.views as ObjectViews
-import ografy.apps.obase.api as ObaseApi
+from ografy.apps.obase import api as ObaseApi
+from ografy.apps.obase.documents import Message, Data, Event
+from ografy.apps.obase.models import Provider, Signal
+from ografy.apps.xauth.models import User
 
 
-class TestOBase(TransactionTestCase):
+class TestOBase(SimpleTestCase):
     fixtures = []
+
+    def test_OBase_Signal_Api(self):
+        test_user = User(email='test@test.test', handle='testy')
+        test_user.save()
+        test_signal = ObaseApi.Signal.post(name='Facebook', backend_name='facebook', user=test_user)
+        test_json = serializers.serialize("json", test_signal)
 
     def test_OBase_Data(self):
 
-        #Create initial test data for testing POST
+        # Create initial test data for testing POST
         testTime = datetime.now()
         testData = {
             'created': testTime,
@@ -24,8 +32,8 @@ class TestOBase(TransactionTestCase):
             'data_blob': ["{'cool': 'pants', 'hammer': 'time'}"]
         }
 
-        #POST the data, save the ID, then GET the data back and check
-        #that the 'data_blob' field is correct, which indicates the POST was successful
+        # POST the data, save the ID, then GET the data back and check
+        # that the 'data_blob' field is correct, which indicates the POST was successful
         postedData = ObaseApi.Data.post(testData)
         dataId = postedData.id
         getData = ObaseApi.Data.get(dataId)
@@ -41,10 +49,10 @@ class TestOBase(TransactionTestCase):
             'data_blob': ["{'top': 'dog'}"]
         }
 
-        #PUT the new data in over the old data
-        #Don't need to save the ID again since it hasn't changed
-        #GET the data back and check that it has been overwritten correctly
-        #Check both the 'data_blob' and created fields to ensure this
+        # PUT the new data in over the old data
+        # Don't need to save the ID again since it hasn't changed
+        # GET the data back and check that it has been overwritten correctly
+        # Check both the 'data_blob' and created fields to ensure this
         putData = ObaseApi.Data.put(dataId, testData)
         getData = ObaseApi.Data.get(dataId)
         assert(getData.data_blob == ["{'top': 'dog'}"])
