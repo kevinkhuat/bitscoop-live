@@ -1,43 +1,49 @@
-import json
-import requests
 from urllib.parse import parse_qs
 from bson import json_util
-
-from bson.objectid import ObjectId
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic import View
 
-from ografy.apps.obase.documents import Event, Data
+from ografy.apps.obase.documents import Event, Data, Message
+from ografy.apps.obase.api import Signal as SignalApi
+from ografy.apps.obase.api import Provider as ProviderApi
 from ografy.apps.obase.api import Event as EventApi
 
 
-# @login_required
-def test(request):
-    return render(request, 'test.html')
+class SignalSingleView(View):
+
+    def get(self, request, id):
+        return HttpResponse(SignalApi.get(val=id))
+
+
+class SignalGroupView(View):
+
+    def get(self, request):
+        return JsonResponse(SignalApi.get())
+
+
+class ProviderSingleView(View):
+
+    def get(self, request, id):
+        return JsonResponse(ProviderApi.get(val=id))
+
+
+class ProviderGroupView(View):
+
+    def get(self, request):
+        return JsonResponse(list(ProviderApi.get()), safe=False)
+
 
 class EventGroupView(View):
 
-    def get(self, request):
-        return EventApi.get()
+    def get(self):
+        return JsonResponse(EventApi.get())
 
     def post(self, request):
 
         result = request.POST
         postedEvent = EventApi.post(**result)
-        # postedEvent = Event(user_id = int(result['user-id']))
-        # postedEvent.signal_id = int(result['signal-id'])
-        # postedEvent.provider_id = int(result['provider-id'])
-        # postedEvent.provider_name = result['provider-name']
-        # postedEvent.datetime = result['datetime']
-        # postedEvent.created = result['created']
-        # postedEvent.updated = result['updated']
-        # postedEvent.location = int(result['location'])
 
         postedData = Data(**result['data'])
-        # postedData.created = postedEvent.created
-        # postedData.updated = postedEvent.created
-        # postedEvent.data = postedData
 
         postedData.save()
         postedEvent.save()
@@ -47,17 +53,16 @@ class EventGroupView(View):
         return JsonResponse(eventObjectIdJson, safe=False)
 
 
-
 class EventSingleView(View):
 
     def delete(self, id):
-        pass
+        JsonResponse(EventApi.delete(val=id))
 
     def get(self, id):
-        pass
+        JsonResponse(EventApi.get(val=id))
 
     def patch(self, id, request):
-        pass
+        JsonResponse(EventApi.patch(val=id))
 
     def put(self, id, request):
         # assuming request.body contains json data which is UTF-8 encoded
@@ -79,10 +84,14 @@ class EventSingleView(View):
         updateData.update_one(set__data_blob=json_str['data'])
         updateData.get().reload()
 
-        updateDocument.update(set__created=json_str['created'], set__datetime=json_str['datetime'],
-                              set__db_id=['db_id'], set__provider_id=json_str['provider-id'],
-                              set__provider_name=json_str['provider_name'], set__signal_id=json_str['signal-id'],
-                              set__updated=json_str['updated'], set__user_id=json_str['user-id']
+        updateDocument.update(set__created=json_str['created'],
+                              set__datetime=json_str['datetime'],
+                              set__db_id=['db_id'],
+                              set__provider_id=json_str['provider-id'],
+                              set__provider_name=json_str['provider_name'],
+                              set__signal_id=json_str['signal-id'],
+                              set__updated=json_str['updated'],
+                              set__user_id=json_str['user-id']
                               )
         updateDocument.update()
         updateDocument.get().reload()
