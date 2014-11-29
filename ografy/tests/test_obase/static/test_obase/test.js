@@ -67,15 +67,23 @@ $(document).ready(function() {
 		console.log(formData);
 
 		$.ajax({
-			url: '/obase/event',
-			type: method.toUpperCase(),
-			data: formData,
-			dataType: 'json',
-			headers: {"X-CSRFToken": csrftoken}
+			type: 'POST',
+			url: '/obase/test',
+			headers: {"X-CSRFToken": csrftoken},
 		}).done(function(data, xhr, response) {
-			$('#event-result').html(JSON.stringify(data));
-		}).fail(function() {
-			console.log('FAILED');
+			console.log('pass')
 		});
+
+//		$.ajax({
+//			url: '/obase/event',
+//			type: method.toUpperCase(),
+//			data: formData,
+//			dataType: 'json',
+//			headers: {"X-CSRFToken": csrftoken}
+//		}).done(function(data, xhr, response) {
+//			$('#event-result').html(JSON.stringify(data));
+//		}).fail(function() {
+//			console.log('FAILED');
+//		});
 	});
 });
