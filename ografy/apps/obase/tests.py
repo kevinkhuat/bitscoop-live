@@ -1,8 +1,7 @@
 from datetime import datetime
-import json
 import requests
 
-from django.test import SimpleTestCase, TransactionTestCase
+from django.test import SimpleTestCase
 from django.core import serializers
 from django.http import HttpResponse
 from mongoengine.queryset.queryset import QuerySet
