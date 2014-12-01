@@ -3,16 +3,19 @@ import requests
 
 from django.test import SimpleTestCase
 from django.core import serializers
-from django.http import HttpResponse
-from mongoengine.queryset.queryset import QuerySet
+from django.db import models
+from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
 from ografy.apps.obase.documents import Message, Data, Event
+from ografy.apps.obase.jsonizer import Jsonizer
 from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
+# TODO: Get from settings
+BASE_URL = 'https://dev.ografy.io'
 
-class TestOBase(SimpleTestCase):
+class TestoBase(SimpleTestCase):
     fixtures = []
 
     # def test_OBase_Signal_Api(self):
@@ -22,7 +25,7 @@ class TestOBase(SimpleTestCase):
     #     test_signal = ObaseApi.Signal.post(name='Facebook', provider=test_provider, user=test_user)
     #     test_json = serializers.serialize("json", test_signal)
 
-    def test_OBase_Data(self):
+    def test_Data(self):
 
         # Create initial test data for testing POST
         test_time = datetime.now()
@@ -34,10 +37,11 @@ class TestOBase(SimpleTestCase):
 
         # POST the data, save the ID, then GET the data back and check
         # that the 'data_blob' field is correct, which indicates the POST was successful
-        posted_data = ObaseApi.Data.post(test_data)
-        data_id = posted_data.id
+        post_data_from_db = ObaseApi.Data.post(test_data)
+        data_id = post_data_from_db.id
         get_data_from_db = ObaseApi.Data.get(data_id)
         self.assertEqual(get_data_from_db.data_blob, ["{'cool': 'pants', 'hammer': 'time'}"])
+        self.assertEqual(post_data_from_db, get_data_from_db)
 
 
         # Create new test data for testing PUT
@@ -53,10 +57,11 @@ class TestOBase(SimpleTestCase):
         # Don't need to save the ID again since it hasn't changed
         # GET the data back and check that it has been overwritten correctly
         # Check both the 'data_blob' and created fields to ensure this
-        put_get_data_from_db = ObaseApi.Data.put(data_id, test_data)
+        put_data_from_db = ObaseApi.Data.put(data_id, test_data)
         get_data_from_db = ObaseApi.Data.get(data_id)
         self.assertEqual(get_data_from_db.data_blob, ["{'top': 'dog'}"])
         self.assertEqual(get_data_from_db.created, test_time)
+        self.assertEqual(put_data_from_db, get_data_from_db)
 
 
         # Create new test data for testing PATCH
@@ -70,10 +75,11 @@ class TestOBase(SimpleTestCase):
         # GET the data back and check that 'data_blob'
         # has been overwitten correctly and that 'created'
         # hasn't changed
-        patch_get_data_from_db = ObaseApi.Data.patch(data_id, {'data_blob': test_data['data_blob']})
+        patch_data_from_db = ObaseApi.Data.patch(data_id, {'data_blob': test_data['data_blob']})
         get_data_from_db = ObaseApi.Data.get(data_id)
         self.assertEqual(get_data_from_db.data_blob, ["{'hot': 'dog'}"])
         self.assertEqual(get_data_from_db.created, datetime(2011, 5, 15, 15, 12, 40))
+        self.assertEqual(patch_data_from_db, get_data_from_db)
 
 
         # DELETE the entry and check that the response is True,
@@ -88,7 +94,37 @@ class TestOBase(SimpleTestCase):
         self.assertIsInstance(data_list_from_group, list)
         self.assertIsInstance(data_list_from_group[0], Data)
 
-    def test_OBase_Event(self):
+    def test_DataGroupView(self):
+        # Test Post
+
+        # Create some data
+
+        # data_list =
+
+
+        BaseDocument.to_json(Data(created="",data_blob={}))
+
+        User(email='test@test.test', handle='testy')
+        data_list = []
+        data_list.append(Data(created="",data_blob={}))
+
+        requests.post(BASE_URL + '/data/post', data_list)
+
+        # Test Get
+
+        # Add some data using the interal API
+
+        request = requests.get(BASE_URL + '/obase/get')
+
+        data = Data.from_json(request.GET)
+
+        self.assertEqual(data, {})
+
+
+    def test_dataSingleView(self):
+        pass
+
+    def test_Event(self):
 
         # Create initial test data for testing POST
         test_time = datetime.now()
