@@ -70,7 +70,7 @@ class TestOBase(SimpleTestCase):
         # GET the data back and check that 'data_blob'
         # has been overwitten correctly and that 'created'
         # hasn't changed
-        patch_get_data_from_db = ObaseApi.Data.patch(data_id, test_data)
+        patch_get_data_from_db = ObaseApi.Data.patch(data_id, {'data_blob': test_data['data_blob']})
         get_data_from_db = ObaseApi.Data.get(data_id)
         self.assertEqual(get_data_from_db.data_blob, ["{'hot': 'dog'}"])
         self.assertEqual(get_data_from_db.created, datetime(2011, 5, 15, 15, 12, 40))
@@ -143,15 +143,16 @@ class TestOBase(SimpleTestCase):
 
         # Test Event PATCH by running it and checking that the new field data is returned,
         # Also check that some old data hasn't changed
-        patch_event_from_db = ObaseApi.Event.patch(event_id, test_event_fields)
+        patch_event_from_db = ObaseApi.Event.patch(event_id, {'provider_name': test_event_fields['provider_name']})
         self.assertEqual(patch_event_from_db['provider_name'], 'FaceTwit')
         self.assertEqual(patch_event_from_db['provider_id'], 92606)
-        self.assertEqual(ObaseApi.Data.get(get_event_from_db.data), ["{'cool': 'pants', 'hammer': 'time'}"])
+        self.assertEqual(ObaseApi.Data.get(get_event_from_db.data.id)['data_blob'], ["{'cool': 'pants', 'hammer': 'time'}"])
 
 
         # DELETE the Event and check that the response is True,
         # which means the request was successful
-        self.assertTrue(ObaseApi.Event.delete(data_id))
+        self.assertTrue(ObaseApi.Event.delete(event_id))
+        self.assertTrue(ObaseApi.Data.delete(data_id))
 
 
         # Test the group GET function
@@ -159,4 +160,4 @@ class TestOBase(SimpleTestCase):
         # and that object's length should be more than 0
         event_list_from_group = list(ObaseApi.Event.get())
         self.assertIsInstance(event_list_from_group, list)
-        self.assertIsInsatance(event_list_from_group[0], Event)
+        self.assertIsInstance(event_list_from_group[0], Event)
