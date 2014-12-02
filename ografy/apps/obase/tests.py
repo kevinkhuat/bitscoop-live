@@ -8,7 +8,7 @@ from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
 from ografy.apps.obase.documents import Message, Data, Event
-from ografy.apps.obase.jsonizer import Jsonizer
+# from ografy.apps.obase.jsonizer import Jsonizer
 from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
@@ -88,37 +88,38 @@ class TestoBase(SimpleTestCase):
 
 
         # Test the group GET function
-        # It should return an object of type 'QuerySet'
-        # and that object's length should be more than 0
+        # It should get a set of Data objects which are then
+        # placed into a list.  Elements of the list should
+        # be of type Data.
         data_list_from_group = list(ObaseApi.Data.get())
         self.assertIsInstance(data_list_from_group, list)
         self.assertIsInstance(data_list_from_group[0], Data)
 
-    def test_DataGroupView(self):
-        # Test Post
-
-        # Create some data
-
-        # data_list =
-
-
-        BaseDocument.to_json(Data(created="",data_blob={}))
-
-        User(email='test@test.test', handle='testy')
-        data_list = []
-        data_list.append(Data(created="",data_blob={}))
-
-        requests.post(BASE_URL + '/data/post', data_list)
-
-        # Test Get
-
-        # Add some data using the interal API
-
-        request = requests.get(BASE_URL + '/obase/get')
-
-        data = Data.from_json(request.GET)
-
-        self.assertEqual(data, {})
+    # def test_DataGroupView(self):
+    #     # Test Post
+    #
+    #     # Create some data
+    #
+    #     # data_list =
+    #
+    #
+    #     BaseDocument.to_json(Data(created="",data_blob={}))
+    #
+    #     User(email='test@test.test', handle='testy')
+    #     data_list = []
+    #     data_list.append(Data(created="",data_blob={}))
+    #
+    #     requests.post(BASE_URL + '/data/post', data_list)
+    #
+    #     # Test Get
+    #
+    #     # Add some data using the interal API
+    #
+    #     request = requests.get(BASE_URL + '/obase/get')
+    #
+    #     data = Data.from_json(request.GET)
+    #
+    #     self.assertEqual(data, {})
 
 
     def test_dataSingleView(self):
@@ -159,6 +160,7 @@ class TestoBase(SimpleTestCase):
         self.assertEqual(get_event_from_db['user_id'], 1138)
         self.assertEqual(get_event_from_db['provider_name'], 'TwitFace')
         self.assertEqual(ObaseApi.Data.get(get_event_from_db.data.id).data_blob, ["{'cool': 'pants', 'hammer': 'time'}"])
+        self.assertEqual(posted_event_from_db, get_event_from_db)
 
 
         # Create new Event field data for the PUT test
@@ -172,7 +174,7 @@ class TestoBase(SimpleTestCase):
         self.assertNotEqual(put_event_from_db.updated, get_event_from_db.created)
         self.assertEqual(put_event_from_db['provider_id'], 92606)
         self.assertEqual(ObaseApi.Data.get(put_event_from_db.data.id).data_blob, ["{'cool': 'pants', 'hammer': 'time'}"])
-
+        self.assertEqual(put_event_from_db, get_event_from_db)
 
         # Create new Event field data for the PATCH test
         test_event_fields['provider_name'] = 'FaceTwit'
@@ -183,7 +185,7 @@ class TestoBase(SimpleTestCase):
         self.assertEqual(patch_event_from_db['provider_name'], 'FaceTwit')
         self.assertEqual(patch_event_from_db['provider_id'], 92606)
         self.assertEqual(ObaseApi.Data.get(get_event_from_db.data.id)['data_blob'], ["{'cool': 'pants', 'hammer': 'time'}"])
-
+        self.assertEqual(patch_event_from_db, get_event_from_db)
 
         # DELETE the Event and check that the response is True,
         # which means the request was successful
@@ -192,8 +194,97 @@ class TestoBase(SimpleTestCase):
 
 
         # Test the group GET function
-        # It should return an object of type 'QuerySet'
-        # and that object's length should be more than 0
+        # It should get a set of events which are then
+        # placed into a list.  Elements of the list should
+        # be of type Event.
         event_list_from_group = list(ObaseApi.Event.get())
         self.assertIsInstance(event_list_from_group, list)
         self.assertIsInstance(event_list_from_group[0], Event)
+
+    def test_Message(self):
+
+        # Create initial test data for testing POST
+        test_time = datetime.now()
+        test_data = {
+            'created': test_time,
+            'updated': test_time,
+            'data_blob': ["{'cool': 'pants', 'hammer': 'time'}"]
+        }
+
+        # POST the data and save the ID
+        posted_data = ObaseApi.Data.post(test_data)
+        data_id = posted_data.id
+
+        # Create initial test Event field data
+        test_event_fields = {
+            'created': test_time,
+            'updated': test_time,
+            'datetime': test_time,
+            'user_id': 1138,
+            'provider_id': 10591,
+            'signal_id': 1812,
+            'provider_name': 'TwitFace',
+            'data': data_id,
+            # 'location':
+        }
+
+        # POST the Event and save the ID
+        posted_event_from_db = ObaseApi.Event.post(test_event_fields)
+        event_id = posted_event_from_db.id
+
+        test_message_fields = {
+            'message_to': ['John Cook'],
+            'message_from': 'Mike Adams',
+            'message_body': 'You are a stupid head.',
+            'event': event_id
+        }
+
+        # POST the Message, save the ID, then GET the Message back and check
+        # that some fields are correct, which indicates the POST was successful
+        posted_message_from_db = ObaseApi.Message.post(test_message_fields)
+        message_id = posted_message_from_db.id
+
+        get_message_from_db = ObaseApi.Message.get(message_id)
+        self.assertEqual(get_message_from_db['message_to'], ['John Cook'])
+        self.assertEqual(get_message_from_db['message_body'], 'You are a stupid head.')
+        self.assertEqual(ObaseApi.Event.get(get_message_from_db.event.id)['provider_name'], 'TwitFace')
+        self.assertEqual(posted_message_from_db, get_message_from_db)
+
+
+        # Create new Message field data for the PUT test
+        test_message_fields['message_to'] = ['Jimmy Garoppolo']
+        test_message_fields['message_body'] = 'Actually, you are a stupid face.'
+
+        # Test Message PUT by running it and checking that the new field data is returned,
+        # Event should be the same since it isn't changed
+        put_message_from_db = ObaseApi.Message.put(message_id, test_message_fields)
+        self.assertEqual(put_message_from_db['message_to'], ['Jimmy Garoppolo'])
+        self.assertEqual(put_message_from_db['message_from'], 'Mike Adams')
+        self.assertEqual(ObaseApi.Event.get(put_message_from_db.event.id)['provider_name'], 'TwitFace')
+        self.assertEqual(put_message_from_db, get_message_from_db)
+
+        # Create new Event field data for the PATCH test
+        test_message_fields['message_from'] = 'Marvin the Martian'
+
+        # Test Message PATCH by running it and checking that the new field data is returned,
+        # Also check that some old data hasn't changed
+        patch_message_from_db = ObaseApi.Message.patch(message_id, {'message_from': test_message_fields['message_from']})
+        self.assertEqual(patch_message_from_db['message_from'], test_message_fields['message_from'])
+        self.assertEqual(patch_message_from_db['message_to'], test_message_fields['message_to'])
+        self.assertEqual(ObaseApi.Event.get(get_message_from_db.event.id)['provider_name'], test_event_fields['provider_name'])
+        self.assertEqual(patch_message_from_db, get_message_from_db)
+
+        # DELETE the Message and check that the response is True,
+        # which means the request was successful
+        self.assertTrue(ObaseApi.Message.delete(message_id))
+        self.assertTrue(ObaseApi.Event.delete(event_id))
+        self.assertTrue(ObaseApi.Data.delete(data_id))
+
+
+        # Test the group GET function
+        # It should get a set of events which are then
+        # placed into a list.  Elements of the list should
+        # be of type Event.
+        message_list_from_group = list(ObaseApi.Message.get())
+        self.assertIsInstance(message_list_from_group, list)
+        self.assertIsInstance(message_list_from_group[0], Message)
