@@ -2,18 +2,16 @@ from datetime import datetime
 import requests
 
 from django.test import SimpleTestCase
-from django.core import serializers
-from django.db import models
-from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
+from ografy.apps.obase import jsonizer
 from ografy.apps.obase.documents import Message, Data, Event
-from ografy.apps.obase.jsonizer import Jsonizer
 from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
 # TODO: Get from settings
 BASE_URL = 'https://dev.ografy.io'
+
 
 class TestoBase(SimpleTestCase):
     fixtures = []
@@ -95,31 +93,25 @@ class TestoBase(SimpleTestCase):
         self.assertIsInstance(data_list_from_group[0], Data)
 
     def test_DataGroupView(self):
+
+        dj = jsonizer.DataJsonizer()
+
         # Test Post
-
-        # Create some data
-
-        # data_list =
-
-
-        BaseDocument.to_json(Data(created="",data_blob={}))
-
-        User(email='test@test.test', handle='testy')
         data_list = []
-        data_list.append(Data(created="",data_blob={}))
+        data_list.append(Data(created="", data_blob={}))
+        data_list.append(Data(created="", data_blob={}))
+        data_list.append(Data(created="", data_blob={}))
 
-        requests.post(BASE_URL + '/data/post', data_list)
+        requests.post(BASE_URL + '/data/post', dj.serialize_list(data_list))
 
         # Test Get
 
-        # Add some data using the interal API
-
         request = requests.get(BASE_URL + '/obase/get')
 
-        data = Data.from_json(request.GET)
+        returned_data_list = dj.deserialize_list(request.GET)
 
-        self.assertEqual(data, {})
-
+        #TODO: make smarter cuz it wont work with the inserted ids
+        self.assertEqual(data_list, returned_data_list)
 
     def test_dataSingleView(self):
         pass

@@ -6,20 +6,20 @@ from django.core import serializers
 from django.db import models
 from mongoengine.base.document import BaseDocument
 
+from ografy.apps.obase.documents import Data, Event, Message
 
-class Jsonizer(jsonpickle):
-    """A custom JSONEncoder class that knows how to encode core custom
-    objects.
 
-    Custom objects are encoded as JSON object literals (ie, dicts) with
-    one key, '__TypeName__' where 'TypeName' is the actual name of the
-    type to which the object belongs.  That single key maps to another
-    object literal which is just the __dict__ of the object encoded."""
-
+class Jsonizer:
     django_serializer = serializers.get_serializer("json")
     django_deserializer = serializers.get_deserializer("json")
 
-    def custom_encode(self, obj):
+    def serialize(self, obj):
+        return jsonpickle.encode(obj)
+
+    def deserialize(self, obj):
+        return jsonpickle.decode(obj)
+
+    def auto_serialize(self, obj):
         if isinstance(obj, models.Model):
             obj.isDjangoModel = True
             return self.django_serializer(obj)
@@ -38,7 +38,7 @@ class Jsonizer(jsonpickle):
             return ret_dict
         return jsonpickle.encode(obj)
 
-    def custom_decode(self, obj):
+    def auto_deserialize(self, obj):
         if isinstance(obj, str):
             decoded_obj = jsonpickle.decode(obj)
         else:
@@ -59,3 +59,74 @@ class Jsonizer(jsonpickle):
                 ret_dict[self.custom_decode(key)] = self.custom_decode(value)
             return ret_dict
         return decoded_obj
+
+    def serialize_list(self, obj_list):
+        ret_list = '['
+        not_first = False
+        for obj in obj_list:
+            if not_first:
+                ret_list += ','
+            ret_list += self.serialize(obj)
+        ret_list = ']'
+        return ret_list
+
+    # Todo: Remove
+    # def _reverse_replace(s, old, new, occurrence):
+    #     li = s.rsplit(old, occurrence)
+    #     return new.join(li)
+
+    # Todo: Fix, look at
+    # http://stackoverflow.com/questions/13384454/split-json-objects-using-a-regular-expression
+    # http://stackoverflow.com/questions/10889506/different-json-encoders-for-different-depths
+    # http://www.django-rest-framework.org/api-guide/serializers/
+    def deserialize_list(self, json_list):
+        # json_list.replace('[', '', 1)
+        # self._reverse_replace(list, ']', '', 1)
+        return []
+
+
+class MongoJsonizer(Jsonizer):
+    def serialize(self, obj):
+        return BaseDocument.to_json(obj)
+
+    def deserialize(self, obj):
+        return BaseDocument.to_json(obj)
+
+
+class DjangoJsonizer(Jsonizer):
+    def serialize(self, obj):
+        return self.django_serializer(obj)
+
+    def deserialize(self, obj):
+        return self.django_deserializer(obj)
+
+    def serialize_list(self, obj_list):
+        return self.django_serializer(obj_list)
+
+    def deserialize_list(self, json_list):
+        return self.django_deserializer(json_list)
+
+
+class EventJsonizer(MongoJsonizer):
+    def serialize(self, obj):
+        return Event.to_json(obj)
+
+    def deserialize(self, obj):
+        return Event.to_json(obj)
+
+
+class DataJsonizer(MongoJsonizer):
+    def serialize(self, obj):
+        return Data.to_json(obj)
+
+    def deserialize(self, obj):
+        return Data.to_json(obj)
+
+
+class MessageJsonizer(MongoJsonizer):
+    def serialize(self, obj):
+        return Message.to_json(obj)
+
+    def deserialize(self, obj):
+        return Message.to_json(obj)
+
