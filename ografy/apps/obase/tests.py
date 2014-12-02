@@ -2,18 +2,17 @@ from datetime import datetime
 import requests
 
 from django.test import SimpleTestCase
-from django.core import serializers
-from django.db import models
-from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
+from ografy.apps.obase import jsonizer
 from ografy.apps.obase.documents import Message, Data, Event
-# from ografy.apps.obase.jsonizer import Jsonizer
+from ografy.apps.obase.jsonizer import Jsonizer
 from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
 # TODO: Get from settings
 BASE_URL = 'https://dev.ografy.io'
+
 
 class TestoBase(SimpleTestCase):
     fixtures = []
@@ -88,38 +87,37 @@ class TestoBase(SimpleTestCase):
 
 
         # Test the group GET function
-        # It should get a set of Data objects which are then
-        # placed into a list.  Elements of the list should
-        # be of type Data.
+        # It should return an object of type 'QuerySet'
+        # and that object's length should be more than 0
         data_list_from_group = list(ObaseApi.Data.get())
         self.assertIsInstance(data_list_from_group, list)
         self.assertIsInstance(data_list_from_group[0], Data)
 
-    # def test_DataGroupView(self):
-    #     # Test Post
-    #
-    #     # Create some data
-    #
-    #     # data_list =
-    #
-    #
-    #     BaseDocument.to_json(Data(created="",data_blob={}))
-    #
-    #     User(email='test@test.test', handle='testy')
-    #     data_list = []
-    #     data_list.append(Data(created="",data_blob={}))
-    #
-    #     requests.post(BASE_URL + '/data/post', data_list)
-    #
-    #     # Test Get
-    #
-    #     # Add some data using the interal API
-    #
-    #     request = requests.get(BASE_URL + '/obase/get')
-    #
-    #     data = Data.from_json(request.GET)
-    #
-    #     self.assertEqual(data, {})
+    def test_DataGroupView(self):
+        # Test Post
+
+        # Create some data
+
+        # data_list =
+
+
+        BaseDocument.to_json(Data(created="",data_blob={}))
+
+        User(email='test@test.test', handle='testy')
+        data_list = []
+        data_list.append(Data(created="",data_blob={}))
+
+        requests.post(BASE_URL + '/data/post', data_list)
+
+        # Test Get
+
+        # Add some data using the interal API
+
+        request = requests.get(BASE_URL + '/obase/get')
+
+        data = Data.from_json(request.GET)
+
+        self.assertEqual(data, {})
 
 
     def test_dataSingleView(self):

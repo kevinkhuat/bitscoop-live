@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     url(r'^provider/(?P<id>[^/]+)$', views.ProviderSingleView.as_view(), name='obase_single_provider'),
     url(r'^signal', views.SignalGroupView.as_view(), name='obase_group_signal'),
     url(r'^signal/(?P<id>[^/]+)$', views.ProviderSingleView.as_view(), name='obase_single_signal'),
-    url(r'^test', test.TestOBase.test_OBase_Data, name='obase_data_test')
+    url(r'^test', test.TestoBase.test_Message, name='obase_data_test')
 )
