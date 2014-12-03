@@ -2,7 +2,6 @@ from django.views.generic import View
 from django.http import HttpResponse
 
 from ografy.apps.obase import api
-from ografy.apps.obase import documents
 from ografy.apps.obase import jsonizer
 
 
@@ -13,19 +12,28 @@ class SignalSingleView(View):
         self.sj = jsonizer.DjangoJsonizer()
 
     def delete(self, val):
-        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)))
+        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)), content_type="application/json")
 
     def get(self, val):
-        return HttpResponse(self.sj.serialize(api.Signal.get(val=val)))
+        return HttpResponse(self.sj.serialize(api.Signal.get(val=val)), content_type="application/json")
 
-    def patch(self):
-        pass
+    def patch(self, val, request):
+        # TODO: Fix with helper function
+        post_dict = dict(request.POST._iteritems())
+        return HttpResponse(self.sj.serialize(api.Signal.patch(val=val, data=post_dict['data'])),
+                            content_type="application/json")
 
-    def post(self):
-        pass
+    def post(self, request):
+        # TODO: Fix with helper function
+        post_dict = dict(request.POST._iteritems())
+        return HttpResponse(self.sj.serialize(api.Signal.patch(data=post_dict['data'])),
+                            content_type="application/json")
 
-    def put(self):
-        pass
+    def put(self, pk, request):
+        # TODO: Fix with helper function
+        post_dict = dict(request.POST._iteritems())
+        return HttpResponse(self.sj.serialize(api.Signal.put(pk=pk, data=post_dict['data'])),
+                            content_type="application/json")
 
 
 class SignalGroupView(View):
@@ -35,16 +43,26 @@ class SignalGroupView(View):
         self.sj = jsonizer.DjangoJsonizer()
 
     def delete(self, val):
-        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)))
+        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)), content_type="application/json")
 
     def get(self):
-        return HttpResponse(self.sj.serialize_list(api.Signal.get()))
+        return HttpResponse(self.sj.serialize_list(api.Signal.get()), content_type="application/json")
 
     def patch(self):
-        pass
+        raise NotImplementedError
 
-    def post(self):
-        pass
+    def post(self, request):
+        # TODO: Fix to use rhobust data cleaning and post list method to be implemented
+        post_dict = dict(request.POST._iteritems())
+        saved_data_list = []
+
+        for data_list_item in post_dict['data_list']:
+            saved_data_list.append(api.Signal.post(self.sj.deserialize(data_list_item)))
+
+        return HttpResponse(self.sj.serialize_list(saved_data_list), content_type="application/json")
+
+    def put(self):
+        raise NotImplementedError
 
 
 class ProviderSingleView(View):
@@ -57,7 +75,7 @@ class ProviderSingleView(View):
         raise NotImplementedError
 
     def get(self, val):
-        return HttpResponse(self.pj.serialize(api.Provider.get(val=val)))
+        return HttpResponse(self.pj.serialize(api.Provider.get(val=val)), content_type="application/json")
 
     def patch(self):
         raise NotImplementedError
@@ -73,16 +91,19 @@ class ProviderGroupView(View):
         self.pj = jsonizer.DjangoJsonizer()
 
     def delete(self):
-        pass
+        raise NotImplementedError
 
     def get(self):
-        return HttpResponse(self.pj.serialize_list(api.Provider.get()))
+        return HttpResponse(self.pj.serialize_list(api.Provider.get()), content_type="application/json")
 
     def patch(self):
-        pass
+        raise NotImplementedError
 
     def post(self):
-        pass
+        raise NotImplementedError
+
+    def put(self):
+        raise NotImplementedError
 
 
 class DataGroupView(View):
@@ -91,14 +112,14 @@ class DataGroupView(View):
         super().__init__()
         self.dj = jsonizer.DataJsonizer()
 
-    def delete(self):
-        pass
+    def delete(self, val):
+        return HttpResponse(self.dj.serialize_list(api.Data.delete(val=val)), content_type="application/json")
 
     def get(self):
-        return HttpResponse(self.dj.serialize_list(api.Data.get()))
+        return HttpResponse(self.dj.serialize_list(api.Data.get()), content_type="application/json")
 
     def patch(self):
-        pass
+        raise NotImplementedError
 
     def post(self, request):
 
@@ -109,7 +130,10 @@ class DataGroupView(View):
         for data_list_item in post_dict['data_list']:
             saved_data_list.append(api.Data.post(self.dj.deserialize(data_list_item)))
 
-        return HttpResponse(self.dj.serialize_list(saved_data_list))
+        return HttpResponse(self.dj.serialize_list(saved_data_list), content_type="application/json")
+
+    def put(self):
+        raise NotImplementedError
 
 
 class DataSingleView(View):
@@ -119,13 +143,13 @@ class DataSingleView(View):
         self.dj = jsonizer.DataJsonizer()
 
     def delete(self, val):
-        return HttpResponse(self.dj.serialize(api.Data.delete(val=val)))
+        return HttpResponse(self.dj.serialize(api.Data.delete(val=val)), content_type="application/json")
 
     def get(self, val):
-        return HttpResponse(self.dj.serialize(api.Data.get(val=val)))
+        return HttpResponse(self.dj.serialize(api.Data.get(val=val)), content_type="application/json")
 
     def patch(self, val):
-        return HttpResponse(self.dj.serialize(api.Data.patch(val=val)))
+        return HttpResponse(self.dj.serialize(api.Data.patch(val=val)), content_type="application/json")
 
     def post(self):
         pass
@@ -135,14 +159,14 @@ class DataSingleView(View):
         post_dict = dict(request.POST._iteritems())
         saved_data = api.Data.post(self.dj.deserialize(post_dict['data']))
 
-        return HttpResponse(self.dj.serialize(saved_data))
+        return HttpResponse(self.dj.serialize(saved_data), content_type="application/json")
 
 
 
 class EventGroupView(View):
 
     def get(self):
-        return HttpResponse(EventApi.get().to_json())
+        return HttpResponse(EventApi.get().to_json(), content_type="application/json")
 
     def post(self, request):
         # TODO: Fix?
@@ -159,7 +183,7 @@ class EventGroupView(View):
             event_dict['data'] = saved_data.id
             saved_event_list.append(EventApi.post(Event.from_json(event_dict)))
 
-        return HttpResponse(saved_event_list.to_json())
+        return HttpResponse(saved_event_list.to_json()), content_type="application/json"
 
     def delete(self):
         pass
@@ -168,13 +192,13 @@ class EventGroupView(View):
 class EventSingleView(View):
 
     def delete(self, id):
-        return HttpResponse(EventApi.delete(val=id).to_json())
+        return HttpResponse(EventApi.delete(val=id).to_json(), content_type="application/json")
 
     def get(self, id):
-        return HttpResponse(EventApi.get(val=id).to_json())
+        return HttpResponse(EventApi.get(val=id).to_json(), content_type="application/json")
 
     def patch(self, id,):
-        return HttpResponse(EventApi.patch(val=id).to_json())
+        return HttpResponse(EventApi.patch(val=id).to_json(), content_type="application/json")
 
     def put(self, request):
         # TODO: Fix?
@@ -187,7 +211,7 @@ class EventSingleView(View):
         event_dict['data'] = saved_data.id
         saved_event = EventApi.post(Event.from_json(event_dict))
 
-        return HttpResponse(saved_event.to_json())
+        return HttpResponse(saved_event.to_json(), content_type="application/json")
 
     def delete(self):
         pass
@@ -196,7 +220,7 @@ class EventSingleView(View):
 class MessageGroupView(View):
 
     def get(self):
-        return HttpResponse(EventApi.get().to_json())
+        return HttpResponse(EventApi.get().to_json(), content_type="application/json")
 
     def post(self, request):
         # TODO: Fix?
@@ -217,19 +241,19 @@ class MessageGroupView(View):
             message_dict['event'] = saved_event.id
             saved_message_list.append(MessageApi.post(Message.from_json(message_dict)))
 
-        return HttpResponse(saved_message_list.to_json())
+        return HttpResponse(saved_message_list.to_json(), content_type="application/json")
 
 
 class MessageSingleView(View):
 
     def delete(self, id):
-        return HttpResponse(EventApi.delete(val=id).to_json())
+        return HttpResponse(EventApi.delete(val=id).to_json(), content_type="application/json")
 
     def get(self, id):
-        return HttpResponse(EventApi.get(val=id).to_json())
+        return HttpResponse(EventApi.get(val=id).to_json(), content_type="application/json")
 
     def patch(self, id,):
-        return HttpResponse(EventApi.patch(val=id).to_json())
+        return HttpResponse(EventApi.patch(val=id).to_json(), content_type="application/json")
 
     def put(self, request):
         # TODO: Fix?
@@ -247,4 +271,4 @@ class MessageSingleView(View):
         message_dict['event'] = saved_event.id
         saved_message = MessageApi.post(Message.from_json(message_dict))
 
-        return HttpResponse(saved_message.to_json())
+        return HttpResponse(saved_message.to_json(), content_type="application/json")
