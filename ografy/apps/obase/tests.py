@@ -2,11 +2,11 @@ from datetime import datetime
 import requests
 
 from django.test import SimpleTestCase
+from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
 from ografy.apps.obase import jsonizer
 from ografy.apps.obase.documents import Message, Data, Event
-from ografy.apps.obase.jsonizer import Jsonizer
 from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
@@ -91,35 +91,218 @@ class TestoBase(SimpleTestCase):
         self.assertIsInstance(data_list_from_group, list)
         self.assertIsInstance(data_list_from_group[0], Data)
 
+    def test_ProviderGroupView(self):
+        provider_list = requests.get(BASE_URL + '/obase/provider')
+        pass
+
     def test_DataGroupView(self):
         # Test Post
 
-        # Create some data
+        test_time = datetime.now()
+        test_data_1 = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'wonder': 'bread', 'mega': 'man'}"]
+        )
 
-        # data_list =
+        test_data_2 = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'can': 'can'}"]
+        )
 
-
-        BaseDocument.to_json(Data(created="",data_blob={}))
-
-        User(email='test@test.test', handle='testy')
         data_list = []
-        data_list.append(Data(created="",data_blob={}))
 
-        requests.post(BASE_URL + '/data/post', data_list)
+        data_jsonizer = jsonizer.DataJsonizer()
+        data_list.append(test_data_1)
+        data_list.append(test_data_2)
+
+        json_data_list = data_jsonizer.serialize_list(data_list)
+        requests.post(BASE_URL + '/obase/data/post', json=json_data_list, verify=False)
 
         # Test Get
 
-        # Add some data using the interal API
+        # Add some data using the internal API
 
-        request = requests.get(BASE_URL + '/obase/get')
+        request = requests.get(BASE_URL + '/obase/data/', verify=False)
+        get_return_json = request.GET
 
-        data = Data.from_json(request.GET)
+        data = data_jsonizer.deserialize(get_return_json)
 
-        self.assertEqual(data, {})
+        self.assertIsInstance(data, Data)
 
 
-    def test_dataSingleView(self):
-        pass
+    def test_DataSingleView(self):
+        test_time = datetime.now()
+        test_data = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'wonder': 'bread', 'mega': 'man'}"]
+        )
+
+        data_jsonizer = jsonizer.DataJsonizer()
+
+        json_data = data_jsonizer.serialize(test_data)
+
+        post_return = requests.post(BASE_URL + '/obase/data/', json=json_data, verify=False)
+
+        data_id = post_return.DATA['id']
+        get_return = requests.get(BASE_URL + '/obase/data/' + data_id)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        fixed_time = datetime(2011, 5, 15, 15, 12, 40)
+        test_data = Data(
+            created = fixed_time,
+            updated = fixed_time,
+            data_blob = ["{'chocolate milk': 'amazing'}"]
+        )
+
+        json_data = data_jsonizer.serialize(test_data)
+        put_return = requests.put(BASE_URL + '/obase/data/' + data_id, data=json_data, verify=False)
+
+        get_return = requests.get(BASE_URL + '/obase/data' + data_id, verify=False)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        test_data.created = datetime.now()
+
+        json_data = data_jsonizer.serialize(test_data)
+        patch_return = requests.patch(BASE_URL + 'obase/data' + data_id, data= test_data.created, verify=False)
+
+        get_return = requests.get(BASE_URL + '/obase/data' + data_id, verify=False)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        delete_return = requests.delete(BASE_URL + 'obase/data' + data_id, verify=False)
+        self.assertTrue(delete_return)
+
+
+    def test_EventGroupView(self):
+        # Test Post
+
+        test_time = datetime.now()
+        test_data_1 = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'wonder': 'bread', 'mega': 'man'}"]
+        )
+
+        test_data_2 = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'can': 'can'}"]
+        )
+
+        data_list = []
+
+        data_jsonizer = jsonizer.DataJsonizer()
+        data_list.append(test_data_1)
+        data_list.append(test_data_2)
+
+        json_data_list = data_jsonizer.serialize_list(data_list)
+        post_request = requests.post(BASE_URL + '/obase/data/post', json=json_data_list, verify=False)
+
+        data_id_1 = post_request['id']
+        data_id_2 = post_request['id']
+
+
+        test_event_1 = Event(
+            created = test_time,
+            updated = test_time,
+            user_id = 1138,
+            signal_id = 10101,
+            provider_id = 1812,
+            provider_name = 'Twitbook',
+            datetime = test_time,
+            data = data_id_1
+        )
+
+        test_event_2 = Event(
+            created = test_time,
+            updated = test_time,
+            user_id = 1138,
+            signal_id = 10101,
+            provider_id = 1812,
+            provider_name = 'Twitbook',
+            datetime = test_time,
+            data = data_id_2
+        )
+
+        event_list = []
+        event_jsonizer = jsonizer.EventJsonizer()
+
+        event_list.append(test_event_1)
+        event_list.append(test_event_2)
+
+        json_event_list = event_jsonizer.serialize_list(event_list)
+        post_request = requests.post(BASE_URL + '/obase/data/event', json=json_event_list, verify=False)
+
+
+        # Test Get
+
+        # Add some data using the internal API
+
+        request = requests.get(BASE_URL + '/obase/event/', verify=False)
+        get_return_json = request.GET
+
+        event = event_jsonizer.deserialize(get_return_json)
+
+        self.assertEqual(event, {})
+
+
+    def test_EventSingleView(self):
+        test_time = datetime.now()
+        test_data = Data(
+            created = test_time,
+            updated = test_time,
+            data_blob = ["{'wonder': 'bread', 'mega': 'man'}"]
+        )
+
+        data_jsonizer = jsonizer.DataJsonizer()
+
+        json_data = data_jsonizer.serialize(test_data)
+
+        post_return = requests.post(BASE_URL + '/obase/data/', json=json_data, verify=False)
+
+        data_id = post_return.DATA['id']
+        get_return = requests.get(BASE_URL + '/obase/data/' + data_id)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        fixed_time = datetime(2011, 5, 15, 15, 12, 40)
+        test_data = Data(
+            created = fixed_time,
+            updated = fixed_time,
+            data_blob = ["{'chocolate milk': 'amazing'}"]
+        )
+
+        json_data = data_jsonizer.serialize(test_data)
+        put_return = requests.put(BASE_URL + '/obase/data/' + data_id, data=json_data, verify=False)
+
+        get_return = requests.get(BASE_URL + '/obase/data' + data_id, verify=False)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        test_data.created = datetime.now()
+
+        json_data = data_jsonizer.serialize(test_data)
+        patch_return = requests.patch(BASE_URL + 'obase/data' + data_id, data= test_data.created, verify=False)
+
+        get_return = requests.get(BASE_URL + '/obase/data' + data_id, verify=False)
+        get_return_json = get_return.GET
+        get_data = data_jsonizer.deserialize(get_return_json)
+        self.assertEqual(get_data, test_data)
+
+        delete_return = requests.delete(BASE_URL + 'obase/data' + data_id, verify=False)
+        self.assertTrue(delete_return)
+
+
 
     def test_Event(self):
 
