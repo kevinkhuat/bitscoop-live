@@ -9,73 +9,134 @@ from ografy.apps.obase import jsonizer
 class SignalSingleView(View):
 
     def __init__(self):
+        super().__init__()
         self.sj = jsonizer.DjangoJsonizer()
+
+    def delete(self, val):
+        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)))
 
     def get(self, val):
         return HttpResponse(self.sj.serialize(api.Signal.get(val=val)))
+
+    def patch(self):
+        pass
+
+    def post(self):
+        pass
+
+    def put(self):
+        pass
 
 
 class SignalGroupView(View):
 
     def __init__(self):
+        super().__init__()
         self.sj = jsonizer.DjangoJsonizer()
+
+    def delete(self, val):
+        return HttpResponse(self.sj.serialize_list(api.Signal.delete(val=val)))
 
     def get(self):
         return HttpResponse(self.sj.serialize_list(api.Signal.get()))
+
+    def patch(self):
+        pass
+
+    def post(self):
+        pass
 
 
 class ProviderSingleView(View):
 
     def __init__(self):
-        self.sj = jsonizer.DjangoJsonizer()
+        super().__init__()
+        self.pj = jsonizer.DjangoJsonizer()
+
+    def delete(self):
+        raise NotImplementedError
 
     def get(self, val):
-        return HttpResponse(self.sj.serialize(api.Provider.get(val=val)))
+        return HttpResponse(self.pj.serialize(api.Provider.get(val=val)))
+
+    def patch(self):
+        raise NotImplementedError
+
+    def post(self):
+        raise NotImplementedError
 
 
 class ProviderGroupView(View):
 
     def __init__(self):
-        self.sj = jsonizer.DjangoJsonizer()
+        super().__init__()
+        self.pj = jsonizer.DjangoJsonizer()
+
+    def delete(self):
+        pass
 
     def get(self):
-        return HttpResponse(self.sj.serialize_list(api.Provider.get()))
+        return HttpResponse(self.pj.serialize_list(api.Provider.get()))
+
+    def patch(self):
+        pass
+
+    def post(self):
+        pass
 
 
 class DataGroupView(View):
 
+    def __init__(self):
+        super().__init__()
+        self.dj = jsonizer.DataJsonizer()
+
+    def delete(self):
+        pass
+
     def get(self):
-        return HttpResponse(DataApi.get().to_json())
+        return HttpResponse(self.dj.serialize_list(api.Data.get()))
+
+    def patch(self):
+        pass
 
     def post(self, request):
-        # TODO: Fix?
+
+        # TODO: Fix to use rhobust data cleaning and post list method to be implemented
         post_dict = dict(request.POST._iteritems())
         saved_data_list = []
 
         for data_list_item in post_dict['data_list']:
+            saved_data_list.append(api.Data.post(self.dj.deserialize(data_list_item)))
 
-            saved_data_list.append(DataApi.post(Data.from_json(data_list_item)))
-
-        return HttpResponse(saved_data_list.to_json())
+        return HttpResponse(self.dj.serialize_list(saved_data_list))
 
 
 class DataSingleView(View):
 
-    def delete(self, id):
-        return HttpResponse(DataApi.delete(val=id).to_json())
+    def __init__(self):
+        super().__init__()
+        self.dj = jsonizer.DataJsonizer()
 
-    def get(self, id):
-        return HttpResponse(DataApi.get(val=id).to_json())
+    def delete(self, val):
+        return HttpResponse(self.dj.serialize(api.Data.delete(val=val)))
 
-    def patch(self, id,):
-        return HttpResponse(DataApi.patch(val=id).to_json())
+    def get(self, val):
+        return HttpResponse(self.dj.serialize(api.Data.get(val=val)))
+
+    def patch(self, val):
+        return HttpResponse(self.dj.serialize(api.Data.patch(val=val)))
+
+    def post(self):
+        pass
 
     def put(self, request):
         # TODO: Fix?
         post_dict = dict(request.POST._iteritems())
-        saved_data = DataApi.post(Data.from_json(post_dict['data']))
+        saved_data = api.Data.post(self.dj.deserialize(post_dict['data']))
 
-        return HttpResponse(saved_data.to_json())
+        return HttpResponse(self.dj.serialize(saved_data))
+
 
 
 class EventGroupView(View):
@@ -99,6 +160,9 @@ class EventGroupView(View):
             saved_event_list.append(EventApi.post(Event.from_json(event_dict)))
 
         return HttpResponse(saved_event_list.to_json())
+
+    def delete(self):
+        pass
 
 
 class EventSingleView(View):
@@ -124,6 +188,9 @@ class EventSingleView(View):
         saved_event = EventApi.post(Event.from_json(event_dict))
 
         return HttpResponse(saved_event.to_json())
+
+    def delete(self):
+        pass
 
 
 class MessageGroupView(View):
