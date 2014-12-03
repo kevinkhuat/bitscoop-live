@@ -10,8 +10,6 @@ from ografy.apps.obase.documents import Data, Event, Message
 
 
 class Jsonizer:
-    django_serializer = serializers.get_serializer("json")
-    django_deserializer = serializers.get_deserializer("json")
 
     def serialize(self, obj):
         return jsonpickle.encode(obj)
@@ -82,7 +80,7 @@ class Jsonizer:
     def deserialize_list(self, json_list):
         # json_list.replace('[', '', 1)
         # self._reverse_replace(list, ']', '', 1)
-        return []
+        raise NotImplementedError
 
 
 class MongoJsonizer(Jsonizer):
@@ -94,6 +92,11 @@ class MongoJsonizer(Jsonizer):
 
 
 class DjangoJsonizer(Jsonizer):
+
+    def __init__(self):
+        self.django_serializer = serializers.get_serializer("json")
+        self.django_deserializer = serializers.get_deserializer("json")
+
     def serialize(self, obj):
         return self.django_serializer(obj)
 

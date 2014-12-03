@@ -1,34 +1,45 @@
 from django.views.generic import View
 from django.http import HttpResponse
-from django.core import serializers
 
-from ografy.apps.obase.documents import Event, Data, Message
-from ografy.apps.obase.api import Signal as SignalApi, Provider as ProviderApi
-from ografy.apps.obase.api import Event as EventApi, Data as DataApi, Message as MessageApi
+from ografy.apps.obase import api
+from ografy.apps.obase import documents
+from ografy.apps.obase import jsonizer
 
 
 class SignalSingleView(View):
 
-    def get(self, id):
-        return HttpResponse(serializers.serialize(SignalApi.get(val=id)))
+    def __init__(self):
+        self.sj = jsonizer.DjangoJsonizer()
+
+    def get(self, val):
+        return HttpResponse(self.sj.serialize(api.Signal.get(val=val)))
 
 
 class SignalGroupView(View):
 
+    def __init__(self):
+        self.sj = jsonizer.DjangoJsonizer()
+
     def get(self):
-        return HttpResponse(serializers.serialize(SignalApi.get()))
+        return HttpResponse(self.sj.serialize_list(api.Signal.get()))
 
 
 class ProviderSingleView(View):
 
-    def get(self, id):
-        return HttpResponse(serializers.serialize((ProviderApi.get(val=id))))
+    def __init__(self):
+        self.sj = jsonizer.DjangoJsonizer()
+
+    def get(self, val):
+        return HttpResponse(self.sj.serialize(api.Provider.get(val=val)))
 
 
 class ProviderGroupView(View):
 
+    def __init__(self):
+        self.sj = jsonizer.DjangoJsonizer()
+
     def get(self):
-        return HttpResponse(serializers.serialize(ProviderApi.get()))
+        return HttpResponse(self.sj.serialize_list(api.Provider.get()))
 
 
 class DataGroupView(View):

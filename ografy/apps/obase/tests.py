@@ -42,7 +42,6 @@ class TestoBase(SimpleTestCase):
         self.assertEqual(get_data_from_db.data_blob, ["{'cool': 'pants', 'hammer': 'time'}"])
         self.assertEqual(post_data_from_db, get_data_from_db)
 
-
         # Create new test data for testing PUT
         # This data is not the same as the POST test data
         test_time = datetime(2011, 5, 15, 15, 12, 40)
@@ -61,7 +60,6 @@ class TestoBase(SimpleTestCase):
         self.assertEqual(get_data_from_db.data_blob, ["{'top': 'dog'}"])
         self.assertEqual(get_data_from_db.created, test_time)
         self.assertEqual(put_data_from_db, get_data_from_db)
-
 
         # Create new test data for testing PATCH
         # 'test_time' will be changed but will not be patched in to make sure
