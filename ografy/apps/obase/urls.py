@@ -4,10 +4,10 @@ import ografy.apps.obase.views as views
 import ografy.apps.obase.tests as test
 
 urlpatterns = patterns('',
-    url(r'^data/?$', views.DataGroupView.as_view(), name='obase_group_data'),
-    url(r'^data/(?P<val>[^/]+)/?$', views.DataSingleView.as_view(), name='obase_single_data'),
-    url(r'^event/?$', views.EventGroupView.as_view(), name='obase_group_event'),
-    url(r'^event/(?P<val>[^/]+)/?$', views.EventSingleView.as_view(), name='obase_single_event'),
+    url(r'^/data/?$', views.DataGroupView.as_view(), name='obase_group_data'),
+    url(r'^/data/(?P<val>[^/]+)/?$', views.DataSingleView.as_view(), name='obase_single_data'),
+    url(r'^/event/?$', views.EventGroupView.as_view(), name='obase_group_event'),
+    url(r'^/event/(?P<val>[^/]+)/?$', views.EventSingleView.as_view(), name='obase_single_event'),
     url(r'^/message/?$', views.MessageGroupView.as_view(), name='obase_group_message'),
     url(r'^/message/(?P<val>[^/]+)/?$', views.MessageSingleView.as_view(), name='obase_single_message'),
     url(r'^/provider/?$', views.ProviderGroupView.as_view(), name='obase_group_provider'),

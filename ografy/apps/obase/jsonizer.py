@@ -2,6 +2,7 @@ __author__ = 'kyle'
 
 import jsonpickle
 
+from bson import json_util
 from django.core import serializers
 from django.db import models
 from mongoengine.base.document import BaseDocument
@@ -89,6 +90,14 @@ class MongoJsonizer(Jsonizer):
 
     def deserialize(self, obj):
         return BaseDocument.from_json(obj)
+
+
+class BsonJsonizer(Jsonizer):
+    def serialize(self, obj):
+        return json_util.dumps(obj)
+
+    def deserialize(self, obj):
+        return json_util.loads(obj)
 
 
 class DjangoJsonizer(Jsonizer):
