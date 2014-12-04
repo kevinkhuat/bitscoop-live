@@ -142,9 +142,7 @@ class TestoBase(SimpleTestCase):
 
         json_data = dj.serialize(test_data)
 
-        data_list = {'data_list': [json_data]}
-
-        post_return = self.client.post(reverse('obase_group_data'), data=data_list, content_type="application/json", HTTP_USER_AGENT='Mozilla/5.0')
+        post_return = self.client.post(reverse('obase_group_data'), data=json_data, content_type="application/json", HTTP_USER_AGENT='Mozilla/5.0')
 
         # data_id = post_return.DATA['id']
         # get_return = requests.get(BASE_URL + '/obase/data/' + data_id)

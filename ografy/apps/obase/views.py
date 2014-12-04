@@ -1,5 +1,3 @@
-import json
-
 from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
 
@@ -10,6 +8,7 @@ from ografy.apps.obase import jsonizer
 class DataSingleView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
 
     def delete(self, request, val):
@@ -19,22 +18,23 @@ class DataSingleView(View):
         return HttpResponse(self.dj.serialize(api.Data.get(val=val)), content_type="application/json")
 
     def patch(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        return HttpResponse(self.dj.serialize(api.Data.patch(val=val, data=post_dict['data'])),
+        post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        return HttpResponse(self.dj.serialize(api.Data.patch(val=val, data=post_data)),
                             content_type="application/json")
 
     def post(self, request):
         raise NotImplementedError
 
     def put(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        return HttpResponse(self.dj.serialize(api.Data.put(pk=val, data=post_dict['data'])),
+        post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        return HttpResponse(self.dj.serialize(api.Data.put(pk=val, data=post_data)),
                             content_type="application/json")
 
 
 class DataGroupView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
 
     def delete(self, request):
@@ -47,13 +47,18 @@ class DataGroupView(View):
         raise NotImplementedError
 
     def post(self, request):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        saved_list = []
+        post_json = request.body.decode('utf-8')
+        post_data = self.jj.deserialize(post_json)
 
-        for list_item in post_dict['data_list']:
-            saved_list.append(api.Data.post(self.dj.deserialize(list_item)))
-
-        return HttpResponse(self.dj.serialize_list(saved_list), content_type="application/json")
+        if isinstance(post_data, list):
+            raise NotImplementedError
+            # saved_list = []
+            # for list_item in post_data['data_list']:
+            # saved_list.append(api.Data.post(self.dj.deserialize(list_item)))
+            # return HttpResponse(self.dj.serialize_list(saved_list), content_type="application/json")
+        else:
+            return HttpResponse(self.dj.serialize(api.Data.post(self.dj.deserialize(post_json))),
+                                content_type="application/json")
 
     def put(self, request):
         raise NotImplementedError
@@ -62,6 +67,7 @@ class DataGroupView(View):
 class EventSingleView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
         self.ej = jsonizer.EventJsonizer()
 
@@ -73,13 +79,13 @@ class EventSingleView(View):
         return HttpResponse(self.ej.serialize(api.Event.get(val=val)), content_type="application/json")
 
     def patch(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        data_dict = post_dict['data']
-        event_dict = post_dict['event']
-        # TODO: Make query smarter
-        saved_data = api.Data.patch(val=val, data=self.dj.deserialize(data_dict))
-        event_dict['data'] = saved_data.id
-        saved_event = api.Event.patch(val=val, data=self.ej.deserialize(event_dict))
+        # post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        # data_dict = post_data['data']
+        # event_dict = post_data['event']
+        # # TODO: Make query smarter
+        # saved_data = api.Data.patch(val=val, data=self.dj.deserialize(data_dict))
+        # event_dict['data'] = saved_data.id
+        saved_event = api.Event.patch(val=val, data=self.ej.deserialize(request.body.decode('utf-8')))
 
         return HttpResponse(self.ej.serialize(saved_event), content_type="application/json")
 
@@ -87,13 +93,13 @@ class EventSingleView(View):
         raise NotImplementedError
 
     def put(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        data_dict = post_dict['data']
-        event_dict = post_dict['event']
-        # TODO: Make query smarter
-        saved_data = api.Data.put(pk=val, data=self.dj.deserialize(data_dict))
-        event_dict['data'] = saved_data.id
-        saved_event = api.Event.put(pk=val, data=self.ej.deserialize(event_dict))
+        # post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        # data_dict = post_data['data']
+        # event_dict = post_data['event']
+        # # TODO: Make query smarter
+        # saved_data = api.Data.put(pk=val, data=self.dj.deserialize(data_dict))
+        # event_dict['data'] = saved_data.id
+        saved_event = api.Event.put(pk=val, data=self.ej.deserialize(request.body.decode('utf-8')))
 
         return HttpResponse(self.ej.serialize(saved_event), content_type="application/json")
 
@@ -101,6 +107,7 @@ class EventSingleView(View):
 class EventGroupView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
         self.ej = jsonizer.EventJsonizer()
 
@@ -114,18 +121,22 @@ class EventGroupView(View):
         raise NotImplementedError
 
     def post(self, request):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        saved_list = []
+        post_json = request.body.decode('utf-8')
+        post_data = self.jj.deserialize(post_json)
 
-        for list_item in post_dict['event_list']:
-            data_dict = list_item['data']
-            event_dict = list_item['event']
-            # TODO: Make query smarter
-            saved_data = api.Data.post(self.dj.deserialize(data_dict))
-            event_dict['data'] = saved_data.id
-            saved_list.append(api.Event.post(self.ej.deserialize(event_dict)))
-
-        return JsonResponse(saved_list)
+        if isinstance(post_data, list):
+            raise NotImplementedError
+            # saved_list = []
+            # for list_item in post_data['event_list']:
+            # data_dict = list_item['data']
+            #     event_dict = list_item['event']
+            #     # TODO: Make query smarter
+            #     saved_data = api.Data.post(self.dj.deserialize(data_dict))
+            #     event_dict['data'] = saved_data.id
+            #     saved_list.append(api.Event.post(self.ej.deserialize(event_dict)))
+        else:
+            return HttpResponse(self.ej.serialize(api.Event.post(self.ej.deserialize(post_json))),
+                                content_type="application/json")
 
     def put(self, request):
         raise NotImplementedError
@@ -134,6 +145,7 @@ class EventGroupView(View):
 class MessageSingleView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
         self.ej = jsonizer.EventJsonizer()
         self.mj = jsonizer.MessageJsonizer()
@@ -146,17 +158,17 @@ class MessageSingleView(View):
         return HttpResponse(self.mj.serialize(api.Message.get(val=val)), content_type="application/json")
 
     def patch(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        data_dict = post_dict['data']
-        event_dict = post_dict['event']
-        message_dict = post_dict['message']
-        # TODO: Make query smarter
-        saved_data = api.Data.patch(val=val, data=self.dj.deserialize(data_dict))
-        event_dict['data'] = saved_data.id
-        # TODO: Make query smarter
-        saved_event = api.Event.patch(val=val, data=self.ej.deserialize(event_dict))
-        message_dict['event'] = saved_event.id
-        saved_message = api.Message.patch(val=val, data=self.mj.deserialize(message_dict))
+        # post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        # data_dict = post_data['data']
+        # event_dict = post_data['event']
+        # message_dict = post_data['message']
+        # # TODO: Make query smarter
+        # saved_data = api.Data.patch(val=val, data=self.dj.deserialize(data_dict))
+        # event_dict['data'] = saved_data.id
+        # # TODO: Make query smarter
+        # saved_event = api.Event.patch(val=val, data=self.ej.deserialize(event_dict))
+        # message_dict['event'] = saved_event.id
+        saved_message = api.Message.patch(val=val, data=self.mj.deserialize(request.body.decode('utf-8')))
 
         return HttpResponse(self.mj.serialize(saved_message), content_type="application/json")
 
@@ -164,17 +176,17 @@ class MessageSingleView(View):
         raise NotImplementedError
 
     def put(self, request, val):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        data_dict = post_dict['data']
-        event_dict = post_dict['event']
-        message_dict = post_dict['message']
-        # TODO: Make query smarter
-        saved_data = api.Data.put(pk=val, data=self.dj.deserialize(data_dict))
-        event_dict['data'] = saved_data.id
-        # TODO: Make query smarter
-        saved_event = api.Event.put(pk=val, data=self.ej.deserialize(event_dict))
-        message_dict['event'] = saved_event.id
-        saved_message = api.Message.put(pk=val, data=self.mj.deserialize(message_dict))
+        # post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        # data_dict = post_data['data']
+        # event_dict = post_data['event']
+        # message_dict = post_data['message']
+        # # TODO: Make query smarter
+        # saved_data = api.Data.put(pk=val, data=self.dj.deserialize(data_dict))
+        # event_dict['data'] = saved_data.id
+        # # TODO: Make query smarter
+        # saved_event = api.Event.put(pk=val, data=self.ej.deserialize(event_dict))
+        # message_dict['event'] = saved_event.id
+        saved_message = api.Message.put(pk=val, data=self.mj.deserialize(request.body.decode('utf-8')))
 
         return HttpResponse(self.mj.serialize(saved_message), content_type="application/json")
 
@@ -182,6 +194,7 @@ class MessageSingleView(View):
 class MessageGroupView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
         self.ej = jsonizer.EventJsonizer()
         self.mj = jsonizer.MessageJsonizer()
@@ -196,20 +209,23 @@ class MessageGroupView(View):
         raise NotImplementedError
 
     def post(self, request):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        saved_list = []
+        post_json = request.body.decode('utf-8')
+        post_data = self.jj.deserialize(post_json)
 
-        for list_item in post_dict['message_list']:
-            data_dict = list_item['data']
-            event_dict = list_item['event']
-            message_dict = list_item['message']
-            saved_data = api.Data.post(self.dj.deserialize(data_dict))
-            event_dict['data'] = saved_data.id
-            saved_event = api.Event.post(self.ej.deserialize(event_dict))
-            message_dict['event'] = saved_event.id
-            saved_list.append(api.Message.post(self.mj.deserialize(message_dict)))
-
-        return JsonResponse(saved_list)
+        if isinstance(post_data, list):
+            raise NotImplementedError
+            # saved_list = []
+            # data_dict = list_item['data']
+            # event_dict = list_item['event']
+            # message_dict = list_item['message']
+            # saved_data = api.Data.post(self.dj.deserialize(data_dict))
+            # event_dict['data'] = saved_data.id
+            # saved_event = api.Event.post(self.ej.deserialize(event_dict))
+            # message_dict['event'] = saved_event.id
+            # saved_list.append(api.Message.post(self.mj.deserialize(message_dict)))
+        else:
+            return HttpResponse(self.mj.serialize(api.Event.post(self.mj.deserialize(post_json))),
+                                content_type="application/json")
 
     def put(self, request):
         raise NotImplementedError
@@ -218,6 +234,7 @@ class MessageGroupView(View):
 class ProviderSingleView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.pj = jsonizer.DjangoJsonizer()
 
     def delete(self, request):
@@ -236,6 +253,7 @@ class ProviderSingleView(View):
 class ProviderGroupView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.pj = jsonizer.DjangoJsonizer()
 
     def delete(self, request):
@@ -257,6 +275,7 @@ class ProviderGroupView(View):
 class SignalSingleView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.sj = jsonizer.DjangoJsonizer()
 
     def delete(self, request, val):
@@ -265,22 +284,25 @@ class SignalSingleView(View):
     def get(self, request, val):
         return HttpResponse(self.sj.serialize(api.Signal.get(val=val)), content_type="application/json")
 
-    def patch(self, request):
-        raise NotImplementedError
+    def patch(self, request, val):
+        post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        return HttpResponse(self.sj.serialize(api.Signal.patch(val=val, data=post_data)),
+                            content_type="application/json")
 
     def post(self, request):
         raise NotImplementedError
 
     def put(self, request, val):
         # TODO: Fix with helper function
-        post_dict = json.loads(request.body.decode('utf-8'))
-        return HttpResponse(self.sj.serialize(api.Signal.put(pk=val, data=post_dict['signal'])),
+        post_data = self.jj.deserialize(request.body.decode('utf-8'))
+        return HttpResponse(self.sj.serialize(api.Signal.put(pk=val, data=post_data)),
                             content_type="application/json")
 
 
 class SignalGroupView(View):
     def __init__(self):
         super().__init__()
+        self.jj = jsonizer.Jsonizer()
         self.sj = jsonizer.DjangoJsonizer()
 
     def delete(self, request):
@@ -293,13 +315,16 @@ class SignalGroupView(View):
         raise NotImplementedError
 
     def post(self, request):
-        post_dict = json.loads(request.body.decode('utf-8'))
-        saved_list = []
+        post_json = request.body.decode('utf-8')
+        post_data = self.jj.deserialize(post_json)
 
-        for list_item in post_dict['signal_list']:
-            saved_list.append(api.Signal.post(self.sj.deserialize(list_item)))
-
-        return HttpResponse(self.sj.serialize_list(saved_list), content_type="application/json")
+        if isinstance(post_data, list):
+            raise NotImplementedError
+            # saved_list = []
+            # saved_list.append(api.Signal.post(self.sj.deserialize(list_item)))
+        else:
+            return HttpResponse(self.sj.serialize(api.Signal.post(self.sj.deserialize(post_json))),
+                                content_type="application/json")
 
     def put(self, request):
         raise NotImplementedError
