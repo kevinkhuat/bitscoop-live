@@ -4,7 +4,7 @@ import ografy.apps.obase.views as views
 
 urlpatterns = patterns('',
     url(r'^/data/?$', views.DataGroupView.as_view(), name='obase_group_data'),
-    url(r'^/data/(?P<id>\\S\+)/?$', views.DataSingleView.as_view(), name='obase_single_data'),
+    url(r'^/data/(?P<id>[a-zA-Z0-9]+)/?$', views.DataSingleView.as_view(), name='obase_single_data'),
     # url(r'^event/$', views.EventGroupView.as_view(), name='obase_group_event'),
     # url(r'^event/(?P<val>[^/]+)/?$', views.EventSingleView.as_view(), name='obase_single_event'),
     # url(r'^message/?$', views.MessageGroupView.as_view(), name='obase_group_message'),

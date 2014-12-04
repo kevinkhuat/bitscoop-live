@@ -85,6 +85,13 @@ class Jsonizer:
         # self._reverse_replace(list, ']', '', 1)
         raise NotImplementedError
 
+    def get_serialized_dict(self, obj):
+        serialized_object = self.serialize(obj)
+        return jsonpickle.decode(serialized_object)
+
+    def get_serialized_value(self, obj, key):
+        return self.get_serialized_dict(obj)[key]
+
 
 class MongoJsonizer(Jsonizer):
     def serialize(self, obj):

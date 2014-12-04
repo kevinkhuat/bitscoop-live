@@ -11,23 +11,23 @@ class DataSingleView(View):
         self.jj = jsonizer.Jsonizer()
         self.dj = jsonizer.DataJsonizer()
 
-    def delete(self, request, val):
-        return JsonResponse(api.Data.delete(val=val))
+    def delete(self, request, id):
+        return JsonResponse(api.Data.delete(val=id))
 
-    def get(self, request, val):
-        return HttpResponse(self.dj.serialize(api.Data.get(val=val)), content_type="application/json")
+    def get(self, request, id):
+        return HttpResponse(self.dj.serialize(api.Data.get(val=id)), content_type="application/json")
 
-    def patch(self, request, val):
+    def patch(self, request, id):
         post_data = self.jj.deserialize(request.body.decode('utf-8'))
-        return HttpResponse(self.dj.serialize(api.Data.patch(val=val, data=post_data)),
+        return HttpResponse(self.dj.serialize(api.Data.patch(val=id, data=post_data)),
                             content_type="application/json")
 
     def post(self, request):
         raise NotImplementedError
 
-    def put(self, request, val):
+    def put(self, request, id):
         post_data = self.jj.deserialize(request.body.decode('utf-8'))
-        return HttpResponse(self.dj.serialize(api.Data.put(pk=val, data=post_data)),
+        return HttpResponse(self.dj.serialize(api.Data.put(pk=id, data=post_data)),
                             content_type="application/json")
 
 

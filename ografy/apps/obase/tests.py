@@ -134,35 +134,41 @@ class TestoBase(SimpleTestCase):
         bj = jsonizer.BsonJsonizer()
         dj = jsonizer.DataJsonizer()
 
-        test_time = datetime.now()
-        test_data = Data(
-            created=test_time,
-            updated=test_time,
+        current_test_time = datetime.now()
+        fixed_test_time = datetime(2011, 5, 15, 15, 12, 40)
+
+        post_test_data = Data(
+            created=current_test_time,
+            updated=current_test_time,
             data_blob=["{'wonder': 'bread', 'mega': 'man'}"]
         )
 
-        json_data = dj.serialize(test_data)
+        json_test_data = dj.serialize(post_test_data)
 
-        post_return = self.client.post(reverse('obase_group_data'), data=json_data, content_type="application/json",  HTTP_USER_AGENT='Mozilla/5.0')
+        post_url = reverse('obase_group_data')
+        post_return_response = self.client.post(post_url, data=json_test_data, content_type="application/json",  HTTP_USER_AGENT='Mozilla/5.0')
 
-        data = dj.deserialize(post_return.content.decode('utf-8'))
+        post_response_data = dj.deserialize(post_return_response.content.decode('utf-8'))
+        post_return_data_id = bj.get_serialized_value(post_response_data.id, "$oid")
 
-        data_id = bj.serialize(data.id)
-        get_return = self.client.get(reverse('obase_single_data', kwargs={'val': data_id}),
-                                     HTTP_USER_AGENT='Mozilla/5.0')
+        get_url = reverse('obase_single_data', kwargs={'id': post_return_data_id})
+        get_return_response = self.client.get(get_url, HTTP_USER_AGENT='Mozilla/5.0')
 
-        get_return_json = get_return.GET
-        get_data = dj.deserialize(get_return_json)
-        self.assertEqual(get_data, test_data)
+        get_response_data = dj.deserialize(get_return_response.content.decode('utf-8'))
 
-        fixed_time = datetime(2011, 5, 15, 15, 12, 40)
-        test_data = Data(
-            created=fixed_time,
-            updated=fixed_time,
+        self.assertEqual(get_response_data.id, post_response_data.id)
+        self.assertEqual(get_response_data.pk, post_response_data.pk)
+        self.assertEqual(get_response_data.created, post_response_data.created)
+        self.assertEqual(get_response_data.updated, post_response_data.updated)
+        self.assertEqual(get_response_data.data_blob, post_response_data.data_blob)
+
+        put_test_data = Data(
+            created=fixed_test_time,
+            updated=fixed_test_time,
             data_blob=["{'chocolate milk': 'amazing'}"]
         )
 
-        json_data = dj.serialize(test_data)
+        json_data = dj.serialize(put_test_data)
         # put_return = requests.put(BASE_URL + '/obase/data/' + data_id, data=json_data, verify=False)
         #
         # get_return = requests.get(BASE_URL + '/obase/data' + data_id, verify=False)
