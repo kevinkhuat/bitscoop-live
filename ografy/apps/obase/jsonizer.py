@@ -65,7 +65,7 @@ class Jsonizer:
             if not_first:
                 ret_list += ','
             ret_list += self.serialize(obj)
-        ret_list = ']'
+        ret_list += ']'
         return ret_list
 
     # Todo: Remove

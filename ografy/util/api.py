@@ -18,12 +18,12 @@ class BaseApi(object):
     @classmethod
     def get(cls, val=None):
         if val is None:
-            ret = cls.model.objects.all()
+            ret = list(cls.model.objects.all())
         else:
             try:
-                ret = cls.model.objects.get(pk=val)
+                ret = list(cls.model.objects.get(pk=val))
             except TypeError:
-                ret = cls.model.objects.filter(val)
+                ret = list(cls.model.objects.filter(val))
 
         return ret
 
@@ -31,13 +31,13 @@ class BaseApi(object):
     def patch(cls, val, data):
         # TODO: Strip out pk and foreign keys from data so it doesn't silent bombfuck with malicious data.
         try:
-            inst = cls.model.objects.get(pk=val)
+            inst = list(cls.model.objects.get(pk=val))
             update(inst, data)
             inst.save()
         except TypeError:
             # TODO: Transform Q expression `val` into something that peppers in permissions so you can't blindly update things that don't belong to you.
             cls.model.objects.filter(val).update(**data)
-            inst = cls.models.objects.filter(val)
+            inst = list(cls.models.objects.filter(val))
 
         return inst
 
