@@ -135,7 +135,7 @@ class TestoBase(SimpleTestCase):
         test_data = Data(
             created=test_time,
             updated=test_time,
-            data_blob=[{'wonder': 'bread', 'mega': 'man'}]
+            data_blob=["{'wonder': 'bread', 'mega': 'man'}"]
         )
 
         dj = jsonizer.DataJsonizer()

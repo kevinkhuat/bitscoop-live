@@ -88,7 +88,7 @@ class MongoJsonizer(Jsonizer):
         return BaseDocument.to_json(obj)
 
     def deserialize(self, obj):
-        return BaseDocument.to_json(obj)
+        return BaseDocument.from_json(obj)
 
 
 class DjangoJsonizer(Jsonizer):
@@ -116,7 +116,7 @@ class EventJsonizer(MongoJsonizer):
         return Event.to_json(obj)
 
     def deserialize(self, obj):
-        return Event.to_json(obj)
+        return Event.from_json(obj)
 
 
 class DataJsonizer(MongoJsonizer):
@@ -124,7 +124,7 @@ class DataJsonizer(MongoJsonizer):
         return Data.to_json(obj)
 
     def deserialize(self, obj):
-        return Data.to_json(obj)
+        return Data.from_json(obj)
 
 
 class MessageJsonizer(MongoJsonizer):
@@ -132,5 +132,5 @@ class MessageJsonizer(MongoJsonizer):
         return Message.to_json(obj)
 
     def deserialize(self, obj):
-        return Message.to_json(obj)
+        return Message.from_json(obj)
 
