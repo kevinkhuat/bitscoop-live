@@ -61,9 +61,11 @@ class Jsonizer:
 
     def serialize_list(self, obj_list):
         ret_list = '['
-        not_first = False
+        first = True
         for obj in obj_list:
-            if not_first:
+            if first:
+                first = False
+            else:
                 ret_list += ','
             ret_list += self.serialize(obj)
         ret_list += ']'
