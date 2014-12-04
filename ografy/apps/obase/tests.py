@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.core.urlresolvers import reverse, resolve
 from django.test import SimpleTestCase
 from mongoengine.base.document import BaseDocument
 
@@ -10,7 +11,7 @@ from ografy.apps.obase.models import Provider, Signal
 from ografy.apps.xauth.models import User
 
 # TODO: Get from settings
-BASE_URL = 'https://dev.ografy.io'
+BASE_URL = 'dev.ografy.io'
 
 
 class TestoBase(SimpleTestCase):
@@ -134,14 +135,16 @@ class TestoBase(SimpleTestCase):
         test_data = Data(
             created=test_time,
             updated=test_time,
-            data_blob=["{'wonder': 'bread', 'mega': 'man'}"]
+            data_blob=[{'wonder': 'bread', 'mega': 'man'}]
         )
 
         dj = jsonizer.DataJsonizer()
 
         json_data = dj.serialize(test_data)
 
-        post_return = self.client.post(path=BASE_URL + '/obase/data', data=json_data, content_type="application/json")
+        data_list = {'data_list': [json_data]}
+
+        post_return = self.client.post(reverse('obase_group_data'), data=data_list, content_type="application/json", HTTP_USER_AGENT='Mozilla/5.0')
 
         # data_id = post_return.DATA['id']
         # get_return = requests.get(BASE_URL + '/obase/data/' + data_id)

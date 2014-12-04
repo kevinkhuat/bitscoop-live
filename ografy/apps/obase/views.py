@@ -1,3 +1,5 @@
+import json
+
 from django.views.generic import View
 from django.http import HttpResponse, JsonResponse
 
@@ -18,19 +20,19 @@ class SignalSingleView(View):
 
     def patch(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.sj.serialize(api.Signal.patch(val=val, data=post_dict['signal'])),
                             content_type="application/json")
 
     def post(self, request):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.sj.serialize(api.Signal.post(data=post_dict['signal'])),
                             content_type="application/json")
 
     def put(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.sj.serialize(api.Signal.put(pk=val, data=post_dict['signal'])),
                             content_type="application/json")
 
@@ -51,7 +53,7 @@ class SignalGroupView(View):
 
     def post(self, request):
         # TODO: Fix to use robust data cleaning and post list method to be implemented
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         saved_list = []
 
         for list_item in post_dict['signal_list']:
@@ -119,7 +121,7 @@ class DataGroupView(View):
     def post(self, request):
 
         # TODO: Fix to use robust data cleaning and post list method to be implemented
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         saved_list = []
 
         for list_item in post_dict['data_list']:
@@ -144,19 +146,19 @@ class DataSingleView(View):
 
     def patch(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.dj.serialize(api.Data.patch(val=val, data=post_dict['data'])),
                             content_type="application/json")
 
     def post(self, request):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.dj.serialize(api.Data.patch(data=post_dict['data'])),
                             content_type="application/json")
 
     def put(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         return HttpResponse(self.dj.serialize(api.Data.put(pk=val, data=post_dict['data'])),
                             content_type="application/json")
 
@@ -179,7 +181,7 @@ class EventGroupView(View):
 
     def post(self, request):
         # TODO: Fix to use robust data cleaning and post list method to be implemented
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         saved_list = []
 
         for list_item in post_dict['event_list']:
@@ -211,7 +213,7 @@ class EventSingleView(View):
 
     def patch(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         # TODO: Make query smarter
@@ -223,7 +225,7 @@ class EventSingleView(View):
 
     def post(self, request):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         # TODO: Make query smarter
@@ -235,7 +237,7 @@ class EventSingleView(View):
 
     def put(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         # TODO: Make query smarter
@@ -265,7 +267,7 @@ class MessageGroupView(View):
 
     def post(self, request):
         # TODO: Fix to use robust data cleaning and post list method to be implemented
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         saved_list = []
 
         for list_item in post_dict['message_list']:
@@ -300,7 +302,7 @@ class MessageSingleView(View):
 
     def patch(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         message_dict = post_dict['message']
@@ -316,7 +318,7 @@ class MessageSingleView(View):
 
     def post(self, request):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         message_dict = post_dict['message']
@@ -332,7 +334,7 @@ class MessageSingleView(View):
 
     def put(self, request, val):
         # TODO: Fix with helper function
-        post_dict = dict(request.POST._iteritems())
+        post_dict = dict(json.loads(request.body.decode('utf-8')))
         data_dict = post_dict['data']
         event_dict = post_dict['event']
         message_dict = post_dict['message']
