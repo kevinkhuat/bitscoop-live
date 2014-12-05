@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
+from django.views.generic import View
 
 
 @login_required
@@ -31,3 +32,10 @@ def profile(request, handle):
         'user': user
     })
 
+
+# Ografy Account specific login/logout
+def signals(request):
+    return render(request, 'core/user/signals.html', {
+        # 'title': 'Ografy - {0}'.format(request.user.identifier),
+        # 'user': request.user
+    })

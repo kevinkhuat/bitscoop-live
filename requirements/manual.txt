@@ -1,4 +1,6 @@
 django
 django-redis
+jsonpickle
 psycopg2
 python-social-auth
+requests

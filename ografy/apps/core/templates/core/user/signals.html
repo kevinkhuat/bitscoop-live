@@ -1,0 +1,117 @@
+{% extends 'shared/dispatcher.html' %}
+{% load staticfiles %}
+
+{% block static %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'core/js/signals.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
+
+	<style type="text/css">
+		.slide-grid {
+			width: 220px;
+			margin: 10px;
+		}
+
+		.icon-align {
+			vertical-align: middle;
+		}
+
+		.connect-button {
+			width: 210px;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div class="slide-grid">
+	<h4>Connect Services</h4>
+
+	<a class="connect-button ui button positive" name="facebook">
+		<i class="icon-align icon-facebook"></i>
+		Facebook
+	</a>
+	<a class="connect-button ui button positive" name="twitter">
+		<i class="icon-align icon-twitter"></i>
+		Twitter</a>
+	<a class="connect-button ui button positive" name="steam">
+		<i class="icon-align icon-spotify"></i>
+		Steam
+	</a>
+	<a class="connect-button ui button positive" name="amazon">
+		Amazon
+	</a>
+	<a class="connect-button ui button positive" name="dropbox">
+		<i class="icon-align icon-dropbox"></i>
+		Dropbox
+	</a>
+	<a class="connect-button ui button positive" name="fitbit">
+		FitBit
+	</a>
+	<a class="connect-button ui button positive" name="foursquare">
+		<i class="icon-align icon-foursquare2"></i>
+		FourSquare
+	</a>
+	<a class="connect-button ui button positive" name="github">
+		<i class="icon-align icon-github3"></i>
+		GitHub
+	</a>
+	<a class="connect-button ui button positive" name="google">
+		<i class="icon-align icon-googleplus"></i>
+		Google
+	</a>
+	<a class="connect-button ui button positive" name="instagram">
+		<i class="icon-align icon-instagram"></i>
+		Instagram
+	</a>
+	<a class="connect-button ui button positive" name="linkedin">
+		<i class="icon-align icon-linkedin"></i>
+		LinkedIn
+	</a>
+	<a class="connect-button ui button positive" name="reddit">
+		<i class="icon-align icon-reddit"></i>
+		reddit
+	</a>
+	<a class="connect-button ui button positive" name="spotify">
+		<i class="icon-align icon-spotify"></i>
+		Spotify
+	</a>
+	<a class="connect-button ui button positive" name="stackoverflow">
+		<i class="icon-align icon-stackoverflow"></i>
+		Stack Overflow</a>
+	<a class="connect-button ui button positive" name="steam">
+		<i class="icon-align icon-steam2"></i>
+		Steam
+	</a>
+	<a class="connect-button ui button positive" name="tumblr">
+		<i class="icon-align icon-tumblr"></i>
+		tumblr
+	</a>
+	<a class="connect-button ui button positive" name="viemo">
+		<i class="icon-align icon-vimeo"></i>
+		Viemo
+	</a>
+
+	<div>
+		<label>Logged in:</label>
+		<select class="full-width" name="logged-in-backend"></select>
+
+		<div>
+			<label>Access token:</label>
+			<input class="full-width" name="access_token" type="text" value=""
+				   placeholder="OAuth1 or OAuth2 access token">
+		</div>
+
+		<div>
+			<label>Access token secret:</label>
+			<input class="full-width" name="access_token_secret" type="text" value=""
+				   placeholder="OAuth1 access token secret">
+		</div>
+
+		<a class="connect-button ui button positive" name="ajax-login" href="#">Ajax Login</a>
+
+		<input class="full-width" name="api-call-url" type="text"
+			   value="https://graph.facebook.com/v2.1/me?fields=friends"/>
+		<a class="connect-button ui button positive" name="ajax-call" href="#">Ajax API Call</a>
+	</div>
+</div>
+{% endblock %}

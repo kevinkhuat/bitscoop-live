@@ -1,14 +1,6 @@
 [
 {
   "fields": {
-    "expire_date": "2014-11-06T20:00:05.037Z",
-    "session_data": "YTk4ZWQ5OTA2YmM5MGQzM2UyMzkxMDJkZmRhYjMyOTU5ZDg4YmE3NDp7ImZhY2Vib29rX3N0YXRlIjoiVFpnVlRxOEZoM1RBeGt2ZEVZczhjWnBneUZDYzRLdTIiLCJfYXV0aF91c2VyX2hhc2giOiJiNzNmOTZkMGQxODNlY2JlM2FmMGUxY2U4ZjJmMzkxOGJiYTUxYzczIiwidHdpdHRlcl9zdGF0ZSI6ImMwUHlJcFJaeVk5aTFJYWNRRDl3SFI2cE9Gb2djM0ZUIiwiX2F1dGhfdXNlcl9pZCI6MSwib3BlbmlkIjp7fSwidGVzdGNvb2tpZSI6IndvcmtlZCIsInR3aXR0ZXJ1bmF1dGhvcml6ZWRfdG9rZW5fbmFtZSI6W10sIl9hdXRoX3VzZXJfYmFja2VuZCI6Im9ncmFmeS5hcHBzLnhhdXRoLmJhY2tlbmRzLklkZW50aWZpZXJCYWNrZW5kIiwiZ29vZ2xlLW9hdXRodW5hdXRob3JpemVkX3Rva2VuX25hbWUiOltdfQ=="
-  },
-  "model": "sessions.session",
-  "pk": "ay57f6j8nqlqfse9fzj5wyqlyp27ei7m"
-},
-{
-  "fields": {
     "server_url": "https://open.login.yahooapis.com/openid/op/auth",
     "salt": "M3mZzrurU6MR5W3EumMyxk7oT8o4TrCy.Q--",
     "timestamp": 1414094365

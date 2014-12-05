@@ -4,7 +4,7 @@ from ografy.apps.demo import views
 
 
 urlpatterns = patterns('',
-    url(r'^/?$', views.login, name='demo_login'),
+    url(r'^$', views.login, name='demo_login'),
 
     url(r'^/info/?$', views.info, name='demo_info'),
     url(r'^/examples/?$', views.examples, name='demo_examples'),

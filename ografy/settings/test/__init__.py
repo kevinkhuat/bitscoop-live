@@ -84,6 +84,48 @@ AUTHENTICATION_BACKENDS += (
     'social.backends.username.UsernameAuth',
 )
 
+#########
+# CACHE #
+#########
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default',
+    },
+    'session': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'session',
+    },
+}
+
+
+############
+# DATABASE #
+############
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.abspath(os.path.join(ROOT_PATH, '..', 'databases', 'development.db')),
+    },
+}
+
+
+#############
+# DEBUGGING #
+#############
+
+DEBUG = True
+
+
+###########
+# LOGGING #
+###########
+
+LOGGING = {}
+
+
 ##########
 # MODELS #  https://docs.djangoproject.com/en/1.7/ref/settings/#models
 ##########
@@ -97,6 +139,41 @@ INSTALLED_APPS += (
     'ografy.tests.test_xauth',
 )
 
+############
+# SECURITY #
+############
+
+CSRF_COOKIE_SECURE = False
+
+
+#############
+# TEMPLATES #
+#############
+
+TEMPLATE_DEBUG = True
+
+
+##########
+# STATIC #
+##########
+
+STATIC_URL = '/static/'
+
+
+############
+# SESSIONS #
+############
+
+SESSION_COOKIE_SECURE = False
+
+
+###########
+# MONGODB #
+###########
+
+MONGODB_DBNAME = 'ografy_db'
+MONGODB_SERVERNAME = 'localhost'
+MONGODB_SERVERPORT = 27017
 
 ########
 # URLS #  https://docs.djangoproject.com/en/1.7/ref/settings/#urls
@@ -104,4 +181,4 @@ INSTALLED_APPS += (
 
 APPEND_SLASH = False
 # PREPEND_WWW = False
-ROOT_URLCONF = 'ografy.test_urls'
+ROOT_URLCONF = 'ografy.tests.urls'

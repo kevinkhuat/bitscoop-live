@@ -45,8 +45,11 @@ class BaseApi(object):
     def post(cls, data):
         # TODO: POST all? Check the link for manual transactions.
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
-        inst = cls.model(**data)
-        inst.save()
+        if isinstance(data, cls.model):
+            inst = data.save()
+        else:
+            inst = cls.model(**data)
+            inst.save()
 
         return inst
 
@@ -54,8 +57,12 @@ class BaseApi(object):
     def put(cls, pk, data):
         # TODO: Support multiple objects? There doesn't seem to be an easy way to batch PUT with transactions.
         # Should we add in all the fields that aren't included and set them to their nullable values and then batch PATCH?
-        inst = cls.model(**data)
-        inst.pk = pk
-        inst.save()
+        if isinstance(data, cls.model):
+            data.pk = pk
+            inst = data.save()
+        else:
+            inst = cls.model(**data)
+            inst.pk = pk
+            inst.save()
 
         return inst

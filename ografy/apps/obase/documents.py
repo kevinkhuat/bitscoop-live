@@ -43,6 +43,8 @@ class Event(mongo.Document):
     #. *datetime* the date and time of the event
     #. *data* a class with a list of uncategorizable data fields
     #. *location* the location of the event
+
+    #. *database_id* the id that Mongo uses to reference the event
     """
 
     # To be managed by the REST API

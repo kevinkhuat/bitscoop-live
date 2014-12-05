@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^user/?$', user_views.my_profile, name='core_user_my_profile'),
     url(r'^user/(?P<handle>\w+)/?$', user_views.profile, name='core_user_profile'),
+    url(r'^signals/?$', user_views.signals, name='core_signals'),
 
     url(r'^login/?$', account_views.LoginView.as_view(), name='core_account_login'),
     url(r'^logout/?$', account_views.logout, name='core_account_logout'),

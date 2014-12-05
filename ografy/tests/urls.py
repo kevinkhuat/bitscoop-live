@@ -18,4 +18,7 @@ urlpatterns = patterns('',
     # So this pattern will always match and forward to "core."
     # Just be sure to put it last so it doesn't cut off the other included apps.
     url(r'^', include('ografy.apps.core.urls')),
+
+    url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
+    url(r'^tests/obase', include('ografy.tests.test_obase.urls')),
 )
