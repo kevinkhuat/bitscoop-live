@@ -3,19 +3,19 @@ import ografy.apps.core.models as models
 from ografy.apps.tastydata.api import BaseApi
 
 
-class Provider(BaseApi):
+class ProviderApi(BaseApi):
     model = models.Provider
 
 
-class Settings(BaseApi):
+class SettingsApi(BaseApi):
     model = documents.Settings
 
     # TODO: Merge free fields on User object with MongoDB data on GET. Save appropriately (route the properties) on a PATCH.
 
 
-class Signal(BaseApi):
+class SignalApi(BaseApi):
     model = models.Signal
 
 
-class User(BaseApi):
+class UserApi(BaseApi):
     model = models.User

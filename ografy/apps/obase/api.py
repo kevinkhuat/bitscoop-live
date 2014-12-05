@@ -2,13 +2,13 @@ from ografy.apps.tastydata.api import BaseApi
 import ografy.apps.obase.documents as documents
 
 
-class Data(BaseApi):
+class DataApi(BaseApi):
     model = documents.Data
 
 
-class Event(BaseApi):
+class EventApi(BaseApi):
     model = documents.Event
 
 
-class Message(BaseApi):
+class MessageApi(BaseApi):
     model = documents.Message
