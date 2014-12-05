@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from ografy.apps.core.forms import LoginForm, SignUpForm, UpdateDetailsForm, UpdatePasswordForm
-from ografy.util import update
+from ografy.util.collections import update
 from ografy.util.response import redirect_by_name
 
 

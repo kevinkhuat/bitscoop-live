@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 
-from ografy.util import get_client_ip
+from ografy.util.location import get_client_ip
 from ografy.apps.xauth.backends import TokenBackend, DummyTokenBackend
 from ografy.apps.xauth.models import Key
 from ografy.apps.xauth.util import put_address

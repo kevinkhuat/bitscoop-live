@@ -29,7 +29,7 @@ Thumbs.db
 
 # Build Folders #
 #################
-build
+/build
 
 # Databases #
 #############
@@ -45,4 +45,4 @@ node_modules
 
 # Logs #
 ########
-logs
+/logs

@@ -1,4 +1,7 @@
 import os
+import re
+
+from django.core.validators import RegexValidator
 
 from ografy.settings.signals import *
 
@@ -224,8 +227,8 @@ LOGGING = {
 
 # ABSOLUTE_URL_OVERRIDES = {}
 FIXTURE_DIRS = (
+   os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'core', 'fixtures')),
    os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'xauth', 'fixtures')),
-   os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'obase', 'fixtures')),
 )
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -239,6 +242,7 @@ INSTALLED_APPS = (
     'ografy.apps.demo',
     #'ografy.apps.helpr',
     'ografy.apps.obase',
+    'ografy.apps.opi',
     'ografy.apps.xauth',
 )
 
@@ -315,7 +319,7 @@ AUTHENTICATION_BACKENDS = (
     'ografy.apps.xauth.backends.IdentifierBackend',
     'ografy.apps.xauth.backends.DummyTokenBackend',
 )
-AUTH_USER_MODEL = 'xauth.User'
+AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = ''
 LOGIN_URL = '/login'
 # LOGOUT_URL = '/accounts/logout/'
@@ -364,6 +368,16 @@ STATICFILES_DIRS = (
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 # )
+
+
+########
+# CORE #
+########
+
+HANDLE_VALIDATORS = [
+    RegexValidator(re.compile(r'^(?=[a-zA-Z0-9_\.]{3,20}$)(?=.*[a-zA-Z])'), '3-20 letters, numbers, underscores, or periods. Must contain least one letter.', 'invalid'),
+    RegexValidator(re.compile(r'^((?![o0]+[g9]+r+[a4]+(f|ph)+y+).)*$', re.I), 'Username cannot contain Ografy.', 'invalid'),
+]
 
 
 #########

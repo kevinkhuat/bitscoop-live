@@ -1,5 +1,5 @@
 import ografy.apps.xauth.models as models
-from ografy.util.api import BaseApi
+from ografy.apps.tastydata.api import BaseApi
 
 
 class Address(BaseApi):
@@ -8,7 +8,3 @@ class Address(BaseApi):
 
 class Key(BaseApi):
     model = models.Key
-
-
-class User(BaseApi):
-    model = models.User

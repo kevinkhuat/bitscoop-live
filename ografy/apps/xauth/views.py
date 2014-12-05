@@ -7,7 +7,7 @@ from django.template import Context
 from social.apps.django_app.utils import psa
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 
-from ografy.apps.obase.models import Signal, Provider
+from ografy.apps.core.models import Signal, Provider
 
 # TODO: Fix comments
 

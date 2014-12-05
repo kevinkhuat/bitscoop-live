@@ -1,0 +1,146 @@
+[
+  {
+    "pk": 1,
+    "fields": {
+      "name": "Facebook",
+      "backend_name": "facebook",
+      "auth_backend_name": "social.backends.facebook.FacebookOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 2,
+    "fields": {
+      "name": "Twitter",
+      "backend_name": "twitter",
+      "auth_backend_name": "social.backends.twitter.TwitterOAuth"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 3,
+    "fields": {
+      "name": "Steam",
+      "backend_name": "steam",
+      "auth_backend_name": "social.backends.steam.SteamOpenId"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 4,
+    "fields": {
+      "name": "Amazon",
+      "backend_name": "amazon",
+      "auth_backend_name": "social.backends.amazon.AmazonOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 5,
+    "fields": {
+      "name": "Dropbox",
+      "backend_name": "dropbox",
+      "auth_backend_name": "social.backends.dropbox.DropboxOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 6,
+    "fields": {
+      "name": "FitBit",
+      "backend_name": "fitbit",
+      "auth_backend_name": "social.backends.fitbit.FitbitOAuth"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 7,
+    "fields": {
+      "name": "FourSquare",
+      "backend_name": "foursquare",
+      "auth_backend_name": "social.backends.foursquare.FoursquareOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 8,
+    "fields": {
+      "name": "GitHub",
+      "backend_name": "github",
+      "auth_backend_name": "social.backends.github.GithubOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 9,
+    "fields": {
+      "name": "Google",
+      "backend_name": "google",
+      "auth_backend_name": "social.backends.google.GoogleOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 10,
+    "fields": {
+      "name": "Instagram",
+      "backend_name": "instagram",
+      "auth_backend_name": "social.backends.instagram.InstagramOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 11,
+    "fields": {
+      "name": "LinkedIn",
+      "backend_name": "linkedin",
+      "auth_backend_name": "social.backends.linkedin.LinkedinOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 12,
+    "fields": {
+      "name": "reddit",
+      "backend_name": "reddit",
+      "auth_backend_name": "social.backends.reddit.RedditOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 13,
+    "fields": {
+      "name": "Spotify",
+      "backend_name": "spotify",
+      "auth_backend_name": "social.backends.spotify.SpotifyOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 14,
+    "fields": {
+      "name": "Stack Overflow",
+      "backend_name": "stackoverflow",
+      "auth_backend_name": "social.backends.stackoverflow.StackoverflowOAuth2"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 15,
+    "fields": {
+      "name": "Tumblr",
+      "backend_name": "tumblr",
+      "auth_backend_name": "social.backends.tumblr.TumblrOAuth"
+    },
+    "model": "core.provider"
+  },
+  {
+    "pk": 16,
+    "fields": {
+      "name": "Vimeo",
+      "backend_name": "vimeo",
+      "auth_backend_name": "social.backends.vimeo.VimeoOAuth1"
+    },
+    "model": "core.provider"
+  }
+]

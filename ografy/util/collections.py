@@ -23,3 +23,8 @@ class DictView(Mapping):
     def __iter__(self):
         for key in self.valid_keys:
             yield key
+
+
+def update(obj, kwargs):
+    for key, value in kwargs.items():
+        setattr(obj, key, value)

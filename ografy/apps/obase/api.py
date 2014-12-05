@@ -1,14 +1,5 @@
-from ografy.util.api import BaseApi
-import ografy.apps.obase.models as models
+from ografy.apps.tastydata.api import BaseApi
 import ografy.apps.obase.documents as documents
-
-
-class Signal(BaseApi):
-    model = models.Signal
-
-
-class Provider(BaseApi):
-    model = models.Provider
 
 
 class Data(BaseApi):
