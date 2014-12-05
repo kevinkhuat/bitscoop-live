@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ografy.apps.obase.api import Event
+from ografy.apps.obase.api import EventApi
 
 
 # @login_required

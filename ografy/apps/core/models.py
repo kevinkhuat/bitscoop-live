@@ -23,10 +23,10 @@ class Provider(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=150)
     backend_name = models.CharField(max_length=250)
-    auth_backend_name = models.CharField(max_length=250)
+    auth_backend = models.CharField(max_length=250)
 
-    def __unicode__(self):
-        return u'<PROVIDER_{0}: {1}@{2}>'.format(self.id, self.name, self.backend_name)
+    def __str__(self):
+        return '{0} {1}'.format(self.id, self.backend_name)
 
 
 class Signal(models.Model):
@@ -57,8 +57,8 @@ class Signal(models.Model):
         except UserSocialAuth.DoesNotExist:
             return None
 
-    def __unicode__(self):
-        return u'<SIGNAL_{0}: {1}@{2}>'.format(self.id, self.user.display_name, self.name)
+    def __str__(self):
+        return '{0} {1}'.format(self.id, self.user.display_name)
 
 
 @autoconnect
