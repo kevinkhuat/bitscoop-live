@@ -1,17 +1,15 @@
-__author__ = 'kyle'
-
 import jsonpickle
 
 from bson import json_util
 from django.core import serializers
 from django.db import models
 from mongoengine.base.document import BaseDocument
+from rest_framework_mongoengine.serializers import MongoEngineModelSerializer
 
-from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.obase import documents
 
 
 class Jsonizer:
-
     def serialize(self, obj):
         return jsonpickle.encode(obj)
 
@@ -71,18 +69,7 @@ class Jsonizer:
         ret_list += ']'
         return ret_list
 
-    # Todo: Remove
-    # def _reverse_replace(s, old, new, occurrence):
-    #     li = s.rsplit(old, occurrence)
-    #     return new.join(li)
-
-    # Todo: Fix, look at
-    # http://stackoverflow.com/questions/13384454/split-json-objects-using-a-regular-expression
-    # http://stackoverflow.com/questions/10889506/different-json-encoders-for-different-depths
-    # http://www.django-rest-framework.org/api-guide/serializers/
     def deserialize_list(self, json_list):
-        # json_list.replace('[', '', 1)
-        # self._reverse_replace(list, ']', '', 1)
         raise NotImplementedError
 
     def get_serialized_dict(self, obj):
@@ -110,7 +97,6 @@ class BsonJsonizer(Jsonizer):
 
 
 class DjangoJsonizer(Jsonizer):
-
     def __init__(self):
         super.__init__()
         self.django_serializer = serializers.get_serializer("json")
@@ -129,26 +115,55 @@ class DjangoJsonizer(Jsonizer):
         return self.django_deserializer(json_list)
 
 
+class EventDRFSerializer(MongoEngineModelSerializer):
+    class Meta:
+        model = documents.Event
+        # depth = 2
+        # exclude = ('pk',)
+
+
 class EventJsonizer(MongoJsonizer):
+    def __init__(self):
+        super.__init__()
+        self.DRF_serializer = EventDRFSerializer()
+
     def serialize(self, obj):
-        return Event.to_json(obj)
+        return documents.Event.to_json(obj)
 
     def deserialize(self, obj):
-        return Event.from_json(obj)
+        return documents.Event.from_json(obj)
+
+
+class DataDRFSerializer(MongoEngineModelSerializer):
+    class Meta:
+        model = documents.Data
 
 
 class DataJsonizer(MongoJsonizer):
+    def __init__(self):
+        super.__init__()
+        self.DRF_serializer = DataDRFSerializer()
+
     def serialize(self, obj):
-        return Data.to_json(obj)
+        return documents.Data.to_json(obj)
 
     def deserialize(self, obj):
-        return Data.from_json(obj)
+        return documents.Data.from_json(obj)
+
+
+class MessageDRFSerializer(MongoEngineModelSerializer):
+    class Meta:
+        model = documents.Message
 
 
 class MessageJsonizer(MongoJsonizer):
+    def __init__(self):
+        super.__init__()
+        self.DRF_serializer = MessageDRFSerializer()
+
     def serialize(self, obj):
-        return Message.to_json(obj)
+        return documents.Message.to_json(obj)
 
     def deserialize(self, obj):
-        return Message.from_json(obj)
+        return documents.Message.from_json(obj)
 
