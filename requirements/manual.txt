@@ -1,6 +1,7 @@
 django
 django-redis
 jsonpickle
+mongoengine
 psycopg2
 python-social-auth
 requests
