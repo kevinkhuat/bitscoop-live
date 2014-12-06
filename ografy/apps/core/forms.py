@@ -6,7 +6,7 @@ from django.forms import Form, ModelForm
 from django.utils.translation import ugettext_lazy as _
 
 from ografy.apps.core.fields import PasswordField
-from ografy.apps.xauth.models import User
+from ografy.apps.core.models import User
 
 
 class LoginForm(Form):

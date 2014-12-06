@@ -41,7 +41,7 @@ class Signal(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
 
     def get_user_social_auth(self):
         return UserSocialAuth.get_social_auth(self.provider.backend_name, self.user.id)
