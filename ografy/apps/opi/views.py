@@ -3,8 +3,10 @@ from rest_framework import permissions, renderers, viewsets
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 import ografy.apps.opi.serializers as opi_serializer
+from ografy.apps.opi.permissions import IsUser
 from ografy.apps.core.models import Provider, Signal, User
 
 
@@ -16,6 +18,17 @@ def api_root(request, format=None):
         'signal': reverse('signal-list', request=request, format=format),
         'user': reverse('user-list', request=request, format=format),
     })
+
+
+class APIListView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        return Response({
+            'provider': reverse('provider-list', request=request, format=format),
+            'signal': reverse('signal-list', request=request, format=format),
+            'user': reverse('user-list', request=request, format=format),
+        })
 
 
 class DataView(View):
@@ -93,7 +106,7 @@ class ProviderViewSet(viewsets.ModelViewSet):
 class SignalViewSet(viewsets.ModelViewSet):
     queryset = Signal.objects.all()
     serializer_class = opi_serializer.SignalSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsUser)
 
     def provider(self, request, *args, **kwargs):
         signal = self.get_object()

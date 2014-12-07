@@ -46,13 +46,13 @@ urlpatterns = patterns('',
        name='opi_message_single'),
 
    # Login and logout views for the browsable API
-   url(r'^$', views.api_root),
-   url(r'^/provider/$', provider_list, name='provider-list'),
+   url(r'^$', views.APIListView.as_view()),
+   url(r'^/provider$', provider_list, name='provider-list'),
    url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', provider_detail, name='provider-detail'),
-   url(r'^/signal/$', signal_list, name='signal-list'),
+   url(r'^/signal$', signal_list, name='signal-list'),
    url(r'^/signal/(?P<pk>[a-zA-Z0-9]+)/?$', signal_detail, name='signal-detail'),
    url(r'^/signal/(?P<pk>[a-zA-Z0-9]+)', signal_provider, name='signal-provider'),
-   url(r'^/user/$', user_list, name='user-list'),
+   url(r'^/user$', user_list, name='user-list'),
    url(r'^/user/(?P<pk>[a-zA-Z0-9]+)', user_detail, name='user-detail'),
    url(r'^/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
