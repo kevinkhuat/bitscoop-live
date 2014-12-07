@@ -237,6 +237,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'social.apps.django_app.default',
+    'rest_framework',
 
     'ografy.apps.core',
     'ografy.apps.demo',
@@ -369,6 +370,14 @@ STATICFILES_DIRS = (
 #     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 # )
 
+##################
+# REST FRAMEWORK #  https://http://www.django-rest-framework.org/
+##################
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
 
 ########
 # CORE #

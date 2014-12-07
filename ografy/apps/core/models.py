@@ -10,6 +10,12 @@ from ografy.apps.core.managers import UserManager
 from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
 
+PROVIDER_TAGS =(
+    ('Social', 'Social'),
+    ('Development', 'Development'),
+    ('Media', 'Media'),
+)
+
 
 class Provider(models.Model):
     """
@@ -24,9 +30,13 @@ class Provider(models.Model):
     name = models.CharField(max_length=150)
     backend_name = models.CharField(max_length=250)
     auth_backend = models.CharField(max_length=250)
+    tags = models.CharField(choices=PROVIDER_TAGS, default='Social',  max_length=100)
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)
+
+    class Meta:
+        ordering = ('tags',)
 
 
 class Signal(models.Model):
@@ -59,6 +69,9 @@ class Signal(models.Model):
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.user.display_name)
+
+    class Meta:
+        ordering = ('user',)
 
 
 @autoconnect
@@ -135,3 +148,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             self._upper_handle = self.handle.upper()
         else:
             self._upper_handle = self.handle
+
+    class Meta:
+        ordering = ('id',)
