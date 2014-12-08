@@ -1,0 +1,16 @@
+{% extends 'shared/dispatcher.html' %}
+
+{% block content %}
+<section class="lockwidth centered center">
+	<h2>Login to Ografy</h2>
+
+	<form class="block" action="{% url 'core_login' %}" method="POST">
+		{% csrf_token %}
+		<input type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>
+		<input type="password" name="password" placeholder="Password" />
+		<div>{{ form.non_field_errors }}</div>
+		<label><input type="checkbox" name="remember_me" value="1" />Remember me</label>
+		<input class="ui button positive" type="submit" value="Log In" />
+	</form>
+</section>
+{% endblock %}

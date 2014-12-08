@@ -42,20 +42,20 @@
 #         # Check if the signup form is valid
 #         self.assertEqual(signup_form.is_valid(), True)
 #
-#         response = self.client.post(reverse('core_account_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_logout'), HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_logout'), HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
 #         # Test the login get functionality, which should just return an HttpResponse (status code 200)
-#         response = self.client.get(reverse('core_account_login'), HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.get(reverse('core_login'), HTTP_USER_AGENT='Mozilla/5.0')
 #
 #         # TODO: FIX!
 #         # self.assertEqual(response.wsgi_request.META.get('PATH_INFO'), '/auth/applogin')
@@ -70,7 +70,7 @@
 #         }
 #
 #         # Todo: Figure out how to test for invalid form
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponse
 #         self.assertEqual(response.status_code, 200)
@@ -81,7 +81,7 @@
 #             'password': 'Foxtrot0196',
 #             'remember_me': False
 #         }
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #
 #         # self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponse
@@ -142,13 +142,13 @@
 #         # Check if the signup form is valid
 #         self.assertEqual(signup_form.is_valid(), True)
 #
-#         response = self.client.post(reverse('core_account_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_logout'), HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_logout'), HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
@@ -160,19 +160,19 @@
 #             'remember_me': False
 #         }
 #
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_logout'), HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_logout'), HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_logout'), HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_logout'), HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
@@ -198,7 +198,7 @@
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_signup'), signup_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
@@ -222,7 +222,7 @@
 #             'remember_me': True
 #         }
 #
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         self.assertEqual(response.status_code, 302)
 #
@@ -246,7 +246,7 @@
 #             'remember_me': True
 #         }
 #
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         self.assertEqual(response.status_code, 302)
 #
@@ -276,7 +276,7 @@
 #         # Check if this was an HttpResponseRedirect
 #         self.assertEqual(response.status_code, 302)
 #
-#         response = self.client.post(reverse('core_account_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
+#         response = self.client.post(reverse('core_login'), login_form_info, HTTP_USER_AGENT='Mozilla/5.0')
 #         # Check if the response is to the core index page
 #         self.assertEqual(resolve(urlparse(response.url).path).view_name, 'core_index')
 #         # Check if this was an HttpResponseRedirect
