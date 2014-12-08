@@ -1,9 +1,9 @@
 {% extends 'shared/dispatcher.html' %}
 
 {% block content %}
-<section class="lockwidth centered">
-	<h2>Update your information</h2>
-	<form action="{% url 'core_account_details' %}" method="POST">
+<h2>Update your information</h2>
+
+<form action="{% url 'core_account_details' %}" method="POST">
 	{% csrf_token %}
 	<div class="table">
 		<div>
@@ -44,6 +44,5 @@
 	</div>
 	<div>{{ form.non_field_errors }}</div>
 	<input class="ui button positive" type="submit" value="Update" />
-	</form>
-</section>
+</form>
 {% endblock %}

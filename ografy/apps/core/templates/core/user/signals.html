@@ -2,24 +2,24 @@
 {% load staticfiles %}
 
 {% block static %}
-	{{ block.super }}
-	<script type="text/javascript" src="{% static 'core/js/signals.js' %}"></script>
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
+{{ block.super }}
+<script type="text/javascript" src="{% static 'core/js/signals.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
 
-	<style type="text/css">
-		.slide-grid {
-			width: 220px;
-			margin: 10px;
-		}
+<style type="text/css">
+	.slide-grid {
+		width: 220px;
+		margin: 10px;
+	}
 
-		.icon-align {
-			vertical-align: middle;
-		}
+	.icon-align {
+		vertical-align: middle;
+	}
 
-		.connect-button {
-			width: 210px;
-		}
-	</style>
+	.connect-button {
+		width: 210px;
+	}
+</style>
 {% endblock %}
 
 {% block content %}

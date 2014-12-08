@@ -16,10 +16,9 @@ urlpatterns = patterns('',
     url(r'^user/(?P<handle>\w+)/?$', user_views.profile, name='core_user_profile'),
     url(r'^signals/?$', user_views.signals, name='core_signals'),
 
-    url(r'^login/?$', account_views.LoginView.as_view(), name='core_account_login'),
-    url(r'^logout/?$', account_views.logout, name='core_account_logout'),
-    url(r'^signup/?$', account_views.SignupView.as_view(), name='core_account_signup'),
-
     url(r'^contact/?$', views.contact, name='core_contact'),
+    url(r'^login/?$', views.LoginView.as_view(), name='core_login'),
+    url(r'^logout/?$', views.logout, name='core_logout'),
+    url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
 )
