@@ -12,7 +12,7 @@ from ografy.util.response import redirect_by_name
 
 class PersonalView(View):
     template_name = 'core/settings/personal.html'
-    title = 'Ografy - Update Profile'
+    title = 'Ografy - Update Personal Information'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
