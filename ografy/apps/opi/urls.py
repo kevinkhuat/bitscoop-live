@@ -39,11 +39,9 @@ urlpatterns = patterns('',
    url(r'^/data/?$', views.DataView.as_view(), name='opi_data'),
    url(r'^/data/(?P<pk>[a-zA-Z0-9]+)/?$', views.DataSingleView.as_view(), name='opi_data_single'),
    url(r'^/event/?$', views.EventView.as_view(), name='opi_event'),
-   url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/?$', views.EventSingleView.as_view(),
-       name='opi_event_single'),
+   url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/?$', views.EventSingleView.as_view(), name='opi_event_single'),
    url(r'^/message/?$', views.MessageView.as_view(), name='opi_message'),
-   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/?$', views.MessageSingleView.as_view(),
-       name='opi_message_single'),
+   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/?$', views.MessageSingleView.as_view(), name='opi_message_single'),
 
    # Login and logout views for the browsable API
    url(r'^$', views.APIListView.as_view()),
