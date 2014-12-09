@@ -36,17 +36,18 @@ user_detail = views.UserViewSet.as_view({
 })
 
 urlpatterns = patterns('',
-   url(r'^/data/?$', views.DataView.as_view(), name='opi_data'),
-   url(r'^/data/(?P<pk>[a-zA-Z0-9]+)/?$', views.DataSingleView.as_view(), name='opi_data_single'),
-   url(r'^/event/?$', views.EventView.as_view(), name='opi_event'),
-   url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/?$', views.EventSingleView.as_view(),
-       name='opi_event_single'),
-   url(r'^/message/?$', views.MessageView.as_view(), name='opi_message'),
-   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/?$', views.MessageSingleView.as_view(),
-       name='opi_message_single'),
-
    # Login and logout views for the browsable API
    url(r'^$', views.APIListView.as_view()),
+
+   url(r'^/data/?$', views.DataView.as_view(), name='data-list'),
+   url(r'^/data/(?P<pk>[a-zA-Z0-9]+)/?$', views.DataSingleView.as_view(), name='data-detail'),
+   url(r'^/event/?$', views.EventView.as_view(), name='event-list'),
+   url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/?$', views.EventSingleView.as_view(), name='event-detail'),
+   url(r'^/message/?$', views.MessageView.as_view(), name='message-list'),
+   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/?$', views.MessageSingleView.as_view(), name='message-detail'),
+   url(r'^/settings/?$', views.SettingsView.as_view(), name='settings-list'),
+   url(r'^/settings/(?P<pk>[a-zA-Z0-9]+)/?$', views.SettingsSingleView.as_view(), name='settings-detail'),
+
    url(r'^/provider$', provider_list, name='provider-list'),
    url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', provider_detail, name='provider-detail'),
    url(r'^/signal$', signal_list, name='signal-list'),
@@ -55,12 +56,4 @@ urlpatterns = patterns('',
    url(r'^/user$', user_list, name='user-list'),
    url(r'^/user/(?P<pk>[a-zA-Z0-9]+)', user_detail, name='user-detail'),
    url(r'^/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
-   # url(r'^/provider/?$', views.ProviderView.as_view(), name='opi_provider'),
-   # url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', views.ProviderSingleView.as_view(), name='opi_provider_single'),
-   # url(r'^/settings/?$', views.SettingsView.as_view(), name='opi_settings'),
-   # url(r'^/signal/?$', views.SignalView.as_view(), name='opi_signal'),
-   # url(r'^/signal/(?P<pk>[a-zA-Z0-9]+)/?$', views.SignalSingleView.as_view(), name='opi_signal_single'),
-   # url(r'^/user/?$', views.UserView.as_view(), name='opi_user'),
-   # url(r'^/user/(?P<pk>[a-zA-Z0-9]+)/?$', views.UserSingleView.as_view(), name='opi_user_single'),
 )
