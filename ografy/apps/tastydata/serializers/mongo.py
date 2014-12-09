@@ -6,23 +6,32 @@ from mongoengine.fields import DynamicField, EmbeddedDocumentField, ListField, R
 from rest_framework import fields, serializers
 
 
-from rest_framework.fields import
-from rest_framework.serializers import Serializer as BaseSerializer
-
-
-class Serializer(BaseSerializer):
+class DocumentSerializer(serializers.ModelSerializer):
     """
-    Model Serializer that supports Mongoengine
-    """
+    A `DocumentSerializer` is just a regular `Serializer`, except that:
 
+    * A set of default fields are automatically populated.
+    * A set of default validators are automatically populated.
+    * Default `.create()` and `.update()` implementations are provided.
+
+    The process of automatically determining a set of serializer fields
+    based on the model fields is reasonably complex, but you almost certainly
+    don't need to dig into the implementation.
+
+    If the `DocumentSerializer` class *doesn't* generate the set of fields that
+    you need you should either declare the extra/differing fields explicitly on
+    the serializer class, or simply use a `Serializer` class.
+    """
     _field_mapping = {
+        mongoengine.BooleanField: fields.BooleanField,
+
         mongoengine.FloatField: fields.FloatField,
         mongoengine.IntField: fields.IntegerField,
         mongoengine.DateTimeField: fields.DateTimeField,
         mongoengine.EmailField: fields.EmailField,
         mongoengine.URLField: fields.URLField,
         mongoengine.StringField: fields.CharField,
-        mongoengine.BooleanField: fields.BooleanField,
+
         mongoengine.FileField: fields.FileField,
         mongoengine.ImageField: fields.ImageField,
         mongoengine.ObjectIdField: fields.Field,
@@ -62,7 +71,7 @@ class Serializer(BaseSerializer):
             if not field or field.read_only:
                 continue
 
-            if isinstance(field, serializers.Serializer):
+            if isinstance(field, serializers.ModelSerializer):
                 many = field.many
 
                 def _restore(field, item):
@@ -86,18 +95,16 @@ class Serializer(BaseSerializer):
         return instance
 
     def create(self, validated_data):
-        instance = self.restore_object(validated_data)
-        instance.save()
+        raise NotImplementedError
 
     def update(self, instance, validated_data):
-        instance = self.restore_object(validated_data, instance)
-        instance.save()
+        raise NotImplementedError
 
     def get_field(self, model_field):
         kwargs = {}
 
-        if model_field.__class__ in (mongoengine.ReferenceField, mongoengine.EmbeddedDocumentField,
-                                     mongoengine.ListField, mongoengine.DynamicField):
+        # FIXME: Tuple silly error. Use sets, don't reinstantiate the set every time this function runs.
+        if model_field.__class__ in (mongoengine.ReferenceField, mongoengine.EmbeddedDocumentField, mongoengine.ListField, mongoengine.DynamicField):
             kwargs['model_field'] = model_field
             kwargs['depth'] = self.opts.depth
 

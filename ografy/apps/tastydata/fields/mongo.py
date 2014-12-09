@@ -4,8 +4,8 @@ from django.utils.encoding import smart_str
 from mongoengine import dereference
 from mongoengine.base.document import BaseDocument
 from mongoengine.document import Document
-from rest_framework import serializers
 from mongoengine.fields import ObjectId
+from rest_framework import serializers
 
 
 class MongoDocumentField(serializers.Field):
@@ -66,7 +66,6 @@ class MongoDocumentField(serializers.Field):
 
 
 class ReferenceField(MongoDocumentField):
-
     type_label = 'ReferenceField'
 
     def to_representation(self, value):
@@ -89,7 +88,6 @@ class ReferenceField(MongoDocumentField):
 
 
 class ListField(MongoDocumentField):
-
     type_label = 'ListField'
 
     def to_representation(self, value):
@@ -100,7 +98,6 @@ class ListField(MongoDocumentField):
 
 
 class EmbeddedDocumentField(MongoDocumentField):
-
     type_label = 'EmbeddedDocumentField'
 
     def __init__(self, *args, **kwargs):
@@ -125,7 +122,6 @@ class EmbeddedDocumentField(MongoDocumentField):
 
 
 class DynamicField(MongoDocumentField):
-
     type_label = 'DynamicField'
 
     def to_internal_value(self, data):

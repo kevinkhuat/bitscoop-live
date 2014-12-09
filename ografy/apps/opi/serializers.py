@@ -2,7 +2,7 @@ from rest_framework import serializers as django_serializers
 
 from ografy.apps.core.models import Provider, Signal, User
 from ografy.apps.obase.documents import Data
-from ografy.apps.mongo_rest_framework import serializers as mongo_serializers
+from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
 class ProviderSerializer(django_serializers.ModelSerializer):
