@@ -35,9 +35,6 @@ class Provider(models.Model):
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)
 
-    class Meta:
-        ordering = ('tags',)
-
 
 class Signal(models.Model):
     """
@@ -69,9 +66,6 @@ class Signal(models.Model):
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.user.display_name)
-
-    class Meta:
-        ordering = ('user',)
 
 
 @autoconnect
@@ -148,6 +142,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             self._upper_handle = self.handle.upper()
         else:
             self._upper_handle = self.handle
-
-    class Meta:
-        ordering = ('id',)
