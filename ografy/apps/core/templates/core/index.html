@@ -1,80 +1,36 @@
 {% extends 'shared/dispatcher.html' %}
 {% load staticfiles %}
 
-{% block static %}
-{{ block.super }}
-<style type="text/css">
-	.bg1 {
-		background:url({% static 'core/img/bg1.png' %}) left top;
-	}
 
-	a > .icon-facebook:hover { color: #4862A3; }
-	a > .icon-twitter:hover { color: #55ACEE; }
-	a > .icon-googleplus:hover { color: #d94734; }
-	a > .icon-linkedin:hover { color: #1684BB; }
-
-	.square-set {
-		border: 1px solid #CCC;
-		border-radius: 2px;
-		background: #EEE;
-		margin-bottom: 2em;
-	}
-	.square-set > .header {
-		text-align: center;
-		position: relative;
-		top: -2.25em;
-	}
-	.square-set > .header > i {
-		font-size: 2.5em;
-		background-color: #0E9D58;
-		color: #FFF;
-		padding: 0.35em;
-		border: 2px solid #CCC;
-		border-radius: 1em;
-	}
-	.square-set .bullet { padding-right: 1em; }
-
-	.social-links > a {
-		text-decoration: none;
-		color: #AAA !important;
-	}
-</style>
-<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+{% block branding %}
+<a class="item" href="{% url 'core_index' %}" style="font-weight: bold; text-transform: uppercase; font-size: 110%;">Ografy</a>
 {% endblock %}
 
-{% block logo %}
-<li><a href="{% url 'core_index' %}" style="font-weight: bold; text-transform: uppercase; font-size: 110%;">Ografy</a></li>
-{% endblock %}
 
-{% block content %}
-<div class="bg1 bg-img-full bottom-space">
-	<div class="bg-black lockwidth centered" style="padding: 2em;">
-		<div class="table full-width">
-			<div>
-				<div class="middle" style="width: 240px;">
-					<img src="{% static 'assets/logo_light_240.png' %}" />
+{% block main %}
+<section style="background:url({% static 'core/img/bg1.png' %}) left top; position:relative; top:-25px;">
+	<div class="flex row center lockwidth centered bg black translucent" style="padding:35px;">
+		<img src="{% static 'assets/logo_light_240.png' %}" />
+		<div class="grow center">
+			<h1>Discover your data</h1>
+			<p>Search and explore your data no matter where it is.</p>
+			<p>Get more out of your favorite applications and services.</p>
+		</div>
+		<div class="bg gray light padded" style="width:240px;">
+			<form action="{% url 'core_signup' %}" method="POST">
+				<div class="group">
+					{% csrf_token %}
+					<input class="full-width" type="text" name="email" placeholder="Email address" />
+					<input class="full-width" type="text" name="handle" placeholder="Username" />
+					<input class="full-width" type="password" name="password" placeholder="Password" />
 				</div>
-				<div class="middle center">
-					<h1>Discover your data</h1>
-					<p>Search and explore your data no matter where it is.</p>
-					<p>Get more out of your favorite applications and services.</p>
-				</div>
-				<div class="middle" style="width: 240px;">
-					<div class="bg-light padded center rounded">
-						<form action="{% url 'core_account_signup' %}" method="POST" >
-							{% csrf_token %}
-							<div><input class="full-width" type="text" name="email" placeholder="Email address" /></div>
-							<div><input class="full-width" type="text" name="handle" placeholder="Username" /></div>
-							<div><input class="full-width" type="password" name="password" placeholder="Password" /></div>
-							<input class="ui button positive" type="submit" value="Sign Up" />
-						</form>
-					</div>
-				</div>
-			</div>
+				<input class="ui button positive" type="submit" value="Sign Up" />
+			</form>
 		</div>
 	</div>
-</div>
+</section>
 
+<!-- FIXME: The following content needs to be redone in line with the new aesthetic and structure. -->
 <section class="lockwidth centered">
 	<div class="table full-width">
 		<div>

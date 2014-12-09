@@ -25,7 +25,7 @@ class SignUpForm(ModelForm):
         fields = ['email', 'handle', 'first_name', 'last_name']
 
 
-class UpdateDetailsForm(Form):
+class UpdatePersonalForm(Form):
     """
     We don't want this to be a model form because we can't cut out the "unique" filters selectively.
     We need more control over the validation of `email` and `handle` so that a user can submit their own

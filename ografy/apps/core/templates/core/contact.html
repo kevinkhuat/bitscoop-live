@@ -3,7 +3,6 @@
 
 {% block static %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
 <style type="text/css">
 	a > .icon-facebook:hover { color: #4862A3; }
 	a > .icon-twitter:hover { color: #55ACEE; }
@@ -21,20 +20,16 @@
 {% endblock %}
 
 {% block content %}
-<section class="lockwidth centered">
-	<h1 class="center">Contact Us</h1>
+<h1 class="center">Contact Us</h1>
 
-	<p>If you have questions, comments, or concerns we would love to hear from you.</p>
+<p>If you have questions, comments, or concerns we would love to hear from you.</p>
 
-	<h2>Direct</h2>
-	<p><b>Email:</b> <a href="mailto:support@ografy.io">support@ografy.io</a></p>
+<p>You can contact us directly at <a href="mailto:support@ografy.io">support@ografy.io</a> or touch base with us on:</p>
 
-	<h2>Social Networks</h2>
-	<div class="social-links">
-		<a href="https://www.facebook.com/Ografy"><i class="icon-facebook"></i></a>
-		<a href="https://twitter.com/ografy"><i class="icon-twitter"></i></a>
-		<a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958"><i class="icon-googleplus"></i></a>
-		<a href="https://www.linkedin.com/company/ografy"><i class="icon-linkedin"></i></a>
-	</div>
-</section>
+<div class="social-links">
+	<a href="https://www.facebook.com/Ografy"><i class="icon-facebook"></i></a>
+	<a href="https://twitter.com/ografy"><i class="icon-twitter"></i></a>
+	<a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958"><i class="icon-googleplus"></i></a>
+	<a href="https://www.linkedin.com/company/ografy"><i class="icon-linkedin"></i></a>
+</div>
 {% endblock %}
