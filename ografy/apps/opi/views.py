@@ -1,23 +1,26 @@
 from django.views.generic import View
-from rest_framework import permissions, renderers, viewsets
-from rest_framework.decorators import api_view, detail_route
+from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 import ografy.apps.opi.serializers as opi_serializer
+from ografy.apps.mongo_rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from ografy.apps.obase.documents import Data
 from ografy.apps.opi.permissions import IsUser
 from ografy.apps.core.models import Provider, Signal, User
 
 
+
 # TODO: Fix with final endpoints for models
-@api_view(('GET',))
-def api_root(request, format=None):
-    return Response({
-        'provider': reverse('provider-list', request=request, format=format),
-        'signal': reverse('signal-list', request=request, format=format),
-        'user': reverse('user-list', request=request, format=format),
-    })
+# @api_view(('GET',))
+# def api_root(request, format=None):
+#     return Response({
+#         'data': reverse('data-list', request=request, format=format),
+#         'provider': reverse('provider-list', request=request, format=format),
+#         'signal': reverse('signal-list', request=request, format=format),
+#         'user': reverse('user-list', request=request, format=format),
+#     })
 
 
 class APIListView(APIView):
@@ -25,32 +28,26 @@ class APIListView(APIView):
 
     def get(self, request, format=None):
         return Response({
+            'data': reverse('data-list', request=request, format=format),
+            'event': reverse('event-list', request=request, format=format),
+            'message': reverse('message-list', request=request, format=format),
+            'settings': reverse('settings-list', request=request, format=format),
             'provider': reverse('provider-list', request=request, format=format),
             'signal': reverse('signal-list', request=request, format=format),
             'user': reverse('user-list', request=request, format=format),
         })
 
 
-class DataView(View):
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        pass
+class DataView(RetrieveUpdateDestroyAPIView):
+    queryset = Data.objects.all()
+    serializer_class = opi_serializer.DataSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
-class DataSingleView(View):
-    def delete(self, request, id):
-        pass
-
-    def get(self, request, id):
-        pass
-
-    def patch(self, request, id):
-        pass
-
-    def put(self, request, id):
-        pass
+class DataSingleView(ListCreateAPIView):
+    queryset = Data.objects.all()
+    serializer_class = opi_serializer.DataSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class EventView(View):
@@ -88,6 +85,28 @@ class MessageSingleView(View):
         pass
 
     def get(self, requset, id):
+        pass
+
+    def patch(self, request, id):
+        pass
+
+    def put(self, request, id):
+        pass
+
+
+class SettingsView(View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class SettingsSingleView(View):
+    def delete(self, request, id):
+        pass
+
+    def get(self, request, id):
         pass
 
     def patch(self, request, id):
