@@ -4,7 +4,8 @@
     "fields": {
       "name": "Facebook",
       "backend_name": "facebook",
-      "auth_backend": "social.backends.facebook.FacebookOAuth2"
+      "auth_backend": "social.backends.facebook.FacebookOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -13,7 +14,8 @@
     "fields": {
       "name": "Twitter",
       "backend_name": "twitter",
-      "auth_backend": "social.backends.twitter.TwitterOAuth"
+      "auth_backend": "social.backends.twitter.TwitterOAuth",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -22,7 +24,8 @@
     "fields": {
       "name": "Steam",
       "backend_name": "steam",
-      "auth_backend": "social.backends.steam.SteamOpenId"
+      "auth_backend": "social.backends.steam.SteamOpenId",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -31,7 +34,8 @@
     "fields": {
       "name": "Amazon",
       "backend_name": "amazon",
-      "auth_backend": "social.backends.amazon.AmazonOAuth2"
+      "auth_backend": "social.backends.amazon.AmazonOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -40,7 +44,8 @@
     "fields": {
       "name": "Dropbox",
       "backend_name": "dropbox",
-      "auth_backend": "social.backends.dropbox.DropboxOAuth2"
+      "auth_backend": "social.backends.dropbox.DropboxOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -49,7 +54,8 @@
     "fields": {
       "name": "FitBit",
       "backend_name": "fitbit",
-      "auth_backend": "social.backends.fitbit.FitbitOAuth"
+      "auth_backend": "social.backends.fitbit.FitbitOAuth",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -58,7 +64,8 @@
     "fields": {
       "name": "FourSquare",
       "backend_name": "foursquare",
-      "auth_backend": "social.backends.foursquare.FoursquareOAuth2"
+      "auth_backend": "social.backends.foursquare.FoursquareOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -67,7 +74,8 @@
     "fields": {
       "name": "GitHub",
       "backend_name": "github",
-      "auth_backend": "social.backends.github.GithubOAuth2"
+      "auth_backend": "social.backends.github.GithubOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -76,7 +84,8 @@
     "fields": {
       "name": "Google",
       "backend_name": "google",
-      "auth_backend": "social.backends.google.GoogleOAuth2"
+      "auth_backend": "social.backends.google.GoogleOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -85,7 +94,8 @@
     "fields": {
       "name": "Instagram",
       "backend_name": "instagram",
-      "auth_backend": "social.backends.instagram.InstagramOAuth2"
+      "auth_backend": "social.backends.instagram.InstagramOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -94,7 +104,8 @@
     "fields": {
       "name": "LinkedIn",
       "backend_name": "linkedin",
-      "auth_backend": "social.backends.linkedin.LinkedinOAuth2"
+      "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -103,7 +114,8 @@
     "fields": {
       "name": "reddit",
       "backend_name": "reddit",
-      "auth_backend": "social.backends.reddit.RedditOAuth2"
+      "auth_backend": "social.backends.reddit.RedditOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -112,7 +124,8 @@
     "fields": {
       "name": "Spotify",
       "backend_name": "spotify",
-      "auth_backend": "social.backends.spotify.SpotifyOAuth2"
+      "auth_backend": "social.backends.spotify.SpotifyOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -121,7 +134,8 @@
     "fields": {
       "name": "Stack Overflow",
       "backend_name": "stackoverflow",
-      "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2"
+      "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -130,7 +144,8 @@
     "fields": {
       "name": "Tumblr",
       "backend_name": "tumblr",
-      "auth_backend": "social.backends.tumblr.TumblrOAuth"
+      "auth_backend": "social.backends.tumblr.TumblrOAuth",
+      "tags": "Social"
     },
     "model": "core.provider"
   },
@@ -139,7 +154,8 @@
     "fields": {
       "name": "Vimeo",
       "backend_name": "vimeo",
-      "auth_backend": "social.backends.vimeo.VimeoOAuth1"
+      "auth_backend": "social.backends.vimeo.VimeoOAuth1",
+      "tags": "Social"
     },
     "model": "core.provider"
   }

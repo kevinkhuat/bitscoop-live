@@ -1,12 +1,12 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'settings/base.html' %}
 
 {% block content %}
-<h2>Update your information</h2>
+<h2>Update your personal information</h2>
 
-<form action="{% url 'core_account_details' %}" method="POST">
+<form action="{% url 'core_settings_personal' %}" method="POST">
 	{% csrf_token %}
-	<div class="table">
-		<div>
+	<div class="table grouping">
+		<div style="padding-bottom: 5px">
 			<div>Email:</div>
 			<div><input type="text" name="email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/></div>
 		</div>
@@ -14,17 +14,7 @@
 			<div></div>
 			<div>{{ form.email.errors }}</div>
 		</div>
-
-		<div>
-			<div>Username:</div>
-			<div><input type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" /></div>
-		</div>
-		<div>
-			<div></div>
-			<div>{{ form.handle.errors }}</div>
-		</div>
-
-		<div>
+		<div style="padding-bottom: 5px">
 			<div>First Name:</div>
 			<div><input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></div>
 		</div>
@@ -32,8 +22,7 @@
 			<div></div>
 			<div>{{ form.first_name.errors }}</div>
 		</div>
-
-		<div>
+		<div style="padding-bottom: 5px">
 			<div>Last Name:</div>
 			<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></div>
 		</div>
@@ -41,8 +30,8 @@
 			<div></div>
 			<div>{{ form.last_name.errors }}</div>
 		</div>
+		<div>{{ form.non_field_errors }}</div>
 	</div>
-	<div>{{ form.non_field_errors }}</div>
-	<input class="ui button positive" type="submit" value="Update" />
+	<input class="ui button positive" type="submit" value="Update" style="margin-top: 5px"/>
 </form>
 {% endblock %}

@@ -5,22 +5,22 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
-from ografy.apps.core.forms import UpdateDetailsForm, UpdatePasswordForm
+from ografy.apps.core.forms import UpdatePersonalForm, UpdatePasswordForm
 from ografy.util.collections import update
 from ografy.util.response import redirect_by_name
 
 
-class DetailsView(View):
-    template_name = 'core/account/details.html'
-    title = 'Ografy - Update Details'
+class PersonalView(View):
+    template_name = 'core/settings/personal.html'
+    title = 'Ografy - Update Personal Information'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(DetailsView, self).dispatch(*args, **kwargs)
+        return super(PersonalView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         user = request.user
-        form = UpdateDetailsForm({
+        form = UpdatePersonalForm({
             'email': user.email,
             'handle': user.handle,
             'first_name': user.first_name,
@@ -36,7 +36,7 @@ class DetailsView(View):
         User = get_user_model()
 
         user = request.user
-        form = UpdateDetailsForm(request.POST)
+        form = UpdatePersonalForm(request.POST)
         form.full_clean()
 
         email = form.cleaned_data.get('email')
@@ -55,7 +55,7 @@ class DetailsView(View):
             update(user, form.cleaned_data)
             user.save()
 
-            return redirect_by_name('core_account_index')
+            return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
                 'title': self.title,
@@ -63,13 +63,13 @@ class DetailsView(View):
             })
 
 
-class PasswordView(View):
-    template_name = 'core/account/password.html'
-    title = 'Ografy - Update Password'
+class SecurityView(View):
+    template_name = 'core/settings/security.html'
+    title = 'Ografy - Update Security Settings'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PasswordView, self).dispatch(*args, **kwargs)
+        return super(SecurityView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         return render(request, self.template_name, {
@@ -89,7 +89,7 @@ class PasswordView(View):
             user.password_date = timezone.now()
             user.save()
 
-            return redirect_by_name('core_account_index')
+            return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
                 'title': self.title,
@@ -98,7 +98,7 @@ class PasswordView(View):
 
 
 @login_required
-def index(request):
-    return render(request, 'core/account/index.html', {
-        'title': 'Ografy - Account'
+def base(request):
+    return render(request, 'core/settings/personal.html', {
+        'title': 'Ografy - Base'
     })
