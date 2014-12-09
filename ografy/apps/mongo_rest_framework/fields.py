@@ -8,7 +8,7 @@ from rest_framework import serializers
 from mongoengine.fields import ObjectId
 
 
-class MongoDocumentField(serializers.WritableField):
+class MongoDocumentField(serializers.Field):
     MAX_RECURSION_DEPTH = 5  # default value of depth
 
     def __init__(self, *args, **kwargs):

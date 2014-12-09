@@ -30,15 +30,16 @@ class MongoAPIView(GenericAPIView):
         if self.model is not None:
             return self.get_serializer().opts.model.objects.all()
 
-        raise ImproperlyConfigured("'%s' must define 'queryset' or 'model'"
-                                    % self.__class__.__name__)
+        raise ImproperlyConfigured("'%s' must define 'queryset' or 'model'" % self.__class__.__name__)
 
     def get_object(self, queryset=None):
         """
         Get a document instance for read/update/delete requests.
         """
         query_key = self.lookup_url_kwarg or self.lookup_field
-        query_kwargs = {query_key: self.kwargs[query_key]}
+        query_kwargs = {}
+        if query_key in self.kwargs:
+            {query_key: self.kwargs[query_key]}
         queryset = self.get_queryset()
 
         obj = get_document_or_404(queryset, **query_kwargs)
@@ -47,12 +48,11 @@ class MongoAPIView(GenericAPIView):
         return obj
 
 
-class CreateAPIView(mixins.CreateModelMixin,
-                    MongoAPIView):
-
+class CreateAPIView(mixins.CreateModelMixin, MongoAPIView):
     """
     Concrete view for creating a model instance.
     """
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
@@ -62,6 +62,7 @@ class ListAPIView(mixins.ListModelMixin,
     """
     Concrete view for listing a queryset.
     """
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -72,6 +73,7 @@ class ListCreateAPIView(mixins.ListModelMixin,
     """
     Concrete view for listing a queryset or creating a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -84,16 +86,17 @@ class RetrieveAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
 
 class UpdateAPIView(mixins.UpdateModelMixin,
                     MongoAPIView):
-
     """
     Concrete view for updating a model instance.
     """
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
@@ -107,6 +110,7 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving, updating a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -123,6 +127,7 @@ class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving or deleting a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -137,6 +142,7 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving, updating or deleting a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 

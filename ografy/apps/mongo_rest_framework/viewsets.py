@@ -1,6 +1,7 @@
 from rest_framework import mixins
 from rest_framework.viewsets import ViewSetMixin
-from ografy.apps.tastydata.mongo_rest_framework.generics import MongoAPIView
+
+from ografy.apps.mongo_rest_framework.generics import MongoAPIView
 
 
 class MongoGenericViewSet(ViewSetMixin, MongoAPIView):

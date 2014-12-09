@@ -1,16 +1,15 @@
 from django.views.generic import View
-from rest_framework import permissions, renderers, viewsets
-from rest_framework.decorators import api_view, detail_route
+from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 import ografy.apps.opi.serializers as opi_serializer
-from ografy.apps.tastydata.mongo_rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.mongo_rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from ografy.apps.obase.documents import Data
 from ografy.apps.opi.permissions import IsUser
 from ografy.apps.core.models import Provider, Signal, User
-from ografy.apps.core.documents import Settings
+
 
 
 # TODO: Fix with final endpoints for models

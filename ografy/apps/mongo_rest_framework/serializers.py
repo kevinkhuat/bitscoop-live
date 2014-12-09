@@ -1,15 +1,16 @@
 import mongoengine
 from django.db import models
 from django.forms import widgets
-from django.utils.datastructures import SortedDict
 from mongoengine.base import BaseDocument
-from mongoengine.errors import ValidationError
 from mongoengine.fields import DynamicField, EmbeddedDocumentField, ListField, ReferenceField
 from rest_framework import fields, serializers
-from rest_framework.compat import get_concrete_model
 
 
-class MongoEngineModelSerializer(serializers.Serializer):
+from rest_framework.fields import
+from rest_framework.serializers import Serializer as BaseSerializer
+
+
+class Serializer(BaseSerializer):
     """
     Model Serializer that supports Mongoengine
     """
