@@ -12,7 +12,7 @@ $(document).ready(function() {
 		console.log('FAILED');
 	});
 
-	$('.slide-grid').on('click', 'a', function(e) {
+	$('.signal-box').on('click', 'a', function(e) {
 		service = e.target.name;
 	});
 });
