@@ -4,7 +4,6 @@ from bson import json_util
 from django.core import serializers
 from django.db import models
 from mongoengine.base.document import BaseDocument
-from rest_framework_mongoengine.serializers import MongoEngineModelSerializer
 
 from ografy.apps.obase import documents
 
@@ -115,17 +114,9 @@ class DjangoJsonizer(Jsonizer):
         return self.django_deserializer(json_list)
 
 
-class EventDRFSerializer(MongoEngineModelSerializer):
-    class Meta:
-        model = documents.Event
-        # depth = 2
-        # exclude = ('pk',)
-
-
 class EventJsonizer(MongoJsonizer):
     def __init__(self):
         super.__init__()
-        self.DRF_serializer = EventDRFSerializer()
 
     def serialize(self, obj):
         return documents.Event.to_json(obj)
@@ -134,15 +125,9 @@ class EventJsonizer(MongoJsonizer):
         return documents.Event.from_json(obj)
 
 
-class DataDRFSerializer(MongoEngineModelSerializer):
-    class Meta:
-        model = documents.Data
-
-
 class DataJsonizer(MongoJsonizer):
     def __init__(self):
         super.__init__()
-        self.DRF_serializer = DataDRFSerializer()
 
     def serialize(self, obj):
         return documents.Data.to_json(obj)
@@ -151,15 +136,9 @@ class DataJsonizer(MongoJsonizer):
         return documents.Data.from_json(obj)
 
 
-class MessageDRFSerializer(MongoEngineModelSerializer):
-    class Meta:
-        model = documents.Message
-
-
 class MessageJsonizer(MongoJsonizer):
     def __init__(self):
         super.__init__()
-        self.DRF_serializer = MessageDRFSerializer()
 
     def serialize(self, obj):
         return documents.Message.to_json(obj)
