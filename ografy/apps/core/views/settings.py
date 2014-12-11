@@ -22,7 +22,7 @@ class PersonalView(View):
         user = request.user
         form = UpdatePersonalForm({
             'email': user.email,
-            'handle': user.handle,
+            # 'handle': user.handle,
             'first_name': user.first_name,
             'last_name': user.last_name
         })
@@ -96,6 +96,18 @@ class SecurityView(View):
                 'form': form
             })
 
+class SignalView(View):
+    template_name = 'core/settings/signals.html'
+    title = 'Ografy - Signals Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SignalView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'title': self.title
+    })
 
 @login_required
 def base(request):

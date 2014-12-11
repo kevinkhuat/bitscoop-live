@@ -1,0 +1,146 @@
+{% extends 'settings/base.html' %}
+{% load staticfiles %}
+
+{% block static %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'core/js/signals.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
+
+<style type="text/css">
+
+	.input-box {
+		padding: 10px;
+	}
+
+	.signal-box {
+		background-color: #E0E0E0;
+	}
+
+	.signal-header {
+		padding: 0px 30%;
+		background-color: #0E9D58;
+		opacity: 0.8;
+		font-size: 40pt;
+	}
+
+	.signal-item {
+        font-size: 25pt;
+	}
+
+    .signal-item:hover {
+        text-decoration: none;
+    }
+
+    .cmn-toggle {
+      position: absolute;
+      margin-left: -9999px;
+      visibility: hidden;
+    }
+
+    .cmn-toggle + label {
+      display: block;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      user-select: none;
+    }
+
+    input.cmn-toggle-round + label {
+      padding: 2px;
+      width: 120px;
+      height: 60px;
+      background-color: #dddddd;
+      border-radius: 60px;
+    }
+
+    input.cmn-toggle-round + label:before,
+    input.cmn-toggle-round + label:after {
+      display: block;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      bottom: 1px;
+      content: "";
+    }
+
+    input.cmn-toggle-round + label:before {
+      right: 1px;
+      background-color: #f1f1f1;
+      border-radius: 60px;
+      transition: background 0.4s;
+    }
+
+    input.cmn-toggle-round + label:after {
+      width: 58px;
+      background-color: #fff;
+      border-radius: 100%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: margin 0.4s;
+    }
+
+    input.cmn-toggle-round:checked + label:before {
+      background-color: #8ce196;
+    }
+
+    input.cmn-toggle-round:checked + label:after {
+      margin-left: 60px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="flex column signal-box">
+        <label class="signal-header centered">
+			Signals
+		</label>
+        <div class="flex row">
+            <a href="/signals" class="centered signal-item">
+                Facebook 1
+            </a>
+            <div class="switch">
+                <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-1"></label>
+            </div>
+            <div class="ui button">
+                DELETE
+            </div>
+        </div>
+        <div class="flex row">
+            <a href="/signals" class="centered signal-item">
+                Twitter
+            </a>
+            <div class="switch">
+                <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-2"></label>
+            </div>
+            <div class="ui button">
+                DELETE
+            </div>
+        </div>
+        <div class="flex row">
+            <a href="/signals" class="centered signal-item">
+                Facebook 2
+            </a>
+            <div class="switch">
+                <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-3"></label>
+            </div>
+            <div class="ui button">
+                DELETE
+            </div>
+        </div>
+        <div class="flex row">
+            <a href="/signals" class="centered signal-item">
+                Facetwit
+            </a>
+            <div class="switch">
+                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-4"></label>
+            </div>
+            <div class="ui button">
+                DELETE
+            </div>
+        </div>
+    </div>
+{% endblock %}

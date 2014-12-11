@@ -8,163 +8,72 @@
 
 <style type="text/css">
 
-	.icon-align {
-		height: 100px;
-		width: 100px;
-		vertical-align: middle;
-	}
-
-	.menu-item {
-		color: white;
-		padding: 5px 0px;
-	}
-
-	.menu-item:hover {
-		text-decoration: none;
-		background-color: white;
-		padding: 5px;
-		color: #0E9D58;
-		opacity: 0.8;
-	}
-
-	.menu-header {
-		color: white;
-		font-size: 1.5em;
-		font-weight: bold;
-		margin-bottom: 10px;
-	}
-
-	.menu-box {
-		min-width: 150px;
+	.input-box {
 		padding: 10px;
-		background-color:#0E9D58;
-		opacity:0.8;
 	}
 
-	.signal-box {
-		border-radius: 10px;
+	.permissions-box {
 		background-color: #E0E0E0;
-		font-size: 30px;
-		font-weight: bold;
-		height: 300px;
-		margin-bottom: 25px;
-		margin-left: 25px;
-		padding: 10px;
-		text-align: center;
-		width: 300px;
-	}
-	.signal-box:hover {
-		text-decoration: none;
-		background-color: #D0D0D0;
+		margin-top: 20px;
+		margin-left: 300px;
 	}
 
-	.signal-grid {
-		flex-wrap: wrap;
-		justify-content: centered;
+	.permissions-header {
+		padding: 0px 10px;
+		background-color: #0E9D58;
+		opacity: 0.8;
+		font-size: 30pt;
+	}
+
+	.permissions-item {
+		padding:  0px 10px;
+	}
+
+	.permissions-item:hover {
+		background-color: #D0D0D0;
 	}
 
 </style>
 {% endblock %}
 
+
 {% block main %}
 <div class="flex row">
 	{% block left %}
-	<div class="menu-box">
-		<div class="menu-header">Categories</div>
-		<a class="flex menu-item" name="all" href="{% url 'core_signals' %}">All</a>
-		<a class="flex menu-item" name="entertainment" href="{% url 'core_signals' %}?tags=entertainment">Entertainment</a>
-		<a class="flex menu-item" name="personal-data" href="{% url 'core_signals' %}?tags=personal-data">Personal Data</a>
-		<a class="flex menu-item" name="productivity" href="{% url 'core_signals' %}?tags=productivity">Productivity</a>
-		<a class="flex menu-item" name="social media" href="{% url 'core_signals' %}?tags=social-media">Social Media</a>
-		<a class="flex menu-item" name="storage" href="{% url 'core_signals' %}?tags=storage">Storage</a>
+	<div class="flex column input-box">
+        <label>Account nickname:</label>
+        <input class="full-width" name="account-nickname" type="text" placeholder="Enter a nickname"/>
+        <label>Account login name</label>
+        <input class="full-width" name="account-login" type="text" placeholder="Enter the login name"/>
+        <label>API Key</label>
+        <input class="full-width" name="api-key" type="text" placeholder="Enter the API key"/>
 	</div>
 	{% endblock %}
 
 	{% block content %}
-	<div class="flex row centered signal-grid">
-		<a class="signal-box" name="facebook">
-			<i class="icon-align icon-facebook"></i>
-			Facebook
-		</a>
-		<a class="signal-box" name="twitter">
-			<i class="icon-align icon-twitter"></i>
-			Twitter</a>
-		<a class="signal-box" name="amazon">
-			Amazon
-		</a>
-		<a class="signal-box" name="dropbox">
-			<i class="icon-align icon-dropbox"></i>
-			Dropbox
-		</a>
-		<a class="signal-box" name="fitbit">
-			FitBit
-		</a>
-		<a class="signal-box" name="foursquare">
-			<i class="icon-align icon-foursquare2"></i>
-			FourSquare
-		</a>
-		<a class="signal-box" name="github">
-			<i class="icon-align icon-github3"></i>
-			GitHub
-		</a>
-		<a class="signal-box" name="google">
-			<i class="icon-align icon-googleplus"></i>
-			Google+
-		</a>
-		<a class="signal-box" name="instagram">
-			<i class="icon-align icon-instagram"></i>
-			Instagram
-		</a>
-		<a class="signal-box" name="linkedin">
-			<i class="icon-align icon-linkedin"></i>
-			LinkedIn
-		</a>
-		<a class="signal-box" name="reddit">
-			<i class="icon-align icon-reddit"></i>
-			reddit
-		</a>
-		<a class="signal-box" name="spotify">
-			<i class="icon-align icon-spotify"></i>
-			Spotify
-		</a>
-		<a class="signal-box" name="stackoverflow">
-			<i class="icon-align icon-stackoverflow"></i>
-			Stack Overflow</a>
-		<a class="signal-box" name="steam">
-			<i class="icon-align icon-steam2"></i>
-			Steam
-		</a>
-		<a class="signal-box" name="tumblr">
-			<i class="icon-align icon-tumblr"></i>
-			tumblr
-		</a>
-		<a class="signal-box" name="vimeo">
-			<i class="icon-align icon-vimeo"></i>
-			Vimeo
-		</a>
-
-		<div>
-			<label>Logged in:</label>
-			<select class="full-width" name="logged-in-backend"></select>
-
-			<div>
-				<label>Access token:</label>
-				<input class="full-width" name="access_token" type="text" value=""
-					   placeholder="OAuth1 or OAuth2 access token">
-			</div>
-
-			<div>
-				<label>Access token secret:</label>
-				<input class="full-width" name="access_token_secret" type="text" value=""
-					   placeholder="OAuth1 access token secret">
-			</div>
-
-			<a class="signal-box" name="ajax-login" href="#">Ajax Login</a>
-
-			<input class="full-width" name="api-call-url" type="text"
-				   value="https://graph.facebook.com/v2.1/me?fields=friends"/>
-			<a class="signal-box" name="ajax-call" href="#">Ajax API Call</a>
+		<div class="flex column permissions-box">
+			<label class="permissions-header">
+				Permissions
+			</label>
+			<label class="permissions-item" name="friends-list">
+				<input type="checkbox"/>
+				Friends list
+			</label>
+			<label class="permissions-item" name="search-history">
+				<input type="checkbox"/>
+				Search history
+			</label>
+			<label class="permissions-item" name="enemies-list">
+				<input type="checkbox"/>
+				Enemies list
+			</label>
+			<label class="permissions-item" name="favorited">
+				<input type="checkbox"/>
+				Favorited
+			</label>
+			</label>
 		</div>
-	</div>
+		<a href="/settings/signals">Back to signal settings</a>
 	{% endblock %}
+
 </div>{% endblock %}
