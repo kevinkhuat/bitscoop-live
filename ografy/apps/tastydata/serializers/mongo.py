@@ -87,10 +87,6 @@ class DocumentSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
     #
     #
     # def get_dynamic_fields(self, obj):
