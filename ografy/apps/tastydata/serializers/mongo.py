@@ -87,10 +87,10 @@ class DocumentSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         raise NotImplementedError
 
-@property
-def data(self):
-    self._data = self.to_representation(self.instance)
-    return self._data
+    @property
+    def data(self):
+        self._data = self.to_representation(self.instance)
+        return self._data
 
 
 def get_serialized_dict(self, obj):

@@ -3,9 +3,7 @@ from ografy.apps.tastydata.serializers import mongo
 
 
 class APIView(BaseAPIView):
-    serializer = mongo.DocumentSerializer
-
-    # FIXME: Is this insane? Probably.
+    # FIXME: Is this insane to get data from the serializer? Probably.
     @property
     def queryset(self):
         return self.serializer.Meta.model.objects.all()

@@ -48,7 +48,8 @@ class DataSingleView(APIView):
 
     def get(self, request, pk, format=None):
         data = obase_api.DataApi.get(val=pk)
-        return Response(self.serialize(data))
+        serial_data = self.serialize(data)
+        return Response(serial_data)
 
     def patch(self, request, pk, format=None):
         data = obase_api.DataApi.patch(val=pk, data=self.deserialize(request.data))

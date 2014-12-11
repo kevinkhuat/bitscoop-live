@@ -56,11 +56,6 @@ class MessageSerializer(mongo_serializers.DocumentSerializer):
 
 
 class ProviderSerializer(django_serializers.ModelSerializer):
-    def to_representation(self, instance):
-        return Data.to_json(instance)
-
-    def to_internal_value(self, data):
-        return Data.from_json(data)
 
     class Meta:
         model = Provider
