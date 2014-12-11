@@ -1,3 +1,4 @@
+import jsonpickle
 from rest_framework import serializers as django_serializers
 
 from ografy.apps.core.documents import Settings
@@ -14,7 +15,7 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
         return {}
 
     def to_representation(self, instance):
-        return Data.to_json(instance)
+        return jsonpickle.decode(Data.to_json(instance))
 
     def to_internal_value(self, data):
         return Data.from_json(data)
@@ -32,10 +33,10 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
         return {}
 
     def to_representation(self, instance):
-        return Data.to_json(instance)
+        return jsonpickle.decode(Event.to_json(instance))
 
     def to_internal_value(self, data):
-        return Data.from_json(data)
+        return Event.from_json(data)
 
     class Meta:
         model = Event
@@ -44,11 +45,17 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
+    def get_validators(self):
+        return []
+
+    def get_fields(self):
+        return {}
+
     def to_representation(self, instance):
-        return Data.to_json(instance)
+        return jsonpickle.decode(Event.to_json(instance))
 
     def to_internal_value(self, data):
-        return Data.from_json(data)
+        return Message.from_json(data)
 
     class Meta:
         model = Message
@@ -72,11 +79,17 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
+    def get_validators(self):
+        return []
+
+    def get_fields(self):
+        return {}
+
     def to_representation(self, instance):
-        return Data.to_json(instance)
+        return jsonpickle.decode(Event.to_json(instance))
 
     def to_internal_value(self, data):
-        return Data.from_json(data)
+        return Event.from_json(data)
 
     user = django_serializers.Field(source='user.id')
     provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
