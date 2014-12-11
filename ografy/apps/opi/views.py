@@ -1,4 +1,3 @@
-from django.views.generic import View
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -6,7 +5,6 @@ from rest_framework.reverse import reverse
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
-from ografy.apps.opi.permissions import IsUser
 from ografy.apps.tastydata.views import APIView
 
 
@@ -49,7 +47,7 @@ class DataSingleView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        data = list(obase_api.DataApi.get(val=pk))
+        data = obase_api.DataApi.get(val=pk)
         return Response(self.serialize(data))
 
     def patch(self, request, pk, format=None):
@@ -177,6 +175,16 @@ class SignalView(APIView):
     def post(self, request, format=None):
         signal = core_api.SignalApi.post(data=self.deserialize(request.data))
         return Response(self.serialize(signal))
+
+
+class SettingsView(APIView):
+    # TODO: add access permissions
+    serializer = opi_serializer.SettingsSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        settings_list = list(core_api.SettingsApi.get())
+        return Response(self.serialize(settings_list, many=True))
 
 
 class SettingsSingleView(APIView):

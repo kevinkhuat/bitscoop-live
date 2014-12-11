@@ -1,5 +1,7 @@
+import bson
+import jsonpickle
 import mongoengine
-from mongoengine import fields as mongo_fields
+from mongoengine import Document, fields as mongo_fields
 from rest_framework import fields, relations, serializers
 
 
@@ -85,7 +87,23 @@ class DocumentSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         raise NotImplementedError
 
+@property
+def data(self):
+    self._data = self.to_representation(self.instance)
+    return self._data
 
+
+def get_serialized_dict(self, obj):
+    serialized_object = self.serialize(obj)
+    return jsonpickle.decode(serialized_object)
+
+
+def get_serialized_value(self, obj, key):
+    return self.get_serialized_dict(obj)[key]
+
+
+def create_object_id(id):
+    return bson.ObjectId(id)
 
     #
     #

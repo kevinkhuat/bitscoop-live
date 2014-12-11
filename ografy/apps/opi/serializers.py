@@ -7,12 +7,36 @@ from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
 class DataSerializer(mongo_serializers.DocumentSerializer):
+    def get_validators(self):
+        return []
+
+    def get_fields(self):
+        return {}
+
+    def to_representation(self, instance):
+        return Data.to_json(instance)
+
+    def to_internal_value(self, data):
+        return Data.from_json(data)
+
     class Meta:
         model = Data
         fields = ('_id', 'created', 'updated', 'data_blob')
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
+    def get_validators(self):
+        return []
+
+    def get_fields(self):
+        return {}
+
+    def to_representation(self, instance):
+        return Data.to_json(instance)
+
+    def to_internal_value(self, data):
+        return Data.from_json(data)
+
     class Meta:
         model = Event
         fields = ('_id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime',
@@ -20,12 +44,24 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
+    def to_representation(self, instance):
+        return Data.to_json(instance)
+
+    def to_internal_value(self, data):
+        return Data.from_json(data)
+
     class Meta:
         model = Message
         fields = ('_id', 'event', 'message_to', 'message_from', 'message_body')
 
 
 class ProviderSerializer(django_serializers.ModelSerializer):
+    def to_representation(self, instance):
+        return Data.to_json(instance)
+
+    def to_internal_value(self, data):
+        return Data.from_json(data)
+
     class Meta:
         model = Provider
         fields = ('id', 'name', 'backend_name', 'auth_backend', 'tags')
@@ -41,6 +77,12 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
+    def to_representation(self, instance):
+        return Data.to_json(instance)
+
+    def to_internal_value(self, data):
+        return Data.from_json(data)
+
     user = django_serializers.Field(source='user.id')
     provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
 
