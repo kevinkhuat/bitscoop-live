@@ -1,4 +1,4 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'core/settings/base.html' %}
 {% load staticfiles %}
 
 {% block static %}
@@ -8,11 +8,11 @@
 
 <style type="text/css">
 
-	.input-box {
+	.input-container {
 		padding: 10px;
 	}
 
-	.permissions-box {
+	.permissions-container {
 		background-color: #E0E0E0;
 		margin-top: 20px;
 		margin-left: 300px;
@@ -33,47 +33,93 @@
 		background-color: #D0D0D0;
 	}
 
+
+	.grouping {
+		margin-bottom: 20px;
+	}
+
+	.grouping > :first-child {
+		border: 1px solid #D8D8D8;
+		border-radius: 2px 2px 0 0;
+		font-weight: bold;
+		background-color: #EEE;
+		padding: 8px 15px;
+	}
+
+
+	.grouping > :last-child {
+		border: 1px solid #D8D8D8;
+		border-top: none;
+		padding: 10px;
+	}
+
+
+	.no-pad {
+		padding: 0px !important;
+	}
+
+	.bold {
+		font-weight: bold !important;
+	}
+
+	ul.links {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	ul.links > li > a {
+		display: block;
+		padding: 8px 12px;
+		text-decoration: none;
+	}
+
+
+	ul.links > li > a:hover {
+		background-color: #0E9D58 !important;
+		color: #FFFFFF;
+	}
+
+	ul.links > li > a.active {
+		background-color: #12CC72;
+		color: #FFFFFF;
+	}
+
+	ul.links > li:not(:last-child) {
+		border-bottom: 1px solid #EAEAEA;
+	}
+
+	.bigger {
+		font-size: 18pt;
+	}
 </style>
 {% endblock %}
 
-
-{% block main %}
-<div class="flex row">
-	{% block left %}
-	<div class="flex column input-box">
-        <label>Account nickname:</label>
-        <input class="full-width" name="account-nickname" type="text" placeholder="Enter a nickname"/>
-        <label>Account login name</label>
-        <input class="full-width" name="account-login" type="text" placeholder="Enter the login name"/>
-        <label>API Key</label>
-        <input class="full-width" name="api-key" type="text" placeholder="Enter the API key"/>
+{% block content %}
+<div class="grouping">
+	<div class="bigger">Options</div>
+	<div>
+		<div class="bold">Account name:</div>
+		<div><input type="text" name="account_name" value="{{ form.first_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.account_name.errors }}</div>
+		<div class="bold">Login name:</div>
+		<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.login_name.errors }}</div>
+		<div class="bold">API key:</div>
+		<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" placeholder="XXXX-XXXX-XXXX-XXXX"/></div>
+		<div>{{ form.api_key.errors }}</div>
 	</div>
-	{% endblock %}
+</div>
+{% endblock %}
 
-	{% block content %}
-		<div class="flex column permissions-box">
-			<label class="permissions-header">
-				Permissions
-			</label>
-			<label class="permissions-item" name="friends-list">
-				<input type="checkbox"/>
-				Friends list
-			</label>
-			<label class="permissions-item" name="search-history">
-				<input type="checkbox"/>
-				Search history
-			</label>
-			<label class="permissions-item" name="enemies-list">
-				<input type="checkbox"/>
-				Enemies list
-			</label>
-			<label class="permissions-item" name="favorited">
-				<input type="checkbox"/>
-				Favorited
-			</label>
-			</label>
-		</div>
-		<a href="/settings/signals">Back to signal settings</a>
-	{% endblock %}
-
-</div>{% endblock %}
+{% block right %}
+<div class="grouping" style="padding-left:20px">
+	<div>Permissions</div>
+	<div>
+		<label class="block"><input type="checkbox" /> Friends list</label>
+		<label class="block"><input type="checkbox" /> Search history</label>
+		<label class="block"><input type="checkbox" /> Enemies list</label>
+		<label class="block"><input type="checkbox" /> Favorited</label>
+	</div>
+</div>
+{% endblock %}

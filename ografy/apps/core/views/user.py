@@ -39,7 +39,7 @@ def providers(request):
         # 'user': request.user
     })
 
-def signals(request):
+def signals(request, pk):
     return render(request, 'core/user/signals.html', {
         # 'title': 'Ografy - {0}'.format(request.user.identifier),
         # 'user': request.user

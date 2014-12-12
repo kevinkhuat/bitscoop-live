@@ -1,39 +1,24 @@
-{% extends 'settings/base.html' %}
+{% extends 'core/settings/base.html' %}
 
 {% block content %}
-<h2>Update your password or username</h2>
-<form action="{% url 'core_settings_security' %}" method="POST">
-	{% csrf_token %}
-	<div name="current password" class="grouping">
-		<div>Current Password (must be present to change password or username):</div>
-		<div>
-			<input type="password" name="password" />
-			{{ form.password.errors }}
-		</div>
+<div class="grouping">
+	<div class="bigger">Password</div>
+	<div>
+		<div class="bold">New password:</div>
+		<input type="password" name="new_password" />
+		<div>{{ form.new_password.errors }}</div>
+		<div class="bold">Repeated:</div>
+		<input type="password" name="new_password_repeated" />
+		<div>{{ form.new_password.errors }}</div>
 	</div>
-	<div name="new password" class="grouping">
-		<div>New password:</div>
-		<div>
-			<input type="password" name="new_password" />
-			{{ form.new_password.errors }}
-		</div>
-		<div>{{ form.non_field_errors }}</div>
-		<div>
-			<input type="password" name="repeat_new_password" />
-			{{ form.new_password.errors }}
-		</div>
-		<div>{{ form.non_field_errors }}</div>
+</div>
+
+<div class="grouping">
+	<div class="bigger">Handle</div>
+	<div>
+		<div class="bold">Handle:</div>
+		<div><input type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" /></div>
+		<div>{{ form.handle.errors }}</div>
 	</div>
-	<div name="new username" class="grouping">
-		<div>
-			<div>New Username:</div>
-			<div><input type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" /></div>
-		</div>
-		<div>
-			<div></div>
-			<div>{{ form.handle.errors }}</div>
-		</div>
-	</div>
-	<input class="ui button positive" type="submit" value="Update" style="margin-top: 5px"/>
-</form>
+</div>
 {% endblock %}

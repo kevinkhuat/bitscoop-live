@@ -1,0 +1,83 @@
+{% extends 'shared/dispatcher.html' %}
+
+{% block static %}
+{{ block.super }}
+<style type="text/css">
+
+
+	.grouping {
+		margin-bottom: 20px;
+	}
+
+	.grouping > :first-child {
+		border: 1px solid #D8D8D8;
+		border-radius: 2px 2px 0 0;
+		font-weight: bold;
+		background-color: #EEE;
+		padding: 8px 15px;
+	}
+
+
+	.grouping > :last-child {
+		border: 1px solid #D8D8D8;
+		border-top: none;
+		padding: 10px;
+	}
+
+
+	.no-pad {
+		padding: 0px !important;
+	}
+
+	.bold {
+		font-weight: bold !important;
+	}
+
+	ul.links {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	ul.links > li > a {
+		display: block;
+		padding: 8px 12px;
+		text-decoration: none;
+	}
+
+
+	ul.links > li > a:hover {
+		background-color: #0E9D58 !important;
+		color: #FFFFFF;
+	}
+
+	ul.links > li > a.active {
+		background-color: #12CC72;
+		color: #FFFFFF;
+	}
+
+	ul.links > li:not(:last-child) {
+		border-bottom: 1px solid #EAEAEA;
+	}
+
+	.bigger {
+		font-size: 1.2em;
+	}
+
+</style>
+{% endblock %}
+
+{% block left %}
+<div style="padding-right:20px">
+	<div class="grouping">
+		<div>Account Settings</div>
+		<div class="flex column no-pad">
+			<ul class="links">
+				<li><a href="{% url 'core_settings_personal' %}">Personal info</a></li>
+				<li><a href="{% url 'core_settings_security' %}">Security</a></li>
+				<li><a href="{% url 'core_settings_signals' %}">Signals</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
