@@ -1,4 +1,4 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'core/settings/base.html' %}
 {% load staticfiles %}
 
 {% block static %}
@@ -7,111 +7,119 @@
 <link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
 
 <style type="text/css">
-	.slide-grid {
-		width: 220px;
-		margin: 10px;
+
+	.input-container {
+		padding: 10px;
 	}
 
-	.icon-align {
-		vertical-align: middle;
+	.permissions-container {
+		background-color: #E0E0E0;
+		margin-top: 20px;
+		margin-left: 300px;
 	}
 
-	.connect-button {
-		width: 210px;
+	.permissions-header {
+		padding: 0px 10px;
+		background-color: #0E9D58;
+		opacity: 0.8;
+		font-size: 30pt;
+	}
+
+	.permissions-item {
+		padding:  0px 10px;
+	}
+
+	.permissions-item:hover {
+		background-color: #D0D0D0;
+	}
+
+
+	.grouping {
+		margin-bottom: 20px;
+	}
+
+	.grouping > :first-child {
+		border: 1px solid #D8D8D8;
+		border-radius: 2px 2px 0 0;
+		font-weight: bold;
+		background-color: #EEE;
+		padding: 8px 15px;
+	}
+
+
+	.grouping > :last-child {
+		border: 1px solid #D8D8D8;
+		border-top: none;
+		padding: 10px;
+	}
+
+
+	.no-pad {
+		padding: 0px !important;
+	}
+
+	.bold {
+		font-weight: bold !important;
+	}
+
+	ul.links {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+
+	ul.links > li > a {
+		display: block;
+		padding: 8px 12px;
+		text-decoration: none;
+	}
+
+
+	ul.links > li > a:hover {
+		background-color: #0E9D58 !important;
+		color: #FFFFFF;
+	}
+
+	ul.links > li > a.active {
+		background-color: #12CC72;
+		color: #FFFFFF;
+	}
+
+	ul.links > li:not(:last-child) {
+		border-bottom: 1px solid #EAEAEA;
+	}
+
+	.bigger {
+		font-size: 18pt;
 	}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="slide-grid">
-	<h4>Connect Services</h4>
-
-	<a class="connect-button ui button positive" name="facebook">
-		<i class="icon-align icon-facebook"></i>
-		Facebook
-	</a>
-	<a class="connect-button ui button positive" name="twitter">
-		<i class="icon-align icon-twitter"></i>
-		Twitter</a>
-	<a class="connect-button ui button positive" name="steam">
-		<i class="icon-align icon-spotify"></i>
-		Steam
-	</a>
-	<a class="connect-button ui button positive" name="amazon">
-		Amazon
-	</a>
-	<a class="connect-button ui button positive" name="dropbox">
-		<i class="icon-align icon-dropbox"></i>
-		Dropbox
-	</a>
-	<a class="connect-button ui button positive" name="fitbit">
-		FitBit
-	</a>
-	<a class="connect-button ui button positive" name="foursquare">
-		<i class="icon-align icon-foursquare2"></i>
-		FourSquare
-	</a>
-	<a class="connect-button ui button positive" name="github">
-		<i class="icon-align icon-github3"></i>
-		GitHub
-	</a>
-	<a class="connect-button ui button positive" name="google">
-		<i class="icon-align icon-googleplus"></i>
-		Google
-	</a>
-	<a class="connect-button ui button positive" name="instagram">
-		<i class="icon-align icon-instagram"></i>
-		Instagram
-	</a>
-	<a class="connect-button ui button positive" name="linkedin">
-		<i class="icon-align icon-linkedin"></i>
-		LinkedIn
-	</a>
-	<a class="connect-button ui button positive" name="reddit">
-		<i class="icon-align icon-reddit"></i>
-		reddit
-	</a>
-	<a class="connect-button ui button positive" name="spotify">
-		<i class="icon-align icon-spotify"></i>
-		Spotify
-	</a>
-	<a class="connect-button ui button positive" name="stackoverflow">
-		<i class="icon-align icon-stackoverflow"></i>
-		Stack Overflow</a>
-	<a class="connect-button ui button positive" name="steam">
-		<i class="icon-align icon-steam2"></i>
-		Steam
-	</a>
-	<a class="connect-button ui button positive" name="tumblr">
-		<i class="icon-align icon-tumblr"></i>
-		tumblr
-	</a>
-	<a class="connect-button ui button positive" name="viemo">
-		<i class="icon-align icon-vimeo"></i>
-		Viemo
-	</a>
-
+<div class="grouping">
+	<div class="bigger">Options</div>
 	<div>
-		<label>Logged in:</label>
-		<select class="full-width" name="logged-in-backend"></select>
+		<div class="bold">Account name:</div>
+		<div><input type="text" name="account_name" value="{{ form.first_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.account_name.errors }}</div>
+		<div class="bold">Login name:</div>
+		<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.login_name.errors }}</div>
+		<div class="bold">API key:</div>
+		<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" placeholder="XXXX-XXXX-XXXX-XXXX"/></div>
+		<div>{{ form.api_key.errors }}</div>
+	</div>
+</div>
+{% endblock %}
 
-		<div>
-			<label>Access token:</label>
-			<input class="full-width" name="access_token" type="text" value=""
-				   placeholder="OAuth1 or OAuth2 access token">
-		</div>
-
-		<div>
-			<label>Access token secret:</label>
-			<input class="full-width" name="access_token_secret" type="text" value=""
-				   placeholder="OAuth1 access token secret">
-		</div>
-
-		<a class="connect-button ui button positive" name="ajax-login" href="#">Ajax Login</a>
-
-		<input class="full-width" name="api-call-url" type="text"
-			   value="https://graph.facebook.com/v2.1/me?fields=friends"/>
-		<a class="connect-button ui button positive" name="ajax-call" href="#">Ajax API Call</a>
+{% block right %}
+<div class="grouping" style="padding-left:20px">
+	<div>Permissions</div>
+	<div>
+		<label class="block"><input type="checkbox" /> Friends list</label>
+		<label class="block"><input type="checkbox" /> Search history</label>
+		<label class="block"><input type="checkbox" /> Enemies list</label>
+		<label class="block"><input type="checkbox" /> Favorited</label>
 	</div>
 </div>
 {% endblock %}

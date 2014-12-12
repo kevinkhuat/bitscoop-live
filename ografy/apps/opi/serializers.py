@@ -41,7 +41,7 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
         fields = ('id', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified')
 
 
-class DataSerializer(mongo_serializers.MongoEngineModelSerializer):
-    class Meta:
-        model = Data
-        depth = 2
+# class DataSerializer(mongo_serializers.MongoEngineModelSerializer):
+#     class Meta:
+#         model = Data
+#         depth = 2

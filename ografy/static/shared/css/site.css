@@ -49,10 +49,10 @@ input {
 
 	padding: 0.4em;
 	border-radius: 0.1em;
-	border: 1px solid #999;
+	border: 1px solid #BBB;
 	outline: none;
 
-	margin: 0.4em;
+	margin: 0.4em 0em;
 }
 input:focus {
 	-moz-box-shadow: 0 0 6px -1px #0E9D58;
@@ -60,9 +60,7 @@ input:focus {
 	box-shadow: 0 0 6px -1px #0E9D58;
 }
 
-
 main { padding: 25px 0; }
-
 
 header { padding: 5px 0; }
 header nav {
@@ -157,9 +155,26 @@ form.block > input,
 form.block > label { display: block; }
 
 
-/* FIXME: Make better. */
+
+body.full {
+	overflow: hidden;
+}
+
 body.full .lockwidth {
-	width: 100%;
+	width: auto !important;
 	max-width: none;
 	min-width: 0;
+}
+
+body.full > header {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+body.full > main {
+	overflow-y: auto;
+}
+
+body.full > footer {
+	display: none;
 }
