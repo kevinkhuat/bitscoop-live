@@ -8,11 +8,6 @@ from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
 class DataSerializer(mongo_serializers.DocumentSerializer):
-    def get_validators(self):
-        return []
-
-    # def to_representation(self, instance):
-    #     return jsonpickle.decode(Data.to_json(instance))
 
     def to_internal_value(self, data):
         return Data.from_json(data)
@@ -23,14 +18,6 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
-    def get_validators(self):
-        return []
-
-    def get_fields(self):
-        return {}
-
-    def to_representation(self, instance):
-        return jsonpickle.decode(Event.to_json(instance))
 
     def to_internal_value(self, data):
         return Event.from_json(data)
@@ -42,15 +29,6 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
-    def get_validators(self):
-        return []
-
-    def get_fields(self):
-        return {}
-
-    def to_representation(self, instance):
-        return jsonpickle.decode(Event.to_json(instance))
-
     def to_internal_value(self, data):
         return Message.from_json(data)
 
@@ -76,14 +54,6 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
-    def get_validators(self):
-        return []
-
-    def get_fields(self):
-        return {}
-
-    def to_representation(self, instance):
-        return jsonpickle.decode(Event.to_json(instance))
 
     def to_internal_value(self, data):
         return Event.from_json(data)
