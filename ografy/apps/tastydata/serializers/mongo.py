@@ -115,12 +115,21 @@ class DocumentSerializer(serializers.ModelSerializer):
         try:
             return self._field_mapping[model_field.__class__](**kwargs)
         except KeyError:
+            # TODO: Fix to field
             return fields.CharField(**kwargs)
 
     def get_fields(self):
         return_dict = {}
 
         for field in self.Meta.fields:
+
+            # TODO: Dont think this does anything
+            dynamic_fields = {}
+            if hasattr(field, '_dynamic'):
+                for key, value in field._dynamic_fields.items():
+                    dynamic_fields[key] = self.get_field(value)
+                return_dict[field] = dynamic_fields
+
             model_field = getattr(self.Meta.model, field)
             # setattr(object,attrname,value)
             return_dict[field] = self.get_field(model_field)
@@ -140,15 +149,18 @@ class DocumentSerializer(serializers.ModelSerializer):
         for field_name in self.fields.keys():
             mapped_field = self.fields[field_name]
 
+            # FIXME: Make less awful
             if isinstance(instance[field_name], bson.ObjectId):
                 ret[field_name] = jsonpickle.decode(bson_dumps(instance[field_name]))['$oid']
 
             elif isinstance(mapped_field, fields.Field):
 
-                try:
-                    ret[field_name] = mapped_field.to_representation(instance[field_name])
-                except NotImplementedError:
+                if type(mapped_field) == fields.Field:
+                    # ret[field_name] = jsonpickle.decode(Document.to_json(instance[field_name]))
                     ret[field_name] = None
+                else:
+                    ret[field_name] = mapped_field.to_representation(instance[field_name])
+
             else:
                 ret[field_name] = None
 
@@ -164,3 +176,10 @@ class DocumentSerializer(serializers.ModelSerializer):
     def data(self):
         self._data = self.to_representation(self.instance)
         return self._data
+
+    def get_dynamic_fields(self, obj):
+        dynamic_fields = {}
+        if obj is not None and obj._dynamic:
+            for key, value in obj._dynamic_fields.items():
+                dynamic_fields[key] = self.get_field(value)
+        return dynamic_fields
