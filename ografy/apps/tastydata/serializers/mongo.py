@@ -53,6 +53,25 @@ class DocumentSerializer(serializers.ModelSerializer):
         mongoengine.URLField: ['max_length'],
     }
 
+    @property
+    def data(self):
+        self._data = self.to_representation(self.instance)
+        return self._data
+
+    @property
+    def fields(self):
+        if not hasattr(self, '_fields'):
+            self._fields = self.get_fields()
+
+        return self._fields
+
+    def get_dynamic_fields(self, obj):
+        dynamic_fields = {}
+        if obj is not None and obj._dynamic:
+            for key, value in obj._dynamic_fields.items():
+                dynamic_fields[key] = self.get_field(value)
+        return dynamic_fields
+
     def _get_default_field_names(self, declared_fields, model_info):
         raise NotImplementedError
 
@@ -78,7 +97,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     def get_value(self, dictionary):
         raise NotImplementedError
 
-    def run_validation(self, data=fields.empty):
+    def run_validation(self, data=[]):
         raise NotImplementedError
 
     def to_internal_value(self, data):
@@ -136,13 +155,6 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         return return_dict
 
-    @property
-    def fields(self):
-        if not hasattr(self, '_fields'):
-            self._fields = self.get_fields()
-
-        return self._fields
-
     def to_representation(self, instance):
         ret = OrderedDict()
 
@@ -171,15 +183,3 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         raise NotImplementedError
-
-    @property
-    def data(self):
-        self._data = self.to_representation(self.instance)
-        return self._data
-
-    def get_dynamic_fields(self, obj):
-        dynamic_fields = {}
-        if obj is not None and obj._dynamic:
-            for key, value in obj._dynamic_fields.items():
-                dynamic_fields[key] = self.get_field(value)
-        return dynamic_fields
