@@ -1,5 +1,3 @@
-from ografy.apps.tastydata.serializers.mongo import create_object_id
-
 class BaseApi(object):
     @classmethod
     def delete(cls, val):

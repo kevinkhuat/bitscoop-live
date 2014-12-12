@@ -11,18 +11,15 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
     def get_validators(self):
         return []
 
-    def get_fields(self):
-        return {}
-
-    def to_representation(self, instance):
-        return jsonpickle.decode(Data.to_json(instance))
+    # def to_representation(self, instance):
+    #     return jsonpickle.decode(Data.to_json(instance))
 
     def to_internal_value(self, data):
         return Data.from_json(data)
 
     class Meta:
         model = Data
-        fields = ('_id', 'created', 'updated', 'data_blob')
+        fields = ('id', 'created', 'updated', 'data_blob')
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
@@ -40,7 +37,7 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
     class Meta:
         model = Event
-        fields = ('_id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime',
+        fields = ('id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime',
                   'location', 'data')
 
 
@@ -59,7 +56,7 @@ class MessageSerializer(mongo_serializers.DocumentSerializer):
 
     class Meta:
         model = Message
-        fields = ('_id', 'event', 'message_to', 'message_from', 'message_body')
+        fields = ('id', 'event', 'message_to', 'message_from', 'message_body')
 
 
 class ProviderSerializer(django_serializers.ModelSerializer):
@@ -75,7 +72,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Settings
-        fields = ('_id', 'created', 'updated', 'data_blob')
+        fields = ('id', 'created', 'updated', 'data_blob')
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):

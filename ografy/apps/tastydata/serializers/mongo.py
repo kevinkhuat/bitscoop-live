@@ -1,6 +1,10 @@
-import bson
 import jsonpickle
+import bson
 import mongoengine
+
+from collections import OrderedDict
+from django.db import models
+from django.forms import widgets
 from mongoengine import Document, fields as mongo_fields
 from rest_framework import fields, relations, serializers
 
@@ -78,8 +82,72 @@ class DocumentSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         raise NotImplementedError
 
+    def get_field(self, model_field):
+        kwargs = {}
+
+        # FIXME: Tuple silly error. Use sets, don't reinstantiate the set every time this function runs.
+
+        if model_field.__class__ in (mongoengine.ReferenceField, mongoengine.EmbeddedDocumentField,
+                                     mongoengine.ListField, mongoengine.DynamicField):
+            kwargs['model_field'] = model_field
+            kwargs['depth'] = self.opts.depth
+
+        if not model_field.__class__ == mongoengine.ObjectIdField:
+            kwargs['required'] = model_field.required
+
+        if model_field.__class__ == mongoengine.EmbeddedDocumentField:
+            kwargs['document_type'] = model_field.document_type
+
+        if model_field.default:
+            kwargs['required'] = False
+            kwargs['default'] = model_field.default
+
+        if model_field.__class__ == models.TextField:
+            kwargs['widget'] = widgets.Textarea
+
+        if model_field.__class__ in self._attribute_dict:
+            attributes =self._attribute_dict[model_field.__class__]
+            for attribute in attributes:
+                kwargs.update({attribute: getattr(model_field, attribute)})
+
+        try:
+            return self._field_mapping[model_field.__class__](**kwargs)
+        except KeyError:
+            return fields.CharField(**kwargs)
+
+    def get_fields(self):
+        return_dict = {}
+
+        for field in self.Meta.fields:
+            model_field = getattr(self.Meta.model, field)
+            # setattr(object,attrname,value)
+            return_dict[field] = self.get_field(model_field)
+
+        return return_dict
+
+    @property
+    def fields(self):
+        if not hasattr(self, '_fields'):
+            self._fields = self.get_fields()
+
+        return self._fields
+
     def to_representation(self, instance):
-        raise NotImplementedError
+        ret = OrderedDict()
+
+        model_serializer = super(serializers.ModelSerializer, self)
+
+        for field_name in self.fields.keys():
+            mapped_field = self.fields[field_name]
+            if isinstance(mapped_field, fields.Field):
+                try:
+                    ret[field_name] = mapped_field.to_representation(instance[field_name])
+                except NotImplementedError:
+                    ret[field_name] = None  # bson.ObjectId.to_json(instance[field_name])
+            else:
+                ret[field_name] = None
+
+        return ret
 
     def update(self, instance, validated_data):
         raise NotImplementedError
@@ -92,16 +160,41 @@ class DocumentSerializer(serializers.ModelSerializer):
         self._data = self.to_representation(self.instance)
         return self._data
 
-
-def get_serialized_dict(self, obj):
-    serialized_object = self.serialize(obj)
-    return jsonpickle.decode(serialized_object)
-
-
-def get_serialized_value(self, obj, key):
-    return self.get_serialized_dict(obj)[key]
-
-
-def create_object_id(id):
-    return bson.ObjectId(id)
-
+    # def get_dynamic_fields(self, obj):
+    #     dynamic_fields = {}
+    #     if obj is not None and obj._dynamic:
+    #         for key, value in obj._dynamic_fields.items():
+    #             dynamic_fields[key] = self.get_field(value)
+    #     return dynamic_fields
+    #
+    # def get_field(self, model_field):
+    #     kwargs = {}
+    #
+    #     # FIXME: Tuple silly error. Use sets, don't reinstantiate the set every time this function runs.
+    #     if model_field.__class__ in (mongoengine.ReferenceField, mongoengine.EmbeddedDocumentField, mongoengine.ListField, mongoengine.DynamicField):
+    #         kwargs['model_field'] = model_field
+    #         kwargs['depth'] = self.opts.depth
+    #
+    #     if not model_field.__class__ == mongoengine.ObjectIdField:
+    #         kwargs['required'] = model_field.required
+    #
+    #     if model_field.__class__ == mongoengine.EmbeddedDocumentField:
+    #         kwargs['document_type'] = model_field.document_type
+    #
+    #     if model_field.default:
+    #         kwargs['required'] = False
+    #         kwargs['default'] = model_field.default
+    #
+    #     if model_field.__class__ == models.TextField:
+    #         kwargs['widget'] = widgets.Textarea
+    #
+    #     if model_field.__class__ in self._attribute_dict:
+    #         attributes = self._attribute_dict[model_field.__class__]
+    #         for attribute in attributes:
+    #             kwargs.update({attribute: getattr(model_field, attribute)})
+    #
+    #     try:
+    #         return self._field_mapping[model_field.__class__](**kwargs)
+    #     except KeyError:
+    #         # Defaults to WritableField if not in field mapping
+    #         return fields.WritableField(**kwargs)
