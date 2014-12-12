@@ -32,13 +32,6 @@ def profile(request, handle):
     })
 
 
-# Ografy Account specific login/logout
-def providers(request):
-    return render(request, 'core/user/providers.html', {
-        # 'title': 'Ografy - {0}'.format(request.user.identifier),
-        # 'user': request.user
-    })
-
 def signals(request, pk):
     return render(request, 'core/user/signals.html', {
         # 'title': 'Ografy - {0}'.format(request.user.identifier),

@@ -89,7 +89,9 @@ footer {
 	border: 1px solid #7A7A7A;
 	box-shadow: 0 0 10px -3px #3A3A3A;
 }
+.bigger { font-size: 1.2em;}
 .block { display: block; }
+.bold { font-weight: bold !important; }
 .center { text-align: center !important; }
 .centered {
 	margin-left: auto !important;
@@ -101,6 +103,7 @@ footer {
 	max-width: 1200px;
 	min-width: 400px;
 }
+.no-pad { padding: 0px !important; }
 .padded { padding: 1rem; }
 
 
@@ -112,6 +115,45 @@ footer {
 .flex.stretch { align-items: stretch; }
 .flex.center { align-items: center; }
 .flex > .grow { flex: 1; }
+
+
+.grouping { margin-bottom: 20px; }
+.grouping > :first-child {
+	border: 1px solid #D8D8D8;
+	border-radius: 2px 2px 0 0;
+	font-weight: bold;
+	background-color: #EEE;
+	padding: 8px 15px;
+}
+.grouping > :last-child {
+	border: 1px solid #D8D8D8;
+	border-top: none;
+	padding: 10px;
+}
+
+
+
+ul.links {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+ul.links > li > a {
+	display: block;
+	padding: 8px 12px;
+	text-decoration: none;
+}
+ul.links > li > a:hover {
+	background-color: #0E9D58 !important;
+	color: #FFFFFF;
+}
+ul.links > li > a.active {
+	background-color: #12CC72;
+	color: #FFFFFF;
+}
+ul.links > li:not(:last-child) {
+	border-bottom: 1px solid #EAEAEA;
+}
 
 
 .bg.gray.darker {
@@ -156,8 +198,12 @@ form.block > label { display: block; }
 
 
 
+
+
 body.full {
 	overflow: hidden;
+	height: 100%;
+	min-height: 0;
 }
 
 body.full .lockwidth {
@@ -172,9 +218,13 @@ body.full > header {
 }
 
 body.full > main {
+	padding: 0;
+}
+
+body.full #content {
 	overflow-y: auto;
 }
 
 body.full > footer {
-	display: none;
+	/* display: none; */
 }

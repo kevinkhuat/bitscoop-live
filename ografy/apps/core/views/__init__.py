@@ -126,3 +126,10 @@ def start(request):
     return render(request, 'core/start.html', {
         'title': 'Ografy - Get Started'
     })
+
+
+def providers(request):
+    return render(request, 'core/providers.html', {
+        'title': 'Ografy - Providers',
+        'body_class': 'full'
+    })
