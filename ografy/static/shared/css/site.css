@@ -60,7 +60,9 @@ input:focus {
 	box-shadow: 0 0 6px -1px #0E9D58;
 }
 
-main { padding: 25px 0; }
+main {
+	padding: 25px 0;
+}
 
 header { padding: 5px 0; }
 header nav {
@@ -82,7 +84,11 @@ footer {
 }
 
 
-#logo > img { width: 40px; height: 40px; }
+#logo > img {
+	width: 40px; height: 40px;
+	position: relative;
+	top: 3px;
+}
 
 
 .backfill {
@@ -120,7 +126,7 @@ footer {
 .grouping { margin-bottom: 20px; }
 .grouping > :first-child {
 	border: 1px solid #D8D8D8;
-	border-radius: 2px 2px 0 0;
+	border-radius: 4px 4px 0 0;
 	font-weight: bold;
 	background-color: #EEE;
 	padding: 8px 15px;
@@ -138,16 +144,17 @@ ul.links {
 	margin: 0;
 	list-style-type: none;
 }
-ul.links > li > a {
+ul.links > li > * {
 	display: block;
 	padding: 8px 12px;
 	text-decoration: none;
+	cursor: pointer;
 }
-ul.links > li > a:hover {
+ul.links > li > :hover {
 	background-color: #0E9D58 !important;
 	color: #FFFFFF;
 }
-ul.links > li > a.active {
+ul.links > li > .active {
 	background-color: #12CC72;
 	color: #FFFFFF;
 }
@@ -181,10 +188,13 @@ ul.links > li:not(:last-child) {
 .bg.black.translucent { background-color: rgba(0, 0, 0, 0.8); }
 
 
-.bordered {
-	border-style: solid;
-	border-width: 0;
+.bg.green {
+	background-color: #0E9D58;
+	color: #FFF;
 }
+
+
+.bordered { border: 0 solid #CCC; }
 .bordered.top { border-top-width: 1px; }
 .bordered.right { border-right-width: 1px; }
 .bordered.bottom { border-bottom-width: 1px; }
@@ -223,8 +233,9 @@ body.full > main {
 
 body.full #content {
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 body.full > footer {
-	/* display: none; */
+	display: none;
 }

@@ -100,8 +100,7 @@ def index(request):
     else:
         template = 'core/index.html'
         context = {
-            'title': 'Ografy',
-            'content_class': 'no-vertical-pad'
+            'title': 'Ografy'
         }
 
     return render(request, template, context)
@@ -131,5 +130,6 @@ def start(request):
 def providers(request):
     return render(request, 'core/providers.html', {
         'title': 'Ografy - Providers',
-        'body_class': 'full'
+        'body_class': 'full',
+        'content_class': 'bordered left'
     })

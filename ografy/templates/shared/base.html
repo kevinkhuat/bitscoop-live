@@ -13,7 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
 
 		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>-->
 
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/javascript/semantic.min.js"></script>
@@ -23,8 +23,9 @@
 		{% endblock %}
 	</head>
 
-	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">{% block body %}
-		<header class="bg gray light bordered bottom">
+	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
+		{% block body %}
+		<header class="bg gray light bordered bottom {{ header_class }}">
 			<nav class="flex stretch lockwidth centered">
 				<div class="flex center grow">
 					{% block branding %}
@@ -32,7 +33,10 @@
 					{% endblock %}
 
 					{% block navlinks %}
+					{% if not request.user.is_authenticated %}
 					<a class="item" href="{% url 'core_start' %}">Get Started</a>
+					{% endif %}
+					<a class="item" href="{% url 'core_providers' %}">Providers</a>
 					<a class="item" href="http://blog.ografy.io" target="_blank">Blog</a>
 					{% endblock %}
 				</div>
@@ -50,19 +54,22 @@
 			</nav>
 		</header>
 
-		<main class="grow">{% block main %}
-			<div class="flex row lockwidth centered">
-				<aside id="left">{% block left %}{% endblock %}</aside>
-				<div id="content" class="grow">{% block content %}{% endblock %}</div>
-				<aside id="right">{% block right %}{% endblock %}</aside>
+		<main class="flex column grow {{ main_class }}">
+			{% block main %}
+			<div class="flex grow lockwidth centered">
+				<aside id="left" class="{{ left_class }}">{% block left %}{% endblock %}</aside>
+				<div id="content" class="grow {{ content_class }}">{% block content %}{% endblock %}</div>
+				<aside id="right" class="{{ right_class }}">{% block right %}{% endblock %}</aside>
 			</div>
-		{% endblock %}</main>
+			{% endblock %}
+		</main>
 
-		{% block footer %}<footer class="bg gray light bordered top">
+		<footer class="bg gray light bordered top {{ footer_class }}">
 			<div class="lockwidth centered center">
 				&copy 2014 Ografy, LLC.<br/>
 				<a href="{% url 'core_contact' %}">Contact Us</a>
 			</div>
-		</footer>{% endblock %}
-	{% endblock %}</body>
+		</footer>
+		{% endblock %}
+	</body>
 </html>
