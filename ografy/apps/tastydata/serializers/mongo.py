@@ -127,7 +127,31 @@ class DocumentSerializer(serializers.ModelSerializer):
         raise NotImplementedError
 
     def to_internal_value(self, data):
-        raise NotImplementedError
+        self._errors = {}
+        ret_data = {}
+
+        if data is not None:
+            if not isinstance(data, dict):
+                self._errors['non_field_errors'] = ['Invalid data']
+                return None
+
+            for field_name, field in self.fields.items():
+                field.bind(field_name=field_name, self=self)
+                try:
+                    field.to_internal_value(data, field_name, ret_data)
+                except ret_data as err:
+                    self._errors[field_name] = list(err.messages)
+
+            for key in data.keys():
+                if key not in ret_data:
+                    ret_data[key] = data[key]
+            if ret_data is not None:
+                ret_data = self.perform_validation(ret_data)
+        else:
+            self._errors['non_field_errors'] = ['No input provided']
+
+        if not self._errors:
+            return self.to_internal_value(ret_data)
 
     def get_field(self, model_field):
         kwargs = {}
@@ -207,24 +231,6 @@ class DocumentSerializer(serializers.ModelSerializer):
             if not getattr(mapped_field, 'write_only', False):
                 ret[field_name] = value
             ret[field_name] = mapped_field.to_representation(instance[field_name])
-
-        # for field_name in self.fields.keys():
-        #     mapped_field = self.fields[field_name]
-        #
-        #     # FIXME: Make less awful
-        #     if isinstance(instance[field_name], bson.ObjectId):
-        #         ret[field_name] = jsonpickle.decode(bson_dumps(instance[field_name]))['$oid']
-        #
-        #     elif isinstance(mapped_field, fields.Field):
-        #
-        #         if type(mapped_field) == fields.Field:
-        #             # ret[field_name] = jsonpickle.decode(Document.to_json(instance[field_name]))
-        #             ret[field_name] = None
-        #         else:
-        #             ret[field_name] = mapped_field.to_representation(instance[field_name])
-        #
-        #     else:
-        #         ret[field_name] = None
 
         return ret
 
