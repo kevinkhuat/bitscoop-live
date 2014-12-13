@@ -134,7 +134,7 @@ class ObjectIdField(MongoDocumentField):
     type_label = 'ObjectId'
 
     def to_representation(self, value):
-        return self.model_field.to_python(bson_loads({'$oid': value}))
+        return jsonpickle.decode(bson_dumps(value))['$oid']
 
     def to_internal_value(self, data):
-        return self.model_field.to_python(jsonpickle.decode(bson_dumps(data))['$oid'])
+        return self.model_field.to_python(bson_loads({'$oid': data}))

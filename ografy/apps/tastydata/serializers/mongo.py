@@ -2,6 +2,7 @@ import bson
 import jsonpickle
 import mongoengine
 import warnings
+import ografy.apps.tastydata.fields.mongo as mongo_fields
 
 from bson.json_util import dumps as bson_dumps, loads as bson_loads
 from collections import OrderedDict
@@ -10,7 +11,6 @@ from django.db import models
 from django.forms import widgets
 from mongoengine.base import BaseDocument
 from rest_framework import fields, relations, serializers
-from ografy.apps.tastydata.fields.mongo import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, ObjectIdField
 
 
 class DocumentSerializer(serializers.ModelSerializer):
@@ -37,17 +37,17 @@ class DocumentSerializer(serializers.ModelSerializer):
         mongoengine.BooleanField: fields.BooleanField,
         mongoengine.DateTimeField: fields.DateTimeField,
         mongoengine.DecimalField: fields.DecimalField,
-        mongoengine.DynamicField: DynamicField,
+        mongoengine.DynamicField: mongo_fields.DynamicField,
         mongoengine.EmailField: fields.EmailField,
-        mongoengine.EmbeddedDocumentField: EmbeddedDocumentField,
+        mongoengine.EmbeddedDocumentField:  mongo_fields.EmbeddedDocumentField,
         mongoengine.FileField: fields.FileField,
         mongoengine.FloatField: fields.FloatField,
         mongoengine.ImageField: fields.ImageField,
         mongoengine.IntField: fields.IntegerField,
-        mongoengine.ListField: ListField,
-        mongoengine.ObjectIdField: ObjectIdField,
-        mongoengine.ReferenceField: ReferenceField,
-        mongoengine.SortedListField: ListField,
+        mongoengine.ListField:  mongo_fields.ListField,
+        mongoengine.ObjectIdField:  mongo_fields.ObjectIdField,
+        mongoengine.ReferenceField:  mongo_fields.ReferenceField,
+        mongoengine.SortedListField:  mongo_fields.ListField,
         mongoengine.StringField: fields.CharField,
         mongoengine.URLField: fields.URLField,
         mongoengine.UUIDField: fields.CharField
@@ -66,7 +66,8 @@ class DocumentSerializer(serializers.ModelSerializer):
                           mongoengine.ListField,
                           mongoengine.SortedListField,
                           mongoengine.DynamicField,
-                          mongoengine.ObjectIdField)
+                          mongoengine.ObjectIdField,
+                          bson.ObjectId)
 
     @property
     def data(self):
@@ -184,7 +185,6 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = OrderedDict()
-        ret.fields = OrderedDict()
 
         #Dynamic Document Support
         dynamic_fields = self.get_dynamic_fields(instance)
@@ -206,7 +206,7 @@ class DocumentSerializer(serializers.ModelSerializer):
                 value = method(instance, value)
             if not getattr(mapped_field, 'write_only', False):
                 ret[field_name] = value
-            ret.fields[field_name] = mapped_field
+            ret[field_name] = mapped_field.to_representation(instance[field_name])
 
         # for field_name in self.fields.keys():
         #     mapped_field = self.fields[field_name]
