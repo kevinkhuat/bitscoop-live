@@ -1,16 +1,20 @@
 import bson
 import jsonpickle
 import mongoengine
+import warnings
 
 from bson.json_util import dumps as bson_dumps, loads as bson_loads
 from collections import OrderedDict
+from django.core.paginator import Page
 from django.db import models
 from django.forms import widgets
-from mongoengine import Document, fields as mongo_fields
+from mongoengine.base import BaseDocument
 from rest_framework import fields, relations, serializers
+from ografy.apps.tastydata.fields.mongo import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, ObjectIdField
 
 
 class DocumentSerializer(serializers.ModelSerializer):
+
     """
     A `DocumentSerializer` is just a regular `Serializer`, except that:
 
@@ -26,20 +30,24 @@ class DocumentSerializer(serializers.ModelSerializer):
     you need you should either declare the extra/differing fields explicitly on
     the serializer class, or simply use a `Serializer` class.
     """
+
+    _default_depth = 5
+
     _field_mapping = {
         mongoengine.BooleanField: fields.BooleanField,
         mongoengine.DateTimeField: fields.DateTimeField,
         mongoengine.DecimalField: fields.DecimalField,
-        mongoengine.DynamicField: mongo_fields.DynamicField,
+        mongoengine.DynamicField: DynamicField,
         mongoengine.EmailField: fields.EmailField,
-        mongoengine.EmbeddedDocumentField: mongo_fields.EmbeddedDocumentField,
+        mongoengine.EmbeddedDocumentField: EmbeddedDocumentField,
         mongoengine.FileField: fields.FileField,
         mongoengine.FloatField: fields.FloatField,
         mongoengine.ImageField: fields.ImageField,
         mongoengine.IntField: fields.IntegerField,
-        mongoengine.ListField: mongo_fields.ListField,
-        mongoengine.ObjectIdField: fields.Field,
-        mongoengine.ReferenceField: mongo_fields.ReferenceField,
+        mongoengine.ListField: ListField,
+        mongoengine.ObjectIdField: ObjectIdField,
+        mongoengine.ReferenceField: ReferenceField,
+        mongoengine.SortedListField: ListField,
         mongoengine.StringField: fields.CharField,
         mongoengine.URLField: fields.URLField,
         mongoengine.UUIDField: fields.CharField
@@ -53,9 +61,26 @@ class DocumentSerializer(serializers.ModelSerializer):
         mongoengine.URLField: ['max_length'],
     }
 
+    _custom_class_list = (mongoengine.ReferenceField,
+                          mongoengine.EmbeddedDocumentField,
+                          mongoengine.ListField,
+                          mongoengine.SortedListField,
+                          mongoengine.DynamicField,
+                          mongoengine.ObjectIdField)
+
     @property
     def data(self):
-        self._data = self.to_representation(self.instance)
+        """
+        Returns the serialized data on the serializer.
+        """
+        if self._data is None:
+            data = self.data
+
+            if self.many:
+                self._data = [self.to_representation(item) for item in data]
+            else:
+                self._data = self.to_representationtive(data)
+
         return self._data
 
     @property
@@ -108,20 +133,22 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         # FIXME: Tuple silly error. Use sets, don't reinstantiate the set every time this function runs.
 
-        if model_field.__class__ in (mongoengine.ReferenceField, mongoengine.EmbeddedDocumentField,
-                                     mongoengine.ListField, mongoengine.DynamicField):
+        if model_field.__class__ in self._custom_class_list:
             kwargs['model_field'] = model_field
-            kwargs['depth'] = self.opts.depth
+            if hasattr(self.Meta, 'depth'):
+                kwargs['depth'] = self.Meta.depth
+            else:
+                kwargs['depth'] = self._default_depth
 
         if not model_field.__class__ == mongoengine.ObjectIdField:
             kwargs['required'] = model_field.required
 
-        if model_field.__class__ == mongoengine.EmbeddedDocumentField:
-            kwargs['document_type'] = model_field.document_type
-
         if model_field.default:
             kwargs['required'] = False
             kwargs['default'] = model_field.default
+
+        if model_field.__class__ == mongoengine.EmbeddedDocumentField:
+            kwargs['document_type'] = model_field.document_type
 
         if model_field.__class__ == models.TextField:
             kwargs['widget'] = widgets.Textarea
@@ -157,24 +184,47 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = OrderedDict()
+        ret.fields = OrderedDict()
+
+        #Dynamic Document Support
+        dynamic_fields = self.get_dynamic_fields(instance)
+        all_fields = OrderedDict()
+        all_fields.update(self.fields)
+        all_fields.update(dynamic_fields)
 
         for field_name in self.fields.keys():
             mapped_field = self.fields[field_name]
+            if mapped_field.read_only and instance is None:
+                continue
 
-            # FIXME: Make less awful
-            if isinstance(instance[field_name], bson.ObjectId):
-                ret[field_name] = jsonpickle.decode(bson_dumps(instance[field_name]))['$oid']
+            # mapped_field.bind(field_name, self)
 
-            elif isinstance(mapped_field, fields.Field):
+            #Override value with transform_ methods
+            method = getattr(self, 'transform_%s' % field_name, None)
+            value = instance[field_name]
+            if callable(method):
+                value = method(instance, value)
+            if not getattr(mapped_field, 'write_only', False):
+                ret[field_name] = value
+            ret.fields[field_name] = mapped_field
 
-                if type(mapped_field) == fields.Field:
-                    # ret[field_name] = jsonpickle.decode(Document.to_json(instance[field_name]))
-                    ret[field_name] = None
-                else:
-                    ret[field_name] = mapped_field.to_representation(instance[field_name])
-
-            else:
-                ret[field_name] = None
+        # for field_name in self.fields.keys():
+        #     mapped_field = self.fields[field_name]
+        #
+        #     # FIXME: Make less awful
+        #     if isinstance(instance[field_name], bson.ObjectId):
+        #         ret[field_name] = jsonpickle.decode(bson_dumps(instance[field_name]))['$oid']
+        #
+        #     elif isinstance(mapped_field, fields.Field):
+        #
+        #         if type(mapped_field) == fields.Field:
+        #             # ret[field_name] = jsonpickle.decode(Document.to_json(instance[field_name]))
+        #             ret[field_name] = None
+        #         else:
+        #             ret[field_name] = mapped_field.to_representation(instance[field_name])
+        #
+        #     else:
+        #         ret[field_name] = None
 
         return ret
 
