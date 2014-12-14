@@ -1,37 +1,25 @@
-{% extends 'settings/base.html' %}
+{% extends 'core/settings/base.html' %}
+
 
 {% block content %}
-<h2>Update your personal information</h2>
-
-<form action="{% url 'core_settings_personal' %}" method="POST">
-	{% csrf_token %}
-	<div class="table grouping">
-		<div style="padding-bottom: 5px">
-			<div>Email:</div>
-			<div><input type="text" name="email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/></div>
-		</div>
-		<div>
-			<div></div>
-			<div>{{ form.email.errors }}</div>
-		</div>
-		<div style="padding-bottom: 5px">
-			<div>First Name:</div>
-			<div><input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></div>
-		</div>
-		<div>
-			<div></div>
-			<div>{{ form.first_name.errors }}</div>
-		</div>
-		<div style="padding-bottom: 5px">
-			<div>Last Name:</div>
-			<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></div>
-		</div>
-		<div>
-			<div></div>
-			<div>{{ form.last_name.errors }}</div>
-		</div>
-		<div>{{ form.non_field_errors }}</div>
+<div class="grouping">
+	<div class="bigger">Details</div>
+	<div>
+		<div class="bold">First name:</div>
+		<div><input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.first_name.errors }}</div>
+		<div class="bold">Last name:</div>
+		<div><input type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></div>
+		<div>{{ form.last_name.errors }}</div>
 	</div>
-	<input class="ui button positive" type="submit" value="Update" style="margin-top: 5px"/>
-</form>
+</div>
+
+<div class="grouping">
+	<div class="bigger">Contact</div>
+	<div>
+		<div class="bold">Email:</div>
+		<div><input type="text" name="email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/></div>
+		<div>{{ form.email.errors }}</div>
+	</div>
+</div>
 {% endblock %}

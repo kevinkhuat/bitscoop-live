@@ -1,0 +1,79 @@
+{% extends 'shared/dispatcher.html' %}
+{% load staticfiles %}
+
+
+{% block static %}
+{{ block.super }}
+<style type="text/css">
+	.signal-button {
+		display: inline-block;
+		background-color: #E0E0E0;
+
+		font-size: 1.5em;
+		font-weight: bold;
+
+		height: 200px; width: 200px;
+		padding: 10px; margin: 5px;
+
+		text-align: center;
+
+		text-decoration: none !important;
+
+		cursor: pointer;
+
+		-webkit-transition: width 1s ease;
+		transition: width 1s ease;
+	}
+
+	.signal-button > i {
+		position: relative;
+		top: 3px; left: -5px;
+	}
+
+	.item-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+
+	.menu-container {
+		background-color: #0E9D58;
+		color: #FFF;
+		padding: 15px;
+	}
+
+	.signal-button:hover { background-color: #D0D0D0; }
+</style>
+{% endblock %}
+
+
+{% block left %}
+<ul class="links">
+	<li><span>Media <i class="icon radio"></i></span></li>
+	<li><span>Personal Data <i class="icon radio"></i></span></li>
+	<li><span>Productivity <i class="icon radio"></i></span></li>
+	<li><span>Social Media <i class="icon radio"></i></span></li>
+	<li><span>Storage <i class="icon radio"></i></span></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div id="isotope-container">
+	<a class="signal-button" name="facebook"><i class="icon-facebook"></i> Facebook</a>
+	<a class="signal-button" name="twitter"><i class="icon-twitter"></i>Twitter</a>
+	<a class="signal-button" name="amazon">Amazon</a>
+	<a class="signal-button" name="dropbox"><i class="icon-dropbox"></i>Dropbox</a>
+	<a class="signal-button" name="fitbit">FitBit</a>
+	<a class="signal-button" name="foursquare"><i class="icon-foursquare2"></i>FourSquare</a>
+	<a class="signal-button" name="github"><i class="icon-github3"></i>GitHub</a>
+	<a class="signal-button" name="google"><i class="icon-googleplus"></i>Google+</a>
+	<a class="signal-button" name="instagram"><i class="icon-instagram"></i>Instagram</a>
+	<a class="signal-button" name="linkedin"><i class="icon-linkedin"></i>LinkedIn</a>
+	<a class="signal-button" name="reddit"><i class="icon-reddit"></i>reddit</a>
+	<a class="signal-button" name="spotify"><i class="icon-spotify"></i>Spotify</a>
+	<a class="signal-button" name="stackoverflow"><i class="icon-stackoverflow"></i>Stack Overflow</a>
+	<a class="signal-button" name="steam"><i class="icon-steam2"></i>Steam</a>
+	<a class="signal-button" name="tumblr"><i class="icon-tumblr"></i>tumblr</a>
+	<a class="signal-button" name="vimeo"><i class="icon-vimeo"></i>Vimeo</a>
+</div>
+{% endblock %}

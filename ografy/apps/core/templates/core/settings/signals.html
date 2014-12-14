@@ -1,0 +1,63 @@
+{% extends 'core/settings/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<div class="grouping">
+	<div class="bigger">Your connections</div>
+	<div>
+		<div class="flex row">
+			<div class="grow">
+				<i class="icon facebook"></i>
+				<a href="/signals">Facebook 1</a>
+			</div>
+			<div class="ui toggle checkbox">
+				<input type="checkbox" id="signal-1">
+				<label for="signal-1"></label>
+			</div>
+			<div>
+				<i class="remove icon"></i>
+			</div>
+		</div>
+		<div class="flex row">
+			<div class="grow">
+				<i class="icon twitter"></i>
+				<a href="/signals">Twitter</a>
+			</div>
+			<div class="ui toggle checkbox">
+				<input type="checkbox" id="signal-2">
+				<label for="signal-2"></label>
+			</div>
+			<div>
+				<i class="remove icon"></i>
+			</div>
+		</div>
+		<div class="flex row">
+			<div class="grow">
+				<i class="icon facebook"></i>
+				<a href="/signals">Facebook 2</a>
+			</div>
+			<div class="ui toggle checkbox">
+				<input type="checkbox" id="signal-3">
+				<label for="signal-3"></label>
+			</div>
+			<div>
+				<i class="remove icon"></i>
+			</div>
+		</div>
+		<div class="flex row">
+			<div class="grow">
+				<i class="icon facebook"></i>
+				<a href="/signals">Facebook 3</a>
+			</div>
+			<div class="ui toggle checkbox">
+				<input type="checkbox" id="signal-4">
+				<label for="signal-4"></label>
+			</div>
+			<div>
+				<i class="remove icon"></i>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
