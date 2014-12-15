@@ -20,6 +20,8 @@
 
 		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
 		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+
+		<script type="text/javascript" src="{% static 'lib/isotope/isotope-pkgd-2.1.0.min.js' %}"></script>
 		{% endblock %}
 	</head>
 
@@ -54,7 +56,7 @@
 			</nav>
 		</header>
 
-		<main class="flex column grow {{ main_class }}">
+		<main class="flex grow {{ main_class }}">
 			{% block main %}
 			<div class="flex grow lockwidth centered">
 				<aside id="left" class="{{ left_class }}">{% block left %}{% endblock %}</aside>
