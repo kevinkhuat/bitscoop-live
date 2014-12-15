@@ -1,0 +1,269 @@
+{% extends 'core/settings/base.html' %}
+{% load staticfiles %}
+
+
+{% block static %}
+{{ block.super }}
+<style type="text/css">
+	#left {
+	max-width: 300px;
+	padding: 0 35px 0 0;
+	}
+
+	.ui.steps {
+	border-radius: 0;
+	}
+
+	#left .ui.vertical.steps .step {
+	padding: 15px 20px 15px 20px;
+	}
+
+	.ui.steps .step {
+	display: inline-block;
+	position: relative;
+	margin: 0;
+	vertical-align: top;
+	background: #fff;
+	color: rgba(0,0,0,.8);
+	box-shadow: 0 0 0 1px #d4d4d5;
+	border-radius: 0;
+	}
+
+	.ui.steps .step .icon {
+	float: left;
+	}
+
+	.ui.steps .step .title {
+	font-weight: bold;
+	}
+
+	.ui.steps .step .title-align {
+	vertical-align: middle;
+	}
+
+	.ui.steps .step .description {
+	font-weight: 400;
+	font-size: .8em;
+	color: rgba(0,0,0,.8);
+	margin-top: 5px;
+	margin-bottom: 5px;
+	}
+
+	.ui.steps .step:after {
+	position: absolute;
+	z-index: 2;
+	content: '';
+	top: 50%;
+	right: 0;
+	border: none;
+	background-color: #fff;
+	width: 1.5em;
+	height: 1.5em;
+	border-bottom: 1px solid rgba(39,41,43,.15);
+	border-right: 1px solid rgba(39,41,43,.15);
+	-webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+	-ms-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+	transform: translateY(-50%) translateX(50%) rotate(-45deg);
+	}
+
+	.ui.steps .step.active {
+	cursor: auto;
+	background: #f0f0f0;
+	}
+
+	.ui.ordered.steps .step.active:before, .ui.steps .active.step .icon {
+	color: #0E9D58;
+	}
+
+	.ui.steps .step.active .title {
+	color: #0E9D58;
+	}
+
+	.ui.steps .step.active:after {
+	background: #f0f0f0;
+	}
+
+	.ui.steps .disabled.step, .ui.steps .disabled.step .description, .ui.steps .disabled.step .title {
+	color: rgba(40,40,40,.3);
+	}
+
+	.permission-toggle {
+	padding: 5px 0 5px 0;
+	}
+</style>
+{% endblock %}
+
+{% block left %}
+<div class="ui vertical steps">
+	<div class="step">
+		<div class="content">
+			<div class="title-align">
+				<i class="truck icon"></i>
+
+				<div class="title">Connect Service</div>
+			</div>
+			<div class="description">Connect your external service account to your Ografy account</div>
+		</div>
+	</div>
+	<div class="active step">
+		<div class="content">
+			<div class="title-align">
+				<i class="payment icon"></i>
+
+				<div class="title">Authorize</div>
+			</div>
+			<div class="description">Authorize your account's connection to Ografy</div>
+		</div>
+	</div>
+	<div class="disabled step">
+		<div class="content">
+			<div class="title-align">
+				<i class="info icon"></i>
+
+				<div class="title">Verify settings</div>
+			</div>
+			<div class="description">Ensure that your connection settings are correct</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="step-connect">
+	<div class="grouping">
+		<div class="bigger">Service</div>
+		<div>
+			<span>This is some text telling you about the service and how awesome it is.</span>
+
+			<div class="form-connect">
+				<div class="center">
+					<input class="bold" type="button" value="Connect"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="grouping">
+		<div class="bigger">Use API key to connect</div>
+		<div>
+			<span>You can use your own API key to connect a service</span>
+			<input style="width: 100%" type="text" name="email" value="12345-abcdef-678910-ghijkl"/>
+
+			<div class="center">
+				<input class="bold" type="button" value="Verify"/>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="step-authorize">
+	<div class="grouping">
+		<div class="bigger">Authorize</div>
+		<div class="bold center">Please use the popped-up page to authorize this connection.</div>
+	</div>
+</div>
+<div class="step-verify">
+	<div class="grouping">
+		<div class="bigger">Verify Settings - <span class="service-name">Service Name</span></div>
+		<div class="verify-form">
+			<span>This is some text telling you about the service and how awesome it is.</span>
+
+			<div class="bold">Signal name:</div>
+			<input style="width: 100%" type="text" name="email" value="Service - dummy@dummy.dummy"/>
+		</div>
+	</div>
+	<div class="grouping">
+		<div class="bigger">Permissions</div>
+		<div>
+			<div name="permission-1" class="flex row permission-toggle">
+				<div class="grow">
+					<span>Email</span>
+				</div>
+				<div class="ui toggle checkbox">
+					<input type="checkbox" id="signal-1">
+					<label for="signal-1"></label>
+				</div>
+			</div>
+			<div name="permission-2" class="flex row permission-toggle">
+				<div class="grow">
+					<span>Contacts</span>
+				</div>
+				<div class="ui toggle checkbox">
+					<input type="checkbox" id="signal-2">
+					<label for="signal-2"></label>
+				</div>
+			</div>
+			<div name="permission-3" class="flex row permission-toggle">
+				<div class="grow">
+					<span>Phone numbers</span>
+				</div>
+				<div class="ui toggle checkbox">
+					<input type="checkbox" id="signal-3">
+					<label for="signal-3"></label>
+				</div>
+			</div>
+			<div name="permission-4" class="flex row permission-toggle">
+				<div class="grow">
+					<span>Blahblah</span>
+				</div>
+				<div class="ui toggle checkbox">
+					<input type="checkbox" id="signal-4">
+					<label for="signal-4"></label>
+				</div>
+			</div>
+			<div name="permission-5" class="flex row permission-toggle">
+				<div class="grow">
+					<span>Fudge</span>
+				</div>
+				<div class="ui toggle checkbox">
+					<input type="checkbox" id="signal-5">
+					<label for="signal-5"></label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="grouping">
+		<div class="bigger">Update frequency</div>
+		<div>
+			<div class="ui form">
+				<div class="grouped fields" id="frequency">
+					<label for="frequency">Select the frequency you would like this service to update:</label>
+					<div class="field">
+						<div class="ui radio checkbox checked">
+							<input type="radio" name="fruit" checked="">
+							<div class="ui message green compact">
+								<label>On demand - premium</label>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" name="fruit">
+							<label>Daily</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" name="fruit">
+							<label>Weekly</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" name="fruit">
+							<label>Manual</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" name="fruit">
+							<label>Once</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="center">
+		<input class="bold" type="button" value="Done"/>
+	</div>
+</div>
+{% endblock %}

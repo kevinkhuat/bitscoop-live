@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^signals/?$', settings_views.SignalView.as_view(), name='core_signals'),
     url(r'^signals/(?P<pk>[a-zA-Z0-9]+)/?$', user_views.signals, name='core_signals'),
 
+    url(r'^connect/?$', views.connect, name='core_connect'),
     url(r'^contact/?$', views.contact, name='core_contact'),
     url(r'^login/?$', views.LoginView.as_view(), name='core_login'),
     url(r'^logout/?$', views.logout, name='core_logout'),

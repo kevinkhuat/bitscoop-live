@@ -111,6 +111,11 @@ def contact(request):
         'title': 'Ografy - Contact'
     })
 
+def connect(request):
+    return render(request, 'core/connect.html', {
+        'title': 'Ografy - Connect',
+        'content_class': 'left'
+    })
 
 def logout(request):
     """
