@@ -1,3 +1,5 @@
+import jsonpickle
+from bson.json_util import dumps as bson_dumps, loads as bson_loads
 from bson.errors import InvalidId
 from django.core.exceptions import ValidationError
 from django.utils.encoding import smart_str
@@ -109,7 +111,7 @@ class EmbeddedDocumentField(MongoDocumentField):
         super(EmbeddedDocumentField, self).__init__(*args, **kwargs)
 
     def get_default_value(self):
-        return self.to_native(self.default())
+        return self.to_internal_value(self.default())
 
     def to_internal_value(self, data):
         if data is None:
@@ -126,3 +128,13 @@ class DynamicField(MongoDocumentField):
 
     def to_internal_value(self, data):
         return self.model_field.to_python(data)
+
+
+class ObjectIdField(MongoDocumentField):
+    type_label = 'ObjectId'
+
+    def to_representation(self, value):
+        return jsonpickle.decode(bson_dumps(value))['$oid']
+
+    def to_internal_value(self, data):
+        return self.model_field.to_python(bson_loads({'$oid': data}))
