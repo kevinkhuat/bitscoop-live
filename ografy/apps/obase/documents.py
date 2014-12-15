@@ -60,8 +60,6 @@ class Event(mongo.Document):
     data = mongo.ReferenceField(Data, reverse_delete_rule=mongo.CASCADE)
     location = mongo.PointField()
 
-    database_id = mongo.IntField()
-
     meta = {
         'indexes': [
             'user_id',
