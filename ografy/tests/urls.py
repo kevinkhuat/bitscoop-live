@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^demo', include('ografy.apps.demo.urls')),
     #url(r'^help', include('ografy.apps.helpr.urls')),
     url(r'^auth', include('ografy.apps.xauth.urls')),
-    url(r'^obase', include('ografy.apps.obase.urls')),
+    # url(r'^obase', include('ografy.apps.obase.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".
     # So this pattern will always match and forward to "core."
@@ -20,5 +20,5 @@ urlpatterns = patterns('',
     url(r'^', include('ografy.apps.core.urls')),
 
     url(r'^tests/auth', include('ografy.tests.test_xauth.urls')),
-    url(r'^tests/obase', include('ografy.tests.test_obase.urls')),
+    # url(r'^tests/obase', include('ografy.tests.test_obase.urls')),
 )

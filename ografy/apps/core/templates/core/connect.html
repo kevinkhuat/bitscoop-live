@@ -129,6 +129,20 @@
 		.hide {
 			display: none;
 		}
+
+		.link-button {
+			font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
+			font-weight: 300;
+			padding: 0.4em;
+			border-radius: 0.1em;
+			border: 1px solid #BBB;
+			outline: none;
+			margin: 0.4em 0em;
+		}
+
+		.link-button:link {
+			text-decoration: none;
+		}
 	</style>
 {% endblock %}
 
@@ -177,7 +191,12 @@
 				<div class="grouping-content">
 					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 				</div>
-				<input class="bold button-green" type="button" value="Connect"/>
+				<div style="margin: 0.7em 0">
+					<a class="bold button-green link-button" name="social-{{ provider.backend_name }}"
+						href="{% url "social:begin" backend=provider.backend_name %}">
+						Connect to {{ provider.name }}
+					</a>
+				</div>
 			</div>
 		</div>
 		<div class="grouping">

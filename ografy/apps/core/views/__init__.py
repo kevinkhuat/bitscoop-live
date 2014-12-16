@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout as auth_logout
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View
 
 from ografy.apps.core.forms import LoginForm, SignUpForm
@@ -128,11 +128,7 @@ def connect(request, pk):
 def connect_name(request, name):
     provider = core_api.ProviderApi.get(Q(backend_name=name)).get()
 
-    return render(request, 'core/connect.html', {
-        'title': 'Ografy - Connect to ' + provider.name,
-        'content_class': 'left',
-        'provider': provider
-    })
+    return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
 
 
 def logout(request):
@@ -154,7 +150,7 @@ def providers(request):
     providers = core_api.ProviderApi.get()
     signal_by_user = Q(user_id=request.user.id)
     signals = core_api.SignalApi.get(val=signal_by_user)
-    connect_url = reverse('core_connect')
+    connect_url = reverse('core_providers')
 
     # FIXME: Make the count happen in the DB
     for provider in providers:
