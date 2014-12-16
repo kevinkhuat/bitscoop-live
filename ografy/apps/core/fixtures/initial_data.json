@@ -5,7 +5,7 @@
       "name": "Facebook",
       "backend_name": "facebook",
       "auth_backend": "social.backends.facebook.FacebookOAuth2",
-      "tags": "Social"
+      "tags": "social"
     },
     "model": "core.provider"
   },
@@ -15,7 +15,7 @@
       "name": "Twitter",
       "backend_name": "twitter",
       "auth_backend": "social.backends.twitter.TwitterOAuth",
-      "tags": "Social"
+      "tags": "social"
     },
     "model": "core.provider"
   },
@@ -25,7 +25,7 @@
       "name": "Steam",
       "backend_name": "steam",
       "auth_backend": "social.backends.steam.SteamOpenId",
-      "tags": "Social"
+      "tags": "gaming media social"
     },
     "model": "core.provider"
   },
@@ -35,7 +35,7 @@
       "name": "Amazon",
       "backend_name": "amazon",
       "auth_backend": "social.backends.amazon.AmazonOAuth2",
-      "tags": "Social"
+      "tags": "development productivity"
     },
     "model": "core.provider"
   },
@@ -45,7 +45,7 @@
       "name": "Dropbox",
       "backend_name": "dropbox",
       "auth_backend": "social.backends.dropbox.DropboxOAuth2",
-      "tags": "Social"
+      "tags": "collaboration productivity"
     },
     "model": "core.provider"
   },
@@ -55,7 +55,7 @@
       "name": "FitBit",
       "backend_name": "fitbit",
       "auth_backend": "social.backends.fitbit.FitbitOAuth",
-      "tags": "Social"
+      "tags": "fitness health"
     },
     "model": "core.provider"
   },
@@ -65,7 +65,7 @@
       "name": "FourSquare",
       "backend_name": "foursquare",
       "auth_backend": "social.backends.foursquare.FoursquareOAuth2",
-      "tags": "Social"
+      "tags": "social"
     },
     "model": "core.provider"
   },
@@ -75,7 +75,7 @@
       "name": "GitHub",
       "backend_name": "github",
       "auth_backend": "social.backends.github.GithubOAuth2",
-      "tags": "Social"
+      "tags": "collaboration development productivity"
     },
     "model": "core.provider"
   },
@@ -85,7 +85,7 @@
       "name": "Google",
       "backend_name": "google",
       "auth_backend": "social.backends.google.GoogleOAuth2",
-      "tags": "Social"
+      "tags": "collaboration media productivity social"
     },
     "model": "core.provider"
   },
@@ -95,7 +95,7 @@
       "name": "Instagram",
       "backend_name": "instagram",
       "auth_backend": "social.backends.instagram.InstagramOAuth2",
-      "tags": "Social"
+      "tags": "media social"
     },
     "model": "core.provider"
   },
@@ -105,7 +105,7 @@
       "name": "LinkedIn",
       "backend_name": "linkedin",
       "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
-      "tags": "Social"
+      "tags": "productivity social"
     },
     "model": "core.provider"
   },
@@ -115,7 +115,7 @@
       "name": "reddit",
       "backend_name": "reddit",
       "auth_backend": "social.backends.reddit.RedditOAuth2",
-      "tags": "Social"
+      "tags": "media social"
     },
     "model": "core.provider"
   },
@@ -125,7 +125,7 @@
       "name": "Spotify",
       "backend_name": "spotify",
       "auth_backend": "social.backends.spotify.SpotifyOAuth2",
-      "tags": "Social"
+      "tags": "media music"
     },
     "model": "core.provider"
   },
@@ -135,7 +135,7 @@
       "name": "Stack Overflow",
       "backend_name": "stackoverflow",
       "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2",
-      "tags": "Social"
+      "tags": "collaboration development productivity social"
     },
     "model": "core.provider"
   },
@@ -145,7 +145,7 @@
       "name": "Tumblr",
       "backend_name": "tumblr",
       "auth_backend": "social.backends.tumblr.TumblrOAuth",
-      "tags": "Social"
+      "tags": "social"
     },
     "model": "core.provider"
   },
@@ -155,7 +155,7 @@
       "name": "Vimeo",
       "backend_name": "vimeo",
       "auth_backend": "social.backends.vimeo.VimeoOAuth1",
-      "tags": "Social"
+      "tags": "media video"
     },
     "model": "core.provider"
   }

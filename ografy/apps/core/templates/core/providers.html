@@ -4,6 +4,7 @@
 
 {% block static %}
 {{ block.super }}
+<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
 <style type="text/css">
 	.signal-button {
 		display: inline-block;
@@ -50,38 +51,41 @@
 
 	#isotope-container { padding: 5px; }
 
+	.provider-associated {
+		background-color: blue;
+	}
 </style>
 {% endblock %}
 
 
 {% block left %}
 <ul class="links" id="filters">
-	<li><span data-filter=".media">Media <i class="icon radio"></i></span></li>
-	<li><span data-filter=".personal">Personal Data <i class="icon radio"></i></span></li>
-	<li><span data-filter=".productivity">Productivity <i class="icon radio"></i></span></li>
-	<li><span data-filter=".social">Social Media <i class="icon radio"></i></span></li>
-	<li><span data-filter=".storage">Storage <i class="icon radio"></i></span></li>
-	<li><span data-filter=".bs">BS</span></li>
+	<li><span data-filter=".collaboration">Collaboration<i class="icon radio"></i></span></li>
+	<li><span data-filter=".development">Development<i class="icon radio"></i></span></li>
+	<li><span data-filter=".fitness">Fitness<i class="icon radio"></i></span></li>
+	<li><span data-filter=".gaming">Gaming<i class="icon radio"></i></span></li>
+	<li><span data-filter=".health">Health<i class="icon radio"></i></span></li>
+	<li><span data-filter=".media">Media<i class="icon radio"></i></span></li>
+	<li><span data-filter=".music">Music<i class="icon radio"></i></span></li>
+	<li><span data-filter=".productivity">Productivity<i class="icon radio"></i></span></li>
+	<li><span data-filter=".social">Social<i class="icon radio"></i></span></li>
+	<li><span data-filter=".video">Video<i class="icon radio"></i></span></li>
 </ul>
 {% endblock %}
 
 {% block content %}
 <div id="isotope-container">
-	<a class="signal-button social bs" name="facebook"><i class="icon-facebook"></i> Facebook</a>
-	<a class="signal-button social" name="twitter"><i class="icon-twitter"></i>Twitter</a>
-	<a class="signal-button productivity" name="amazon">Amazon</a>
-	<a class="signal-button storage" name="dropbox"><i class="icon-dropbox"></i>Dropbox</a>
-	<a class="signal-button personal" name="fitbit">FitBit</a>
-	<a class="signal-button social" name="foursquare"><i class="icon-foursquare2"></i>FourSquare</a>
-	<a class="signal-button productivity" name="github"><i class="icon-github3"></i>GitHub</a>
-	<a class="signal-button social" name="google"><i class="icon-googleplus"></i>Google+</a>
-	<a class="signal-button social" name="instagram"><i class="icon-instagram"></i>Instagram</a>
-	<a class="signal-button productivity" name="linkedin"><i class="icon-linkedin"></i>LinkedIn</a>
-	<a class="signal-button social" name="reddit"><i class="icon-reddit"></i>reddit</a>
-	<a class="signal-button media" name="spotify"><i class="icon-spotify"></i>Spotify</a>
-	<a class="signal-button productivity" name="stackoverflow"><i class="icon-stackoverflow"></i>Stack Overflow</a>
-	<a class="signal-button media" name="steam"><i class="icon-steam2"></i>Steam</a>
-	<a class="signal-button social" name="tumblr"><i class="icon-tumblr"></i>tumblr</a>
-	<a class="signal-button media" name="vimeo"><i class="icon-vimeo"></i>Vimeo</a>
+	{% for provider in providers %}
+	<a href="{{ connect_url }}#{{ provider.backend_name }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
+		<div>
+			<i class="icon-{{ provider.backend_name }}"></i> {{ provider.name }}
+			{% if provider.associated_signal %}
+			<div class="provider-count">
+				{{ provider.assoc_count }}
+			</div>
+			{% endif %}
+		</div>
+	</a>
+	{% endfor %}
 </div>
 {% endblock %}
