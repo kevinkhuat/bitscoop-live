@@ -1,7 +1,6 @@
 {% extends 'shared/dispatcher.html' %}
 {% load staticfiles %}
 
-
 {% block static %}
 {{ block.super }}
 <script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
@@ -31,18 +30,6 @@
 	.signal-button > i {
 		position: relative;
 		top: 3px; left: -5px;
-	}
-
-	.item-container {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-around;
-	}
-
-	.menu-container {
-		background-color: #0E9D58;
-		color: #FFF;
-		padding: 15px;
 	}
 
 	.signal-button:hover {
@@ -76,7 +63,7 @@
 {% block content %}
 <div id="isotope-container">
 	{% for provider in providers %}
-	<a href="{{ connect_url }}#{{ provider.backend_name }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
+	<a href="{{ connect_url }}/{{ provider.id }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
 		<div>
 			<i class="icon-{{ provider.backend_name }}"></i> {{ provider.name }}
 			{% if provider.associated_signal %}

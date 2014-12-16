@@ -114,11 +114,26 @@ def contact(request):
         'title': 'Ografy - Contact'
     })
 
-def connect(request):
+
+def connect(request, pk):
+    provider = core_api.ProviderApi.get(Q(id=pk)).get()
+
     return render(request, 'core/connect.html', {
-        'title': 'Ografy - Connect',
-        'content_class': 'left'
+        'title': 'Ografy - Connect to ' + provider.name,
+        'content_class': 'left',
+        'provider': provider
     })
+
+
+def connect_name(request, name):
+    provider = core_api.ProviderApi.get(Q(backend_name=name)).get()
+
+    return render(request, 'core/connect.html', {
+        'title': 'Ografy - Connect to ' + provider.name,
+        'content_class': 'left',
+        'provider': provider
+    })
+
 
 def logout(request):
     """
