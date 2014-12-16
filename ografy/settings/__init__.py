@@ -20,19 +20,13 @@ ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '127.0.0.1:6379:0',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
-        },
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default',
     },
     'session': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '127.0.0.1:6379:1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
-        },
-    }
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'session',
+    },
 }
 CACHE_MIDDLEWARE_ALIAS = 'default'
 # CACHE_MIDDLEWARE_KEY_PREFIX = ''
