@@ -39,6 +39,15 @@ DATABASES = {
 }
 
 
+###########
+# MONGODB #
+###########
+
+MONGODB_DBNAME = 'ografy_db'
+MONGODB_SERVERNAME = 'localhost'
+MONGODB_SERVERPORT = 27017
+
+
 #############
 # DEBUGGING #
 #############
