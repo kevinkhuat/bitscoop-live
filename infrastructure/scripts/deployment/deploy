@@ -1,0 +1,104 @@
+#!/bin/bash
+
+
+# Set this to the folder where the "ografy" folder lives.
+REPO=${HOME}/Development/Repositories
+# Set this to the directory where the tarballs should be created.
+PKG=${HOME}/Development/Packages
+# Set this to the directory where ssh keys are stored.
+KEYDIR=${HOME}/Keys/ssh
+
+# Set this to the production ssh key.
+PROD_KEY=${KEYDIR}/ografy.io.pem
+# Set this to the virtual ssh key.
+VIRT_KEY=${KEYDIR}/virtual.ografy.io.pem
+
+
+usage() {
+cat << EOF
+usage: ${0} options
+
+OPTIONS:
+   [-f]  A flag to indicate whether a full deploy will be performed or only infrastructure scripts.
+   [-c]  Name of connection configured in ~/.ssh/config.
+   [-l]  A flag to indicate whether to carry out a full SCP or just locally package files.
+EOF
+}
+
+
+###################
+# PARSE ARGUMENTS #
+###################
+
+while getopts ":hc:fl" OPTION; do
+    case ${OPTION} in
+        h)
+            usage
+            exit 0
+            ;;
+        c)
+            CONNECTION=${OPTARG}
+            ;;
+        f)
+            FULL=1
+            ;;
+        l)
+            LOCAL=1
+            ;;
+        ?)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+
+if [ -z ${LOCAL+x} ]
+then
+    if [ ! -f ${HOME}/.ssh/config ] || [ -z "`grep \"Host ${CONNECTION}\" ${HOME}/.ssh/config`" ]
+    then
+        echo "No configured host named \"${CONNECTION}\" found in \`~/.ssh/config\`."
+    fi
+
+    if [ -z ${CONNECTION+x} ]
+    then
+        echo "No host specified."
+        exit 1
+    fi
+fi
+
+
+if [ ${FULL+x} ]
+then
+    if [ -d ${REPO}/ografy/build ]
+    then
+        rm -vf ${PKG}/static.tar.gz
+        cd ${REPO}/ografy/build/static
+        tar -czvf ${PKG}/static.tar.gz --exclude .git --exclude .idea *
+    else
+        echo "Expected ografy/build/static folder with compiled static files. Aborting..."
+        exit 1
+    fi
+
+    rm -vf ${PKG}/ografy.tar.gz
+    cd ${REPO}
+    tar -czvf ${PKG}/ografy.tar.gz --exclude .git --exclude .idea --exclude __pycache__ --exclude *.pyc --exclude ografy/infrastructure --exclude ografy/build ografy
+fi
+
+rm -vf ${PKG}/infrastructure.tar.gz
+cd ${REPO}/ografy
+tar -czvf ${PKG}/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
+
+
+if [ -z ${LOCAL+x} ]
+then
+    echo "Deploying to \"${CONNECTION}\"..."
+    echo
+
+    if [ ${FULL+x} ]
+    then
+        scp ${PKG}/infrastructure.tar.gz ${PKG}/ografy.tar.gz ${PKG}/static.tar.gz ${CONNECTION}:~
+    else
+        scp ${PKG}/infrastructure.tar.gz ${CONNECTION}:~
+    fi
+fi
