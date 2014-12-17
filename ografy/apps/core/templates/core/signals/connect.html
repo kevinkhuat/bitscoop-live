@@ -194,16 +194,14 @@
 					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 				</div>
 				<div>
-					<input class="bold button-green"
-						   value="Connect"
-						   name="social-{{ provider.backend_name }}"
-						   type="button"
-						   onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}', '{{ provider.backend_name }}')"
+					<input class="bold button-green"  value="Connect"  name="social-{{ provider.backend_name }}"
+						   type="button" onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}',
+							'{{ provider.backend_name }}')"
 							/>
-					<!--<a class="bold button-green link-button" name="social-{{ provider.backend_name }}"-->
-						<!--href="{% url "social:begin" backend=provider.backend_name %}">-->
-						<!--Connect to {{ provider.name }}-->
-					<!--</a>-->
+					<a class="bold button-green link-button" name="social-{{ provider.backend_name }}"
+						href="{% url "social:begin" backend=provider.backend_name %}">
+						Connect to {{ provider.name }}
+					</a>
 				</div>
 			</div>
 		</div>

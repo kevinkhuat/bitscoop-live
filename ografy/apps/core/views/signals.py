@@ -10,16 +10,15 @@ from ografy.apps.core import api as core_api
 def authorize(request, pk=None):
     # Look up signals from API for current user where signal
     # is not verified or complete.
-    connected_backends = UserSocialAuth.objects.get(user=request.user)
+    unassociated_backends = UserSocialAuth.objects.get(user=request.user)
     unverified_signals = core_api.SignalApi.get(val=Q(user=request.user.id) | Q(verified=False)).get()
 
-    unassociated_backends = connected_backends
     backend_uid = None
 
     # If there is more than one unverified+incomplete signal,
     # delete all but the newest one.
     for signal in unverified_signals:
-        for backend in connected_backends:
+        for backend in unassociated_backends:
             if backend.uid == signal.psa_backend_uid:
                 unassociated_backends.remove(backend)
 

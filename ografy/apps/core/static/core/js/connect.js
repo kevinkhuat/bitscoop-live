@@ -14,7 +14,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
 var signalTemplate = {
 	'user': null,
 	'provider': null,
@@ -47,5 +46,5 @@ function createConnectSignal(providerId, defaultName, userId/*, psaUrl*/) {
 	newSignal.name = defaultName;
 	//Second, post new signal with given provider (goes to OPI)
 	postNewSignal(newSignal);
-		//When done, navigate to psaURL
+	//When done, navigate to psaURL
 }

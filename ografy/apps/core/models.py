@@ -46,14 +46,18 @@ class Signal(models.Model):
         name: The name of the linked service.
     """
     id = models.AutoField(primary_key=True)
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
-    psa_backend_uid = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    psa_backend_uid = models.CharField(max_length=100)
+
     verified = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
+
     permissions = models.TextField()
-    frequency = models.TextField()
+    frequency = models.IntegerField()
+
     created = models.DateTimeField(default=datetime.datetime.now)
     updated = models.DateTimeField(default=datetime.datetime.now)
 
