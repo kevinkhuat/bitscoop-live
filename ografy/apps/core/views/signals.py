@@ -1,0 +1,74 @@
+from django.core.urlresolvers import reverse
+from django.db.models import Q
+from django.shortcuts import render, HttpResponseRedirect
+
+from ografy.apps.core import api as core_api
+
+
+def authorize(request, pk=None):
+    if pk != None:
+        signal = core_api.SignalApi.get(Q(id=pk)).get()
+    else:
+        pass
+        # Look up signals from API for current user where signal is not verified or complete.
+        # If there is more than one unverified+incomplete signal, delete all but the newest one.
+        # signal = core_api.SignalApi.get(Q(user_id=request.user.id & is_verified__not = True)).get() //then, if it's a queryset, iterate through and find the most recent one
+
+    return render(request, 'core/signals/authorize.html', {
+        'title': 'Ografy - Authorize ' + signal.name + ' Connection',
+        'content_class': 'left',
+        'signal': signal
+    })
+
+
+def connect(request, pk):
+    provider = core_api.ProviderApi.get(Q(id=pk)).get()
+
+    return render(request, 'core/signals/connect.html', {
+        'title': 'Ografy - Connect to ' + provider.name,
+        'content_class': 'left',
+        'provider': provider,
+        'user_id': request.user.id,
+        'postback_url': reverse('core_authorize')
+    })
+
+
+def connect_name(request, name):
+    provider = core_api.ProviderApi.get(Q(backend_name=name)).get()
+
+    return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
+
+
+def providers(request):
+    providers = core_api.ProviderApi.get()
+    signal_by_user = Q(user_id=request.user.id)
+    signals = core_api.SignalApi.get(val=signal_by_user)
+    connect_url = reverse('core_providers')
+
+    # FIXME: Make the count happen in the DB
+    # for provider in providers:
+    #     for signal in signals:
+    #         if provider.id == signal.provider.id:
+    #             provider.associated_signal = True
+    #             if hasattr(provider, 'assoc_count'):
+    #                 provider.assoc_count += 1
+    #             else:
+    #                 provider.assoc_count = 1
+
+    return render(request, 'core/signals/providers.html', {
+        'title': 'Ografy - Providers',
+        'body_class': 'full',
+        'content_class': 'bordered left',
+        'providers': providers,
+        'connect_url': connect_url
+    })
+
+
+def verify(request, pk):
+    signal = core_api.SignalApi.get(Q(id=pk)).get()
+
+    return render(request, 'core/signals/verify.html', {
+        'title': 'Ografy - Verify ' + signal.name + ' Connection',
+        'content_class': 'left',
+        'signal': signal
+    })

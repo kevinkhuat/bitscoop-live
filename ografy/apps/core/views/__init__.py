@@ -1,12 +1,9 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout as auth_logout
-from django.core.urlresolvers import reverse
-from django.db.models import Q
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import View
 
 from ografy.apps.core.forms import LoginForm, SignUpForm
-from ografy.apps.core import api as core_api
 from ografy.util.response import redirect_by_name
 
 
@@ -115,22 +112,6 @@ def contact(request):
     })
 
 
-def connect(request, pk):
-    provider = core_api.ProviderApi.get(Q(id=pk)).get()
-
-    return render(request, 'core/connect.html', {
-        'title': 'Ografy - Connect to ' + provider.name,
-        'content_class': 'left',
-        'provider': provider
-    })
-
-
-def connect_name(request, name):
-    provider = core_api.ProviderApi.get(Q(backend_name=name)).get()
-
-    return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
-
-
 def logout(request):
     """
     User logout and redirection to the main page.
@@ -145,27 +126,3 @@ def start(request):
         'title': 'Ografy - Get Started'
     })
 
-
-def providers(request):
-    providers = core_api.ProviderApi.get()
-    signal_by_user = Q(user_id=request.user.id)
-    signals = core_api.SignalApi.get(val=signal_by_user)
-    connect_url = reverse('core_providers')
-
-    # FIXME: Make the count happen in the DB
-    for provider in providers:
-        for signal in signals:
-            if provider.id == signal.provider.id:
-                provider.associated_signal = True
-                if hasattr(provider, 'assoc_count'):
-                    provider.assoc_count += 1
-                else:
-                    provider.assoc_count = 1
-
-    return render(request, 'core/providers.html', {
-        'title': 'Ografy - Providers',
-        'body_class': 'full',
-        'content_class': 'bordered left',
-        'providers': providers,
-        'connect_url': connect_url
-    })

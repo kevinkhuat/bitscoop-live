@@ -1,0 +1,225 @@
+{% extends 'core/settings/base.html' %}
+{% load staticfiles %}
+
+
+{% block static %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'core/js/connect.js' %}"></script>
+
+	<style type="text/css">
+		#left {
+			max-width: 300px;
+			padding: 0 35px 0 0;
+		}
+
+		.ui.steps {
+			border-radius: 0;
+		}
+
+		#left .ui.vertical.steps .step {
+			padding: 15px 20px 15px 20px;
+		}
+
+		.ui.steps .step {
+			display: inline-block;
+			position: relative;
+			margin: 0;
+			vertical-align: top;
+			background: #fff;
+			color: rgba(0, 0, 0, .8);
+			box-shadow: 0 0 0 1px #d4d4d5;
+			border-radius: 0;
+		}
+
+		.ui.steps .step .icon {
+			float: left;
+		}
+
+		.ui.steps .step .title {
+			font-weight: bold;
+		}
+
+		.ui.steps .step .title-align {
+			vertical-align: middle;
+		}
+
+		.ui.steps .step .description {
+			font-weight: 400;
+			font-size: .8em;
+			color: rgba(0, 0, 0, .8);
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		.ui.steps .step:after {
+			position: absolute;
+			z-index: 2;
+			content: '';
+			top: 50%;
+			right: 0;
+			border: none;
+			background-color: #fff;
+			width: 1.5em;
+			height: 1.5em;
+			border-bottom: 1px solid rgba(39, 41, 43, .15);
+			border-right: 1px solid rgba(39, 41, 43, .15);
+			-webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+			-ms-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+			transform: translateY(-50%) translateX(50%) rotate(-45deg);
+		}
+
+		.ui.steps .step.active {
+			cursor: auto;
+			background: #f0f0f0;
+		}
+
+		.ui.ordered.steps .step.active:before, .ui.steps .active.step .icon {
+			color: #0E9D58;
+		}
+
+		.ui.steps .step.active .title {
+			color: #0E9D58;
+		}
+
+		.ui.steps .step.active:after {
+			background: #f0f0f0;
+		}
+
+		.ui.steps .disabled.step, .ui.steps .disabled.step .description, .ui.steps .disabled.step .title {
+			color: rgba(40, 40, 40, .3);
+		}
+
+		.permission-toggle {
+			padding: 5px 0 5px 0;
+		}
+
+		.grouping-content {
+			padding: 10px 0 10px 0;
+		}
+
+		.green-big {
+			color: #5BBD72;
+			padding: 30px 0 30px 0 !important;
+			width: 70%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.button-green {
+			background-color: #5BBD72;
+			color: #FFFFFF;
+		}
+
+		.premium-message {
+			background-color: #5BBD72;
+			color: #FFFFFF !important;
+			padding: 15px 15px 15px 30px;
+		}
+
+		.ui.radio.checkbox label:before {
+			margin: 0 0 0 10px;
+		}
+
+		.ui.radio.checkbox .premium-message::before {
+			margin: 15px 0 0 10px;
+		}
+
+		.text-input-width {
+			width: 400px;
+		}
+
+		.hide {
+			display: none;
+		}
+
+		.link-button {
+			font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
+			font-weight: 300;
+			padding: 0.4em;
+			border-radius: 0.1em;
+			border: 1px solid #BBB;
+			outline: none;
+			margin: 0.4em 0em;
+		}
+
+		.link-button:link {
+			text-decoration: none;
+		}
+	</style>
+{% endblock %}
+
+{% block left %}
+	<div class="ui vertical steps">
+		<div class="active step">
+			<div class="content">
+				<div class="title-align">
+					<i class="block layout icon"></i>
+
+					<div class="title">Connect to {{ provider.name }}</div>
+				</div>
+				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+			</div>
+		</div>
+		<div class="disabled step">
+			<div class="content">
+				<div class="title-align">
+					<i class="certificate icon"></i>
+
+					<div class="title">Authorize Access</div>
+				</div>
+				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+			</div>
+		</div>
+		<div class="disabled step">
+			<div class="content">
+				<div class="title-align">
+					<i class="checkmark icon"></i>
+
+					<div class="title">Verify Settings</div>
+				</div>
+				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="step-connect">
+		<div class="grouping">
+			<div class="bigger">Connect to {{ provider.name }}</div>
+			<div>
+				<span>Connect your {{ provider.name }} account to Ografy</span>
+
+				<div class="grouping-content">
+					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
+				</div>
+				<div>
+					<input class="bold button-green"
+						   value="Connect"
+						   name="social-{{ provider.backend_name }}"
+						   type="button"
+						   onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}', '{{ provider.backend_name }}')"
+							/>
+					<!--<a class="bold button-green link-button" name="social-{{ provider.backend_name }}"-->
+						<!--href="{% url "social:begin" backend=provider.backend_name %}">-->
+						<!--Connect to {{ provider.name }}-->
+					<!--</a>-->
+				</div>
+			</div>
+		</div>
+		<div class="grouping">
+			<div class="bigger">Use API key to connect</div>
+			<div>
+				<span>Connect to {{ provider.name }} with your own API key</span>
+
+				<div class="grouping-content">
+					<span>Details about how to connect to {{ provider.name }} with your API key</span>
+				</div>
+				<form>
+					<input class="text-input-width" type="text" name="email" value="12345-abcdef-678910-ghijkl"/>
+					<input class="bold button-green" type="button" value="Verify"/>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

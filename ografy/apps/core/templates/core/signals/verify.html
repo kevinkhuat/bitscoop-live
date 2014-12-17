@@ -148,7 +148,7 @@
 
 {% block left %}
 	<div class="ui vertical steps">
-		<div class="active step">
+		<div class="step">
 			<div class="content">
 				<div class="title-align">
 					<i class="block layout icon"></i>
@@ -158,7 +158,7 @@
 				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
 			</div>
 		</div>
-		<div class="disabled step">
+		<div class="step">
 			<div class="content">
 				<div class="title-align">
 					<i class="certificate icon"></i>
@@ -168,7 +168,7 @@
 				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
 			</div>
 		</div>
-		<div class="disabled step">
+		<div class="active step">
 			<div class="content">
 				<div class="title-align">
 					<i class="checkmark icon"></i>
@@ -182,48 +182,7 @@
 {% endblock %}
 
 {% block content %}
-	<div class="step-connect">
-		<div class="grouping">
-			<div class="bigger">Connect to {{ provider.name }}</div>
-			<div>
-				<span>Connect your {{ provider.name }} account to Ografy</span>
-
-				<div class="grouping-content">
-					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
-				</div>
-				<div style="margin: 0.7em 0">
-					<a class="bold button-green link-button" name="social-{{ provider.backend_name }}"
-						href="{% url "social:begin" backend=provider.backend_name %}">
-						Connect to {{ provider.name }}
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="grouping">
-			<div class="bigger">Use API key to connect</div>
-			<div>
-				<span>Connect to {{ provider.name }} with your own API key</span>
-
-				<div class="grouping-content">
-					<span>Details about how to connect to {{ provider.name }} with your API key</span>
-				</div>
-				<form>
-					<input class="text-input-width" type="text" name="email" value="12345-abcdef-678910-ghijkl"/>
-					<input class="bold button-green" type="button" value="Verify"/>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="step-authorize hide">
-		<div class="grouping">
-			<div class="bigger">Authorize Access to {{ provider.name }}</div>
-			<div>
-				<h2 class="bold green-big center">Please use the the pop-up to authorize your Ografy connection
-					with {{ provider.name }}</h2>
-			</div>
-		</div>
-	</div>
-	<div class="step-verify hide">
+	<div class="step-verify">
 		<div class="grouping">
 			<div class="bigger">Verify {{ provider.name }} Connection Settings</div>
 			<div>

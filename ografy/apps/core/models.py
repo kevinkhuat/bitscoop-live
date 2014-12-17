@@ -1,9 +1,12 @@
+import datetime
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
 
+import mongoengine as mongo
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core.managers import UserManager
@@ -49,6 +52,12 @@ class Signal(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
     name = models.CharField(max_length=100)
+    verified = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False)
+    permissions = mongo.SortedListField(mongo.BooleanField(default=False))
+    frequency = mongo.SortedListField(mongo.BooleanField(default=False))
+    created = models.DateTimeField(default=datetime.datetime.now)
+    updated = models.DateTimeField(default=datetime.datetime.now)
 
     def get_user_social_auth(self):
         return UserSocialAuth.get_social_auth(self.provider.backend_name, self.user.id)
