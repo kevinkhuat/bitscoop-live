@@ -6,9 +6,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
 
-import mongoengine as mongo
-from social.apps.django_app.default.models import UserSocialAuth
-
 from ografy.apps.core.managers import UserManager
 from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
@@ -51,27 +48,28 @@ class Signal(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
+    psa_backend_uid = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     verified = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
-    permissions = mongo.SortedListField(mongo.BooleanField(default=False))
-    frequency = mongo.SortedListField(mongo.BooleanField(default=False))
+    permissions = models.TextField()
+    frequency = models.TextField()
     created = models.DateTimeField(default=datetime.datetime.now)
     updated = models.DateTimeField(default=datetime.datetime.now)
 
-    def get_user_social_auth(self):
-        return UserSocialAuth.get_social_auth(self.provider.backend_name, self.user.id)
-
-    @classmethod
-    def get_social_auth_for_user(cls, user, backend_name):
-        return UserSocialAuth.get_social_auth(backend_name, user.id)
-
-    @classmethod
-    def get_social_auths_for_user(cls, user):
-        try:
-            return UserSocialAuth.objects.get(uid=user.id)
-        except UserSocialAuth.DoesNotExist:
-            return None
+    # def get_user_social_auth(self):
+    #     return UserSocialAuth.get_social_auth(self.provider, self.user.id)
+    #
+    # @classmethod
+    # def get_social_auth_for_user_by_name(cls, user, backend_name):
+    #     return UserSocialAuth.get_social_auth(backend_name, user.id)
+    #
+    # @classmethod
+    # def get_social_auths_for_user(cls, user):
+    #     try:
+    #         return UserSocialAuth.objects.get(user=user)
+    #     except UserSocialAuth.DoesNotExist:
+    #         return None
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.user.display_name)

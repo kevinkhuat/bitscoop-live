@@ -1,9 +1,7 @@
-import json
 import requests
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from django.template import Context
 from social.apps.django_app.utils import psa
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 
@@ -96,8 +94,6 @@ def call(request):
 
     except requests.RequestException:
         return HttpResponseBadRequest()
-
-    return Context()
 
 
 @login_required

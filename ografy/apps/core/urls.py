@@ -23,12 +23,14 @@ urlpatterns = patterns('',
     url(r'^contact/?$', views.contact, name='core_contact'),
     url(r'^login/?$', views.LoginView.as_view(), name='core_login'),
     url(r'^logout/?$', views.logout, name='core_logout'),
+
     url(r'^authorize/?$', signals_views.authorize, name='core_authorize'),
     url(r'^authorize/(?P<pk>[0-9]+)/?$', signals_views.authorize, name='core_authorize_id'),
     url(r'^connect/?$', signals_views.providers, name='core_providers'),
     url(r'^connect/(?P<pk>[0-9]+)/?$', signals_views.connect, name='core_connect'),
     url(r'^connect/(?P<name>[a-zA-Z]+)/?$', signals_views.connect_name, name='core_connect_name'),
     url(r'^verify/(?P<pk>[0-9]+)/?$', signals_views.verify, name='core_verify'),
+
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
 )
