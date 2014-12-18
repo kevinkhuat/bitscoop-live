@@ -86,14 +86,14 @@ def providers(request):
     connect_url = reverse('core_providers')
 
     # FIXME: Make the count happen in the DB
-    for provider in providers:
-        for signal in signals:
-            if provider.id == signal.provider.id:
-                provider.associated_signal = True
-                if hasattr(provider, 'assoc_count'):
-                    provider.assoc_count += 1
-                else:
-                    provider.assoc_count = 1
+    # for provider in providers:
+    #     for signal in signals:
+    #         if provider.id == signal.provider.id:
+    #             provider.associated_signal = True
+    #             if hasattr(provider, 'assoc_count'):
+    #                 provider.assoc_count += 1
+    #             else:
+    #                 provider.assoc_count = 1
 
     return render(request, 'core/signals/providers.html', {
         'title': 'Ografy - Providers',
