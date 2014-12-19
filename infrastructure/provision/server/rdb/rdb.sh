@@ -23,7 +23,7 @@ case "$1" in
 
         cd /home/vagrant
 
-		CUSR=vagrant
+        CUSR=vagrant
 
         # Create checkpoints folder.
         [ ! -d checkpoints ] && mkdir checkpoints
