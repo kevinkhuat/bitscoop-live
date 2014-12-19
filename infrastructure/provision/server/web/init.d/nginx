@@ -1,8 +1,14 @@
 #!/bin/sh
+#
+# nginx - Script that starts and stops the nginx daemon
+#
+# chkconfig: - 85 15
+# description: Nginx is an HTTP(S) server, HTTP(S) reverse proxy and IMAP/POP3 proxy server.
+# processname: nginx
 
 
-[ -f /etc/rc.d/init.d/functions ] && source /etc/rc.d/init.d/functions
-[ -f /etc/sysconfig/network ] && source /etc/sysconfig/network
+source /etc/rc.d/init.d/functions
+source /etc/sysconfig/network
 [ "$NETWORKING" = "no" ] && exit 0
 
 
