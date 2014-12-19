@@ -1,3 +1,4 @@
+{% extends 'core/main/base.html' %}
 {% load staticfiles %}
 <html lang="en-US">
 <head>
@@ -200,14 +201,11 @@
 </script>
 </head>
 <body onload="onload();">
+{% block content %}
 <div id="map-ui">
 	<ul id="filters"></ul>
 </div>
-<div id="map"></div>
-<div id="info">
-	<h2 class="uppercase-info">Take a Trip</h2>
-
-	<h3>Select a Marker</h3>
-</div>
+<div id="map" style="min-height: 500px"></div>
+{% endblock %}
 </body>
 </html>
