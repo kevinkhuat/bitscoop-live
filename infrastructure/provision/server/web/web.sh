@@ -11,14 +11,14 @@ case ${TYPE} in
         echo "Using aws settings for web config."
 
         CUSR=ec2-user
-        SETTINGS=${SETTINGS:="ografy.settings.production.sqlite"}
+        SETTINGS=${SETTINGS:="ografy.settings.production"}
         CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
         ;;
     virtual)
         echo "Using virtual settings for web config."
 
         CUSR=ec2-user
-        SETTINGS=${SETTINGS:="ografy.settings.virtual.sqlite"}
+        SETTINGS=${SETTINGS:="ografy.settings.virtual.local"}
         CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
         ;;
 esac
