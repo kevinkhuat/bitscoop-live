@@ -16,33 +16,6 @@ PROVIDER_TAGS =(
 	('Media', 'Media'),
 )
 
-class Friend(models.Model):
-	"""
-	Entity representing a User.
-
-	Attributes:
-		id: Entity identifier.
-		password: (Inherited) The salted and hashed password value.
-		email: Entity-specified email address.
-		handle: Entity-specified username.
-		first_name: Entity-specified given name.
-		last_name: Entity-specified inherited name.
-		last_login: The date of last login.
-		password_date: The date of the last password change.
-		is_verified: Flag indicating whether or not the account has been verified.
-		is_active: Flag indicating whether or not the account is active.
-	"""
-	id = models.AutoField(primary_key=True)
-	email = models.EmailField(max_length=256, unique=True, db_index=True)
-
-	first_name = models.CharField(max_length=30, blank=True)
-	last_name = models.CharField(max_length=30, blank=True)
-	last_contacted = models.DateTimeField(default=timezone.now, auto_now_add=True)
-
-	age = models.IntegerField()
-	USERNAME_FIELD = 'email'
-	objects = UserManager()
-
 class Provider(models.Model):
 	"""
 	Entity representing a Provider.

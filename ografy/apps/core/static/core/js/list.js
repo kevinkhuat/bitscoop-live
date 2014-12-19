@@ -9,7 +9,11 @@ $(document).ready(function() {
 	}
 
 	var $container = $('#isotope-container').isotope({
-	  // options
+	// options
+    itemSelector: '.iso-item',
+	masonry: {
+		columnWidth: 500
+	}
 	});
 
 	// filter items on button click
@@ -19,4 +23,9 @@ $(document).ready(function() {
 
 		$container.isotope({ filter: filterValue });
 	});
+
+	$('.iso-item').on('click', function(){
+	    $(this).toggleClass('big');
+	    $container.isotope( 'layout' );
+    });
 });

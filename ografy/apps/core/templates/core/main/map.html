@@ -1,0 +1,213 @@
+{% load staticfiles %}
+<html lang="en-US">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js"></script>
+<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css"/>
+
+<style type="text/css">
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	* {
+		font-family: 'Source Sans Pro',Helvetica,Arial,sans-serif;
+	}
+
+	#map {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+	}
+
+	#map-ui {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		z-index: 100;
+		padding: 10px;
+		background: rgba(255, 255, 255, 0.75);
+		border: 1px solid #fff;
+		border-radius: 3px;
+	}
+
+	#map-ui ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	#info {
+		background: rgba(255, 255, 255, 0.75);
+		border: 1px solid #fff;
+		position: absolute;
+		width: 260px;
+		top: 0px;
+		left: 0px;
+		z-index: 100;
+		padding: 10px;
+		border-radius: 3px;
+	}
+
+	#info > h2, h3, p {
+		padding: 0px;
+		margin: 0px auto;
+	}
+
+	#info > img {
+		display: block;
+		padding: 0px;
+		max-width: 240px;
+		margin: 10px auto;
+	}
+
+	input[type=checkbox].css-checkbox {
+		display: none;
+	}
+
+	input[type=checkbox].css-checkbox + label.css-label {
+		vertical-align: middle;
+		cursor: pointer;
+		display: inline-block;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		cursor: pointer;
+		width: 100%;
+		box-sizing: border-box;
+		vertical-align: middle;
+		outline: none;
+		border: none;
+		margin: 0.25em 0;
+		padding: 0.4em 1em;
+		line-height: 1;
+		font-weight: 700;
+		font-style: normal;
+		text-align: center;
+		text-decoration: none;
+		text-transform: uppercase;
+		color: #808080;
+		background-color: #FAFAFA;
+		background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
+		background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+		background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+		border-radius: 0.25em;
+		-webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.08) inset;
+		box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.08) inset;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-select: none;
+		user-select: none;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		-webkit-transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, -webkit-box-shadow 0.25s ease;
+		transition: opacity 0.25s ease, background-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	input[type=checkbox].css-checkbox:checked + label.css-label {
+		background-position: 0 -24px;
+		background-image: -moz-linear-gradient(top, #ebebeb, #fefefe);
+		background-image: -webkit-linear-gradient(top, #ebebeb, #fefefe);
+		background: #5BBD72;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, .2) inset;
+		color: #fff;
+		text-shadow: 0 0 2px #fff;
+	}
+
+	label.css-label {
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.uppercase-info {
+		text-transform: uppercase;
+	}
+</style>
+
+<script type="text/javascript" src="{% static 'core/js/map.js' %}">
+</script>
+
+<script type="text/javascript">
+	function onload() {
+		// Listen for individual marker clicks
+		map.featureLayer.on('mouseover', function (e) {
+			// Force the popup closed.
+			e.layer.closePopup();
+
+			var feature = e.layer.feature;
+			var info = '<h2 class="uppercase-info">' + feature.properties.title + '</h2>' +
+					'<h3>' + feature.properties['data-time'] + '</h3>' +
+					'<p>' + feature.properties.description + '</p>';
+
+			if (feature.properties['data-image-uri'] !== undefined) {
+				info += '<img src=' + feature.properties['data-image-uri'] + ' />';
+			}
+			document.getElementById('info').innerHTML = info;
+		});
+
+		for (var k in typesObj) types.push(k);
+
+		var checkboxes = [];
+		// create a filter interface
+		for (var i = 0; i < types.length; i++) {
+			// create an <li> list element for each type, and add an input checkbox
+			// and label inside
+			var li = filters.appendChild(document.createElement('li'));
+			var checkbox = li.appendChild(document.createElement('input'));
+			var label = li.appendChild(document.createElement('label'));
+			checkbox.type = 'checkbox';
+			checkbox.id = types[i];
+			checkbox.checked = false;
+			checkbox.classList.add("css-checkbox")
+			// create a label to the right of the checkbox with explanatory text
+			label.innerHTML = types[i];
+			label.classList.add("css-label")
+			label.setAttribute('for', types[i]);
+			// whenever a person clicks on this checkbox, call the update() function
+			// below
+			checkbox.addEventListener('change', update);
+			checkboxes.push(checkbox);
+		}
+
+		// this function is called whenever someone clicks on a checkbox and changes
+		// the selection of markers to be displayed
+		function update() {
+			var enabled = {};
+			// run through each checkbox and record whether it is checked. If it is,
+			// add it to the object of types to display, otherwise do not.
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
+			}
+			map.featureLayer.setFilter(function (feature) {
+				// if this symbol is in the list, return true. if not, return false.
+				// the 'in' operator in javascript does exactly that: given a string
+				// or number, it says if that is in a object
+				// 2 in { 2: true } // true
+				// 2 in { } // false
+				return (feature.properties['data-type'] in enabled);
+			});
+		}
+
+	}
+</script>
+</head>
+<body onload="onload();">
+<div id="map-ui">
+	<ul id="filters"></ul>
+</div>
+<div id="map"></div>
+<div id="info">
+	<h2 class="uppercase-info">Take a Trip</h2>
+
+	<h3>Select a Marker</h3>
+</div>
+</body>
+</html>

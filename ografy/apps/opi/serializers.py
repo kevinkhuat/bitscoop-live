@@ -26,7 +26,7 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
     class Meta:
         model = Event
         fields = ('id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime',
-                  'location', 'data')
+                  'location')
         depth = 5
 
 
