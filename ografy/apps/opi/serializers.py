@@ -54,7 +54,8 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Settings
-        fields = ('id', 'created', 'updated', 'data_blob')
+        fields = ('id', 'user', 'provider', 'name', 'psa_backend_uid', 'verified', 'complete',
+                  'permissions', 'frequency', 'created', 'updated')
         depth = 5
 
 
