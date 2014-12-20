@@ -80,20 +80,20 @@ def connect_name(request, name):
 
 
 def providers(request):
-    providers = core_api.ProviderApi.get()
+    providers = list(core_api.ProviderApi.get())
     signal_by_user = Q(user_id=request.user.id)
     signals = core_api.SignalApi.get(val=signal_by_user)
     connect_url = reverse('core_providers')
 
     # FIXME: Make the count happen in the DB
-    # for provider in providers:
-    #     for signal in signals:
-    #         if provider.id == signal.provider.id:
-    #             provider.associated_signal = True
-    #             if hasattr(provider, 'assoc_count'):
-    #                 provider.assoc_count += 1
-    #             else:
-    #                 provider.assoc_count = 1
+    for provider in providers:
+        for signal in signals:
+            if provider.id == signal.provider.id:
+                provider.associated_signal = True
+                if hasattr(provider, 'assoc_count'):
+                    provider.assoc_count += 1
+                else:
+                    provider.assoc_count = 1
 
     return render(request, 'core/signals/providers.html', {
         'title': 'Ografy - Providers',
