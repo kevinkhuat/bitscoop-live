@@ -9,7 +9,7 @@ exports.event = [
     'provider_id': 3,
     'provider_name': 'steam',
     'datetime': new Date('2014-12-01 19:54:06.860Z'),
-//    'data': new ObjectId("5480e6984b75752c225476a9"),
+    'data': new ObjectId("5480e6984b75752c225476a9"),
     'location' : [ -73.88, 40.78 ],
   },
   {

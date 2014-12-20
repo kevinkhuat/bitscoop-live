@@ -3,94 +3,59 @@
 
 {% block static %}
 {{ block.super }}
-
 <style type="text/css">
-	.iso-item {
-		background-color: #12CC72;
 
+	.information {
 		font-size: 1.5em;
-		font-weight: bold;
-		color: #444;
-
-		height: 100px;
-		width: 500px;
-
-		margin-top: auto;
-		margin-bottom: auto;
-
-		text-decoration: none !important;
-
-		cursor: pointer;
-
-		-webkit-transition: width .5s ease;
-		transition: width .5s ease;
-
-		border: 1px solid #D8D8D8;
-
-		font-size: 10pt;
-		display: inline-block;
-		vertical-align: middle;
+		position: absolute;
+		width: 100%;
+		height: 100%;
 	}
 
-	.iso-item.big {
-		height: 200px;
+	.information-top-half {
+		min-height: 250px;
+		height: 50%;
+		background-color: #96CB7F;
 	}
 
-	.iso-item > i {
-		position: relative;
-		top: 3px; left: -5px;
+	.information-bottom-half {
+		min-height: 250px;
 	}
 
-	.iso-item:hover {
-		background-color: #34DD28;
-	}
-
-	.avatar {
+	.information .avatar {
 		margin-right: 0.25em;
 		width: 100px;
 		height: 100px;
-		vertical-align: middle;
-	}
-
-	.search-nav {
-		height: 60px;
-		width: auto;
-		padding-left: 150px;
-		padding-top: 5px;
-	}
-
-	.search-selector {
-		background-color: #12CC72;
-
-		font-size: 1.5em;
-		font-weight: bold;
-		color: #444;
-
-		text-decoration: none !important;
-
-		cursor: pointer;
-
-		-webkit-transition: width .5s ease;
-		transition: width .5s ease;
-
-		height: 60px; width: 150px;
+		vertical-align: top;
 		display: inline-block;
-		text-align: center;
-
-		border-radius: 4px 4px 0 0;
-
-		padding: 0px 5px;
-		margin-right: 10px;
 	}
 
-	.search-selector:hover {
-		background-color: #0E9D58 !important;
-		color: #FFFFFF;
+	.information .information-upper-right {
+		display: inline-block;
+		horizontal-align: middle;
 	}
 
-	.search-bar {
-		display: inline;
+	.information .other-data {
 	}
+
+	.information .date {
+		display: inline-block;
+		width: 50%;
+	}
+
+	.information .location {
+		display: inline-block;
+	}
+
+	.information.invisible {
+		visibility: hidden;
+	}
+
+	.data-sidebar {
+		width: 25%;
+		position: relative;
+	}
+
 </style>
 {% endblock %}
 
@@ -102,71 +67,56 @@
 			{% block branding %}
 			<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
 			{% endblock %}
-
-			{% block navlinks %}
-			{% if not request.user.is_authenticated %}
-			<a class="item" href="{% url 'core_start' %}">Get Started</a>
-			{% endif %}
-			<a class="item" href="{% url 'core_providers' %}">Providers</a>
-			<a class="item" href="http://blog.ografy.io" target="_blank">Blog</a>
-			{% endblock %}
+			<a class="item" href="{% url 'core_main_list' %}"><i class="icon-list-unordered"></i></a>
+			<a class="item" href="{% url 'core_main_timeline' %}"><i class="icon-clock"></i></a>
+			<a class="item" href="{% url 'core_main_map' %}"><i class="icon-map22"></i></a>
+			<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
 		</div>
 
 		<div class="flex center">
-			{% if request.user.is_authenticated %}
 			<a class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
-			<a class="item" href="{% url 'core_settings_personal' %}">Settings</a>
-			<a class="item" href="{% url 'core_logout' %}">Logout</a>
-			{% else %}
-			<a class="item" href="{% url 'core_signup' %}">Sign Up</a>
-			<a class="item" href="{% url 'core_login' %}">Log In</a>
-			{% endif %}
+			<a class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<a class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
 		</div>
 	</nav>
 </header>
 
-<div class="flex search-nav">
-	<div class="search-selector active">
-		List
-	</div>
-	<div class="search-selector">
-		Timeline
-	</div>
-	<div class="search-selector">
-		Map
-	</div>
-	<div class="search-selector">
-		Chart
-	</div>
-	<div class="search-bar"><input type="text" placeholder="Enter search terms here"/></div>
-
-</div>
 
 <main class="flex grow {{ main_class }}">
 {% block main %}
-	<div class="flex grow lockwidth centered">
-	{% block left %}
-		<aside id="left" class="{{ left_class }}">
-			<div class="grouping">
-				<div class="bigger">{{ user.first_name }} {{ user.last_name }}</div>
-				<div style="padding: 0">
-					<ul class="links" id="filters">
-						<li><span data-filter=".call">Phone Calls</span></li>
-						<li><span data-filter=".media-view">Media Views</span></li>
-						<li><span data-filter=".message">Messages</span></li>
-						<li><span data-filter=".picture">Pictures</span></li>
-						<li><span data-filter=".transaction">Transactions</span></li>
-					</ul>
+	<div class="flex grow">
+		<aside id="left" class="">{% block left %}{% endblock %}</aside>
+		<div id="content" class="grow">{% block content %}{% endblock %}</div>
+		<aside id="right" class="data-sidebar">
+			{% block right %}
+			<div class="information invisible">
+				<div class="information-top-half">
+					<div class="avatar"></div>
+					<div class="information-upper-right">
+						<div class="type">Message</div>
+						<div class="key-data">
+							To: BlahBlah
+						</div>
+					</div>
+					<div class="other-data">
+						Message: Here's a lot of text to demonstrate that this scales with the amount present{{ event.data }}
+					</div>
+					<div class="information-date-location">
+						<div class="date">
+							Date: {{ event.created }}
+						</div>
+						<div class="location">
+							Location: {{ event.location }}
+						</div>
+					</div>
+				</div>
+				<div class="information-bottom-half" id="map">
+				MAP GOES HERE
 				</div>
 			</div>
+			{% endblock %}
 		</aside>
-	{% endblock %}
 
-	<div id="content" class="grow {{ content_class }}">
-		{% block content %}
-
-		{% endblock %}
-		</div>
 	</div>
 {% endblock %}
 </main>
