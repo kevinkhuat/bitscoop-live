@@ -8,56 +8,62 @@ from ografy.apps.core import api as core_api
 
 
 def authorize(request, pk=None):
-    # Look up signals from API for current user where signal
-    # is not verified or complete.
-    unassociated_backends = UserSocialAuth.objects.get(user=request.user)
-    unverified_signals = core_api.SignalApi.get(val=Q(user=request.user.id) | Q(verified=False)).get()
 
-    backend_uid = None
+    # TODO: Remove demo stuff
+    provider = core_api.ProviderApi.get(Q(id=pk)).get()
 
-    # If there is more than one unverified+incomplete signal,
-    # delete all but the newest one.
-    for signal in unverified_signals:
-        for backend in unassociated_backends:
-            if backend.uid == signal.psa_backend_uid:
-                unassociated_backends.remove(backend)
 
-    # Messed up backend
-    if len(unassociated_backends) == 0:
-        # TODO: Change to bulk delete
-        if len(unverified_signals) > 0:
-            for signal in unverified_signals:
-                core_api.SignalApi.delete(val=signal.id)
-        HttpResponseRedirect(reverse('core_providers'))
-    elif len(unassociated_backends) > 1:
-        for backend in unassociated_backends:
-            UserSocialAuth.objects.get(uid=backend.uid).delete()
-        HttpResponseRedirect(reverse('core_providers'))
-    else:
-        backend_uid = unassociated_backends[0].uid
-
-    # Messed up signals
-    if len(unverified_signals) == 0:
-        # TODO: Change to bulk delete
-        if len(unassociated_backends) > 0:
-            for backend in unassociated_backends:
-                UserSocialAuth.objects.get(uid=backend.uid)
-        HttpResponseRedirect(reverse('core_providers'))
-
-    if pk is None:
-        HttpResponseRedirect(reverse('core_providers'))
-    else:
-        signal = unverified_signals.get(val=Q(id=pk)).get()
-        if signal is None:
-            HttpResponseRedirect(reverse('core_providers'))
-
-        signal.psa_backend_uid = backend_uid
-        signal.verified = True
+    # # Look up signals from API for current user where signal
+    # # is not verified or complete.
+    # unassociated_backends = UserSocialAuth.objects.get(user=request.user)
+    # unverified_signals = core_api.SignalApi.get(val=Q(user=request.user.id) | Q(verified=False)).get()
+    #
+    # backend_uid = None
+    #
+    # # If there is more than one unverified+incomplete signal,
+    # # delete all but the newest one.
+    # for signal in unverified_signals:
+    #     for backend in unassociated_backends:
+    #         if backend.uid == signal.psa_backend_uid:
+    #             unassociated_backends.remove(backend)
+    #
+    # # Messed up backend
+    # if len(unassociated_backends) == 0:
+    #     # TODO: Change to bulk delete
+    #     if len(unverified_signals) > 0:
+    #         for signal in unverified_signals:
+    #             core_api.SignalApi.delete(val=signal.id)
+    #     HttpResponseRedirect(reverse('core_providers'))
+    # elif len(unassociated_backends) > 1:
+    #     for backend in unassociated_backends:
+    #         UserSocialAuth.objects.get(uid=backend.uid).delete()
+    #     HttpResponseRedirect(reverse('core_providers'))
+    # else:
+    #     backend_uid = unassociated_backends[0].uid
+    #
+    # # Messed up signals
+    # if len(unverified_signals) == 0:
+    #     # TODO: Change to bulk delete
+    #     if len(unassociated_backends) > 0:
+    #         for backend in unassociated_backends:
+    #             UserSocialAuth.objects.get(uid=backend.uid)
+    #     HttpResponseRedirect(reverse('core_providers'))
+    #
+    # if pk is None:
+    #     HttpResponseRedirect(reverse('core_providers'))
+    # else:
+    #     signal = unverified_signals.get(val=Q(id=pk)).get()
+    #     if signal is None:
+    #         HttpResponseRedirect(reverse('core_providers'))
+    #
+    #     signal.psa_backend_uid = backend_uid
+    #     signal.verified = True
 
     return render(request, 'core/signals/authorize.html', {
-        'title': 'Ografy - Authorize ' + signal.name + ' Connection',
+        'title': 'Ografy - Authorize ' + provider.name + ' Connection',  # Change to signal
         'content_class': 'left',
-        'signal': signal
+        # 'signal': signal,
+        'provider': provider
     })
 
 
@@ -105,10 +111,14 @@ def providers(request):
 
 
 def verify(request, pk):
-    signal = core_api.SignalApi.get(Q(id=pk)).get()
+    # TODO: Remove demo stuff
+    provider = core_api.ProviderApi.get(Q(id=pk)).get()
+
+    # signal = core_api.SignalApi.get(Q(id=pk)).get()
 
     return render(request, 'core/signals/verify.html', {
-        'title': 'Ografy - Verify ' + signal.name + ' Connection',
+        'title': 'Ografy - Verify ' + provider.name + ' Connection',  # Change to signal
         'content_class': 'left',
-        'signal': signal
+        # 'signal': signal,
+        'provider': provider
     })

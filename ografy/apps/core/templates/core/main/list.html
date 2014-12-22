@@ -2,101 +2,299 @@
 {% load staticfiles %}
 
 {% block static %}
-{{ block.super }}
-<script type="text/javascript" src="{% static 'core/js/list.js' %}"></script>
-<style type="text/css">
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'core/js/list.js' %}"></script>
+	<style type="text/css">
 
-	.list-title {
-		color: #000;
+		.list-title {
+			color: #000;
 
-		text-decoration: none !important;
-		font-size: 1.5em;
-		padding: 5px;
-	}
+			text-decoration: none !important;
+			font-size: 1em;
+			padding: 5px;
+		}
 
+		.list-item-name {
+			height: 20px;
+			display: inline-block;
+			width: 50%;
+		}
 
-	.list-item-name {
-		height: 50px;
-		display: inline-block;
-		width: 50%;
-	}
+		.list-item-date {
+			display: inline-block;
+			width: 25%;
+		}
 
-	.list-item-date {
-		display: inline-block;
-		width: 25%;
-	}
+		.list-item-location {
+			display: inline-block;
+		}
 
-	.list-item-location {
-		display: inline-block;
-	}
+		.list-item {
+			color: #000;
 
+			margin-top: auto;
+			margin-bottom: auto;
 
-	.list-item {
+			text-decoration: none !important;
 
-		color: #000;
+			cursor: pointer;
 
-		margin-top: auto;
-		margin-bottom: auto;
+			-webkit-transition: width .5s ease;
+			transition: width .5s ease;
 
-		text-decoration: none !important;
+			font-size: 10pt;
+			vertical-align: middle;
 
-		cursor: pointer;
+			font-size: 1em;
+			margin: 4px;
+			height: auto;
+			width: 100%;
+			padding: 5px;
+			background-color: #EEE;
+		}
 
-		-webkit-transition: width .5s ease;
-		transition: width .5s ease;
+		.list-item.big {
+			height: 200px;
+		}
 
-		font-size: 10pt;
-		vertical-align: middle;
+		.list-item:hover {
+			background-color: #488A2D;
+			color: #FFF;
+		}
 
-			font-size: 1.5em;
-		margin: 4px;
-		height: auto;
-		width: 100%;
-		padding: 5px;
-		background-color: #96CB7F;
-	}
-
-	.list-item.big {
-		height: 200px;
-	}
-
-	.list-item:hover {
-		background-color: blue;
-	}
-
-	.list-item.active {
-		background-color: #488A2D;
-	}
+		.list-item.active {
+			background-color: #CCC;
+		}
 
 
-</style>
+	</style>
 {% endblock %}
 
 {% block content %}
-<div id="main-list">
+	<div id="main-list">
 	<div class="list-title">
-		<div class="list-item-name">
+		<div class="list-item-name bold">
 			Name
 		</div>
-		<div class="list-item-date">
-			Date
+		<div class="list-item-date bold">
+			Date / Time
 		</div>
-		<div class="list-item-location">
+		<div class="list-item-location bold">
 			Location
 		</div>
 	</div>
-{% for event in events %}
-	<div class="list-item" id="{{ event.id }}">
+	{% for event in events %}
+		<div class="list-item" id="{{ event.id }}">
+			<div class="list-item-name">
+				{{ event.provider_name }}
+			</div>
+			<div class="list-item-date">
+				{{ event.created }}
+			</div>
+			<div class="list-item-location">
+				{{ event.location }}
+			</div>
+		</div>
+	{% endfor %}
+
+	<div class="list-item">
 		<div class="list-item-name">
-			{{ event.provider_name }}
+			Spotify
 		</div>
 		<div class="list-item-date">
-			{{ event.created }}
+			Nov. 19 2014 / 1:11 PM
 		</div>
 		<div class="list-item-location">
-			{{ event.location }}
+			San Diego, CA
 		</div>
 	</div>
-	{% endfor %}
+	<div class="list-item">
+		<div class="list-item-name">
+			Netflix
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Hulu
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Amazon
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Google+
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Netflix
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Hulu
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Amazon
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Google+
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
+	<div class="list-item">
+		<div class="list-item-name">
+			Spotify
+		</div>
+		<div class="list-item-date">
+			Nov. 19 2014 / 1:11 PM
+		</div>
+		<div class="list-item-location">
+			San Diego, CA
+		</div>
+	</div>
 </div>
 {% endblock %}

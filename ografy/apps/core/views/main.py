@@ -10,52 +10,55 @@ from ografy.apps.obase.documents import Event
 
 @login_required()
 def grid(request):
-	template = 'core/main/map.html'
+    template = 'core/main/map.html'
 
-	events = list(Event.objects(user_id=request.user.id))
+    events = list(Event.objects(user_id=request.user.id))
 
-	return render(request, template, {
-		'title': 'Ografy - {0}'.format(request.user.identifier),
-		'body_class': 'full',
-		'user': request.user,
-		'events': events
-	})
+    return render(request, template, {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'body_class': 'full',
+        'user': request.user,
+        'events': events
+    })
+
 
 @login_required()
 def list_view(request):
-	template = 'core/main/list.html'
+    template = 'core/main/list.html'
 
-	events = list(Event.objects(user_id=request.user.id))
+    events = list(Event.objects(user_id=request.user.id))
 
-	return render(request, template, {
-		'title': 'Ografy - {0}'.format(request.user.identifier),
-		'body_class': 'full',
-		'user': request.user,
-		'events': events
-	})
+    return render(request, template, {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'body_class': 'full',
+        'user': request.user,
+        'events': events
+    })
+
 
 @login_required()
 def map(request):
-	template = 'core/main/map.html'
+    template = 'core/main/map.html'
 
-	events = list(Event.objects(user_id=request.user.id))
+    events = list(Event.objects(user_id=request.user.id))
 
-	return render(request, template, {
-		'title': 'Ografy - {0}'.format(request.user.identifier),
-		'body_class': 'full',
-		'user': request.user,
-		'events': events
-	})
+    return render(request, template, {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'body_class': 'full',
+        'user': request.user,
+        'events': events
+    })
+
 
 @login_required()
 def timeline(request):
-	template = 'core/main/map.html'
+    template = 'core/main/map.html'
 
-	events = list(Event.objects(user_id=request.user.id))
+    events = list(Event.objects(user_id=request.user.id))
 
-	return render(request, template, {
-		'title': 'Ografy - {0}'.format(request.user.identifier),
-		'body_class': 'full',
-		'user': request.user,
-		'events': events
-	})
+    return render(request, template, {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'body_class': 'full',
+        'user': request.user,
+        'events': events
+    })
