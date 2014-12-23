@@ -3,75 +3,90 @@
 
 {% block static %}
 {{ block.super }}
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' rel='stylesheet' />
 <style type="text/css">
 
-	.information {
+	.list-detail-sidebar {
+		width: 300px;
+		position: relative;
+	}
+
+	.list-detail {
 		font-size: 1em;
 		position: absolute;
 		width: 100%;
 		height: 100%;
 	}
 
-	.information-top-half {
+	.list-detail-top-half {
+		min-height: 250px;
+		background-color: #EEE;
+		height: 50%;
+	}
+
+	.list-detail-bottom-half {
 		min-height: 250px;
 		height: 50%;
-		background-color: #DDD;
 	}
 
-	.information-bottom-half {
-		min-height: 250px;
+	.list-detail-main-label {
+		background-color: #488A2D;
+		color: #FFF;
+		width: 100%;
+		padding: 3px;
 	}
 
-	.information .avatar {
-		margin-right: 0.25em;
-		width: 100px;
-		height: 100px;
+	.list-detail-label {
+		background-color: #CCC;
+		width: 100%;
+		padding: 3px;
+		float: left;
+	}
+
+	.list-detail-content {
+		margin: 3px;
+	}
+
+	.list-detail-avatar {
+		display: inline-block;
 		vertical-align: top;
+		width: 30%;
+	}
+
+	.list-detail-avatar img {
+		width: 100%;
+		margin: 3px;
+	}
+
+	.list-detail-date-time {
 		display: inline-block;
+		width: 68%;
 	}
 
-	.information .information-upper-right {
-		display: inline-block;
-		horizontal-align: middle;
+	.list-detail-location {
 	}
 
-	.information .other-data {
+	.list-detail-data {
 	}
 
-	.information .date {
-		display: inline-block;
-		width: 50%;
+	#map {
+		height: 100%;
+		width: 100%;
 	}
-
-	.information .location {
-		display: inline-block;
-	}
-
-	.information.invisible {
-		visibility: hidden;
-	}
-
-	.data-sidebar {
-		width: 25%;
-		position: relative;
-	}
-
 </style>
 {% endblock %}
 
 {% block body %}
-	<header class="bg gray light bordered bottom {{ header_class }}">
-		<nav class="flex stretch lockwidth centered">
+	<header class="bg gray light bottom">
+		<nav class="flex stretch">
 			<div class="flex center grow">
-				{% block branding %}
 				<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
-				{% endblock %}
 				<a class="item" href="{% url 'core_main_list' %}"><i class="icon-list-unordered"></i></a>
 				<a class="item" href="{% url 'core_main_timeline' %}"><i class="icon-clock"></i></a>
 				<a class="item" href="{% url 'core_main_map' %}"><i class="icon-map22"></i></a>
 				<input class="search-bar grow" style="margin: 0 5px" type="text" placeholder="Enter search terms here"/>
 			</div>
-
 			<div class="flex center">
 				<a class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
 				<a class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
@@ -80,42 +95,75 @@
 		</nav>
 	</header>
 
-
-	<main class="flex grow {{ main_class }}">
+	<main class="flex grow">
 		{% block main %}
 		<div class="flex grow">
-			<aside id="left" class="">{% block left %}{% endblock %}</aside>
-			<div id="content" class="grow">{% block content %}{% endblock %}</div>
-			<aside id="right" class="data-sidebar">
+			<aside id="left" class="">
+				{% block left %}
+
+				{% endblock %}
+			</aside>
+			<div id="content" class="grow">
+				{% block content %}
+
+				{% endblock %}
+			</div>
+			<aside id="right" class="list-detail-sidebar">
 				{% block right %}
-				<div class="information invisible">
-					<div class="information-top-half">
-						<div class="avatar">PHOTO GOES HERE</div>
-						<div class="information-upper-right">
-							<div class="type"><b>Message</b></div>
-							<div style="margin: 5px 0;" class="key-data">
-								<b>To:</b> Sarah
+
+				<div class="list-detail">
+					<div class="list-detail-top-half">
+						<div class="center list-detail-main-label">
+							Message - To Sarah
+						</div>
+						<div class="list-detail-avatar">
+							<img src="{% static 'assets/logo_240.png' %}" alt="Avatar" />
+						</div>
+						<div class="list-detail-date-time">
+							<label class="center list-detail-label">Time</label>
+							<div class="center list-detail-content">
+								Dec. 5th 2014
+							</div>
+							<div class="center list-detail-content">
+								11:11 AM {{ event.created }}
 							</div>
 						</div>
-						<div style="margin: 5px 0;" class="other-data">
-							<b>Message:</b> Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
-						</div>
-						<div class="information-date-location">
-							<div style="margin: 5px 0;"class="date" {# {{ event.created }}#}>
-								<b>Date:</b> Time: 11:11 AM
+						<div class="list-detail-location">
+							<label class="center list-detail-label">Location</label>
+							<div class="center list-detail-content">
+								Anaheim, CA [-115.22, +22.48] {{ event.location }}
 							</div>
-							<div style="margin: 5px 0;"class="location" {#{{ event.location }}#}>
-								<b>Location:</b> Anaheim, CA [-115.22, +22.48]
+						</div>
+						<div class="list-detail-data">
+							<label class="center list-detail-label">Message Body</label>
+							<div class="list-detail-content">
+								Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
 							</div>
 						</div>
 					</div>
-					<div class="information-bottom-half" id="map">
-					MAP GOES HERE
+					<div class="list-detail-bottom-half">
+						<div id='map'></div>
 					</div>
 				</div>
+
 				{% endblock %}
 			</aside>
 		</div>
 		{% endblock %}
 	</main>
+
+
+<script type="application/javascript">
+	mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
+	var map = new mapboxgl.Map({
+	  container: 'map', // container id
+	  style: 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', //stylesheet location
+	  center: [40, -74.50], // starting position
+	  zoom: 9 // starting zoom
+	});
+
+{#	$('.list-detail-sidebar')#}
+{#		.sidebar('toggle')#}
+{#	;#}
+</script>
 {% endblock %}
