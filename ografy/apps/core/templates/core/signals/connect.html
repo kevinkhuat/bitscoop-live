@@ -7,11 +7,6 @@
 	<script type="text/javascript" src="{% static 'core/js/connect.js' %}"></script>
 
 	<style type="text/css">
-		#left {
-			max-width: 300px;
-			padding: 0 35px 0 0;
-		}
-
 		.ui.steps {
 			border-radius: 0;
 		}
@@ -95,14 +90,6 @@
 
 		.grouping-content {
 			padding: 10px 0 10px 0;
-		}
-
-		.green-big {
-			color: #5BBD72;
-			padding: 30px 0 30px 0 !important;
-			width: 70%;
-			margin-left: auto;
-			margin-right: auto;
 		}
 
 		.button-green {
@@ -194,10 +181,10 @@
 					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 				</div>
 				<div>
-{#					<input class="bold button-green"  value="Connect to {{ provider.name }}"  name="social-{{ provider.backend_name }}"#}
-{#						   type="button" onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}',#}
-{#							'{{ provider.backend_name }}')"#}
-{#							/>#}
+{#<input class="bold button-green"  value="Connect to {{ provider.name }}"  name="social-{{ provider.backend_name }}"#}
+{#type="button" onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}',#}
+{#'{{ provider.backend_name }}')"#}
+{#/>#}
 					<div style="margin: 5px 0 5px 0">
 						<a class="bold button-green link-button"  name="social-{{ provider.backend_name }}"
 							href="{% url "social:begin" backend=provider.backend_name %}">

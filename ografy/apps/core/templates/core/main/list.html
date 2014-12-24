@@ -10,21 +10,20 @@
 {#			overflow-y: hidden;#}
 {#		}#}
 
-		.main-list {
-			margin: 0 10px 0 0;
+{#		.main-list {#}
 {#			height: 100%;#}
-		}
+{#		}#}
 
 {#		.list-content {#}
-{#			overflow: auto;#}
+{#			overflow: scroll;#}
 {#		}#}
 
 		.list-title {
+			margin: 4px 10px 4px 4px;
 			height: 30px;
 			color: #000;
 			text-decoration: none !important;
 			font-size: 1em;
-			margin: 4px;
 			padding: 5px;
 		}
 
@@ -49,9 +48,9 @@
 		}
 
 		.list-item {
+			margin: 4px 10px 4px 4px;
 			width: 100%;
 			color: #000;
-			margin: 4px;
 			padding: 5px;
 			background-color: #EEE;
 			transition: width .5s ease;
@@ -91,277 +90,529 @@
 				Data
 			</div>
 		</div>
-	<div class="list-content">
-		{% for event in events %}
-			<div class="list-item" id="{{ event.id }}">
+		<div class="list-content">
+			{% for event in events %}
+				<div class="list-item" id="{{ event.id }}">
+					<div class="list-item-name">
+						{{ event.provider_name }}
+					</div>
+					<div class="list-item-date">
+						{{ event.created }}
+					</div>
+					<div class="list-item-location">
+						{{ event.location }}
+					</div>
+					<div class="list-item-data">
+						{{ event.data }}
+					</div>
+				</div>
+			{% endfor %}
+
+			<div class="list-item">
 				<div class="list-item-name">
-					{{ event.provider_name }}
+					Spotify
 				</div>
 				<div class="list-item-date">
-					{{ event.created }}
+					Nov. 19 2014 - 1:11 PM
 				</div>
 				<div class="list-item-location">
-					{{ event.location }}
+					San Diego, CA
 				</div>
 				<div class="list-item-data">
-					{{ event.data }}
+					Played Stairway to Hell
 				</div>
 			</div>
-		{% endfor %}
+			<div class="list-item">
+				<div class="list-item-name">
+					Netflix
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Hulu
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Amazon
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Google+
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Netflix
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Hulu
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Amazon
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Google+
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Netflix
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Hulu
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Amazon
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Google+
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
 
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Netflix
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Hulu
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Amazon
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Google+
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="list-item-name">
+					Spotify
+				</div>
+				<div class="list-item-date">
+					Nov. 19 2014 - 1:11 PM
+				</div>
+				<div class="list-item-location">
+					San Diego, CA
+				</div>
+				<div class="list-item-data">
+					Played Stairway to Hell
+				</div>
 			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Netflix
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Hulu
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Amazon
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Google+
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Netflix
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Hulu
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Amazon
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Google+
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
-		<div class="list-item">
-			<div class="list-item-name">
-				Spotify
-			</div>
-			<div class="list-item-date">
-				Nov. 19 2014 - 1:11 PM
-			</div>
-			<div class="list-item-location">
-				San Diego, CA
-			</div>
-			<div class="list-item-data">
-				Played Stairway to Hell
-			</div>
-		</div>
 		</div>
 	</div>
 {% endblock %}

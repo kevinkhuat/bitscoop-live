@@ -174,7 +174,7 @@ ul.links > li:not(:last-child) {
 .bg.gray.light {
 	background-color: #EEE;
 	color: #555;
-	border-color: #CCC;
+	/*border-color: #CCC;*/
 }
 .bg.gray.lighter {
 	background-color: #F3F3F3;
@@ -197,7 +197,7 @@ ul.links > li:not(:last-child) {
 .bordered { border: 0 solid #CCC; }
 .bordered.top { border-top-width: 1px; }
 .bordered.right { border-right-width: 1px; }
-.bordered.bottom { border-bottom-width: 1px; }
+/*.bordered.bottom { border-bottom-width: 1px; }*/
 .bordered.left { border-left-width: 1px; }
 
 

@@ -4,8 +4,13 @@
 {% block static %}
 {{ block.super }}
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' rel='stylesheet' />
+
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' rel='stylesheet'/>
+
 <style type="text/css">
+	.search-bar {
+		margin: 0 10px;
+	}
 
 	.list-detail-sidebar {
 		width: 300px;
@@ -20,7 +25,7 @@
 	}
 
 	.list-detail-top-half {
-		min-height: 250px;
+		min-height: 300px;
 		background-color: #EEE;
 		height: 50%;
 	}
@@ -64,10 +69,14 @@
 		width: 68%;
 	}
 
-	.list-detail-location {
+	.list-detail-data {
 	}
 
-	.list-detail-data {
+	.list-detail-location {
+{#		height: 3em;#}
+{#		position: absolute;#}
+{#		bottom: 0;#}
+{#		left: 0;#}
 	}
 
 	#map {
@@ -85,7 +94,7 @@
 				<a class="item" href="{% url 'core_main_list' %}"><i class="icon-list-unordered"></i></a>
 				<a class="item" href="{% url 'core_main_timeline' %}"><i class="icon-clock"></i></a>
 				<a class="item" href="{% url 'core_main_map' %}"><i class="icon-map22"></i></a>
-				<input class="search-bar grow" style="margin: 0 5px" type="text" placeholder="Enter search terms here"/>
+				<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
 			</div>
 			<div class="flex center">
 				<a class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
@@ -128,16 +137,16 @@
 								11:11 AM {{ event.created }}
 							</div>
 						</div>
-						<div class="list-detail-location">
-							<label class="center list-detail-label">Location</label>
-							<div class="center list-detail-content">
-								Anaheim, CA [-115.22, +22.48] {{ event.location }}
-							</div>
-						</div>
 						<div class="list-detail-data">
 							<label class="center list-detail-label">Message Body</label>
 							<div class="list-detail-content">
 								Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
+							</div>
+						</div>
+						<div class="list-detail-location">
+							<label class="center list-detail-label">Location</label>
+							<div class="center list-detail-content">
+								Anaheim, CA [-115.22, +22.48] {{ event.location }}
 							</div>
 						</div>
 					</div>

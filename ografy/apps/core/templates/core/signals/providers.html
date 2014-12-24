@@ -7,7 +7,7 @@
 <style type="text/css">
 	.signal-button {
 		display: inline-block;
-		background-color: #E0E0E0;
+		background-color: #EEE;
 
 		font-size: 1.5em;
 		font-weight: bold;
@@ -16,15 +16,10 @@
 		padding: 10px; margin: 5px;
 
 		text-align: center;
-
 		text-decoration: none !important;
 
 		cursor: pointer;
-
-		-webkit-transition: width .5s ease;
 		transition: width .5s ease;
-
-		border: 1px solid #D8D8D8;
 	}
 
 	.signal-button > i {
@@ -33,13 +28,16 @@
 	}
 
 	.signal-button:hover {
-		background-color: #D0D0D0;
+		background-color: #DDD;
 	}
 
 	#isotope-container { padding: 5px; }
 
-	.provider-associated {
-		background-color: blue;
+	.provider-count {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		margin: 0 5px;
 	}
 </style>
 {% endblock %}
