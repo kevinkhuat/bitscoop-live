@@ -6,6 +6,7 @@ import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
 from ografy.apps.tastydata.views import APIView
+from ografy.apps.tastydata.api import BaseApi
 
 
 class APIEndpoints(APIView):
@@ -24,53 +25,78 @@ class APIEndpoints(APIView):
 
 
 class DataView(APIView):
-    # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        data_list = list(obase_api.DataApi.get())
+        get_query = obase_api.DataApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        data_list = list(get_query)
         return Response(self.serialize(data_list, many=True))
 
     def post(self, request, format=None):
-        data = obase_api.DataApi.post(data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_data = self.deserialize(request.data)
+        post_data.user_id = request.user.id
+
+        data = obase_api.DataApi.post(
+            data=post_data)
         return Response(self.serialize(data))
 
 
 class DataSingleView(APIView):
-    # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def delete(self, request, pk, format=None):
-        obase_api.DataApi.delete(val=pk)
+        obase_api.DataApi.delete(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        data = obase_api.DataApi.get(val=pk)
-        serial_data = self.serialize(data)
+        get_query = obase_api.DataApi.get(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+        serial_data = self.serialize(list(get_query))
         return Response(serial_data)
 
     def patch(self, request, pk, format=None):
-        data = obase_api.DataApi.patch(val=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        patch_data = self.deserialize(request.data)
+        patch_data.user_id = request.user.id
+
+        data = obase_api.DataApi.patch(
+            val=pk,
+            data=patch_data)
         return Response(self.serialize(data))
 
     def put(self, request, pk, format=None):
-        data = obase_api.DataApi.put(pk=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_data = self.deserialize(request.data)
+        post_data.user_id = request.user.id
+
+        data = obase_api.DataApi.put(
+            pk=pk,
+            data=post_data)
         return Response(self.serialize(data))
 
 
 class EventView(APIView):
-    # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.EventSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        events = list(obase_api.EventApi.get())
-        return Response(self.serialize(events, many=True))
+        get_query = obase_api.EventApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        event_list = list(get_query)
+        return Response(self.serialize(event_list, many=True))
 
     def post(self, request, format=None):
-        event = obase_api.EventApi.post(data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_event = self.deserialize(request.data)
+        post_event.user_id = request.user.id
+
+        event = obase_api.EventApi.post(
+            data=post_event)
         return Response(self.serialize(event))
 
 
@@ -80,24 +106,41 @@ class EventSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def delete(self, request, pk, format=None):
-        obase_api.EventApi.delete(val=pk)
+        obase_api.EventApi.delete(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        event = list(obase_api.EventApi.get(val=pk))
-        return Response(self.serialize(event))
+        get_query = obase_api.EventApi.get(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+        serial_event = self.serialize(list(get_query))
+        return Response(serial_event)
 
     def patch(self, request, pk, format=None):
-        event = obase_api.EventApi.patch(val=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        patch_event = self.deserialize(request.data)
+        patch_event.user_id = request.user.id
+
+        event = obase_api.DataApi.patch(
+            val=pk,
+            data=patch_event)
         return Response(self.serialize(event))
 
     def put(self, request, pk, format=None):
-        event = obase_api.EventApi.put(pk=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        put_event = self.deserialize(request.data)
+        put_event.user_id = request.user.id
+
+        event = obase_api.EventApi.patch(
+            val=pk,
+            data=put_event)
         return Response(self.serialize(event))
 
     def data(self, request, pk, **kwargs):
-        event = obase_api.EventApi.get(val=pk)
-        return Response(opi_serializer.DataSerializer().to_internal_value(event.data))
+        get_query = obase_api.DataApi.get(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+        serial_data = self.serialize(list(get_query))
+        return Response(serial_data)
 
 
 class MessageView(APIView):
@@ -106,11 +149,18 @@ class MessageView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        messages = list(obase_api.MessageApi.get())
-        return Response(self.serialize(messages, many=True))
+        get_query = obase_api.MessageApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        message_list = list(get_query)
+        return Response(self.serialize(message_list, many=True))
 
     def post(self, request, format=None):
-        message = obase_api.MessageApi.post(data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_message = self.deserialize(request.data)
+        post_message.user_id = request.user.id
+
+        message = obase_api.DataApi.post(
+            data=post_message)
         return Response(self.serialize(message))
 
 
@@ -120,62 +170,69 @@ class MessageSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def delete(self, request, pk, format=None):
-        obase_api.MessageApi.delete(val=pk)
+        obase_api.MessageApi.delete(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        message = list(obase_api.MessageApi.get(val=pk))
-        return Response(self.serialize(message))
+        get_query = obase_api.MessageApi.get(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+        serial_message = self.serialize(list(get_query))
+        return Response(serial_message)
 
     def patch(self, request, pk, format=None):
-        message = obase_api.MessageApi.patch(val=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        patch_message = self.deserialize(request.data)
+        patch_message.user_id = request.user.id
+
+        message = obase_api.DataApi.patch(
+            val=pk,
+            data=patch_message)
         return Response(self.serialize(message))
 
     def put(self, request, pk, format=None):
-        message = obase_api.MessageApi.put(pk=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        put_data = self.deserialize(request.data)
+        put_data.user_id = request.user.id
+
+        message = obase_api.DataApi.put(
+            pk=pk,
+            data=put_data)
         return Response(self.serialize(message))
 
     def event(self, request, pk, **kwargs):
-        message = obase_api.MessageApi.get(val=pk)
-        return Response(opi_serializer.EventSerializer().to_internal_value(message.event))
+        get_query = obase_api.EventApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        event_list = list(get_query)
+        return Response(self.serialize(event_list))
 
     def data(self, request, pk, **kwargs):
-        message = obase_api.MessageApi.get(val=pk)
-        return Response(opi_serializer.DataSerializer().to_internal_value(message.event.data))
+        get_query = obase_api.DataApi.get(
+            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+        serial_data = self.serialize(list(get_query))
+        return Response(serial_data)
 
 
 class ProviderView(APIView):
-    # TODO: add access permissions
     serializer = opi_serializer.ProviderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        providers = list(core_api.ProviderApi.get())
-        return Response(self.serialize(providers, many=True))
+        get_query = obase_api.ProviderApi.get(
+            val=BaseApi.query_django_by_user_request(request))
+        provider_list = list(get_query)
+        return Response(self.serialize(provider_list, many=True))
 
 
 class ProviderSingleView(APIView):
-    # TODO: add access permissions
     serializer = opi_serializer.ProviderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
-        provider = list(core_api.ProviderApi.get(val=pk))
+        get_query = obase_api.ProviderApi.get(
+            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        provider = list(get_query)
         return Response(self.serialize(provider))
-
-
-class SignalView(APIView):
-    # TODO: add access permissions
-    serializer = opi_serializer.SignalSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request, format=None):
-        signals = list(core_api.SignalApi.get())
-        return Response(self.serialize(signals, many=True))
-
-    def post(self, request, format=None):
-        signal = core_api.SignalApi.post(data=self.deserialize(request.data))
-        return Response(self.serialize(signal))
 
 
 class SettingsView(APIView):
@@ -184,8 +241,10 @@ class SettingsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        settings_list = list(core_api.SettingsApi.get())
-        return Response(self.serialize(settings_list, many=True))
+        get_query = core_api.SignalApi.get(
+            val=BaseApi.query_django_by_user_request(request))
+        settings = list(get_query)
+        return Response(self.serialize(settings))
 
 
 class SettingsSingleView(APIView):
@@ -194,13 +253,40 @@ class SettingsSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        settings = list(core_api.SettingsApi.get())
-        return Response(self.serialize(settings, many=True))
+        get_query = obase_api.ProviderApi.get(
+            val=BaseApi.query_django_by_user_request(request))
+        settings = list(get_query)
+        return Response(self.serialize(settings))
 
     # TODO: Replace with patch
     def post(self, request, format=None):
-        settings = core_api.SettingsApi.post(data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_settings = self.deserialize(request.data)
+        post_settings.user = request.user
+
+        settings = core_api.SettingsApi.post(
+            data=post_settings)
         return Response(self.serialize(settings))
+
+
+class SignalView(APIView):
+    serializer = opi_serializer.SignalSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        get_query = core_api.SignalApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        signal_list = list(get_query)
+        return Response(self.serialize(signal_list, many=True))
+
+    def post(self, request, format=None):
+        # TODO: Better user filter
+        post_signal = self.deserialize(request.data)
+        post_signal.user = request.user
+
+        signal = core_api.SignalApi.post(
+            data=post_signal)
+        return Response(self.serialize(signal))
 
 
 class SignalSingleView(APIView):
@@ -209,24 +295,41 @@ class SignalSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def delete(self, request, pk, format=None):
-        core_api.SignalApi.delete(val=pk)
+        core_api.SignalApi.delete(
+            val=BaseApi.query_django_by_user_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        signal = list(core_api.SignalApi.get(val=pk))
-        return Response(self.serialize(signal))
+        get_query = core_api.SignalApi.get(
+            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        serial_signal = self.serialize(list(get_query))
+        return Response(serial_signal)
 
     def patch(self, request, pk, format=None):
-        signal = core_api.SignalApi.patch(val=pk, data=self.deserialize(request.data))
-        return Response(self.serialize(signal))
+        # TODO: Better user filter
+        patch_signal = self.deserialize(request.data)
+        patch_signal.user = request.user
+
+        data = core_api.SignalApi.patch(
+            val=pk,
+            data=patch_signal)
+        return Response(self.serialize(data))
 
     def put(self, request, pk, format=None):
-        signal = core_api.SignalApi.put(pk=pk, data=self.deserialize(request.data))
+        # TODO: Better user filter
+        post_signal = self.deserialize(request.data)
+        post_signal.user = request.user
+
+        signal = obase_api.DataApi.put(
+            pk=pk,
+            data=post_signal)
         return Response(self.serialize(signal))
 
     def provider(self, request, pk, **kwargs):
-        signal = core_api.SignalApi.get(val=pk)
-        return Response(opi_serializer.ProviderSerializer().to_internal_value(signal.provider))
+        get_query = obase_api.ProviderApi.get(
+            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        provider = list(get_query)
+        return Response(self.serialize(provider))
 
 
 class UserView(APIView):
@@ -235,8 +338,10 @@ class UserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        user = list(core_api.UserApi.get())
-        return Response(self.serialize(user, many=True))
+        get_query = core_api.UserApi.get(
+            val=BaseApi.query_mongo_by_user_request(request))
+        user_list = list(get_query)
+        return Response(self.serialize(user_list, many=True))
 
 
 class UserSingleView(APIView):
@@ -245,5 +350,8 @@ class UserSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
-        user = list(core_api.UserApi.get(val=pk))
-        return Response(self.serialize(user))
+        get_query = core_api.UserApi.get(
+            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        serial_user = self.serialize(list(get_query))
+        return Response(serial_user)
+

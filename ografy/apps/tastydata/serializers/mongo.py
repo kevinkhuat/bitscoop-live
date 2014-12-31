@@ -61,13 +61,15 @@ class DocumentSerializer(serializers.ModelSerializer):
         mongoengine.URLField: ['max_length'],
     }
 
-    _custom_class_list = (mongoengine.ReferenceField,
-                          mongoengine.EmbeddedDocumentField,
-                          mongoengine.ListField,
-                          mongoengine.SortedListField,
-                          mongoengine.DynamicField,
-                          mongoengine.ObjectIdField,
-                          bson.ObjectId)
+    _custom_class_list = (
+        mongoengine.ReferenceField,
+        mongoengine.EmbeddedDocumentField,
+        mongoengine.ListField,
+        mongoengine.SortedListField,
+        mongoengine.DynamicField,
+        mongoengine.ObjectIdField,
+        bson.ObjectId
+    )
 
     @property
     def data(self):

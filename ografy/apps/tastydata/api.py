@@ -1,12 +1,16 @@
+from django.db.models import Q
+
+
 class BaseApi(object):
     @classmethod
     def delete(cls, val):
         # TODO: DELETE all? Check the link for manual transactions.
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         try:
-            cls.model.objects.get(pk=val).delete()
-        except TypeError:
-            cls.model.objects.filter(val).delete()
+            if type(val) is Q:
+                ret = cls.model.objects.filter(val).delete()
+            else:
+                ret = cls.model.objects.get(pk=val).delete()
         except cls.model.DoesNotExist:
             return False
 
@@ -17,28 +21,23 @@ class BaseApi(object):
         if val is None:
             ret = cls.model.objects.all()
         else:
-            try:
-                ret = cls.model.objects.get(pk=val)
-            except TypeError:
+            if type(val) is Q:
                 ret = cls.model.objects.filter(val)
+            else:
+                ret = cls.model.objects.get(pk=val)
 
         return ret
 
     @classmethod
     def patch(cls, val, data):
-        # TODO: Strip out pk and foreign keys from data so it doesn't silent bombfuck with malicious data.
-        try:
-            inst = cls.model.objects.get(pk=val)
-
-            for key, value in data.items():
-                setattr(inst, key, value)
-
-            inst.save()
-        except TypeError:
-            # TODO: Transform Q expression `val` into something that peppers in permissions so you can't blindly update things that don't belong to you.
+        if type(val) is Q:
             cls.model.objects.filter(val).update(**data)
             inst = cls.models.objects.filter(val)
-
+        else:
+            inst = cls.model.objects.get(pk=val)
+            for key, value in data.items():
+                setattr(inst, key, value)
+            inst.save()
         return inst
 
     @classmethod
@@ -66,3 +65,38 @@ class BaseApi(object):
             inst.save()
 
         return inst
+
+    @classmethod
+    def queryFromRequest(cls, request):
+        if hasattr(request, 'query_params'):
+            if 'q' in request.query_params:
+                query = request.query_params['q']
+                return Q(query)
+            else:
+                return Q()
+        else:
+            return Q()
+
+    @classmethod
+    def query_for_user(cls, user):
+        return Q('user=' + user)
+
+    @classmethod
+    def query_for_user_id(cls, id):
+        return Q('user_id=' + id)
+
+    @classmethod
+    def query_django_by_user_request(cls, request):
+        return cls.queryFromRequest(request).add(Q('user=' + request.user), Q.AND)
+
+    @classmethod
+    def query_django_by_user_request_pk(cls, request, pk):
+        return Q('pk=' + pk).add(Q('user=' + request.user), Q.AND)
+
+    @classmethod
+    def query_mongo_by_user_request(cls, request):
+        return cls.queryFromRequest(request).add(Q('user_id=' + request.user.id), Q.AND)
+
+    @classmethod
+    def query_mongo_by_user_request_pk(cls, request, pk):
+        return Q('pk=' + pk).add(Q('user_id=' + request.user.id), Q.AND)
