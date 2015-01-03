@@ -30,7 +30,7 @@ class DataView(APIView):
 
     def get(self, request, format=None):
         get_query = obase_api.DataApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=BaseApi.query_by_user_id_request(request))
         data_list = list(get_query)
         return Response(self.serialize(data_list, many=True))
 
@@ -50,12 +50,12 @@ class DataSingleView(APIView):
 
     def delete(self, request, pk, format=None):
         obase_api.DataApi.delete(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         get_query = obase_api.DataApi.get(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_data = self.serialize(list(get_query))
         return Response(serial_data)
 
@@ -86,7 +86,7 @@ class EventView(APIView):
 
     def get(self, request, format=None):
         get_query = obase_api.EventApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=BaseApi.query_by_user_id_request(request))
         event_list = list(get_query)
         return Response(self.serialize(event_list, many=True))
 
@@ -107,12 +107,12 @@ class EventSingleView(APIView):
 
     def delete(self, request, pk, format=None):
         obase_api.EventApi.delete(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         get_query = obase_api.EventApi.get(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_event = self.serialize(list(get_query))
         return Response(serial_event)
 
@@ -138,7 +138,7 @@ class EventSingleView(APIView):
 
     def data(self, request, pk, **kwargs):
         get_query = obase_api.DataApi.get(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_data = self.serialize(list(get_query))
         return Response(serial_data)
 
@@ -150,7 +150,7 @@ class MessageView(APIView):
 
     def get(self, request, format=None):
         get_query = obase_api.MessageApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=BaseApi.query_by_user_id_request(request))
         message_list = list(get_query)
         return Response(self.serialize(message_list, many=True))
 
@@ -171,12 +171,12 @@ class MessageSingleView(APIView):
 
     def delete(self, request, pk, format=None):
         obase_api.MessageApi.delete(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         get_query = obase_api.MessageApi.get(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_message = self.serialize(list(get_query))
         return Response(serial_message)
 
@@ -202,13 +202,13 @@ class MessageSingleView(APIView):
 
     def event(self, request, pk, **kwargs):
         get_query = obase_api.EventApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=BaseApi.query_by_user_id_request(request))
         event_list = list(get_query)
         return Response(self.serialize(event_list))
 
     def data(self, request, pk, **kwargs):
         get_query = obase_api.DataApi.get(
-            val=BaseApi.query_mongo_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_data = self.serialize(list(get_query))
         return Response(serial_data)
 
@@ -218,8 +218,8 @@ class ProviderView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = obase_api.ProviderApi.get(
-            val=BaseApi.query_django_by_user_request(request))
+        get_query = core_api.ProviderApi.get(
+            val=BaseApi.query_by_user_id_request(request))
         provider_list = list(get_query)
         return Response(self.serialize(provider_list, many=True))
 
@@ -229,8 +229,8 @@ class ProviderSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
-        get_query = obase_api.ProviderApi.get(
-            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        get_query = core_api.ProviderApi.get(
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         provider = list(get_query)
         return Response(self.serialize(provider))
 
@@ -241,8 +241,8 @@ class SettingsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = core_api.SignalApi.get(
-            val=BaseApi.query_django_by_user_request(request))
+        get_query = core_api.SettingsApi.get(
+            val=BaseApi.query_by_user_id_request(request))
         settings = list(get_query)
         return Response(self.serialize(settings))
 
@@ -253,8 +253,8 @@ class SettingsSingleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = obase_api.ProviderApi.get(
-            val=BaseApi.query_django_by_user_request(request))
+        get_query = core_api.SettingsApi.get(
+            val=BaseApi.query_by_user_id_request(request))
         settings = list(get_query)
         return Response(self.serialize(settings))
 
@@ -274,8 +274,9 @@ class SignalView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
+        request_user_query = BaseApi.query_by_user_id_request(request)
         get_query = core_api.SignalApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=request_user_query)
         signal_list = list(get_query)
         return Response(self.serialize(signal_list, many=True))
 
@@ -296,12 +297,12 @@ class SignalSingleView(APIView):
 
     def delete(self, request, pk, format=None):
         core_api.SignalApi.delete(
-            val=BaseApi.query_django_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         get_query = core_api.SignalApi.get(
-            val=BaseApi.query_django_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_signal = self.serialize(list(get_query))
         return Response(serial_signal)
 
@@ -320,14 +321,14 @@ class SignalSingleView(APIView):
         post_signal = self.deserialize(request.data)
         post_signal.user = request.user
 
-        signal = obase_api.DataApi.put(
+        signal = core_api.SignalApi.put(
             pk=pk,
             data=post_signal)
         return Response(self.serialize(signal))
 
     def provider(self, request, pk, **kwargs):
-        get_query = obase_api.ProviderApi.get(
-            val=BaseApi.query_django_by_user_request_pk(request, pk))
+        get_query = core_api.ProviderApi.get(
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         provider = list(get_query)
         return Response(self.serialize(provider))
 
@@ -339,7 +340,7 @@ class UserView(APIView):
 
     def get(self, request, format=None):
         get_query = core_api.UserApi.get(
-            val=BaseApi.query_mongo_by_user_request(request))
+            val=BaseApi.query_by_user_id_request(request))
         user_list = list(get_query)
         return Response(self.serialize(user_list, many=True))
 
@@ -351,7 +352,7 @@ class UserSingleView(APIView):
 
     def get(self, request, pk, format=None):
         get_query = core_api.UserApi.get(
-            val=BaseApi.query_django_by_user_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk))
         serial_user = self.serialize(list(get_query))
         return Response(serial_user)
 

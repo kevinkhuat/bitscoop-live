@@ -8,9 +8,9 @@ class BaseApi(object):
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         try:
             if type(val) is Q:
-                ret = cls.model.objects.filter(val).delete()
+                ret = cls.model.objects.get(val).delete()
             else:
-                ret = cls.model.objects.get(pk=val).delete()
+                ret = cls.model.objects.filter(pk=val).delete()
         except cls.model.DoesNotExist:
             return False
 
@@ -22,19 +22,19 @@ class BaseApi(object):
             ret = cls.model.objects.all()
         else:
             if type(val) is Q:
-                ret = cls.model.objects.filter(val)
+                ret = cls.model.objects.get(val)
             else:
-                ret = cls.model.objects.get(pk=val)
+                ret = cls.model.objects.filter(pk=val)
 
         return ret
 
     @classmethod
     def patch(cls, val, data):
         if type(val) is Q:
-            cls.model.objects.filter(val).update(**data)
-            inst = cls.models.objects.filter(val)
+            cls.model.objects.get(val).update(**data)
+            inst = cls.models.objects.get(val)
         else:
-            inst = cls.model.objects.get(pk=val)
+            inst = cls.model.objects.filter(pk=val)
             for key, value in data.items():
                 setattr(inst, key, value)
             inst.save()
@@ -67,7 +67,8 @@ class BaseApi(object):
         return inst
 
     @classmethod
-    def queryFromRequest(cls, request):
+    # TODO: I am too dumb to fix this.
+    def query_from_request(cls, request):
         if hasattr(request, 'query_params'):
             if 'q' in request.query_params:
                 query = request.query_params['q']
@@ -78,25 +79,13 @@ class BaseApi(object):
             return Q()
 
     @classmethod
-    def query_for_user(cls, user):
-        return Q('user=' + user)
+    def user_query_from_request(cls, request):
+        return Q(user_id=request.user.id)
 
     @classmethod
-    def query_for_user_id(cls, id):
-        return Q('user_id=' + id)
+    def query_by_user_id_request(cls, request):
+        return cls.user_query_from_request(request).add(cls.query_from_request(request), Q.AND)
 
     @classmethod
-    def query_django_by_user_request(cls, request):
-        return cls.queryFromRequest(request).add(Q('user=' + request.user), Q.AND)
-
-    @classmethod
-    def query_django_by_user_request_pk(cls, request, pk):
-        return Q('pk=' + pk).add(Q('user=' + request.user), Q.AND)
-
-    @classmethod
-    def query_mongo_by_user_request(cls, request):
-        return cls.queryFromRequest(request).add(Q('user_id=' + request.user.id), Q.AND)
-
-    @classmethod
-    def query_mongo_by_user_request_pk(cls, request, pk):
-        return Q('pk=' + pk).add(Q('user_id=' + request.user.id), Q.AND)
+    def query_by_user_id_request_pk(cls, request, pk):
+        return Q(pk=pk).add(Q(user_id=request.user.id), Q.AND)
