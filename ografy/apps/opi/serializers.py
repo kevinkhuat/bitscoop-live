@@ -49,7 +49,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
     provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
 
     class Meta:
-        model = Settings
+        model = Signal
         fields = ('id', 'user', 'provider', 'name', 'psa_backend_uid', 'verified', 'complete', 'permissions', 'frequency', 'created', 'updated')
         depth = 5
 
@@ -62,7 +62,7 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
     provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
 
     class Meta:
-        model = Signal
+        model = Settings
         fields = ('id', 'user', 'provider', 'name')
         depth = 5
 

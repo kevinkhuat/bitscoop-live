@@ -9,6 +9,7 @@ handler404 = errors.view404
 handler500 = errors.view500
 
 urlpatterns = patterns('',
+    url(r'^api', include('ografy.apps.api.urls')),
     url(r'^auth', include('ografy.apps.xauth.urls')),
     url(r'^demo', include('ografy.apps.demo.urls')),
     #url(r'^help', include('ografy.apps.helpr.urls')),

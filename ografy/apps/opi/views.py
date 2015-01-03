@@ -1,15 +1,16 @@
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
-from ografy.apps.tastydata.views import APIView
+from ografy.apps.tastydata.views import APIView as TastyAPIView
 from ografy.apps.tastydata.api import BaseApi
 
 
-class APIEndpoints(APIView):
+class APIEndpoints(TastyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
@@ -24,7 +25,7 @@ class APIEndpoints(APIView):
         })
 
 
-class DataView(APIView):
+class DataView(TastyAPIView):
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -44,7 +45,7 @@ class DataView(APIView):
         return Response(self.serialize(data))
 
 
-class DataSingleView(APIView):
+class DataSingleView(TastyAPIView):
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -80,7 +81,7 @@ class DataSingleView(APIView):
         return Response(self.serialize(data))
 
 
-class EventView(APIView):
+class EventView(TastyAPIView):
     serializer = opi_serializer.EventSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -100,7 +101,7 @@ class EventView(APIView):
         return Response(self.serialize(event))
 
 
-class EventSingleView(APIView):
+class EventSingleView(TastyAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.EventSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -143,7 +144,7 @@ class EventSingleView(APIView):
         return Response(serial_data)
 
 
-class MessageView(APIView):
+class MessageView(TastyAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -164,7 +165,7 @@ class MessageView(APIView):
         return Response(self.serialize(message))
 
 
-class MessageSingleView(APIView):
+class MessageSingleView(TastyAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -213,7 +214,7 @@ class MessageSingleView(APIView):
         return Response(serial_data)
 
 
-class ProviderView(APIView):
+class ProviderView(TastyAPIView):
     serializer = opi_serializer.ProviderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -224,7 +225,7 @@ class ProviderView(APIView):
         return Response(self.serialize(provider_list, many=True))
 
 
-class ProviderSingleView(APIView):
+class ProviderSingleView(TastyAPIView):
     serializer = opi_serializer.ProviderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -235,7 +236,7 @@ class ProviderSingleView(APIView):
         return Response(self.serialize(provider))
 
 
-class SettingsView(APIView):
+class SettingsView(TastyAPIView):
     # TODO: add access permissions
     serializer = opi_serializer.SettingsSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -247,7 +248,7 @@ class SettingsView(APIView):
         return Response(self.serialize(settings))
 
 
-class SettingsSingleView(APIView):
+class SettingsSingleView(TastyAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.SettingsSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -269,7 +270,7 @@ class SettingsSingleView(APIView):
         return Response(self.serialize(settings))
 
 
-class SignalView(APIView):
+class SignalView(TastyAPIView):
     serializer = opi_serializer.SignalSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -290,7 +291,7 @@ class SignalView(APIView):
         return Response(self.serialize(signal))
 
 
-class SignalSingleView(APIView):
+class SignalSingleView(TastyAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.SignalSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -333,7 +334,7 @@ class SignalSingleView(APIView):
         return Response(self.serialize(provider))
 
 
-class UserView(APIView):
+class UserView(TastyAPIView):
     # TODO: add access permissions
     serializer = opi_serializer.UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -345,7 +346,7 @@ class UserView(APIView):
         return Response(self.serialize(user_list, many=True))
 
 
-class UserSingleView(APIView):
+class UserSingleView(TastyAPIView):
     # TODO: add access permissions
     serializer = opi_serializer.UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
