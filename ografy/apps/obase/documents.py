@@ -54,6 +54,7 @@ class Event(mongo.Document):
     signal_id = mongo.IntField(required=True)
     provider_id = mongo.IntField(required=True)
     provider_name = mongo.StringField(required=True)
+    name = mongo.StringField(required=True)
 
     # To be sourced from signals.js
     datetime = mongo.DateTimeField()
