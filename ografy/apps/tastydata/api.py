@@ -65,27 +65,3 @@ class BaseApi(object):
             inst.save()
 
         return inst
-
-    @classmethod
-    # TODO: I am too dumb to fix this.
-    def query_from_request(cls, request):
-        if hasattr(request, 'query_params'):
-            if 'q' in request.query_params:
-                query = request.query_params['q']
-                return Q(query)
-            else:
-                return Q()
-        else:
-            return Q()
-
-    @classmethod
-    def user_query_from_request(cls, request):
-        return Q(user_id=request.user.id)
-
-    @classmethod
-    def query_by_user_id_request(cls, request):
-        return cls.user_query_from_request(request).add(cls.query_from_request(request), Q.AND)
-
-    @classmethod
-    def query_by_user_id_request_pk(cls, request, pk):
-        return Q(pk=pk).add(Q(user_id=request.user.id), Q.AND)

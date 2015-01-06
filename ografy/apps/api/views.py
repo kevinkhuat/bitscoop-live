@@ -13,15 +13,18 @@ def api_root(request, format=None):
         'signal-list': reverse('signal-list', request=request, format=format)
     })
 
-# @api_view(['GET', 'POST'])
+
 class ProviderViewSet(viewsets.ModelViewSet):
     queryset = core_models.Provider.objects.all()
     serializer_class = api_serializer.ProviderSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
 
-# @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 class SignalViewSet(viewsets.ModelViewSet):
-    queryset = core_models.Signal.objects.all()
+    # queryset = core_models.Signal.objects.all()
     serializer_class = api_serializer.SignalSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        return core_models.Signal.objects.filter(user=user)

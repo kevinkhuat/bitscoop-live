@@ -1,13 +1,18 @@
+from django.db.models import Q
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from urllib.parse import unquote
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
 from ografy.apps.tastydata.views import APIView as TastyAPIView
 from ografy.apps.tastydata.api import BaseApi
+from ografy.apps.tastydata.expressions import tokenize
+
+
 
 
 class APIEndpoints(TastyAPIView):
@@ -220,7 +225,8 @@ class ProviderView(TastyAPIView):
 
     def get(self, request, format=None):
         get_query = core_api.ProviderApi.get(
-            val=BaseApi.query_by_user_id_request(request))
+            val=BaseApi.query_by_user_id_request(request)
+        )
         provider_list = list(get_query)
         return Response(self.serialize(provider_list, many=True))
 
@@ -231,7 +237,8 @@ class ProviderSingleView(TastyAPIView):
 
     def get(self, request, pk, format=None):
         get_query = core_api.ProviderApi.get(
-            val=BaseApi.query_by_user_id_request_pk(request, pk))
+            val=BaseApi.query_by_user_id_request_pk(request, pk)
+        )
         provider = list(get_query)
         return Response(self.serialize(provider))
 
