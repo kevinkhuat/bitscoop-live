@@ -1,13 +1,10 @@
-from django.db.models import Q
-
-
 class BaseApi(object):
     @classmethod
     def delete(cls, val):
         # TODO: DELETE all? Check the link for manual transactions.
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         try:
-            if type(val) is Q:
+            if type(val) is cls.Q:
                 ret = cls.model.objects.get(val).delete()
             else:
                 ret = cls.model.objects.filter(pk=val).delete()
@@ -21,7 +18,7 @@ class BaseApi(object):
         if val is None:
             ret = cls.model.objects.all()
         else:
-            if type(val) is Q:
+            if type(val) is cls.Q:
                 ret = cls.model.objects.get(val)
             else:
                 ret = cls.model.objects.filter(pk=val)
@@ -30,7 +27,7 @@ class BaseApi(object):
 
     @classmethod
     def patch(cls, val, data):
-        if type(val) is Q:
+        if type(val) is cls.Q:
             cls.model.objects.get(val).update(**data)
             inst = cls.models.objects.get(val)
         else:
