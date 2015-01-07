@@ -18,13 +18,13 @@ class Parse:
         # Transform the request query paramter filter into Q objects that can be used
         # by the django or mongoengine orm
         if hasattr(request, 'query_params'):
-            if 'q' in request.query_params:
+            if 'filter' in request.query_params:
                 query = request.query_params['filter']
                 return parse_filter(query, expression_class=cls.get_expression_class(is_mongo_query=is_mongo_query))
             else:
-                return cls.get_expression_class(is_mongo_query=is_mongo_query)()
+                return None
         else:
-            return cls.get_expression_class(is_mongo_query=is_mongo_query)()
+            return None
 
     @classmethod
     def filter_user_from_request(cls, request, is_mongo_query=False):
@@ -43,19 +43,21 @@ class Parse:
 
 class ViewApi(BaseApi):
     @classmethod
+    def filter_get(cls, request):
+        # Filters by filter in in request to preform get
+        return cls.get(val=Parse.get_filter_from_request(request, is_mongo_query=False))
+
+    @classmethod
     def user_get(cls, request):
-        cls.get(
-            val=Parse.get_user_and_filter_from_request(request, is_mongo_query=cls.is_mongo_query)
-        )
+        # Filters by user and filter in in request to preform get
+        return cls.get(val=Parse.get_user_and_filter_from_request(request, is_mongo_query=cls.is_mongo_query))
 
     @classmethod
     def user_pk_delete(cls, request, pk):
-        cls.delete(
-            val=Parse.get_user_and_pk_filter_from_request(request, pk, is_mongo_query=True)
-        )
+        # Filters by user and pk to preform delete
+        return cls.delete(val=Parse.get_user_and_pk_filter_from_request(request, pk, is_mongo_query=True))
 
     @classmethod
     def user_pk_get(cls, request, pk):
-        cls.get(
-            val=Parse.get_user_and_pk_filter_from_request(request, pk, is_mongo_query=True)
-        )
+        # Filters by user and pk to preform get
+        return cls.get(val=Parse.get_user_and_pk_filter_from_request(request, pk, is_mongo_query=True))

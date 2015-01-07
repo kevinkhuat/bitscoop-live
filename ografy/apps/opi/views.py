@@ -193,7 +193,7 @@ class ProviderView(TastyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = core_api.ProviderViewApi.user_get(request)
+        get_query = core_api.ProviderViewApi.filter_get(request)
         provider_list = list(get_query)
         return Response(self.serialize(provider_list, many=True))
 
@@ -203,7 +203,7 @@ class ProviderSingleView(TastyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
-        get_query = core_api.ProviderViewApi.user_pk_get(request, pk)
+        get_query = core_api.ProviderViewApi.get(pk)
         provider = list(get_query)
         return Response(self.serialize(provider))
 

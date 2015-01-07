@@ -5,9 +5,9 @@ class BaseApi(object):
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         try:
             if type(val) is cls.Q:
-                ret = cls.model.objects.get(val).delete()
+                ret = cls.model.objects.filter(val).delete()
             else:
-                ret = cls.model.objects.filter(pk=val).delete()
+                ret = cls.model.objects.get(pk=val).delete()
         except cls.model.DoesNotExist:
             return False
 
@@ -19,9 +19,9 @@ class BaseApi(object):
             ret = cls.model.objects.all()
         else:
             if type(val) is cls.Q:
-                ret = cls.model.objects.get(val)
+                ret = cls.model.objects.filter(val)
             else:
-                ret = cls.model.objects.filter(pk=val)
+                ret = cls.model.objects.get(pk=val)
 
         return ret
 
@@ -29,9 +29,9 @@ class BaseApi(object):
     def patch(cls, val, data):
         if type(val) is cls.Q:
             cls.model.objects.get(val).update(**data)
-            inst = cls.models.objects.get(val)
+            inst = cls.models.objects.filter(val)
         else:
-            inst = cls.model.objects.filter(pk=val)
+            inst = cls.model.objects.get(pk=val)
             for key, value in data.items():
                 setattr(inst, key, value)
             inst.save()
