@@ -1,16 +1,12 @@
 import bson
-import jsonpickle
 import mongoengine
-import warnings
-import ografy.apps.tastydata.fields.mongo as mongo_fields
 
-from bson.json_util import dumps as bson_dumps, loads as bson_loads
 from collections import OrderedDict
-from django.core.paginator import Page
 from django.db import models
 from django.forms import widgets
-from mongoengine.base import BaseDocument
 from rest_framework import fields, relations, serializers
+
+import ografy.apps.tastydata.fields.mongo as mongo_fields
 
 
 class DocumentSerializer(serializers.ModelSerializer):
