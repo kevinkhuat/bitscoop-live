@@ -1,12 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import render, HttpResponseRedirect
-
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core import api as core_api
 
-
+@login_required
 def authorize(request, pk=None):
 
     # TODO: Remove demo stuff
@@ -65,7 +65,7 @@ def authorize(request, pk=None):
         'provider': provider
     })
 
-
+@login_required
 def connect(request, pk):
     provider = core_api.ProviderApi.get(Q(id=pk)).get()
 
@@ -77,13 +77,13 @@ def connect(request, pk):
         'postback_url': reverse('core_authorize')
     })
 
-
+@login_required
 def connect_name(request, name):
     provider = core_api.ProviderApi.get(Q(backend_name=name)).get()
 
     return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
 
-
+@login_required
 def providers(request):
     providers = list(core_api.ProviderApi.get())
     signal_by_user = Q(user_id=request.user.id)
@@ -108,7 +108,7 @@ def providers(request):
         'connect_url': connect_url
     })
 
-
+@login_required
 def verify(request, pk):
     # TODO: Remove demo stuff
     provider = core_api.ProviderApi.get(Q(id=pk)).get()
