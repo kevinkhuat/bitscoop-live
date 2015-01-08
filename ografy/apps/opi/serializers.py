@@ -6,6 +6,14 @@ from ografy.apps.obase.documents import Data, Event, Message
 from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
+def evaluate(query):
+    data = list(query)
+    if data is None:
+        return []
+    else:
+        return data
+
+
 class DataSerializer(mongo_serializers.DocumentSerializer):
     def to_internal_value(self, data):
         return Data.from_json(data)
