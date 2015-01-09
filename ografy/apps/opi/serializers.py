@@ -15,7 +15,7 @@ def evaluate(query):
 
 
 class DataSerializer(mongo_serializers.DocumentSerializer):
-    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id, queryset=User.objects.all())
 
     def to_internal_value(self, data):
         return Data.from_json(data)
@@ -27,8 +27,8 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
-    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
-    # data = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Event.data)
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id, queryset=User.objects.all())
+    # data = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Event.data, queryset=Data.objects.all())
 
     def to_internal_value(self, data):
         return Event.from_json(data)
@@ -40,8 +40,8 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
-    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
-    # event = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Message.event)
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id, queryset=User.objects.all())
+    # event = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Message.event, queryset=Event.objects.all())
 
     def to_internal_value(self, data):
         return Message.from_json(data)
@@ -61,8 +61,8 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
-    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field=Signal.user.id)
-    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field=Signal.provider.id)
+    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field=Signal.user)
+    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field=Signal.provider)
 
     class Meta:
         model = Signal
@@ -71,7 +71,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
-    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Settings.user_id)
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Settings.user_id, queryset=User.objects.all())
 
     def to_internal_value(self, data):
         return Event.from_json(data)
@@ -86,10 +86,10 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
 
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
-    signals = django_serializers.HyperlinkedRelatedField(many=True, view_name='signal-detail')
-    # events = django_serializers.HyperlinkedRelatedField(many=True, view_name='event-detail')
-    # messages = django_serializers.HyperlinkedRelatedField(many=True, view_name='message-detail')
-    # events_data = django_serializers.HyperlinkedRelatedField(many=True, view_name='data-detail')
+    signals = django_serializers.HyperlinkedRelatedField(many=True, view_name='signal-detail', queryset=Signal.objects.all())
+    # events = django_serializers.HyperlinkedRelatedField(many=True, view_name='event-detail', queryset=Events.objects.all())
+    # messages = django_serializers.HyperlinkedRelatedField(many=True, view_name='message-detail', queryset=Messages.objects.all())
+    # events_data = django_serializers.HyperlinkedRelatedField(many=True, view_name='data-detail', queryset=Data.objects.all())
 
     class Meta:
         model = User
