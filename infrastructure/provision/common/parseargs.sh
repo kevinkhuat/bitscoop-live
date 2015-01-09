@@ -48,14 +48,19 @@ done
 
 case ${TYPE} in
     production)
+        CUSR=ec2-user
         ;;
     virtual)
+        CUSR=ec2-user
         ;;
     *)
         echo "Invalid type: ${TYPE}"
         exit 1
         ;;
 esac
+
+
+CUSR_HOME=`sudo su - ${CUSR} -c "echo ${HOME}"`
 
 
 case ${PLATFORM} in
