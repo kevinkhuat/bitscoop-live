@@ -78,7 +78,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             if self.many:
                 self._data = [self.to_representation(item) for item in data]
             else:
-                self._data = self.to_representationtive(data)
+                self._data = self.to_representation(data)
 
         return self._data
 

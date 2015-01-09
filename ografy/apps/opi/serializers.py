@@ -6,7 +6,17 @@ from ografy.apps.obase.documents import Data, Event, Message
 from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
+def evaluate(query):
+    data = list(query)
+    if data is None:
+        return []
+    else:
+        return data
+
+
 class DataSerializer(mongo_serializers.DocumentSerializer):
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
+
     def to_internal_value(self, data):
         return Data.from_json(data)
 
@@ -17,6 +27,9 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
+    # data = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Event.data)
+
     def to_internal_value(self, data):
         return Event.from_json(data)
 
@@ -27,6 +40,9 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Data.user_id)
+    # event = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field=Message.event)
+
     def to_internal_value(self, data):
         return Message.from_json(data)
 
@@ -45,8 +61,8 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
-    user = django_serializers.Field(source='user.id')
-    provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
+    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field=Signal.user.id)
+    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field=Signal.provider.id)
 
     class Meta:
         model = Signal
@@ -55,6 +71,8 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
+    # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field=Settings.user_id)
+
     def to_internal_value(self, data):
         return Event.from_json(data)
 
@@ -68,13 +86,12 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
 
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
-    # TODO: Fix? With custom lookup?
-    # signals = serializers.HyperlinkedRelatedField(many=True, view_name='signal-detail', queryset=Signal.objects.all())
-    # events = serializers.HyperlinkedRelatedField(many=True, view_name='event-detail')
-    # messages = serializers.HyperlinkedRelatedField(many=True, view_name='message-detail')
-    # events_data = serializers.HyperlinkedRelatedField(many=True, view_name='data-detail')
+    signals = django_serializers.HyperlinkedRelatedField(many=True, view_name='signal-detail')
+    # events = django_serializers.HyperlinkedRelatedField(many=True, view_name='event-detail')
+    # messages = django_serializers.HyperlinkedRelatedField(many=True, view_name='message-detail')
+    # events_data = django_serializers.HyperlinkedRelatedField(many=True, view_name='data-detail')
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified')
+        fields = ('signals', 'events', 'messages', 'event_data', 'id', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified')
         depth = 5
