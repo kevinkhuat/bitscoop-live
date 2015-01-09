@@ -34,7 +34,12 @@ class Parse:
     @classmethod
     def get_user_and_filter_from_request(cls, request, is_mongo_query=False):
         # Create a Q object filtering objects for a specific user
-        return cls.filter_user_from_request(request, is_mongo_query=is_mongo_query) & cls.get_filter_from_request(request, is_mongo_query=is_mongo_query)
+        request_filter = cls.get_filter_from_request(request, is_mongo_query=is_mongo_query)
+
+        if request_filter is None:
+            return cls.filter_user_from_request(request, is_mongo_query=is_mongo_query)
+        else:
+            return cls.filter_user_from_request(request, is_mongo_query=is_mongo_query) & request_filter
 
     @classmethod
     def get_user_and_pk_filter_from_request(cls, request, pk, is_mongo_query=False):

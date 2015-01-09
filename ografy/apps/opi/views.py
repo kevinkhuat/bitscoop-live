@@ -30,7 +30,7 @@ class DataView(TastyAPIView):
     def get(self, request, format=None):
         get_query = obase_api.DataViewApi.user_get(request)
         data_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(data_list, many=True))
+        return Response(self.serialize(data_list, context={'request': request}, many=True))
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -38,7 +38,7 @@ class DataView(TastyAPIView):
         post_data.user_id = request.user.id
 
         data = obase_api.DataViewApi.post(data=post_data)
-        return Response(self.serialize(data))
+        return Response(self.serialize(data, context={'request': request}))
 
 
 class DataSingleView(TastyAPIView):
@@ -52,7 +52,7 @@ class DataSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = obase_api.DataViewApi.user_pk_get(request, pk)
         data_object =opi_serializer.evaluate(get_query)
-        return Response( self.serialize(data_object))
+        return Response( self.serialize(data_object, context={'request': request}))
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
@@ -60,7 +60,7 @@ class DataSingleView(TastyAPIView):
         patch_data.user_id = request.user.id
 
         data = obase_api.DataViewApi.patch(val=pk, data=patch_data)
-        return Response(self.serialize(data))
+        return Response(self.serialize(data, context={'request': request}))
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
@@ -68,7 +68,7 @@ class DataSingleView(TastyAPIView):
         post_data.user_id = request.user.id
 
         data = obase_api.DataViewApi.put(pk=pk, data=post_data)
-        return Response(self.serialize(data))
+        return Response(self.serialize(data, context={'request': request}))
 
 
 class EventView(TastyAPIView):
@@ -78,7 +78,7 @@ class EventView(TastyAPIView):
     def get(self, request, format=None):
         get_query = obase_api.EventViewApi.user_get(request)
         event_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(event_list, many=True))
+        return Response(self.serialize(event_list, context={'request': request}, many=True))
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -86,7 +86,7 @@ class EventView(TastyAPIView):
         post_event.user_id = request.user.id
 
         event = obase_api.EventViewApi.post(data=post_event)
-        return Response(self.serialize(event))
+        return Response(self.serialize(event, context={'request': request}))
 
 
 class EventSingleView(TastyAPIView):
@@ -101,7 +101,7 @@ class EventSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = obase_api.EventViewApi.user_get(request, pk)
         event_object = opi_serializer.evaluate(get_query)
-        serial_event = self.serialize(event_object)
+        serial_event = self.serialize(event_object, context={'request': request})
         return Response(serial_event)
 
     def patch(self, request, pk, format=None):
@@ -110,7 +110,7 @@ class EventSingleView(TastyAPIView):
         patch_event.user_id = request.user.id
 
         event = obase_api.EventViewApi.patch(val=pk, data=patch_event)
-        return Response(self.serialize(event))
+        return Response(self.serialize(event, context={'request': request}))
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
@@ -118,13 +118,13 @@ class EventSingleView(TastyAPIView):
         put_event.user_id = request.user.id
 
         event = obase_api.EventViewApi.patch(val=pk, data=put_event)
-        return Response(self.serialize(event))
+        return Response(self.serialize(event, context={'request': request}))
 
     def data(self, request, pk, **kwargs):
         # TODO: get pk to make work right
         get_query = obase_api.DataViewApi.user_get(request, pk)
         data_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(data_object))
+        return Response(self.serialize(data_object, context={'request': request}))
 
 
 class MessageView(TastyAPIView):
@@ -135,7 +135,7 @@ class MessageView(TastyAPIView):
     def get(self, request, format=None):
         get_query = obase_api.MessageViewApi.user_get(request)
         message_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(message_list, many=True))
+        return Response(self.serialize(message_list, context={'request': request}, many=True))
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -143,7 +143,7 @@ class MessageView(TastyAPIView):
         post_message.user_id = request.user.id
 
         message = obase_api.DataViewApi.post(data=post_message)
-        return Response(self.serialize(message))
+        return Response(self.serialize(message, context={'request': request}))
 
 
 class MessageSingleView(TastyAPIView):
@@ -158,7 +158,7 @@ class MessageSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = obase_api.MessageViewApi.user_get(request, pk)
         message_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(message_object))
+        return Response(self.serialize(message_object, context={'request': request}))
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
@@ -166,7 +166,7 @@ class MessageSingleView(TastyAPIView):
         patch_message.user_id = request.user.id
 
         message = obase_api.MessageViewApi.patch(val=pk, data=patch_message)
-        return Response(self.serialize(message))
+        return Response(self.serialize(message, context={'request': request}))
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
@@ -174,7 +174,7 @@ class MessageSingleView(TastyAPIView):
         put_data.user_id = request.user.id
 
         message = obase_api.MessageViewApi.put(pk=pk, data=put_data)
-        return Response(self.serialize(message))
+        return Response(self.serialize(message, context={'request': request}))
 
     def event(self, request, pk, **kwargs):
         # TODO: get pk to make work right
@@ -186,7 +186,7 @@ class MessageSingleView(TastyAPIView):
         # TODO: get pk to make work right
         get_query = obase_api.DataViewApi.user_pk_get(request, pk)
         data_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(data_object))
+        return Response(self.serialize(data_object, context={'request': request}))
 
 
 class ProviderView(TastyAPIView):
@@ -196,7 +196,7 @@ class ProviderView(TastyAPIView):
     def get(self, request, format=None):
         get_query = core_api.ProviderViewApi.filter_get(request)
         provider_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(provider_list, many=True))
+        return Response(self.serialize(provider_list, context={'request': request}, many=True))
 
 
 class ProviderSingleView(TastyAPIView):
@@ -206,7 +206,7 @@ class ProviderSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.ProviderViewApi.get(pk)
         provider_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(provider_object))
+        return Response(self.serialize(provider_object, context={'request': request}))
 
 
 class SettingsView(TastyAPIView):
@@ -217,7 +217,7 @@ class SettingsView(TastyAPIView):
     def get(self, request, format=None):
         get_query = core_api.SettingsViewApi.user_get(request)
         settings_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(settings_list))
+        return Response(self.serialize(settings_list, context={'request': request}))
 
 
 class SettingsSingleView(TastyAPIView):
@@ -228,16 +228,16 @@ class SettingsSingleView(TastyAPIView):
     def get(self, request, format=None):
         get_query = core_api.SettingsViewApi.user_get(request)
         settings_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(settings_object))
+        return Response(self.serialize(settings_object, context={'request': request}))
 
     # TODO: Replace with patch
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_settings = self.deserialize(request.data)
+        post_settings = self.deserialize(request.data, context={'request': request})
         post_settings.user = request.user
 
         settings = core_api.SettingsViewApi.post(data=post_settings)
-        return Response(self.serialize(settings))
+        return Response(self.serialize(settings, context={'request': request}))
 
 
 class SignalView(TastyAPIView):
@@ -247,7 +247,7 @@ class SignalView(TastyAPIView):
     def get(self, request, format=None):
         get_query = core_api.SignalViewApi.user_get(request)
         signal_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(signal_list, many=True))
+        return Response(self.serialize(signal_list, context={'request': request}, many=True))
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -255,7 +255,7 @@ class SignalView(TastyAPIView):
         post_signal.user = request.user
 
         signal = core_api.SignalViewApi.post(data=post_signal)
-        return Response(self.serialize(signal))
+        return Response(self.serialize(signal, context={'request': request}))
 
 
 class SignalSingleView(TastyAPIView):
@@ -270,7 +270,7 @@ class SignalSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.SignalViewApi.user_get(request, pk)
         signal_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(signal_object))
+        return Response(self.serialize(signal_object, context={'request': request}))
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
@@ -278,7 +278,7 @@ class SignalSingleView(TastyAPIView):
         patch_signal.user = request.user
 
         data = core_api.SignalViewApi.patch(val=pk, data=patch_signal)
-        return Response(self.serialize(data))
+        return Response(self.serialize(data, context={'request': request}))
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
@@ -286,12 +286,12 @@ class SignalSingleView(TastyAPIView):
         post_signal.user = request.user
 
         signal = core_api.SignalViewApi.put(pk=pk, data=post_signal)
-        return Response(self.serialize(signal))
+        return Response(self.serialize(signal, context={'request': request}))
 
     def provider(self, request, pk, **kwargs):
         get_query = core_api.ProviderViewApi.user_pk_get(request, pk)
         provider_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(provider_object))
+        return Response(self.serialize(provider_object, context={'request': request}))
 
 
 class UserView(TastyAPIView):
@@ -302,7 +302,7 @@ class UserView(TastyAPIView):
     def get(self, request, format=None):
         get_query = core_api.UserViewApi.user_get(request)
         user_list = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(user_list, many=True))
+        return Response(self.serialize(user_list, context={'request': request}, many=True))
 
 
 class UserSingleView(TastyAPIView):
@@ -313,5 +313,5 @@ class UserSingleView(TastyAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.UserViewApi.user_pk_get(request, pk)
         user_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(user_object))
+        return Response(self.serialize(user_object, context={'request': request}))
 
