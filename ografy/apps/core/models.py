@@ -70,7 +70,7 @@ class Signal(models.Model):
     #		 return None
 
     def __str__(self):
-        return '{0} {1}'.format(self.id, self.user.display_name)
+        return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
 
 
 @autoconnect

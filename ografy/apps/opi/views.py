@@ -210,7 +210,6 @@ class ProviderSingleView(TastyAPIView):
 
 
 class SettingsView(TastyAPIView):
-    # TODO: add access permissions
     serializer = opi_serializer.SettingsSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -300,7 +299,7 @@ class UserView(TastyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = core_api.UserViewApi.user_get(request)
+        get_query = core_api.UserViewApi.get()
         user_list = opi_serializer.evaluate(get_query)
         return Response(self.serialize(user_list, context={'request': request}, many=True))
 
@@ -311,7 +310,7 @@ class UserSingleView(TastyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, pk, format=None):
-        get_query = core_api.UserViewApi.user_pk_get(request, pk)
+        get_query = core_api.UserViewApi.get(pk)
         user_object = opi_serializer.evaluate(get_query)
         return Response(self.serialize(user_object, context={'request': request}))
 
