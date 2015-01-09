@@ -1,0 +1,32 @@
+<div class="list-detail-top-half">
+	<div class="center list-detail-main-label">
+		Message - To {{ event.name }}
+	</div>
+	<div class="list-detail-avatar">
+		<img src="static/assets/logo_240.png" alt="Avatar" />
+	</div>
+	<div class="list-detail-date-time">
+		<label class="center list-detail-label">Time</label>
+		<div class="center list-detail-content">
+			Dec. 5th 2014
+		</div>
+		<div class="center list-detail-content">
+			11:11 AM {{ event.created }}
+		</div>
+	</div>
+	<div class="list-detail-data">
+		<label class="center list-detail-label">Message Body</label>
+		<div class="list-detail-content">
+			Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
+		</div>
+	</div>
+	<div class="list-detail-location">
+		<label class="center list-detail-label">Location</label>
+		<div class="center list-detail-content">
+			Anaheim, CA [-115.22, +22.48] {{ event.location }}
+		</div>
+	</div>
+</div>
+<div class="list-detail-bottom-half">
+	<div id='map'></div>
+</div>

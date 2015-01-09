@@ -24,7 +24,7 @@ def grid(request):
 
 @login_required()
 def list_view(request):
-    template = 'core/main/list.html'
+    template = 'core/main/base.html'
 
     events = list(Event.objects(user_id=request.user.id))
 
@@ -32,7 +32,8 @@ def list_view(request):
         'title': 'Ografy - {0}'.format(request.user.identifier),
         'body_class': 'full',
         'user': request.user,
-        'events': events
+        'events': events,
+		'list': True
     })
 
 

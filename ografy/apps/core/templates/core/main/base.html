@@ -1,178 +1,47 @@
-{% extends 'shared/dispatcher.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en-US">
+	<meta charset="UTF-8">
+	<title>{{ title }}</title>
 
-{% block static %}
-{{ block.super }}
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
+	{% load staticfiles %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
 
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' rel='stylesheet'/>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
 
-<style type="text/css">
-	.search-bar {
-		margin: 0 10px;
-	}
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' rel='stylesheet'/>
 
-	.list-detail-sidebar {
-		width: 300px;
-		position: relative;
-	}
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
 
-	.list-detail {
-		font-size: 1em;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
+	<script type='text/javascript' src="{% static 'core/js/base.js' %}"></script>
 
-	.list-detail-top-half {
-		min-height: 300px;
-		background-color: #EEE;
-		height: 50%;
-	}
+	{% if list %}
+	<script type='text/javascript' src="{% static 'core/js/list.js' %}"></script>
+	{% endif %}
 
-	.list-detail-bottom-half {
-		min-height: 250px;
-		height: 50%;
-	}
-
-	.list-detail-main-label {
-		background-color: #488A2D;
-		color: #FFF;
-		width: 100%;
-		padding: 3px;
-	}
-
-	.list-detail-label {
-		background-color: #CCC;
-		width: 100%;
-		padding: 3px;
-		float: left;
-	}
-
-	.list-detail-content {
-		margin: 3px;
-	}
-
-	.list-detail-avatar {
-		display: inline-block;
-		vertical-align: top;
-		width: 30%;
-	}
-
-	.list-detail-avatar img {
-		width: 100%;
-		margin: 3px;
-	}
-
-	.list-detail-date-time {
-		display: inline-block;
-		width: 68%;
-	}
-
-	.list-detail-data {
-	}
-
-	.list-detail-location {
-{#		height: 3em;#}
-{#		position: absolute;#}
-{#		bottom: 0;#}
-{#		left: 0;#}
-	}
-
-	#map {
-		height: 100%;
-		width: 100%;
-	}
-</style>
-{% endblock %}
-
-{% block body %}
-	<header class="bg gray light bottom">
-		<nav class="flex stretch">
-			<div class="flex center grow">
-				<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
-				<a class="item" href="{% url 'core_main_list' %}"><i class="icon-list-unordered"></i></a>
-				<a class="item" href="{% url 'core_main_timeline' %}"><i class="icon-clock"></i></a>
-				<a class="item" href="{% url 'core_main_map' %}"><i class="icon-map22"></i></a>
-				<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
-			</div>
-			<div class="flex center">
-				<a class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
-				<a class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
-				<a class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
-			</div>
-		</nav>
-	</header>
-
-	<main class="flex grow">
-		{% block main %}
-		<div class="flex grow">
-			<aside id="left" class="">
-				{% block left %}
-
-				{% endblock %}
-			</aside>
-			<div id="content" class="grow">
-				{% block content %}
-
-				{% endblock %}
-			</div>
-			<aside id="right" class="list-detail-sidebar">
-				{% block right %}
-
-				<div class="list-detail">
-					<div class="list-detail-top-half">
-						<div class="center list-detail-main-label">
-							Message - To Sarah
-						</div>
-						<div class="list-detail-avatar">
-							<img src="{% static 'assets/logo_240.png' %}" alt="Avatar" />
-						</div>
-						<div class="list-detail-date-time">
-							<label class="center list-detail-label">Time</label>
-							<div class="center list-detail-content">
-								Dec. 5th 2014
-							</div>
-							<div class="center list-detail-content">
-								11:11 AM {{ event.created }}
-							</div>
-						</div>
-						<div class="list-detail-data">
-							<label class="center list-detail-label">Message Body</label>
-							<div class="list-detail-content">
-								Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
-							</div>
-						</div>
-						<div class="list-detail-location">
-							<label class="center list-detail-label">Location</label>
-							<div class="center list-detail-content">
-								Anaheim, CA [-115.22, +22.48] {{ event.location }}
-							</div>
-						</div>
-					</div>
-					<div class="list-detail-bottom-half">
-						<div id='map'></div>
-					</div>
-				</div>
-
-				{% endblock %}
-			</aside>
+</head>
+<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
+<header class="bg gray light bottom">
+	<nav class="flex stretch">
+		<div class="flex center grow">
+			<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
+			<a class="item" href="{% url 'core_main_list' %}"><i class="icon-list-unordered"></i></a>
+			<a class="item" href="{% url 'core_main_timeline' %}"><i class="icon-clock"></i></a>
+			<a class="item" href="{% url 'core_main_map' %}"><i class="icon-map22"></i></a>
+			<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
 		</div>
-		{% endblock %}
-	</main>
-
-
-<script type="application/javascript">
-	mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
-	var map = new mapboxgl.Map({
-	  container: 'map', // container id
-	  style: 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', //stylesheet location
-	  center: [40, -74.50], // starting position
-	  zoom: 9 // starting zoom
-	});
-
-{#	$('.list-detail-sidebar')#}
-{#		.sidebar('toggle')#}
-{#	;#}
-</script>
-{% endblock %}
+		<div class="flex center">
+			<a class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
+			<a class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<a class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
+		</div>
+	</nav>
+</header>
+<main class="flex grow ">
+</main>
+</body>
+</html>
