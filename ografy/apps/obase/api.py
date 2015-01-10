@@ -20,6 +20,8 @@ class MessageApi(BaseApi):
     model = documents.Message
 
 
+# TODO: Move to Serializer, Tastadata View, or View?
+
 class DataViewApi(DataApi, ViewApi):
     is_mongo_query = True
 

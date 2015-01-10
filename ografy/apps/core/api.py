@@ -27,7 +27,7 @@ class UserApi(BaseApi):
     Q = D_Q
     model = models.User
 
-
+# TODO: Move to Serializer, Tastadata View, or View?
 class ProviderViewApi(ProviderApi, ViewApi):
     is_mongo_query = False
 

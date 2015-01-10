@@ -5,6 +5,7 @@ from ografy.apps.tastydata import parse_filter
 from ografy.apps.tastydata.api import BaseApi
 
 
+# TODO: Change, move, kill?
 class Parse:
     @classmethod
     def get_expression_class(cls, is_mongo_query=False):

@@ -108,20 +108,54 @@ class DocumentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         raise NotImplementedError
 
-    def get_fields(self):
-        raise NotImplementedError
-
     def get_initial(self):
         raise NotImplementedError
 
     # TODO: Add validators
     def get_validators(self):
-        raise []  # NotImplementedError
+        return []  # raise NotImplementedError
+
+        """
+        Rest Framework built-in validation + related model validations
+        """
+        # for field_name, field in self.fields.items():
+        #     if field_name in self._errors:
+        #         continue
+        #
+        #     source = field.source or field_name
+        #     if self.partial and source not in attrs:
+        #         continue
+        #
+        #     if field_name in attrs and hasattr(field, 'model_field'):
+        #         try:
+        #             field.model_field.validate(attrs[field_name])
+        #         except ValidationError as err:
+        #             self._errors[field_name] = str(err)
+        #
+        #     try:
+        #         validate_method = getattr(self, 'validate_%s' % field_name, None)
+        #         if validate_method:
+        #             attrs = validate_method(attrs, source)
+        #     except serializers.ValidationError as err:
+        #         self._errors[field_name] = self._errors.get(field_name, []) + list(err.messages)
+        #
+        # if not self._errors:
+        #     try:
+        #         attrs = self.validate(attrs)
+        #     except serializers.ValidationError as err:
+        #         if hasattr(err, 'message_dict'):
+        #             for field_name, error_messages in err.message_dict.items():
+        #                 self._errors[field_name] = self._errors.get(field_name, []) + list(error_messages)
+        #         elif hasattr(err, 'messages'):
+        #             self._errors['non_field_errors'] = err.messages
+        #
+        # return attrs
 
     def get_value(self, dictionary):
         raise NotImplementedError
 
     def run_validation(self, data=[]):
+        # TODO: Delete?
         raise NotImplementedError
 
     def to_internal_value(self, data):

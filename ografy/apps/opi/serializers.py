@@ -7,6 +7,7 @@ from ografy.apps.obase.documents import Data, Event, Message
 from ografy.apps.tastydata.serializers import mongo as mongo_serializers
 
 
+# TODO: Move to API, Tastadata View, or View?
 def evaluate(query):
     if type(query) is not QuerySet:
         return query

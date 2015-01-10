@@ -33,7 +33,7 @@ def list_view(request):
         'body_class': 'full',
         'user': request.user,
         'events': events,
-		'list': True
+        'list': True
     })
 
 

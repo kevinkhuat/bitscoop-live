@@ -92,8 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
     id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=256, unique=True, db_index=True)
-    handle = NullCharField(max_length=20, blank=True, null=True, unique=True, db_index=True,
-                           validators=settings.HANDLE_VALIDATORS)
+    handle = NullCharField(max_length=20, blank=True, null=True, unique=True, db_index=True, validators=settings.HANDLE_VALIDATORS)
 
     password_date = models.DateTimeField(auto_now_add=True)
 
