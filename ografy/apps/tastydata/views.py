@@ -1,5 +1,4 @@
 from rest_framework.views import APIView as BaseAPIView
-from ografy.apps.tastydata.serializers import mongo
 
 
 class APIView(BaseAPIView):

@@ -4,7 +4,7 @@ from rest_framework import serializers as django_serializers
 from ografy.apps.core.documents import Settings
 from ografy.apps.core.models import Provider, Signal, User
 from ografy.apps.obase.documents import Data, Event, Message
-from ografy.apps.tastydata.serializers import mongo as mongo_serializers
+from ografy.apps.tastydata.rest_framework_mongoengine import serializers as mongo_serializers
 
 
 # TODO: Move to API, Tastadata View, or View?
