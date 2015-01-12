@@ -119,6 +119,17 @@ class ListField(DocumentField):
         return self.transform_object(value, self.depth - 1)
 
 
+class SortedListField(DocumentField):
+
+    type_label = 'SortedListField'
+
+    def to_internal_value(self, data):
+        return self.model_field.to_python(data)
+
+    def to_representation(self, value):
+        return self.transform_object(value, self.depth - 1)
+
+
 class EmbeddedDocumentField(DocumentField):
 
     type_label = 'EmbeddedDocumentField'

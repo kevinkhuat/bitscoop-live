@@ -12,7 +12,7 @@ from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework import fields as drf_fields
 from ografy.apps.tastydata.rest_framework_mongoengine.utils import get_field_info
-from ografy.apps.tastydata.rest_framework_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, ObjectIdField
+from ografy.apps.tastydata.rest_framework_mongoengine.fields import ReferenceField, ListField, SortedListField, EmbeddedDocumentField, DynamicField, ObjectIdField
 
 import copy
 
@@ -140,10 +140,20 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.ReferenceField: ReferenceField,
         me_fields.ListField: ListField,
         me_fields.EmbeddedDocumentField: EmbeddedDocumentField,
+        me_fields.SortedListField: SortedListField,
         me_fields.DynamicField: DynamicField,
         me_fields.DecimalField: drf_fields.DecimalField,
         me_fields.UUIDField: drf_fields.CharField
     }
+
+    custom_class_list = (
+        me_fields.ReferenceField,
+        me_fields.EmbeddedDocumentField,
+        me_fields.ListField,
+        me_fields.SortedListField,
+        me_fields.DynamicField,
+        me_fields.ObjectIdField
+    )
 
     embedded_document_serializer_fields = []
 
@@ -306,8 +316,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         """
         kwargs = {}
 
-        if type(model_field) in (me_fields.ReferenceField, me_fields.EmbeddedDocumentField,
-                                     me_fields.ListField, me_fields.DynamicField):
+        if type(model_field) in self.custom_class_list:
             kwargs['model_field'] = model_field
             kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
