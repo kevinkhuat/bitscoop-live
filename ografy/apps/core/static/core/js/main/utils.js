@@ -41,10 +41,10 @@ function placeMapPoints() {
 			"type": "Feature",
 			"geometry": {
 				"type": "Point",
-				"coordinates": data[x].location
+				"coordinates": dataList[x].location
 			},
 			"properties": {
-				"title": data[x].provider_name + " " + data[x].name,
+				"title": dataList[x].provider_name + " " + dataList[x].name,
 				"marker-symbol": "marker"
 			}
 		})
