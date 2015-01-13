@@ -10,10 +10,7 @@ import ografy.apps.core.views.user as user_views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
 
-    url(r'^main/grid?$', main_views.grid, name='core_main_grid'),
-    url(r'^main/list?$', main_views.list_view, name='core_main_list'),
-    url(r'^main/map?$', main_views.map, name='core_main_map'),
-    url(r'^main/timeline?$', main_views.timeline, name='core_main_timeline'),
+    url(r'^main?$', main_views.main, name='core_main'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),
     url(r'^settings/personal/?$', settings_views.PersonalView.as_view(), name='core_settings_personal'),

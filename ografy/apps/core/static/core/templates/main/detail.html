@@ -1,32 +1,31 @@
-<div class="list-detail-top-half">
-	<div class="center list-detail-main-label">
-		Message - To {{ event.name }}
+<div class="detail-top-half">
+	<div id="detail-main-label" class="center detail-main-label">
+		Select an Event at left to see its details.
 	</div>
-	<div class="list-detail-avatar">
+	<div class="detail-avatar">
 		<img src="static/assets/logo_240.png" alt="Avatar" />
 	</div>
-	<div class="list-detail-date-time">
-		<label class="center list-detail-label">Time</label>
-		<div class="center list-detail-content">
-			Dec. 5th 2014
-		</div>
-		<div class="center list-detail-content">
-			11:11 AM {{ event.created }}
+	<div id="detail-date-time" class="detail-date-time">
+		<label class="center detail-label">Time</label>
+		<div id="detail-time-content" class="center detail-time-content">
+			Select an Event at left to see its details.
 		</div>
 	</div>
-	<div class="list-detail-data">
-		<label class="center list-detail-label">Message Body</label>
-		<div class="list-detail-content">
-			Meet me here at Disneyland! We are going on Space Mountain. {{ event.data }}
+	<div id="detail-data" class="detail-data">
+		<label class="center detail-label">Message Body</label>
+		<div id="detail-body-content" class="center detail-body-content">
+			Select an Event at left to see its details.
 		</div>
 	</div>
-	<div class="list-detail-location">
-		<label class="center list-detail-label">Location</label>
-		<div class="center list-detail-content">
-			Anaheim, CA [-115.22, +22.48] {{ event.location }}
+	<div id="detail-location" class="detail-location">
+		<label class="center detail-label">Location</label>
+		<div id="detail-location-content" class="center detail-location-content">
+			Select an Event at left to see its details.
 		</div>
 	</div>
 </div>
-<div class="list-detail-bottom-half">
+{% if showMap %}
+<div class="detail-bottom-half">
 	<div id='map'></div>
 </div>
+{% endif %}
