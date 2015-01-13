@@ -75,7 +75,7 @@ header nav a {
 	text-decoration: none !important;
 	color: #555;
 }
-header nav a:hover { color: #0E9D58; }
+header nav a:hover { color: #0E9D58; cursor: pointer; }
 
 
 footer {

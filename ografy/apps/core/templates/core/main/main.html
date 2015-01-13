@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en-US">
+	<meta charset="UTF-8">
+	<title>Ografy App</title>
+
+	{% load staticfiles %}
+
+	{% block static %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
+
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
+
+	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+
+	<script type='text/javascript' src="{% static 'core/js/main/base.js' %}"></script>
+	<script type='text/javascript' src="{% static 'core/js/main/list.js' %}"></script>
+	<script type='text/javascript' src="{% static 'core/js/main/map.js' %}"></script>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
+
+
+
+	<script type='text/javascript' src="{% static 'core/js/main/TEST_REMOVE.js' %}"></script>
+
+
+	{% endblock %}
+
+</head>
+<body class="flex full">
+<header class="bg gray light bottom">
+	<nav class="flex stretch">
+		<div class="flex center grow">
+			<a id="logo_home" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
+			<a id="list_view_button" class="item"><i class="icon-list-unordered"></i></a>
+			<a id="timeline_view_button" class="item"><i class="icon-clock"></i></a>
+			<a id="map_view_button" class="item"><i class="icon-map22"></i></a>
+			<input id="search_bar" class="search-bar grow" type="text" placeholder="Enter search terms here"/>
+		</div>
+		<div class="flex center">
+			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
+			<a id="provider_link" class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<a id="logout_button" class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
+		</div>
+	</nav>
+</header>
+<main class="flex grow">
+</main>
+</body>
+</html>
