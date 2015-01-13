@@ -1,7 +1,6 @@
 {% extends 'core/settings/base.html' %}
 {% load staticfiles %}
 
-
 {% block static %}
 	{{ block.super }}
 	<style type="text/css">
@@ -272,8 +271,7 @@
 			</div>
 		</div>
 		<div>
-			<input class="bold button-green" class="bold" type="button"
-			       value="Complete Connection to {{ provider.name }}"/>
+			<input class="bold button-green" class="bold" type="button" value="Complete Connection to {{ provider.name }}"/>
 		</div>
 	</div>
 {% endblock %}

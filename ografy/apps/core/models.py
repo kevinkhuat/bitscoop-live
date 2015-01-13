@@ -40,7 +40,6 @@ class Signal(models.Model):
         name: The name of the linked service.
     """
     id = models.AutoField(primary_key=True)
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
     name = models.CharField(max_length=100)

@@ -10,7 +10,7 @@ import ografy.apps.core.views.user as user_views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
 
-    url(r'^main?$', main_views.main, name='core_main'),
+    url(r'^app?$', main_views.main, name='core_main'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),
     url(r'^settings/personal/?$', settings_views.PersonalView.as_view(), name='core_settings_personal'),
