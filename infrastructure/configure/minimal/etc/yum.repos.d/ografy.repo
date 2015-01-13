@@ -1,0 +1,5 @@
+[ografy]
+name=Ografy Repository
+baseurl=file:///mnt/ografy/repo
+gpgcheck=0
+enabled=0
