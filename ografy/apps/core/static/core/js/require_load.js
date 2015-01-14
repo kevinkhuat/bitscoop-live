@@ -1,0 +1,38 @@
+requirejs.config({
+	baseUrl: '',
+	paths: {
+		lib: 'static/lib',
+		main: 'static/core/js/main'
+	},
+	shim: {
+		'main/base': {
+			deps: ['main/detail', 'main/list', 'main/map', 'main/utils'],
+			exports: 'Base'
+		},
+		'main/detail': {
+			deps: ['main/utils']
+		},
+		'main/list': {
+			deps: ['main/utils']
+		},
+		'main/map': {
+			deps: ['main/utils']
+		},
+		'main/utils': {
+			deps: []
+		}
+	}
+});
+
+// Start the main app logic.
+requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/base'],
+	function () {
+		$(document).ready(function() {
+			var base = baseView();
+
+			base.loadTestData(function() {
+				base.render();
+				base.bindNavigation();
+			});
+		});
+	});

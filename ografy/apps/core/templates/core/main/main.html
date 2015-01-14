@@ -9,25 +9,15 @@
 	{% block static %}
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.js'></script>
-
 	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.5.1/mapbox-gl.css' />
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
 
 	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/require/require.js' %}" data-main="{% static 'core/js/require_load.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
-
-	<script type='text/javascript' src="{% static 'core/js/main/base.js' %}"></script>
-	<script type='text/javascript' src="{% static 'core/js/main/list.js' %}"></script>
-	<script type='text/javascript' src="{% static 'core/js/main/map.js' %}"></script>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
-
-
-
-	<script type='text/javascript' src="{% static 'core/js/main/TEST_REMOVE.js' %}"></script>
-
-
 	{% endblock %}
 
 </head>
@@ -35,7 +25,7 @@
 <header class="bg gray light bottom">
 	<nav class="flex stretch">
 		<div class="flex center grow">
-			<a id="logo_home" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
+			<a id="logo_home" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/favicon.png' %}" alt="Ografy" /></a>
 			<a id="list_view_button" class="item"><i class="icon-list-unordered"></i></a>
 			<a id="timeline_view_button" class="item"><i class="icon-clock"></i></a>
 			<a id="map_view_button" class="item"><i class="icon-map22"></i></a>

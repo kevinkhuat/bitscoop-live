@@ -1,6 +1,6 @@
 function utils() {
 
-	function map() {
+	function mapbox() {
 		//Mapbox functions
 		function initializeMap() {
 
@@ -20,18 +20,18 @@ function utils() {
 			var maxLat = dataList[0].location[1];
 			var minLat = dataList[0].location[1];
 
-			for (x in dataList) {
-				if (dataList[x].location[0] > maxLong) {
-					maxLong = dataList[x].location[0];
+			for (index in dataList) {
+				if (dataList[index].location[0] > maxLong) {
+					maxLong = dataList[index].location[0];
 				}
-				if (dataList[x].location[0] < minLong) {
-					minLong = dataList[x].location[0];
+				if (dataList[index].location[0] < minLong) {
+					minLong = dataList[index].location[0];
 				}
-				if (dataList[x].location[1] > maxLat) {
-					maxLat = dataList[x].location[1];
+				if (dataList[index].location[1] > maxLat) {
+					maxLat = dataList[index].location[1];
 				}
-				if (dataList[x].location[1] < minLat) {
-					minLat = dataList[x].location[1];
+				if (dataList[index].location[1] < minLat) {
+					minLat = dataList[index].location[1];
 				}
 			}
 
@@ -39,15 +39,15 @@ function utils() {
 		}
 
 		function placeMapPoints() {
-			for (x in dataList) {
+			for (index in dataList) {
 				geoJSON["features"].push({
 					"type": "Feature",
 					"geometry": {
 						"type": "Point",
-						"coordinates": dataList[x].location
+						"coordinates": dataList[index].location
 					},
 					"properties": {
-						"title": dataList[x].provider_name + " " + dataList[x].name,
+						"title": dataList[index].provider_name + " " + dataList[index].name,
 						"marker-symbol": "marker"
 					}
 				})
@@ -57,43 +57,48 @@ function utils() {
 			map.addSource('markers', markers);
 		}
 
-		mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
-		var map;
-		var geoJSON = {
-			"type": "FeatureCollection",
-			"features": []
-		};
+		function renderDetailMap(map, geoJSON) {
+			mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 
-		mapboxgl.util.getJSON('https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', function(err, style) {
-			if (err) throw err;
+			mapboxgl.util.getJSON('https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', function (err, style) {
+				if (err) throw err;
 
-			style.layers.push({
-				"id": "markers",
-				"type": "symbol",
-				"source": "markers",
-				"layout": {
-					"icon-image": "{marker-symbol}-12",
-					"text-field": "{title}",
-					"text-font": "Open Sans Semibold, Arial Unicode MS Bold",
-					"text-offset": [0, 0.6],
-					"text-anchor": "top",
-					"icon-allow-overlap": true,
-					"text-allow-overlap": true
-				},
-				"paint": {
-					"text-size": 12
-				}
+				style.layers.push({
+					"id": "markers",
+					"type": "symbol",
+					"source": "markers",
+					"layout": {
+						"icon-image": "{marker-symbol}-12",
+						"text-field": "{title}",
+						"text-font": "Open Sans Semibold, Arial Unicode MS Bold",
+						"text-offset": [0, 0.6],
+						"text-anchor": "top",
+						"icon-allow-overlap": true,
+						"text-allow-overlap": true
+					},
+					"paint": {
+						"text-size": 12
+					}
+				});
+				map = new mapboxgl.Map({
+					center: [40.82, -73.59],
+					zoom: 9,
+					container: 'map',
+					style: style
+				});
+
+				var markers = new mapboxgl.GeoJSONSource({data: geoJSON});
+				map.addSource('markers', markers);
+
+				return map;
 			});
-			map = new mapboxgl.Map({
-				center: [40.82, -73.59],
-				zoom: 9,
-				container: 'map',
-				style: style
-			});
+		}
 
-			var markers = new mapboxgl.GeoJSONSource({data: geoJSON});
-			map.addSource('markers', markers);
-		});
+		return {
+			calculateFitBounds: calculateFitBounds,
+			placeMapPoints: placeMapPoints,
+			renderDetailMap: renderDetailMap
+		}
 	}
 
 	function session() {
@@ -120,7 +125,7 @@ function utils() {
 	}
 
 	return {
-		map: map,
+		mapbox: mapbox,
 		session: session
 	}
 }

@@ -9,8 +9,8 @@ function mapView(mapUtil) {
 			style: style
 		});
 
-		mapUtil.calculateFitBounds(DANGEROUS_TEST_DATA);
-		mapUtil.placeMapPoints(DANGEROUS_TEST_DATA);
+		mapUtil.calculateFitBounds(baseData);
+		mapUtil.placeMapPoints(baseData);
 	}
 
 	return {
