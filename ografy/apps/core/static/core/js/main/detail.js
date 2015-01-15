@@ -2,7 +2,7 @@ function detailView() {
 	//Views
 	function renderContent(eventName, eventDate, eventLocation, eventData, showMap) {
 
-		showMap = typeof showmap !== 'undefined' ? showMap : true;
+		showMap = typeof showMap !== 'undefined' ? showMap : true;
 
 		var list_detail = nunjucks.render('static/core/templates/main/detail.html', {showMap: showMap});
 		$('.base_detail').html(list_detail);
@@ -28,29 +28,33 @@ function detailView() {
 		$('.detail-body-content').html('Select an Event at left to see its details.');
 	}
 
-	function updateMap(map, coordinates) {
-		clearMap();
-		geoJSON["features"] = {
+	function updateMap(eventName, map, coordinates) {
+		clearMap(map);
+		map.geoJSON["features"].push({
 			"type": "Feature",
 			"geometry": {
 				"type": "Point",
 				"coordinates": coordinates
 			},
 			"properties": {
-				"title": $(this).children('.list-item-name').html(),
+				"title": eventName,
 				"marker-symbol": "marker"
 			}
-		};
+		});
 
-		var markers = new mapboxgl.GeoJSONSource({data: geoJSON});
-		map.addSource('markers', markers);
+		var markers = new mapboxgl.GeoJSONSource({data: map.geoJSON});
+		map.map.addSource('markers', markers);
 
-		map.flyTo([coordinates[1], coordinates[0]], 12, 0, {speed: 3.0, curve: 0.5});
+		map.map.flyTo([coordinates[1], coordinates[0]], 14, 0, {speed: 3.0, curve: 0.5});
 	}
 
 	function clearMap(map) {
-		map.removeSource('markers');
-		geoJSON["features"] = {};
+		if (typeof map.map.style.sources.markers !== 'undefined') {
+			map.map.removeSource('markers');
+		}
+
+		map.geoJSON["features"] = [];
+
 	}
 
 	return {

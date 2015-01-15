@@ -2,11 +2,19 @@ function baseView() {
 	//Data model
 	var baseData = [];
 
+	function mapbox() {
+		this.map = 10;
+		this.geoJSON = {
+			"type": "FeatureCollection",
+			"features": []
+		};
+	}
+
+	var baseMap = new mapbox();
 	//Sub Views
 	var detailViewInst = detailView();
 	var listViewInst = listView();
 	var mapViewInst = mapView();
-
 	var utilsViewInst = utils();
 
 	function clearData() {
@@ -35,34 +43,23 @@ function baseView() {
 	}
 
 	function render() {
-		var map;
-		var geoJSON = {
-			"type": "FeatureCollection",
-			"features": []
-		};
-
 		var base_framework = nunjucks.render('static/core/templates/main/base.html');
 		$('main').html(base_framework);
 
-		var tempData = 'Select an Event at left to see its details.';
-		listViewInst.renderContent(map, baseData);
-		detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);
-
-		var detailMap = utilsViewInst.mapbox().renderDetailMap(map);
-		$('.map').html(detailMap);
+		listViewInst.renderBase(baseMap, baseData);
 	}
 
 	function bindNavigation() {
-		$('#list-view-button').click(function() {
-			listViewInst.renderContent(baseData);
+		$('.list-view-button').click(function() {
+			listViewInst.renderBase(baseMap, baseData);
 		});
 
-		$('#timeline-view-button').click(function() {
+		$('.timeline-view-button').click(function() {
 
 		});
 
-		$('#map-view-button').click(function() {
-			mapViewInst.renderContent(utilsViewInst.map());
+		$('.map-view-button').click(function() {
+			mapViewInst.renderBase(baseMap, baseData, utilsViewInst.mapbox());
 		});
 	}
 

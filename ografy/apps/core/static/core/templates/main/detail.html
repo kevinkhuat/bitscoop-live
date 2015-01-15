@@ -1,4 +1,4 @@
-<div class="detail-top-half">
+<div class="{% if showMap %} detail-top-half {% else %} detail-full {% endif %}">
 	<div id="detail-main-label" class="center detail-main-label">
 		Select an Event at left to see its details.
 	</div>
@@ -26,6 +26,6 @@
 </div>
 {% if showMap %}
 <div class="detail-bottom-half">
-	<div id='map'></div>
+	<div id='mapbox'></div>
 </div>
 {% endif %}

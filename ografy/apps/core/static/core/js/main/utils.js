@@ -14,7 +14,7 @@ function utils() {
 
 		}
 
-		function calculateFitBounds(dataList) {
+		function calculateFitBounds(map, dataList) {
 			var maxLong = dataList[0].location[0];
 			var minLong = dataList[0].location[0];
 			var maxLat = dataList[0].location[1];
@@ -35,12 +35,12 @@ function utils() {
 				}
 			}
 
-			map.fitBounds([[minLat, minLong], [maxLat, maxLong]], {'padding': 15});
+			map.map.fitBounds([[minLat, minLong], [maxLat, maxLong]], {'padding': 15});
 		}
 
-		function placeMapPoints() {
+		function placeMapPoints(map, dataList) {
 			for (index in dataList) {
-				geoJSON["features"].push({
+				map.geoJSON["features"].push({
 					"type": "Feature",
 					"geometry": {
 						"type": "Point",
@@ -53,11 +53,11 @@ function utils() {
 				})
 			}
 
-			var markers = new mapboxgl.GeoJSONSource({data: geoJSON});
-			map.addSource('markers', markers);
+			var markers = new mapboxgl.GeoJSONSource({data: map.geoJSON});
+			map.map.addSource('markers', markers);
 		}
 
-		function renderDetailMap(map, geoJSON) {
+		function renderDetailMap(map) {
 			mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 
 			mapboxgl.util.getJSON('https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', function (err, style) {
@@ -80,17 +80,18 @@ function utils() {
 						"text-size": 12
 					}
 				});
-				map = new mapboxgl.Map({
+
+				map.geoJSON["features"] = [];
+
+				map.map = new mapboxgl.Map({
 					center: [40.82, -73.59],
 					zoom: 9,
-					container: 'map',
+					container: 'mapbox',
 					style: style
 				});
 
-				var markers = new mapboxgl.GeoJSONSource({data: geoJSON});
-				map.addSource('markers', markers);
-
-				return map;
+				var markers = new mapboxgl.GeoJSONSource({data: map.geoJSON});
+				map.map.addSource('markers', markers);
 			});
 		}
 

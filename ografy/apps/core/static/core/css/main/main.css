@@ -25,11 +25,18 @@
     height: 50%;
 }
 
+.detail-full {
+    min-height: 600px;
+    background-color: #EEE;
+    height: 100%;
+}
+
 .detail-main-label {
     background-color: #488A2D;
     color: #FFF;
     width: 100%;
     padding: 3px;
+    min-height: 60px;
 }
 
 .detail-label {
@@ -60,9 +67,10 @@
 }
 
 .detail-data {
+    min-height: 80px;
 }
 
-#map {
+#mapbox {
     height: 100%;
     width: 100%;
 }

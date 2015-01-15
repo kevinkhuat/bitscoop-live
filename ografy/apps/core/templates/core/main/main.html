@@ -25,11 +25,11 @@
 <header class="bg gray light bottom">
 	<nav class="flex stretch">
 		<div class="flex center grow">
-			<a id="logo_home" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/favicon.png' %}" alt="Ografy" /></a>
-			<a id="list_view_button" class="item"><i class="icon-list-unordered"></i></a>
-			<a id="timeline_view_button" class="item"><i class="icon-clock"></i></a>
-			<a id="map_view_button" class="item"><i class="icon-map22"></i></a>
-			<input id="search_bar" class="search-bar grow" type="text" placeholder="Enter search terms here"/>
+			<a class="logo-home item" href="{% url 'core_index' %}"><img src="{% static 'assets/favicon.png' %}" alt="Ografy" /></a>
+			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
+			<a class="timeline-view-button item"><i class="icon-clock"></i></a>
+			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<input class="search-bar search-bar grow" type="text" placeholder="Enter search terms here"/>
 		</div>
 		<div class="flex center">
 			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
