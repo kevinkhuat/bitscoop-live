@@ -1,13 +1,11 @@
 from collections import namedtuple
-from django.core.exceptions import ImproperlyConfigured
-from django.utils import six
-
-from mongoengine.base.common import get_document
+import inspect
 import mongoengine
 
+from django.core.exceptions import ImproperlyConfigured
+from django.utils import six
+from mongoengine.base.common import get_document
 from rest_framework.compat import OrderedDict
-from rest_framework.utils import field_mapping
-import inspect
 
 
 FieldInfo = namedtuple('FieldResult', [

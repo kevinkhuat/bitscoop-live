@@ -1,10 +1,9 @@
+from mongoengine.django.shortcuts import get_document_or_404
 from rest_framework import mixins
 from rest_framework import generics as drf_generics
 
-from mongoengine.django.shortcuts import get_document_or_404
 
-
-class GenericAPIView(drf_generics.GenericAPIView):
+class MongoAPIView(drf_generics.GenericAPIView):
     """
     View to play nice with our Document Serializer
     """
@@ -41,31 +40,29 @@ class GenericAPIView(drf_generics.GenericAPIView):
         return obj
 
 
-class CreateAPIView(mixins.CreateModelMixin,
-                    GenericAPIView):
-
+class CreateAPIView(mixins.CreateModelMixin, MongoAPIView):
     """
     Concrete view for creating a model instance.
     """
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
 
-class ListAPIView(mixins.ListModelMixin,
-                  GenericAPIView):
+class ListAPIView(mixins.ListModelMixin, MongoAPIView):
     """
     Concrete view for listing a queryset.
     """
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 
-class ListCreateAPIView(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        GenericAPIView):
+class ListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, MongoAPIView):
     """
     Concrete view for listing a queryset or creating a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -73,21 +70,20 @@ class ListCreateAPIView(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
 
-class RetrieveAPIView(mixins.RetrieveModelMixin,
-                      GenericAPIView):
+class RetrieveAPIView(mixins.RetrieveModelMixin, MongoAPIView):
     """
     Concrete view for retrieving a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
 
-class UpdateAPIView(mixins.UpdateModelMixin,
-                    GenericAPIView):
-
+class UpdateAPIView(mixins.UpdateModelMixin, MongoAPIView):
     """
     Concrete view for updating a model instance.
     """
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
@@ -95,12 +91,11 @@ class UpdateAPIView(mixins.UpdateModelMixin,
         return self.partial_update(request, *args, **kwargs)
 
 
-class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
-                            mixins.UpdateModelMixin,
-                            GenericAPIView):
+class RetrieveUpdateAPIView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, MongoAPIView):
     """
     Concrete view for retrieving, updating a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -111,12 +106,11 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
         return self.partial_update(request, *args, **kwargs)
 
 
-class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
-                             mixins.DestroyModelMixin,
-                             GenericAPIView):
+class RetrieveDestroyAPIView(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, MongoAPIView):
     """
     Concrete view for retrieving or deleting a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -124,13 +118,11 @@ class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
         return self.destroy(request, *args, **kwargs)
 
 
-class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
-                                   mixins.UpdateModelMixin,
-                                   mixins.DestroyModelMixin,
-                                   GenericAPIView):
+class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, MongoAPIView):
     """
     Concrete view for retrieving, updating or deleting a model instance.
     """
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 

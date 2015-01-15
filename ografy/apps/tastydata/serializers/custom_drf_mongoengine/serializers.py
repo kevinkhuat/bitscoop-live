@@ -1,20 +1,18 @@
 from __future__ import unicode_literals
 
-from mongoengine.errors import ValidationError as me_ValidationError
-from mongoengine import fields as me_fields
+from collections import OrderedDict
+import copy
 
 from django.db import models
 from django.forms import widgets
 from django.core.exceptions import ImproperlyConfigured
-
-from collections import OrderedDict
-
+from mongoengine.errors import ValidationError as me_ValidationError
+from mongoengine import fields as me_fields
 from rest_framework import serializers
 from rest_framework import fields as drf_fields
-from ografy.apps.tastydata.rest_framework_mongoengine.utils import get_field_info
-from ografy.apps.tastydata.rest_framework_mongoengine.fields import ReferenceField, ListField, SortedListField, EmbeddedDocumentField, DynamicField, ObjectIdField
 
-import copy
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.utils import get_field_info
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField
 
 
 def raise_errors_on_nested_writes(method_name, serializer, validated_data):
@@ -41,22 +39,17 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
     # Ensure we don't have a writable nested field. For example:
     #
     # class UserSerializer(ModelSerializer):
-    #     ...
+    # ...
     #     profile = ProfileSerializer()
     assert not any(
         isinstance(field, serializers.BaseSerializer) and
         not isinstance(field, EmbeddedDocumentSerializer) and
-        (key in validated_data)
-        for key, field in serializer.fields.items()
-    ), (
+        (key in validated_data) for key, field in serializer.fields.items()), (
         'The `.{method_name}()` method does not support writable nested'
         'fields by default.\nWrite an explicit `.{method_name}()` method for '
         'serializer `{module}.{class_name}`, or set `read_only=True` on '
-        'nested serializer fields.'.format(
-            method_name=method_name,
-            module=serializer.__class__.__module__,
-            class_name=serializer.__class__.__name__
-        )
+        'nested serializer fields.'.format(method_name=method_name,
+            module=serializer.__class__.__module__, class_name=serializer.__class__.__name__)
     )
 
     # Ensure we don't have a writable dotted-source field. For example:
@@ -64,18 +57,12 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
     # class UserSerializer(ModelSerializer):
     #     ...
     #     address = serializer.CharField('profile.address')
-    assert not any(
-        '.' in field.source and (key in validated_data)
-        for key, field in serializer.fields.items()
-    ), (
+    assert not any('.' in field.source and (key in validated_data) for key, field in serializer.fields.items()), (
         'The `.{method_name}()` method does not support writable dotted-source '
         'fields by default.\nWrite an explicit `.{method_name}()` method for '
         'serializer `{module}.{class_name}`, or set `read_only=True` on '
-        'dotted-source serializer fields.'.format(
-            method_name=method_name,
-            module=serializer.__class__.__module__,
-            class_name=serializer.__class__.__name__
-        )
+        'dotted-source serializer fields.'.format(method_name=method_name,
+            module=serializer.__class__.__module__, class_name=serializer.__class__.__name__)
     )
 
 
@@ -119,6 +106,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             - maybe a better way to implement transform_%s methods on fields.py
 
     """
+
     def __init__(self, instance=None, data=None, **kwargs):
         super(DocumentSerializer, self).__init__(instance=instance, data=data, **kwargs)
         if not hasattr(self.Meta, 'model'):
@@ -143,7 +131,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.SortedListField: SortedListField,
         me_fields.DynamicField: DynamicField,
         me_fields.DecimalField: drf_fields.DecimalField,
-        me_fields.UUIDField: drf_fields.CharField
+        me_fields.UUIDField: drf_fields.CharField,
+        me_fields.DictField: DocumentField
     }
 
     custom_class_list = (
@@ -191,16 +180,12 @@ class DocumentSerializer(serializers.ModelSerializer):
         extra_kwargs = getattr(self.Meta, 'extra_kwargs', {})
 
         if fields and not isinstance(fields, (list, tuple)):
-            raise TypeError(
-                'The `fields` option must be a list or tuple. Got %s.' %
-                type(fields).__name__
-            )
+            raise TypeError('The `fields` option must be a list or tuple. Got %s.' %
+                            type(fields).__name__)
 
         if exclude and not isinstance(exclude, (list, tuple)):
-            raise TypeError(
-                'The `exclude` option must be a list or tuple. Got %s.' %
-                type(exclude).__name__
-            )
+            raise TypeError('The `exclude` option must be a list or tuple. Got %s.' %
+                            type(exclude).__name__)
 
         assert not (fields and exclude), "Cannot set both 'fields' and 'exclude'."
 
@@ -255,7 +240,13 @@ class DocumentSerializer(serializers.ModelSerializer):
             elif field_name in info.fields_and_pk:
                 # Create regular model fields.
                 model_field = info.fields_and_pk[field_name]
-                field_cls = self.field_mapping[model_field.__class__]
+                try:
+                    field_cls = self.field_mapping[model_field.__class__]
+                except KeyError:
+                    raise KeyError('%s is not supported, yet. Please open a ticket regarding '
+                                   'this issue and have it fixed asap.\n'
+                                   'https://github.com/umutbozkurt/django-rest-framework-mongoengine/issues/' % type(model_field))
+
                 kwargs = self.get_field_kwargs(model_field)
                 if 'choices' in kwargs:
                     # Fields with choices get coerced into `ChoiceField`
@@ -271,29 +262,24 @@ class DocumentSerializer(serializers.ModelSerializer):
                 kwargs = {}
 
             else:
-                raise ImproperlyConfigured(
-                    'Field name `%s` is not valid for model `%s`.' %
-                    (field_name, model.__class__.__name__)
-                )
+                raise ImproperlyConfigured('Field name `%s` is not valid for model `%s`.' %
+                                           (field_name, model.__class__.__name__))
 
             # Check that any fields declared on the class are
             # also explicitly included in `Meta.fields`.
             missing_fields = set(declared_fields.keys()) - set(fields)
             if missing_fields:
                 missing_field = list(missing_fields)[0]
-                raise ImproperlyConfigured(
-                    'Field `%s` has been declared on serializer `%s`, but '
-                    'is missing from `Meta.fields`.' %
-                    (missing_field, self.__class__.__name__)
-                )
+                raise ImproperlyConfigured('Field `%s` has been declared on serializer `%s`, but '
+                                           'is missing from `Meta.fields`.' %
+                                           (missing_field, self.__class__.__name__))
 
             # Populate any kwargs defined in `Meta.extra_kwargs`
             extras = extra_kwargs.get(field_name, {})
             if extras.get('read_only', False):
                 for attr in [
-                    'required', 'default', 'allow_blank', 'allow_null',
-                    'min_length', 'max_length', 'min_value', 'max_value',
-                    'validators', 'queryset'
+                    'required', 'default', 'allow_blank', 'allow_null', 'min_length',
+                    'max_length', 'min_value', 'max_value', 'validators', 'queryset'
                 ]:
                     kwargs.pop(attr, None)
 
@@ -372,12 +358,8 @@ class DocumentSerializer(serializers.ModelSerializer):
                 'serializer class that is not a valid argument to '
                 '`%s.objects.create()`. You may need to make the field '
                 'read-only, or override the %s.create() method to handle '
-                'this correctly.\nOriginal exception text was: %s.' %
-                (
-                    ModelClass.__name__,
-                    ModelClass.__name__,
-                    type(self).__name__,
-                    exc
+                'this correctly.\nOriginal exception text was: %s.' % (
+                    ModelClass.__name__, ModelClass.__name__, type(self).__name__, exc
                 )
             )
             raise TypeError(msg)
@@ -388,12 +370,8 @@ class DocumentSerializer(serializers.ModelSerializer):
                 'but not Mongoengine`s. You may need to check consistency between '
                 '%s and %s.\nIf that is not the case, please open a ticket '
                 'regarding this issue on https://github.com/umutbozkurt/django-rest-framework-mongoengine/issues'
-                '\nOriginal exception was: %s' %
-                (
-                    ModelClass.__name__,
-                    ModelClass.__name__,
-                    type(self).__name__,
-                    exc
+                '\nOriginal exception was: %s' % (
+                    ModelClass.__name__, ModelClass.__name__, type(self).__name__, exc
                 )
             )
             raise me_ValidationError(msg)
@@ -412,28 +390,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         return super(DocumentSerializer, self).update(instance, validated_data)
 
 
-class EmbeddedDocumentSerializer(DocumentSerializer):
+class DynamicDocumentSerializer(DocumentSerializer):
     """
 
     """
-
-    def create(self, validated_data):
-        """
-        EmbeddedDocuments are not saved separately, so we create an instance of it.
-        """
-        raise_errors_on_nested_writes('create', self, validated_data)
-        return self.Meta.model(**validated_data)
-
-    def update(self, instance, validated_data):
-        """
-        EmbeddedDocuments are not saved separately, so we just update the instance and return it.
-        """
-        raise_errors_on_nested_writes('update', self, validated_data)
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        return instance
 
     def to_internal_value(self, data):
         """
@@ -469,12 +429,35 @@ class EmbeddedDocumentSerializer(DocumentSerializer):
                 dynamic_fields[name] = DynamicField(field_name=name, source=name, **self.get_field_kwargs(field))
         return dynamic_fields
 
+
+class EmbeddedDocumentSerializer(DocumentSerializer):
+    """
+
+    """
+
+    def create(self, validated_data):
+        """
+        EmbeddedDocuments are not saved separately, so we create an instance of it.
+        """
+        raise_errors_on_nested_writes('create', self, validated_data)
+        return self.Meta.model(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        EmbeddedDocuments are not saved separately, so we just update the instance and return it.
+        """
+        raise_errors_on_nested_writes('update', self, validated_data)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        return instance
+
     def _get_default_field_names(self, declared_fields, model_info):
         """
         EmbeddedDocuments don't have `id`s so do not include `id` to field names
         """
         return (
-            list(declared_fields.keys()) +
-            list(model_info.fields.keys()) +
+            list(declared_fields.keys()) + list(model_info.fields.keys()) +
             list(model_info.forward_relations.keys())
         )

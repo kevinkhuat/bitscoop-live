@@ -1,13 +1,11 @@
+from bson.errors import InvalidId
 from django.core.exceptions import ValidationError
 from django.utils.encoding import smart_str
-
-from rest_framework import serializers
-
-from bson.errors import InvalidId
 from mongoengine import dereference
 from mongoengine.base.document import BaseDocument
 from mongoengine.document import Document
 from mongoengine.fields import ObjectId
+from rest_framework import serializers
 
 
 class DocumentField(serializers.Field):
@@ -40,7 +38,7 @@ class DocumentField(serializers.Field):
             else:
                 continue
 
-            val = self.transform_object(obj, depth-1)
+            val = self.transform_object(obj, depth - 1)
 
             if val is not None:
                 data[field] = val
@@ -109,7 +107,6 @@ class ReferenceField(DocumentField):
 
 
 class ListField(DocumentField):
-
     type_label = 'ListField'
 
     def to_internal_value(self, data):
@@ -120,7 +117,6 @@ class ListField(DocumentField):
 
 
 class SortedListField(DocumentField):
-
     type_label = 'SortedListField'
 
     def to_internal_value(self, data):
@@ -131,7 +127,6 @@ class SortedListField(DocumentField):
 
 
 class EmbeddedDocumentField(DocumentField):
-
     type_label = 'EmbeddedDocumentField'
 
     def __init__(self, *args, **kwargs):
@@ -153,7 +148,6 @@ class EmbeddedDocumentField(DocumentField):
 
 
 class DynamicField(DocumentField):
-
     type_label = 'DynamicField'
 
     def __init__(self, field_name=None, source=None, *args, **kwargs):
@@ -168,7 +162,6 @@ class DynamicField(DocumentField):
 
 
 class ObjectIdField(serializers.Field):
-
     type_label = 'ObjectIdField'
 
     def to_representation(self, value):
