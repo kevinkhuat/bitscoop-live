@@ -6,28 +6,13 @@ from ografy.apps.tastydata import parse_filter
 
 
 class APIView(BaseAPIView):
-
-    @classmethod
-    def get_expression_class(cls):
-            return Django_Q
-
-    @classmethod
-    def get_filter_from_request(cls, request):
-        # Transform the request query paramter filter into Q objects that can be used
-        # by the django or mongoengine orm
-        if hasattr(request, 'query_params'):
-            if 'filter' in request.query_params:
-                query = request.query_params['filter']
-                return parse_filter(query, expression_class=cls.get_expression_class())
-            else:
-                return cls.get_expression_class()()
-        else:
-            return cls.get_expression_class()()
+    class Meta:
+        Q = Django_Q
 
     @classmethod
     def get_auth_from_request(cls, request):
         # Create a Q object filtering objects for a specific user
-        return cls.get_expression_class()(user_id=request.user.id)
+        return cls.Meta.Q(user_id=request.user.id)
 
     # FIXME: Is this insane to get data from the serializer? Probably.
     @property
@@ -46,13 +31,27 @@ class APIView(BaseAPIView):
 
     def initial(self, request, *args, **kwargs):
         super().initial(request, *args, **kwargs)
-        # add filter query
-        request.query_filter = self.get_filter_from_request(request)
+
+        # Transform the request query paramter filter into Q objects that can be used
+        # by the django or mongoengine orm
+        if hasattr(request, 'query_params'):
+            if 'filter' in request.query_params:
+                query = request.query_params['filter']
+                # add filter query
+                request.query_filter = parse_filter(query, expression_class=self.Meta.Q)
+            else:
+                request.query_filter = self.Meta.Q()
+        else:
+            request.query_filter = self.Meta.Q()
+
         request.auth_filter = self.get_auth_from_request(request)
 
 
-class MongoAPIView(APIView):
+class DjangoAPIView(APIView):
+    class Meta:
+        Q = Django_Q
 
-    @classmethod
-    def get_expression_class(cls):
-            return Mongo_Q
+
+class MongoAPIView(APIView):
+    class Meta:
+        Q = Mongo_Q
