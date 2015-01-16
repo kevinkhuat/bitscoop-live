@@ -6,8 +6,7 @@ requirejs.config({
 	},
 	shim: {
 		'main/base': {
-			deps: ['main/detail', 'main/list', 'main/map', 'main/utils'],
-			exports: 'Base'
+			deps: ['main/detail', 'main/list', 'main/map', 'main/utils']
 		},
 		'main/detail': {
 			deps: ['main/utils']

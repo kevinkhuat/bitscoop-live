@@ -11,41 +11,49 @@ function mapView() {
 		var map_framework = nunjucks.render('static/core/templates/main/map/map.html');
 		$('.content').html(map_framework);
 
-		mapboxgl.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
+		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
+		map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.82, -73.59], 9);
 
-		mapboxgl.util.getJSON('https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v6.json', function (err, style) {
-			if (err) throw err;
+		map.geoJSON["features"] = [];
 
-			style.layers.push({
-				"id": "markers",
-				"type": "symbol",
-				"source": "markers",
-				"layout": {
-					"icon-image": "{marker-symbol}-12",
-					"text-field": "{title}",
-					"text-font": "Open Sans Semibold, Arial Unicode MS Bold",
-					"text-offset": [0, 0.6],
-					"text-anchor": "top",
-					"icon-allow-overlap": true,
-					"text-allow-overlap": true
+		for (index in baseData) {
+			map.geoJSON["features"].push({
+				// this feature is in the GeoJSON format: see geojson.org
+				// for the full specification
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					// coordinates here are in longitude, latitude order because
+					// x, y is the standard for GeoJSON and many formats
+					coordinates: baseData[index].location
 				},
-				"paint": {
-					"text-size": 12
+				properties: {
+					title: baseData[index].name,
+					description: baseData[index].provider_name,
+					// one can customize markers by adding simplestyle properties
+					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
+					'marker-size': 'large',
+					'marker-color': '#BE9A6B',
+					'marker-symbol': 'post',
+					'datetime': baseData[index].datetime,
+					'data': baseData[index].data
 				}
-			});
+			})
+		}
 
-			map.geoJSON["features"] = [];
+		map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
 
-			map.map = new mapboxgl.Map({
-				container: 'mapbox',
-				style: style
-			});
+		map.map.fitBounds(map.map.featureLayer.getBounds());
 
-			mapUtil.calculateFitBounds(map, baseData);
-			mapUtil.placeMapPoints(map, baseData);
+		map.map.featureLayer.on('click', function(e) {
+			var feature = e.layer.feature;
+			console.log(feature.geometry.coordinates);
+			$('.detail-main-label').html(feature.properties.description);
+			$('.detail-time-content').html(feature.properties.datetime);
+			$('.detail-location-content').html(String(feature.geometry.coordinates));
+			$('.detail-body-content').html(String(feature.properties.data));
 
 		});
-
 	}
 
 	return {
