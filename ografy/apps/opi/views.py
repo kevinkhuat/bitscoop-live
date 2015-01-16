@@ -468,7 +468,9 @@ class SettingsView(MongoAPIView):
         settings_list = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             settings_list,
-            context={'request': request}
+            context={
+                'request': request
+            }
         )
 
         return Response(serialized_response)
@@ -641,7 +643,9 @@ class SignalSingleView(DjangoAPIView):
         provider_object = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             provider_object,
-            context={'request': request}
+            context={
+                'request': request
+            }
         )
 
         return Response(serialized_response)
