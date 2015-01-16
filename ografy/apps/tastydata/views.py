@@ -20,9 +20,9 @@ class APIView(BaseAPIView):
                 query = request.query_params['filter']
                 return parse_filter(query, expression_class=cls.get_expression_class())
             else:
-                return None
+                return cls.get_expression_class()()
         else:
-            return None
+            return cls.get_expression_class()()
 
     @classmethod
     def get_auth_from_request(cls, request):
@@ -45,7 +45,7 @@ class APIView(BaseAPIView):
         return self.__class__.serializer(**kwargs).to_internal_value(data)
 
     def initial(self, request, *args, **kwargs):
-        BaseAPIView.initial(request, *args, **kwargs)
+        super().initial(request, *args, **kwargs)
         # add filter query
         request.query_filter = self.get_filter_from_request(request)
         request.auth_filter = self.get_auth_from_request(request)
