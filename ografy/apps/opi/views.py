@@ -49,7 +49,12 @@ class DataView(MongoAPIView):
 
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_data = self.deserialize(request.data)
+        post_data = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_data.user_id = request.user.id
         data = obase_api.DataApi.post(
             data=post_data
@@ -92,7 +97,12 @@ class DataSingleView(MongoAPIView):
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
-        patch_data = self.deserialize(request.data)
+        patch_data = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         patch_data.user_id = request.user.id
         data = obase_api.DataApi.patch(
             val=pk,
@@ -109,7 +119,12 @@ class DataSingleView(MongoAPIView):
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
-        post_data = self.deserialize(request.data)
+        post_data = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_data.user_id = request.user.id
         data = obase_api.DataApi.put(
             pk=pk,
@@ -147,7 +162,12 @@ class EventView(MongoAPIView):
 
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_event = self.deserialize(request.data)
+        post_event = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_event.user_id = request.user.id
 
         event = obase_api.EventApi.post(
@@ -192,7 +212,12 @@ class EventSingleView(MongoAPIView):
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
-        patch_event = self.deserialize(request.data)
+        patch_event = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         patch_event.user_id = request.user.id
 
         event = obase_api.EventApi.patch(
@@ -210,7 +235,12 @@ class EventSingleView(MongoAPIView):
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
-        put_event = self.deserialize(request.data)
+        put_event = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         put_event.user_id = request.user.id
 
         event = obase_api.EventApi.patch(
@@ -266,7 +296,12 @@ class MessageView(MongoAPIView):
 
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_message = self.deserialize(request.data)
+        post_message = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_message.user_id = request.user.id
         message = obase_api.MessageApi.post(
             data=post_message
@@ -309,7 +344,12 @@ class MessageSingleView(MongoAPIView):
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
-        patch_message = self.deserialize(request.data)
+        patch_message = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         patch_message.user_id = request.user.id
 
         message = obase_api.MessageApi.patch(
@@ -327,7 +367,12 @@ class MessageSingleView(MongoAPIView):
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
-        put_data = self.deserialize(request.data)
+        put_data = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         put_data.user_id = request.user.id
 
         message = obase_api.MessageApi.put(
@@ -440,12 +485,24 @@ class SettingsSingleView(MongoAPIView):
             request.auth_filter
         )
         settings_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(settings_object, context={'request': request}))
+        serialized_response = self.serialize(
+            settings_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
 
     # TODO: Replace with patch
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_settings = self.deserialize(request.data, context={'request': request})
+        post_settings = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_settings.user = request.user
 
         settings = core_api.SignalApi.post(
@@ -483,7 +540,12 @@ class SignalView(DjangoAPIView):
 
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_signal = self.deserialize(request.data)
+        post_signal = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_signal.user = request.user
         signal = core_api.SignalApi.post(
             data=post_signal
@@ -527,7 +589,12 @@ class SignalSingleView(DjangoAPIView):
 
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
-        patch_signal = self.deserialize(request.data)
+        patch_signal = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         patch_signal.user = request.user
 
         data = core_api.SignalApi.patch(
@@ -545,7 +612,12 @@ class SignalSingleView(DjangoAPIView):
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
-        post_signal = self.deserialize(request.data)
+        post_signal = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
         post_signal.user = request.user
 
         signal = core_api.SignalApi.put(
