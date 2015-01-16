@@ -2,7 +2,6 @@ function listView() {
 
 	var detailViewInst = detailView();
 	var utilsViewInst = utils();
-	var detailMap;
 
 	//TEST_REMOVE
 	function getCoordinatesHack(selectedItem) {
@@ -15,18 +14,18 @@ function listView() {
 
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
+
+		var list = nunjucks.render('static/core/templates/main/list/list.html');
+		$('.content').html(list);
+
 		renderContent(map, baseData);
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);
-
-		detailMap = utilsViewInst.mapbox().renderDetailMap(map);
+		utilsViewInst.mapbox().renderDetailMap(map);
 	}
 
 	//Views
 	function renderContent(map, data) {
 		//Iterate through json and render list items using Nunjucks templates
-		var list = nunjucks.render('static/core/templates/main/list/list.html');
-		$('.content').html(list);
-
 		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html', {event_data: data});
 		$('.list-content').html(listItems);
 

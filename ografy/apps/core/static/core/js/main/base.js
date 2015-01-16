@@ -3,7 +3,7 @@ function baseView() {
 	var baseData = [];
 
 	function mapbox() {
-		this.map = 10;
+		this.map;
 		this.geoJSON = {
 			"type": "FeatureCollection",
 			"features": []
@@ -46,7 +46,7 @@ function baseView() {
 		var base_framework = nunjucks.render('static/core/templates/main/base.html');
 		$('main').html(base_framework);
 
-		listViewInst.renderBase(baseMap, baseData);
+		mapViewInst.renderBase(baseMap, baseData, utilsViewInst.mapbox());
 	}
 
 	function bindNavigation() {

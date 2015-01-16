@@ -29,31 +29,35 @@ function detailView() {
 	}
 
 	function updateMap(eventName, map, coordinates) {
-		clearMap(map);
-		map.geoJSON["features"].push({
-			"type": "Feature",
-			"geometry": {
-				"type": "Point",
-				"coordinates": coordinates
+		var geoJSON = {
+			// this feature is in the GeoJSON format: see geojson.org
+			// for the full specification
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				// coordinates here are in longitude, latitude order because
+				// x, y is the standard for GeoJSON and many formats
+				coordinates: coordinates
 			},
-			"properties": {
-				"title": eventName,
-				"marker-symbol": "marker"
+			properties: {
+				title: eventName,
+				description: 'pants',
+				// one can customize markers by adding simplestyle properties
+				// https://www.mapbox.com/guides/an-open-platform/#simplestyle
+				'marker-size': 'large',
+				'marker-color': '#BE9A6B',
+				'marker-symbol': 'post'
 			}
-		});
+		}
 
-		var markers = new mapboxgl.GeoJSONSource({data: map.geoJSON});
-		map.map.addSource('markers', markers);
+		map.map.featureLayer.setGeoJSON(geoJSON);
 
-		map.map.flyTo([coordinates[1], coordinates[0]], 14, 0, {speed: 3.0, curve: 0.5});
+		map.map.panTo([coordinates[1], coordinates[0]]);
+		map.map.setZoom(13);
 	}
 
 	function clearMap(map) {
-		if (typeof map.map.style.sources.markers !== 'undefined') {
-			map.map.removeSource('markers');
-		}
-
-		map.geoJSON["features"] = [];
+		map.map.featureLayer.setGeoJSON([]);
 
 	}
 

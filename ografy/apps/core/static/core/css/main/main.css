@@ -73,9 +73,17 @@
 #mapbox {
     height: 100%;
     width: 100%;
+    position: fixed;
 }
 
+#map {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
 body.full #content {
+    height: 100%;
+    width: 100%;
     overflow-y: hidden;
 }
 
@@ -84,7 +92,7 @@ body.full #content {
 }
 
 .list-content {
-    overflow: scroll;
+    overflow: auto;
 }
 
 .list-title {
