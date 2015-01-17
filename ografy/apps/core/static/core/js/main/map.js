@@ -47,7 +47,6 @@ function mapView() {
 
 		map.map.featureLayer.on('click', function(e) {
 			var feature = e.layer.feature;
-			console.log(feature.geometry.coordinates);
 			$('.detail-main-label').html(feature.properties.description);
 			$('.detail-time-content').html(feature.properties.datetime);
 			$('.detail-location-content').html(String(feature.geometry.coordinates));

@@ -3,15 +3,6 @@ function listView() {
 	var detailViewInst = detailView();
 	var utilsViewInst = utils();
 
-	//TEST_REMOVE
-	function getCoordinatesHack(selectedItem) {
-		var trimmed = $.trim(selectedItem.children('.list-item-location').html());
-		var numberArray = trimmed.split(',').map(function(trimmed) {
-			return Number(trimmed);
-		});
-		return numberArray;
-	}
-
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
 
@@ -24,9 +15,9 @@ function listView() {
 	}
 
 	//Views
-	function renderContent(map, data) {
+	function renderContent(map, event_data) {
 		//Iterate through json and render list items using Nunjucks templates
-		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html', {event_data: data});
+		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html', {event_data: event_data});
 		$('.list-content').html(listItems);
 
 		$('.list-item').click(function() {
@@ -36,14 +27,18 @@ function listView() {
 
 
 			if (selectedItem.hasClass('active')) {
-				var eventName =selectedItem.children('.list-item-name').html();
-				var eventDate = selectedItem.children('.list-item-date').html();
-				var eventLocation = selectedItem.children('.list-item-location').html();
-				var eventData = selectedItem.children('.list-item-data').html();
+				var csrftoken = utilsViewInst.session().getCookie('csrftoken');
+				$.ajax({
+					url: 'static/core/js/test_data/event_single_test_data.json',
+					type: 'GET',
+					dataType: 'json',
+					headers: {"X-CSRFToken": csrftoken}
+				}).done(function(data, xhr, response) {
+					var single_data = data;
+					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location), String(single_data.data));
+					detailViewInst.updateMap(single_data.provider_name, map, single_data.location);
 
-				detailViewInst.updateContent(eventName, eventDate, eventLocation, eventData);
-				detailViewInst.updateMap(eventName, map, getCoordinatesHack(selectedItem));
-
+				});
 			}
 			else {
 				detailViewInst.clearContent();

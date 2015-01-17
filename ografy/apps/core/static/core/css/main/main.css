@@ -5,6 +5,8 @@
 .detail-sidebar {
     width: 300px;
     position: relative;
+    border-left: 2px;
+    border-left-style: solid;
 }
 
 .detail {
@@ -73,15 +75,10 @@
 #mapbox {
     height: 100%;
     width: 100%;
-    position: fixed;
-}
-
-#map {
-    height: 100%;
-    width: 100%;
     position: relative;
 }
-body.full #content {
+
+body.full .content {
     height: 100%;
     width: 100%;
     overflow-y: hidden;
@@ -107,6 +104,7 @@ body.full #content {
 .list-item-name {
     width: 30%;
     display: inline-block;
+    margin-left: 5px;
 }
 
 .list-item-date {
@@ -125,10 +123,10 @@ body.full #content {
 }
 
 .list-item {
-    margin: 4px 10px 4px 4px;
+    margin: 4px 0px;
     width: 100%;
     color: #000;
-    padding: 5px;
+    padding: 5px 0px;
     background-color: #EEE;
     transition: width .5s ease;
     cursor: pointer;

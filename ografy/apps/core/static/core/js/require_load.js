@@ -33,5 +33,7 @@ requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/base'],
 				base.render();
 				base.bindNavigation();
 			});
+
+			//base.insertInitialData();
 		});
 	});

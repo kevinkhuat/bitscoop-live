@@ -52,8 +52,7 @@ function detailView() {
 
 		map.map.featureLayer.setGeoJSON(geoJSON);
 
-		map.map.panTo([coordinates[1], coordinates[0]]);
-		map.map.setZoom(13);
+		map.map.setView([coordinates[1], coordinates[0]], 13, {pan: {animate: true}});
 	}
 
 	function clearMap(map) {

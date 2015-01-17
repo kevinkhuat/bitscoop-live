@@ -199,6 +199,9 @@ footer {
 
 .flex > .grow {
     flex: 1;
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 
 .grouping {
@@ -329,6 +332,9 @@ body.full > header {
 
 body.full > main {
     padding: 0;
+    position: relative;
+    left: 0px;
+    top: 0px;
 }
 
 body.full #content {

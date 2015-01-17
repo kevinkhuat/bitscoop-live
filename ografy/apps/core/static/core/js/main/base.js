@@ -64,6 +64,7 @@ function baseView() {
 	}
 
 	function loadInitialData() {
+		var csrftoken = utilsViewInst.session().getCookie('csrftoken');
 		$.ajax({
 			url: '/opi/event',
 			type: 'GET',
@@ -75,9 +76,33 @@ function baseView() {
 		});
 	}
 
+	function insertInitialData() {
+		var csrftoken = utilsViewInst.session().getCookie('csrftoken');
+		for (i=0; i<8; i++){
+			var data = {
+				"created": "2014-12-01 19:54:06.860Z",
+				"updated": "2014-12-01 19:54:06.860Z",
+				"user_id": 1,
+				"data_blob": {"cool": "pants", "hammer": "time"}
+			};
+			$.ajax({
+				url: '/opi/data',
+				type: 'POST',
+				dataType: 'json',
+				headers: {"X-CSRFToken": csrftoken},
+				data: data
+			}).done(function(data, xhr, response) {
+				baseData = data;
+				console.log(baseData);
+			});
+		}
+
+	}
+
 	return {
 		render: render,
 		bindNavigation: bindNavigation,
+		insertInitialData: insertInitialData,
 		loadInitialData: loadInitialData,
 		loadTestData: loadTestData
 	}
