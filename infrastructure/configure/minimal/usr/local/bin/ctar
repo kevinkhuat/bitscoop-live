@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tar --exclude .svn --exclude .git --exclude .idea --exclude __pycache__ --exclude *.pyc $@
