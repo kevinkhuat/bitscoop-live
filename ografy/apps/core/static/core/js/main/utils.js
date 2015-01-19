@@ -30,6 +30,8 @@ function utils() {
 	}
 
 	function session() {
+		var csrfToken = '';
+
 		//Django cookie management
 		function getCookie(name) {
 			var cookieValue = null;
@@ -47,7 +49,16 @@ function utils() {
 			return cookieValue;
 		}
 
+		function getCsrfToken() {
+			if (csrfToken == '') {
+				csrfToken = getCookie('csrftoken');
+			}
+
+			return csrfToken;
+		}
+
 		return {
+			getCsrfToken: getCsrfToken,
 			getCookie: getCookie
 		}
 	}

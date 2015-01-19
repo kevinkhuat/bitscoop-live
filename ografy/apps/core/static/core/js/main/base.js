@@ -1,6 +1,17 @@
 function baseView() {
 	//Data model
 	var baseData = [];
+	var baseMap = new mapbox();
+
+	//View components
+	var detailViewInst = detailView();
+	var utilsInst = utils();
+	var mapInst = utilsInst.mapbox();
+	var sessionInst = utilsInst.session();
+
+	//Sub Views
+	var listViewInst = listView(detailViewInst, mapInst, sessionInst);
+	var mapViewInst = mapView(detailViewInst, utilsInst);
 
 	function mapbox() {
 		this.map;
@@ -9,13 +20,6 @@ function baseView() {
 			"features": []
 		};
 	}
-
-	var baseMap = new mapbox();
-	//Sub Views
-	var detailViewInst = detailView();
-	var listViewInst = listView();
-	var mapViewInst = mapView();
-	var utilsViewInst = utils();
 
 	function clearData() {
 
@@ -30,12 +34,13 @@ function baseView() {
 	}
 
 	function loadTestData(completeCallback) {
-		var csrftoken = utilsViewInst.session().getCookie('csrftoken');
 		$.ajax({
 			url: 'static/core/js/test_data/event_test_data.json',
 			type: 'GET',
 			dataType: 'json',
-			headers: {"X-CSRFToken": csrftoken}
+			headers: {
+				"X-CSRFToken": sessionInst.getCsrfToken()
+			}
 		}).done(function(data, xhr, response) {
 			baseData = data;
 			completeCallback();
@@ -46,7 +51,7 @@ function baseView() {
 		var base_framework = nunjucks.render('static/core/templates/main/base.html');
 		$('main').html(base_framework);
 
-		mapViewInst.renderBase(baseMap, baseData, utilsViewInst.mapbox());
+		mapViewInst.renderBase(baseMap, baseData, mapInst);
 	}
 
 	function bindNavigation() {
@@ -59,17 +64,18 @@ function baseView() {
 		});
 
 		$('.map-view-button').click(function() {
-			mapViewInst.renderBase(baseMap, baseData, utilsViewInst.mapbox());
+			mapViewInst.renderBase(baseMap, baseData, mapInst);
 		});
 	}
 
 	function loadInitialData() {
-		var csrftoken = utilsViewInst.session().getCookie('csrftoken');
 		$.ajax({
 			url: '/opi/event',
 			type: 'GET',
 			dataType: 'json',
-			headers: {"X-CSRFToken": csrftoken}
+			headers: {
+				"X-CSRFToken": sessionInst.getCsrfToken()
+			}
 		}).done(function(data, xhr, response) {
 			baseData = data;
 			console.log(baseData);
@@ -77,7 +83,6 @@ function baseView() {
 	}
 
 	function insertInitialData() {
-		var csrftoken = utilsViewInst.session().getCookie('csrftoken');
 		for (i=0; i<8; i++){
 			var data = {
 				"created": "2014-12-01 19:54:06.860Z",
@@ -89,7 +94,9 @@ function baseView() {
 				url: '/opi/data',
 				type: 'POST',
 				dataType: 'json',
-				headers: {"X-CSRFToken": csrftoken},
+				headers: {
+					"X-CSRFToken": sessionInst.getCsrfToken()
+				},
 				data: data
 			}).done(function(data, xhr, response) {
 				baseData = data;

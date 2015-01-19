@@ -1,7 +1,4 @@
-function listView() {
-
-	var detailViewInst = detailView();
-	var utilsViewInst = utils();
+function listView(detailViewInst, mapInst, sessionInst) {
 
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
@@ -11,7 +8,7 @@ function listView() {
 
 		renderContent(map, baseData);
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);
-		utilsViewInst.mapbox().renderDetailMap(map);
+		mapInst.renderDetailMap(map);
 	}
 
 	//Views
@@ -27,12 +24,13 @@ function listView() {
 
 
 			if (selectedItem.hasClass('active')) {
-				var csrftoken = utilsViewInst.session().getCookie('csrftoken');
 				$.ajax({
 					url: 'static/core/js/test_data/event_single_test_data.json',
 					type: 'GET',
 					dataType: 'json',
-					headers: {"X-CSRFToken": csrftoken}
+					headers: {
+						"X-CSRFToken": sessionInst.getCsrfToken()
+					}
 				}).done(function(data, xhr, response) {
 					var single_data = data;
 					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location), String(single_data.data));
