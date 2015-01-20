@@ -51,8 +51,8 @@ class Signal(models.Model):
     permissions = models.TextField()
     frequency = models.IntegerField()
 
-    created = models.DateTimeField(default=datetime.datetime.now)
-    updated = models.DateTimeField(default=datetime.datetime.now)
+    created = models.DateTimeField(blank=False)
+    updated = models.DateTimeField(blank=False)
 
     # def get_user_social_auth(self):
     # return UserSocialAuth.get_social_auth(self.provider, self.user.id)
