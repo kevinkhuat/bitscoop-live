@@ -1,13 +1,12 @@
-function mapView() {
+function mapView(detailViewInst, utilsInst) {
 	//Views
-	function renderBase(map, baseData, mapUtil) {
+	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
-		var detailViewInst = detailView();
-		renderContent(map, baseData, mapUtil)
+		renderContent(map, baseData)
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, false);
 	}
 
-	function renderContent(map, baseData, mapUtil) {
+	function renderContent(map, baseData) {
 		var map_framework = nunjucks.render('static/core/templates/main/map/map.html');
 		$('.content').html(map_framework);
 
