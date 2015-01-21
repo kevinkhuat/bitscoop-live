@@ -78,7 +78,6 @@ function baseView() {
 			}
 		}).done(function(data, xhr, response) {
 			baseData = data;
-			console.log(baseData);
 		});
 	}
 

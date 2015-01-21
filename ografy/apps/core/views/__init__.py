@@ -93,7 +93,7 @@ class SignupView(View):
 
 def index(request):
     if request.user.is_authenticated():
-        template = 'core/main/main.html'
+        template = 'core/main/search_test.html'
         context = {
             'title': 'Ografy - Home'
         }

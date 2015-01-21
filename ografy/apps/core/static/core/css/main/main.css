@@ -2,6 +2,107 @@
     margin: 0 10px;
 }
 
+.search-container {
+}
+
+.type-container {
+}
+
+.type-button {
+		display: inline-block;
+		background-color: #EEE;
+
+		font-weight: bold;
+
+		padding: 10px;
+        margin: 5px;
+
+		text-align: center;
+		text-decoration: none !important;
+
+		cursor: pointer;
+		transition: width .5s ease;
+}
+
+.type-button:hover {
+	background-color: #DDD;
+}
+
+.type-button.active {
+    background-color: #CCC;
+}
+
+.add-filter-button {
+        display: inline-block;
+		background-color: #EEE;
+
+		font-weight: bold;
+
+		padding: 5px;
+        margin: 5px;
+
+		text-align: center;
+		text-decoration: none !important;
+
+		cursor: pointer;
+		transition: width .5s ease;
+
+}
+
+.add-filter-button:hover {
+	background-color: #DDD;
+}
+
+.add-filter-button.active {
+    background-color: #CCC;
+}
+
+.remove-filter-button {
+        display: inline-block;
+		background-color: #EEE;
+
+		font-weight: bold;
+
+		padding: 5px;
+        margin: 5px;
+
+		text-align: center;
+		text-decoration: none !important;
+
+		cursor: pointer;
+		transition: width .5s ease;
+
+}
+
+.remove-filter-button:hover {
+	background-color: #DDD;
+}
+
+.remove-filter-button.active {
+    background-color: #CCC;
+}
+
+.date {
+    display: inline-block;
+}
+
+.time {
+    display: inline-block;
+}
+
+.filter {
+    background: #AAA;
+    border-bottom: solid 1px;
+}
+
+.filter-selection {
+    display: inline-block;
+}
+
+.add-remove-buttons {
+    display: inline-block;
+}
+
 .detail-sidebar {
     width: 300px;
     position: relative;

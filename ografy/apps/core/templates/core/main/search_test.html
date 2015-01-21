@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head lang="en-US">
+<head lang="en">
 	<meta charset="UTF-8">
-	<title>Ografy App</title>
+	<title>Ografy Search Development Page</title>
 
 	{% load staticfiles %}
 	{% block static %}
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
-	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
 
 	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/require/require.js' %}" data-main="{% static 'core/js/require_load.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
 
+	<script type="text/javascript" src="{% static 'lib/search/search.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
 	{% endblock %}
@@ -29,6 +27,7 @@
 			<a class="timeline-view-button item"><i class="icon-clock"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
 			<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
+
 		</div>
 		<div class="flex center">
 			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
@@ -37,7 +36,15 @@
 		</div>
 	</nav>
 </header>
-<main class="flex grow">
-</main>
+<div class="search-container">
+	<div class="type-container">
+		<div class="type-button">Events</div>
+		<div class="type-button">Messages</div>
+		<div class="type-button">Transactions</div>
+	</div>
+	<div class="filter-container">
+
+	</div>
+</div>
 </body>
 </html>
