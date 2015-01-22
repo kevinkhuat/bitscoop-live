@@ -14,7 +14,6 @@ function getCookie(name) {
 	}
 	return cookieValue;
 }
-var testNumFilters = 0;
 
 function addDropdown() {
 	var newDropdown = nunjucks.render('static/core/templates/main/filter/initial_filter_dropdown.html');
@@ -24,7 +23,7 @@ function addDropdown() {
 	renderDate().dropdown(initDropdown);
 
 	$('.filter:last').find('.initial').change(function() {
-		currentElement = this;
+		var currentElement = this;
 		$(currentElement).siblings().remove();
 		if (currentElement.value == 'date') {
 			renderDate().dropdown(currentElement);
@@ -39,37 +38,21 @@ function addDropdown() {
 			renderFrom().dropdown(currentElement);
 		}
 	});
-
-	var initDateDropdown = $('.filter:last').find('.date')[0];
-	renderDate().afterField(initDateDropdown);
 }
 
 function addFilter() {
-
-	testNumFilters++;
+	createFilterBase();
 	addDropdown();
-	createRemoveButton();
-	createAddButton();
 }
 
-function createAddButton() {
-	var newFilter = nunjucks.render('static/core/templates/main/filter/filter.html', {num: testNumFilters});
+function createFilterBase() {
+	var newFilter = nunjucks.render('static/core/templates/main/filter/filter.html');
 	$('.filter-container').append(newFilter);
 	$('.filter:last').find('.add-filter-button').on('click', function() {
 		addFilter();
 	});
-}
-
-function createInitialFilter() {
-	createAddButton();
-}
-
-function createRemoveButton() {
-	var newRemoveButton = nunjucks.render('static/core/templates/main/filter/remove_button.html');
-	$('.filter:last').find('.add-remove-buttons').before(newRemoveButton);
-	var currentButton = $('.filter:last').find('.remove-filter-button');
-	currentButton.on('click', function() {
-		removeFilter(currentButton);
+	$('.filter:last').find('.remove-filter-button').on('click', function() {
+		removeFilter(this);
 	});
 }
 
@@ -77,14 +60,26 @@ function removeFilter(currentButton) {
 	$(currentButton).parents('.filter').remove();
 }
 
-function renderDate() {
-
+function renderFrom() {
 	function dropdown(currentElement) {
-		var newDropdown = nunjucks.render('static/core/templates/main/filter/date_dropdown.html');
-		$(currentElement.parentElement).append(newDropdown);
+		var parent = currentElement.parentElement;
+		var newDropdown = nunjucks.render('static/core/templates/main/filter/from_text_field.html');
+		$(parent).append(newDropdown);
+	}
 
-		$('.filter:last').find('.date').change(function() {
-			currentElement = this;
+	return {
+		dropdown: dropdown
+	}
+}
+
+function renderDate() {
+	function dropdown(currentElement) {
+		var parent = currentElement.parentElement;
+		var newDropdown = nunjucks.render('static/core/templates/main/filter/date_dropdown.html');
+		$(parent).append(newDropdown);
+
+		$(parent).find('.date').change(function() {
+			var currentElement = this;
 			$(currentElement).siblings().not('.initial').remove();
 			if (currentElement.value == 'after') {
 				afterField(currentElement);
@@ -97,7 +92,7 @@ function renderDate() {
 			}
 		});
 
-		var initDateDropdown = $('.filter:last').find('.date')[0];
+		var initDateDropdown = $(parent).find('.date')[0];
 		renderDate().afterField(initDateDropdown);
 	}
 
@@ -115,6 +110,7 @@ function renderDate() {
 		var newDropdown = nunjucks.render('static/core/templates/main/filter/date_between_fields.html');
 		$(currentElement.parentElement).append(newDropdown);
 	}
+
 	return {
 		afterField: afterField,
 		beforeField: beforeField,
@@ -125,11 +121,12 @@ function renderDate() {
 
 function renderTime() {
 	function dropdown(currentElement) {
+		var parent = currentElement.parentElement;
 		var newDropdown = nunjucks.render('static/core/templates/main/filter/time_dropdown.html');
-		$(currentElement.parentElement).append(newDropdown);
+		$(parent).append(newDropdown);
 
-		$('.filter:last').find('.time').change(function() {
-			currentElement = this;
+		$(parent).find('.time').change(function() {
+			var currentElement = this;
 			$(currentElement).siblings().not('.initial').remove();
 			if (currentElement.value == 'after') {
 				afterField(currentElement);
@@ -142,7 +139,7 @@ function renderTime() {
 			}
 		});
 
-		var initTimeDropdown = $('.filter:last').find('.time')[0];
+		var initTimeDropdown = $(parent).find('.time')[0];
 		renderTime().afterField(initTimeDropdown);
 	}
 
@@ -160,6 +157,7 @@ function renderTime() {
 		var newDropdown = nunjucks.render('static/core/templates/main/filter/time_between_fields.html');
 		$(currentElement.parentElement).append(newDropdown);
 	}
+
 	return {
 		afterField: afterField,
 		beforeField: beforeField,
@@ -168,17 +166,113 @@ function renderTime() {
 	}
 }
 
+function renderTo() {
+	function dropdown(currentElement) {
+		var parent = currentElement.parentElement;
+		var newField = nunjucks.render('static/core/templates/main/filter/to_text_field.html');
+		$(parent).append(newField);
+	}
+
+	return {
+		dropdown: dropdown
+	}
+}
+
+function dateString (currentFilter) {
+	function appendAfter(currentFilter) {
+		return 'Date gt ' + $(currentFilter).find('.date-start')[0].value;
+	}
+
+	function appendBefore(curretFilter) {
+		return 'Date lt ' + $(currentFilter).find('.date-end')[0].value;
+	}
+
+	var returnString = '';
+	var delimeter = $(currentFilter).children('.date')[0];
+
+	if (delimeter.value == 'after') {
+		returnString += appendAfter(currentFilter);
+	}
+	else if (delimeter.value == 'before') {
+		returnString += appendBefore(currentFilter);
+	}
+	else if (delimeter.value == 'between') {
+		returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+	}
+
+	return returnString;
+}
+
+function timeString (currentFilter) {
+	function appendAfter(currentFilter) {
+		return 'Time gt ' + $(currentFilter).find('.time-start')[0].value;
+	}
+
+	function appendBefore(curretFilter) {
+		return 'Time lt ' + $(currentFilter).find('.time-end')[0].value;
+	}
+
+	var returnString = '';
+	var delimeter = $(currentFilter).children('.time')[0];
+
+	if (delimeter.value == 'after') {
+		returnString += appendAfter(currentFilter);
+	}
+	else if (delimeter.value == 'before') {
+		returnString += appendBefore(currentFilter);
+	}
+	else if (delimeter.value == 'between') {
+		returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+	}
+
+	return returnString;
+}
+
+function fromString (currentFilter) {
+	return 'From ' + $(currentFilter).find('.from-text')[0].value;
+}
+
+function toString (currentFilter) {
+	return 'To ' + $(currentFilter).find('.to-text')[0].value;
+}
+
 $(document).ready(function() {
-
-	createInitialFilter();
-
 	$('.search-bar').keypress(function(event) {
 		if (event.keyCode == 13) {
+			var filterString = "";
+			var filtersList = $('.filter-options');
+
+			for (var i = 0; i < filtersList.length; i++) {
+				var outputString = '';
+				var currentFilter = filtersList[i];
+				var type = $(currentFilter).children('.initial')[0].value;
+				if (i != 0) {
+					filterString += ' AND ';
+				}
+
+				if (type == 'date') {
+					filterString += '(' + dateString(currentFilter) + ')';
+				}
+				else if (type == 'time') {
+					filterString += '(' + timeString(currentFilter) + ')';
+				}
+				else if (type == 'to') {
+					filterString += '(' + toString(currentFilter) + ')';
+				}
+				else if (type == 'from') {
+					filterString += '(' + fromString(currentFilter) + ')';
+				}
+			}
+
+			console.log(filterString);
 			$.ajax({
 				url: '/search/event',
 				type: 'POST',
 				dataType: 'json',
-				data: $('.search-bar').val(),
+				data: {
+					'search-terms': $('.search-bar').val(),
+					'filters': filterString
+				},
 				headers: {
 					"X-CSRFToken": getCookie('csrftoken')
 				}
@@ -192,5 +286,12 @@ $(document).ready(function() {
 		$(this).toggleClass('active');
 	});
 
+	$('.ui.dropdown .item').not('.add-filter').click(function() {
+		$(this).toggleClass('active');
+	});
+
+	$('.ui.dropdown .add-filter').click(function() {
+		addFilter();
+	});
 
 });

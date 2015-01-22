@@ -1,5 +1,5 @@
 .search-bar {
-    margin: 0 10px;
+	margin: 0 10px;
 }
 
 .search-container {
@@ -9,19 +9,19 @@
 }
 
 .type-button {
-		display: inline-block;
-		background-color: #EEE;
+	display: inline-block;
+	background-color: #EEE;
 
-		font-weight: bold;
+	font-weight: bold;
 
-		padding: 10px;
-        margin: 5px;
+	padding: 10px;
+	margin: 5px;
 
-		text-align: center;
-		text-decoration: none !important;
+	text-align: center;
+	text-decoration: none !important;
 
-		cursor: pointer;
-		transition: width .5s ease;
+	cursor: pointer;
+	transition: width .5s ease;
 }
 
 .type-button:hover {
@@ -29,23 +29,23 @@
 }
 
 .type-button.active {
-    background-color: #CCC;
+	background-color: #CCC;
 }
 
 .add-filter-button {
-        display: inline-block;
-		background-color: #EEE;
+	display: inline-block;
+	background-color: #EEE;
 
-		font-weight: bold;
+	font-weight: bold;
 
-		padding: 5px;
-        margin: 5px;
+	padding: 5px;
+	margin: 5px;
 
-		text-align: center;
-		text-decoration: none !important;
+	text-align: center;
+	text-decoration: none !important;
 
-		cursor: pointer;
-		transition: width .5s ease;
+	cursor: pointer;
+	transition: width .5s ease;
 
 }
 
@@ -54,23 +54,23 @@
 }
 
 .add-filter-button.active {
-    background-color: #CCC;
+	background-color: #CCC;
 }
 
 .remove-filter-button {
-        display: inline-block;
-		background-color: #EEE;
+	display: inline-block;
+	background-color: #EEE;
 
-		font-weight: bold;
+	font-weight: bold;
 
-		padding: 5px;
-        margin: 5px;
+	padding: 5px;
+	margin: 5px;
 
-		text-align: center;
-		text-decoration: none !important;
+	text-align: center;
+	text-decoration: none !important;
 
-		cursor: pointer;
-		transition: width .5s ease;
+	cursor: pointer;
+	transition: width .5s ease;
 
 }
 
@@ -79,168 +79,200 @@
 }
 
 .remove-filter-button.active {
-    background-color: #CCC;
+	background-color: #CCC;
+}
+
+.initial {
+	display: inline-block;
+	padding: 5px;
+	margin: 0px 5px;
 }
 
 .date {
-    display: inline-block;
+	display: inline-block;
+	padding: 5px;
+	margin: auto 5px;
+}
+
+.date-text {
+	display: inline-block;
 }
 
 .time {
-    display: inline-block;
+	display: inline-block;
+	padding: 5px;
+	margin: auto 5px;
+}
+
+.time-text {
+	display: inline-block;
+}
+
+.text {
+	display: inline-block;
 }
 
 .filter {
-    background: #AAA;
-    border-bottom: solid 1px;
+	background: #AAA;
+	border-bottom: solid 1px;
 }
 
+.filter-options {
+	margin-top: auto !important;
+	margin-bottom: auto !important;
+}
 .filter-selection {
-    display: inline-block;
+	display: inline-block;
 }
 
 .add-remove-buttons {
-    display: inline-block;
+	display: inline-block;
+	margin-top: auto !important;
+	margin-bottom: auto !important;
 }
 
 .detail-sidebar {
-    width: 300px;
-    position: relative;
-    border-left: 2px;
-    border-left-style: solid;
+	width: 300px;
+	position: relative;
+	border-left: 2px;
+	border-left-style: solid;
 }
 
 .detail {
-    font-size: 1em;
-    position: absolute;
-    width: 100%;
-    height: 100%;
+	font-size: 1em;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 .detail-top-half {
-    min-height: 300px;
-    background-color: #EEE;
-    height: 50%;
+	min-height: 300px;
+	background-color: #EEE;
+	height: 50%;
 }
 
 .detail-bottom-half {
-    min-height: 250px;
-    height: 50%;
+	min-height: 250px;
+	height: 50%;
 }
 
 .detail-full {
-    min-height: 600px;
-    background-color: #EEE;
-    height: 100%;
+	min-height: 600px;
+	background-color: #EEE;
+	height: 100%;
 }
 
 .detail-main-label {
-    background-color: #488A2D;
-    color: #FFF;
-    width: 100%;
-    padding: 3px;
-    min-height: 60px;
+	background-color: #488A2D;
+	color: #FFF;
+	width: 100%;
+	padding: 3px;
+	min-height: 60px;
 }
 
 .detail-label {
-    background-color: #CCC;
-    width: 100%;
-    padding: 3px;
-    float: left;
+	background-color: #CCC;
+	width: 100%;
+	padding: 3px;
+	float: left;
 }
 
 .detail-content {
-    margin: 3px;
+	margin: 3px;
 }
 
 .detail-avatar {
-    display: inline-block;
-    vertical-align: top;
-    width: 30%;
+	display: inline-block;
+	vertical-align: top;
+	width: 30%;
 }
 
 .detail-avatar img {
-    width: 100%;
-    margin: 3px;
+	width: 100%;
+	margin: 3px;
 }
 
 .detail-date-time {
-    display: inline-block;
-    width: 68%;
+	display: inline-block;
+	width: 68%;
 }
 
 .detail-data {
-    min-height: 80px;
+	min-height: 80px;
 }
 
 #mapbox {
-    height: 100%;
-    width: 100%;
-    position: relative;
+	height: 100%;
+	width: 100%;
+	position: relative;
 }
 
 body.full .content {
-    height: 100%;
-    width: 100%;
-    overflow-y: hidden;
+	height: 100%;
+	width: 100%;
+	overflow-y: hidden;
 }
 
 .main-list {
-    height: 100%;
+	height: 100%;
 }
 
 .list-content {
-    overflow: auto;
+	overflow: auto;
 }
 
 .list-title {
-    margin: 4px 10px 4px 4px;
-    height: 30px;
-    color: #000;
-    text-decoration: none !important;
-    font-size: 1em;
-    padding: 5px;
+	margin: 4px 10px 4px 4px;
+	height: 30px;
+	color: #000;
+	text-decoration: none !important;
+	font-size: 1em;
+	padding: 5px;
 }
 
 .list-item-name {
-    width: 30%;
-    display: inline-block;
-    margin-left: 5px;
+	width: 30%;
+	display: inline-block;
+	margin-left: 5px;
 }
 
 .list-item-date {
-    display: inline-block;
-    width: 20%;
+	display: inline-block;
+	width: 20%;
 }
 
 .list-item-location {
-    display: inline-block;
-    width: 20%;
+	display: inline-block;
+	width: 20%;
 }
 
 .list-item-data {
-    display: inline-block;
-    width: 25%;
+	display: inline-block;
+	width: 25%;
 }
 
 .list-item {
-    margin: 4px 0px;
-    width: 100%;
-    color: #000;
-    padding: 5px 0px;
-    background-color: #EEE;
-    transition: width .5s ease;
-    cursor: pointer;
-    vertical-align: middle;
-    text-decoration: none !important;
-    font-size: 1em;
+	margin: 4px 0px;
+	width: 100%;
+	color: #000;
+	padding: 5px 0px;
+	background-color: #EEE;
+	transition: width .5s ease;
+	cursor: pointer;
+	vertical-align: middle;
+	text-decoration: none !important;
+	font-size: 1em;
 }
 
 .list-item:hover {
-    background-color: #488A2D;
-    color: #FFF;
+	background-color: #488A2D;
+	color: #FFF;
 }
 
 .list-item.active {
-    background-color: #CCC;
+	background-color: #CCC;
+}
+
+.ui.dropdown {
+
 }

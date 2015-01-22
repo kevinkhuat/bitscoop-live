@@ -7,7 +7,8 @@
 	{% load staticfiles %}
 	{% block static %}
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.7.3/semantic.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.7.3/semantic.min.css" />
 
 	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
@@ -26,8 +27,26 @@
 			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
 			<a class="timeline-view-button item"><i class="icon-clock"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
-			<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
-
+			<input class="search-bar grow" type="text" placeholder="Search terms"/>
+			<div class="ui simple dropdown labeled icon button">
+				<i class="filter icon"></i>
+				<span class="text">Filter Search</span>
+				<div class="menu">
+					<div class="item">
+						Events
+					</div>
+					<div class="item">
+						Messages
+					</div>
+					<div class="item">
+						Transactions
+					</div>
+					<div class="divider"></div>
+					<div class="item add-filter">
+						Add custom filters
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="flex center">
 			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
@@ -37,13 +56,7 @@
 	</nav>
 </header>
 <div class="search-container">
-	<div class="type-container">
-		<div class="type-button">Events</div>
-		<div class="type-button">Messages</div>
-		<div class="type-button">Transactions</div>
-	</div>
 	<div class="filter-container">
-
 	</div>
 </div>
 </body>

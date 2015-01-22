@@ -18,7 +18,11 @@ class SearchView(View):
 		#Any letter (one or more) OR Quote, anything not a quote (one or more), quote
 
 		deserialized = request.body.decode('utf-8')
-		tokens = SearchView.tokenize(deserialized)
+		deserialized_split = deserialized.split('&')
+		search_terms_json = deserialized_split[0]
+		search_terms_data = search_terms_json.split('=')[1]
+		search_terms_replaced_characters = search_terms_data.replace('%22', '"').replace('+', ' ')
+		tokens = SearchView.tokenize(search_terms_replaced_characters)
 
 		return_dict = {}
 		for i in range(len(tokens)):
