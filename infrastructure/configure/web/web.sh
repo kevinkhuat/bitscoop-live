@@ -45,24 +45,8 @@ sudo chmod 644 /etc/profile.d/django.sh
 rm ${TMP}
 
 
-# FIXME: Update the code after this break point. We would like a cleaner way to install the web application.
-exit 0
+sudo chkconfig stunnel on
+sudo service stunnel start
 
-
-# Add new user ografy if it doesn't already exist.
-if [ -z `getent passwd ografy` ]
-then
-    sudo adduser ografy
-    sudo passwd -l ografy
-fi
-
-# Copy specific CUSR files to ografy user.
-sudo cp ${CUSR_HOME}/ografy.tar.gz ${CUSR_HOME}/static.tar.gz ${WD}/../../scripts/installation/ografy-0.2.0.sh /home/ografy
-sudo chown ografy:ografy /home/ografy/ografy.tar.gz /home/ografy/static.tar.gz /home/ografy/ografy-0.2.0.sh
-sudo chmod +x /home/ografy/ografy-0.2.0.sh
-
-# Install ografy package.
-sudo su - ografy "/home/ografy/ografy-0.2.0.sh"
-
-# Remove obsoleted files.
-sudo rm /home/ografy/ografy.tar.gz /home/ografy/static.tar.gz /home/ografy/ografy-0.2.0.sh
+sudo chkconfig nginx on
+sudo service nginx start
