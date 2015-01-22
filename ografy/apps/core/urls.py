@@ -1,12 +1,16 @@
 from django.conf.urls import patterns, url
 
 import ografy.apps.core.views as views
+import ografy.apps.core.views.main as main_views
 import ografy.apps.core.views.settings as settings_views
+import ografy.apps.core.views.signals as signals_views
 import ografy.apps.core.views.user as user_views
 
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
+
+    url(r'^app?$', main_views.main, name='core_main'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),
     url(r'^settings/personal/?$', settings_views.PersonalView.as_view(), name='core_settings_personal'),
@@ -22,7 +26,14 @@ urlpatterns = patterns('',
     url(r'^contact/?$', views.contact, name='core_contact'),
     url(r'^login/?$', views.LoginView.as_view(), name='core_login'),
     url(r'^logout/?$', views.logout, name='core_logout'),
-    url(r'^providers/?$', views.providers, name='core_providers'),
+
+    url(r'^authorize/?$', signals_views.authorize, name='core_authorize'),
+    url(r'^authorize/(?P<pk>[0-9]+)/?$', signals_views.authorize, name='core_authorize_id'),
+    url(r'^connect/?$', signals_views.providers, name='core_providers'),
+    url(r'^connect/(?P<pk>[0-9]+)/?$', signals_views.connect, name='core_connect'),
+    url(r'^connect/(?P<name>[a-zA-Z]+)/?$', signals_views.connect_name, name='core_connect_name'),
+    url(r'^verify/(?P<pk>[0-9]+)/?$', signals_views.verify, name='core_verify'),
+
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
 )

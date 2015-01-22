@@ -26,16 +26,12 @@ class BaseApi(object):
 
     @classmethod
     def patch(cls, val, data):
-        # TODO: Strip out pk and foreign keys from data so it doesn't silent bombfuck with malicious data.
         try:
             inst = cls.model.objects.get(pk=val)
-
             for key, value in data.items():
                 setattr(inst, key, value)
-
             inst.save()
         except TypeError:
-            # TODO: Transform Q expression `val` into something that peppers in permissions so you can't blindly update things that don't belong to you.
             cls.model.objects.filter(val).update(**data)
             inst = cls.models.objects.filter(val)
 

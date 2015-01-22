@@ -309,11 +309,12 @@ ROOT_URLCONF = 'ografy.urls'
 # AUTH #  https://docs.djangoproject.com/en/1.7/ref/settings/#auth
 ########
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'ografy.apps.xauth.backends.IdentifierBackend',
-    'ografy.apps.xauth.backends.DummyTokenBackend',
-)
+# TODO: Currently in auth, Fix
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'ografy.apps.xauth.backends.IdentifierBackend',
+#     'ografy.apps.xauth.backends.DummyTokenBackend',
+# )
 AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = ''
 LOGIN_URL = '/login'

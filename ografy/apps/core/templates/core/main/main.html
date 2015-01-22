@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en-US">
+	<meta charset="UTF-8">
+	<title>Ografy App</title>
+
+	{% load staticfiles %}
+
+	{% block static %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
+
+	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/require/require.js' %}" data-main="{% static 'core/js/require_load.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
+	{% endblock %}
+
+</head>
+<body class="flex full">
+<header class="bg gray light bottom">
+	<nav class="flex stretch">
+		<div class="flex center grow">
+			<a class="logo-home item" href="{% url 'core_index' %}"><img src="{% static 'assets/favicon.png' %}" alt="Ografy" /></a>
+			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
+			<a class="timeline-view-button item"><i class="icon-clock"></i></a>
+			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<input class="search-bar search-bar grow" type="text" placeholder="Enter search terms here"/>
+		</div>
+		<div class="flex center">
+			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
+			<a id="provider_link" class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<a id="logout_button" class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
+		</div>
+	</nav>
+</header>
+<main class="flex grow">
+</main>
+</body>
+</html>

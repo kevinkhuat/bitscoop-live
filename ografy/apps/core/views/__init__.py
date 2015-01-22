@@ -93,7 +93,7 @@ class SignupView(View):
 
 def index(request):
     if request.user.is_authenticated():
-        template = 'core/user/home.html'
+        template = 'core/main/main.html'
         context = {
             'title': 'Ografy - Home'
         }
@@ -126,10 +126,3 @@ def start(request):
         'title': 'Ografy - Get Started'
     })
 
-
-def providers(request):
-    return render(request, 'core/providers.html', {
-        'title': 'Ografy - Providers',
-        'body_class': 'full',
-        'content_class': 'bordered left'
-    })

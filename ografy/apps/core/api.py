@@ -7,7 +7,6 @@ class ProviderApi(BaseApi):
     model = models.Provider
 
 
-# TODO: Merge free fields on User object with MongoDB data on GET. Save appropriately (route the properties) on a PATCH.
 class SettingsApi(BaseApi):
     model = documents.Settings
 

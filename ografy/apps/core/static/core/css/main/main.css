@@ -1,0 +1,145 @@
+.search-bar {
+    margin: 0 10px;
+}
+
+.detail-sidebar {
+    width: 300px;
+    position: relative;
+    border-left: 2px;
+    border-left-style: solid;
+}
+
+.detail {
+    font-size: 1em;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.detail-top-half {
+    min-height: 300px;
+    background-color: #EEE;
+    height: 50%;
+}
+
+.detail-bottom-half {
+    min-height: 250px;
+    height: 50%;
+}
+
+.detail-full {
+    min-height: 600px;
+    background-color: #EEE;
+    height: 100%;
+}
+
+.detail-main-label {
+    background-color: #488A2D;
+    color: #FFF;
+    width: 100%;
+    padding: 3px;
+    min-height: 60px;
+}
+
+.detail-label {
+    background-color: #CCC;
+    width: 100%;
+    padding: 3px;
+    float: left;
+}
+
+.detail-content {
+    margin: 3px;
+}
+
+.detail-avatar {
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+}
+
+.detail-avatar img {
+    width: 100%;
+    margin: 3px;
+}
+
+.detail-date-time {
+    display: inline-block;
+    width: 68%;
+}
+
+.detail-data {
+    min-height: 80px;
+}
+
+#mapbox {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+body.full .content {
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+.main-list {
+    height: 100%;
+}
+
+.list-content {
+    overflow: auto;
+}
+
+.list-title {
+    margin: 4px 10px 4px 4px;
+    height: 30px;
+    color: #000;
+    text-decoration: none !important;
+    font-size: 1em;
+    padding: 5px;
+}
+
+.list-item-name {
+    width: 30%;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.list-item-date {
+    display: inline-block;
+    width: 20%;
+}
+
+.list-item-location {
+    display: inline-block;
+    width: 20%;
+}
+
+.list-item-data {
+    display: inline-block;
+    width: 25%;
+}
+
+.list-item {
+    margin: 4px 0px;
+    width: 100%;
+    color: #000;
+    padding: 5px 0px;
+    background-color: #EEE;
+    transition: width .5s ease;
+    cursor: pointer;
+    vertical-align: middle;
+    text-decoration: none !important;
+    font-size: 1em;
+}
+
+.list-item:hover {
+    background-color: #488A2D;
+    color: #FFF;
+}
+
+.list-item.active {
+    background-color: #CCC;
+}

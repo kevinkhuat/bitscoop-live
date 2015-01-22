@@ -1,13 +1,9 @@
 from datetime import datetime
 
-from django.core.urlresolvers import reverse, resolve
 from django.test import SimpleTestCase
-from mongoengine.base.document import BaseDocument
 
 from ografy.apps.obase import api as ObaseApi
-from ografy.apps.obase import jsonizer
-from ografy.apps.obase.documents import Message, Data, Event
-from ografy.apps.core.models import Provider, Signal, User
+from ografy.apps.obase.documents import Data
 
 # TODO: Get from settings
 BASE_URL = 'dev.ografy.io'

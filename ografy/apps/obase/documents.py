@@ -23,6 +23,7 @@ class Data(mongo.DynamicDocument):
     """
 
     # To be managed by the REST API
+    user_id = mongo.IntField(required=True)
     created = mongo.DateTimeField(default=datetime.datetime.now)
     updated = mongo.DateTimeField(default=datetime.datetime.now)
 
@@ -54,6 +55,7 @@ class Event(mongo.Document):
     signal_id = mongo.IntField(required=True)
     provider_id = mongo.IntField(required=True)
     provider_name = mongo.StringField(required=True)
+    name = mongo.StringField(required=True)
 
     # To be sourced from signals.js
     datetime = mongo.DateTimeField()
@@ -94,6 +96,7 @@ class Message(mongo.Document):
     """
 
     # To be managed by the REST API
+    user_id = mongo.IntField(required=True)
     event = mongo.ReferenceField(Event, reverse_delete_rule=mongo.CASCADE)
 
     # To be sourced from signals.js

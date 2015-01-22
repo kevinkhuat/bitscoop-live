@@ -2,11 +2,20 @@
 {% load staticfiles %}
 
 
+{% block static %}
+{{ block.super }}
+<style type="text/css">
+	.signal-toggle {
+		padding: 5px 0 5px 0;
+	}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="grouping">
 	<div class="bigger">Your connections</div>
 	<div>
-		<div class="flex row">
+		<div class="flex row signal-toggle">
 			<div class="grow">
 				<i class="icon facebook"></i>
 				<a href="/signals">Facebook 1</a>
@@ -19,7 +28,7 @@
 				<i class="remove icon"></i>
 			</div>
 		</div>
-		<div class="flex row">
+		<div class="flex row signal-toggle">
 			<div class="grow">
 				<i class="icon twitter"></i>
 				<a href="/signals">Twitter</a>
@@ -32,7 +41,7 @@
 				<i class="remove icon"></i>
 			</div>
 		</div>
-		<div class="flex row">
+		<div class="flex row signal-toggle">
 			<div class="grow">
 				<i class="icon facebook"></i>
 				<a href="/signals">Facebook 2</a>
@@ -45,7 +54,7 @@
 				<i class="remove icon"></i>
 			</div>
 		</div>
-		<div class="flex row">
+		<div class="flex row signal-toggle">
 			<div class="grow">
 				<i class="icon facebook"></i>
 				<a href="/signals">Facebook 3</a>

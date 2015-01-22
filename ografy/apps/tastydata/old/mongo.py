@@ -1,16 +1,12 @@
 import bson
-import jsonpickle
 import mongoengine
-import warnings
-import ografy.apps.tastydata.fields.mongo as mongo_fields
 
-from bson.json_util import dumps as bson_dumps, loads as bson_loads
 from collections import OrderedDict
-from django.core.paginator import Page
 from django.db import models
 from django.forms import widgets
-from mongoengine.base import BaseDocument
 from rest_framework import fields, relations, serializers
+
+import ografy.apps.tastydata.fields.mongo as mongo_fields
 
 
 class DocumentSerializer(serializers.ModelSerializer):
@@ -61,13 +57,15 @@ class DocumentSerializer(serializers.ModelSerializer):
         mongoengine.URLField: ['max_length'],
     }
 
-    _custom_class_list = (mongoengine.ReferenceField,
-                          mongoengine.EmbeddedDocumentField,
-                          mongoengine.ListField,
-                          mongoengine.SortedListField,
-                          mongoengine.DynamicField,
-                          mongoengine.ObjectIdField,
-                          bson.ObjectId)
+    _custom_class_list = (
+        mongoengine.ReferenceField,
+        mongoengine.EmbeddedDocumentField,
+        mongoengine.ListField,
+        mongoengine.SortedListField,
+        mongoengine.DynamicField,
+        mongoengine.ObjectIdField,
+        bson.ObjectId
+    )
 
     @property
     def data(self):
@@ -80,7 +78,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             if self.many:
                 self._data = [self.to_representation(item) for item in data]
             else:
-                self._data = self.to_representationtive(data)
+                self._data = self.to_representation(data)
 
         return self._data
 
@@ -110,20 +108,54 @@ class DocumentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         raise NotImplementedError
 
-    def get_fields(self):
-        raise NotImplementedError
-
     def get_initial(self):
         raise NotImplementedError
 
     # TODO: Add validators
     def get_validators(self):
-        raise []  # NotImplementedError
+        return []  # raise NotImplementedError
+
+        """
+        Rest Framework built-in validation + related model validations
+        """
+        # for field_name, field in self.fields.items():
+        #     if field_name in self._errors:
+        #         continue
+        #
+        #     source = field.source or field_name
+        #     if self.partial and source not in attrs:
+        #         continue
+        #
+        #     if field_name in attrs and hasattr(field, 'model_field'):
+        #         try:
+        #             field.model_field.validate(attrs[field_name])
+        #         except ValidationError as err:
+        #             self._errors[field_name] = str(err)
+        #
+        #     try:
+        #         validate_method = getattr(self, 'validate_%s' % field_name, None)
+        #         if validate_method:
+        #             attrs = validate_method(attrs, source)
+        #     except serializers.ValidationError as err:
+        #         self._errors[field_name] = self._errors.get(field_name, []) + list(err.messages)
+        #
+        # if not self._errors:
+        #     try:
+        #         attrs = self.validate(attrs)
+        #     except serializers.ValidationError as err:
+        #         if hasattr(err, 'message_dict'):
+        #             for field_name, error_messages in err.message_dict.items():
+        #                 self._errors[field_name] = self._errors.get(field_name, []) + list(error_messages)
+        #         elif hasattr(err, 'messages'):
+        #             self._errors['non_field_errors'] = err.messages
+        #
+        # return attrs
 
     def get_value(self, dictionary):
         raise NotImplementedError
 
     def run_validation(self, data=[]):
+        # TODO: Delete?
         raise NotImplementedError
 
     def to_internal_value(self, data):
