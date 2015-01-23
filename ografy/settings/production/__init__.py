@@ -31,7 +31,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ografy_db',
-        'USER': 'ografy_db_user',
+        'USER': 'ografy',
         'PASSWORD': 'foxtrot1234',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -46,6 +46,30 @@ DATABASES = {
 MONGODB_DBNAME = 'ografy_db'
 MONGODB_SERVERNAME = 'localhost'
 MONGODB_SERVERPORT = 27017
+
+
+###########
+# LOGGING #
+###########
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/ografy/debug.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 
 #############

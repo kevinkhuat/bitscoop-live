@@ -31,7 +31,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ografy_db',
-        'USER': 'ografy_db_user',
+        'USER': 'ografy',
         'PASSWORD': 'foxtrot1234',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -66,7 +66,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.abspath(os.path.join(ROOT_PATH, '..', 'logs', 'debug.log')),
+            'filename': '/var/log/ografy/debug.log',
         },
     },
     'loggers': {
