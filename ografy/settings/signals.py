@@ -117,7 +117,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.get_username',
     'social.pipeline.mail.mail_validation',
     # 'social.pipeline.user.create_user',
-    'social.pipeline.social_auth.associate_user',
+    # 'social.pipeline.social_auth.associate_user',
+    'ografy.apps.xauth.pipeline.associate_user_and_signal'
     'social.pipeline.debug.debug',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
