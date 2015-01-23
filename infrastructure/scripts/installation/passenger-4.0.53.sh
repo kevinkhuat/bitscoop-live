@@ -51,6 +51,14 @@ install() {
 
 case ${1} in
     install)
+        if ! /usr/bin/id -g nginx &>/dev/null; then
+            sudo /usr/sbin/groupadd -r nginx
+        fi
+
+        if ! /usr/bin/id nginx &>/dev/null; then
+            sudo /usr/sbin/useradd -M -r -g nginx -d /var/lib/nginx -s /sbin/nologin -c nginx nginx > /dev/null 2>&1
+        fi
+
         # Check to see if passenger-4.0.53 with nginx-1.7.7 is already installed.
         if [ -f ${FLAG} ]
         then
