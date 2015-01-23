@@ -11,7 +11,7 @@ case ${TYPE} in
         SETTINGS=${SETTINGS:="ografy.settings.production"}
         ;;
     virtual)
-        SETTINGS=${SETTINGS:="ografy.settings.virtual.local"}
+        SETTINGS=${SETTINGS:="ografy.settings.virtual"}
         ;;
 esac
 
