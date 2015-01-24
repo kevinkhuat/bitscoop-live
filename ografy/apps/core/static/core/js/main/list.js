@@ -4,7 +4,7 @@ function listView(detailViewInst, mapInst, sessionInst) {
 		var tempData = 'Select an Event at left to see its details.';
 
 		var list = nunjucks.render('static/core/templates/main/list/list.html');
-		$('.content').html(list);
+		$('.data-view').html(list);
 
 		renderContent(map, baseData);
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);

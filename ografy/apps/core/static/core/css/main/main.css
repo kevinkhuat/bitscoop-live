@@ -2,10 +2,8 @@
 	margin: 0 10px;
 }
 
-.search-container {
-}
-
-.type-container {
+.filter-container {
+    font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 
 .type-button {
@@ -136,6 +134,7 @@
 	position: relative;
 	border-left: 2px;
 	border-left-style: solid;
+	height: 100%;
 }
 
 .detail {
@@ -273,6 +272,14 @@ body.full .content {
 	background-color: #CCC;
 }
 
-.ui.dropdown {
+.data-view {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
 
+.content {
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }

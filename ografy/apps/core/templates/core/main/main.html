@@ -28,7 +28,28 @@
 			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
 			<a class="timeline-view-button item"><i class="icon-clock"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
-			<input class="search-bar grow" type="text" placeholder="Enter search terms here"/>
+			<form id="search-form" class="flex grow">
+				<input class="search-bar grow" type="text" placeholder="Search terms"/>
+			</form>
+			<div class="ui simple dropdown labeled icon button">
+				<i class="filter icon"></i>
+				<span class="text">Filter Search</span>
+				<div class="menu">
+					<div class="item">
+						Events
+					</div>
+					<div class="item">
+						Messages
+					</div>
+					<div class="item">
+						Transactions
+					</div>
+					<div class="divider"></div>
+					<div class="item add-filter">
+						Add custom filters
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="flex center">
 			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>

@@ -8,7 +8,7 @@ function mapView(detailViewInst, utilsInst) {
 
 	function renderContent(map, baseData) {
 		var map_framework = nunjucks.render('static/core/templates/main/map/map.html');
-		$('.content').html(map_framework);
+		$('.data-view').html(map_framework);
 
 		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 		map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.82, -73.59], 9);
