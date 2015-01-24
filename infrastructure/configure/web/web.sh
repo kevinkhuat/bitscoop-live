@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-WD=`dirname ${BASH_SOURCE}`
+WD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source ${WD}/../parseargs.sh
 source ${WD}/../baseline.sh
 
@@ -11,7 +11,7 @@ case ${TYPE} in
         SETTINGS=${SETTINGS:="ografy.settings.production"}
         ;;
     virtual)
-        SETTINGS=${SETTINGS:="ografy.settings.virtual.local"}
+        SETTINGS=${SETTINGS:="ografy.settings.virtual"}
         ;;
 esac
 
@@ -20,14 +20,11 @@ esac
 sudo yum install -y --disablerepo=* --enablerepo=ografy stunnel
 sudo -u ${CUSR} ${WD}/../../scripts/installation/Python-3.4.2.sh install
 sudo -u ${CUSR} ${WD}/../../scripts/installation/passenger-4.0.53.sh install
+sudo -u ${CUSR} ${WD}/../../scripts/installation/ografy-0.2.0.sh install
 
 
 # Set appropriate default permissions.
 umask 022
-
-
-# Create log directory structure.
-sudo mkdir -p /var/log/nginx/ografy.io/{static,www}
 
 
 # Copy configuration files.
@@ -45,24 +42,8 @@ sudo chmod 644 /etc/profile.d/django.sh
 rm ${TMP}
 
 
-# FIXME: Update the code after this break point. We would like a cleaner way to install the web application.
-exit 0
+sudo chkconfig stunnel on
+sudo service stunnel start
 
-
-# Add new user ografy if it doesn't already exist.
-if [ -z `getent passwd ografy` ]
-then
-    sudo adduser ografy
-    sudo passwd -l ografy
-fi
-
-# Copy specific CUSR files to ografy user.
-sudo cp ${CUSR_HOME}/ografy.tar.gz ${CUSR_HOME}/static.tar.gz ${WD}/../../scripts/installation/ografy-0.2.0.sh /home/ografy
-sudo chown ografy:ografy /home/ografy/ografy.tar.gz /home/ografy/static.tar.gz /home/ografy/ografy-0.2.0.sh
-sudo chmod +x /home/ografy/ografy-0.2.0.sh
-
-# Install ografy package.
-sudo su - ografy "/home/ografy/ografy-0.2.0.sh"
-
-# Remove obsoleted files.
-sudo rm /home/ografy/ografy.tar.gz /home/ografy/static.tar.gz /home/ografy/ografy-0.2.0.sh
+sudo chkconfig nginx on
+sudo service nginx start

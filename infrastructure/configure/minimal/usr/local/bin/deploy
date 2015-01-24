@@ -55,39 +55,49 @@ done
 
 if [ -z ${LOCAL+x} ]
 then
-    if [ ! -f ${HOME}/.ssh/config ] || [ -z "`grep \"Host ${CONNECTION}\" ${HOME}/.ssh/config`" ]
-    then
-        echo "No configured host named \"${CONNECTION}\" found in \`~/.ssh/config\`."
-    fi
-
     if [ -z ${CONNECTION+x} ]
     then
         echo "No host specified."
         exit 1
     fi
+
+    if [ ! -f ${HOME}/.ssh/config ] || [ -z "`grep \"Host ${CONNECTION}\" ${HOME}/.ssh/config`" ]
+    then
+        echo "No configured host named \"${CONNECTION}\" found in \`~/.ssh/config\`."
+        exit 1
+    fi
 fi
+
+
+cd ${REPO}/ografy
+tar --exclude .DS_Store --exclude ._.DS_Store \
+    --exclude .git \
+    --exclude .idea \
+    -czvf ${PKG}/infrastructure.tar.gz infrastructure
 
 
 if [ ${FULL+x} ]
 then
     if [ -d ${REPO}/ografy/build ]
     then
-        rm -vf ${PKG}/static.tar.gz
         cd ${REPO}/ografy/build/static
-        tar -czvf ${PKG}/static.tar.gz --exclude .git --exclude .idea *
+        tar --exclude .DS_Store --exclude ._.DS_Store \
+            --exclude .git \
+            --exclude .idea \
+            -czvf ${PKG}/static.tar.gz *
     else
         echo "Expected ografy/build/static folder with compiled static files. Aborting..."
         exit 1
     fi
 
-    rm -vf ${PKG}/ografy.tar.gz
     cd ${REPO}
-    tar -czvf ${PKG}/ografy.tar.gz --exclude .git --exclude .idea --exclude __pycache__ --exclude *.pyc --exclude ografy/infrastructure --exclude ografy/build ografy
+    tar --exclude .DS_Store --exclude ._.DS_Store \
+        --exclude .git \
+        --exclude .idea \
+        --exclude __pycache__ --exclude *.pyc \
+        --exclude ografy/infrastructure --exclude ografy/build --exclude ografy/databases \
+        -czvf ${PKG}/ografy.tar.gz ografy
 fi
-
-rm -vf ${PKG}/infrastructure.tar.gz
-cd ${REPO}/ografy
-tar -czvf ${PKG}/infrastructure.tar.gz --exclude .git --exclude .idea infrastructure
 
 
 if [ -z ${LOCAL+x} ]

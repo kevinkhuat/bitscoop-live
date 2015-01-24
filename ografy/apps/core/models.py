@@ -24,6 +24,7 @@ class Provider(models.Model):
     name = models.CharField(max_length=150)
     backend_name = models.CharField(max_length=250)
     auth_backend = models.CharField(max_length=250)
+    # description = models.CharField(max_length=2500)
     tags = models.CharField(max_length=1000)
 
     def __str__(self):
@@ -45,11 +46,12 @@ class Signal(models.Model):
     name = models.CharField(max_length=100)
     psa_backend_uid = models.CharField(max_length=100)
 
-    verified = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
+    connected = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=False)
 
     permissions = models.TextField()
-    frequency = models.IntegerField()
+    frequency = models.PositiveSmallIntegerField(default=0)
 
     created = models.DateTimeField(blank=False)
     updated = models.DateTimeField(blank=False)

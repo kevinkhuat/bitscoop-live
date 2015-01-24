@@ -152,9 +152,9 @@
 				<div class="title-align">
 					<i class="block layout icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
+					<div class="title">Connect to {{ signal.name }}</div>
 				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="description">Connect your {{ signal.name }} account to your Ografy account</div>
 			</div>
 		</div>
 		<div class="step">
@@ -164,7 +164,7 @@
 
 					<div class="title">Authorize Access</div>
 				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+				<div class="description">Authorize your {{ signal.name }} account's connection to Ografy</div>
 			</div>
 		</div>
 		<div class="active step">
@@ -174,7 +174,7 @@
 
 					<div class="title">Verify Settings</div>
 				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+				<div class="description">Ensure that your connection settings to {{ signal.name }} are correct</div>
 			</div>
 		</div>
 	</div>
@@ -183,12 +183,12 @@
 {% block content %}
 	<div class="step-verify">
 		<div class="grouping">
-			<div class="bigger">Verify {{ provider.name }} Connection Settings</div>
+			<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
 			<div>
 				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ provider.name }}</span>
+					<span>Details and stuff about connection settings to {{ signal.name }}</span>
 				</div>
-				<span class="bold">Name your connection to {{ provider.name }}</span>
+				<span class="bold">Name your connection to {{ signal.name }}</span>
 
 				<form>
 					<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
@@ -196,7 +196,7 @@
 			</div>
 		</div>
 		<div class="grouping">
-			<div class="bigger">{{ provider.name }} Connection Permissions</div>
+			<div class="bigger">{{ signal.name }} Connection Permissions</div>
 			<div>
 				<div name="permission-email" class="flex row permission-toggle">
 					<div class="ui toggle checkbox">
@@ -231,7 +231,7 @@
 			</div>
 		</div>
 		<div class="grouping">
-			<div class="bigger">Frequency of {{ provider.name }} Data Updates</div>
+			<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
 			<div class="ui form">
 				<div class="grouped fields" id="frequency">
 					<label for="frequency">
@@ -271,7 +271,7 @@
 			</div>
 		</div>
 		<div>
-			<input class="bold button-green" class="bold" type="button" value="Complete Connection to {{ provider.name }}"/>
+			<input class="bold button-green" class="bold" type="button" value="Complete Connection to {{ signal.name }}"/>
 		</div>
 	</div>
 {% endblock %}

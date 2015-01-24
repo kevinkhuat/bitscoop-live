@@ -10,3 +10,7 @@ sudo yum install -y --disablerepo=* --enablerepo=ografy mongodb-org
 
 umask 022
 sudo cp -rv ${WD}/etc /
+
+
+sudo chkconfig mongod on
+sudo service mongod start
