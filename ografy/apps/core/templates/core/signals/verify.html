@@ -143,6 +143,40 @@
 			text-decoration: none;
 		}
 	</style>
+
+	<script type="application/javascript">
+		function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		;
+
+		function verifiedSignal(signal_id, data) {
+			$.ajax({
+				url: '/verify/' + signal_id,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					"data": data
+				},
+				headers: {
+					"X-CSRFToken": getCookie('csrftoken')
+				}
+			})
+		}
+		;
+	</script>
 {% endblock %}
 
 {% block left %}
@@ -237,6 +271,7 @@
 					<label for="frequency">
 						Select the frequency you would like this service to update
 					</label>
+
 					<div class="field">
 						<div class="ui radio checkbox">
 							<input type="radio" name="update-frequency">
@@ -271,7 +306,7 @@
 			</div>
 		</div>
 		<div>
-			<input class="bold button-green" class="bold" type="button" value="Complete Connection to {{ signal.name }}"/>
+			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal({{ signal.id }})"/>
 		</div>
 	</div>
 {% endblock %}

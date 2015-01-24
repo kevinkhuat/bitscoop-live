@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, Http404
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core import api as core_api
@@ -12,10 +12,9 @@ def authorize(request):
     # # Look up signals from API for current user where signal
     # # is not verified or complete.
     unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
-    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) | Q(verified=False) | Q(connected=False) | Q(enabled=False)))
+    unverified_signals = list(core_api.SignalApi.filter(val=Q(user=request.user.id) | Q(complete=False) | Q(connected=False) | Q(enabled=False)))
 
     signal_count = len(unverified_signals)
-
 
     # If there is more than one unverified+incomplete signal,
     # delete all and start over.
@@ -92,17 +91,27 @@ def providers(request):
 
 @login_required
 def verify(request, pk):
-    signal = core_api.SignalApi.get(Q(id=pk)).get()
+    if request.method == 'GET':
+        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
+        signal.connected = True
+        signal.save()
 
-    if signal.connected is False or signal.complete is True or signal.enabled is True:
-        return render(request, 'core/signals/authorize.html', {
-            'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
-            'content_class': 'left',
-            'signal': signal
-        })
-    else:
-        return render(request, 'core/signals/verify.html', {
-            'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
-            'content_class': 'left',
-            'signal': signal
-        })
+        if signal.connected is False or signal.complete is True or signal.enabled is True:
+            return render(request, 'core/signals/authorize.html', {
+                'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
+                'content_class': 'left',
+                'signal': signal
+            })
+        else:
+            return render(request, 'core/signals/verify.html', {
+                'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
+                'content_class': 'left',
+                'signal': signal
+            })
+    elif request.method == 'POST':
+        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk))
+        signal.complete = True
+        signal.enabled = True
+        signal.save()
+
+        return HttpResponseRedirect(reverse('core_index'))
