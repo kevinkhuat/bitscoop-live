@@ -2,7 +2,7 @@ from ografy.settings import *
 
 
 ########
-# AUTH #  https://docs.djangoproject.com/en/1.7/ref/settings/#auth
+# AUTH #
 ########
 
 AUTHENTICATION_BACKENDS += (
@@ -100,18 +100,6 @@ CACHES = {
 }
 
 
-############
-# DATABASE #
-############
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.abspath(os.path.join(ROOT_PATH, '..', 'databases', 'development.db')),
-    },
-}
-
-
 #############
 # DEBUGGING #
 #############
@@ -127,10 +115,9 @@ LOGGING = {}
 
 
 ##########
-# MODELS #  https://docs.djangoproject.com/en/1.7/ref/settings/#models
+# MODELS #
 ##########
 
-# ABSOLUTE_URL_OVERRIDES = {}
 FIXTURE_DIRS = (
    os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'xauth', 'fixtures')),
 )
@@ -138,6 +125,7 @@ INSTALLED_APPS += (
     'ografy.tests.test_obase',
     'ografy.tests.test_xauth',
 )
+
 
 ############
 # SECURITY #
@@ -167,18 +155,8 @@ STATIC_URL = '/static/'
 SESSION_COOKIE_SECURE = False
 
 
-###########
-# MONGODB #
-###########
-
-MONGODB_DBNAME = 'ografy_db'
-MONGODB_SERVERNAME = 'localhost'
-MONGODB_SERVERPORT = 27017
-
 ########
-# URLS #  https://docs.djangoproject.com/en/1.7/ref/settings/#urls
+# URLS #
 ########
 
-APPEND_SLASH = False
-# PREPEND_WWW = False
 ROOT_URLCONF = 'ografy.tests.urls'

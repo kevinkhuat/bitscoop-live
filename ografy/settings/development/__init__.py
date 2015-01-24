@@ -1,6 +1,22 @@
 from ografy.settings import *
 
 
+#########
+# CACHE #
+#########
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default',
+    },
+    'session': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'session',
+    },
+}
+
+
 ############
 # DATABASE #
 ############
@@ -25,6 +41,7 @@ DEBUG = True
 ###########
 
 LOGGING = {}
+
 
 ############
 # SECURITY #
@@ -52,12 +69,3 @@ STATIC_URL = '/static/'
 ############
 
 SESSION_COOKIE_SECURE = False
-
-
-###########
-# MONGODB #
-###########
-
-MONGODB_DBNAME = 'ografy_db'
-MONGODB_SERVERNAME = 'localhost'
-MONGODB_SERVERPORT = 27017

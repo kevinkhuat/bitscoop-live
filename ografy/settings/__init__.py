@@ -1,5 +1,6 @@
 import os
 import re
+import ssl
 
 from django.core.validators import RegexValidator
 
@@ -20,13 +21,19 @@ ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'default',
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': 'mem-0.ografy.internal:6379:0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+        },
     },
     'session': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'session',
-    },
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': 'mem-0.ografy.internal:6379:1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+        },
+    }
 }
 CACHE_MIDDLEWARE_ALIAS = 'default'
 # CACHE_MIDDLEWARE_KEY_PREFIX = ''
@@ -37,7 +44,29 @@ CACHE_MIDDLEWARE_ALIAS = 'default'
 # DATABASE #  https://docs.djangoproject.com/en/1.7/ref/settings/#database
 ############
 
-# DATABASES = {}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ografy_db',
+        'USER': 'ografy',
+        'PASSWORD': 'foxtrot1234',
+        'HOST': 'rdb-0.ografy.internal',
+        'PORT': '5432',
+        # 'OPTIONS': {
+        #     'sslmode': 'verify-ca',
+        #     'sslcert': 'placeholder',
+        #     'sslrootcert': 'placeholder',
+        # }
+    }
+}
+MONGODB = {
+    'NAME': 'ografy_db',
+    'HOST': 'nrdb-0.ografy.internal',
+    'PORT': 27017,
+    'SSL_CERT_FILE': 'PLACEHOLDER',
+    'SSL_CERT_REQS': ssl.CERT_REQUIRED,
+    'SSL_CA_CERTS': 'PLACEHOLDER',
+}
 # DATABASE_ROUTERS = []
 # DEFAULT_INDEX_TABLESPACE = ''
 # DEFAULT_TABLESPACE = ''
@@ -199,9 +228,9 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.abspath(os.path.join(ROOT_PATH, '..', 'logs', 'debug.log')),
+            'filename': '/var/log/ografy/debug.log',
         },
     },
     'loggers': {
@@ -309,7 +338,7 @@ ROOT_URLCONF = 'ografy.urls'
 # AUTH #  https://docs.djangoproject.com/en/1.7/ref/settings/#auth
 ########
 
-# TODO: Currently in auth, Fix
+# FIXME: Temporarily moved AUTHENTICATION_BACKENDS setting to ografy.settings.signals. Look for a cleaner way to separate application authentication and signal association.
 # AUTHENTICATION_BACKENDS = (
 #     'django.contrib.auth.backends.ModelBackend',
 #     'ografy.apps.xauth.backends.IdentifierBackend',
@@ -365,6 +394,7 @@ STATICFILES_DIRS = (
 #     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 # )
 
+
 ##################
 # REST FRAMEWORK #  https://http://www.django-rest-framework.org/
 ##################
@@ -373,6 +403,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 2
 }
+
 
 ########
 # CORE #
