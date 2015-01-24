@@ -152,9 +152,9 @@
 				<div class="title-align">
 					<i class="block layout icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
+					<div class="title">Connect to {{ signal.name }}</div>
 				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="description">Connect your {{ signal.name }} account to your Ografy account</div>
 			</div>
 		</div>
 		<div class="active step">
@@ -164,7 +164,7 @@
 
 					<div class="title">Authorize Access</div>
 				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+				<div class="description">Authorize your {{ signal.name }} account's connection to Ografy</div>
 			</div>
 		</div>
 		<div class="disabled step">
@@ -174,7 +174,7 @@
 
 					<div class="title">Verify Settings</div>
 				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+				<div class="description">Ensure that your connection settings to {{ signal.name }} are correct</div>
 			</div>
 		</div>
 	</div>
@@ -183,12 +183,12 @@
 {% block content %}
 	<div class="step-authorize">
 		<div class="grouping">
-			<div class="bigger">Authorize Access to {{ provider.name }}</div>
+			<div class="bigger">Authorize Access to {{ signal.name }}</div>
 			<div>
 				<h3 class="bold green-big center">Please use the the pop-up to authorize your Ografy connection
-					with {{ provider.name }}</h3>
-				<input class="bold button-green" value="Retry {{ provider.name }} Connection">
-				<input class="bold button-green" style="width: 225px;" value="Cancel {{ provider.name }} Association">
+					with {{ signal.name }}</h3>
+				<input class="bold button-green" value="Retry {{ signal.name }} Connection">
+				<input class="bold button-green" style="width: 225px;" value="Cancel {{ signal.name }} Association">
 			</div>
 		</div>
 	</div>
