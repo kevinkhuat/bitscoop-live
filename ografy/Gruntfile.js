@@ -6,18 +6,6 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		package: grunt.file.readJSON('package.json'),
 
-		amdsync: {
-			all: {
-				options: {
-					baseUrl: '.',
-					name: '<%= package.name %>',
-					exports: grunt.file.readJSON('config/amdsync.exports.json')
-				},
-				src: 'src/**/*.js',
-				dest: 'artifacts/amdsync/<%= package.name %>.js'
-			}
-		},
-
 		jscs: {
 			all: {
 				options: {
@@ -77,8 +65,10 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('build', [
-		'jsonlint:amdsync',
-		'amdsync'
+		'jsonlint:jshint',
+		'jshint',
+		'jsonlint:jscs',
+		'jscs'
 	]);
 
 	grunt.registerTask('lint', [
