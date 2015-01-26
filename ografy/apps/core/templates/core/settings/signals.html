@@ -3,70 +3,82 @@
 
 
 {% block static %}
-{{ block.super }}
-<style type="text/css">
-	.signal-toggle {
-		padding: 5px 0 5px 0;
-	}
-</style>
+	{{ block.super }}
+	<style type="text/css">
+		.signal-toggle {
+			padding: 5px 0 5px 0;
+		}
+	</style>
+
+	<script type="application/javascript">
+		function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+
+		function disableSignal(signal_id) {
+			{#			FIXME: Make less crap#}
+			$.ajax({
+				url: '/opi/signal/' + signal_id,
+				type: 'PATCH',
+				dataType: 'json',
+				data: {},
+				headers: {
+					"X-CSRFToken": getCookie('csrftoken')
+				}
+			}).done(function() {
+				$('.ui.checkbox.signal-enable-' + signal_id).checkbox();
+			});
+		}
+
+		function deleteSignal(signal_id) {
+			{#			FIXME: Make less crap#}
+			$.ajax({
+				url: '/opi/signal/' + signal_id,
+				type: 'DELETE',
+				dataType: 'json',
+				data: {},
+				headers: {
+					"X-CSRFToken": getCookie('csrftoken')
+				}
+			}).done(function() {
+				$('signal-' + signal_id).remove();
+			});
+		}
+
+		$('.ui.checkbox').checkbox()
+	</script>
 {% endblock %}
 
 {% block content %}
-<div class="grouping">
-	<div class="bigger">Your connections</div>
-	<div>
-		<div class="flex row signal-toggle">
-			<div class="grow">
-				<i class="icon facebook"></i>
-				<a href="/signals">Facebook 1</a>
+	<div class="grouping">
+		<div class="bigger">Your connections</div>
+		{% for signal in signals %}
+			<div class="flex row signal-toggle signal-{{ signal.id }}">
+				<div class="grow">
+					<i class="icon-{{ signal.provider.backend_name }}"></i>
+					<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
+				</div>
+				<div class="ui toggle checkbox signal-enable-{{ signal.id }}">
+					<input type="checkbox">
+					<label></label>
+				</div>
+				<div onclick="deleteSignal({{ signal.id }})">
+					<i class="remove icon"></i>
+					<label></label>
+				</div>
 			</div>
-			<div class="ui toggle checkbox">
-				<input type="checkbox" id="signal-1">
-				<label for="signal-1"></label>
-			</div>
-			<div>
-				<i class="remove icon"></i>
-			</div>
-		</div>
-		<div class="flex row signal-toggle">
-			<div class="grow">
-				<i class="icon twitter"></i>
-				<a href="/signals">Twitter</a>
-			</div>
-			<div class="ui toggle checkbox">
-				<input type="checkbox" id="signal-2">
-				<label for="signal-2"></label>
-			</div>
-			<div>
-				<i class="remove icon"></i>
-			</div>
-		</div>
-		<div class="flex row signal-toggle">
-			<div class="grow">
-				<i class="icon facebook"></i>
-				<a href="/signals">Facebook 2</a>
-			</div>
-			<div class="ui toggle checkbox">
-				<input type="checkbox" id="signal-3">
-				<label for="signal-3"></label>
-			</div>
-			<div>
-				<i class="remove icon"></i>
-			</div>
-		</div>
-		<div class="flex row signal-toggle">
-			<div class="grow">
-				<i class="icon facebook"></i>
-				<a href="/signals">Facebook 3</a>
-			</div>
-			<div class="ui toggle checkbox">
-				<input type="checkbox" id="signal-4">
-				<label for="signal-4"></label>
-			</div>
-			<div>
-				<i class="remove icon"></i>
-			</div>
-		</div>
+		{% endfor %}
 	</div>
-</div>
 {% endblock %}

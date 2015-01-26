@@ -5,24 +5,28 @@
 	{{ block.super }}
 	<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
 	<style type="text/css">
-
 		.signal-button {
 			display: inline-block;
 			background-color: #EEE;
-
-			font-size: 1.5em;
-			font-weight: bold;
 
 			height: 200px;
 			width: 200px;
 			padding: 10px;
 			margin: 5px;
-
 			text-align: center;
-			text-decoration: none !important;
 
 			cursor: pointer;
 			transition: width .5s ease;
+			text-decoration: none !important;
+		}
+
+		.provider-name {
+			font-size: 1.5em;
+			font-weight: bold;
+		}
+
+		.provider-description {
+			color: #000;
 		}
 
 		.signal-button > i {
@@ -68,17 +72,19 @@
 	<div id="isotope-container">
 		{% for provider in providers %}
 			<a href="{{ connect_url }}/{{ provider.id }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
-				<div>
-					<i class="icon-{{ provider.backend_name }}"></i> {{ provider.name }}
-{#				    <div class="provider-description">#}
-{#					    {{ provider.description }}#}
-{#				    </div>#}
-					{% if provider.associated_signal %}
-						<div class="provider-count">
-							{{ provider.assoc_count }}
-						</div>
-					{% endif %}
+
+				<div class="provider-name">
+					<i class="icon-{{ provider.backend_name }}"></i>
+					{{ provider.name }}
 				</div>
+				<div class="provider-description">
+					{{ provider.description }}
+				</div>
+				{% if provider.associated_signal %}
+					<div class="provider-count">
+						{{ provider.assoc_count }}
+					</div>
+				{% endif %}
 			</a>
 		{% endfor %}
 	</div>
