@@ -109,5 +109,5 @@ function baseView() {
 		insertInitialData: insertInitialData,
 		loadInitialData: loadInitialData,
 		loadTestData: loadTestData
-	}
+	};
 }

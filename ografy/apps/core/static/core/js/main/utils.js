@@ -14,13 +14,13 @@ function utils() {
 			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 			map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.68, -73.59], 9);
 
-			map.geoJSON['features'] = [];
+			map.geoJSON.features = [];
 			map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
 		}
 
 		return {
 			renderDetailMap: renderDetailMap
-		}
+		};
 	}
 
 	function session() {
@@ -29,7 +29,7 @@ function utils() {
 		//Django cookie management
 		function getCookie(name) {
 			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
+			if (document.cookie && document.cookie !== '') {
 				var cookies = document.cookie.split(';');
 				for (var i = 0; i < cookies.length; i++) {
 					var cookie = jQuery.trim(cookies[i]);
@@ -44,7 +44,7 @@ function utils() {
 		}
 
 		function getCsrfToken() {
-			if (csrfToken == '') {
+			if (csrfToken === '') {
 				csrfToken = getCookie('csrftoken');
 			}
 
@@ -54,11 +54,11 @@ function utils() {
 		return {
 			getCsrfToken: getCsrfToken,
 			getCookie: getCookie
-		}
+		};
 	}
 
 	return {
 		mapbox: mapbox,
 		session: session
-	}
+	};
 }

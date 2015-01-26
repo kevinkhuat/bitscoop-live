@@ -2,7 +2,7 @@ function mapView(detailViewInst, utilsInst) {
 	//Views
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
-		renderContent(map, baseData)
+		renderContent(map, baseData);
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, false);
 	}
 
@@ -13,10 +13,10 @@ function mapView(detailViewInst, utilsInst) {
 		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 		map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.82, -73.59], 9);
 
-		map.geoJSON['features'] = [];
+		map.geoJSON.features = [];
 
-		for (index in baseData) {
-			map.geoJSON['features'].push({
+		for (var index in baseData) {
+			map.geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org
 				// for the full specification
 				type: 'Feature',
@@ -37,7 +37,7 @@ function mapView(detailViewInst, utilsInst) {
 					datetime: baseData[index].datetime,
 					data: baseData[index].data
 				}
-			})
+			});
 		}
 
 		map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
@@ -56,5 +56,5 @@ function mapView(detailViewInst, utilsInst) {
 	return {
 		renderBase: renderBase,
 		renderContent: renderContent
-	}
+	};
 }

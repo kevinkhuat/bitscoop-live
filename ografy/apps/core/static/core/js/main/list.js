@@ -48,5 +48,5 @@ function listView(detailViewInst, mapInst, sessionInst) {
 	return{
 		renderContent: renderContent,
 		renderBase: renderBase
-	}
+	};
 }

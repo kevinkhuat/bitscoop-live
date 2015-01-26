@@ -70,5 +70,5 @@ function detailView() {
 		clearContent: clearContent,
 		updateMap: updateMap,
 		clearMap: clearMap
-	}
+	};
 }

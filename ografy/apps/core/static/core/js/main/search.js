@@ -55,7 +55,7 @@ function searchView() {
 
 		return {
 			dropdown: dropdown
-		}
+		};
 	}
 
 	function renderDate() {
@@ -102,7 +102,7 @@ function searchView() {
 			beforeField: beforeField,
 			betweenFields: betweenFields,
 			dropdown: dropdown
-		}
+		};
 	}
 
 	function renderTime() {
@@ -149,7 +149,7 @@ function searchView() {
 			beforeField: beforeField,
 			betweenFields: betweenFields,
 			dropdown: dropdown
-		}
+		};
 	}
 
 	function renderTo() {
@@ -161,7 +161,7 @@ function searchView() {
 
 		return {
 			dropdown: dropdown
-		}
+		};
 	}
 
 	function dateString(currentFilter) {
@@ -232,7 +232,7 @@ function searchView() {
 			for (var i = 0; i < filtersList.length; i++) {
 				var currentFilter = filtersList[i];
 				var type = $(currentFilter).children('.initial')[0].value;
-				if (i != 0) {
+				if (i !== 0) {
 					filterString += ' AND ';
 				}
 
@@ -266,7 +266,7 @@ function searchView() {
 					'X-CSRFToken': token
 				}
 			}).done(function(data, xhr, response) {
-				console.log(data)
+				console.log(data);
 			});
 
 			return false;
@@ -298,5 +298,5 @@ function searchView() {
 		renderTo: renderTo,
 		timeString: timeString,
 		toString: toString
-	}
+	};
 }

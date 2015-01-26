@@ -35,7 +35,7 @@ requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 
 				base.bindNavigation();
 			});
 
-			search.bindEvents()
+			search.bindEvents();
 			//base.insertInitialData();
 		});
 	});
