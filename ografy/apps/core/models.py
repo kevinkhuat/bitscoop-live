@@ -24,7 +24,7 @@ class Provider(models.Model):
     name = models.CharField(max_length=150)
     backend_name = models.CharField(max_length=250)
     auth_backend = models.CharField(max_length=250)
-    # description = models.CharField(max_length=2500)
+    description = models.CharField(max_length=2500)
     tags = models.CharField(max_length=1000)
 
     def __str__(self):
@@ -40,6 +40,14 @@ class Signal(models.Model):
         user: A foreign key relationship to the User entity who owns the Signal.
         name: The name of the linked service.
     """
+    FREQUENCY = (
+        (0, 'Premium On Demand'),
+        (1, 'Daily'),
+        (2, 'Weekly'),
+        (3, 'Manual'),
+        (4, 'Once'),
+    )
+
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     provider = models.ForeignKey(Provider)
@@ -50,28 +58,20 @@ class Signal(models.Model):
     connected = models.BooleanField(default=False)
     enabled = models.BooleanField(default=False)
 
-    permissions = models.TextField()
-    frequency = models.PositiveSmallIntegerField(default=0)
+    frequency = models.PositiveSmallIntegerField(default=1, choices=FREQUENCY)
 
     created = models.DateTimeField(blank=False)
     updated = models.DateTimeField(blank=False)
 
-    # def get_user_social_auth(self):
-    # return UserSocialAuth.get_social_auth(self.provider, self.user.id)
-    #
-    # @classmethod
-    # def get_social_auth_for_user_by_name(cls, user, backend_name):
-    #	 return UserSocialAuth.get_social_auth(backend_name, user.id)
-    #
-    # @classmethod
-    # def get_social_auths_for_user(cls, user):
-    #	 try:
-    #		 return UserSocialAuth.objects.get(user=user)
-    #	 except UserSocialAuth.DoesNotExist:
-    #		 return None
-
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
+
+
+class Permission(models.Model):
+    id = models.AutoField(primary_key=True)
+    signal = models.ForeignKey(Signal)
+    key = models.CharField(max_length=50, blank=False)
+    value = models.BooleanField(default=False)
 
 
 @autoconnect

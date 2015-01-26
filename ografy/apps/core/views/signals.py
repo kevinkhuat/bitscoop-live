@@ -12,7 +12,7 @@ def authorize(request):
     # # Look up signals from API for current user where signal
     # # is not verified or complete.
     unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
-    unverified_signals = list(core_api.SignalApi.filter(val=Q(user=request.user.id) | Q(complete=False) | Q(connected=False) | Q(enabled=False)))
+    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) | Q(complete=False) | Q(connected=False) | Q(enabled=False)))
 
     signal_count = len(unverified_signals)
 
