@@ -25,7 +25,7 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 'main/base'],
-	function () {
+	function() {
 		$(document).ready(function() {
 			var base = baseView();
 			var search = searchView();

@@ -1,26 +1,20 @@
 function utils() {
-
 	function mapbox() {
 		//Mapbox functions
 		function initializeMap() {
-
 		}
 
 		function changeMapContext() {
-
 		}
 
 		function changeMapFocus() {
-
 		}
 
-
 		function renderDetailMap(map) {
-
 			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 			map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.68, -73.59], 9);
 
-			map.geoJSON["features"] = [];
+			map.geoJSON['features'] = [];
 			map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
 		}
 

@@ -1,10 +1,11 @@
 function detailView() {
 	//Views
 	function renderContent(eventName, eventDate, eventLocation, eventData, showMap) {
-
 		showMap = typeof showMap !== 'undefined' ? showMap : true;
 
-		var list_detail = nunjucks.render('static/core/templates/main/detail.html', {showMap: showMap});
+		var list_detail = nunjucks.render('static/core/templates/main/detail.html', {
+			showMap: showMap
+		});
 		$('.base_detail').html(list_detail);
 
 		//Populate content
@@ -48,16 +49,19 @@ function detailView() {
 				'marker-color': '#BE9A6B',
 				'marker-symbol': 'post'
 			}
-		}
+		};
 
 		map.map.featureLayer.setGeoJSON(geoJSON);
 
-		map.map.setView([coordinates[1], coordinates[0]], 13, {pan: {animate: true}});
+		map.map.setView([coordinates[1], coordinates[0]], 13, {
+			pan: {
+				animate: true
+			}
+		});
 	}
 
 	function clearMap(map) {
 		map.map.featureLayer.setGeoJSON([]);
-
 	}
 
 	return {

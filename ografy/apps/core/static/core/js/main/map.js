@@ -13,10 +13,10 @@ function mapView(detailViewInst, utilsInst) {
 		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 		map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.82, -73.59], 9);
 
-		map.geoJSON["features"] = [];
+		map.geoJSON['features'] = [];
 
 		for (index in baseData) {
-			map.geoJSON["features"].push({
+			map.geoJSON['features'].push({
 				// this feature is in the GeoJSON format: see geojson.org
 				// for the full specification
 				type: 'Feature',
@@ -34,8 +34,8 @@ function mapView(detailViewInst, utilsInst) {
 					'marker-size': 'large',
 					'marker-color': '#BE9A6B',
 					'marker-symbol': 'post',
-					'datetime': baseData[index].datetime,
-					'data': baseData[index].data
+					datetime: baseData[index].datetime,
+					data: baseData[index].data
 				}
 			})
 		}
@@ -50,7 +50,6 @@ function mapView(detailViewInst, utilsInst) {
 			$('.detail-time-content').html(feature.properties.datetime);
 			$('.detail-location-content').html(String(feature.geometry.coordinates));
 			$('.detail-body-content').html(String(feature.properties.data));
-
 		});
 	}
 

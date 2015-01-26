@@ -1,0 +1,10 @@
+{
+	"auth": "src/auth",
+	"fields": "src/fields",
+	"filters": "src/filters",
+	"querystring": "src/querystring",
+	"router": "src/router",
+	"signals": "src/signals",
+	"url": "src/url",
+	"uuid": "src/uuid"
+}

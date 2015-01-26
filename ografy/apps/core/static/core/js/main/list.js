@@ -1,5 +1,4 @@
 function listView(detailViewInst, mapInst, sessionInst) {
-
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
 
@@ -14,7 +13,10 @@ function listView(detailViewInst, mapInst, sessionInst) {
 	//Views
 	function renderContent(map, event_data) {
 		//Iterate through json and render list items using Nunjucks templates
-		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html', {event_data: event_data});
+		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html',
+			{
+			event_data: event_data
+		});
 		$('.list-content').html(listItems);
 
 		$('.list-item').click(function() {
@@ -22,20 +24,18 @@ function listView(detailViewInst, mapInst, sessionInst) {
 			selectedItem.siblings().removeClass('active');
 			selectedItem.toggleClass('active');
 
-
 			if (selectedItem.hasClass('active')) {
 				$.ajax({
 					url: 'static/core/js/test_data/event_single_test_data.json',
 					type: 'GET',
 					dataType: 'json',
 					headers: {
-						"X-CSRFToken": sessionInst.getCsrfToken()
+						'X-CSRFToken': sessionInst.getCsrfToken()
 					}
 				}).done(function(data, xhr, response) {
 					var single_data = data;
 					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location), String(single_data.data));
 					detailViewInst.updateMap(single_data.provider_name, map, single_data.location);
-
 				});
 			}
 			else {

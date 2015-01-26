@@ -8,7 +8,7 @@ function searchView() {
 		var initDropdown = $('.filter:last').find('.initial')[0];
 		renderDate().dropdown(initDropdown);
 
-		$('.filter:last').find('.initial').change(function () {
+		$('.filter:last').find('.initial').change(function() {
 			var currentElement = this;
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
@@ -34,10 +34,10 @@ function searchView() {
 	function createFilterBase() {
 		var newFilter = nunjucks.render('static/core/templates/main/filter/filter.html');
 		$('.filter-container').append(newFilter);
-		$('.filter:last').find('.add-filter-button').on('click', function () {
+		$('.filter:last').find('.add-filter-button').on('click', function() {
 			addFilter();
 		});
-		$('.filter:last').find('.remove-filter-button').on('click', function () {
+		$('.filter:last').find('.remove-filter-button').on('click', function() {
 			removeFilter(this);
 		});
 	}
@@ -64,7 +64,7 @@ function searchView() {
 			var newDropdown = nunjucks.render('static/core/templates/main/filter/date_dropdown.html');
 			$(parent).append(newDropdown);
 
-			$(parent).find('.date').change(function () {
+			$(parent).find('.date').change(function() {
 				var currentElement = this;
 				$(currentElement).siblings().not('.initial').remove();
 				if (currentElement.value == 'after') {
@@ -111,7 +111,7 @@ function searchView() {
 			var newDropdown = nunjucks.render('static/core/templates/main/filter/time_dropdown.html');
 			$(parent).append(newDropdown);
 
-			$(parent).find('.time').change(function () {
+			$(parent).find('.time').change(function() {
 				var currentElement = this;
 				$(currentElement).siblings().not('.initial').remove();
 				if (currentElement.value == 'after') {
@@ -223,11 +223,10 @@ function searchView() {
 	}
 
 	function bindEvents() {
-
 		$('#search-form').submit(function(event) {
 			event.stopPropagation();
 
-			var filterString = "";
+			var filterString = '';
 			var filtersList = $('.filter-options');
 
 			for (var i = 0; i < filtersList.length; i++) {
@@ -264,9 +263,9 @@ function searchView() {
 				type: 'GET',
 				dataType: 'json',
 				headers: {
-					"X-CSRFToken": token
+					'X-CSRFToken': token
 				}
-			}).done(function (data, xhr, response) {
+			}).done(function(data, xhr, response) {
 				console.log(data)
 			});
 
@@ -284,7 +283,6 @@ function searchView() {
 		$('.ui.dropdown .add-filter').click(function() {
 			addFilter();
 		});
-
 	}
 	return {
 		addDropdown: addDropdown,

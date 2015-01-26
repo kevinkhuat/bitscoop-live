@@ -16,21 +16,18 @@ function baseView() {
 	function mapbox() {
 		this.map;
 		this.geoJSON = {
-			"type": "FeatureCollection",
-			"features": []
+			type: 'FeatureCollection',
+			features: []
 		};
 	}
 
 	function clearData() {
-
 	}
 
 	function updateData() {
-
 	}
 
 	function search() {
-
 	}
 
 	function loadTestData(completeCallback) {
@@ -39,7 +36,7 @@ function baseView() {
 			type: 'GET',
 			dataType: 'json',
 			headers: {
-				"X-CSRFToken": sessionInst.getCsrfToken()
+				'X-CSRFToken': sessionInst.getCsrfToken()
 			}
 		}).done(function(data, xhr, response) {
 			baseData = data;
@@ -60,7 +57,6 @@ function baseView() {
 		});
 
 		$('.timeline-view-button').click(function() {
-
 		});
 
 		$('.map-view-button').click(function() {
@@ -74,7 +70,7 @@ function baseView() {
 			type: 'GET',
 			dataType: 'json',
 			headers: {
-				"X-CSRFToken": sessionInst.getCsrfToken()
+				'X-CSRFToken': sessionInst.getCsrfToken()
 			}
 		}).done(function(data, xhr, response) {
 			baseData = data;
@@ -82,19 +78,22 @@ function baseView() {
 	}
 
 	function insertInitialData() {
-		for (i=0; i<8; i++){
+		for (i = 0; i<8; i++) {
 			var data = {
-				"created": "2014-12-01 19:54:06.860Z",
-				"updated": "2014-12-01 19:54:06.860Z",
-				"user_id": 1,
-				"data_blob": {"cool": "pants", "hammer": "time"}
+				created: '2014-12-01 19:54:06.860Z',
+				updated: '2014-12-01 19:54:06.860Z',
+				user_id: 1,
+				data_blob: {
+					cool: 'pants',
+					hammer: 'time'
+				}
 			};
 			$.ajax({
 				url: '/opi/data',
 				type: 'POST',
 				dataType: 'json',
 				headers: {
-					"X-CSRFToken": sessionInst.getCsrfToken()
+					'X-CSRFToken': sessionInst.getCsrfToken()
 				},
 				data: data
 			}).done(function(data, xhr, response) {
@@ -102,7 +101,6 @@ function baseView() {
 				console.log(baseData);
 			});
 		}
-
 	}
 
 	return {
