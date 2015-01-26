@@ -1,20 +1,20 @@
 import datetime
 
 from django.conf import settings
-import mongoengine as mongo
+import mongoengine
 
 
-"""
-Connect to mongo as a DB connection instance.
-"""
-mongo.connect(
-    settings.MONGODB_DBNAME,
-    host=settings.MONGODB_SERVERNAME,
-    port=settings.MONGODB_SERVERPORT
+mongoengine.connect(
+    settings.MONGODB['NAME'],
+    host=settings.MONGODB['HOST'],
+    port=settings.MONGODB['PORT']
+    #ssl_certfile=settings.MONGODB['SSL_CERT_FILE'],
+    #ssl_cert_reqs=settings.MONGODB['SSL_CERT_REQS'],
+    #ssl_ca_certs=settings.MONGODB['SSL_CA_CERTS']
 )
 
 
-class Settings(mongo.DynamicDocument):
+class Settings(mongoengine.DynamicDocument):
     """The data class for user settings data.
 
     #. *created* the date created
@@ -23,9 +23,9 @@ class Settings(mongo.DynamicDocument):
     """
 
     # To be managed by the REST API
-    user_id = mongo.IntField(required=True)
-    created = mongo.DateTimeField(default=datetime.datetime.now)
-    updated = mongo.DateTimeField(default=datetime.datetime.now)
+    user_id = mongoengine.IntField(required=True)
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
     # To be sourced from signals.js
-    data_blob = mongo.SortedListField(mongo.StringField())
+    data_blob = mongoengine.SortedListField(mongoengine.StringField())
