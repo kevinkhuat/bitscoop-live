@@ -1,7 +1,71 @@
 function utils() {
-	function mapbox() {
+	function dataStore() {
+		//Data model
+
+		function clearData() {
+			localStorage.dataData = [];
+			localStorage.eventData = [];
+			localStorage.messageData = [];
+		}
+
+		function loadInitialData() {
+			$.ajax({
+				url: '/opi/event',
+				type: 'GET',
+				dataType: 'json',
+				headers: {
+					'X-CSRFToken': sessionInst.getCsrfToken()
+				}
+			}).done(function(data, xhr, response) {
+				localStorage.eventData = data;
+			});
+		}
+
+		function loadTestData(completeCallback) {
+			$.ajax({
+				url: 'static/core/js/test_data/event_test_data.json',
+				type: 'GET',
+				dataType: 'json',
+				headers: {
+					'X-CSRFToken': sessionInst.getCsrfToken()
+				}
+			}).done(function(data, xhr, response) {
+				localStorage.eventData.test = data;
+				completeCallback();
+			});
+		}
+
+		function updateData() {
+		}
+
+		function search() {
+		}
+
+		return {
+			clearData: clearData,
+			loadInitialData: loadInitialData,
+			loadTestData: loadTestData,
+			updateData: updateData,
+			search: search
+		};
+	}
+
+	function mapboxManager() {
+		var baseMap, geoJSON;
+		initializeMap();
+
 		//Mapbox functions
 		function initializeMap() {
+			baseMap = new mapbox();
+			geoJSON = {
+				type: 'FeatureCollection',
+				features: []
+			};
+
+			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
+
+			map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.68, -73.59], 9);
+			map.geoJSON.features = [];
 		}
 
 		function changeMapContext() {
@@ -11,19 +75,20 @@ function utils() {
 		}
 
 		function renderDetailMap(map) {
-			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
-			map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.68, -73.59], 9);
-
-			map.geoJSON.features = [];
 			map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
 		}
 
 		return {
+			basemap: baseMap,
+			geoJSON: geoJSON,
+			initializeMap: initializeMap,
+			changeMapContext: changeMapContext,
+			changeMapFocus: changeMapFocus,
 			renderDetailMap: renderDetailMap
 		};
 	}
 
-	function session() {
+	function sessionsCookies() {
 		var csrfToken = '';
 
 		//Django cookie management
@@ -58,7 +123,8 @@ function utils() {
 	}
 
 	return {
-		mapbox: mapbox,
-		session: session
+		dataStore: dataStore,
+		mapboxManager: mapboxManager,
+		sessionsCookies: sessionsCookies
 	};
 }

@@ -1,46 +1,35 @@
 function baseView() {
-	//Data model
-	var baseData = [];
-	var baseMap = new mapbox();
+
+	//Utils Instance
+	var utilsInst = utils();
+
+	//Map Handler
+	var mapInst = utilsInst.mapboxManager();
+
+	//Local Storage Data Handler
+	var dataInst = utilsInst.dataStore();
+
+	//Cookie/Session Handler
+	var sessionInst = utilsInst.sessionsCookies();
 
 	//View components
 	var detailViewInst = detailView();
-	var utilsInst = utils();
-	var mapInst = utilsInst.mapbox();
-	var sessionInst = utilsInst.session();
 
-	//Sub Views
-	var listViewInst = listView(detailViewInst, mapInst, sessionInst);
-	var mapViewInst = mapView(detailViewInst, utilsInst);
+	//Views
+	var listViewInst = listView(detailViewInst, dataInst, mapInst, sessionInst);
+	var mapViewInst = mapView(detailViewInst, dataInst, mapInst, sessionInst);
 
-	function mapbox() {
-		this.map;
-		this.geoJSON = {
-			type: 'FeatureCollection',
-			features: []
-		};
-	}
+	function bindNavigation() {
+		$('.list-view-button').click(function() {
+			listViewInst.renderBase(baseMap, baseData);
+		});
 
-	function clearData() {
-	}
+		$('.timeline-view-button').click(function() {
 
-	function updateData() {
-	}
+		});
 
-	function search() {
-	}
-
-	function loadTestData(completeCallback) {
-		$.ajax({
-			url: 'static/core/js/test_data/event_test_data.json',
-			type: 'GET',
-			dataType: 'json',
-			headers: {
-				'X-CSRFToken': sessionInst.getCsrfToken()
-			}
-		}).done(function(data, xhr, response) {
-			baseData = data;
-			completeCallback();
+		$('.map-view-button').click(function() {
+			mapViewInst.renderBase(baseMap, baseData, mapInst);
 		});
 	}
 
@@ -49,65 +38,11 @@ function baseView() {
 		$('main').html(base_framework);
 
 		mapViewInst.renderBase(baseMap, baseData, mapInst);
-	}
 
-	function bindNavigation() {
-		$('.list-view-button').click(function() {
-			listViewInst.renderBase(baseMap, baseData);
-		});
-
-		$('.timeline-view-button').click(function() {
-		});
-
-		$('.map-view-button').click(function() {
-			mapViewInst.renderBase(baseMap, baseData, mapInst);
-		});
-	}
-
-	function loadInitialData() {
-		$.ajax({
-			url: '/opi/event',
-			type: 'GET',
-			dataType: 'json',
-			headers: {
-				'X-CSRFToken': sessionInst.getCsrfToken()
-			}
-		}).done(function(data, xhr, response) {
-			baseData = data;
-		});
-	}
-
-	function insertInitialData() {
-		for (i = 0; i<8; i++) {
-			var data = {
-				created: '2014-12-01 19:54:06.860Z',
-				updated: '2014-12-01 19:54:06.860Z',
-				user_id: 1,
-				data_blob: {
-					cool: 'pants',
-					hammer: 'time'
-				}
-			};
-			$.ajax({
-				url: '/opi/data',
-				type: 'POST',
-				dataType: 'json',
-				headers: {
-					'X-CSRFToken': sessionInst.getCsrfToken()
-				},
-				data: data
-			}).done(function(data, xhr, response) {
-				baseData = data;
-				console.log(baseData);
-			});
-		}
+		bindNavigation();
 	}
 
 	return {
-		render: render,
-		bindNavigation: bindNavigation,
-		insertInitialData: insertInitialData,
-		loadInitialData: loadInitialData,
-		loadTestData: loadTestData
+		render: render
 	};
 }
