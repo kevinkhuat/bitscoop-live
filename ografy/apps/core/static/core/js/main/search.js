@@ -2,7 +2,7 @@ function searchView() {
 	var utilsInst = utils();
 
 	function addDropdown() {
-		var newDropdown = nunjucks.render('static/core/templates/main/filter/initial_filter_dropdown.html');
+		var newDropdown = nunjucks.render('filter/initial_filter_dropdown.html');
 		$('.filter:last').find('.filter-options').html(newDropdown);
 
 		var initDropdown = $('.filter:last').find('.initial')[0];
@@ -32,7 +32,7 @@ function searchView() {
 	}
 
 	function createFilterBase() {
-		var newFilter = nunjucks.render('static/core/templates/main/filter/filter.html');
+		var newFilter = nunjucks.render('filter/filter.html');
 		$('.filter-container').append(newFilter);
 		$('.filter:last').find('.add-filter-button').on('click', function() {
 			addFilter();
@@ -49,7 +49,7 @@ function searchView() {
 	function renderFrom() {
 		function dropdown(currentElement) {
 			var parent = currentElement.parentElement;
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/from_text_field.html');
+			var newDropdown = nunjucks.render('filter/from_text_field.html');
 			$(parent).append(newDropdown);
 		}
 
@@ -61,7 +61,7 @@ function searchView() {
 	function renderDate() {
 		function dropdown(currentElement) {
 			var parent = currentElement.parentElement;
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/date_dropdown.html');
+			var newDropdown = nunjucks.render('filter/date_dropdown.html');
 			$(parent).append(newDropdown);
 
 			$(parent).find('.date').change(function() {
@@ -83,17 +83,17 @@ function searchView() {
 		}
 
 		function afterField(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/date_after_field.html');
+			var newDropdown = nunjucks.render('filter/date_after_field.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
 		function beforeField(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/date_before_field.html');
+			var newDropdown = nunjucks.render('filter/date_before_field.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
 		function betweenFields(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/date_between_fields.html');
+			var newDropdown = nunjucks.render('filter/date_between_fields.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
@@ -108,7 +108,7 @@ function searchView() {
 	function renderTime() {
 		function dropdown(currentElement) {
 			var parent = currentElement.parentElement;
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/time_dropdown.html');
+			var newDropdown = nunjucks.render('filter/time_dropdown.html');
 			$(parent).append(newDropdown);
 
 			$(parent).find('.time').change(function() {
@@ -130,17 +130,17 @@ function searchView() {
 		}
 
 		function afterField(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/time_after_field.html');
+			var newDropdown = nunjucks.render('filter/time_after_field.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
 		function beforeField(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/time_before_field.html');
+			var newDropdown = nunjucks.render('filter/time_before_field.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
 		function betweenFields(currentElement) {
-			var newDropdown = nunjucks.render('static/core/templates/main/filter/time_between_fields.html');
+			var newDropdown = nunjucks.render('filter/time_between_fields.html');
 			$(currentElement.parentElement).append(newDropdown);
 		}
 
@@ -155,7 +155,7 @@ function searchView() {
 	function renderTo() {
 		function dropdown(currentElement) {
 			var parent = currentElement.parentElement;
-			var newField = nunjucks.render('static/core/templates/main/filter/to_text_field.html');
+			var newField = nunjucks.render('filter/to_text_field.html');
 			$(parent).append(newField);
 		}
 

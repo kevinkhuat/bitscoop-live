@@ -45,7 +45,8 @@ function baseView() {
 	}
 
 	function render() {
-		var base_framework = nunjucks.render('static/core/templates/main/base.html');
+		var base_framework = nunjucks.render('base.html');
+		console.log(base_framework);
 		$('main').html(base_framework);
 
 		mapViewInst.renderBase(baseMap, baseData, mapInst);

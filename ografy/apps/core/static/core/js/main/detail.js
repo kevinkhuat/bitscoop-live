@@ -3,7 +3,7 @@ function detailView() {
 	function renderContent(eventName, eventDate, eventLocation, eventData, showMap) {
 		showMap = typeof showMap !== 'undefined' ? showMap : true;
 
-		var list_detail = nunjucks.render('static/core/templates/main/detail.html', {
+		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
 		$('.base_detail').html(list_detail);

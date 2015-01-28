@@ -17,8 +17,10 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jscs": "^0.8.0",
     "grunt-jsonlint": "^1.0.4",
+    "grunt-nunjucks": "^0.1.4",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^0.6.0",
-    "mock-browser": "^0.90.27"
+    "mock-browser": "^0.90.27",
+    "nunjucks": "^1.1.0"
   }
 }
