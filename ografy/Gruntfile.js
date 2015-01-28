@@ -52,6 +52,7 @@ module.exports = function(grunt) {
 				src: 'package.json'
 			}
 		},
+
 		nunjucks: {
 			precompile: {
 				baseDir: 'ografy/apps/core/static/core/templates/main/**/',
@@ -65,11 +66,12 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+
 		watch: {
 			nunjucks: {
-				files: 'ografy/apps/core/static/core/templates/main/**/*',
-				tasks: ['nunjucks']
-			}
+	            files: 'ografy/apps/core/static/core/templates/main/**/*',
+	            tasks: ['nunjucks']
+	        }
 		}
 	});
 
