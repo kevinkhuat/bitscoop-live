@@ -1,22 +1,26 @@
-function mapView(detailViewInst, utilsInst) {
+function mapView(detailViewInst, dataInst, utilsInst, sessionInst) {
 	//Views
-	function renderBase(map, baseData) {
+	function renderBase() {
 		var tempData = 'Select an Event at left to see its details.';
-		renderContent(map, baseData);
+		dataInst.loadTestData();
+		renderContent();
 		detailViewInst.renderContent(tempData, tempData, tempData, tempData, false);
 	}
 
-	function renderContent(map, baseData) {
+	function renderContent() {
 		var map_framework = nunjucks.render('map/map.html');
 		$('.data-view').html(map_framework);
 
-		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
-		map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.82, -73.59], 9);
+		var mapInst = utilsInst.mapboxManager();
+		var map = mapInst.map;
+		var geoJSON = mapInst.geoJSON;
 
-		map.geoJSON.features = [];
+		geoJSON.features = [];
 
-		for (var index in baseData) {
-			map.geoJSON.features.push({
+		var testData = JSON.parse(localStorage.eventData);
+		console.log(testData);
+		for (var index in testData) {
+			geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org
 				// for the full specification
 				type: 'Feature',
@@ -24,27 +28,27 @@ function mapView(detailViewInst, utilsInst) {
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: baseData[index].location
+					coordinates: testData[index].location
 				},
 				properties: {
-					title: baseData[index].name,
-					description: baseData[index].provider_name,
+					title: testData[index].name,
+					description: testData[index].provider_name,
 					// one can customize markers by adding simplestyle properties
 					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
 					'marker-size': 'large',
 					'marker-color': '#BE9A6B',
 					'marker-symbol': 'post',
-					datetime: baseData[index].datetime,
-					data: baseData[index].data
+					datetime: testData[index].datetime,
+					data: testData[index].data
 				}
 			});
 		}
 
-		map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
+		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 
-		map.map.fitBounds(map.map.featureLayer.getBounds());
+		map.fitBounds(map.featureLayer.getBounds());
 
-		map.map.featureLayer.on('click', function(e) {
+		map.featureLayer.on('click', function(e) {
 			var feature = e.layer.feature;
 			$('.detail-main-label').html(feature.properties.description);
 			$('.detail-time-content').html(feature.properties.datetime);

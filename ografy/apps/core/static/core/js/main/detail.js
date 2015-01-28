@@ -1,4 +1,4 @@
-function detailView() {
+function detailView(utilsInst) {
 	//Views
 	function renderContent(eventName, eventDate, eventLocation, eventData, showMap) {
 		showMap = typeof showMap !== 'undefined' ? showMap : true;
@@ -8,11 +8,22 @@ function detailView() {
 		});
 		$('.base_detail').html(list_detail);
 
+		if (showMap) {
+			var mapbox = utilsInst.mapboxManager();
+			var map = mapbox.map;
+			var geoJSON = mapbox.geoJSON;
+		}
+
 		//Populate content
 		$('.detail-main-label').html(eventName);
 		$('.detail-time-content').html(eventDate);
 		$('.detail-location-content').html(eventLocation);
 		$('.detail-body-content').html(eventData);
+
+		return {
+			map: map,
+			geoJSON: geoJSON
+		};
 	}
 
 	function updateContent(eventName, eventDate, eventLocation, eventData) {
@@ -51,9 +62,9 @@ function detailView() {
 			}
 		};
 
-		map.map.featureLayer.setGeoJSON(geoJSON);
+		map.featureLayer.setGeoJSON(geoJSON);
 
-		map.map.setView([coordinates[1], coordinates[0]], 13, {
+		map.setView([coordinates[1], coordinates[0]], 13, {
 			pan: {
 				animate: true
 			}
@@ -61,7 +72,7 @@ function detailView() {
 	}
 
 	function clearMap(map) {
-		map.map.featureLayer.setGeoJSON([]);
+		map.featureLayer.setGeoJSON([]);
 	}
 
 	return {

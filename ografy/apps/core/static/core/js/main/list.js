@@ -1,22 +1,26 @@
-function listView(detailViewInst, mapInst, sessionInst) {
-	function renderBase(map, baseData) {
+function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
+	function renderBase() {
 		var tempData = 'Select an Event at left to see its details.';
 
 		var list = nunjucks.render('list/list.html');
 		$('.data-view').html(list);
 
-		renderContent(map, baseData);
-		detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);
-		mapInst.renderDetailMap(map);
+		var thisDetailViewInst = detailViewInst.renderContent(tempData, tempData, tempData, tempData, true);
+		var map = thisDetailViewInst.map;
+		var geoJSON = thisDetailViewInst.geoJSON;
+		renderContent(map, geoJSON);
 	}
 
 	//Views
-	function renderContent(map, event_data) {
+	function renderContent(map, geoJSON) {
 		//Iterate through json and render list items using Nunjucks templates
+		var eventData = JSON.parse(localStorage.eventData);
+
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
-			event_data: event_data
+			eventData: eventData
 		});
+
 		$('.list-content').html(listItems);
 
 		$('.list-item').click(function() {

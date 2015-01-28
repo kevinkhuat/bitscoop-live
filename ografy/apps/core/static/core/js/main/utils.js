@@ -14,24 +14,24 @@ function utils() {
 				type: 'GET',
 				dataType: 'json',
 				headers: {
-					'X-CSRFToken': sessionInst.getCsrfToken()
+					'X-CSRFToken': sessionsCookies().getCsrfToken()
 				}
 			}).done(function(data, xhr, response) {
 				localStorage.eventData = data;
 			});
 		}
 
-		function loadTestData(completeCallback) {
+		function loadTestData() {
+			var cookie = sessionsCookies().getCsrfToken();
 			$.ajax({
 				url: 'static/core/js/test_data/event_test_data.json',
 				type: 'GET',
 				dataType: 'json',
 				headers: {
-					'X-CSRFToken': sessionInst.getCsrfToken()
+					'X-CSRFToken': cookie
 				}
 			}).done(function(data, xhr, response) {
-				localStorage.eventData.test = data;
-				completeCallback();
+				localStorage.eventData = JSON.stringify(data);
 			});
 		}
 
@@ -51,12 +51,11 @@ function utils() {
 	}
 
 	function mapboxManager() {
-		var baseMap, geoJSON;
+		var map, geoJSON;
 		initializeMap();
 
 		//Mapbox functions
 		function initializeMap() {
-			baseMap = new mapbox();
 			geoJSON = {
 				type: 'FeatureCollection',
 				features: []
@@ -64,8 +63,7 @@ function utils() {
 
 			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 
-			map.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0').setView([40.68, -73.59], 9);
-			map.geoJSON.features = [];
+			map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0');
 		}
 
 		function changeMapContext() {
@@ -75,11 +73,11 @@ function utils() {
 		}
 
 		function renderDetailMap(map) {
-			map.map.featureLayer = L.mapbox.featureLayer(map.geoJSON).addTo(map.map);
+			map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 		}
 
 		return {
-			basemap: baseMap,
+			map: map,
 			geoJSON: geoJSON,
 			initializeMap: initializeMap,
 			changeMapContext: changeMapContext,

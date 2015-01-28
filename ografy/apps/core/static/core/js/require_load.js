@@ -30,10 +30,7 @@ requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 
 			var base = baseView();
 			var search = searchView();
 
-			base.loadTestData(function() {
-				base.render();
-				base.bindNavigation();
-			});
+			base.render();
 
 			search.bindEvents();
 			//base.insertInitialData();

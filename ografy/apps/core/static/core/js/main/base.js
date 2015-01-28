@@ -3,9 +3,6 @@ function baseView() {
 	//Utils Instance
 	var utilsInst = utils();
 
-	//Map Handler
-	var mapInst = utilsInst.mapboxManager();
-
 	//Local Storage Data Handler
 	var dataInst = utilsInst.dataStore();
 
@@ -13,23 +10,22 @@ function baseView() {
 	var sessionInst = utilsInst.sessionsCookies();
 
 	//View components
-	var detailViewInst = detailView();
+	var detailViewInst = detailView(utilsInst);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, mapInst, sessionInst);
-	var mapViewInst = mapView(detailViewInst, dataInst, mapInst, sessionInst);
+	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst);
+	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst);
 
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
-			listViewInst.renderBase(baseMap, baseData);
+			listViewInst.renderBase();
 		});
 
 		$('.timeline-view-button').click(function() {
-
 		});
 
 		$('.map-view-button').click(function() {
-			mapViewInst.renderBase(baseMap, baseData, mapInst);
+			mapViewInst.renderBase();
 		});
 	}
 
@@ -37,7 +33,7 @@ function baseView() {
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);
 
-		mapViewInst.renderBase(baseMap, baseData, mapInst);
+		mapViewInst.renderBase();
 
 		bindNavigation();
 	}
