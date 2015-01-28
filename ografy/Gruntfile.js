@@ -13,11 +13,10 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'src/**/*.js',
-					'apps/**/*.js',
-					'!apps/demo/**/*.js',
-					'static/**/*.js',
-					'!static/lib/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/apps/demo/**/*.js',
+					'!ografy/static/lib/**/*.js',
+					'!ografy/static/shared/js/templates.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -31,11 +30,10 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'src/**/*.js',
-					'apps/**/*.js',
-					'!apps/demo/**/*.js',
-					'static/**/*.js',
-					'!static/lib/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/apps/demo/**/*.js',
+					'!ografy/static/lib/**/*.js',
+					'!ografy/static/shared/js/templates.js'
 				]
 			}
 		},
@@ -54,22 +52,29 @@ module.exports = function(grunt) {
 				src: 'package.json'
 			}
 		},
-
+		nunjucks: {
+			precompile: {
+				baseDir: 'ografy/apps/core/static/core/templates/main/**/',
+				src: 'ografy/apps/core/static/core/templates/main/**/*',
+				dest: 'ografy/static/shared/js/templates.js',
+				options: {
+					//env: require('./nunjucks-environment'),
+					name: function(filename) {
+						return filename.replace('ografy/apps/core/static/core/templates/main/', '');
+					}
+				}
+			}
+		},
 		watch: {
-			files: 'src/**/*.js',
-			tasks: 'build'
+			nunjucks: {
+				files: 'ografy/apps/core/static/core/templates/main/**/*',
+				tasks: ['nunjucks']
+			}
 		}
 	});
 
 	// Load grunt tasks from NPM packages
 	require('load-grunt-tasks')(grunt);
-
-	grunt.registerTask('build', [
-		'jsonlint:jshint',
-		'jshint',
-		'jsonlint:jscs',
-		'jscs'
-	]);
 
 	grunt.registerTask('lint', [
 		'jsonlint:jshint',
@@ -81,7 +86,6 @@ module.exports = function(grunt) {
 	// Default grunt
 	grunt.registerTask('default', [
 		'jsonlint:package',
-		'lint',
-		'build'
+		'lint'
 	]);
 };

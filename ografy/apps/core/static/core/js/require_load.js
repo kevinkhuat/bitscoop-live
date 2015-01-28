@@ -27,6 +27,15 @@ requirejs.config({
 requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 'main/base'],
 	function() {
 		$(document).ready(function() {
-			baseView().render();
+			var base = baseView();
+			var search = searchView();
+
+			base.loadTestData(function() {
+				base.render();
+				base.bindNavigation();
+			});
+
+			search.bindEvents();
+			//base.insertInitialData();
 		});
 	});

@@ -7,7 +7,7 @@ function mapView(detailViewInst, utilsInst) {
 	}
 
 	function renderContent(map, baseData) {
-		var map_framework = nunjucks.render('static/core/templates/main/map/map.html');
+		var map_framework = nunjucks.render('map/map.html');
 		$('.data-view').html(map_framework);
 
 		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';

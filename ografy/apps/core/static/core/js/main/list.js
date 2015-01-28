@@ -2,7 +2,7 @@ function listView(detailViewInst, mapInst, sessionInst) {
 	function renderBase(map, baseData) {
 		var tempData = 'Select an Event at left to see its details.';
 
-		var list = nunjucks.render('static/core/templates/main/list/list.html');
+		var list = nunjucks.render('list/list.html');
 		$('.data-view').html(list);
 
 		renderContent(map, baseData);
@@ -13,7 +13,7 @@ function listView(detailViewInst, mapInst, sessionInst) {
 	//Views
 	function renderContent(map, event_data) {
 		//Iterate through json and render list items using Nunjucks templates
-		var listItems = nunjucks.render('static/core/templates/main/list/list_elements.html',
+		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			event_data: event_data
 		});
