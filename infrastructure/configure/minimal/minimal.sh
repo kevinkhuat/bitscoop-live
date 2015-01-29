@@ -27,7 +27,7 @@ sudo yum install -y \
 
 
 umask 022
-sudo cp -rv ${WD}/etc /
+sudo cp -rv ${WD}/etc ${WD}/usr /
 
 
 sudo mkdir -p /mnt/ografy

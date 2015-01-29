@@ -67,6 +67,13 @@ umask 022
 sudo cp -rv ${WD}/etc ${WD}/opt /
 
 
+cd /etc/pki/tls/certs
+sudo ln -vs nginx.crt www.ografy.io.crt
+sudo ln -vs nginx.key www.ografy.io.key
+sudo ln -vs nginx.crt static.ografy.io.crt
+sudo ln -vs nginx.key static.ografy.io.key
+
+
 # Set Django settings module environment variable.
 echo "Setting environment variable DJANGO_SETTINGS_MODULE to \"${SETTINGS}\""
 TMP=`mktemp`

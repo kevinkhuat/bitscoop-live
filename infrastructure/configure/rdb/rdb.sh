@@ -16,6 +16,10 @@ sudo yum install -y postgresql93-server postgresql93-contrib
 
 sudo service postgresql-9.3 initdb || /usr/pgsql-9.3/bin/postgresql93-setup initdb
 
+umask 022
+sudo cp -rv ${WD}/etc ${WD}/var /
+
+
 sudo chkconfig postgresql-9.3 on
 sudo service postgresql-9.3 start
 
