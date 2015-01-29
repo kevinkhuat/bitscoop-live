@@ -1,4 +1,4 @@
-function mapView(detailViewInst, dataInst, utilsInst, sessionInst) {
+function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 	//Views
 	function renderBase() {
 		var tempData = 'Select an Event at left to see its details.';

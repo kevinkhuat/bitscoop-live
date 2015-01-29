@@ -1,4 +1,4 @@
-function searchView() {
+function searchView(dataInst) {
 	var utilsInst = utils();
 
 	function addDropdown() {
@@ -257,17 +257,7 @@ function searchView() {
 			console.log(encodedSearch);
 			console.log(encodedFilters);
 
-			var token = utilsInst.session().getCsrfToken();
-			$.ajax({
-				url: '/opi/event',
-				type: 'GET',
-				dataType: 'json',
-				headers: {
-					'X-CSRFToken': token
-				}
-			}).done(function(data, xhr, response) {
-				console.log(data);
-			});
+			dataInst.search(encodedFilters);
 
 			return false;
 		});

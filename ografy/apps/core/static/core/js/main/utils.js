@@ -38,7 +38,18 @@ function utils() {
 		function updateData() {
 		}
 
-		function search() {
+		function search(searchString) {
+			var cookie = sessionsCookies().getCsrfToken();
+			$.ajax({
+				url: 'opi/event?filter=' + encodeURI(searchString),
+				type: 'GET',
+				dataType: 'json',
+				headers: {
+					'X-CSRFToken': cookie
+				}
+			}).done(function(data, xhr, response) {
+				localStorage.eventData = JSON.stringify(data);
+			});
 		}
 
 		return {

@@ -1,4 +1,5 @@
 function baseView() {
+	var geocoder = new google.maps.Geocoder();
 
 	//Utils Instance
 	var utilsInst = utils();
@@ -10,11 +11,12 @@ function baseView() {
 	var sessionInst = utilsInst.sessionsCookies();
 
 	//View components
-	var detailViewInst = detailView(utilsInst);
+	var detailViewInst = detailView(utilsInst, geocoder);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst);
-	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst);
+	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
+	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
+
 
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
