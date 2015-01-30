@@ -6,30 +6,6 @@
     font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 
-.type-button {
-	display: inline-block;
-	background-color: #EEE;
-
-	font-weight: bold;
-
-	padding: 10px;
-	margin: 5px;
-
-	text-align: center;
-	text-decoration: none !important;
-
-	cursor: pointer;
-	transition: width .5s ease;
-}
-
-.type-button:hover {
-	background-color: #DDD;
-}
-
-.type-button.active {
-	background-color: #CCC;
-}
-
 .add-filter-button {
 	display: inline-block;
 	background-color: #EEE;

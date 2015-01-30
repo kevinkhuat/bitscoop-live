@@ -8,7 +8,7 @@
 		"provider_name": "steam",
 		"datetime": "2014-12-01 19:54:06.860Z",
 		"data": {},
-		"name": "pizza",
+		"name": "Thomas",
 		"location" : [ -73.68, 40.68832 ]
 	},
 	{
@@ -20,7 +20,7 @@
 		"provider_name": "steam",
 		"datetime": "2013-04-01 13:02:06.830Z",
 		"data": {},
-		"name": "hamburger",
+		"name": "Sam",
 		"location" : [ -73.687, 40.68830 ]
 	},
 	{
@@ -32,7 +32,7 @@
 		"provider_name": "facebook",
 		"datetime": "2014-12-02 19:54:06.860Z",
 		"data": {},
-		"name": "cheeseburger",
+		"name": "Sam",
 		"location" : [ -73.68, 40.68717 ]
 	},
 	{
@@ -44,7 +44,7 @@
 		"provider_name": "facebook",
 		"datetime": "2014-12-03 19:54:06.860Z",
 		"data": {},
-		"name": "hot dog",
+		"name": "John",
 		"location" : [ -73.68, 40.68888 ]
 	},
 	{
@@ -56,7 +56,7 @@
 		"provider_name": "github",
 		"datetime": "2014-12-08 19:54:06.860Z",
 		"data": {},
-		"name": "french fry",
+		"name": "Sam",
 		"location" : [ -73.683, 40.68844 ]
 	},
 	{
@@ -68,7 +68,7 @@
 		"provider_name": "facebook",
 		"datetime": "2014-11-03 19:54:06.860Z",
 		"data": {},
-		"name": "taco",
+		"name": "John",
 		"location" : [ -73.68, 40.68852 ]
 	},
 	{
@@ -80,7 +80,7 @@
 		"provider_name": "twitter",
 		"datetime": "2014-03-02 19:54:06.860Z",
 		"data": {},
-		"name": "milkshake",
+		"name": "Sam",
 		"location" : [ -73.682, 40.68890 ]
 	},
 	{
@@ -92,7 +92,7 @@
 		"provider_name": "steam",
 		"datetime": "2014-12-14 19:54:06.860Z",
 		"data": {},
-		"name": "donut",
+		"name": "John",
 		"location" : [ -93.67, 40.68831 ]
 	}
 ]

@@ -1,16 +1,26 @@
+//Render the Map View on the main page
 function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
-	//Views
+	//Render the base framework of the Map View
 	function renderBase() {
-		var tempData = 'Select an Event at left to see its details.';
+		//Load data from the database
 		dataInst.loadTestData();
+
+		//Render the map content
 		renderContent();
-		detailViewInst.renderContent(tempData, tempData, tempData, tempData, false);
+
+		//Render the detail panel content without a map
+		detailViewInst.renderContent(false);
 	}
 
+	//Render the map content
 	function renderContent() {
+		//Render the container for the map using Nunjucks and insert it into the DOM
 		var map_framework = nunjucks.render('map/map.html');
 		$('.data-view').html(map_framework);
 
+		//Create a MapBox map.
+		//This needs to be done after the map container has been inserted into the DOM
+		//since MapBox needs a parent element specified when instantiating a map.
 		var mapInst = utilsInst.mapboxManager();
 		var map = mapInst.map;
 		var geoJSON = mapInst.geoJSON;
@@ -18,6 +28,8 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 		geoJSON.features = [];
 
 		var testData = JSON.parse(localStorage.getItem('eventData'));
+
+		//Create a MapBox GeoJSON element with the new information
 		for (var index in testData) {
 			geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org
@@ -43,12 +55,19 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 			});
 		}
 
+		//Add the new element to the map
 		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 
+		//Fit the map's view so that all of the items are visible
 		map.fitBounds(map.featureLayer.getBounds());
 
+		//Bind an event listener that triggers when an item on the map is selected.
+		//This listener will populate the detail content with the selected item's information.
 		map.featureLayer.on('click', function(e) {
+			//Save which item was selected
 			var feature = e.layer.feature;
+
+			//Populate the detail panel content with information from the selected item.
 			$('.detail-main-label').html(feature.properties.description);
 			$('.detail-time-content').html(feature.properties.datetime);
 			$('.detail-location-content').html(String(feature.geometry.coordinates));

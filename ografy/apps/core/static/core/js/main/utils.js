@@ -1,4 +1,6 @@
+//Utilities used in rendering and using the main page
 function utils() {
+	//View pertaining to obtaining and searching for data
 	function dataStore() {
 		//Data model
 
@@ -8,6 +10,7 @@ function utils() {
 			localStorage.setItem('messageData', '');
 		}
 
+		//Load all items from the database
 		function loadInitialData() {
 			$.ajax({
 				url: '/opi/event',
@@ -38,6 +41,7 @@ function utils() {
 		function updateData() {
 		}
 
+		//Search for items in the database based on the search parameters and filters
 		function search(searchString) {
 			var cookie = sessionsCookies().getCsrfToken();
 			var url = 'opi/event?$filter=' + searchString;
@@ -62,11 +66,16 @@ function utils() {
 		};
 	}
 
+	//View pertaining to the MapBox map
 	function mapboxManager() {
 		var map, geoJSON;
+
+		//The map needs to be created for the functions associated with this view to work
 		initializeMap();
 
-		//Mapbox functions
+		//Create the MapBox map
+		//Note that this must be run after the map container has been inserted into the DOM
+		//in order to run right
 		function initializeMap() {
 			geoJSON = {
 				type: 'FeatureCollection',
@@ -75,15 +84,20 @@ function utils() {
 
 			L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
 
+			//The instantiation of a map takes the DOM element where the map will be stored
+			//as a parameter, hence why the DOM element must exist before this function is called.
 			map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0');
 		}
 
+		//Change the map's context
 		function changeMapContext() {
 		}
 
+		//Change the map's focus
 		function changeMapFocus() {
 		}
 
+		//Render a detail panel map
 		function renderDetailMap(map) {
 			map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 		}
@@ -98,6 +112,7 @@ function utils() {
 		};
 	}
 
+	//View pertaining to session cookies
 	function sessionsCookies() {
 		var csrfToken = '';
 
@@ -118,6 +133,7 @@ function utils() {
 			return cookieValue;
 		}
 
+		//Gets a CSRF token
 		function getCsrfToken() {
 			if (csrfToken === '') {
 				csrfToken = getCookie('csrftoken');

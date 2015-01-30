@@ -1,24 +1,29 @@
+//Render the detail panel on the right-hand side of the main page
 function detailView(utilsInst) {
 	//Views
-	function renderContent(eventName, eventDate, eventLocation, eventData, showMap) {
+	//Render the detail panel's content
+	function renderContent(showMap) {
+		//If showMap isn't passed, by default set it to true
 		showMap = typeof showMap !== 'undefined' ? showMap : true;
 
+		//Use Nunjucks to render the detail panel from a template and insert it into the page.
+		//showMap controls whether or not there will be a map in the lower half of the panel.
 		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
 		$('.base_detail').html(list_detail);
 
+		//If there will be a map, create the map.
+		//This needs to be done after the detail panel has been inserted into the DOM
+		//since MapBox needs a parent element specified when instantiating a map.
 		if (showMap) {
 			var mapbox = utilsInst.mapboxManager();
 			var map = mapbox.map;
 			var geoJSON = mapbox.geoJSON;
 		}
 
-		//Populate content
-		$('.detail-main-label').html(eventName);
-		$('.detail-time-content').html(eventDate);
-		$('.detail-location-content').html(eventLocation);
-		$('.detail-body-content').html(eventData);
+		//Populate content with default data
+		clearContent();
 
 		return {
 			map: map,
@@ -26,6 +31,7 @@ function detailView(utilsInst) {
 		};
 	}
 
+	//Update content
 	function updateContent(eventName, eventDate, eventLocation, eventData) {
 		$('.detail-main-label').html(eventName);
 		$('.detail-time-content').html(eventDate);
@@ -33,6 +39,7 @@ function detailView(utilsInst) {
 		$('.detail-body-content').html(eventData);
 	}
 
+	//Insert default text into the detail content
 	function clearContent() {
 		$('.detail-main-label').html('Select an Event at left to see its details.');
 		$('.detail-time-content').html('Select an Event at left to see its details.');
@@ -40,7 +47,9 @@ function detailView(utilsInst) {
 		$('.detail-body-content').html('Select an Event at left to see its details.');
 	}
 
+	//Update the map with a new event's information
 	function updateMap(eventName, map, coordinates) {
+		//Create a MapBox GeoJSON element with the new information
 		var geoJSON = {
 			// this feature is in the GeoJSON format: see geojson.org
 			// for the full specification
@@ -53,7 +62,7 @@ function detailView(utilsInst) {
 			},
 			properties: {
 				title: eventName,
-				description: 'pants',
+				description: 'event',
 				// one can customize markers by adding simplestyle properties
 				// https://www.mapbox.com/guides/an-open-platform/#simplestyle
 				'marker-size': 'large',
@@ -62,8 +71,10 @@ function detailView(utilsInst) {
 			}
 		};
 
+		//Add the new element to the map
 		map.featureLayer.setGeoJSON(geoJSON);
 
+		//Center the map on the new element
 		map.setView([coordinates[1], coordinates[0]], 13, {
 			pan: {
 				animate: true
@@ -71,6 +82,7 @@ function detailView(utilsInst) {
 		});
 	}
 
+	//Remove all markers from the map
 	function clearMap(map) {
 		map.featureLayer.setGeoJSON([]);
 	}
