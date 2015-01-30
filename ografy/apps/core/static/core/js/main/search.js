@@ -215,11 +215,11 @@ function searchView(dataInst) {
 	}
 
 	function fromString(currentFilter) {
-		return 'From ' + $(currentFilter).find('.from-text')[0].value;
+		return 'nameTo containts ' + $(currentFilter).find('.from-text')[0].value;
 	}
 
 	function toString(currentFilter) {
-		return 'To ' + $(currentFilter).find('.to-text')[0].value;
+		return 'nameFrom contains ' + $(currentFilter).find('.to-text')[0].value;
 	}
 
 	function bindEvents() {

@@ -14,8 +14,9 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 	//Views
 	function renderContent(map, geoJSON) {
 		//Iterate through json and render list items using Nunjucks templates
-		var eventData = JSON.parse(localStorage.eventData);
+		var eventData = JSON.parse(localStorage.getItem('eventData'));
 
+		console.log(eventData);
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			eventData: eventData

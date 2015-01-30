@@ -28,11 +28,9 @@ requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 
 	function() {
 		$(document).ready(function() {
 			var base = baseView();
-			var search = searchView();
 
 			base.render();
 
-			search.bindEvents();
 			//base.insertInitialData();
 		});
 	});

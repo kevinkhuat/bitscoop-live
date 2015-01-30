@@ -3,9 +3,9 @@ function utils() {
 		//Data model
 
 		function clearData() {
-			localStorage.dataData = [];
-			localStorage.eventData = [];
-			localStorage.messageData = [];
+			localStorage.setItem('dataData', '');
+			localStorage.setItem('eventData', '');
+			localStorage.setItem('messageData', '');
 		}
 
 		function loadInitialData() {
@@ -17,7 +17,7 @@ function utils() {
 					'X-CSRFToken': sessionsCookies().getCsrfToken()
 				}
 			}).done(function(data, xhr, response) {
-				localStorage.eventData = data;
+				localStorage.setItem('eventData', JSON.stringify(data));
 			});
 		}
 
@@ -31,7 +31,7 @@ function utils() {
 					'X-CSRFToken': cookie
 				}
 			}).done(function(data, xhr, response) {
-				localStorage.eventData = JSON.stringify(data);
+				localStorage.setItem('eventData', JSON.stringify(data));
 			});
 		}
 
@@ -40,8 +40,9 @@ function utils() {
 
 		function search(searchString) {
 			var cookie = sessionsCookies().getCsrfToken();
+			var url = 'opi/event?$filter=' + searchString;
 			$.ajax({
-				url: 'opi/event?filter=' + encodeURI(searchString),
+				url: url,
 				type: 'GET',
 				dataType: 'json',
 				headers: {

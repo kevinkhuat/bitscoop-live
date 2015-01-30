@@ -17,8 +17,7 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 
 		geoJSON.features = [];
 
-		var testData = JSON.parse(localStorage.eventData);
-		console.log(testData);
+		var testData = JSON.parse(localStorage.getItem('eventData'));
 		for (var index in testData) {
 			geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org

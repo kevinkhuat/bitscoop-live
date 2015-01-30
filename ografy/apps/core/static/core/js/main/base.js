@@ -13,6 +13,10 @@ function baseView() {
 	//View components
 	var detailViewInst = detailView(utilsInst, geocoder);
 
+	//Search components
+	var searchViewInst = searchView(dataInst);
+	searchViewInst.bindEvents();
+
 	//Views
 	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
 	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);

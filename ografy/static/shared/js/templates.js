@@ -285,7 +285,7 @@ frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n<div class=\"list-item\" id=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
+output += runtime.suppressValue(runtime.memberLookup((t_4),"_id", env.autoesc), env.autoesc);
 output += "\">\n\t<div class=\"list-item-name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list-item-date\">\n\t\t";
