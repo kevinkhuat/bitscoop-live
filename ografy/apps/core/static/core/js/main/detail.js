@@ -11,7 +11,7 @@ function detailView(utilsInst) {
 		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
-		$('.base_detail').html(list_detail);
+		$('.detail-sidebar').html(list_detail);
 
 		//If there will be a map, create the map.
 		//This needs to be done after the detail panel has been inserted into the DOM

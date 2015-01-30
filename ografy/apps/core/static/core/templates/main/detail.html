@@ -1,4 +1,4 @@
-<div class="{% if showMap %} detail-top-half {% else %} detail-full {% endif %}">
+<div class="{% if showMap %} detail-top-half grow {% else %} detail-full grow {% endif %}">
 	<div id="detail-main-label" class="center detail-main-label">
 		Select an Event at left to see its details.
 	</div>
@@ -25,7 +25,7 @@
 	</div>
 </div>
 {% if showMap %}
-<div class="detail-bottom-half">
-	<div id='mapbox'></div>
+<div class="detail-bottom-half flex grow">
+	<div id='mapbox' class='grow'></div>
 </div>
 {% endif %}

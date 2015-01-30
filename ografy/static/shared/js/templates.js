@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"grow\">\n\t<div class=\"filter-container\"></div>\n\t<div class=\"data-view\"></div>\n</div>\n<aside class=\"detail-sidebar\">\n\t<div class=\"base_detail detail\"></div>\n</aside>\n";
+output += "<div class=\"flex grow\">\n\t<div class=\"filter-container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n</div>\n<aside class=\"detail-sidebar flex column\">\n</aside>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -22,16 +22,16 @@ var output = "";
 try {
 output += "<div class=\"";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += " detail-top-half ";
+output += " detail-top-half grow ";
 ;
 }
 else {
-output += " detail-full ";
+output += " detail-full grow ";
 ;
 }
 output += "\">\n\t<div id=\"detail-main-label\" class=\"center detail-main-label\">\n\t\tSelect an Event at left to see its details.\n\t</div>\n\t<div class=\"detail-avatar\">\n\t\t<img src=\"static/assets/logo_240.png\" alt=\"Avatar\" />\n\t</div>\n\t<div id=\"detail-date-time\" class=\"detail-date-time\">\n\t\t<label class=\"center detail-label\">Time</label>\n\t\t<div id=\"detail-time-content\" class=\"center detail-time-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail-data\" class=\"detail-data\">\n\t\t<label class=\"center detail-label\">Message Body</label>\n\t\t<div id=\"detail-body-content\" class=\"center detail-body-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail-location\" class=\"detail-location\">\n\t\t<label class=\"center detail-label\">Location</label>\n\t\t<div id=\"detail-location-content\" class=\"center detail-location-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n</div>\n";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += "\n<div class=\"detail-bottom-half\">\n\t<div id='mapbox'></div>\n</div>\n";
+output += "\n<div class=\"detail-bottom-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
 ;
 }
 cb(null, output);
@@ -254,7 +254,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-list\">\n\t<div class=\"list-title\">\n\t\t<div class=\"list-item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list-item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list-item-location bold\">\n\t\t\tLocation\n\t\t</div>\n\t\t<div class=\"list-item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list-content\">\n\t</div>\n</div>";
+output += "<div class=\"main-list grow\">\n\t<div class=\"list-title\">\n\t\t<div class=\"list-item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list-item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list-item-location bold\">\n\t\t\tLocation\n\t\t</div>\n\t\t<div class=\"list-item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list-content\">\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -285,7 +285,7 @@ frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n<div class=\"list-item\" id=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"_id", env.autoesc), env.autoesc);
+output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
 output += "\">\n\t<div class=\"list-item-name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list-item-date\">\n\t\t";
@@ -315,7 +315,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div id=\"mapbox\"></div>";
+output += "<div id=\"mapbox\" class=\"grow\"></div>";
 cb(null, output);
 ;
 } catch (e) {
