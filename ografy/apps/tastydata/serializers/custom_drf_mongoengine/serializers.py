@@ -12,7 +12,7 @@ from rest_framework import serializers
 from rest_framework import fields as drf_fields
 
 from ografy.apps.tastydata.serializers.custom_drf_mongoengine.utils import get_field_info
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
 
 
 def raise_errors_on_nested_writes(method_name, serializer, validated_data):
@@ -48,8 +48,10 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
         'The `.{method_name}()` method does not support writable nested'
         'fields by default.\nWrite an explicit `.{method_name}()` method for '
         'serializer `{module}.{class_name}`, or set `read_only=True` on '
-        'nested serializer fields.'.format(method_name=method_name,
-            module=serializer.__class__.__module__, class_name=serializer.__class__.__name__)
+        'nested serializer fields.'.format(
+            method_name=method_name,
+            module=serializer.__class__.__module__,
+            class_name=serializer.__class__.__name__)
     )
 
     # Ensure we don't have a writable dotted-source field. For example:
@@ -124,25 +126,26 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.BooleanField: drf_fields.BooleanField,
         me_fields.FileField: drf_fields.FileField,
         me_fields.ImageField: drf_fields.ImageField,
+        me_fields.UUIDField: drf_fields.CharField,
+        me_fields.DecimalField: drf_fields.DecimalField
+    }
+
+    _drfme_field_mapping = {
         me_fields.ObjectIdField: ObjectIdField,
         me_fields.ReferenceField: ReferenceField,
         me_fields.ListField: ListField,
         me_fields.EmbeddedDocumentField: EmbeddedDocumentField,
         me_fields.SortedListField: SortedListField,
         me_fields.DynamicField: DynamicField,
-        me_fields.DecimalField: drf_fields.DecimalField,
-        me_fields.UUIDField: drf_fields.CharField,
-        me_fields.DictField: DocumentField
+        me_fields.DictField: DocumentField,
+        me_fields.BinaryField: BinaryField,
+        me_fields.GeoPointField: BaseGeoField,
+        me_fields.PointField: BaseGeoField,
+        me_fields.PolygonField: BaseGeoField,
+        me_fields.LineStringField: BaseGeoField,
     }
 
-    custom_class_list = (
-        me_fields.ReferenceField,
-        me_fields.EmbeddedDocumentField,
-        me_fields.ListField,
-        me_fields.SortedListField,
-        me_fields.DynamicField,
-        me_fields.ObjectIdField
-    )
+    field_mapping.update(_drfme_field_mapping)
 
     embedded_document_serializer_fields = []
 
@@ -302,8 +305,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         """
         kwargs = {}
 
-        if type(model_field) in self.custom_class_list:
+        if type(model_field) in self._drfme_field_mapping:
             kwargs['model_field'] = model_field
+
+        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField):
             kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if type(model_field) is me_fields.ObjectIdField:
@@ -327,6 +332,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             me_fields.EmailField: ['max_length'],
             me_fields.FileField: ['max_length'],
             me_fields.URLField: ['max_length'],
+            me_fields.BinaryField: ['max_bytes']
         }
 
         if model_field.__class__ in attribute_dict:
@@ -350,7 +356,8 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         ModelClass = self.Meta.model
         try:
-            instance = ModelClass.objects.create(**validated_data)
+            instance = ModelClass(**validated_data)
+            instance.save()
         except TypeError as exc:
             msg = (
                 'Got a `TypeError` when calling `%s.objects.create()`. '

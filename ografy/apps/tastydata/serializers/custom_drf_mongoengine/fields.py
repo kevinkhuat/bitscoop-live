@@ -12,7 +12,7 @@ class DocumentField(serializers.Field):
     """
     Base field for Mongoengine fields that we can not convert to DRF fields.
 
-    To Contributors:
+    To Users:
         - You can subclass DocumentField to implement custom (de)serialization
     """
 
@@ -21,7 +21,6 @@ class DocumentField(serializers.Field):
     def __init__(self, *args, **kwargs):
         try:
             self.model_field = kwargs.pop('model_field')
-            self.depth = kwargs.pop('depth')
         except KeyError:
             raise ValueError("%s requires 'model_field' kwarg" % self.type_label)
 
@@ -87,6 +86,10 @@ class ReferenceField(DocumentField):
 
     type_label = 'ReferenceField'
 
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(ReferenceField, self).__init__(*args, **kwargs)
+
     def to_internal_value(self, data):
         try:
             dbref = self.model_field.to_python(data)
@@ -108,6 +111,10 @@ class ReferenceField(DocumentField):
 
 class ListField(DocumentField):
     type_label = 'ListField'
+
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(ListField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):
         return self.model_field.to_python(data)
@@ -161,7 +168,7 @@ class DynamicField(DocumentField):
         return self.model_field.to_python(value)
 
 
-class ObjectIdField(serializers.Field):
+class ObjectIdField(DocumentField):
     type_label = 'ObjectIdField'
 
     def to_representation(self, value):
@@ -169,3 +176,27 @@ class ObjectIdField(serializers.Field):
 
     def to_internal_value(self, data):
         return ObjectId(data)
+
+
+class BinaryField(DocumentField):
+
+    type_label = 'BinaryField'
+
+    def __init__(self, **kwargs):
+        try:
+            self.max_bytes = kwargs.pop('max_bytes')
+        except KeyError:
+            raise ValueError('BinaryField requires "max_bytes" kwarg')
+        super(BinaryField, self).__init__(**kwargs)
+
+    def to_representation(self, value):
+        return smart_str(value)
+
+    def to_internal_value(self, data):
+        return super(BinaryField, self).to_internal_value(smart_str(data))
+
+
+class BaseGeoField(DocumentField):
+
+    type_label = 'BaseGeoField'
+

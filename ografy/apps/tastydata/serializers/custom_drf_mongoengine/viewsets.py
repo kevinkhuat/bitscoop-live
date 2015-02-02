@@ -1,10 +1,10 @@
 from rest_framework import mixins
 from rest_framework.viewsets import ViewSetMixin
 
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.generics import MongoAPIView
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.generics import GenericAPIView
 
 
-class MongoGenericViewSet(ViewSetMixin, MongoAPIView):
+class MongoGenericViewSet(ViewSetMixin, GenericAPIView):
     """
     The MongoGenericViewSet class does not provide any actions by default,
     but does include the base set of generic view behavior, such as
