@@ -2,7 +2,6 @@
 
 
 WD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source ${WD}/../baseline.sh
 
 
 sudo yum install -y createrepo gcc gcc-c++ git openssl-devel rpm rpm-build

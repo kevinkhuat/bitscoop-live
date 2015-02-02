@@ -2,8 +2,40 @@
 
 
 WD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source ${WD}/../parseargs.sh
-source ${WD}/../baseline.sh
+CUSR=ec2-user
+
+
+usage() {
+cat << EOF
+usage: ${0} options
+
+OPTIONS:
+    -t    Host type. Can be \`production\` or \`virtual\`.
+
+   [-s]  Django settings module to use. Overrides default associated with server type.
+EOF
+}
+
+
+# Parse options.
+while getopts ":hs:t:" OPTION; do
+    case ${OPTION} in
+        h)
+            usage
+            exit 0
+            ;;
+        s)
+            SETTINGS=${OPTARG}
+            ;;
+        t)
+            TYPE=${OPTARG}
+            ;;
+        ?)
+            usage
+            exit 1
+            ;;
+    esac
+done
 
 
 case ${TYPE} in
@@ -12,6 +44,10 @@ case ${TYPE} in
         ;;
     virtual)
         SETTINGS=${SETTINGS:="ografy.settings.virtual"}
+        ;;
+    *)
+        echo "Invalid type: ${TYPE}"
+        exit 1
         ;;
 esac
 
@@ -29,6 +65,13 @@ umask 022
 
 # Copy configuration files.
 sudo cp -rv ${WD}/etc ${WD}/opt /
+
+
+cd /etc/pki/tls/certs
+sudo ln -vs nginx.crt www.ografy.io.crt
+sudo ln -vs nginx.key www.ografy.io.key
+sudo ln -vs nginx.crt static.ografy.io.crt
+sudo ln -vs nginx.key static.ografy.io.key
 
 
 # Set Django settings module environment variable.
