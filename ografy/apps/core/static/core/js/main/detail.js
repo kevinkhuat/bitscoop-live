@@ -11,7 +11,7 @@ function detailView(utilsInst) {
 		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
-		$('.detail-sidebar').html(list_detail);
+		$('.detail.sidebar').html(list_detail);
 
 		//If there will be a map, create the map.
 		//This needs to be done after the detail panel has been inserted into the DOM
@@ -33,18 +33,18 @@ function detailView(utilsInst) {
 
 	//Update content
 	function updateContent(eventName, eventDate, eventLocation, eventData) {
-		$('.detail-main-label').html(eventName);
-		$('.detail-time-content').html(eventDate);
-		$('.detail-location-content').html(eventLocation);
-		$('.detail-body-content').html(eventData);
+		$('.detail.main-label').html(eventName);
+		$('.detail.time-content').html(eventDate);
+		$('.detail.location-content').html(eventLocation);
+		$('.detail.body-content').html(eventData);
 	}
 
 	//Insert default text into the detail content
 	function clearContent() {
-		$('.detail-main-label').html('Select an Event at left to see its details.');
-		$('.detail-time-content').html('Select an Event at left to see its details.');
-		$('.detail-location-content').html('Select an Event at left to see its details.');
-		$('.detail-body-content').html('Select an Event at left to see its details.');
+		$('.detail.main-label').html('Select an Event at left to see its details.');
+		$('.detail.time-content').html('Select an Event at left to see its details.');
+		$('.detail.location-content').html('Select an Event at left to see its details.');
+		$('.detail.body-content').html('Select an Event at left to see its details.');
 	}
 
 	//Update the map with a new event's information

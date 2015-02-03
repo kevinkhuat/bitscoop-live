@@ -68,10 +68,10 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 			var feature = e.layer.feature;
 
 			//Populate the detail panel content with information from the selected item.
-			$('.detail-main-label').html(feature.properties.description);
-			$('.detail-time-content').html(feature.properties.datetime);
-			$('.detail-location-content').html(String(feature.geometry.coordinates));
-			$('.detail-body-content').html(String(feature.properties.data));
+			$('.detail.main-label').html(feature.properties.description);
+			$('.detail.time-content').html(feature.properties.datetime);
+			$('.detail.location-content').html(String(feature.geometry.coordinates));
+			$('.detail.body-content').html(String(feature.properties.data));
 		});
 	}
 

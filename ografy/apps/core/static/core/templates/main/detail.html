@@ -1,31 +1,31 @@
-<div class="{% if showMap %} detail-top-half grow {% else %} detail-full grow {% endif %}">
-	<div id="detail-main-label" class="center detail-main-label">
+<div class="{% if showMap %} detail top-half grow {% else %} detail full grow {% endif %}">
+	<div id="detail main-label" class="center detail main-label">
 		Select an Event at left to see its details.
 	</div>
-	<div class="detail-avatar">
+	<div class="detail avatar">
 		<img src="static/assets/logo_240.png" alt="Avatar" />
 	</div>
-	<div id="detail-date-time" class="detail-date-time">
-		<label class="center detail-label">Time</label>
-		<div id="detail-time-content" class="center detail-time-content">
+	<div id="detail date-time" class="detail date-time">
+		<label class="center detail label">Time</label>
+		<div id="detail time-content" class="center detail time-content">
 			Select an Event at left to see its details.
 		</div>
 	</div>
-	<div id="detail-data" class="detail-data">
-		<label class="center detail-label">Message Body</label>
-		<div id="detail-body-content" class="center detail-body-content">
+	<div id="detail data" class="detail data">
+		<label class="center detail label">Message Body</label>
+		<div id="detail body-content" class="center detail body-content">
 			Select an Event at left to see its details.
 		</div>
 	</div>
-	<div id="detail-location" class="detail-location">
-		<label class="center detail-label">Location</label>
-		<div id="detail-location-content" class="center detail-location-content">
+	<div id="detail location" class="detail location">
+		<label class="center detail label">Location</label>
+		<div id="detail location-content" class="center detail location-content">
 			Select an Event at left to see its details.
 		</div>
 	</div>
 </div>
 {% if showMap %}
-<div class="detail-bottom-half flex grow">
+<div class="detail bottom-half flex grow">
 	<div id='mapbox' class='grow'></div>
 </div>
 {% endif %}

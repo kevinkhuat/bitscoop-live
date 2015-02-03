@@ -2,12 +2,15 @@
 	margin: 0 10px;
 }
 
-.filter-container {
+.filter {
+	display: inline-block;
+}
+
+.filter.container {
     font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 }
 
-.add-filter-button {
-	display: inline-block;
+.filter.button {
 	background-color: #EEE;
 
 	font-weight: bold;
@@ -23,37 +26,55 @@
 
 }
 
-.add-filter-button:hover {
+.filter.button:hover {
 	background-color: #DDD;
 }
 
-.add-filter-button.active {
+.filter.button.active {
 	background-color: #CCC;
 }
 
-.remove-filter-button {
-	display: inline-block;
-	background-color: #EEE;
+.search.dropdown {
+	position: relative;
+}
 
-	font-weight: bold;
+.search.image {
+	height: 100px;
+	width: 100px;
+}
 
+.search.button {
+	background-color: #DDD;
 	padding: 5px;
-	margin: 5px;
 
-	text-align: center;
 	text-decoration: none !important;
 
 	cursor: pointer;
-	transition: width .5s ease;
-
 }
 
-.remove-filter-button:hover {
-	background-color: #DDD;
+.search.button.hover {
+	background-color: #DDD
 }
 
-.remove-filter-button.active {
-	background-color: #CCC;
+.search.menu {
+	cursor: auto;
+	position: absolute;
+	display: none;
+	top: 50px;
+	margin: 0em;
+	background-color: #FFFFFF;
+	min-width: 100%;
+	white-space: nowrap;
+	font-size: 0.875em;
+	text-shadow: none;
+	-webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
+	border-radius: 0px 0px 0.325em 0.325em;
+	-webkit-transition: opacity 0.2s ease;
+	-moz-transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
+	z-index: 11;
+
 }
 
 .initial {
@@ -68,18 +89,10 @@
 	margin: auto 5px;
 }
 
-.date-text {
-	display: inline-block;
-}
-
 .time {
 	display: inline-block;
 	padding: 5px;
 	margin: auto 5px;
-}
-
-.time-text {
-	display: inline-block;
 }
 
 .text {
@@ -88,15 +101,15 @@
 
 .filter {
 	background: #AAA;
+}
+
+.filter.box{
 	border-bottom: solid 1px;
 }
 
-.filter-options {
+.filter.options {
 	margin-top: auto !important;
 	margin-bottom: auto !important;
-}
-.filter-selection {
-	display: inline-block;
 }
 
 .add-remove-buttons {
@@ -105,38 +118,38 @@
 	margin-bottom: auto !important;
 }
 
-.detail-sidebar {
+.detail.sidebar {
 	width: 300px;
 	position: relative;
 	border-left: 2px;
 	border-left-style: solid;
 }
 
-.detail {
-	font-size: 1em;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
+/*.detail {*/
+	/*font-size: 1em;*/
+	/*position: absolute;*/
+	/*width: 100%;*/
+	/*height: 100%;*/
+/*}*/
 
-.detail-top-half {
+.detail.top-half {
 	min-height: 300px;
 	background-color: #EEE;
 	height: 50%;
 }
 
-.detail-bottom-half {
+.detail.bottom-half {
 	min-height: 250px;
 	height: 50%;
 }
 
-.detail-full {
+.detail.full {
 	min-height: 600px;
 	background-color: #EEE;
 	height: 100%;
 }
 
-.detail-main-label {
+.detail.main-label {
 	background-color: #488A2D;
 	color: #FFF;
 	width: 100%;
@@ -144,34 +157,34 @@
 	min-height: 60px;
 }
 
-.detail-label {
+.detail.label {
 	background-color: #CCC;
 	width: 100%;
 	padding: 3px;
 	float: left;
 }
 
-.detail-content {
+.detail.content {
 	margin: 3px;
 }
 
-.detail-avatar {
+.detail.avatar {
 	display: inline-block;
 	vertical-align: top;
 	width: 30%;
 }
 
-.detail-avatar img {
+.detail.avatar img {
 	width: 100%;
 	margin: 3px;
 }
 
-.detail-date-time {
+.detail.date-time {
 	display: inline-block;
 	width: 68%;
 }
 
-.detail-data {
+.detail.data {
 	min-height: 80px;
 }
 
@@ -187,11 +200,11 @@ body.full .content {
 	overflow-y: hidden;
 }
 
-.list-content {
+.list.content {
 	overflow: auto;
 }
 
-.list-title {
+.list.title {
 	margin: 4px 10px 4px 4px;
 	height: 30px;
 	color: #000;
@@ -200,28 +213,28 @@ body.full .content {
 	padding: 5px;
 }
 
-.list-item-name {
+.list.item-name {
 	width: 30%;
 	display: inline-block;
 	margin-left: 5px;
 }
 
-.list-item-date {
+.list.item-date {
 	display: inline-block;
 	width: 20%;
 }
 
-.list-item-location {
+.list.item-location {
 	display: inline-block;
 	width: 20%;
 }
 
-.list-item-data {
+.list.item-data {
 	display: inline-block;
 	width: 25%;
 }
 
-.list-item {
+.list.item {
 	margin: 4px 0px;
 	width: 100%;
 	color: #000;
@@ -234,12 +247,12 @@ body.full .content {
 	font-size: 1em;
 }
 
-.list-item:hover {
+.list.item:hover {
 	background-color: #488A2D;
 	color: #FFF;
 }
 
-.list-item.active {
+.list.item.active {
 	background-color: #CCC;
 }
 
@@ -249,4 +262,8 @@ body.full .content {
 
 #mapbox {
 	position: absolute;
+}
+
+.search.dropdown {
+
 }

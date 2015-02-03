@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex grow\">\n\t<div class=\"filter-container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n</div>\n<aside class=\"detail-sidebar flex column\">\n</aside>\n";
+output += "<div class=\"flex column grow\">\n\t<div class=\"filter container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n</div>\n<aside class=\"detail sidebar flex column\">\n</aside>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -22,16 +22,16 @@ var output = "";
 try {
 output += "<div class=\"";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += " detail-top-half grow ";
+output += " detail top-half grow ";
 ;
 }
 else {
-output += " detail-full grow ";
+output += " detail full grow ";
 ;
 }
-output += "\">\n\t<div id=\"detail-main-label\" class=\"center detail-main-label\">\n\t\tSelect an Event at left to see its details.\n\t</div>\n\t<div class=\"detail-avatar\">\n\t\t<img src=\"static/assets/logo_240.png\" alt=\"Avatar\" />\n\t</div>\n\t<div id=\"detail-date-time\" class=\"detail-date-time\">\n\t\t<label class=\"center detail-label\">Time</label>\n\t\t<div id=\"detail-time-content\" class=\"center detail-time-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail-data\" class=\"detail-data\">\n\t\t<label class=\"center detail-label\">Message Body</label>\n\t\t<div id=\"detail-body-content\" class=\"center detail-body-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail-location\" class=\"detail-location\">\n\t\t<label class=\"center detail-label\">Location</label>\n\t\t<div id=\"detail-location-content\" class=\"center detail-location-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n</div>\n";
+output += "\">\n\t<div id=\"detail main-label\" class=\"center detail main-label\">\n\t\tSelect an Event at left to see its details.\n\t</div>\n\t<div class=\"detail avatar\">\n\t\t<img src=\"static/assets/logo_240.png\" alt=\"Avatar\" />\n\t</div>\n\t<div id=\"detail date-time\" class=\"detail date-time\">\n\t\t<label class=\"center detail label\">Time</label>\n\t\t<div id=\"detail time-content\" class=\"center detail time-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail data\" class=\"detail data\">\n\t\t<label class=\"center detail label\">Message Body</label>\n\t\t<div id=\"detail body-content\" class=\"center detail body-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail location\" class=\"detail location\">\n\t\t<label class=\"center detail label\">Location</label>\n\t\t<div id=\"detail location-content\" class=\"center detail location-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n</div>\n";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += "\n<div class=\"detail-bottom-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
+output += "\n<div class=\"detail bottom-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
 ;
 }
 cb(null, output);
@@ -50,7 +50,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date-text\">\n\t<input class='date-start' placeholder=\"Start date\">\n</div>";
+output += "<div class=\"date text\">\n\t<input class='date-start' placeholder=\"Start date\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -67,7 +67,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date-text\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
+output += "<div class=\"date text\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -84,7 +84,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date-text\">\n\t<input class='date-start' placeholder=\"Start date\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
+output += "<div class=\"date text\">\n\t<input class='date-start' placeholder=\"Start date\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -118,7 +118,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex filter\">\n\t<div class=\"grow filter-options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"remove-filter-button\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"add-filter-button\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
+output += "<div class=\"flex filter box\">\n\t<div class=\"grow filter options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"filter button remove\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"filter button add\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -169,7 +169,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time-text\">\n\t<input class='time-start' placeholder=\"Start time\">\n</div>";
+output += "<div class=\"time text\">\n\t<input class='time-start' placeholder=\"Start time\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -186,7 +186,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time-text\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
+output += "<div class=\"time text\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -203,7 +203,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time-text\">\n\t<input class='time-start' placeholder=\"Start time\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
+output += "<div class=\"time text\">\n\t<input class='time-start' placeholder=\"Start time\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -254,7 +254,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-list grow\">\n\t<div class=\"list-title\">\n\t\t<div class=\"list-item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list-item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list-item-location bold\">\n\t\t\tLocation\n\t\t</div>\n\t\t<div class=\"list-item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list-content\">\n\t</div>\n</div>";
+output += "<div class=\"main-list grow\">\n\t<div class=\"list title\">\n\t\t<div class=\"list item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list item-location bold\">\n\t\t\tLocation\n\t\t</div>\n\t\t<div class=\"list item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -284,15 +284,15 @@ frame.set("loop.revindex0", t_2 - t_1 - 1);
 frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
-output += "\n<div class=\"list-item\" id=\"";
+output += "\n<div class=\"list item\" id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
-output += "\">\n\t<div class=\"list-item-name\">\n\t\t";
+output += "\">\n\t<div class=\"list item-name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list-item-date\">\n\t\t";
+output += "\n\t</div>\n\t<div class=\"list item-date\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"created", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list-item-location\">\n\t\t";
+output += "\n\t</div>\n\t<div class=\"list item-location\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"location", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list-item-data\">\n\t\t";
+output += "\n\t</div>\n\t<div class=\"list item-data\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"data", env.autoesc), env.autoesc);
 output += "\n\t</div>\n</div>\n";
 ;

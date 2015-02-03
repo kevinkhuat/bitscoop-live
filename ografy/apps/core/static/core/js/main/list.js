@@ -23,10 +23,10 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 			{
 			eventData: eventData
 		});
-		$('.list-content').html(listItems);
+		$('.list.content').html(listItems);
 
 		//Bind an event listener that triggers when any list item is clicked
-		$('.list-item').click(function() {
+		$('.list.item').click(function() {
 			//Remove 'active' from items other than the one that was clicked on
 			//Then toggle 'active' on the clicked item
 			var selectedItem = $(this);

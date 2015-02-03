@@ -11,12 +11,12 @@ function searchView(dataInst) {
 	//This listener will call the appropriate render function based on which option was selected.
 	function addDropdown() {
 		var newDropdown = nunjucks.render('filter/initial_filter_dropdown.html');
-		$('.filter:last').find('.filter-options').html(newDropdown);
+		$('.filter.box:last').find('.filter.options').html(newDropdown);
 
-		var initDropdown = $('.filter:last').find('.initial')[0];
+		var initDropdown = $('.filter.box:last').find('.initial')[0];
 		renderDate().dropdown(initDropdown);
 
-		$('.filter:last').find('.initial').change(function() {
+		$('.filter.box:last').find('.initial').change(function() {
 			var currentElement = this;
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
@@ -45,21 +45,21 @@ function searchView(dataInst) {
 	function createFilterBase() {
 		//Render the base framework of a filter from a template using Nunjucks.
 		var newFilter = nunjucks.render('filter/filter.html');
-		$('.filter-container').append(newFilter);
+		$('.filter.container').append(newFilter);
 
 		//Bind event listeners to the add filter and remove filter buttons.
 		//These will call the add and remove filter functions on click.
-		$('.filter:last').find('.add-filter-button').on('click', function() {
+		$('.filter.box:last').find('.filter.button.add').on('click', function() {
 			addFilter();
 		});
-		$('.filter:last').find('.remove-filter-button').on('click', function() {
+		$('.filter.box:last').find('.filter.button.remove').on('click', function() {
 			removeFilter(this);
 		});
 	}
 
 	//Remove the filter that the selected remove button is part of.
 	function removeFilter(currentButton) {
-		$(currentButton).parents('.filter').remove();
+		$(currentButton).parents('.filter.box').remove();
 	}
 
 	//Render the elements needed to filter on From a given person
@@ -306,7 +306,7 @@ function searchView(dataInst) {
 			var filterString = '';
 
 			//Get a list of the filters that are being used
-			var filtersList = $('.filter-options');
+			var filtersList = $('.filter.options');
 
 			//For each filter, construct the appropriate filter string and add it to the
 			//full filter string that will be submitted to the database.

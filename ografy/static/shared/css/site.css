@@ -121,14 +121,11 @@ footer {
 }
 
 .logo-home {
-	border-right: solid;
-	border-right-width: 2px;
 }
 
 .map-view-button {
-	border-right: solid;
-	border-right-width: 2px;
 }
+
 #logo > img {
     width: 40px;
     height: 40px;

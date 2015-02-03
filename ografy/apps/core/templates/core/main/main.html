@@ -28,15 +28,14 @@
 			<div class="flex center grow">
 				<a class="logo-home item" href="{% url 'core_index' %}"><img src="{% static 'assets/favicon.png' %}" alt="Ografy" /></a>
 				<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
-				<a class="timeline-view-button item"><i class="icon-clock"></i></a>
 				<a class="map-view-button item"><i class="icon-map22"></i></a>
 				<form id="search-form" class="flex grow">
-					<input class="search-bar grow" type="text" placeholder="Search terms"/>
+					<input class="search-bar grow" type="text" placeholder="Search your data"/>
 				</form>
-				<div class="ui simple dropdown labeled icon button">
-					<i class="filter icon"></i>
-					<span class="text">Filter Search</span>
-					<div class="menu">
+				<div class="search dropdown">
+					<a class="search image"><i class="filter icon"></i></a>
+					<span class="search button">Filter Search</span>
+					<div class="search menu">
 						<div class="item">
 							Events
 						</div>
