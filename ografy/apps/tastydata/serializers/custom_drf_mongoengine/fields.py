@@ -126,6 +126,10 @@ class ListField(DocumentField):
 class SortedListField(DocumentField):
     type_label = 'SortedListField'
 
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(SortedListField, self).__init__(*args, **kwargs)
+
     def to_internal_value(self, data):
         return self.model_field.to_python(data)
 
