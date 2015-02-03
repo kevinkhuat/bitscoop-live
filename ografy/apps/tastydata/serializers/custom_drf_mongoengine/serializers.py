@@ -308,7 +308,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         if type(model_field) in self._drfme_field_mapping:
             kwargs['model_field'] = model_field
 
-        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField):
+        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField, me_fields.SortedListField):
             kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if type(model_field) is me_fields.ObjectIdField:
