@@ -2,47 +2,49 @@
 function utils() {
 	//View pertaining to obtaining and searching for data
 	function dataStore() {
+		var resultData = [];
+		var eventIndex = {};
+		var eventData = [];
 		//Data model
 
-		function clearData() {
-			localStorage.setItem('dataData', '');
-			localStorage.setItem('eventData', '');
-			localStorage.setItem('messageData', '');
+		function getEventData() {
+			return eventData;
 		}
 
-		//Load all items from the database
-		function loadInitialData() {
+		function updateData() {
+			for (var item in resultData) {
+				//var currentId = resultData[item].id;
+				//if (currentId in Object.keys(eventIndex)) {
+				//	resultData[item].remove();
+				//}
+				//else {
+				//	eventIndex[currentId] = true;
+					eventData.push(resultData[item]);
+				//}
+			}
+
+		}
+
+				//Load all items from the database
+		function loadInitialData(callbackFunction) {
 			$.ajax({
 				url: '/opi/event',
+				//url: '/opi/event?$filter=' + '(name contains Thomas)',
 				type: 'GET',
 				dataType: 'json',
 				headers: {
 					'X-CSRFToken': sessionsCookies().getCsrfToken()
 				}
 			}).done(function(data, xhr, response) {
-				localStorage.setItem('eventData', JSON.stringify(data));
+				resultData = data;
+				updateData();
 			});
-		}
 
-		function loadTestData() {
-			var cookie = sessionsCookies().getCsrfToken();
-			$.ajax({
-				url: 'static/core/js/test_data/event_test_data.json',
-				type: 'GET',
-				dataType: 'json',
-				headers: {
-					'X-CSRFToken': cookie
-				}
-			}).done(function(data, xhr, response) {
-				localStorage.setItem('eventData', JSON.stringify(data));
-			});
-		}
-
-		function updateData() {
+			callbackFunction();
 		}
 
 		//Search for items in the database based on the search parameters and filters
-		function search(searchString) {
+		function search(searchString, mapViewInst, listViewInst) {
 			var cookie = sessionsCookies().getCsrfToken();
 			var url = 'opi/event?$filter=' + searchString;
 			$.ajax({
@@ -53,14 +55,22 @@ function utils() {
 					'X-CSRFToken': cookie
 				}
 			}).done(function(data, xhr, response) {
-				localStorage.eventData = JSON.stringify(data);
+				resultData = data;
+				updateData();
+
+				var currentView = localStorage.getItem('currentView');
+				if (currentView === 'mapViewInst') {
+					mapViewInst.renderContent();
+				}
+				else if (currentView === 'listViewInst') {
+					listViewInst.renderContent();
+				}
 			});
 		}
 
 		return {
-			clearData: clearData,
+			getEventData: getEventData,
 			loadInitialData: loadInitialData,
-			loadTestData: loadTestData,
 			updateData: updateData,
 			search: search
 		};

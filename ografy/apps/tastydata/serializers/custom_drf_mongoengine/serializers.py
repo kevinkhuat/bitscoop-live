@@ -12,7 +12,7 @@ from rest_framework import serializers
 from rest_framework import fields as drf_fields
 
 from ografy.apps.tastydata.serializers.custom_drf_mongoengine.utils import get_field_info
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField#, BaseGeoField
 
 
 def raise_errors_on_nested_writes(method_name, serializer, validated_data):
@@ -139,10 +139,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.DynamicField: DynamicField,
         me_fields.DictField: DocumentField,
         me_fields.BinaryField: BinaryField,
-        me_fields.GeoPointField: BaseGeoField,
-        me_fields.PointField: BaseGeoField,
-        me_fields.PolygonField: BaseGeoField,
-        me_fields.LineStringField: BaseGeoField,
+        # me_fields.GeoPointField: BaseGeoField,
+        # me_fields.PointField: BaseGeoField,
+        # me_fields.PolygonField: BaseGeoField,
+        # me_fields.LineStringField: BaseGeoField,
     }
 
     field_mapping.update(_drfme_field_mapping)

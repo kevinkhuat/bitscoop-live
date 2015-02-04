@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst) {
+function searchView(dataInst, mapViewInst, listViewInst) {
 	//Utils instance
 	var utilsInst = utils();
 
@@ -340,12 +340,8 @@ function searchView(dataInst) {
 			var encodedSearch = encodeURI($('.search-bar').val());
 			var encodedFilters = encodeURI(filterString);
 
-			console.log(filterString);
-			console.log(encodedSearch);
-			console.log(encodedFilters);
-
 			//Perform a search based on the search terms and filters
-			dataInst.search(encodedFilters);
+			dataInst.search(encodedFilters, mapViewInst, listViewInst);
 
 			return false;
 		});

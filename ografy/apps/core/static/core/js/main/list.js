@@ -36,7 +36,7 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 			//If the clicked item is now active, get the item's information from the database
 			if (selectedItem.hasClass('active')) {
 				$.ajax({
-					url: 'static/core/js/test_data/event_single_test_data.json',
+					url: 'opi/event/' + selectedItem.attr('id'),
 					type: 'GET',
 					dataType: 'json',
 					headers: {
@@ -46,8 +46,8 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 					//When the data has been acquired, update the detail content and detail map
 					//with the new data
 					var single_data = data;
-					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location), String(single_data.data));
-					detailViewInst.updateMap(single_data.provider_name, map, single_data.location);
+					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location.coordinates), String(single_data.data));
+					detailViewInst.updateMap(single_data.provider_name, map, single_data.location.coordinates);
 				});
 			}
 			//If the clicked item is now inactive (occurs when you click an active item),

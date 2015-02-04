@@ -1,9 +1,7 @@
 //Render the Map View on the main page
 function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 	//Render the base framework of the Map View
-	function renderBase() {
-		//Load data from the database
-		dataInst.loadTestData();
+	function renderBase(callback) {
 
 		//Render the map content
 		renderContent();
@@ -27,7 +25,7 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 
 		geoJSON.features = [];
 
-		var testData = JSON.parse(localStorage.getItem('eventData'));
+		var testData = dataInst.getEventData();
 
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in testData) {
@@ -39,7 +37,7 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: testData[index].location
+					coordinates: testData[index].location.coordinates
 				},
 				properties: {
 					title: testData[index].name,

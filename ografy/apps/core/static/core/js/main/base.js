@@ -18,19 +18,19 @@ function baseView() {
 	//View components
 	var detailViewInst = detailView(utilsInst, geocoder);
 
-	//Search components
-	var searchViewInst = searchView(dataInst);
-	searchViewInst.bindEvents();
-
 	//Views
 	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
 	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
 
+	//Search components
+	var searchViewInst = searchView(dataInst, mapViewInst, listViewInst);
+	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
 			listViewInst.renderBase();
+			localStorage.setItem('currentView', 'listViewInst');
 		});
 
 		$('.timeline-view-button').click(function() {
@@ -38,6 +38,7 @@ function baseView() {
 
 		$('.map-view-button').click(function() {
 			mapViewInst.renderBase();
+			localStorage.setItem('currentView', 'mapViewInst');
 		});
 	}
 
@@ -47,8 +48,15 @@ function baseView() {
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);
 
+
+		//Load data from the database
+		dataInst.loadInitialData(function() {
+			mapViewInst.renderBase();
+		});
+
 		//Render the default page view
-		mapViewInst.renderBase();
+
+		localStorage.setItem('currentView', 'mapViewInst');
 
 		//Bind event listeners for switching between different page views
 		bindNavigation();
