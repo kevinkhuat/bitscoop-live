@@ -38,7 +38,10 @@ function baseView() {
 
 		$('.map-view-button').click(function() {
 			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase();
+			mapViewInst.renderBase(function() {
+				mapViewInst.updateContent();
+
+			});
 		});
 	}
 
@@ -51,9 +54,10 @@ function baseView() {
 
 		//Load data from the database
 		dataInst.setCurrentView(mapViewInst);
-		dataInst.search('(name contains Sam)', function() {
-			mapViewInst.renderBase();
+		mapViewInst.renderBase(function() {
+			dataInst.search('(name contains Sam)');
 		});
+
 
 		//Render the default page view
 

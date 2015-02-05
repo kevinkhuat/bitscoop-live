@@ -18,7 +18,7 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 	//Render the List View content
 	function renderContent(map, geoJSON) {
 		//Iterate through json and render list items using Nunjucks templates
-		var eventData = dataInst.getEventData();
+		var eventData = dataInst.getResultData();
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			eventData: eventData
@@ -59,8 +59,14 @@ function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
 		});
 	}
 
+
+	function updateContent() {
+
+	}
+
 	return{
 		renderContent: renderContent,
-		renderBase: renderBase
+		renderBase: renderBase,
+		updateContent: updateContent
 	};
 }

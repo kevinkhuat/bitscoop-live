@@ -6,12 +6,13 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 
 	//Render the base framework of the Map View
 	function renderBase(callback) {
-
 		//Render the map content
 		renderContent();
 
 		//Render the detail panel content without a map
 		detailViewInst.renderContent(false);
+
+		callback();
 	}
 
 	//Render the map content
@@ -26,13 +27,17 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 		mapInst = utilsInst.mapboxManager();
 		map = mapInst.map;
 		geoJSON = mapInst.geoJSON;
+	}
+
+	function updateContent() {
+		map.removeLayer(map.featureLayer);
 
 		geoJSON.features = [];
 
-		var testData = dataInst.getEventData();
+		var newData = dataInst.getResultData();
 
 		//Create a MapBox GeoJSON element with the new information
-		for (var index in testData) {
+		for (var index in newData) {
 			geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org
 				// for the full specification
@@ -41,18 +46,19 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: testData[index].location.coordinates
+					coordinates: newData[index].location.coordinates
 				},
 				properties: {
-					title: testData[index].name,
-					description: testData[index].provider_name,
+					title: newData[index].name,
+					description: newData[index].provider_name,
 					// one can customize markers by adding simplestyle properties
 					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
 					'marker-size': 'large',
 					'marker-color': '#BE9A6B',
 					'marker-symbol': 'post',
-					datetime: testData[index].datetime,
-					data: testData[index].data
+					datetime: newData[index].datetime,
+					data: newData[index].data,
+					id: newData[index].id
 				}
 			});
 		}
@@ -75,12 +81,6 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 			$('.detail.location-content').html(String(feature.geometry.coordinates));
 			$('.detail.body-content').html(String(feature.properties.data));
 		});
-	}
-
-	function updateContent() {
-		for (feature in geoJSON.features){
-
-		}
 	}
 
 	return {

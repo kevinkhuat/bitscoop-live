@@ -27,6 +27,9 @@ function utils() {
 			return eventData;
 		}
 
+		function getResultData() {
+			return resultData;
+		}
 
 		function setCurrentView(inst) {
 			currentViewInst = inst;
@@ -36,7 +39,6 @@ function utils() {
 			newData = [];
 			for (var item in resultData) {
 				var currentId = resultData[item].id;
-				eventIndex[currentId] = true;
 
 				var removed = false;
 				var keys = Object.keys(eventIndex);
@@ -47,6 +49,7 @@ function utils() {
 				}
 				if (removed === false) {
 					newData.push(resultData[item]);
+					eventIndex[currentId] = true;
 					eventData.push(resultData[item]);
 				}
 			}
@@ -58,10 +61,10 @@ function utils() {
 			$('#event-list').append(listItems);
 
 			currentEvents = $('#event-list *');
-			for (var index in currentEvents) {
+			for (var index in eventData) {
 				var found = false;
-				var thisEvent = currentEvents[index];
-				var id = $(thisEvent).attr('data-id');
+				var thisEvent = eventData[index];
+				var id = thisEvent.id;
 				for (var item in resultData) {
 					var thisItem = resultData[item];
 					if (id === thisItem.id) {
@@ -69,17 +72,17 @@ function utils() {
 					}
 				}
 
-				if (found === false) {
-					$(thisEvent).addClass('invisible');
+				if (found === true) {
+					$('div[data-id=' + id + ']').addClass('active');
 				}
-				else if (found === true) {
-					$(thisEvent.removeClass('invisible'));
+				else if (found === false) {
+					$('div[data-id=' + id + ']').removeClass('active');
 				}
 			}
 		}
 
 		//Search for items in the database based on the search parameters and filters
-		function search(searchString, callbackFunction) {
+		function search(searchString) {
 			var cookie = sessionsCookies().getCsrfToken();
 			var url = 'opi/event?filter=' + searchString;
 			$.ajax({
@@ -92,12 +95,13 @@ function utils() {
 			}).done(function(data, xhr, response) {
 				resultData = data;
 				updateData();
-				currentViewInst.renderContent();
+				currentViewInst.updateContent();
 			});
 		}
 
 		return {
 			getEventData: getEventData,
+			getResultData: getResultData,
 			setCurrentView: setCurrentView,
 			updateData: updateData,
 			search: search
