@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex column grow\">\n\t<div class=\"filter container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n</div>\n<aside class=\"detail sidebar flex column\">\n</aside>\n";
+output += "<div class=\"flex column grow\">\n\t<div class=\"filter container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n\t<div id=\"event-list\"></div>\n</div>\n<aside class=\"detail sidebar flex column\">\n</aside>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -34,6 +34,42 @@ if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
 output += "\n<div class=\"detail bottom-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
 ;
 }
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["event_list.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+frame = frame.push();
+var t_3 = runtime.contextOrFrameLookup(context, frame, "eventData");
+if(t_3) {var t_2 = t_3.length;
+for(var t_1=0; t_1 < t_3.length; t_1++) {
+var t_4 = t_3[t_1];
+frame.set("item", t_4);
+frame.set("loop.index", t_1 + 1);
+frame.set("loop.index0", t_1);
+frame.set("loop.revindex", t_2 - t_1);
+frame.set("loop.revindex0", t_2 - t_1 - 1);
+frame.set("loop.first", t_1 === 0);
+frame.set("loop.last", t_1 === t_2 - 1);
+frame.set("loop.length", t_2);
+output += "\n<div class=\"event\" data-id=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
+output += "\">\n</div>\n";
+;
+}
+}
+frame = frame.pop();
 cb(null, output);
 ;
 } catch (e) {
@@ -254,7 +290,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-list grow\">\n\t<div class=\"list title\">\n\t\t<div class=\"list item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list item-location bold\">\n\t\t\tLocation\n\t\t</div>\n\t\t<div class=\"list item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
+output += "<div class=\"main-list grow\">\n\t<div class=\"list title\">\n\t\t<div class=\"list item-provider bold\">\n\t\t\tProvider Name\n\t\t</div>\n\t\t<div class=\"list item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -286,12 +322,12 @@ frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n<div class=\"list item\" id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
-output += "\">\n\t<div class=\"list item-name\">\n\t\t";
+output += "\">\n\t<div class=\"list item-provider\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list item-date\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"created", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list item-location\">\n\t\t";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"location", env.autoesc), env.autoesc);
+output += "\n\t</div>\n\t<div class=\"list item-name\">\n\t\t";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list item-data\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"data", env.autoesc), env.autoesc);
 output += "\n\t</div>\n</div>\n";

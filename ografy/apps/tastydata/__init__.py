@@ -4,7 +4,7 @@ from ografy.apps.tastydata.exceptions import InvalidFilterError
 from ografy.apps.tastydata.expressions import tokenize, Symbol
 
 
-CONTROL_PARAMS = {'$filter', '$set', '$skip', '$top'}
+CONTROL_PARAMS = {'filter', 'set', 'skip', 'top', 'search'}
 
 
 def get_query_string(kwargs={}):

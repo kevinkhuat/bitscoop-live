@@ -29,16 +29,16 @@ function baseView() {
 	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
+			dataInst.setCurrentView(listViewInst);
 			listViewInst.renderBase();
-			localStorage.setItem('currentView', 'listViewInst');
 		});
 
 		$('.timeline-view-button').click(function() {
 		});
 
 		$('.map-view-button').click(function() {
+			dataInst.setCurrentView(mapViewInst);
 			mapViewInst.renderBase();
-			localStorage.setItem('currentView', 'mapViewInst');
 		});
 	}
 
@@ -50,13 +50,12 @@ function baseView() {
 
 
 		//Load data from the database
-		dataInst.loadInitialData(function() {
+		dataInst.setCurrentView(mapViewInst);
+		dataInst.search('(name contains Sam)', function() {
 			mapViewInst.renderBase();
 		});
 
 		//Render the default page view
-
-		localStorage.setItem('currentView', 'mapViewInst');
 
 		//Bind event listeners for switching between different page views
 		bindNavigation();

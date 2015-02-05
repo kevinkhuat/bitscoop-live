@@ -213,7 +213,7 @@ body.full .content {
 	padding: 5px;
 }
 
-.list.item-name {
+.list.item-provider {
 	width: 30%;
 	display: inline-block;
 	margin-left: 5px;
@@ -224,7 +224,7 @@ body.full .content {
 	width: 20%;
 }
 
-.list.item-location {
+.list.item-name {
 	display: inline-block;
 	width: 20%;
 }

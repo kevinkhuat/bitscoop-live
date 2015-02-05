@@ -1,5 +1,9 @@
 //Render the Map View on the main page
 function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
+	var mapInst;
+	var map;
+	var geoJSON;
+
 	//Render the base framework of the Map View
 	function renderBase(callback) {
 
@@ -19,9 +23,9 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 		//Create a MapBox map.
 		//This needs to be done after the map container has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
-		var mapInst = utilsInst.mapboxManager();
-		var map = mapInst.map;
-		var geoJSON = mapInst.geoJSON;
+		mapInst = utilsInst.mapboxManager();
+		map = mapInst.map;
+		geoJSON = mapInst.geoJSON;
 
 		geoJSON.features = [];
 
@@ -73,8 +77,15 @@ function mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder) {
 		});
 	}
 
+	function updateContent() {
+		for (feature in geoJSON.features){
+
+		}
+	}
+
 	return {
 		renderBase: renderBase,
-		renderContent: renderContent
+		renderContent: renderContent,
+		updateContent: updateContent
 	};
 }

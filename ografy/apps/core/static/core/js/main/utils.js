@@ -2,51 +2,86 @@
 function utils() {
 	//View pertaining to obtaining and searching for data
 	function dataStore() {
-		var resultData = [];
-		var eventIndex = {};
-		var eventData = [];
-		//Data model
 
+		//This is the array of events that is returned from a search
+		var resultData = [];
+
+		//This is a dictionary of the IDs of events that have been obtained in previous searches
+		var eventIndex = {};
+
+		//This is the master list of events that have been obtained in previous searches
+		var eventData = [];
+		
+		//This is the list of events in the current search that have not been obtained in previous searches
+		var newData = [];
+
+		//This is the collection of HTML elements that are rendered from eventData
+		//Most of them will be set to invisible since only ones from the current search
+		//should be displayed.
+		var eventHTML = '';
+
+		var currentViewInst = '';
+
+		//Data model
 		function getEventData() {
 			return eventData;
 		}
 
-		function updateData() {
-			for (var item in resultData) {
-				//var currentId = resultData[item].id;
-				//if (currentId in Object.keys(eventIndex)) {
-				//	resultData[item].remove();
-				//}
-				//else {
-				//	eventIndex[currentId] = true;
-					eventData.push(resultData[item]);
-				//}
-			}
 
+		function setCurrentView(inst) {
+			currentViewInst = inst;
 		}
 
-				//Load all items from the database
-		function loadInitialData(callbackFunction) {
-			$.ajax({
-				url: '/opi/event',
-				//url: '/opi/event?$filter=' + '(name contains Thomas)',
-				type: 'GET',
-				dataType: 'json',
-				headers: {
-					'X-CSRFToken': sessionsCookies().getCsrfToken()
-				}
-			}).done(function(data, xhr, response) {
-				resultData = data;
-				updateData();
-			});
+		function updateData() {
+			newData = [];
+			for (var item in resultData) {
+				var currentId = resultData[item].id;
+				eventIndex[currentId] = true;
 
-			callbackFunction();
+				var removed = false;
+				var keys = Object.keys(eventIndex);
+				for (var index in keys) {
+					if (currentId === keys[index]) {
+						removed = true;
+					}
+				}
+				if (removed === false) {
+					newData.push(resultData[item]);
+					eventData.push(resultData[item]);
+				}
+			}
+
+			var listItems = nunjucks.render('event_list.html',
+				{
+					eventData: newData
+				});
+			$('#event-list').append(listItems);
+
+			currentEvents = $('#event-list *');
+			for (var index in currentEvents) {
+				var found = false;
+				var thisEvent = currentEvents[index];
+				var id = $(thisEvent).attr('data-id');
+				for (var item in resultData) {
+					var thisItem = resultData[item];
+					if (id === thisItem.id) {
+						found = true;
+					}
+				}
+
+				if (found === false) {
+					$(thisEvent).addClass('invisible');
+				}
+				else if (found === true) {
+					$(thisEvent.removeClass('invisible'));
+				}
+			}
 		}
 
 		//Search for items in the database based on the search parameters and filters
-		function search(searchString, mapViewInst, listViewInst) {
+		function search(searchString, callbackFunction) {
 			var cookie = sessionsCookies().getCsrfToken();
-			var url = 'opi/event?$filter=' + searchString;
+			var url = 'opi/event?filter=' + searchString;
 			$.ajax({
 				url: url,
 				type: 'GET',
@@ -57,20 +92,13 @@ function utils() {
 			}).done(function(data, xhr, response) {
 				resultData = data;
 				updateData();
-
-				var currentView = localStorage.getItem('currentView');
-				if (currentView === 'mapViewInst') {
-					mapViewInst.renderContent();
-				}
-				else if (currentView === 'listViewInst') {
-					listViewInst.renderContent();
-				}
+				currentViewInst.renderContent();
 			});
 		}
 
 		return {
 			getEventData: getEventData,
-			loadInitialData: loadInitialData,
+			setCurrentView: setCurrentView,
 			updateData: updateData,
 			search: search
 		};
