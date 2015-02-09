@@ -2,76 +2,90 @@
 {% load staticfiles %}
 
 {% block static %}
-{{ block.super }}
-<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
-<style type="text/css">
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
+	<style type="text/css">
+		.signal-button {
+			display: inline-block;
+			background-color: #EEE;
 
-	.signal-button {
-		display: inline-block;
-		background-color: #EEE;
+			height: 200px;
+			width: 200px;
+			padding: 10px;
+			margin: 5px;
+			text-align: center;
 
-		font-size: 1.5em;
-		font-weight: bold;
+			cursor: pointer;
+			transition: width .5s ease;
+			text-decoration: none !important;
+		}
 
-		height: 200px; width: 200px;
-		padding: 10px; margin: 5px;
+		.provider-name {
+			font-size: 1.5em;
+			font-weight: bold;
+		}
 
-		text-align: center;
-		text-decoration: none !important;
+		.provider-description {
+			color: #000;
+		}
 
-		cursor: pointer;
-		transition: width .5s ease;
-	}
+		.signal-button > i {
+			position: relative;
+			top: 3px;
+			left: -5px;
+		}
 
-	.signal-button > i {
-		position: relative;
-		top: 3px; left: -5px;
-	}
+		.signal-button:hover {
+			background-color: #DDD;
+		}
 
-	.signal-button:hover {
-		background-color: #DDD;
-	}
+		#isotope-container {
+			padding: 5px;
+		}
 
-	#isotope-container { padding: 5px; }
-
-	.provider-count {
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		margin: 0 5px;
-	}
-</style>
+		.provider-count {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			margin: 0 5px;
+		}
+	</style>
 {% endblock %}
 
 
 {% block left %}
-<ul class="links" id="filters">
-	<li><span data-filter=".collaboration">Collaboration</span></li>
-	<li><span data-filter=".development">Development</span></li>
-	<li><span data-filter=".fitness">Fitness</span></li>
-	<li><span data-filter=".gaming">Gaming</span></li>
-	<li><span data-filter=".health">Health</span></li>
-	<li><span data-filter=".media">Media</span></li>
-	<li><span data-filter=".music">Music</span></li>
-	<li><span data-filter=".productivity">Productivity</span></li>
-	<li><span data-filter=".social">Social</span></li>
-	<li><span data-filter=".video">Video</span></li>
-</ul>
+	<ul class="links" id="filters">
+		<li><span data-filter=".collaboration">Collaboration</span></li>
+		<li><span data-filter=".development">Development</span></li>
+		<li><span data-filter=".fitness">Fitness</span></li>
+		<li><span data-filter=".gaming">Gaming</span></li>
+		<li><span data-filter=".health">Health</span></li>
+		<li><span data-filter=".media">Media</span></li>
+		<li><span data-filter=".music">Music</span></li>
+		<li><span data-filter=".productivity">Productivity</span></li>
+		<li><span data-filter=".social">Social</span></li>
+		<li><span data-filter=".video">Video</span></li>
+	</ul>
 {% endblock %}
 
 {% block content %}
-<div id="isotope-container">
-	{% for provider in providers %}
-	<a href="{{ connect_url }}/{{ provider.id }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
-		<div>
-			<i class="icon-{{ provider.backend_name }}"></i> {{ provider.name }}
-			{% if provider.associated_signal %}
-			<div class="provider-count">
-				{{ provider.assoc_count }}
-			</div>
-			{% endif %}
-		</div>
-	</a>
-	{% endfor %}
-</div>
+	<div id="isotope-container">
+		{% for provider in providers %}
+			<a href="{{ connect_url }}/{{ provider.id }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
+
+				<div class="provider-name">
+					<i class="icon-{{ provider.backend_name }}"></i>
+					{{ provider.name }}
+				</div>
+				<div class="provider-description">
+					{{ provider.description }}
+				</div>
+				{% if provider.associated_signal %}
+					<div class="provider-count">
+						{{ provider.assoc_count }}
+					</div>
+				{% endif %}
+			</a>
+		{% endfor %}
+	</div>
 {% endblock %}

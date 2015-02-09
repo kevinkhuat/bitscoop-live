@@ -135,6 +135,7 @@ class TestoBase(SimpleTestCase):
         fixed_test_time = datetime(2011, 5, 15, 15, 12, 40)
 
         post_test_data = Data(
+	        user_id = 1,
             created=current_test_time,
             updated=current_test_time,
             data_blob=["{'wonder': 'bread', 'mega': 'man'}"]

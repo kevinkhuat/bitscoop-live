@@ -93,15 +93,17 @@ header nav {
 
 header nav .item {
     padding: 0 7px;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
-header nav .item:first-child {
-    padding-left: 0;
-}
+/*header nav .item:first-child {*/
+    /*padding-left: 0;*/
+/*}*/
 
-header nav .item:last-child {
-    padding-right: 0;
-}
+/*header nav .item:last-child {*/
+    /*padding-right: 0;*/
+/*}*/
 
 header nav a {
     text-decoration: none !important;
@@ -116,6 +118,12 @@ header nav a:hover {
 footer {
     font-size: 0.85em;
     padding: 10px 0;
+}
+
+.logo-home {
+}
+
+.map-view-button {
 }
 
 #logo > img {
@@ -200,8 +208,6 @@ footer {
 .flex > .grow {
     flex: 1;
     position: relative;
-    height: 100%;
-    width: 100%;
 }
 
 .grouping {

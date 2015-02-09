@@ -62,7 +62,8 @@ class Event(mongoengine.Document):
     # To be sourced from signals.js
     datetime = mongoengine.DateTimeField()
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
-    location = mongoengine.PointField()
+    # location = mongoengine.PointField()
+    location = mongoengine.ListField()
 
     meta = {
         'indexes': [

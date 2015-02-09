@@ -1,18 +1,20 @@
-from bson.errors import InvalidId
 from django.core.exceptions import ValidationError
 from django.utils.encoding import smart_str
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import serializers
+from bson.errors import InvalidId
+
 from mongoengine import dereference
 from mongoengine.base.document import BaseDocument
 from mongoengine.document import Document
 from mongoengine.fields import ObjectId
-from rest_framework import serializers
 
 
 class DocumentField(serializers.Field):
     """
     Base field for Mongoengine fields that we can not convert to DRF fields.
-
-    To Contributors:
+    To Users:
         - You can subclass DocumentField to implement custom (de)serialization
     """
 
@@ -21,7 +23,6 @@ class DocumentField(serializers.Field):
     def __init__(self, *args, **kwargs):
         try:
             self.model_field = kwargs.pop('model_field')
-            self.depth = kwargs.pop('depth')
         except KeyError:
             raise ValueError("%s requires 'model_field' kwarg" % self.type_label)
 
@@ -38,7 +39,7 @@ class DocumentField(serializers.Field):
             else:
                 continue
 
-            val = self.transform_object(obj, depth - 1)
+            val = self.transform_object(obj, depth-1)
 
             if val is not None:
                 data[field] = val
@@ -75,7 +76,7 @@ class DocumentField(serializers.Field):
         return self.model_field.to_python(data)
 
     def to_representation(self, value):
-        return self.transform_object(value, self.depth - 1)
+        return self.transform_object(value, 1)
 
 
 class ReferenceField(DocumentField):
@@ -84,20 +85,28 @@ class ReferenceField(DocumentField):
     We always dereference DBRef object before serialization
     TODO: Maybe support DBRef too?
     """
+    default_error_messages = {
+        'invalid_dbref': _('Unable to convert to internal value.'),
+        'invalid_doc': _('DBRef invalid dereference.'),
+    }
 
     type_label = 'ReferenceField'
+
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(ReferenceField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):
         try:
             dbref = self.model_field.to_python(data)
         except InvalidId:
-            raise ValidationError(self.error_messages['invalid'])
+            raise ValidationError(self.error_messages['invalid_dbref'])
 
         instance = dereference.DeReference()([dbref])[0]
 
         # Check if dereference was successful
         if not isinstance(instance, Document):
-            msg = self.error_messages['invalid']
+            msg = self.error_messages['invalid_doc']
             raise ValidationError(msg)
 
         return instance
@@ -107,17 +116,12 @@ class ReferenceField(DocumentField):
 
 
 class ListField(DocumentField):
+
     type_label = 'ListField'
 
-    def to_internal_value(self, data):
-        return self.model_field.to_python(data)
-
-    def to_representation(self, value):
-        return self.transform_object(value, self.depth - 1)
-
-
-class SortedListField(DocumentField):
-    type_label = 'SortedListField'
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(ListField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):
         return self.model_field.to_python(data)
@@ -127,6 +131,7 @@ class SortedListField(DocumentField):
 
 
 class EmbeddedDocumentField(DocumentField):
+
     type_label = 'EmbeddedDocumentField'
 
     def __init__(self, *args, **kwargs):
@@ -148,6 +153,7 @@ class EmbeddedDocumentField(DocumentField):
 
 
 class DynamicField(DocumentField):
+
     type_label = 'DynamicField'
 
     def __init__(self, field_name=None, source=None, *args, **kwargs):
@@ -161,7 +167,8 @@ class DynamicField(DocumentField):
         return self.model_field.to_python(value)
 
 
-class ObjectIdField(serializers.Field):
+class ObjectIdField(DocumentField):
+
     type_label = 'ObjectIdField'
 
     def to_representation(self, value):
@@ -169,3 +176,41 @@ class ObjectIdField(serializers.Field):
 
     def to_internal_value(self, data):
         return ObjectId(data)
+
+
+class BinaryField(DocumentField):
+
+    type_label = 'BinaryField'
+
+    def __init__(self, **kwargs):
+        try:
+            self.max_bytes = kwargs.pop('max_bytes')
+        except KeyError:
+            raise ValueError('BinaryField requires "max_bytes" kwarg')
+        super(BinaryField, self).__init__(**kwargs)
+
+    def to_representation(self, value):
+        return smart_str(value)
+
+    def to_internal_value(self, data):
+        return super(BinaryField, self).to_internal_value(smart_str(data))
+
+
+class BaseGeoField(DocumentField):
+
+    type_label = 'BaseGeoField'
+
+
+class SortedListField(DocumentField):
+    type_label = 'SortedListField'
+
+    def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
+        super(SortedListField, self).__init__(*args, **kwargs)
+
+    def to_internal_value(self, data):
+        return self.model_field.to_python(data)
+
+    def to_representation(self, value):
+        return self.transform_object(value, self.depth - 1)
+

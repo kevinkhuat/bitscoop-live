@@ -116,6 +116,9 @@ def _get_literal_value(value):
     except ValueError:
         pass
 
+    if isinstance(value, str):
+	    return value
+
     raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
 
 

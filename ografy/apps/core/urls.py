@@ -5,6 +5,7 @@ import ografy.apps.core.views.main as main_views
 import ografy.apps.core.views.settings as settings_views
 import ografy.apps.core.views.signals as signals_views
 import ografy.apps.core.views.user as user_views
+import ografy.apps.core.views.search as search_views
 
 
 urlpatterns = patterns('',
@@ -36,4 +37,6 @@ urlpatterns = patterns('',
 
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
+
+    url(r'^search/event$', search_views.SearchView.as_view(), name='search_event'),
 )

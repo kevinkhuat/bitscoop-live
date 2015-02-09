@@ -4,7 +4,6 @@
 
 {% block static %}
 	{{ block.super }}
-	<script type="text/javascript" src="{% static 'core/js/connect.js' %}"></script>
 
 	<style type="text/css">
 		#left {
@@ -185,17 +184,10 @@
 				<div class="grouping-content">
 					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 				</div>
-				<div>
-{#<input class="bold button-green"  value="Connect to {{ provider.name }}"  name="social-{{ provider.backend_name }}"#}
-{#type="button" onclick="createConnectSignal({{ provider.id }}, '{{ provider.name }}',#}
-{#'{{ provider.backend_name }}')"#}
-{#/>#}
-					<div style="margin: 5px 0 5px 0">
-						<a class="bold button-green link-button"  name="social-{{ provider.backend_name }}"
-							href="{% url "social:begin" backend=provider.backend_name %}">
-							Connect to {{ provider.name }}
-						</a>
-					</div>
+				<div style="margin: 5px 0 5px 0">
+					<a class="bold button-green link-button" name="social-{{ provider.backend_name }}" href="{% url "social:begin" backend=provider.backend_name %}">
+						Connect to {{ provider.name }}
+					</a>
 				</div>
 			</div>
 		</div>

@@ -5,7 +5,7 @@ class BaseApi(object):
         # http://stackoverflow.com/questions/1136106/what-is-an-efficent-way-of-inserting-thousands-of-records-into-an-sqlite-table-u
         try:
             cls.model.objects.get(pk=val).delete()
-        except TypeError:
+        except (TypeError, AssertionError):
             cls.model.objects.filter(val).delete()
         except cls.model.DoesNotExist:
             return False
@@ -19,7 +19,7 @@ class BaseApi(object):
         else:
             try:
                 ret = cls.model.objects.get(pk=val)
-            except TypeError:
+            except (TypeError, AssertionError):
                 ret = cls.model.objects.filter(val)
 
         return ret
@@ -31,7 +31,7 @@ class BaseApi(object):
             for key, value in data.items():
                 setattr(inst, key, value)
             inst.save()
-        except TypeError:
+        except (TypeError, AssertionError):
             cls.model.objects.filter(val).update(**data)
             inst = cls.models.objects.filter(val)
 

@@ -1,13 +1,25 @@
 from mongoengine.django.shortcuts import get_document_or_404
+from mongoengine.queryset.base import BaseQuerySet
 from rest_framework import mixins
 from rest_framework import generics as drf_generics
 
 
-class MongoAPIView(drf_generics.GenericAPIView):
+class GenericAPIView(drf_generics.GenericAPIView):
     """
     View to play nice with our Document Serializer
     """
     lookup_field = 'id'
+
+    def get_queryset(self):
+        """
+        Re evaluate queryset, fixes #63
+        """
+        queryset = super(GenericAPIView, self).get_queryset()
+
+        if isinstance(queryset, BaseQuerySet):
+            queryset = queryset.all()
+
+        return queryset
 
     def get_object(self):
         """
@@ -40,7 +52,7 @@ class MongoAPIView(drf_generics.GenericAPIView):
         return obj
 
 
-class CreateAPIView(mixins.CreateModelMixin, MongoAPIView):
+class CreateAPIView(mixins.CreateModelMixin, GenericAPIView):
     """
     Concrete view for creating a model instance.
     """
@@ -49,7 +61,7 @@ class CreateAPIView(mixins.CreateModelMixin, MongoAPIView):
         return self.create(request, *args, **kwargs)
 
 
-class ListAPIView(mixins.ListModelMixin, MongoAPIView):
+class ListAPIView(mixins.ListModelMixin, GenericAPIView):
     """
     Concrete view for listing a queryset.
     """
@@ -58,7 +70,7 @@ class ListAPIView(mixins.ListModelMixin, MongoAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class ListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, MongoAPIView):
+class ListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
     """
     Concrete view for listing a queryset or creating a model instance.
     """

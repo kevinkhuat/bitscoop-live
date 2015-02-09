@@ -24,15 +24,12 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/base'],
-	function () {
+requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 'main/base'],
+	function() {
 		$(document).ready(function() {
 			var base = baseView();
 
-			base.loadTestData(function() {
-				base.render();
-				base.bindNavigation();
-			});
+			base.render();
 
 			//base.insertInitialData();
 		});

@@ -18,7 +18,9 @@ $(document).ready(function() {
 		var filterValue = getFilter();
 
 		$container.isotope(
-			{filter: filterValue}
+			{
+				filter: filterValue
+			}
 		);
 	});
 });

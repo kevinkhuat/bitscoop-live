@@ -94,14 +94,6 @@
 			padding: 10px 0 10px 0;
 		}
 
-		.green-big {
-			color: #5BBD72;
-			padding: 30px 0 30px 0 !important;
-			width: 70%;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
 		.button-green {
 			background-color: #5BBD72;
 			color: #FFFFFF;
@@ -124,25 +116,39 @@
 		.text-input-width {
 			width: 400px;
 		}
-
-		.hide {
-			display: none;
-		}
-
-		.link-button {
-			font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
-			font-weight: 300;
-			padding: 0.4em;
-			border-radius: 0.1em;
-			border: 1px solid #BBB;
-			outline: none;
-			margin: 0.4em 0em;
-		}
-
-		.link-button:link {
-			text-decoration: none;
-		}
 	</style>
+
+	<script type="application/javascript">
+		function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+
+		function verifiedSignal(signal_id, data) {
+			$.ajax({
+				url: '/verify/' + signal_id,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					"data": data
+				},
+				headers: {
+					"X-CSRFToken": getCookie('csrftoken')
+				}
+			})
+		}
+	</script>
 {% endblock %}
 
 {% block left %}
@@ -152,9 +158,9 @@
 				<div class="title-align">
 					<i class="block layout icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
+					<div class="title">Connect to {{ signal.name }}</div>
 				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="description">Connect your {{ signal.name }} account to your Ografy account</div>
 			</div>
 		</div>
 		<div class="step">
@@ -164,7 +170,7 @@
 
 					<div class="title">Authorize Access</div>
 				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+				<div class="description">Authorize your {{ signal.name }} account's connection to Ografy</div>
 			</div>
 		</div>
 		<div class="active step">
@@ -174,7 +180,7 @@
 
 					<div class="title">Verify Settings</div>
 				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+				<div class="description">Ensure that your connection settings to {{ signal.name }} are correct</div>
 			</div>
 		</div>
 	</div>
@@ -183,12 +189,12 @@
 {% block content %}
 	<div class="step-verify">
 		<div class="grouping">
-			<div class="bigger">Verify {{ provider.name }} Connection Settings</div>
+			<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
 			<div>
 				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ provider.name }}</span>
+					<span>Details and stuff about connection settings to {{ signal.name }}</span>
 				</div>
-				<span class="bold">Name your connection to {{ provider.name }}</span>
+				<span class="bold">Name your connection to {{ signal.name }}</span>
 
 				<form>
 					<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
@@ -196,7 +202,7 @@
 			</div>
 		</div>
 		<div class="grouping">
-			<div class="bigger">{{ provider.name }} Connection Permissions</div>
+			<div class="bigger">{{ signal.name }} Connection Permissions</div>
 			<div>
 				<div name="permission-email" class="flex row permission-toggle">
 					<div class="ui toggle checkbox">
@@ -231,12 +237,13 @@
 			</div>
 		</div>
 		<div class="grouping">
-			<div class="bigger">Frequency of {{ provider.name }} Data Updates</div>
+			<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
 			<div class="ui form">
 				<div class="grouped fields" id="frequency">
 					<label for="frequency">
 						Select the frequency you would like this service to update
 					</label>
+
 					<div class="field">
 						<div class="ui radio checkbox">
 							<input type="radio" name="update-frequency">
@@ -271,7 +278,7 @@
 			</div>
 		</div>
 		<div>
-			<input class="bold button-green" class="bold" type="button" value="Complete Connection to {{ provider.name }}"/>
+			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal({{ signal.id }})"/>
 		</div>
 	</div>
 {% endblock %}

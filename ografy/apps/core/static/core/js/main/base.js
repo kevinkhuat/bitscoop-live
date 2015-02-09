@@ -1,116 +1,71 @@
+//Render the base elements of the main page and bind the navigation event listeners
+//Also call for rendering of the default page view
 function baseView() {
-	//Data model
-	var baseData = [];
-	var baseMap = new mapbox();
+	//Instantiate instances of the views that the main page uses
+
+	// Geocoder Instance
+	var geocoder = new google.maps.Geocoder();
+
+	//Utils Instance
+	var utilsInst = utils();
+
+	//Local Storage Data Handler
+	var dataInst = utilsInst.dataStore();
+
+	//Cookie/Session Handler
+	var sessionInst = utilsInst.sessionsCookies();
 
 	//View components
-	var detailViewInst = detailView();
-	var utilsInst = utils();
-	var mapInst = utilsInst.mapbox();
-	var sessionInst = utilsInst.session();
+	var detailViewInst = detailView(utilsInst, geocoder);
 
-	//Sub Views
-	var listViewInst = listView(detailViewInst, mapInst, sessionInst);
-	var mapViewInst = mapView(detailViewInst, utilsInst);
+	//Views
+	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
+	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
 
-	function mapbox() {
-		this.map;
-		this.geoJSON = {
-			"type": "FeatureCollection",
-			"features": []
-		};
-	}
+	//Search components
+	var searchViewInst = searchView(dataInst, mapViewInst, listViewInst);
+	searchViewInst.bindEvents();
 
-	function clearData() {
-
-	}
-
-	function updateData() {
-
-	}
-
-	function search() {
-
-	}
-
-	function loadTestData(completeCallback) {
-		$.ajax({
-			url: 'static/core/js/test_data/event_test_data.json',
-			type: 'GET',
-			dataType: 'json',
-			headers: {
-				"X-CSRFToken": sessionInst.getCsrfToken()
-			}
-		}).done(function(data, xhr, response) {
-			baseData = data;
-			completeCallback();
-		});
-	}
-
-	function render() {
-		var base_framework = nunjucks.render('static/core/templates/main/base.html');
-		$('main').html(base_framework);
-
-		mapViewInst.renderBase(baseMap, baseData, mapInst);
-	}
-
+	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
-			listViewInst.renderBase(baseMap, baseData);
+			dataInst.setCurrentView(listViewInst);
+			listViewInst.renderBase();
 		});
 
 		$('.timeline-view-button').click(function() {
-
 		});
 
 		$('.map-view-button').click(function() {
-			mapViewInst.renderBase(baseMap, baseData, mapInst);
-		});
-	}
+			dataInst.setCurrentView(mapViewInst);
+			mapViewInst.renderBase(function() {
+				mapViewInst.updateContent();
 
-	function loadInitialData() {
-		$.ajax({
-			url: '/opi/event',
-			type: 'GET',
-			dataType: 'json',
-			headers: {
-				"X-CSRFToken": sessionInst.getCsrfToken()
-			}
-		}).done(function(data, xhr, response) {
-			baseData = data;
-			console.log(baseData);
-		});
-	}
-
-	function insertInitialData() {
-		for (i=0; i<8; i++){
-			var data = {
-				"created": "2014-12-01 19:54:06.860Z",
-				"updated": "2014-12-01 19:54:06.860Z",
-				"user_id": 1,
-				"data_blob": {"cool": "pants", "hammer": "time"}
-			};
-			$.ajax({
-				url: '/opi/data',
-				type: 'POST',
-				dataType: 'json',
-				headers: {
-					"X-CSRFToken": sessionInst.getCsrfToken()
-				},
-				data: data
-			}).done(function(data, xhr, response) {
-				baseData = data;
-				console.log(baseData);
 			});
-		}
+		});
+	}
 
+	//Render the base page, which consists of the header bar and the content area
+	function render() {
+		//Use Nunjucks to render the base page from a template and insert it into the page
+		var base_framework = nunjucks.render('base.html');
+		$('main').html(base_framework);
+
+
+		//Load data from the database
+		dataInst.setCurrentView(mapViewInst);
+		mapViewInst.renderBase(function() {
+			dataInst.search('(name contains Sam)');
+		});
+
+
+		//Render the default page view
+
+		//Bind event listeners for switching between different page views
+		bindNavigation();
 	}
 
 	return {
-		render: render,
-		bindNavigation: bindNavigation,
-		insertInitialData: insertInitialData,
-		loadInitialData: loadInitialData,
-		loadTestData: loadTestData
-	}
+		render: render
+	};
 }
