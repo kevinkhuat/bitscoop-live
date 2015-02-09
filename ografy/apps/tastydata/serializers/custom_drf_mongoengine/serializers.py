@@ -160,7 +160,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         valid = super(DocumentSerializer, self).is_valid(raise_exception=raise_exception)
 
         for embedded_field in self.embedded_document_serializer_fields:
-            embedded_field._initial_data = self.validated_data.pop(embedded_field.field_name, serializers.empty)
+            embedded_field.initial_data = self.validated_data.pop(embedded_field.field_name, serializers.empty)
             valid &= embedded_field.is_valid(raise_exception=raise_exception)
 
         return valid
@@ -421,7 +421,11 @@ class DynamicDocumentSerializer(DocumentSerializer):
         fields += self._get_dynamic_fields(instance).values()
 
         for field in fields:
-            attribute = field.get_attribute(instance)
+            try:
+                attribute = field.get_attribute(instance)
+            except serializers.SkipField:
+                continue
+
             if attribute is None:
                 ret[field.field_name] = None
             else:
