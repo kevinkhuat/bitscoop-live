@@ -4,6 +4,8 @@ function baseView() {
 	//Instantiate instances of the views that the main page uses
 
 	// Geocoder Instance
+
+	//TODO: Ugly - fix in a big way so it is done better. On server?
 	var geocoder = new google.maps.Geocoder();
 
 	//Utils Instance
@@ -33,8 +35,8 @@ function baseView() {
 			listViewInst.renderBase();
 		});
 
-		$('.timeline-view-button').click(function() {
-		});
+		//$('.timeline-view-button').click(function() {
+		//});
 
 		$('.map-view-button').click(function() {
 			dataInst.setCurrentView(mapViewInst);
@@ -51,13 +53,14 @@ function baseView() {
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);
 
-
 		//Load data from the database
 		dataInst.setCurrentView(mapViewInst);
 		mapViewInst.renderBase(function() {
-			dataInst.search('(name contains Sam)');
-		});
+			var oneWeekAgo = new Date();
+			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
+			dataInst.search('(datetime gt ' + oneWeekAgo.toJSON() + ')');
+		});
 
 		//Render the default page view
 

@@ -30,7 +30,5 @@ requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 
 			var base = baseView();
 
 			base.render();
-
-			//base.insertInitialData();
 		});
 	});
