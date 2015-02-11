@@ -8,24 +8,27 @@ function baseView() {
 	//TODO: Ugly - fix in a big way so it is done better. On server?
 	var geocoder = new google.maps.Geocoder();
 
-	//Utils Instance
-	var utilsInst = utils();
+	//Cache Instance
+	var cacheInst = cacheManager();
 
-	//Local Storage Data Handler
-	var dataInst = utilsInst.dataStore();
+	//Data Instance
+	var dataInst = dataStore();
 
 	//Cookie/Session Handler
-	var sessionInst = utilsInst.sessionsCookies();
+	var sessionInst = sessionsCookies();
 
 	//View components
-	var detailViewInst = detailView(utilsInst, geocoder);
+	var detailViewInst = detailView()
+
+	//Mapbox handler
+	var mapboxViewInst = mapboxManager();;
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
-	var mapViewInst = mapView(detailViewInst, dataInst, utilsInst, sessionInst, geocoder);
+	var listViewInst = listView(detailViewInst, dataInst, cacheInst, sessionInst, geocoder);
+	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst);
 
 	//Search components
-	var searchViewInst = searchView(dataInst, mapViewInst, listViewInst);
+	var searchViewInst = searchView(dataInst, cacheInst, mapViewInst, listViewInst);
 	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views
@@ -59,7 +62,8 @@ function baseView() {
 			var oneWeekAgo = new Date();
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-			dataInst.search('(datetime gt ' + oneWeekAgo.toJSON() + ')');
+//			dataInst.search('(datetime gt ' + oneWeekAgo.toJSON() + ')');
+		dataInst.search('(name contains Sam)')
 		});
 
 		//Render the default page view

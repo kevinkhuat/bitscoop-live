@@ -1,5 +1,5 @@
 //Render the detail panel on the right-hand side of the main page
-function detailView(utilsInst) {
+function detailView() {
 	//Views
 	//Render the detail panel's content
 	function renderContent(showMap) {
@@ -17,7 +17,7 @@ function detailView(utilsInst) {
 		//This needs to be done after the detail panel has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
 		if (showMap) {
-			var mapbox = utilsInst.mapboxManager();
+			var mapbox = mapboxManager();
 			var map = mapbox.map;
 			var geoJSON = mapbox.geoJSON;
 		}

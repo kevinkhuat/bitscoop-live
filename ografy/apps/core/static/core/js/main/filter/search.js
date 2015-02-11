@@ -1,7 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, mapViewInst, listViewInst) {
-	//Utils instance
-	var utilsInst = utils();
+function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
@@ -14,22 +12,22 @@ function searchView(dataInst, mapViewInst, listViewInst) {
 		$('.filter.box:last').find('.filter.options').html(newDropdown);
 
 		var initDropdown = $('.filter.box:last').find('.initial')[0];
-		renderDate().dropdown(initDropdown);
+		filters().date().dropdown(initDropdown);
 
 		$('.filter.box:last').find('.initial').change(function() {
 			var currentElement = this;
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
-				renderDate().dropdown(currentElement);
+				filters().date().dropdown(currentElement);
 			}
 			else if (currentElement.value == 'time') {
-				renderTime().dropdown(currentElement);
+				filters().time().dropdown(currentElement);
 			}
 			else if (currentElement.value == 'to') {
-				renderTo().dropdown(currentElement);
+				filters().to().dropdown(currentElement);
 			}
 			else if (currentElement.value == 'from') {
-				renderFrom().dropdown(currentElement);
+				filters().from().dropdown(currentElement);
 			}
 		});
 	}
@@ -89,16 +87,16 @@ function searchView(dataInst, mapViewInst, listViewInst) {
 
 				//Construct the filter string based on the filter type
 				if (type == 'date') {
-					filterString += '(' + dateString(currentFilter) + ')';
+					filterString += '(' + filters().date().toString(currentFilter) + ')';
 				}
 				else if (type == 'time') {
-					filterString += '(' + timeString(currentFilter) + ')';
+					filterString += '(' + filters().time().toString(currentFilter) + ')';
 				}
 				else if (type == 'to') {
-					filterString += '(' + toString(currentFilter) + ')';
+					filterString += '(' + filters().to().toString(currentFilter) + ')';
 				}
 				else if (type == 'from') {
-					filterString += '(' + fromString(currentFilter) + ')';
+					filterString += '(' + filters().from().toString(currentFilter) + ')';
 				}
 			}
 
@@ -183,7 +181,7 @@ function searchView(dataInst, mapViewInst, listViewInst) {
 				//When the Date dropdown is first created, set it to the first option
 				//in the dropdown and render the associated fields.
 				var initDateDropdown = $(parent).find('.date')[0];
-				renderDate().afterField(initDateDropdown);
+				filters().date().afterField(initDateDropdown);
 			}
 
 			//Render the After field with Nunjucks and add it to the DOM.
@@ -282,7 +280,7 @@ function searchView(dataInst, mapViewInst, listViewInst) {
 				//When the Date dropdown is first created, set it to the first option
 				//in the dropdown and render the associated fields.
 				var initTimeDropdown = $(parent).find('.time')[0];
-				renderTime().afterField(initTimeDropdown);
+				filters().time().afterField(initTimeDropdown);
 			}
 
 			//Render the After field with Nunjucks and add it to the DOM.
@@ -346,7 +344,7 @@ function searchView(dataInst, mapViewInst, listViewInst) {
 		}
 
 		//Render the elements needed to filter on To a given person
-		function to() {
+		function to(currentElement) {
 			function dropdown(currentElement) {
 				var parent = currentElement.parentElement;
 

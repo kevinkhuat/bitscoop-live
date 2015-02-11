@@ -6,25 +6,27 @@ requirejs.config({
 	},
 	shim: {
 		'main/base': {
-			deps: ['main/detail', 'main/list', 'main/map', 'main/utils']
+			deps: ['main/detail', 'main/views/list', 'main/views/map', 'main/utls/cache',
+					'main/utls/model', 'main/utls/mapUtil', 'main/utls/session', 'main/views/list',
+					'main/filter/search']
 		},
 		'main/detail': {
-			deps: ['main/utils']
+			deps: ['main/utls/cache', 'main/utls/mapUtil', 'main/utls/model', 'main/utls/session']
 		},
 		'main/list': {
-			deps: ['main/utils']
+			deps: ['main/utls/cache', 'main/utls/mapUtil', 'main/utls/model', 'main/utls/session']
 		},
 		'main/map': {
-			deps: ['main/utils']
-		},
-		'main/utils': {
-			deps: []
+			deps: ['main/utls/cache', 'main/utls/mapUtil', 'main/utls/model', 'main/utls/session']
 		}
 	}
 });
 
 // Start the main app logic.
-requirejs(['main/utils', 'main/detail', 'main/list', 'main/map', 'main/search', 'main/base'],
+requirejs(['main/utls/cache', 'main/utls/mapUtil', 'main/utls/model', 'main/utls/session',
+			'main/detail', 'main/views/list', 'main/views/map', 'main/filter/search',
+			'main/filter/objects/data/metadata', 'main/filter/objects/event/metadata',
+			'main/filter/objects/message/metadata',  'main/base'],
 	function() {
 		$(document).ready(function() {
 			var base = baseView();

@@ -1,4 +1,4 @@
-function cachemanager() {
+function cacheManager() {
 	/**
 	 * Cache Manager provides easy to use caching/expiration functionality that is backed by the browser's local and session storage
 	 * with in memory objects for quick access to the variables.
@@ -30,7 +30,7 @@ function cachemanager() {
 			});
 		},
 		/**
-		 * This handles storage updates that happen on different tabs and guarentees that the local cache is updated.
+		 * This handles storage updates that happen on different tabs and guarantees that the local cache is updated.
 		 * It's important to note that this event is only fired for tabs other than the one who changed the local storage
 		 * @param {StorageEvent} e
 		 * @private

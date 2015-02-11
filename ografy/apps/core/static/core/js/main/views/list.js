@@ -1,5 +1,5 @@
 //Render the List View on the main page
-function listView(detailViewInst, dataInst, utilsInst, sessionInst) {
+function listView(detailViewInst, dataInst, cacheInst, sessionInst) {
 	//Render the base framework of the List View
 	function renderBase() {
 		//Render the list title and the container for the list elements using Nunjucks
