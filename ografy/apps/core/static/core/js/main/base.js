@@ -62,8 +62,10 @@ function baseView() {
 			var oneWeekAgo = new Date();
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-//			dataInst.search('(datetime gt ' + oneWeekAgo.toJSON() + ')');
-		dataInst.search('(name contains Sam)')
+//			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
+			var searchString = '(name contains Sam)';
+			console.log(searchString);
+			dataInst.search(searchString);
 		});
 
 		//Render the default page view
