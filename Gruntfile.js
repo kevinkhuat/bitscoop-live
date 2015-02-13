@@ -15,8 +15,9 @@ module.exports = function(grunt) {
 					'Gruntfile.js',
 					'ografy/**/*.js',
 					'!ografy/apps/demo/**/*.js',
-					'!ografy/static/lib/**/*.js',
-					'!ografy/static/shared/js/templates.js'
+					'!ografy/static/assets/lib/**/*.js',
+					'!ografy/static/shared/js/templates.js',
+					'!ografy/tests/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -32,8 +33,9 @@ module.exports = function(grunt) {
 					'Gruntfile.js',
 					'ografy/**/*.js',
 					'!ografy/apps/demo/**/*.js',
-					'!ografy/static/lib/**/*.js',
-					'!ografy/static/shared/js/templates.js'
+					'!ografy/static/assets/lib/**/*.js',
+					'!ografy/static/shared/js/templates.js',
+					'!ografy/tests/**/*.js'
 				]
 			}
 		},

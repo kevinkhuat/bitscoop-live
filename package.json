@@ -5,7 +5,10 @@
   "private": true,
   "dependencies": {
     "jquery": "^2.1.1",
-    "lodash": "^2.4.1"
+    "jshint-stylish": "^1.0.0",
+    "load-grunt-tasks": "^3.1.0",
+    "lodash": "^2.4.1",
+    "mock-browser": "^0.90.30"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
