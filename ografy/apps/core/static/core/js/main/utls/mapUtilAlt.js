@@ -96,8 +96,8 @@ function mapUtil() {
                 var staticPath = window.site_static_url;
                 var MyIcon = L.Icon.extend({
                     options: {
-                        iconUrl: staticPath + '/images/modules/maps/marker.png',
-                        shadowUrl: staticPath + '/images/modules/maps/marker-shadow.png',
+                        //iconUrl: staticPath + '/images/modules/maps/marker.png',
+                        //shadowUrl: staticPath + '/images/modules/maps/marker-shadow.png',
                         iconSize:     [25, 41], // size of the icon
                         shadowSize:   [41, 41], // size of the shadow
                         iconAnchor:   [11, 41], // point of the icon which will correspond to marker's location

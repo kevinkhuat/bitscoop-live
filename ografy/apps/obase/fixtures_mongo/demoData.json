@@ -1,0 +1,42 @@
+{
+  "events": [
+    {
+      "data": {
+        "created": "2010-04-20T20:08:21.634121",
+        "updated": "2010-04-20T20:08:21.634121",
+        "user_id": 1,
+        "data_blob": {
+          "d": "{\r\n  \"array\": [\r\n    1,\r\n    2,\r\n    3\r\n  ],\r\n  \"boolean\": true,\r\n  \"null\": null,\r\n  \"number\": 123,\r\n  \"object\": {\r\n    \"a\": \"b\",\r\n    \"c\": \"d\",\r\n    \"e\": \"f\"\r\n  },\r\n  \"string\": \"Hello World\"\r\n}"
+        }
+      },
+      "event": {
+        "created": "2010-04-20T20:08:21.634121",
+        "updated": "2010-04-20T20:08:21.634121",
+        "user_id": 1,
+        "provider_id": 1,
+        "provider_name": "facebook",
+        "name": "Message to Chris"
+      },
+      "message": {
+        "message_to": "2010-04-20T20:08:21.634121",
+        "message_from": "2010-04-20T20:08:21.634121",
+        "message_body": "",
+        "user_id": 1
+      }
+    }
+  ],
+  "signals": [
+    {
+      "user": 1,
+      "provider": 1,
+      "name": "facebook",
+      "psa_backend_uid": "",
+      "complete": true,
+      "connected": true,
+      "enabled": true,
+      "frequency": 1,
+      "created": "2010-04-20T20:08:21.634121",
+      "message_from": "2010-04-20T20:08:21.634121"
+    }
+  ]
+}

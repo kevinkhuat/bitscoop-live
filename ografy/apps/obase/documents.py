@@ -29,7 +29,7 @@ class Data(mongoengine.DynamicDocument):
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
     # To be sourced from signals.js
-    data_blob = mongoengine.SortedListField(mongoengine.StringField())
+    data_blob = mongoengine.DictField()
 
 
 class Event(mongoengine.Document):
