@@ -79,6 +79,13 @@ input:focus {
     box-shadow: 0 0 6px -1px #0E9D58;
 }
 
+input.full-width {
+	display: block;
+	width: 98%;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
 main {
     padding: 25px 0;
 }
@@ -163,6 +170,10 @@ footer {
     color: #0E9D58 !important;
 }
 
+.inline-block {
+	display: inline-block;
+}
+
 .lockwidth {
     width: 85%;
     max-width: 1200px;
@@ -174,7 +185,7 @@ footer {
 }
 
 .padded {
-    padding: 1rem;
+    padding: 2rem;
 }
 
 .flex {
@@ -203,6 +214,10 @@ footer {
 
 .flex.center {
     align-items: center;
+}
+
+.wrap {
+	flex-wrap: wrap;
 }
 
 .flex > .grow {
@@ -350,4 +365,30 @@ body.full #content {
 
 body.full > footer {
     display: none;
+}
+
+.square-set {
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	background: #EEE;
+	margin-bottom: 2em;
+}
+
+.square-set > .header {
+	text-align: center;
+	position: relative;
+	top: -2.25em;
+}
+
+.square-set > .header > i {
+	font-size: 2.5em;
+	background-color: #0E9D58;
+	color: #FFF;
+	padding: 0.35em;
+	border: 2px solid #CCC;
+	border-radius: 1em;
+}
+
+div.table > div > div {
+	display: table-cell;
 }

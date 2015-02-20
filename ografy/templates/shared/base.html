@@ -11,14 +11,14 @@
 		{% block static %}
         {# TODO: Dependancy problems with libraries need to be fixed with require #}
 		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-		<script type="text/javascript" src="{% static 'lib/isotope/isotope.pkgd.js' %}"></script>
+		<script type="text/javascript" src="{% static 'assets/lib/isotope/isotope.pkgd.js' %}"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/javascript/semantic.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
 
 		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
-		<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
 		{% endblock %}
 	</head>
@@ -54,7 +54,7 @@
 			</nav>
 		</header>
 
-		<main class="flex grow {{ main_class }}">
+		<main class="grow {{ main_class }}">
 			{% block main %}
 			<div class="flex grow lockwidth centered">
 				<aside id="left" class="{{ left_class }}">{% block left %}{% endblock %}</aside>
