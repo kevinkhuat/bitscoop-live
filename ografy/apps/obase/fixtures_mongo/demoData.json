@@ -1,76 +1,255 @@
 {
-  "events": [
-    {
-      "created": {"$date": 1359717786000},
-      "updated": {"$date": 1364821326000},
-      "user_id": 1,
-      "signal_id": 2,
-      "provider_id": 3,
-      "provider_name": "steam",
-      "name": "Sam",
-      "datetime": {"$date": 1364821326000},
-      "location": [
-        -73.687,
-        40.6883
-      ]
-    },
-    {
-      "data": {
-        "created": "2010-04-20T20:08:21.634121",
-        "updated": "2010-04-20T20:08:21.634121",
-        "user_id": 1,
-        "data_blob": {
-          "d": "{\r\n  \"array\": [\r\n    1,\r\n    2,\r\n    3\r\n  ],\r\n  \"boolean\": true,\r\n  \"null\": null,\r\n  \"number\": 123,\r\n  \"object\": {\r\n    \"a\": \"b\",\r\n    \"c\": \"d\",\r\n    \"e\": \"f\"\r\n  },\r\n  \"string\": \"Hello World\"\r\n}"
-        }
-      },
-      "event": {
-        "created": "2010-04-20T20:08:21.634121",
-        "updated": "2010-04-20T20:08:21.634121",
-        "user_id": 1,
-        "provider_id": 1,
-        "provider_name": "facebook",
-        "name": "Message to Chris"
-      }
-    }
-  ],
-  "messages": [
-    {
-      "data": {
-        "created": "2010-04-20T20:08:21.634121",
-        "updated": "2010-04-20T20:08:21.634121",
-        "user_id": 1,
-        "data_blob": {
-          "d": "{\r\n  \"array\": [\r\n    1,\r\n    2,\r\n    3\r\n  ],\r\n  \"boolean\": true,\r\n  \"null\": null,\r\n  \"number\": 123,\r\n  \"object\": {\r\n    \"a\": \"b\",\r\n    \"c\": \"d\",\r\n    \"e\": \"f\"\r\n  },\r\n  \"string\": \"Hello World\"\r\n}"
-        }
-      },
-      "event": {
-        "created": "2010-04-20T20:08:21.634121",
-        "updated": "2010-04-20T20:08:21.634121",
-        "user_id": 1,
-        "provider_id": 1,
-        "provider_name": "facebook",
-        "name": "Message to Chris"
-      },
-      "message": {
-        "message_to": "2010-04-20T20:08:21.634121",
-        "message_from": "2010-04-20T20:08:21.634121",
-        "message_body": "",
-        "user_id": 1
-      }
-    }
-  ],
-  "signals": [
-    {
-      "user": 1,
-      "provider": 1,
-      "name": "facebook",
-      "psa_backend_uid": "",
-      "complete": true,
-      "connected": true,
-      "enabled": true,
-      "frequency": 1,
-      "created": "2010-04-20T20:08:21.634121",
-      "message_from": "2010-04-20T20:08:21.634121"
-    }
-  ]
+	"events": [
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2013-04-11 03:36:12+00:00",
+				"updated": "2013-04-11 03:36:12+00:00",
+				"data_blob": {
+					"d": {
+						"null": null,
+						"boolean": true,
+						"array": [1, 2, 3],
+						"string": "Hello World",
+						"object": {"c": "d", "e": "f", "a": "b"},
+						"number": 123
+					}
+				}
+			},
+			"event": {
+				"created": "2013-04-11 03:36:12+00:00",
+				"updated": "2013-04-11 03:36:12+00:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 3,
+				"provider_name": "steam",
+				"name": "Started playing Half-Life 2",
+				"datetime": "2013-04-11 03:36:12+00:00",
+				"location": [-73.6875, 40.6884]
+			}
+		},
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2014-12-26 23:18:55+00:00",
+				"updated": "2014-12-26 23:18:55+00:00",
+				"data_blob": {
+					"d": {
+						"null": null,
+						"string": "Hello World",
+						"number": 123,
+						"boolean": true,
+						"object": {"a": "b", "c": "d", "e": "f"},
+						"array": [1, 2, 3]
+					}
+				}
+			},
+			"event": {
+				"created": "2014-12-26 23:18:55+00:00",
+				"updated": "2014-12-26 23:18:55+00:00",
+				"user_id": 2,
+				"signal_id": 3,
+				"provider_id": 8,
+				"provider_name": "github",
+				"name": "Commit #379 to project NumberCruncher",
+				"datetime": "2014-12-26 23:18:55+00:00",
+				"location": [-73.68855, 40.68719]
+			}
+		},
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2014-12-31 04:27:01+00:00",
+				"updated": "2014-12-31 04:27:01+00:00",
+				"data_blob": {
+					"d": {
+						"string": "Hello World",
+						"array": [1, 2, 3],
+						"boolean": true,
+						"number": 123,
+						"null": null,
+						"object": {"e": "f", "a": "b", "c": "d"}
+					}
+				}
+			},
+			"event": {
+				"created": "2014-12-31 04:27:01+00:00",
+				"updated": "2014-12-31 04:27:01+00:00",
+				"user_id": 2,
+				"signal_id": 4,
+				"provider_id": 5,
+				"provider_name": "dropbox",
+				"name": "Uploaded file \"Big Air\"",
+				"datetime": "2014-12-31 04:27:01+00:00",
+				"location": [-73.68855, 40.68719]
+			}
+		}
+	],
+	"messages": [
+		{
+			"data": {
+				"created": "2013-06-14 18:23:44+00:00",
+				"updated": "2013-06-16 03:01:18+00:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2013-06-14 18:23:44+00:00",
+				"updated": "2013-06-16 03:01:18+00:00",
+				"user_id": 2,
+				"signal_id": 4,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Message to Sam and Arnold",
+				"datetime": "2013-06-13 19:06:22+00:00",
+				"location": [-73.687, 40.6883]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Arnold", "Sam"],
+				"message_from": "John",
+				"message_body": "Meet you at Pizza 'Spress in 20 minutes"
+			}
+		},
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2013-06-14 18:23:44+00:00",
+				"updated": "2013-06-16 03:01:18+00:00",
+				"data_blob": {
+					"d": {
+						"string": "Hello World",
+						"null": null,
+						"object": {"c": "d", "a": "b", "e": "f"},
+						"number": 123,
+						"boolean": true,
+						"array": [1, 2, 3]
+					}
+				}
+			},
+			"event": {
+				"created": "2013-06-14 18:23:44+00:00",
+				"updated": "2013-06-16 03:01:18+00:00",
+				"user_id": 2,
+				"signal_id": 4,
+				"provider_id": 2,
+				"provider_name": "twitter",
+				"name": "Message to John and Sam",
+				"datetime": "2013-06-13 19:09:11+00:00",
+				"location": [-73.68702, 40.68827]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to":
+				["John", "Sam"],
+				"message_from": "Arnold",
+				"message_body": "The bus was a few minutes late"
+			}
+		},
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2014-12-25 20:56:08+00:00",
+				"updated": "2014-12-25 21:03:03+00:00",
+				"data_blob": {
+					"d": {
+						"number": 123,
+						"object": {"a": "b", "e": "f", "c": "d"},
+						"string": "Hello World",
+						"boolean": true,
+						"null": null,
+						"array": [1, 2, 3]
+					}
+				}
+			},
+			"event": {
+				"created": "2014-12-25 20:56:08+00:00",
+				"updated": "2014-12-25 21:03:03+00:00",
+				"user_id": 2,
+				"signal_id": 1,
+				"provider_id": 1,
+				"provider_name": "facebook",
+				"name": "Message to Sarah",
+				"datetime": "2014-12-25 20:37:00+00:00",
+				"location": [-73.68782, 40.68823]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Sarah"],
+				"message_from": "John",
+				"message_body": "I am done with Justin Bieber"
+			}
+		}
+	],
+	"signals": [
+		{
+			"user": 2,
+			"provider": 1,
+			"name": "Demo's Facebook",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2010-04-20T20:08:21.634121",
+			"message_from": "2010-04-20T20:08:21.634121"
+		},
+		{
+			"user": 2,
+			"provider": 2,
+			"name": "Demo's Twitter",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2010-04-20T20:08:21.634121",
+			"message_from": "2010-04-20T20:08:21.634121"
+		},
+		{
+			"user": 2,
+			"provider": 3,
+			"name": "Demo's Steam",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2010-04-20T20:08:21.634121",
+			"message_from": "2010-04-20T20:08:21.634121"
+		},
+		{
+			"user": 2,
+			"provider": 5,
+			"name": "Demo's Dropbox",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2010-04-20T20:08:21.634121",
+			"message_from": "2010-04-20T20:08:21.634121"
+		},
+		{
+			"user": 2,
+			"provider": 8,
+			"name": "Demo's GitHub",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2010-04-20T20:08:21.634121",
+			"message_from": "2010-04-20T20:08:21.634121"
+		}
+	]
 }

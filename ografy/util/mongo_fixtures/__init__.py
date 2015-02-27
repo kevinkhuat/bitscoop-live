@@ -8,50 +8,141 @@ import ografy.apps.obase.api as ObaseAPI
 from ografy.apps.core import api as core_api
 from ografy.apps.core.models import Signal
 from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.core.models import User, Signal, Provider
 
 import datetime
 
 
 def load_fixture(path):
 
-    demo_data_file = open(path, encoding='utf-8').read()
+	demo_data_file = open(path, encoding='utf-8').read()
 
-    demo_data = json.loads(demo_data_file)
+	demo_data = json.loads(demo_data_file)
 
-    test_data = Event(
-        user_id=1,
-        created=datetime.datetime(2013, 2, 1, 11, 23, 6),
-        updated=datetime.datetime(2013, 4, 1, 13, 2, 6),
-        signal_id=2,
-        provider_id=3,
-        provider_name='steam',
-        datetime=datetime.datetime(2013, 4, 1, 13, 2, 6),
-        name='Sam',
-        location=[-73.687, 40.68830]
-    )
+	#Create a demo user
+	demo_user = User(
+		id=2,
+		email='demouser@demo.com',
+		handle='DemoUser',
+		first_name='Demo',
+		last_name='User',
+		date_joined=datetime.datetime(2015, 2, 25, 16, 14, 15),
+		is_staff=False,
+		is_active=True,
+		is_verified=True,
+		password_date=datetime.datetime(2015, 2, 25, 16, 14, 15)
+	)
 
-    test_json = test_data.to_json()
+	demo_user.set_password('DemoUser')
+	demo_user.save()
+	#Create a list of demo signals
 
-    test_data_2 = Event.from_json(test_json)
+	# for signal_dict in demo_data['signals']:
+	# 	provider = core_api.ProviderApi.get(Q(id=signal_dict['provider'])).get()
+	# 	signal = Signal()
 
-    for signal_dict in demo_data['signals']:
-        provider = core_api.ProviderApi.get(Q(id=signal_dict['provider'])).get()
-        signal = Signal()
+	test_data = Data(
+		created=datetime.datetime(2014, 12, 31, 15, 22, 24),
+		updated=datetime.datetime(2014, 12, 31, 15, 22, 24),
+		user_id=1,
+		data_blob={"d": {"array": [1, 2, 3], "boolean": True, "null": None, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"}}
+	)
 
-    for event in demo_data['events']:
-        if hasattr(event, 'event'):
-            demo_event =Event(
-                user_id=1,
-                created=datetime.datetime(2014, 12, 1, 19, 54, 6),
-                updated=datetime.datetime(2014, 12, 1, 19, 54, 6),
-                signal_id=2,
-                provider_id=3,
-                provider_name='steam',
-                datetime=datetime.datetime(2014, 12, 1, 19, 54, 6),
-                name='Thomas',
-                location=[-73.68, 40.68832]
-            )
-            ObaseAPI.EventApi.post(demo_event)
+	test_event = Event(
+		user_id=1,
+		created=datetime.datetime(2014, 12, 31, 15, 22, 24),
+		updated=datetime.datetime(2014, 12, 31, 15, 22, 24),
+		signal_id=4,
+		provider_id=5,
+		provider_name='dropbox',
+		datetime=datetime.datetime(2014, 12, 31, 15, 22, 24),
+		name='Uploaded file "Big Air"',
+		location=[-73.68855, 40.68719]
+	)
+
+	test_message = Message(
+		user_id=1,
+		message_to=["Sarah"],
+		message_from="John",
+		message_body="I am done with Justin Bieber"
+	)
+
+	test_data_json = test_data.to_json()
+
+	test_data_from_json = Data.from_json(test_data_json)
+
+	test_event_json = test_event.to_json()
+
+	test_event_from_json = Event.from_json(test_event_json)
+
+	test_message_json = test_message.to_json()
+
+	test_message_from_json = Message.from_json(test_message_json)
+
+	for event in demo_data['events']:
+		temp_data = event['data']
+		insert_data = Data(
+			created=temp_data['created'],
+			updated=temp_data['updated'],
+			user_id=temp_data['user_id'],
+			data_blob=temp_data['data_blob']
+		)
+
+		data_id = ObaseAPI.DataApi.post(insert_data)['id']
+
+		temp_event = event['event']
+		insert_event = Event(
+			created=temp_event['created'],
+			updated=temp_event['updated'],
+			user_id=temp_event['user_id'],
+			datetime=temp_event['datetime'],
+			location=temp_event['location'],
+			name=temp_event['name'],
+			provider_id=temp_event['provider_id'],
+			provider_name=temp_event['provider_name'],
+			signal_id=temp_event['signal_id'],
+			data=data_id
+		)
+
+		event_id = ObaseAPI.EventApi.post(insert_event)['id']
+
+	for message in demo_data['messages']:
+		temp_data = message['data']
+		insert_data = Data(
+			created=temp_data['created'],
+			updated=temp_data['updated'],
+			user_id=temp_data['user_id'],
+			data_blob=temp_data['data_blob']
+		)
+
+		data_id = ObaseAPI.DataApi.post(insert_data)['id']
+
+		temp_event = message['event']
+		insert_event = Event(
+			created=temp_event['created'],
+			updated=temp_event['updated'],
+			user_id=temp_event['user_id'],
+			datetime=temp_event['datetime'],
+			location=temp_event['location'],
+			name=temp_event['name'],
+			provider_id=temp_event['provider_id'],
+			provider_name=temp_event['provider_name'],
+			signal_id=temp_event['signal_id'],
+			data=data_id
+		)
+
+		event_id = ObaseAPI.EventApi.post(insert_event)['id']
+
+		temp_message = message['message']
+		insert_message = Message(
+			message_to=temp_message['message_to'],
+			message_from=temp_message['message_from'],
+			message_body=temp_message['message_body'],
+			user_id=temp_message['user_id'],
+			event=event_id
+		)
+
+		message_id = ObaseAPI.MessageApi.post(insert_message)['id']
 
 # test_data=Event(
 #     user_id=1,
