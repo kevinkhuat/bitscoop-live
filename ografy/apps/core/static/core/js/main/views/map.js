@@ -46,7 +46,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: newData[index].location.coordinates
+					coordinates: newData[index].location
 				},
 				properties: {
 					title: newData[index].name,

@@ -3,8 +3,8 @@
 		{
 			"data": {
 				"user_id": 2,
-				"created": "2013-04-11 03:36:12+00:00",
-				"updated": "2013-04-11 03:36:12+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"data_blob": {
 					"d": {
 						"null": null,
@@ -17,22 +17,22 @@
 				}
 			},
 			"event": {
-				"created": "2013-04-11 03:36:12+00:00",
-				"updated": "2013-04-11 03:36:12+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 3,
 				"provider_name": "steam",
 				"name": "Started playing Half-Life 2",
-				"datetime": "2013-04-11 03:36:12+00:00",
-				"location": [-73.6875, 40.6884]
+				"datetime": "2015-06-13 13:10:33-05:00",
+				"location": [-73.9786479, 40.7534117]
 			}
 		},
 		{
 			"data": {
 				"user_id": 2,
-				"created": "2014-12-26 23:18:55+00:00",
-				"updated": "2014-12-26 23:18:55+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"data_blob": {
 					"d": {
 						"null": null,
@@ -45,22 +45,22 @@
 				}
 			},
 			"event": {
-				"created": "2014-12-26 23:18:55+00:00",
-				"updated": "2014-12-26 23:18:55+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
 				"signal_id": 3,
 				"provider_id": 8,
 				"provider_name": "github",
 				"name": "Commit #379 to project NumberCruncher",
-				"datetime": "2014-12-26 23:18:55+00:00",
-				"location": [-73.68855, 40.68719]
+				"datetime": "2015-06-13 17:22:11-05:00",
+				"location": [-73.9822581, 40.753178]
 			}
 		},
 		{
 			"data": {
 				"user_id": 2,
-				"created": "2014-12-31 04:27:01+00:00",
-				"updated": "2014-12-31 04:27:01+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"data_blob": {
 					"d": {
 						"string": "Hello World",
@@ -73,23 +73,23 @@
 				}
 			},
 			"event": {
-				"created": "2014-12-31 04:27:01+00:00",
-				"updated": "2014-12-31 04:27:01+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
-				"signal_id": 4,
-				"provider_id": 5,
+				"signal_id": 6,
+				"provider_id": 13,
 				"provider_name": "dropbox",
-				"name": "Uploaded file \"Big Air\"",
-				"datetime": "2014-12-31 04:27:01+00:00",
-				"location": [-73.68855, 40.68719]
+				"name": "Played \"It's All About the Benjamins\"",
+				"datetime": "2015-06-13 17:52:07-05:00",
+				"location": [-73.9819792, 40.7541614]
 			}
 		}
 	],
 	"messages": [
 		{
 			"data": {
-				"created": "2013-06-14 18:23:44+00:00",
-				"updated": "2013-06-16 03:01:18+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
 				"data_blob": {
 					"d": {
@@ -103,28 +103,28 @@
 				}
 			},
 			"event": {
-				"created": "2013-06-14 18:23:44+00:00",
-				"updated": "2013-06-16 03:01:18+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
-				"signal_id": 4,
-				"provider_id": 2,
-				"provider_name":"twitter",
+				"signal_id": 1,
+				"provider_id": 1,
+				"provider_name":"facebook",
 				"name": "Message to Sam and Arnold",
-				"datetime": "2013-06-13 19:06:22+00:00",
-				"location": [-73.687, 40.6883]
+				"datetime": "2015-06-13 13:06:22-05:00",
+				"location": [-73.9770547, 40.7529952]
 			},
 			"message": {
 				"user_id": 2,
 				"message_to": ["Arnold", "Sam"],
 				"message_from": "John",
-				"message_body": "Meet you at Pizza 'Spress in 20 minutes"
+				"message_body": "Just arrived at Grand Central"
 			}
 		},
 		{
 			"data": {
 				"user_id": 2,
-				"created": "2013-06-14 18:23:44+00:00",
-				"updated": "2013-06-16 03:01:18+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"data_blob": {
 					"d": {
 						"string": "Hello World",
@@ -137,29 +137,28 @@
 				}
 			},
 			"event": {
-				"created": "2013-06-14 18:23:44+00:00",
-				"updated": "2013-06-16 03:01:18+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
 				"signal_id": 4,
 				"provider_id": 2,
 				"provider_name": "twitter",
-				"name": "Message to John and Sam",
-				"datetime": "2013-06-13 19:09:11+00:00",
-				"location": [-73.68702, 40.68827]
+				"name": "Message to John",
+				"datetime": "2015-06-13 13:09:51-05:00",
+				"location": [-73.9778781, 40.7531232]
 			},
 			"message": {
 				"user_id": 2,
-				"message_to":
-				["John", "Sam"],
+				"message_to": ["John"],
 				"message_from": "Arnold",
-				"message_body": "The bus was a few minutes late"
+				"message_body": "Cool, I'll meet you at the library in like 20 minutes"
 			}
 		},
 		{
 			"data": {
 				"user_id": 2,
-				"created": "2014-12-25 20:56:08+00:00",
-				"updated": "2014-12-25 21:03:03+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"data_blob": {
 					"d": {
 						"number": 123,
@@ -172,21 +171,293 @@
 				}
 			},
 			"event": {
-				"created": "2014-12-25 20:56:08+00:00",
-				"updated": "2014-12-25 21:03:03+00:00",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
 				"signal_id": 1,
 				"provider_id": 1,
 				"provider_name": "facebook",
-				"name": "Message to Sarah",
-				"datetime": "2014-12-25 20:37:00+00:00",
-				"location": [-73.68782, 40.68823]
+				"name": "Facebook Bieber",
+				"datetime": "2015-06-13 13:14:29-05:00",
+				"location": [-73.9807507,40.7536332]
 			},
 			"message": {
 				"user_id": 2,
-				"message_to": ["Sarah"],
-				"message_from": "John",
+				"message_to": ["John", "Alan", "Arnold", "Liz R.", "Sarah"],
+				"message_from": "Sam",
 				"message_body": "I am done with Justin Bieber"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Message to Sam and Arnold",
+				"datetime": "2015-06-13 13:16:50-05:00",
+				"location": [-73.9810485, 40.7533406]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Arnold", "Sam"],
+				"message_from": "John",
+				"message_body": "Wow, the library is huge!"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 4,
+				"provider_id": 10,
+				"provider_name":"instagram",
+				"name": "Photo",
+				"datetime": "2015-06-13 13:18:11-05:00",
+				"location": [-73.9813998, 40.7528326]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Arnold", "Sam", "Liz R.", "Alan", "Sasha", "Miguel"],
+				"message_from": "John",
+				"message_body": "Outside the New York Public Library"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Twitter Message",
+				"datetime": "2015-06-13 13:18:41-05:00",
+				"location": [-73.9814186, 40.7528123]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["John"],
+				"message_from": "Sam",
+				"message_body": "I'm going to be in your area this evening, want to meet for dinner?"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Twitter Message",
+				"datetime": "2015-06-13 13:18:59-05:00",
+				"location": [-73.9814186, 40.7528123]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Sam", "Arnold"],
+				"message_from": "John",
+				"message_body": "Sure, we shouldn't be too late"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Twitter Message",
+				"datetime": "2015-06-13 17:29:53-05:00",
+				"location": [-73.9822581, 40.753178]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Sam"],
+				"message_from": "John",
+				"message_body": "Want to eat at the Chipotle across the street?"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Twitter Message",
+				"datetime": "2015-06-13 17:32:26-05:00",
+				"location": [-73.9822581, 40.753178]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["John"],
+				"message_from": "Sam",
+				"message_body": "Sure, I've been craving a big ol' burrito"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 2,
+				"provider_name":"twitter",
+				"name": "Twitter",
+				"datetime": "2015-06-13 17:32:26-05:00",
+				"location": [-73.9822581, 40.753178]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Sam"],
+				"message_from": "John",
+				"message_body": "We'll meet you there at 6"
+			}
+		},
+		{
+			"data": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null
+					}
+				}
+			},
+			"event": {
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 4,
+				"provider_id": 10,
+				"provider_name":"instagram",
+				"name": "Photo",
+				"datetime": "2015-06-13 18:06:30-05:00",
+				"location": [-73.9814588, 40.7539969]
+			},
+			"message": {
+				"user_id": 2,
+				"message_to": ["Sam", "Arnold", "Kim", "Alan", "Liz R.", "Liz L.", "Morris", "Miguel"],
+				"message_from": "John",
+				"message_body": "I've seen dogs that weigh less than my burrito!"
 			}
 		}
 	],
@@ -200,8 +471,8 @@
 			"connected": true,
 			"enabled": true,
 			"frequency": 1,
-			"created": "2010-04-20T20:08:21.634121",
-			"message_from": "2010-04-20T20:08:21.634121"
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
 		},
 		{
 			"user": 2,
@@ -212,8 +483,8 @@
 			"connected": true,
 			"enabled": true,
 			"frequency": 1,
-			"created": "2010-04-20T20:08:21.634121",
-			"message_from": "2010-04-20T20:08:21.634121"
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
 		},
 		{
 			"user": 2,
@@ -224,20 +495,20 @@
 			"connected": true,
 			"enabled": true,
 			"frequency": 1,
-			"created": "2010-04-20T20:08:21.634121",
-			"message_from": "2010-04-20T20:08:21.634121"
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
 		},
 		{
 			"user": 2,
-			"provider": 5,
-			"name": "Demo's Dropbox",
+			"provider": 10,
+			"name": "Demo's Instagram",
 			"psa_backend_uid": "",
 			"complete": true,
 			"connected": true,
 			"enabled": true,
 			"frequency": 1,
-			"created": "2010-04-20T20:08:21.634121",
-			"message_from": "2010-04-20T20:08:21.634121"
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
 		},
 		{
 			"user": 2,
@@ -248,8 +519,20 @@
 			"connected": true,
 			"enabled": true,
 			"frequency": 1,
-			"created": "2010-04-20T20:08:21.634121",
-			"message_from": "2010-04-20T20:08:21.634121"
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
+		},
+		{
+			"user": 2,
+			"provider": 13,
+			"name": "Demo's Spotify",
+			"psa_backend_uid": "",
+			"complete": true,
+			"connected": true,
+			"enabled": true,
+			"frequency": 1,
+			"created": "2011-06-14 13:23:44-05:00",
+			"updated": "2011-06-16 03:01:18-05:00"
 		}
 	]
 }

@@ -1,5 +1,5 @@
 //Render the List View on the main page
-function listView(detailViewInst, dataInst, cacheInst, sessionInst) {
+function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst) {
 	//Render the base framework of the List View
 	function renderBase() {
 		//Render the list title and the container for the list elements using Nunjucks
@@ -10,8 +10,8 @@ function listView(detailViewInst, dataInst, cacheInst, sessionInst) {
 		//Create an instance of the Detail panel, get the map and geoJSON properties it created,
 		//then render the List View's content.
 		var thisDetailViewInst = detailViewInst.renderContent(true);
-		var map = thisDetailViewInst.map;
-		var geoJSON = thisDetailViewInst.geoJSON;
+		var map = mapboxViewInst.map;
+		var geoJSON = mapboxViewInst.geoJSON;
 		renderContent(map, geoJSON);
 	}
 

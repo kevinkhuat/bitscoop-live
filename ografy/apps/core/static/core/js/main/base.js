@@ -17,14 +17,14 @@ function baseView() {
 	//Cookie/Session Handler
 	var sessionInst = sessionsCookies();
 
-	//View components
-	var detailViewInst = detailView()
-
 	//Mapbox handler
-	var mapboxViewInst = mapboxManager();;
+	var mapboxViewInst = mapboxManager();
+
+	//View components
+	var detailViewInst = detailView(mapboxViewInst);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, cacheInst, sessionInst, geocoder);
+	var listViewInst = listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst);
 	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst);
 
 	//Search components
@@ -63,7 +63,7 @@ function baseView() {
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
 //			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-			var searchString = '(name contains Sam)';
+			var searchString = '(provider_name contains twitter)';
 			console.log(searchString);
 			dataInst.search(searchString);
 		});

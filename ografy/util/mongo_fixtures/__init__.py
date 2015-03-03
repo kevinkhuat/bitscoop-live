@@ -37,19 +37,35 @@ def load_fixture(path):
 	demo_user.save()
 	#Create a list of demo signals
 
-	# for signal_dict in demo_data['signals']:
-	# 	provider = core_api.ProviderApi.get(Q(id=signal_dict['provider'])).get()
-	# 	signal = Signal()
+	for signal_dict in demo_data['signals']:
+		user = core_api.UserApi.get(Q(id=signal_dict['user'])).get()
+		provider = core_api.ProviderApi.get(Q(id=signal_dict['provider'])).get()
+		signal = Signal(
+		    user=user,
+		    provider=provider,
+		    name=signal_dict['name'],
+		    psa_backend_uid=signal_dict['psa_backend_uid'],
+
+		    complete=signal_dict['complete'],
+		    connected=signal_dict['connected'],
+		    enabled=signal_dict['enabled'],
+
+		    frequency=signal_dict['frequency'],
+
+		    created=signal_dict['created'],
+		    updated=signal_dict['updated']
+		)
+		signal.save()
 
 	test_data = Data(
 		created=datetime.datetime(2014, 12, 31, 15, 22, 24),
 		updated=datetime.datetime(2014, 12, 31, 15, 22, 24),
-		user_id=1,
+		user_id=2,
 		data_blob={"d": {"array": [1, 2, 3], "boolean": True, "null": None, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"}}
 	)
 
 	test_event = Event(
-		user_id=1,
+		user_id=2,
 		created=datetime.datetime(2014, 12, 31, 15, 22, 24),
 		updated=datetime.datetime(2014, 12, 31, 15, 22, 24),
 		signal_id=4,
@@ -61,7 +77,7 @@ def load_fixture(path):
 	)
 
 	test_message = Message(
-		user_id=1,
+		user_id=2,
 		message_to=["Sarah"],
 		message_from="John",
 		message_body="I am done with Justin Bieber"
@@ -145,7 +161,7 @@ def load_fixture(path):
 		message_id = ObaseAPI.MessageApi.post(insert_message)['id']
 
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2013, 2, 1, 11, 23, 6),
 #     updated=datetime.datetime(2013, 4, 1, 13, 2, 6),
 #     signal_id=2,
@@ -175,7 +191,7 @@ def load_fixture(path):
 # ObaseAPI.EventApi.post(test_data)
 #
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2014, 12, 3, 19, 54, 6),
 #     updated=datetime.datetime(2014, 12, 3, 19, 54, 6),
 #     signal_id=1,
@@ -190,7 +206,7 @@ def load_fixture(path):
 # ObaseAPI.EventApi.post(test_data)
 #
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2014, 12, 8, 19, 54, 6),
 #     updated=datetime.datetime(2014, 12, 8, 19, 54, 6),
 #     signal_id=3,
@@ -205,7 +221,7 @@ def load_fixture(path):
 # ObaseAPI.EventApi.post(test_data)
 #
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2014, 11, 3, 19, 54, 6),
 #     updated=datetime.datetime(2014, 11, 3, 19, 54, 6),
 #     signal_id=1,
@@ -220,7 +236,7 @@ def load_fixture(path):
 # ObaseAPI.EventApi.post(test_data)
 #
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2014, 3, 2, 19, 54, 6),
 #     updated=datetime.datetime(2014, 3, 2, 19, 54, 6),
 #     signal_id=4,
@@ -235,7 +251,7 @@ def load_fixture(path):
 # ObaseAPI.EventApi.post(test_data)
 #
 # test_data=Event(
-#     user_id=1,
+#     user_id=2,
 #     created=datetime.datetime(2014, 12, 14, 19, 54, 6),
 #     updated=datetime.datetime(2014, 12, 14, 19, 54, 6),
 #     signal_id=2,
