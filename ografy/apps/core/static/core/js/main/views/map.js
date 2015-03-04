@@ -34,7 +34,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 
 		geoJSON.features = [];
 
-		var newData = dataInst.getResultData();
+		var newData = dataInst.getResultData().reverse();
 
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in newData) {
@@ -79,13 +79,49 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		color: '#000'
 		};
 
-		var polyline = L.polyline(line, polyline_options).addTo(map);
+		map.polyline = L.polyline(line, polyline_options).addTo(map);
+
+
+		L.control.layers({"Street View": map.featureLayer}, {"Directions": map.polyline}).addTo(map);
+		//FIXME: This is most of what's needed to generate walking directions once the API is working
+//		var directions = L.mapbox.directions({
+//			profile: 'mapbox.driving'
+//		});
+//
+//		for (var index in geoJSON.features) {
+//			if (index == 0) {
+//				directions.setOrigin(geoJSON.features[index]);
+//			}
+//			else if (index == geoJSON.features.length-1){
+//				directions.setDestination(geoJSON.features[index]);
+//			}
+//			else {
+//				directions.addWaypoint(index-1, geoJSON.features[index]);
+//			}
+//		}
+//
+//		directions.query();
+//		map.directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
+
+		map.on('click', function(e) {
+			resetColors(map, geoJSON);
+			//Populate the detail panel content with information from the selected item.
+			$('.detail.main-label').html('Select an Event at left to see its details.');
+			$('.detail.time-content').html('Select an Event at left to see its details.');
+			$('.detail.location-content').html('Select an Event at left to see its details.');
+			$('.detail.body-content').html('Select an Event at left to see its details.');
+		})
 
 		//Bind an event listener that triggers when an item on the map is selected.
 		//This listener will populate the detail content with the selected item's information.
 		map.featureLayer.on('click', function(e) {
 			//Save which item was selected
 			var feature = e.layer.feature;
+
+			resetColors(map, geoJSON);
+			feature.properties['old-color'] = feature.properties['marker-color'];
+			feature.properties['marker-color'] = '#ff8888';
+			map.featureLayer.setGeoJSON(geoJSON);
 
 			//Populate the detail panel content with information from the selected item.
 			$('.detail.main-label').html(feature.properties.description);
@@ -94,7 +130,13 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			$('.detail.body-content').html(String(feature.properties.data));
 		});
 	}
-
+	function resetColors(map, geoJSON) {
+		for (var i = 0; i < geoJSON.features.length; i++) {
+			geoJSON.features[i].properties['marker-color'] = geoJSON.features[i].properties['old-color'] ||
+				geoJSON.features[i].properties['marker-color'];
+		}
+		map.featureLayer.setGeoJSON(geoJSON);
+	}
 	return {
 		renderBase: renderBase,
 		renderContent: renderContent,

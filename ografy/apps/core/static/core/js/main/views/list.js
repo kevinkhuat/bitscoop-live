@@ -17,11 +17,12 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 
 	//Render the List View content
 	function renderContent(map, geoJSON) {
+		map.removeLayer(map.featureLayer);
 		//Iterate through json and render list items using Nunjucks templates
-		var eventData = dataInst.getResultData();
+		var resultData = dataInst.getResultData().reverse();
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
-			eventData: eventData
+			resultData: resultData
 		});
 		$('.list.content').html(listItems);
 

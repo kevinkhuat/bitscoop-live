@@ -18,7 +18,19 @@ function mapboxManager() {
 
 		//The instantiation of a map takes the DOM element where the map will be stored
 		//as a parameter, hence why the DOM element must exist before this function is called.
-		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {zoomControl: false});
+		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {
+			zoomControl: false,
+			tileLayer: {
+				// This map option disables world wrapping. by default, it is false.
+				continuousWorld: false,
+				// This option disables loading tiles outside of the world bounds.
+				noWrap: true
+			}
+		}).addControl(L.mapbox.geocoderControl('mapbox.places', {
+			autocomplete: true
+		}));
+
+		L.control.fullscreen().addTo(this.map);
 		L.control.zoomslider().addTo(this.map);
 	}
 

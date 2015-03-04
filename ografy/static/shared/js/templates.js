@@ -121,7 +121,7 @@ var colno = null;
 var output = "";
 try {
 frame = frame.push();
-var t_3 = runtime.contextOrFrameLookup(context, frame, "eventData");
+var t_3 = runtime.contextOrFrameLookup(context, frame, "resultData");
 if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
