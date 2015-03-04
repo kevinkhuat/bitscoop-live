@@ -52,7 +52,7 @@ function dataStore() {
 			}
 		}
 
-		var listItems = nunjucks.render('event_list.html',
+		var listItems = nunjucks.render('list/event_list.html',
 			{
 				eventData: newData
 			});
@@ -91,7 +91,7 @@ function dataStore() {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
-			resultData = data;
+			resultData = data.sort(function(a, b) {return Date.parse(a.datetime)-Date.parse(b.datetime)});
 			updateData();
 			currentViewInst.updateContent();
 		});

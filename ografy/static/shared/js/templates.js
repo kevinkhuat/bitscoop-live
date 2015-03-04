@@ -1,3 +1,20 @@
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["Polyselect.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=utf-8 />\n<title>Show drawn polygon area</title>\n<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>\n<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />\n<style>\n  body { margin:0; padding:0; }\n  #map { position:absolute; top:0; bottom:0; width:100%; }\n</style>\n</head>\n<body>\n<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />\n<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>\n<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js'></script>\n\n<div id='map'></div>\n\n<script>\nL.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';\nvar map = L.mapbox.map('map', 'examples.map-i86nkdio')\n    .setView([38.89399, -77.03659], 17);\n\nvar featureGroup = L.featureGroup().addTo(map);\n\nvar drawControl = new L.Control.Draw({\n  edit: {\n    featureGroup: featureGroup\n  },\n  draw: {\n    polygon: true,\n    polyline: false,\n    rectangle: false,\n    circle: false,\n    marker: false\n  }\n}).addTo(map);\n\nmap.on('draw:created', showPolygonArea);\nmap.on('draw:edited', showPolygonAreaEdited);\n\nfunction showPolygonAreaEdited(e) {\n  e.layers.eachLayer(function(layer) {\n    showPolygonArea({ layer: layer });\n  });\n}\nfunction showPolygonArea(e) {\n  featureGroup.clearLayers();\n  featureGroup.addLayer(e.layer);\n  e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');\n  e.layer.openPopup();\n}\n</script>\n</body>\n</html>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["base.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -45,7 +62,7 @@ root: root
 };
 })();
 })();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["event_list.html"] = (function() {function root(env, context, frame, runtime, cb) {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["list/event_list.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
@@ -70,210 +87,6 @@ output += "\">\n</div>\n";
 }
 }
 frame = frame.pop();
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/date_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"date text\">\n\t<input class='date-start' placeholder=\"Start date\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/date_before_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"date text\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/date_between_fields.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"date text\">\n\t<input class='date-start' placeholder=\"Start date\">\n\t<input class='date-end' placeholder=\"End date\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/date_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<select class=\"date\">\n\t<option value=\"after\">After</option>\n\t<option value=\"before\">Before</option>\n\t<option value=\"between\">Between</option>\n</select>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/filter.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"flex filter box\">\n\t<div class=\"grow filter options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"filter button remove\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"filter button add\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/from_text_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"from text\">\n\t<input class='from-text' placeholder=\"Name\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/initial_filter_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<select class=\"initial\">\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/time_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"time text\">\n\t<input class='time-start' placeholder=\"Start time\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/time_before_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"time text\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/time_between_fields.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"time text\">\n\t<input class='time-start' placeholder=\"Start time\">\n\t<input class='time-end' placeholder=\"End time\">\n</div>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/time_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<select class=\"time\">\n\t<option value=\"after\">After</option>\n\t<option value=\"before\">Before</option>\n\t<option value=\"between\">Between</option>\n</select>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["filter/to_text_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<div class=\"to text\">\n\t<input class='to-text' placeholder=\"Name\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -325,7 +138,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), e
 output += "\">\n\t<div class=\"list item-provider\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list item-date\">\n\t\t";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"created", env.autoesc), env.autoesc);
+output += runtime.suppressValue(runtime.memberLookup((t_4),"datetime", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list item-name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n\t<div class=\"list item-data\">\n\t\t";
@@ -352,6 +165,210 @@ var colno = null;
 var output = "";
 try {
 output += "<div id=\"mapbox\" class=\"grow\"></div>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filter.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"flex filter box\">\n\t<div class=\"grow filter options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"filter button remove\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"filter button add\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/date/date_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"date text\">\n\t<input class='date-start' type=\"date\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/date/date_before_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"date text\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/date/date_between_fields.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"date text\">\n\t<input class='date-start' type=\"date\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/date/date_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<select class=\"date\">\n\t<option value=\"after\">After</option>\n\t<option value=\"before\">Before</option>\n\t<option value=\"between\">Between</option>\n</select>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/message_from/from_text_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"from text\">\n\t<input class='from-text' placeholder=\"Name\">\n</div>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/message_to/to_text_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"to text\">\n\t<input class='to-text' placeholder=\"Name\">\n</div>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/time/time_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"time text\">\n\t<input class='time-start' type=\"time\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/time/time_before_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"time text\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/time/time_between_fields.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"time text\">\n\t<input class='time-start' type=\"time\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/time/time_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<select class=\"time\">\n\t<option value=\"after\">After</option>\n\t<option value=\"before\">Before</option>\n\t<option value=\"between\">Between</option>\n</select>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/initial_filter_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<select class=\"initial\">\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
 cb(null, output);
 ;
 } catch (e) {

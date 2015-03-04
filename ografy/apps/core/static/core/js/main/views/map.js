@@ -69,6 +69,18 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//Fit the map's view so that all of the items are visible
 		map.fitBounds(map.featureLayer.getBounds());
 
+		var line = [];
+
+		map.featureLayer.eachLayer(function(marker) {
+			line.push(marker.getLatLng());
+		});
+
+		var polyline_options = {
+		color: '#000'
+		};
+
+		var polyline = L.polyline(line, polyline_options).addTo(map);
+
 		//Bind an event listener that triggers when an item on the map is selected.
 		//This listener will populate the detail content with the selected item's information.
 		map.featureLayer.on('click', function(e) {

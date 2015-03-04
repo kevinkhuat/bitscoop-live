@@ -210,7 +210,7 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Message to Sam and Arnold",
 				"datetime": "2015-06-13 13:16:50-05:00",
 				"location": [-73.9810485, 40.7533406]
@@ -278,7 +278,7 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 13:18:41-05:00",
 				"location": [-73.9814186, 40.7528123]
@@ -312,7 +312,7 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 13:18:59-05:00",
 				"location": [-73.9814186, 40.7528123]
@@ -346,7 +346,7 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 17:29:53-05:00",
 				"location": [-73.9822581, 40.753178]
@@ -380,7 +380,7 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 17:32:26-05:00",
 				"location": [-73.9822581, 40.753178]
@@ -414,9 +414,9 @@
 				"user_id": 2,
 				"signal_id": 2,
 				"provider_id": 2,
-				"provider_name":"twitter",
+				"provider_name": "twitter",
 				"name": "Twitter",
-				"datetime": "2015-06-13 17:32:26-05:00",
+				"datetime": "2015-06-13 17:32:28-05:00",
 				"location": [-73.9822581, 40.753178]
 			},
 			"message": {

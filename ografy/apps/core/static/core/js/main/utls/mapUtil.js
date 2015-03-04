@@ -18,7 +18,8 @@ function mapboxManager() {
 
 		//The instantiation of a map takes the DOM element where the map will be stored
 		//as a parameter, hence why the DOM element must exist before this function is called.
-		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0');
+		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {zoomControl: false});
+		L.control.zoomslider().addTo(this.map);
 	}
 
 	//Change the map's context

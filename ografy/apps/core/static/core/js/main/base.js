@@ -63,7 +63,7 @@ function baseView() {
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
 //			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-			var searchString = '(provider_name contains twitter)';
+			var searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam)';
 			console.log(searchString);
 			dataInst.search(searchString);
 		});

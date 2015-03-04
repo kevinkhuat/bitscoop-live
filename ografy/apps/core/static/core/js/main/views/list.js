@@ -46,7 +46,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 					//When the data has been acquired, update the detail content and detail map
 					//with the new data
 					var single_data = data;
-					detailViewInst.updateContent(single_data.provider_name, single_data.created, String(single_data.location.coordinates), String(single_data.data));
+					detailViewInst.updateContent(single_data.provider_name, single_data.datetime, String(single_data.location.coordinates), String(single_data.data));
 					detailViewInst.updateMap(single_data.provider_name, map, single_data.location.coordinates);
 				});
 			}
