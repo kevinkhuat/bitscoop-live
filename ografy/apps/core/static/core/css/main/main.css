@@ -199,7 +199,7 @@
 #mapbox {
     height: 100%;
     width: 100%;
-    position: relative;
+    position: absolute;
 }
 
 .list.content {
@@ -263,10 +263,6 @@
 
 .data-view {
     position: relative;
-}
-
-#mapbox {
-    position: absolute;
 }
 
 .search.dropdown {
