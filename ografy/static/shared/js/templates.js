@@ -198,7 +198,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date text\">\n\t<input class='date-start' type=\"date\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='date-start' type=\"date\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -215,7 +215,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date text\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -232,7 +232,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"date text\">\n\t<input class='date-start' type=\"date\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='date-start' type=\"date\">\n\t<input class='date-end' type=\"date\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -300,7 +300,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time text\">\n\t<input class='time-start' type=\"time\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='time-start' type=\"time\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -317,7 +317,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time text\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -334,7 +334,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"time text\">\n\t<input class='time-start' type=\"time\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
+output += "<div class=\"text\">\n\t<input class='time-start' type=\"time\">\n\t<input class='time-end' type=\"time\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

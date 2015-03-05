@@ -91,14 +91,19 @@ function dataStore() {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
-		for (index in data) {
-			data[index].updated = new Date(data[index].updated).toLocaleString();
-			data[index].created = new Date(data[index].created).toLocaleString();
-			data[index].datetime = new Date(data[index].datetime).toLocaleString();
-		}
-			resultData = data.sort(function(a, b) {return Date.parse(b.datetime)-Date.parse(a.datetime)});
-			updateData();
-			currentViewInst.updateContent();
+			if (data.length > 0) {
+				for (index in data) {
+					data[index].updated = new Date(data[index].updated).toLocaleString();
+					data[index].created = new Date(data[index].created).toLocaleString();
+					data[index].datetime = new Date(data[index].datetime).toLocaleString();
+				}
+				resultData = data.sort(function(a, b) {return Date.parse(b.datetime)-Date.parse(a.datetime)});
+				updateData();
+				currentViewInst.updateContent();
+			}
+			else if (data.length == 0) {
+
+			}
 		});
 	}
 

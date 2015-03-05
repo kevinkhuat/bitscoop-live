@@ -26,6 +26,8 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		});
 		$('.list.content').html(listItems);
 
+		setHeight();
+
 		//Bind an event listener that triggers when any list item is clicked
 		$('.list.item').click(function() {
 			//Remove 'active' from items other than the one that was clicked on
@@ -60,10 +62,16 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		});
 	}
 
+	function setHeight() {
+		var parentHeight = $('.main-list').height();
+		$('.list.content').height(parentHeight-30);
+	}
 
 	function updateContent() {
 
 	}
+
+	$(window).resize(function (){setHeight()});
 
 	return{
 		renderContent: renderContent,

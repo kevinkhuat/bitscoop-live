@@ -8,7 +8,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 	//Bind an event listener that triggers when the initial dropdown changes.
 	//This listener will call the appropriate render function based on which option was selected.
 	function addDropdown() {
-		var newDropdown = nunjucks.render('filter/initial_filter_dropdown.html');
+		var newDropdown = nunjucks.render('search/initial_filter_dropdown.html');
 		$('.filter.box:last').find('.filter.options').html(newDropdown);
 
 		var initDropdown = $('.filter.box:last').find('.initial')[0];
@@ -42,7 +42,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 	//Create the base elements of a filter
 	function createFilterBase() {
 		//Render the base framework of a filter from a template using Nunjucks.
-		var newFilter = nunjucks.render('filter/filter.html');
+		var newFilter = nunjucks.render('search/filter.html');
 		$('.filter.container').append(newFilter);
 
 		//Bind event listeners to the add filter and remove filter buttons.
@@ -131,7 +131,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 				var parent = currentElement.parentElement;
 
 				//Render the From field using Nunjucks and add it to the DOM
-				var newField = nunjucks.render('filter/from_text_field.html');
+				var newField = nunjucks.render('search/filters/message_from/from_text_field.html');
 				$(parent).append(newField);
 			}
 
@@ -152,7 +152,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			function dropdown(currentElement) {
 				var parent = currentElement.parentElement;
 				//Render the Date dropdown from a template using Nunjucks and add it to the DOM
-				var newDropdown = nunjucks.render('filter/date_dropdown.html');
+				var newDropdown = nunjucks.render('search/filters/date/date_dropdown.html');
 				$(parent).append(newDropdown);
 
 				//Bind an event listener to the new dropdown.
@@ -186,19 +186,19 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 			//Render the After field with Nunjucks and add it to the DOM.
 			function afterField(currentElement) {
-				var newDropdown = nunjucks.render('filter/date_after_field.html');
+				var newDropdown = nunjucks.render('search/filters/date/date_after_field.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
 			//Render the Before field with Nunjucks and add it to the DOM.
 			function beforeField(currentElement) {
-				var newDropdown = nunjucks.render('filter/date_before_field.html');
+				var newDropdown = nunjucks.render('search/filters/date/date_before_field.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
 			//Render the Between fields with Nunjucks and add them to the DOM.
 			function betweenFields(currentElement) {
-				var newDropdown = nunjucks.render('filter/date_between_fields.html');
+				var newDropdown = nunjucks.render('search/filters/date/date_between_fields.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
@@ -251,7 +251,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			function dropdown(currentElement) {
 				var parent = currentElement.parentElement;
 				//Render the Time dropdown from a template using Nunjucks and add it to the DOM
-				var newDropdown = nunjucks.render('filter/time_dropdown.html');
+				var newDropdown = nunjucks.render('search/filters/time/time_dropdown.html');
 				$(parent).append(newDropdown);
 
 				//Bind an event listener to the new dropdown.
@@ -285,19 +285,19 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 			//Render the After field with Nunjucks and add it to the DOM.
 			function afterField(currentElement) {
-				var newDropdown = nunjucks.render('filter/time_after_field.html');
+				var newDropdown = nunjucks.render('search/filters/time/time_after_field.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
 			//Render the Before field with Nunjucks and add it to the DOM.
 			function beforeField(currentElement) {
-				var newDropdown = nunjucks.render('filter/time_before_field.html');
+				var newDropdown = nunjucks.render('search/filters/time/time_before_field.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
 			//Render the Between fields with Nunjucks and add them to the DOM.
 			function betweenFields(currentElement) {
-				var newDropdown = nunjucks.render('filter/time_between_fields.html');
+				var newDropdown = nunjucks.render('search/filters/time/time_between_fields.html');
 				$(currentElement.parentElement).append(newDropdown);
 			}
 
@@ -349,7 +349,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 				var parent = currentElement.parentElement;
 
 				//Render the To field using Nunjucks and add it to the DOM
-				var newField = nunjucks.render('filter/to_text_field.html');
+				var newField = nunjucks.render('search/filters/message_to/to_text_field.html');
 				$(parent).append(newField);
 			}
 
