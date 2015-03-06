@@ -71,10 +71,10 @@ function dataStore() {
 			}
 
 			if (found === true) {
-				$('div[data-id=' + id + ']').addClass('active');
+				$('div[event-id=' + id + ']').addClass('active');
 			}
 			else if (found === false) {
-				$('div[data-id=' + id + ']').removeClass('active');
+				$('div[event-id=' + id + ']').removeClass('active');
 			}
 		}
 	}

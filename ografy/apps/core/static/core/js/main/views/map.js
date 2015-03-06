@@ -64,7 +64,9 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		}
 
 		//Add the new element to the map
-		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
+		map.featureLayer = L.mapbox.featureLayer(geoJSON);
+
+		map.clusterGroup = new L.MarkerClusterGroup({animateAddingMarkers: true});
 
 		//Fit the map's view so that all of the items are visible
 		map.fitBounds(map.featureLayer.getBounds());
@@ -72,8 +74,11 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		var line = [];
 
 		map.featureLayer.eachLayer(function(marker) {
+			map.clusterGroup.addLayer(marker);
 			line.push(marker.getLatLng());
 		});
+
+		map.addLayer(map.clusterGroup);
 
 		var polyline_options = {
 		color: '#000'
@@ -104,7 +109,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 //		map.directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
 
 		map.on('click', function(e) {
-			resetColors(map, geoJSON);
+			resetColors(map);
 			//Populate the detail panel content with information from the selected item.
 			$('.detail.main-label').html('Select an Event at left to see its details.');
 			$('.detail.time-content').html('Select an Event at left to see its details.');
@@ -114,14 +119,14 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 
 		//Bind an event listener that triggers when an item on the map is selected.
 		//This listener will populate the detail content with the selected item's information.
-		map.featureLayer.on('click', function(e) {
+		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
 			var feature = e.layer.feature;
 
-			resetColors(map, geoJSON);
+			resetColors(map);
 			feature.properties['old-color'] = feature.properties['marker-color'];
 			feature.properties['marker-color'] = '#ff8888';
-			map.featureLayer.setGeoJSON(geoJSON);
+			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
 			$('.detail.main-label').html(feature.properties.description);
@@ -130,12 +135,16 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			$('.detail.body-content').html(String(feature.properties.data));
 		});
 	}
-	function resetColors(map, geoJSON) {
-		for (var i = 0; i < geoJSON.features.length; i++) {
-			geoJSON.features[i].properties['marker-color'] = geoJSON.features[i].properties['old-color'] ||
-				geoJSON.features[i].properties['marker-color'];
+	function resetColors(map) {
+		var clusterMarkers = map.clusterGroup.getLayers();
+		for (var index in clusterMarkers) {
+			var thisMarker = clusterMarkers[index];
+
+			thisMarker.feature.properties['marker-color'] = thisMarker.feature.properties['old-color'] ||
+				thisMarker.feature.properties['marker-color'];
+			thisMarker.setIcon(L.mapbox.marker.icon(thisMarker.feature.properties));
 		}
-		map.featureLayer.setGeoJSON(geoJSON);
+
 	}
 	return {
 		renderBase: renderBase,
