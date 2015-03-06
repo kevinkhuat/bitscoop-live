@@ -129,8 +129,8 @@ input:focus {
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
     border-radius: 0.25em;
 
-    -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.08) inset;
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.08) inset;
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
 
     -moz-user-select: none;
     -ms-user-select: none;
@@ -150,8 +150,8 @@ input:focus {
 .ui.button:active {
     background-color: #F1F1F1;
     color: rgba(0, 0, 0, 0.7);
-    -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.05) inset !important;
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.05) inset !important;
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
 }
 
 .ui.button:hover:not(:active) {
