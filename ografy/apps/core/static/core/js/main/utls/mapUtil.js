@@ -20,6 +20,12 @@ function mapboxManager() {
 		//as a parameter, hence why the DOM element must exist before this function is called.
 		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {
 			zoomControl: false,
+			//FIXME: This was added as a hack to work around a bug in Leaflet's clusterGroup.
+			//When reloading the map, at the highest zoom level (19), markers would no longer cluster.
+			//This would cause all markers at the same location to stack on top of each other.
+			//My solution was to restrict the zoom level to 18, where the bug does not appear.
+			//Should revisit if and when ClusterGroup is fixed.
+			maxZoom: 18,
 			tileLayer: {
 				// This map option disables world wrapping. by default, it is false.
 				continuousWorld: false,

@@ -52,6 +52,7 @@ def create_fixture_data(temp_data):
 
 def create_fixture_event(temp_event, data_id):
     return Event(
+        type=temp_event['type'],
         created=temp_event['created'],
         updated=temp_event['updated'],
         user_id=temp_event['user_id'],
@@ -82,7 +83,7 @@ def load_fixture(path):
 
     fixture_user = create_demo_user()
 
-    fixture_user.set_password('demoUser')
+    fixture_user.set_password('DemoUser')
     fixture_user.save()
 
     for signal_dict in fixture_data['signals']:

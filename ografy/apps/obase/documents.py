@@ -51,6 +51,7 @@ class Event(mongoengine.Document):
 
     # To be managed by the REST API
     # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
+    type = mongoengine.StringField(required=True)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
