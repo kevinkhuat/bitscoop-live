@@ -129,7 +129,8 @@
 .detail.sidebar {
     width: 300px;
     position: relative;
-    border-left: 2px solid;
+    border-left: 2px;
+    border-left-style: solid;
 }
 
 /*.detail {*/
@@ -198,7 +199,7 @@
 #mapbox {
     height: 100%;
     width: 100%;
-    position: relative;
+    position: absolute;
 }
 
 .list.content {
@@ -264,6 +265,6 @@
     position: relative;
 }
 
-#mapbox {
-    position: absolute;
+.search.dropdown {
+
 }
