@@ -1,5 +1,5 @@
 //Render the Map View on the main page
-function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst) {
+function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
 	var mapInst;
 	var map = 'pants';
 	var geoJSON = 'shorts';
@@ -66,11 +66,48 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//Add the new element to the map
 		map.featureLayer = L.mapbox.featureLayer(geoJSON);
 
-		map.clusterGroup = new L.MarkerClusterGroup({animateAddingMarkers: true});
+		map.clusterGroup = new L.MarkerClusterGroup();
 
-		//Fit the map's view so that all of the items are visible
-		map.fitBounds(map.featureLayer.getBounds());
+		var currentFocus = urlParserInst.getFocus();
+		var currentZoom = urlParserInst.getZoom();
 
+		if (currentFocus !== '' || currentZoom !== 0) {
+			if (currentFocus !== '' && currentZoom !== 0) {
+				map.setView(currentFocus.reverse(), currentZoom);
+			}
+			else if (currentFocus !== '') {
+				urlParserInst.setZoom(12);
+				currentZoom = urlParserInst.getZoom();
+				map.setView(currentFocus.reverse(), 12);
+			}
+			else {
+				urlParserInst.setFocus([parseFloat(geoplugin_latitude()), parseFloat(geoplugin_longitude())]);
+				currentFocus = urlParserInst.getFocus();
+				map.setView(currentFocus, currentZoom);
+			}
+		}
+		else {
+			//Fit the map's view so that all of the items are visible
+			map.fitBounds(map.featureLayer.getBounds());
+			urlParserInst.setZoom(map.getZoom());
+			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng])
+			currentZoom = urlParserInst.getZoom();
+			currentFocus = urlParserInst.getFocus();
+		}
+
+		urlParserInst.updateHash();
+
+		map.on('zoomend', function() {
+			urlParserInst.setZoom(map.getZoom());
+			currentZoom = urlParserInst.getZoom();
+			urlParserInst.updateHash();
+		});
+
+		map.on('moveend', function() {
+			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng]);
+			currentFocus = urlParserInst.getFocus();
+			urlParserInst.updateHash();
+		});
 		var line = [];
 
 		map.featureLayer.eachLayer(function(marker) {
@@ -146,6 +183,8 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		}
 
 	}
+
+
 	return {
 		renderBase: renderBase,
 		renderContent: renderContent,

@@ -1,7 +1,7 @@
 //Render the List View on the main page
-function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst) {
+function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
 	//Render the base framework of the List View
-	function renderBase() {
+	function renderBase(callback) {
 		//Render the list title and the container for the list elements using Nunjucks
 		//and insert them into the DOM
 		var list = nunjucks.render('list/list.html');
@@ -13,11 +13,14 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		var map = mapboxViewInst.map;
 		var geoJSON = mapboxViewInst.geoJSON;
 		renderContent(map, geoJSON);
+		callback();
 	}
 
-	//Render the List View content
 	function renderContent(map, geoJSON) {
 		map.removeLayer(map.featureLayer);
+	}
+	//Update the List View content
+	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
 		var resultData = dataInst.getResultData().reverse();
 		var listItems = nunjucks.render('list/list_elements.html',
@@ -62,13 +65,13 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		});
 	}
 
+	//This is used to set the height of the div containing the list content.
+	//It gets the height of the main-list div, then subtracts the 30-pixel height of the header
+	//and sets the list content div to this figure.
+	//This allows for making the content scrollable while leaving the header alone.
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
 		$('.list.content').height(parentHeight-30);
-	}
-
-	function updateContent() {
-
 	}
 
 	$(window).resize(function (){setHeight()});
