@@ -24,7 +24,7 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs(['main/utls/cache', 'main/utls/mapUtil', 'main/utls/model', 'main/utls/session',
-			'main/detail', 'main/views/list', 'main/views/map', 'main/filter/search',
+			'main/utls/url', 'main/detail', 'main/views/list', 'main/views/map', 'main/filter/search',
 			'main/filter/objects/data/metadata', 'main/filter/objects/event/metadata',
 			'main/filter/objects/message/metadata',  'main/base'],
 	function() {
