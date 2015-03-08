@@ -137,7 +137,7 @@ function urlParser() {
 	}
 
 	function updateHash() {
-		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[1] + ',' + currentFocus[0] + '&filters=' + currentFilters;
+		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[0] + ',' + currentFocus[1] + '&filters=' + currentFilters;
 		window.location.hash = urlString;
 	}
 

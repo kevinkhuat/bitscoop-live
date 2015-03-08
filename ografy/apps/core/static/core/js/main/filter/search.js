@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
+function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserInst) {
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its
@@ -21,6 +21,9 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			}
 			else if (currentElement.value == 'time') {
 				filters().time().dropdown(currentElement);
+			}
+			else if (currentElement.value == 'provider') {
+				filters().provider().dropdown(currentElement);
 			}
 			else if (currentElement.value == 'to') {
 				filters().to().dropdown(currentElement);
@@ -81,7 +84,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 				//If this isn't the first filter, append an AND to the top-level filter string.
 				if (i !== 0) {
-					filterString += ' AND ';
+					filterString += ' or ';
 				}
 
 				//Construct the filter string based on the filter type
@@ -90,6 +93,9 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 				}
 				else if (type == 'time') {
 					filterString += '(' + filters().time().toString(currentFilter) + ')';
+				}
+				else if (type == 'provider') {
+					filterString += '(' + filters().provider().toString(currentFilter) + ')';
 				}
 				else if (type == 'to') {
 					filterString += '(' + filters().to().toString(currentFilter) + ')';
@@ -103,6 +109,10 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			var encodedSearch = encodeURI($('.search-bar').val());
 			var encodedFilters = encodeURI(filterString);
 
+			urlParserInst.setSearchQuery(encodedSearch);
+			urlParserInst.setSearchFilters(encodedFilters);
+
+			console.log(encodedFilters);
 			//Perform a search based on the search terms and filters
 			dataInst.search(encodedFilters, mapViewInst, listViewInst);
 
@@ -243,6 +253,26 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			};
 		}
 
+		function provider() {
+			function dropdown(currentElement) {
+				var parent = currentElement.parentElement;
+
+				//Render the From field using Nunjucks and add it to the DOM
+				var newField = nunjucks.render('search/filters/provider/provider_dropdown.html');
+				$(parent).append(newField);
+			}
+
+			//Consruct a filter string from an inputted From
+			function toString(currentFilter) {
+				return 'provider_name contains ' + $(currentFilter).find('.provider')[0].value;
+			}
+
+			return {
+				dropdown: dropdown,
+				toString: toString
+			};
+		}
+
 		//Render the elements needed to filter on Times
 		function time() {
 			//Create the Time dropdown
@@ -365,6 +395,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 		return {
 			from: from,
 			date: date,
+			provider: provider,
 			time: time,
 			to: to
 		};

@@ -30,8 +30,18 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 	}
 
 	function updateContent() {
-		map.removeLayer(map.featureLayer);
+		var line = [];
+		if (map.hasLayer(map.clusterGroup)) {
+			map.removeLayer(map.clusterGroup);
+			map.removeLayer(map.polyline);
+			map.removeControl(map.layerControl);
+		}
+		//map.featureLayer.eachLayer(function(marker) {
+		//	map.clusterGroup.removeLayer(marker);
+		//});
 
+		map.removeLayer(map.featureLayer);
+		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
 		var newData = dataInst.getResultData().reverse();
@@ -68,7 +78,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 
 		map.clusterGroup = new L.MarkerClusterGroup();
 
-		var currentFocus = urlParserInst.getFocus();
+		var currentFocus = urlParserInst.getFocus().slice();
 		var currentZoom = urlParserInst.getZoom();
 
 		if (currentFocus !== '' || currentZoom !== 0) {
@@ -81,34 +91,21 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 				map.setView(currentFocus.reverse(), 12);
 			}
 			else {
-				urlParserInst.setFocus([parseFloat(geoplugin_latitude()), parseFloat(geoplugin_longitude())]);
+				urlParserInst.setFocus([parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())]);
 				currentFocus = urlParserInst.getFocus();
-				map.setView(currentFocus, currentZoom);
+				map.setView(currentFocus.reverse(), currentZoom);
 			}
 		}
 		else {
 			//Fit the map's view so that all of the items are visible
 			map.fitBounds(map.featureLayer.getBounds());
 			urlParserInst.setZoom(map.getZoom());
-			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng]);
+			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
 			currentZoom = urlParserInst.getZoom();
 			currentFocus = urlParserInst.getFocus();
 		}
 
 		urlParserInst.updateHash();
-
-		map.on('zoomend', function() {
-			urlParserInst.setZoom(map.getZoom());
-			currentZoom = urlParserInst.getZoom();
-			urlParserInst.updateHash();
-		});
-
-		map.on('moveend', function() {
-			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng]);
-			currentFocus = urlParserInst.getFocus();
-			urlParserInst.updateHash();
-		});
-		var line = [];
 
 		map.featureLayer.eachLayer(function(marker) {
 			map.clusterGroup.addLayer(marker);
@@ -118,13 +115,13 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		map.addLayer(map.clusterGroup);
 
 		var polyline_options = {
-		color: '#000'
+			color: '#000'
 		};
 
 		map.polyline = L.polyline(line, polyline_options).addTo(map);
 
 
-		L.control.layers({ 'Street View': map.featureLayer }, { Directions: map.polyline }).addTo(map);
+		map.layerControl = L.control.layers({ 'Street View': map.featureLayer }, { Directions: map.polyline }).addTo(map);
 		//FIXME: This is most of what's needed to generate walking directions once the API is working
 //		var directions = L.mapbox.directions({
 //			profile: 'mapbox.driving'
@@ -144,6 +141,18 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 //
 //		directions.query();
 //		map.directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
+
+		map.on('zoomend', function() {
+			urlParserInst.setZoom(map.getZoom());
+			currentZoom = urlParserInst.getZoom();
+			urlParserInst.updateHash();
+		});
+
+		map.on('moveend', function() {
+			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
+			currentFocus = urlParserInst.getFocus();
+			urlParserInst.updateHash();
+		});
 
 		map.on('click', function(e) {
 			resetColors(map);
@@ -172,6 +181,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			$('.detail.body-content').html(String(feature.properties.data));
 		});
 	}
+
 	function resetColors(map) {
 		var clusterMarkers = map.clusterGroup.getLayers();
 		for (var index in clusterMarkers) {

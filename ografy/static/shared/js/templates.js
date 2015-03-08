@@ -295,6 +295,23 @@ root: root
 };
 })();
 })();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/provider/provider_dropdown.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<select class=\"provider\">\n\t<option value=\"facebook\">Facebook</option>\n\t<option value=\"twitter\">Twitter</option>\n\t<option value=\"steam\">Steam</option>\n\t<option value=\"amazon\">Amazon</option>\n\t<option value=\"dropbox\">Dropbox</option>\n\t<option value=\"fitbit\">FitBit</option>\n\t<option value=\"foursquare\">FourSquare</option>\n\t<option value=\"github\">GitHub</option>\n\t<option value=\"google\">Google</option>\n\t<option value=\"instagram\">Instagram</option>\n\t<option value=\"linkedin\">LinkedIn</option>\n\t<option value=\"reddit\">reddit</option>\n\t<option value=\"spotify\">Spotify</option>\n\t<option value=\"stackoverflow\">Stack Overflow</option>\n\t<option value=\"tumblr\">Tumblr</option>\n\t<option value=\"vimeo\">Vimeo</option>\n</select>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/time/time_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -368,7 +385,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<select class=\"initial\">\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
+output += "<select class=\"initial\">\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"provider\">Provider</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
 cb(null, output);
 ;
 } catch (e) {
