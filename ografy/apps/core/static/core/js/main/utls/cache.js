@@ -7,9 +7,10 @@ function cacheManager() {
 	var CacheManager = function() {
 		_.bindAll(this, '_updateCache');
 		if (window.addEventListener) {
-			window.addEventListener("storage", this._updateCache, false);
-		} else {
-			window.attachEvent("onstorage", this._updateCache);
+			window.addEventListener('storage', this._updateCache, false);
+		}
+		else {
+			window.attachEvent('onstorage', this._updateCache);
 		}
 		this.reset();
 		this.getValue('cmgc', this.gc, 60 * 24 * 7); // once every 7 days
@@ -48,7 +49,8 @@ function cacheManager() {
 						cacheEntry.data = $.Deferred().resolve(cacheEntry.data);
 					}
 					this._setMemoryCache(e.key, cacheEntry);
-				} else {
+				}
+				else {
 					delete this._cache[e.key];
 				}
 			}
@@ -79,7 +81,8 @@ function cacheManager() {
 							var cacheEntry = this._buildCacheEntry(value, true, timeoutMinutes);
 							this._setBrowserCache(key, cacheEntry, browserCache);
 						}, this));
-					} else {
+					}
+					else {
 						this._setBrowserCache(key, cacheEntry, browserCache);
 					}
 				}
@@ -104,7 +107,8 @@ function cacheManager() {
 					var cacheEntry = this._buildCacheEntry(value, true, timeoutMinutes);
 					this._setBrowserCache(key, cacheEntry, this._getStorage(timeoutMinutes));
 				}, this));
-			} else {
+			}
+			else {
 				this._setBrowserCache(key, cacheEntry, this._getStorage(timeoutMinutes));
 			}
 			this._setMemoryCache(key, cacheEntry);
@@ -144,7 +148,8 @@ function cacheManager() {
 		_setBrowserCache: function(key, cacheEntry, browserCache) {
 			try {
 				browserCache.setItem(key, JSON.stringify(cacheEntry));
-			} catch (e) {
+			}
+			catch(e) {
 				console.log('Storage Set Failed for key: ' + key);
 			}
 		},
@@ -197,7 +202,8 @@ function cacheManager() {
 					if (cacheEntry.data.state() === 'pending') {
 						// always return pending cacheEntries, even if they've expired
 						return cacheEntry;
-					} else if (cacheEntry.data.state() === 'rejected') {
+					}
+					else if (cacheEntry.data.state() === 'rejected') {
 						// always skip rejected cacheEntries, we don't cache rejected promises
 						return null;
 					}
@@ -206,7 +212,8 @@ function cacheManager() {
 				if (!cacheEntry.expires) {
 					// no expiration, return immediately
 					return cacheEntry;
-				} else if ((new Date()) < new Date(cacheEntry.expires)) {
+				}
+				else if ((new Date()) < new Date(cacheEntry.expires)) {
 					// we have an expires, we aren't pending or rejected, check if the entry has expired
 					return cacheEntry;
 				}
@@ -244,11 +251,11 @@ function cacheManager() {
 		_getValue: function(generator) {
 			if (!$.isFunction(generator)) {
 				return generator;
-			} else {
+			}
+			else {
 				return generator();
 			}
 		}
-
 	};
 	return new CacheManager();
 }

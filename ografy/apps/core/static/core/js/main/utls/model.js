@@ -1,6 +1,5 @@
 //View pertaining to obtaining and searching for data
 function dataStore() {
-
 	//This is the array of events that is returned from a search
 	var resultData = [];
 
@@ -92,17 +91,18 @@ function dataStore() {
 			}
 		}).done(function(data, xhr, response) {
 			if (data.length > 0) {
-				for (index in data) {
+				for (var index in data) {
 					data[index].updated = new Date(data[index].updated).toLocaleString();
 					data[index].created = new Date(data[index].created).toLocaleString();
 					data[index].datetime = new Date(data[index].datetime).toLocaleString();
 				}
-				resultData = data.sort(function(a, b) {return Date.parse(b.datetime)-Date.parse(a.datetime)});
+				resultData = data.sort(function(a, b) {
+					return Date.parse(b.datetime) - Date.parse(a.datetime);
+				});
 				updateData();
 				currentViewInst.updateContent();
 			}
-			else if (data.length == 0) {
-
+			else if (data.length === 0) {
 			}
 		});
 	}

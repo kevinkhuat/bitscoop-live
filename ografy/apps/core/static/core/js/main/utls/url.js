@@ -9,12 +9,12 @@ function urlParser() {
 	var zoomRegexResult = '';
 	var currentZoom = 0;
 
-	var focusPattern= /focus=\S*?(&|$)/;
+	var focusPattern = /focus=\S*?(&|$)/;
 	var focusRegexResult = '';
 	var currentFocus = [];
 	var currentFocusString = '';
 
-	var sortPattern= /sort=\S*?(&|$)/;
+	var sortPattern = /sort=\S*?(&|$)/;
 	var sortRegexResult = '';
 	var currentSort = '';
 
@@ -95,7 +95,7 @@ function urlParser() {
 	}
 
 	function updateHash() {
-		var urlString = "view=" + currentView + "&zoom=" + currentZoom + "&focus=" + currentFocus[1] + ',' + currentFocus[0];
+		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[1] + ',' + currentFocus[0];
 		window.location.hash = urlString;
 	}
 

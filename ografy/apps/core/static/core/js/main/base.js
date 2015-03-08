@@ -41,7 +41,6 @@ function baseView() {
 			listViewInst.renderBase(function() {
 				listViewInst.updateContent();
 			});
-
 		});
 
 		//$('.timeline-view-button').click(function() {
@@ -51,7 +50,6 @@ function baseView() {
 			dataInst.setCurrentView(mapViewInst);
 			mapViewInst.renderBase(function() {
 				mapViewInst.updateContent();
-
 			});
 		});
 	}
@@ -69,7 +67,7 @@ function baseView() {
 		//Load data from the database
 		if (currentView === 'map') {
 			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase(function () {
+			mapViewInst.renderBase(function() {
 				var oneWeekAgo = new Date();
 				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
@@ -81,7 +79,7 @@ function baseView() {
 		}
 		else if (currentView === 'list') {
 			dataInst.setCurrentView(listViewInst);
-			listViewInst.renderBase(function () {
+			listViewInst.renderBase(function() {
 				var oneWeekAgo = new Date();
 				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
@@ -92,9 +90,9 @@ function baseView() {
 			});
 		}
 		else {
-			currentView = "map";
+			currentView = 'map';
 			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase(function () {
+			mapViewInst.renderBase(function() {
 				var oneWeekAgo = new Date();
 				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 

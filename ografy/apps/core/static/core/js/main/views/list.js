@@ -71,10 +71,12 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	//This allows for making the content scrollable while leaving the header alone.
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
-		$('.list.content').height(parentHeight-30);
+		$('.list.content').height(parentHeight - 30);
 	}
 
-	$(window).resize(function (){setHeight()});
+	$(window).resize(function() {
+		setHeight();
+	});
 
 	return{
 		renderContent: renderContent,

@@ -90,7 +90,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			//Fit the map's view so that all of the items are visible
 			map.fitBounds(map.featureLayer.getBounds());
 			urlParserInst.setZoom(map.getZoom());
-			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng])
+			urlParserInst.setFocus([map.getCenter().lat, map.getCenter().lng]);
 			currentZoom = urlParserInst.getZoom();
 			currentFocus = urlParserInst.getFocus();
 		}
@@ -124,7 +124,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		map.polyline = L.polyline(line, polyline_options).addTo(map);
 
 
-		L.control.layers({"Street View": map.featureLayer}, {"Directions": map.polyline}).addTo(map);
+		L.control.layers({ 'Street View': map.featureLayer }, { Directions: map.polyline }).addTo(map);
 		//FIXME: This is most of what's needed to generate walking directions once the API is working
 //		var directions = L.mapbox.directions({
 //			profile: 'mapbox.driving'
@@ -152,7 +152,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			$('.detail.time-content').html('Select an Event at left to see its details.');
 			$('.detail.location-content').html('Select an Event at left to see its details.');
 			$('.detail.body-content').html('Select an Event at left to see its details.');
-		})
+		});
 
 		//Bind an event listener that triggers when an item on the map is selected.
 		//This listener will populate the detail content with the selected item's information.
@@ -181,7 +181,6 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 				thisMarker.feature.properties['marker-color'];
 			thisMarker.setIcon(L.mapbox.marker.icon(thisMarker.feature.properties));
 		}
-
 	}
 
 

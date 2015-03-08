@@ -21,7 +21,6 @@ function detailView(mapboxViewInst) {
 			map = mapboxViewInst.map;
 			geoJSON = mapboxViewInst.geoJSON;
 //			mapboxViewInst.renderDetailMap();
-
 		}
 
 		//Populate content with default data

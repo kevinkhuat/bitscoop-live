@@ -1,6 +1,5 @@
 //Construct search filters to send to the database
 function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
-
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its
@@ -205,7 +204,6 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 			//Construct a filter string from an inputted Date
 			function toString(currentFilter) {
-
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
 					return 'Date gt ' + $(currentFilter).find('.date-start')[0].value;
@@ -303,7 +301,6 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 
 			//Consruct a filter string from an inputted Time
 			function toString(currentFilter) {
-
 				//Add the text for "time after XXX"
 				function appendAfter(currentFilter) {
 					return 'Time gt ' + $(currentFilter).find('.time-start')[0].value;
@@ -370,7 +367,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst) {
 			date: date,
 			time: time,
 			to: to
-		}
+		};
 	}
 
 	return {
