@@ -129,7 +129,8 @@
 .detail.sidebar {
     width: 300px;
     position: relative;
-    border-left: 2px solid;
+    border-left: 2px;
+    border-left-style: solid;
 }
 
 /*.detail {*/
@@ -262,4 +263,8 @@
 
 .data-view {
     position: relative;
+}
+
+.search.dropdown {
+
 }
