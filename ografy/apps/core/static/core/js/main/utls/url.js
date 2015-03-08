@@ -18,6 +18,14 @@ function urlParser() {
 	var sortRegexResult = '';
 	var currentSort = '';
 
+	var filtersPattern = /filters=\S*?(&|$)/;
+	var filtersRegexResult = '';
+	var currentFilters = '';
+
+	var queryPattern = /query=\S*?(&|$)/;
+	var queryRegexResult = '';
+	var currentQuery = '';
+
 	function retrieveHash() {
 		urlHash = window.location.hash;
 
@@ -60,6 +68,24 @@ function urlParser() {
 			zoomRegexResult = '';
 			currentZoom = 0;
 		}
+
+		if (filtersPattern.test(urlHash)) {
+			filtersRegexResult = filtersPattern.exec(urlHash)[0];
+			currentFilters = filtersRegexResult.replace('filters=', '').replace('&20', ' ').replace('&', '');
+		}
+		else {
+			filtersRegexResult = '';
+			currentFilters = '';
+		}
+
+		if (queryPattern.test(urlHash)) {
+			queryRegexResult = queryPattern.exec(urlHash)[0];
+			currentQuery = queryRegexResult.replace('query=', '').replace('&20', ' ').replace('&', '');
+		}
+		else {
+			queryRegexResult = '';
+			currentQuery = '';
+		}
 	}
 
 	function getFocus() {
@@ -94,8 +120,24 @@ function urlParser() {
 		currentZoom = input;
 	}
 
+	function getSearchFilters() {
+		return currentFilters;
+	}
+
+	function getSearchQuery() {
+		return currentQuery;
+	}
+
+	function setSearchFilters(input) {
+		currentFilters = input;
+	}
+
+	function setSearchQuery(input) {
+		currentQuery = input;
+	}
+
 	function updateHash() {
-		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[1] + ',' + currentFocus[0];
+		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[1] + ',' + currentFocus[0] + '&filters=' + currentFilters;
 		window.location.hash = urlString;
 	}
 
@@ -108,6 +150,10 @@ function urlParser() {
 		setSort: setSort,
 		setView: setView,
 		setZoom: setZoom,
+		getSearchFilters: getSearchFilters,
+		getSearchQuery: getSearchQuery,
+		setSearchFilters: setSearchFilters,
+		setSearchQuery: setSearchQuery,
 		retrieveHash: retrieveHash,
 		updateHash: updateHash
 	};

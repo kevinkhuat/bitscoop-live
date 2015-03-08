@@ -31,7 +31,7 @@ function baseView() {
 	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst, urlParserInst);
 
 	//Search components
-	var searchViewInst = searchView(dataInst, cacheInst, mapViewInst, listViewInst);
+	var searchViewInst = searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserInst);
 	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views
@@ -63,16 +63,16 @@ function baseView() {
 		urlParserInst.retrieveHash();
 
 		var currentView = urlParserInst.getView();
+		var oneWeekAgo = new Date();
+		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
 		//Load data from the database
 		if (currentView === 'map') {
 			dataInst.setCurrentView(mapViewInst);
 			mapViewInst.renderBase(function() {
-				var oneWeekAgo = new Date();
-				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
 //			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-				var searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+//				var searchString = '(provider_name%20contains%20twitter)%20or%20(provider_name%20contains%20facebook)%20or%20(provider_name%20contains%20github)%20or%20(provider_name%20contains%20instagram)%20or%20(provider_name%20contains%20steam)%20or%20(provider_name%20contains%20spotify)';
+				var searchString = urlParserInst.getSearchFilters();
 				console.log(searchString);
 				dataInst.search(searchString);
 			});
@@ -80,11 +80,8 @@ function baseView() {
 		else if (currentView === 'list') {
 			dataInst.setCurrentView(listViewInst);
 			listViewInst.renderBase(function() {
-				var oneWeekAgo = new Date();
-				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
 //			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-				var searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+				var searchString = urlParserInst.getSearchFilters();
 				console.log(searchString);
 				dataInst.search(searchString);
 			});
@@ -93,11 +90,8 @@ function baseView() {
 			currentView = 'map';
 			dataInst.setCurrentView(mapViewInst);
 			mapViewInst.renderBase(function() {
-				var oneWeekAgo = new Date();
-				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
 //			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-				var searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+				var searchString = urlParserInst.getSearchFilters();
 				console.log(searchString);
 				dataInst.search(searchString);
 			});
