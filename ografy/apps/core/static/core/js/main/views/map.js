@@ -56,7 +56,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: newData[index].location
+					coordinates: newData[index].location.coordinates
 				},
 				properties: {
 					title: newData[index].name,
@@ -157,10 +157,10 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		map.on('click', function(e) {
 			resetColors(map);
 			//Populate the detail panel content with information from the selected item.
-			$('.detail.main-label').html('Select an Event at left to see its details.');
-			$('.detail.time-content').html('Select an Event at left to see its details.');
-			$('.detail.location-content').html('Select an Event at left to see its details.');
-			$('.detail.body-content').html('Select an Event at left to see its details.');
+			$('.detail .main-label').html('Select an Event to see its details.');
+			$('.detail .time-content').html('Select an Event to see its details.');
+			$('.detail .location-content').html('Select an Event to see its details.');
+			$('.detail .body-content').html('Select an Event to see its details.');
 		});
 
 		//Bind an event listener that triggers when an item on the map is selected.
@@ -175,10 +175,10 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			$('.detail.main-label').html(feature.properties.description);
-			$('.detail.time-content').html(feature.properties.datetime);
-			$('.detail.location-content').html(String(feature.geometry.coordinates));
-			$('.detail.body-content').html(String(feature.properties.data));
+			$('.detail .main-label').html(feature.properties.description);
+			$('.detail .time-content').html(feature.properties.datetime);
+			$('.detail .location-content').html(String(feature.geometry.coordinates));
+			$('.detail .body-content').html(String(feature.properties.data));
 		});
 	}
 
