@@ -48,10 +48,14 @@ class Event(mongoengine.Document):
 
     #. *database_id* the id that Mongo uses to reference the event
     """
+    EVENT_TYPE = (
+        ('Event', 'Basic Event'),
+        ('Message', 'Message Event'),
+    )
 
     # To be managed by the REST API
     # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
-    type = mongoengine.StringField(required=True)
+    type = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
@@ -63,8 +67,7 @@ class Event(mongoengine.Document):
     # To be sourced from signals.js
     datetime = mongoengine.DateTimeField()
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
-    # location = mongoengine.PointField()
-    location = mongoengine.ListField()
+    location = mongoengine.PointField()
 
     meta = {
         'indexes': [

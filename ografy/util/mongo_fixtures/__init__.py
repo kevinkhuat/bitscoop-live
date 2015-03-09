@@ -50,9 +50,9 @@ def create_fixture_data(temp_data):
     )
 
 
-def create_fixture_event(temp_event, data_id):
+def create_fixture_event(temp_event, data_id, event_type='Event'):
     return Event(
-        type=temp_event['type'],
+        type=event_type,
         created=temp_event['created'],
         updated=temp_event['updated'],
         user_id=temp_event['user_id'],
@@ -110,7 +110,7 @@ def load_fixture(path):
         data_id = ObaseAPI.DataApi.post(insert_data)['id']
 
         temp_event = message['event']
-        insert_event = create_fixture_event(temp_event, data_id)
+        insert_event = create_fixture_event(temp_event, data_id, 'Message')
 
         event_id = ObaseAPI.EventApi.post(insert_event)['id']
 

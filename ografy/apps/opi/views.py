@@ -8,10 +8,6 @@ from ografy.apps.obase import api as obase_api
 from ografy.apps.tastydata.views import DjangoAPIView, MongoAPIView
 
 
-def get_user_and_filter_from_request(request):
-    return
-
-
 class APIEndpoints(DjangoAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 

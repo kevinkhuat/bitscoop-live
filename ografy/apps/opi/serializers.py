@@ -22,9 +22,6 @@ def evaluate(query):
 class DataSerializer(mongo_serializers.DocumentSerializer):
     # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
-    # def to_internal_value(self, data):
-    #     return Data.from_json(data)
-
     class Meta:
         model = Data
         fields = ('id', 'created', 'updated', 'data_blob')
@@ -35,9 +32,6 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
     # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
     # data = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
 
-    # def to_internal_value(self, data):
-    #     return Event.from_json(data)
-
     class Meta:
         model = Event
         fields = ('id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime', 'location', 'data')
@@ -47,9 +41,6 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 class MessageSerializer(mongo_serializers.DocumentSerializer):
     # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
     # event = mongo_serializers.HyperlinkedRelatedField(view_name='event-detail', lookup_field='event', queryset=Event.objects.all())
-
-    # def to_internal_value(self, data):
-    #     return Message.from_json(data)
 
     class Meta:
         model = Message
@@ -77,9 +68,6 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
     # user = mongo_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
-
-    # def to_internal_value(self, data):
-    #     return Event.from_json(data)
 
     user = django_serializers.Field(source='user.id')
     provider = django_serializers.HyperlinkedIdentityField(view_name='signal-provider')
