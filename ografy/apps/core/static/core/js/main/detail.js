@@ -11,6 +11,7 @@ function detailView(mapboxViewInst) {
 		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
+
 		$('.detail.sidebar').html(list_detail);
 
 		//If there will be a map, create the map.
@@ -33,19 +34,22 @@ function detailView(mapboxViewInst) {
 	}
 
 	//Update content
-	function updateContent(eventName, eventDate, eventLocation, eventData) {
-		$('.detail.main-label').html(eventName);
-		$('.detail.time-content').html(eventDate);
-		$('.detail.location-content').html(eventLocation);
-		$('.detail.body-content').html(eventData);
+	function updateContent(eventName, eventDateTime, eventLocation, eventData) {
+		var dateTimeArray = eventDateTime.split(',');
+		$('.detail.main .label').html(eventName);
+		$('.detail-date .content').html(dateTimeArray[0].trim());
+		$('.detail-time .content').html(dateTimeArray[1].trim());
+		$('.detail-location .content').html(eventLocation);
+		$('.detail-data .content').html(eventData);
 	}
 
 	//Insert default text into the detail content
 	function clearContent() {
-		$('.detail.main-label').html('Select an Event at left to see its details.');
-		$('.detail.time-content').html('Select an Event at left to see its details.');
-		$('.detail.location-content').html('Select an Event at left to see its details.');
-		$('.detail.body-content').html('Select an Event at left to see its details.');
+		$('.detail.main .label').html('Select an Event');
+		$('.detail-date .content').html('Select an Event');
+		$('.detail-time .content').html('Select an Event');
+		$('.detail-location .content').html('Select an Event');
+		$('.detail-data .content').html('Select an Event');
 	}
 
 	//Update the map with a new event's information

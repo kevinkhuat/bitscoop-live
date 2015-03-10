@@ -37,18 +37,18 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"";
+output += "<div class=\"detail grow";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += " detail top-half grow ";
+output += " text-half ";
 ;
 }
 else {
-output += " detail full grow ";
+output += " full ";
 ;
 }
-output += "\">\n\t<div id=\"detail main-label\" class=\"center detail main-label\">\n\t\tSelect an Event at left to see its details.\n\t</div>\n\t<div class=\"detail avatar\">\n\t\t<img src=\"static/assets/logo_240.png\" alt=\"Avatar\" />\n\t</div>\n\t<div id=\"detail date-time\" class=\"detail date-time\">\n\t\t<label class=\"center detail label\">Time</label>\n\t\t<div id=\"detail time-content\" class=\"center detail time-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail data\" class=\"detail data\">\n\t\t<label class=\"center detail label\">Message Body</label>\n\t\t<div id=\"detail body-content\" class=\"center detail body-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n\t<div id=\"detail location\" class=\"detail location\">\n\t\t<label class=\"center detail label\">Location</label>\n\t\t<div id=\"detail location-content\" class=\"center detail location-content\">\n\t\t\tSelect an Event at left to see its details.\n\t\t</div>\n\t</div>\n</div>\n";
+output += "\">\n\t<div id=\"detail main-label\" class=\"center main-label\">\n\t\tSelect an Event\n\t</div>\n\t<div class=\"information\">\n\t\t<div id=\"detail datetime-location\" class=\"datetime-location\">\n\t\t\t<div id=\"avatar datetime\" class=\"avatar-datetime\">\n\t\t\t\t<div class=\"avatar\">\n\t\t\t\t\t<img src=\"static/assets/logo_240.png\" alt=\"Avatar\" />\n\t\t\t\t</div>\n\t\t\t\t<div id=\"detail datetime\" class=\"datetime\">\n\t\t\t\t\t<div id=\"detail date\" class=\"detail-date\">\n\t\t\t\t\t\t<label class=\"center label\">Date</label>\n\t\t\t\t\t\t<div id=\"detail date content\" class=\"center content\">\n\t\t\t\t\t\t\tSelect an Event\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div id=\"detail time\" class=\"detail-time\">\n\t\t\t\t\t\t<label class=\"center label\">Time</label>\n\t\t\t\t\t\t<div id=\"detail time content\" class=\"center content\">\n\t\t\t\t\t\t\tSelect an Event\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div id=\"detail location\" class=\"detail-location\">\n\t\t\t\t<label class=\"center label\">Location</label>\n\t\t\t\t<div id=\"detail location content\" class=\"center content\">\n\t\t\t\t\tSelect an Event\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div id=\"detail data\" class=\"detail-data\">\n\t\t\t<label class=\"center label\">Message Body</label>\n\t\t\t<div id=\"detail data content\" class=\"center content\">\n\t\t\t\tSelect an Event\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += "\n<div class=\"detail bottom-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
+output += "\n<div class=\"detail map-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
 ;
 }
 cb(null, output);

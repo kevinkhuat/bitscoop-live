@@ -157,10 +157,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		map.on('click', function(e) {
 			resetColors(map);
 			//Populate the detail panel content with information from the selected item.
-			$('.detail .main-label').html('Select an Event to see its details.');
-			$('.detail .time-content').html('Select an Event to see its details.');
-			$('.detail .location-content').html('Select an Event to see its details.');
-			$('.detail .body-content').html('Select an Event to see its details.');
+			detailViewInst.clearContent();
 		});
 
 		//Bind an event listener that triggers when an item on the map is selected.
@@ -175,10 +172,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			$('.detail .main-label').html(feature.properties.description);
-			$('.detail .time-content').html(feature.properties.datetime);
-			$('.detail .location-content').html(String(feature.geometry.coordinates));
-			$('.detail .body-content').html(String(feature.properties.data));
+			detailViewInst.updateContent(feature.properties.description, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data))
 		});
 	}
 
@@ -187,8 +181,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		for (var index in clusterMarkers) {
 			var thisMarker = clusterMarkers[index];
 
-			thisMarker.feature.properties['marker-color'] = thisMarker.feature.properties['old-color'] ||
-				thisMarker.feature.properties['marker-color'];
+			thisMarker.feature.properties['marker-color'] = thisMarker.feature.properties['old-color'] || thisMarker.feature.properties['marker-color'];
 			thisMarker.setIcon(L.mapbox.marker.icon(thisMarker.feature.properties));
 		}
 	}

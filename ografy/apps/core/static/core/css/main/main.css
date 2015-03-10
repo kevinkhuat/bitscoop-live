@@ -102,6 +102,12 @@
     margin-left: 5px;
 }
 
+.provider {
+    display: inline-block;
+    padding: 5px;
+    margin-left: 5px;
+}
+
 .text {
     display: inline-block;
     margin-left: 6px;
@@ -126,74 +132,184 @@
     margin-bottom: auto !important;
 }
 
-.detail.sidebar {
-    width: 300px;
-    position: relative;
-    border-left: 2px;
-    border-left-style: solid;
-}
+@media only screen and (orientation: landscape) {
+    .detail.sidebar {
+        width: 300px;
+        position: relative;
+        border-left: 2px;
+        border-left-style: solid;
+    }
 
-/*.detail {*/
+    /*.detail {*/
     /*font-size: 1em;*/
     /*position: absolute;*/
     /*width: 100%;*/
     /*height: 100%;*/
-/*}*/
+    /*}*/
+    .detail.text-half {
+        min-height: 300px;
+        background-color: #EEE;
+        height: 50%;
+    }
 
-.detail.top-half {
-    min-height: 300px;
-    background-color: #EEE;
-    height: 50%;
+    .detail.map-half {
+        min-height: 250px;
+        height: 50%;
+    }
+
+    .detail.full {
+        min-height: 600px;
+        background-color: #EEE;
+        height: 100%;
+    }
+
+    .detail .main-label {
+        background-color: #488A2D;
+        color: #FFF;
+        width: 100%;
+        padding: 3px;
+        min-height: 60px;
+    }
+
+    .detail .label {
+        background-color: #CCC;
+        width: 100%;
+        padding: 3px;
+        float: left;
+    }
+
+    .detail .content {
+        padding: 10px;
+    }
+
+    .detail .avatar {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+    }
+
+    .detail .avatar img {
+        width: 100%;
+        margin: 3px;
+    }
+
+    .detail .datetime {
+        display: inline-block;
+        width: 68%;
+    }
+
+    .detail .detail-date {
+        min-height: 50px;
+    }
+
+    .detail .detail-time {
+        min-height: 50px;
+    }
+
+    .detail .detail-data {
+        min-height: 80px;
+    }
+
+    .detail .detail-location {
+        min-width: 80px;
+    }
 }
 
-.detail.bottom-half {
-    min-height: 250px;
-    height: 50%;
-}
+@media screen and (orientation:portrait) {
+    main {
+        flex-direction: column;
+    }
 
-.detail.full {
-    min-height: 600px;
-    background-color: #EEE;
-    height: 100%;
-}
+    .detail {
+        font-size: 1.25em;
+    }
 
-.detail.main-label {
-    background-color: #488A2D;
-    color: #FFF;
-    width: 100%;
-    padding: 3px;
-    min-height: 60px;
-}
+    .detail.sidebar {
+        height: 400px;
+        position: relative;
+        border-top: 2px;
+        border-top-style: solid;
+    }
 
-.detail.label {
-    background-color: #CCC;
-    width: 100%;
-    padding: 3px;
-    float: left;
-}
+    .detail.sidebar.text-half {
+        min-width: 300px;
+        background-color: #EEE;
+        width: 50%
+    }
 
-.detail.content {
-    margin: 3px;
-}
+    .detail.map-half {
+        min-width: 250px;
+        width: 50%
+    }
 
-.detail.avatar {
-    display: inline-block;
-    vertical-align: top;
-    width: 30%;
-}
+    .detail.full {
+        min-width: 200px;
+        background-color: #EEE;
+        width: 100%;
+    }
 
-.detail.avatar img {
-    width: 100%;
-    margin: 3px;
-}
+    .detail .main-label {
+        background-color: #488A2D;
+        color: #FFF;
+        width: 100%;
+        padding: 3px;
+        min-height: 60px;
+    }
 
-.detail.date-time {
-    display: inline-block;
-    width: 68%;
-}
+    .detail .label {
+        border-right: solid;
+        border-right-width: 1px;
+        background-color: #CCC;
+        width: 100%;
+        padding: 3px;
+        float: left;
+    }
 
-.detail.data {
-    min-height: 80px;
+    .detail .content {
+        padding: 10px;
+    }
+
+    .detail .avatar {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+    }
+
+    .detail .avatar img {
+        width: 100%;
+        margin: 3px;
+    }
+
+    .detail .datetime-location {
+        width: 55%;
+    }
+
+    .detail .datetime {
+        display: inline-block;
+        min-height: 80px;
+        width: 67.6%
+    }
+
+    .detail .detail-date {
+    }
+
+    .detail .detail-time {
+    }
+
+    .detail .detail-data {
+        min-width: 80px;
+        width: 100%;
+    }
+
+    .detail .detail-location {
+        min-width: 80px;
+    }
+
+    .detail .information {
+        display: flex;
+        height: 100%;
+        width: 100%;
+    }
 }
 
 #mapbox {
