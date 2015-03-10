@@ -24,7 +24,7 @@ class Data(mongoengine.DynamicDocument):
 
     # To be managed by the REST API
     user_id = mongoengine.IntField(required=True)
-    # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
+
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
@@ -48,14 +48,13 @@ class Event(mongoengine.Document):
 
     #. *database_id* the id that Mongo uses to reference the event
     """
+
     EVENT_TYPE = (
         ('Event', 'Basic Event'),
         ('Message', 'Message Event'),
     )
-
-    # To be managed by the REST API
-    # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
     type = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
@@ -104,7 +103,7 @@ class Message(mongoengine.Document):
 
     # To be managed by the REST API
     user_id = mongoengine.IntField(required=True)
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
+    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE, lookup_field='pk')
 
     # To be sourced from signals.js
     message_to = mongoengine.SortedListField(mongoengine.StringField())
