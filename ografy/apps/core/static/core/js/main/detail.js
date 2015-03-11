@@ -12,7 +12,8 @@ function detailView(mapboxViewInst) {
 			showMap: showMap
 		});
 
-		$('.detail.sidebar').html(list_detail);
+		$('.sidebar').html(list_detail);
+		setHeight();
 
 		//If there will be a map, create the map.
 		//This needs to be done after the detail panel has been inserted into the DOM
@@ -35,21 +36,18 @@ function detailView(mapboxViewInst) {
 
 	//Update content
 	function updateContent(eventName, eventDateTime, eventLocation, eventData) {
+		$('.sidebar').removeClass('invisible');
 		var dateTimeArray = eventDateTime.split(',');
 		$('.detail.main .label').html(eventName);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(eventLocation);
-		$('.detail-data .content').html(eventData);
+		$('.detail-data .content').html("This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  ");
 	}
 
 	//Insert default text into the detail content
 	function clearContent() {
-		$('.detail.main .label').html('Select an Event');
-		$('.detail-date .content').html('Select an Event');
-		$('.detail-time .content').html('Select an Event');
-		$('.detail-location .content').html('Select an Event');
-		$('.detail-data .content').html('Select an Event');
+		$('.sidebar').addClass('invisible');
 	}
 
 	//Update the map with a new event's information
@@ -85,6 +83,12 @@ function detailView(mapboxViewInst) {
 				animate: true
 			}
 		});
+	}
+
+	function setHeight() {
+		var detailHeight = $('.detail').height();
+		var mainLabelHeight = $('.main-label').height();
+		$('.information').height(detailHeight - mainLabelHeight);
 	}
 
 	//Remove all markers from the map

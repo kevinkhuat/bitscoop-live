@@ -132,12 +132,26 @@
     margin-bottom: auto !important;
 }
 
-@media only screen and (orientation: landscape) {
-    .detail.sidebar {
+@media screen and (orientation: landscape) {
+    .sidebar {
         width: 300px;
+        flex-direction: column;
         position: relative;
         border-left: 2px;
         border-left-style: solid;
+        -webkit-transition: width 0.2s ease;
+        -moz-transition: width 0.2s ease;
+        transition: width 0.2s ease;
+    }
+
+    .sidebar.invisible {
+        width: 0px;
+        flex-direction: column;
+        visibility: hidden;
+        -webkit-transition: width 0.2s ease;
+        -moz-transition: width 0.2s ease;
+        transition: width 0.2s ease;
+
     }
 
     /*.detail {*/
@@ -167,14 +181,16 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding: 3px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         min-height: 60px;
     }
 
     .detail .label {
         background-color: #CCC;
         width: 100%;
-        padding: 3px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         float: left;
     }
 
@@ -183,7 +199,6 @@
     }
 
     .detail .avatar {
-        display: inline-block;
         vertical-align: top;
         width: 30%;
     }
@@ -194,8 +209,8 @@
     }
 
     .detail .datetime {
-        display: inline-block;
-        width: 68%;
+        width: 85%;
+        float:right;
     }
 
     .detail .detail-date {
@@ -213,6 +228,11 @@
     .detail .detail-location {
         min-width: 80px;
     }
+
+    .detail .information {
+        overflow-y: auto;
+    }
+
 }
 
 @media screen and (orientation:portrait) {
@@ -221,17 +241,30 @@
     }
 
     .detail {
-        font-size: 1.25em;
+        font-size: 1.12em;
     }
 
-    .detail.sidebar {
+    .sidebar {
         height: 400px;
+        flex-direction: row;
         position: relative;
         border-top: 2px;
         border-top-style: solid;
+        -webkit-transition: height 0.2s ease;
+        transition: height 0.2s ease;
     }
 
-    .detail.sidebar.text-half {
+    .sidebar.invisible {
+        height: 0px;
+        flex-direction: row;
+        visibility: hidden;
+        -webkit-transition: height 0.2s ease;
+        -moz-transition: height 0.2s ease;
+        transition: height 0.2s ease;
+
+    }
+
+    .detail.text-half {
         min-width: 300px;
         background-color: #EEE;
         width: 50%
@@ -252,16 +285,16 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding: 3px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         min-height: 60px;
     }
 
     .detail .label {
-        border-right: solid;
-        border-right-width: 1px;
         background-color: #CCC;
         width: 100%;
-        padding: 3px;
+        padding-top: 3px;
+        padding-bottom: 3px;
         float: left;
     }
 
@@ -270,24 +303,23 @@
     }
 
     .detail .avatar {
-        display: inline-block;
         vertical-align: top;
         width: 30%;
+        margin: 1%;
     }
 
     .detail .avatar img {
         width: 100%;
-        margin: 3px;
-    }
-
-    .detail .datetime-location {
-        width: 55%;
     }
 
     .detail .datetime {
-        display: inline-block;
         min-height: 80px;
-        width: 67.6%
+        width: 85%;
+        float: right;
+    }
+
+    .detail .avatar-datetime {
+        width: 100%;
     }
 
     .detail .detail-date {
@@ -306,9 +338,9 @@
     }
 
     .detail .information {
-        display: flex;
-        height: 100%;
+        height: 344px;
         width: 100%;
+        overflow-y: auto;
     }
 }
 
