@@ -3,8 +3,6 @@
 function baseView() {
 	//Instantiate instances of the views that the main page uses
 
-	// Geocoder Instance
-
 	//TODO: Ugly - fix in a big way so it is done better. On server?
 	var geocoder = new google.maps.Geocoder();
 
@@ -97,6 +95,14 @@ function baseView() {
 			});
 		}
 
+		$(window).resize(function() {
+			if (window.outerHeight >= window.outerWidth) {
+				$('body').addClass('mobile').addClass;
+			}
+			else if (window.outerHeight < window.outerWidth) {
+				$('body').removeClass('mobile');
+			}
+		});
 		//Render the default page view
 
 		//Bind event listeners for switching between different page views
