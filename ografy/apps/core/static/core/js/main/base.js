@@ -3,9 +3,6 @@
 function baseView() {
 	//Instantiate instances of the views that the main page uses
 
-	//TODO: Ugly - fix in a big way so it is done better. On server?
-	var geocoder = new google.maps.Geocoder();
-
 	//Cache Instance
 	var cacheInst = cacheManager();
 

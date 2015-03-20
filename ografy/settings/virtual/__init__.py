@@ -19,4 +19,4 @@ TEMPLATE_DEBUG = True
 # STATIC #
 ##########
 
-STATIC_URL = 'https://virtual.static.ografy.io/'
+STATIC_URL = 'https://virtual.static.ografy.io'

@@ -103,7 +103,7 @@ class Message(mongoengine.Document):
 
     # To be managed by the REST API
     user_id = mongoengine.IntField(required=True)
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE, lookup_field='pk')
+    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
 
     # To be sourced from signals.js
     message_to = mongoengine.SortedListField(mongoengine.StringField())

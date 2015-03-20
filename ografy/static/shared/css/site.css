@@ -7,8 +7,9 @@
     margin: 0;
     padding: 0;
 }
-@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) and (orientation: landscape) {
     html {
+        -webkit-text-size-adjust: none;
         font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
         font-weight: 400;
         background-color: #FFF;
@@ -16,12 +17,33 @@
     }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5) and (orientation: portrait) {
     html {
-        font: 24px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+        -webkit-text-size-adjust: none;
+        font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
         font-weight: 400;
         background-color: #FFF;
         height: 100%;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: landscape) {
+    html {
+        -webkit-text-size-adjust: none;
+        font: 10px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+        font-weight: 400;
+        background-color: #FFF;
+        height: 100%;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: portrait) {
+    html {
+    -webkit-text-size-adjust: none;
+    font: 8px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    background-color: #FFF;
+    height: 100%;
     }
 }
 
@@ -105,11 +127,11 @@ header {
 }
 
 header nav {
-    min-height: 44px;
+    /*min-height: 44px;*/
 }
 
 header nav .item {
-    padding: 0 7px;
+    padding: 0 1%;
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -357,8 +379,8 @@ body.full .lockwidth {
 }
 
 body.full > header {
-    padding-left: 20px;
-    padding-right: 20px;
+    /*padding-left: 1%;*/
+    padding-right: 1%;
 }
 
 body.full > main {
