@@ -3,10 +3,11 @@
 }
 
 .banner-logo {
-    height: 40px;
-    width: 50px;
-    padding-right: 10px;
+    width: 5%;
+    max-width: 50px;
+    padding-right: 1%;
 }
+
 .filter {
     display: inline-block;
 }
@@ -304,7 +305,7 @@
 
     .detail .avatar {
         vertical-align: top;
-        width: 30%;
+        width: 15%;
         margin: 1%;
     }
 
