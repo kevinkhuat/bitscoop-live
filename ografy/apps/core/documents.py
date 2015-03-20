@@ -23,7 +23,7 @@ class Settings(mongoengine.DynamicDocument):
     """
 
     # To be managed by the REST API
-    user_id = mongoengine.IntField(required=True)
+    user = mongoengine.IntField(required=True)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
