@@ -7,6 +7,7 @@
     margin: 0;
     padding: 0;
 }
+
 @media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) and (orientation: landscape) {
     html {
         -webkit-text-size-adjust: none;
@@ -63,7 +64,7 @@ h1, h2, h3 {
 }
 
 p {
-    margin-bottom: 1em;
+    margin: 0 0 1em 0;
 }
 
 h1 {
@@ -114,8 +115,7 @@ input:focus {
 input.full-width {
     display: block;
     width: 98%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto 0 auto !important;
 }
 
 main {
@@ -132,8 +132,7 @@ header nav {
 
 header nav .item {
     padding: 0 1%;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: 0 auto 0 auto;
 }
 
 /*header nav .item:first-child {*/
@@ -194,8 +193,7 @@ footer {
 }
 
 .centered {
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto 0 auto !important;
 }
 
 .green {
@@ -258,7 +256,7 @@ footer {
 }
 
 .grouping {
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
 }
 
 .grouping > :first-child {
@@ -358,7 +356,7 @@ ul.links > li:not(:last-child) {
 }
 
 .group {
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0;
 }
 
 form.block > input,
@@ -380,7 +378,7 @@ body.full .lockwidth {
 
 body.full > header {
     /*padding-left: 1%;*/
-    padding-right: 1%;
+    padding: 0 1% 0 0;
 }
 
 body.full > main {
@@ -403,7 +401,7 @@ body.full > footer {
     border: 1px solid #CCC;
     border-radius: 2px;
     background: #EEE;
-    margin-bottom: 2em;
+    margin: 0 0 2em 0;
 }
 
 .square-set > .header {

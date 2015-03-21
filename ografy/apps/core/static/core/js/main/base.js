@@ -16,7 +16,7 @@ function baseView() {
 	var sessionInst = sessionsCookies();
 
 	//Mapbox handler
-	var mapboxViewInst = mapboxManager();
+	var mapboxViewInst = mapboxManager(dataInst);
 
 	//View components
 	var detailViewInst = detailView(mapboxViewInst);
@@ -55,42 +55,21 @@ function baseView() {
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);
 
+		//Have the URL parser retreieve and parse the URL hash
 		urlParserInst.retrieveHash();
 
-		var currentView = urlParserInst.getView();
-		var oneWeekAgo = new Date();
-		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+		//Get the intial search
+		var searchString = getInitialSearchString();
 
-		//Load data from the database
-		if (currentView === 'map') {
-			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase(function() {
-//			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-//				var searchString = '(provider_name%20contains%20twitter)%20or%20(provider_name%20contains%20facebook)%20or%20(provider_name%20contains%20github)%20or%20(provider_name%20contains%20instagram)%20or%20(provider_name%20contains%20steam)%20or%20(provider_name%20contains%20spotify)';
-				var searchString = urlParserInst.getSearchFilters();
-				console.log(searchString);
-				dataInst.search(searchString);
-			});
-		}
-		else if (currentView === 'list') {
-			dataInst.setCurrentView(listViewInst);
-			listViewInst.renderBase(function() {
-//			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-				var searchString = urlParserInst.getSearchFilters();
-				console.log(searchString);
-				dataInst.search(searchString);
-			});
-		}
-		else {
-			currentView = 'map';
-			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase(function() {
-//			var searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
-				var searchString = urlParserInst.getSearchFilters();
-				console.log(searchString);
-				dataInst.search(searchString);
-			});
-		}
+		//Set the initial view
+		setInitialView();
+
+		//Call the renderBase function for the current view with a callback to perform a search on the search string
+		dataInst.getCurrentView().renderBase(function() {
+			console.log(searchString);
+			urlParserInst.setSearchFilters(searchString);
+			dataInst.search(searchString);
+		});
 
 		$(window).resize(function() {
 			if (window.outerHeight >= window.outerWidth) {
@@ -106,7 +85,47 @@ function baseView() {
 		bindNavigation();
 	}
 
+	function getInitialSearchString() {
+		//Get filters from the URL parser
+		var searchString = urlParserInst.getSearchFilters();
+
+		//If no search string was provided in the URL, use a default
+		if (searchString.length === 0) {
+			//The default search, if none is provided in the URL, is to get everything from the past week
+			var oneWeekAgo = new Date();
+			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+			//This will be the default search string if none is provided, but as of now that functionality isn't working on the backend.
+//		    searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
+
+			//This is a temporary default search string, as searching by providers does work
+			searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+		}
+
+		return searchString;
+	}
+
+	function setInitialView() {
+		//Get the current view from the URL parser
+		var currentView = urlParserInst.getView();
+
+		//When the page is first loaded, if a view is specified in the URL hash, set the page to that view
+		if (currentView === 'map') {
+			dataInst.setCurrentView(mapViewInst);
+		}
+		else if (currentView === 'list') {
+			dataInst.setCurrentView(listViewInst);
+		}
+		//If no view is specified, default to map view and set the URL parser to that view
+		else {
+			urlParserInst.setView('map');
+			dataInst.setCurrentView(mapViewInst);
+		}
+	}
+
 	return {
-		render: render
+		render: render,
+		getInitialSearchString: getInitialSearchString,
+		setInitialView: setInitialView
 	};
 }

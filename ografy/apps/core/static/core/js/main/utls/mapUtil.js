@@ -1,5 +1,5 @@
 //View pertaining to the MapBox map
-function mapboxManager() {
+function mapboxManager(dataInst) {
 	var map, geoJSON;
 
 	//The map needs to be created for the functions associated with this view to work
@@ -53,7 +53,41 @@ function mapboxManager() {
 		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 	}
 
+	function addData(geoJSON) {
+		var newData = dataInst.getResultData().reverse();
+
+		//Create a MapBox GeoJSON element with the new information
+		for (var index in newData) {
+			geoJSON.features.push({
+				// this feature is in the GeoJSON format: see geojson.org
+				// for the full specification
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					// coordinates here are in longitude, latitude order because
+					// x, y is the standard for GeoJSON and many formats
+					coordinates: newData[index].location.coordinates
+				},
+				properties: {
+					title: newData[index].name,
+					description: newData[index].provider_name,
+					// one can customize markers by adding simplestyle properties
+					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
+					'marker-size': 'large',
+					'marker-color': '#BE9A6B',
+					'marker-symbol': 'post',
+					datetime: newData[index].datetime,
+					data: newData[index].data,
+					id: newData[index].id
+				}
+			});
+		}
+
+		return geoJSON;
+	}
+
 	return {
+		addData: addData,
 		map: map,
 		geoJSON: geoJSON,
 		initializeMap: initializeMap,

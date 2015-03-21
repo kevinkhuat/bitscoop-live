@@ -26,7 +26,7 @@ function detailView(mapboxViewInst) {
 		}
 
 		//Populate content with default data
-		clearContent();
+		hideContent();
 
 //		return {
 //			map: map,
@@ -42,11 +42,11 @@ function detailView(mapboxViewInst) {
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(eventLocation);
-		$('.detail-data .content').html("This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  ");
+		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
 	}
 
 	//Insert default text into the detail content
-	function clearContent() {
+	function hideContent() {
 		$('.sidebar').addClass('invisible');
 	}
 
@@ -99,7 +99,7 @@ function detailView(mapboxViewInst) {
 	return {
 		renderContent: renderContent,
 		updateContent: updateContent,
-		clearContent: clearContent,
+		hideContent: hideContent,
 		updateMap: updateMap,
 		clearMap: clearMap
 	};

@@ -5,7 +5,7 @@
 .banner-logo {
     width: 5%;
     max-width: 50px;
-    padding-right: 1%;
+    padding: 0 1% 0 0;
 }
 
 .filter {
@@ -88,30 +88,30 @@
 .initial {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .date {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .time {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .provider {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .text {
     display: inline-block;
-    margin-left: 6px;
+    margin: 0 0 0 6px;
 }
 
 .filter {
@@ -123,14 +123,12 @@
 }
 
 .filter.options {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
+    margin: auto 0 auto 0 !important;
 }
 
 .add-remove-buttons {
     display: inline-block;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
+    margin: auto 0 auto 0 !important;
 }
 
 @media screen and (orientation: landscape) {
@@ -182,16 +180,14 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         min-height: 60px;
     }
 
     .detail .label {
         background-color: #CCC;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         float: left;
     }
 
@@ -286,16 +282,14 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         min-height: 60px;
     }
 
     .detail .label {
         background-color: #CCC;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         float: left;
     }
 
@@ -370,7 +364,7 @@
 .list.item-provider {
     width: 30%;
     display: inline-block;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .list.item-date {
@@ -416,4 +410,19 @@
 
 .search.dropdown {
 
+}
+
+.leaflet-control-mapbox-geocoder-form input {
+    margin: 0;
+}
+
+.leaflet-container .leaflet-control-zoomslider-body {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.leaflet-control-zoomslider-knob {
+    width: 14px;
+    height: 6px;
 }
