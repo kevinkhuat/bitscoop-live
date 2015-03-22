@@ -58,8 +58,8 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
-    user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id')
-    provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider')
+    user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id', queryset=User.objects.all())
+    provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider', queryset=User.objects.all())
 
     class Meta:
         model = Signal
@@ -72,12 +72,12 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
 
     class Meta:
         model = Settings
-        fields = ('id', 'user_id', 'created', 'updated', 'data_blob')
+        fields = ('id', 'user', 'created', 'updated', 'settings_dict')
         depth = 5
 
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
-    settings = django_fields.MongoRefField(view_name='settings-detail', depth=5, lookup_field=id)
+    settings = django_fields.MongoRefField(view_name='settings-detail', depth=5, lookup_field=id, queryset=User.objects.all())
 
     class Meta:
         model = User

@@ -27,4 +27,4 @@ class Settings(mongoengine.DynamicDocument):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
-    data_blob = mongoengine.DictField()
+    settings_dict = mongoengine.DictField()

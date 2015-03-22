@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.reverse import reverse
 
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField
+from ografy.apps.tastydata.serializers.custom_drf_mongoengine.related_fields import ReferenceField
 
 
 class MongoRefField(ReferenceField):
@@ -31,6 +31,3 @@ class MongoRefField(ReferenceField):
         # implicit `self` argument to be passed.
         self.reverse = reverse
         super(ReferenceField, self).__init__(*args, **kwargs)
-
-# TODO: USABLE?
-# class MongoReverseRefField(MongoRefField):
