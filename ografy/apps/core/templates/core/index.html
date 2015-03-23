@@ -12,12 +12,12 @@
 	<div class="flex row center wrap lockwidth centered bg black translucent" style="padding:35px;">
 		<img class="flex wrap centered" src="{% static 'assets/logo_light_240.png' %}" />
 		<div class="flex centered wrap">
-			<div class="grow center wrap" style="min-width: 500px;">
+			<div class="grow center wrap" style="min-width: 50%">
 				<h1>Discover your data</h1>
 				<p>Search and explore your data from all of your digital accounts.</p>
 				<p>Get more out of your favorite applications and services.</p>
 			</div>
-			<div class="bg gray light padded wrap centered" style="width:240px;">
+			<div class="bg gray light padded wrap centered">
 				<form action="{% url 'core_signup' %}" method="POST">
 					<div class="group">
 						{% csrf_token %}
@@ -35,8 +35,8 @@
 <!-- FIXME: The following content needs to be redone in line with the new aesthetic and structure. -->
 <section class="lockwidth centered">
 	<div class="table full-width flex wrap">
-		<div class="flex wrap">
-			<div class="padded grow wrap" style="min-width: 500px">
+		<div class="flex wrap info">
+			<div class="padded thin grow wrap">
 				<div class="square-set padded">
 					<div class="header"><i class="icon-share"></i></div>
 					<h2 class="green center">Bring Services Together</h2>
@@ -64,7 +64,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="padded grow wrap" style="min-width: 500px">
+			<div class="padded thin grow wrap">
 				<div class="square-set padded">
 					<div class="header"><i class="icon-statistics"></i></div>
 					<h2 class="green center">Easily Re-stream Your Data</h2>
@@ -85,8 +85,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex wrap">
-			<div class="padded grow wrap" style="min-width: 500px">
+		<div class="flex wrap info">
+			<div class="padded thin grow wrap">
 				<div class="square-set padded">
 					<div class="header"><i class="icon-domain3"></i></div>
 					<h2 class="green center">What's Next?</h2>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="padded grow wrap" style="min-width: 500px">
+			<div class="padded thin grow wrap">
 				<div class="square-set padded">
 					<div class="header"><i class="icon-link"></i></div>
 					<h2 class="green center">Connect with us!</h2>

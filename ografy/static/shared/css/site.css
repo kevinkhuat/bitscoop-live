@@ -8,7 +8,7 @@
     padding: 0;
 }
 
-@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) and (orientation: landscape) {
+@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
     html {
         -webkit-text-size-adjust: none;
         font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -16,9 +16,13 @@
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 0 5px 0 5px;
+    }
 }
 
-@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5) and (orientation: portrait) {
+@media (orientation: portrait) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5){
     html {
         -webkit-text-size-adjust: none;
         font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -26,25 +30,45 @@
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 5px 0 5px 0;
+    }
+
+    .padded.centered.wrap {
+        margin: 10px 0 0 0;
+    }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: landscape) {
+@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5){
     html {
         -webkit-text-size-adjust: none;
-        font: 10px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+        font: 20px 'Source Sans Pro', Helvetica, Arial, sans-serif;
         font-weight: 400;
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 0 5px 0 5px;
+    }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: portrait) {
+@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5){
     html {
     -webkit-text-size-adjust: none;
-    font: 8px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    font: 20px 'Source Sans Pro', Helvetica, Arial, sans-serif;
     font-weight: 400;
     background-color: #FFF;
     height: 100%;
+    }
+
+    .grow.center.wrap {
+        margin: 5px 0 5px 0;
+    }
+
+    .padded.centered.wrap {
+        margin: 10px 0 0 0;
     }
 }
 
@@ -93,6 +117,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
 
 input {
     font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -193,7 +218,8 @@ footer {
 }
 
 .centered {
-    margin: 0 auto 0 auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .green {
@@ -207,7 +233,6 @@ footer {
 .lockwidth {
     width: 85%;
     max-width: 1200px;
-    min-width: 400px;
 }
 
 .no-pad {
@@ -216,6 +241,14 @@ footer {
 
 .padded {
     padding: 2rem;
+}
+
+.padded.thin {
+    padding: 2rem 1rem 2rem 1rem;
+}
+
+.padded.thin.grow.wrap {
+    min-width: 300px;
 }
 
 .flex {
@@ -440,3 +473,4 @@ div.table > div > div {
     left:0!important;
     z-index:99999;
 }
+
