@@ -49,6 +49,20 @@ function baseView() {
 		});
 	}
 
+	function bindFilterCommands() {
+		$('.dropdown i').click(function() {
+			$('.menu').removeClass('hidden');
+		});
+
+		$(document.body).click(function(e){
+			if(e.target.className !== ('filter icon') &&
+				e.target.className !== ('item') &&
+				e.target.className !== ('item active')) {
+				$('.menu').addClass('hidden');
+			}
+		});
+	}
+
 	//Render the base page, which consists of the header bar and the content area
 	function render() {
 		//Use Nunjucks to render the base page from a template and insert it into the page
@@ -71,18 +85,11 @@ function baseView() {
 			dataInst.search(searchString);
 		});
 
-		$(window).resize(function() {
-			if (window.outerHeight >= window.outerWidth) {
-				$('body').addClass('mobile').addClass;
-			}
-			else if (window.outerHeight < window.outerWidth) {
-				$('body').removeClass('mobile');
-			}
-		});
 		//Render the default page view
 
 		//Bind event listeners for switching between different page views
 		bindNavigation();
+		bindFilterCommands();
 	}
 
 	function getInitialSearchString() {

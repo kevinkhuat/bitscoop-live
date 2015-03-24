@@ -431,7 +431,7 @@
     min-width: 10%;
 }
 
-.dropdown {
+.dropdown > .buttons {
     border: 1px solid gainsboro;
     border-radius: 5px;
 }
@@ -443,7 +443,7 @@
     box-sizing: border-box;
     width: 2.75em;
     height: 2.75em;
-    padding-top: .8em;
+    padding: .8em;
     background-color: rgba(0,0,0,.05);
     text-align: center;
     border-radius: .25em 0 0 .25em;
@@ -453,22 +453,65 @@
     cursor: pointer;
 }
 
-.dropdown > span {
+.dropdown span {
     margin: 0;
-    height: 2em;
+    padding: 0.8em 0;
     width: 6em;
     font-weight: bold;
     cursor: pointer;
 }
 
-.dropdown > span:hover {
-    background-color: #CCC;
+.dropdown span:hover {
+    background-color: #DDD;
 }
 
-.menu .item {
+.menu {
+    position: absolute;
+    z-index: 10;
+    -webkit-transition: height 0.2s ease;
+    -moz-transition: height 0.2s ease;
+    transition: height 0.2s ease;
+    background-color: #EEE;
+    border-radius: 3px;
+}
+
+.menu.hidden {
     height: 0;
     width: 0;
     visibility: hidden;
+    -webkit-transition: height 0.2s ease;
+    -moz-transition: height 0.2s ease;
+    transition: height 0.2s ease;
+}
+
+.menu .item {
+    cursor: pointer;
+    width: 100%;
+    padding: 0.25em 0.5em;
+    text-align: left;
+}
+
+.menu .item:hover {
+    background-color: #CCC;
+}
+
+.menu .active {
+    background-color: #DDD;
+}
+
+.menu .divider {
+    border: 1px #BBB solid;
+}
+
+.menu .add-filter {
+    cursor: pointer;
+    width: 100%;
+    padding: 0.25em 0.5em;
+    text-align: left;
+}
+
+.menu .add-filter:hover {
+    color: #0E9D58;
 }
 
 i.icon {
@@ -487,4 +530,8 @@ i.icon {
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+i.icon:hover {
+    background-color: #CCC;
 }
