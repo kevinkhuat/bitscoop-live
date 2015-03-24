@@ -62,61 +62,68 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		$(currentButton).parents('.filter.box').remove();
 	}
 
+	function submitSearch(event) {
+		//Prevent normal form submission from bubbling any further up.
+		event.stopPropagation();
+
+		var filterString = '';
+
+		//Get a list of the filters that are being used
+		var filtersList = $('.filter.options');
+
+		//For each filter, construct the appropriate filter string and add it to the
+		//full filter string that will be submitted to the database.
+		for (var i = 0; i < filtersList.length; i++) {
+			var currentFilter = filtersList[i];
+
+			//Determine what type of filter this is
+			var type = $(currentFilter).children('.initial')[0].value;
+
+			//If this isn't the first filter, append an AND to the top-level filter string.
+			if (i !== 0) {
+				filterString += ' or ';
+			}
+
+			//Construct the filter string based on the filter type
+			if (type == 'date') {
+				filterString += '(' + filters().date().toString(currentFilter) + ')';
+			}
+			else if (type == 'time') {
+				filterString += '(' + filters().time().toString(currentFilter) + ')';
+			}
+			else if (type == 'provider') {
+				filterString += '(' + filters().provider().toString(currentFilter) + ')';
+			}
+			else if (type == 'to') {
+				filterString += '(' + filters().to().toString(currentFilter) + ')';
+			}
+			else if (type == 'from') {
+				filterString += '(' + filters().from().toString(currentFilter) + ')';
+			}
+		}
+
+		//Set the Query and Filters in the URL parser
+		urlParserInst.setSearchQuery($('.search-bar').val());
+		urlParserInst.setSearchFilters(filterString);
+
+		//Perform a search based on the search terms and filters
+		dataInst.search(filterString, mapViewInst, listViewInst);
+
+		return false;
+	}
 	//Create event listeners for actions related to searching
 	function bindEvents() {
 		//Perform the search when the form that contains the search bar is submitted.
 		$('#search-form').submit(function(event) {
-			//Prevent normal form submission from bubbling any further up.
-			event.stopPropagation();
+			return submitSearch(event);
+		});
 
-			var filterString = '';
-
-			//Get a list of the filters that are being used
-			var filtersList = $('.filter.options');
-
-			//For each filter, construct the appropriate filter string and add it to the
-			//full filter string that will be submitted to the database.
-			for (var i = 0; i < filtersList.length; i++) {
-				var currentFilter = filtersList[i];
-
-				//Determine what type of filter this is
-				var type = $(currentFilter).children('.initial')[0].value;
-
-				//If this isn't the first filter, append an AND to the top-level filter string.
-				if (i !== 0) {
-					filterString += ' or ';
-				}
-
-				//Construct the filter string based on the filter type
-				if (type == 'date') {
-					filterString += '(' + filters().date().toString(currentFilter) + ')';
-				}
-				else if (type == 'time') {
-					filterString += '(' + filters().time().toString(currentFilter) + ')';
-				}
-				else if (type == 'provider') {
-					filterString += '(' + filters().provider().toString(currentFilter) + ')';
-				}
-				else if (type == 'to') {
-					filterString += '(' + filters().to().toString(currentFilter) + ')';
-				}
-				else if (type == 'from') {
-					filterString += '(' + filters().from().toString(currentFilter) + ')';
-				}
-			}
-
-			//Set the Query and Filters in the URL parser
-			urlParserInst.setSearchQuery($('.search-bar').val());
-			urlParserInst.setSearchFilters(filterString);
-
-			//Perform a search based on the search terms and filters
-			dataInst.search(filterString, mapViewInst, listViewInst);
-
-			return false;
+		$('span.text').click(function(event){
+			return submitSearch(event);
 		});
 
 		//Toggle whether to search for the clicked type of information
-		$('.ui.dropdown .item').not('.add-filter').click(function() {
+		$('.dropdown .item').not('.add-filter').click(function() {
 			$(this).toggleClass('active');
 		});
 
@@ -124,7 +131,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//By default, there are no filters, and this is the only way to add
 		//the first one.  Additional filters can be created from the "+" button
 		//on existing filters.
-		$('.ui.dropdown .add-filter').click(function() {
+		$('.dropdown .add-filter').click(function() {
 			addFilter();
 		});
 	}
