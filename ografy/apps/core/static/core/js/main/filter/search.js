@@ -105,16 +105,12 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 				}
 			}
 
-			//Encode both the search terms and the filter string
-			var encodedSearch = encodeURI($('.search-bar').val());
-			var encodedFilters = encodeURI(filterString);
+			//Set the Query and Filters in the URL parser
+			urlParserInst.setSearchQuery($('.search-bar').val());
+			urlParserInst.setSearchFilters(filterString);
 
-			urlParserInst.setSearchQuery(encodedSearch);
-			urlParserInst.setSearchFilters(encodedFilters);
-
-			console.log(encodedFilters);
 			//Perform a search based on the search terms and filters
-			dataInst.search(encodedFilters, mapViewInst, listViewInst);
+			dataInst.search(filterString, mapViewInst, listViewInst);
 
 			return false;
 		});

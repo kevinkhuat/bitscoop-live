@@ -29,6 +29,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		geoJSON = mapboxViewInst.geoJSON;
 	}
 
+	//Creates a new layer of markers on the map
 	function updateContent() {
 		var line = [];
 		if (map.hasLayer(map.clusterGroup)) {
@@ -44,58 +45,39 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
-		var newData = dataInst.getResultData().reverse();
-
-		//Create a MapBox GeoJSON element with the new information
-		for (var index in newData) {
-			geoJSON.features.push({
-				// this feature is in the GeoJSON format: see geojson.org
-				// for the full specification
-				type: 'Feature',
-				geometry: {
-					type: 'Point',
-					// coordinates here are in longitude, latitude order because
-					// x, y is the standard for GeoJSON and many formats
-					coordinates: newData[index].location.coordinates
-				},
-				properties: {
-					title: newData[index].name,
-					description: newData[index].provider_name,
-					// one can customize markers by adding simplestyle properties
-					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
-					'marker-size': 'large',
-					'marker-color': '#BE9A6B',
-					'marker-symbol': 'post',
-					datetime: newData[index].datetime,
-					data: newData[index].data,
-					id: newData[index].id
-				}
-			});
-		}
+		//Adds result data to a geoJSON layer
+		geoJSON = mapboxViewInst.addData(geoJSON);
 
 		//Add the new element to the map
 		map.featureLayer = L.mapbox.featureLayer(geoJSON);
 
+		//Create a new ClusterGroup for drawing lines or directions between markers
 		map.clusterGroup = new L.MarkerClusterGroup();
 
 		var currentFocus = urlParserInst.getFocus().slice();
 		var currentZoom = urlParserInst.getZoom();
 
-		if (currentFocus !== '' || currentZoom !== 0) {
-			if (currentFocus !== '' && currentZoom !== 0) {
+		//Logic for the focus and/or zoom being present in the URL
+		if (currentFocus.length !== 0 || currentZoom !== 0) {
+			//If both the focus and zoom were entered, set the map to that focus and zoom.
+			if (currentFocus.length !== 0 && currentZoom !== 0) {
 				map.setView(currentFocus.reverse(), currentZoom);
 			}
-			else if (currentFocus !== '') {
+			//If the focus was entered but not the zoom, center on the focus and set zoom to 12
+			else if (currentFocus.length !== 0) {
 				urlParserInst.setZoom(12);
 				currentZoom = urlParserInst.getZoom();
 				map.setView(currentFocus.reverse(), 12);
 			}
+			//If the zoom was entered but not the focus, get the user's location and center on them.
 			else {
 				urlParserInst.setFocus([parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())]);
 				currentFocus = urlParserInst.getFocus();
 				map.setView(currentFocus.reverse(), currentZoom);
 			}
 		}
+		//If neither the zoom nor focus were present in the URL, fit the map around all of the elements
+		//in the result data using fitBounds
 		else {
 			//Fit the map's view so that all of the items are visible
 			map.fitBounds(map.featureLayer.getBounds());
@@ -105,23 +87,29 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			currentFocus = urlParserInst.getFocus();
 		}
 
+		//Update the URL hash
 		urlParserInst.updateHash();
 
+		//Draw lines between the markers in the clusterGroup
 		map.featureLayer.eachLayer(function(marker) {
 			map.clusterGroup.addLayer(marker);
 			line.push(marker.getLatLng());
 		});
 
+		//Add the clusterGroup to the map
 		map.addLayer(map.clusterGroup);
 
+		//Line that will be drawn between clusterGroup markers
 		var polyline_options = {
 			color: '#000'
 		};
 
+		//Add the clusterGroup line to the map
 		map.polyline = L.polyline(line, polyline_options).addTo(map);
 
 
-		map.layerControl = L.control.layers({ 'Street View': map.featureLayer }, { Directions: map.polyline }).addTo(map);
+		//Add the layer control to the map
+		map.layerControl = L.control.layers({ Directions: map.polyline }).addTo(map);
 		//FIXME: This is most of what's needed to generate walking directions once the API is working
 //		var directions = L.mapbox.directions({
 //			profile: 'mapbox.driving'
@@ -142,40 +130,48 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 //		directions.query();
 //		map.directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
 
+		//Update the zoom both locally and in the hash when the user zooms in or out
 		map.on('zoomend', function() {
 			urlParserInst.setZoom(map.getZoom());
 			currentZoom = urlParserInst.getZoom();
 			urlParserInst.updateHash();
 		});
 
+		//Update the focus both locally and in the hash when the user moves the map
 		map.on('moveend', function() {
 			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
 			currentFocus = urlParserInst.getFocus();
 			urlParserInst.updateHash();
 		});
 
+		//When the user clicks anywhere, change all markers back to the default color
 		map.on('click', function(e) {
 			resetColors(map);
 			//Populate the detail panel content with information from the selected item.
-			detailViewInst.clearContent();
+			detailViewInst.hideContent();
 		});
 
 		//Bind an event listener that triggers when an item on the map is selected.
 		//This listener will populate the detail content with the selected item's information.
+		//The selected marker will also change color.
 		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
 			var feature = e.layer.feature;
 
+			//Reset all markers back to their original color.
 			resetColors(map);
+
+			//Change the color of the selected marker
 			feature.properties['old-color'] = feature.properties['marker-color'];
 			feature.properties['marker-color'] = '#ff8888';
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			detailViewInst.updateContent(feature.properties.description, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data))
+			detailViewInst.updateContent(feature.properties.description, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data));
 		});
 	}
 
+	//Resets the color of every marker back to default
 	function resetColors(map) {
 		var clusterMarkers = map.clusterGroup.getLayers();
 		for (var index in clusterMarkers) {

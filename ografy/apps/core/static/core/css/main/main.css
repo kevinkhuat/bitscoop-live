@@ -3,9 +3,8 @@
 }
 
 .banner-logo {
-    width: 5%;
     max-width: 50px;
-    padding-right: 1%;
+    padding: 0 1% 0 0;
 }
 
 .filter {
@@ -88,30 +87,30 @@
 .initial {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .date {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .time {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .provider {
     display: inline-block;
     padding: 5px;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .text {
     display: inline-block;
-    margin-left: 6px;
+    margin: 0 0 0 6px;
 }
 
 .filter {
@@ -123,14 +122,12 @@
 }
 
 .filter.options {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
+    margin: auto 0 auto 0 !important;
 }
 
 .add-remove-buttons {
     display: inline-block;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
+    margin: auto 0 auto 0 !important;
 }
 
 @media screen and (orientation: landscape) {
@@ -182,16 +179,14 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         min-height: 60px;
     }
 
     .detail .label {
         background-color: #CCC;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         float: left;
     }
 
@@ -286,16 +281,14 @@
         background-color: #488A2D;
         color: #FFF;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         min-height: 60px;
     }
 
     .detail .label {
         background-color: #CCC;
         width: 100%;
-        padding-top: 3px;
-        padding-bottom: 3px;
+        padding: 3px 0 3px 0;
         float: left;
     }
 
@@ -370,7 +363,7 @@
 .list.item-provider {
     width: 30%;
     display: inline-block;
-    margin-left: 5px;
+    margin: 0 0 0 5px;
 }
 
 .list.item-date {
@@ -416,4 +409,82 @@
 
 .search.dropdown {
 
+}
+
+.leaflet-control-mapbox-geocoder-form input {
+    margin: 0;
+}
+
+.leaflet-container .leaflet-control-zoomslider-body {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.leaflet-control-zoomslider-knob {
+    width: 14px;
+    height: 6px;
+}
+
+.links {
+    margin: 10px 5px;
+    min-width: 10%;
+}
+
+.dropdown {
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+}
+
+.dropdown .filter {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 2.75em;
+    height: 2.75em;
+    padding-top: .8em;
+    background-color: rgba(0,0,0,.05);
+    text-align: center;
+    border-radius: .25em 0 0 .25em;
+    line-height: 1;
+    -webkit-box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
+    box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
+    cursor: pointer;
+}
+
+.dropdown > span {
+    margin: 0;
+    height: 2em;
+    width: 6em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dropdown > span:hover {
+    background-color: #CCC;
+}
+
+.menu .item {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+i.icon {
+    display: inline-block;
+    opacity: .75;
+    margin: 0;
+    width: 1.23em;
+    height: 1em;
+    font-family: Icons;
+    font-style: normal;
+    line-height: 1;
+    font-weight: 400;
+    text-decoration: inherit;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }

@@ -32,6 +32,10 @@ function dataStore() {
 		currentViewInst = inst;
 	}
 
+	function getCurrentView() {
+		return currentViewInst;
+	}
+
 	function updateData() {
 		newData = [];
 		for (var item in resultData) {
@@ -111,6 +115,7 @@ function dataStore() {
 		getEventData: getEventData,
 		getResultData: getResultData,
 		setCurrentView: setCurrentView,
+		getCurrentView: getCurrentView,
 		updateData: updateData,
 		search: search
 	};

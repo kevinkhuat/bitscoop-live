@@ -59,7 +59,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 			//If the clicked item is now inactive (occurs when you click an active item),
 			//clear the detail panel content and map
 			else {
-				detailViewInst.clearContent();
+				detailViewInst.hideContent();
 				detailViewInst.clearMap(map);
 			}
 		});

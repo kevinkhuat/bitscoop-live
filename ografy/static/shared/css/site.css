@@ -7,7 +7,8 @@
     margin: 0;
     padding: 0;
 }
-@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) and (orientation: landscape) {
+
+@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
     html {
         -webkit-text-size-adjust: none;
         font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -15,9 +16,13 @@
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 0 5px 0 5px;
+    }
 }
 
-@media screen and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5) and (orientation: portrait) {
+@media (orientation: portrait) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5){
     html {
         -webkit-text-size-adjust: none;
         font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -25,25 +30,53 @@
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 5px 0 5px 0;
+    }
+
+    .padded.centered.wrap {
+        margin: 10px 0 0 0;
+    }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: landscape) {
+@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5){
     html {
         -webkit-text-size-adjust: none;
-        font: 10px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+        font: 20px 'Source Sans Pro', Helvetica, Arial, sans-serif;
         font-weight: 400;
         background-color: #FFF;
         height: 100%;
     }
+
+    .grow.center.wrap {
+        margin: 0 5px 0 5px;
+    }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) and (orientation: portrait) {
+@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5){
     html {
     -webkit-text-size-adjust: none;
-    font: 8px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
     font-weight: 400;
     background-color: #FFF;
     height: 100%;
+    }
+
+    .grow.center.wrap {
+        margin: 5px 0 5px 0;
+    }
+
+    .padded.centered.wrap {
+        margin: 10px 0 0 0;
+    }
+
+    .flex.stretch.lockwidth.centered {
+        flex-direction: column;
+    }
+
+    .app-header {
+        flex-direction: column-reverse;
     }
 }
 
@@ -63,7 +96,7 @@ h1, h2, h3 {
 }
 
 p {
-    margin-bottom: 1em;
+    margin: 0 0 1em 0;
 }
 
 h1 {
@@ -93,6 +126,7 @@ a:hover {
     text-decoration: underline;
 }
 
+
 input {
     font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
     font-weight: 300;
@@ -114,8 +148,7 @@ input:focus {
 input.full-width {
     display: block;
     width: 98%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto 0 auto !important;
 }
 
 main {
@@ -132,8 +165,7 @@ header nav {
 
 header nav .item {
     padding: 0 1%;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: 0 auto 0 auto;
 }
 
 /*header nav .item:first-child {*/
@@ -209,7 +241,6 @@ footer {
 .lockwidth {
     width: 85%;
     max-width: 1200px;
-    min-width: 400px;
 }
 
 .no-pad {
@@ -218,6 +249,14 @@ footer {
 
 .padded {
     padding: 2rem;
+}
+
+.padded.thin {
+    padding: 2rem 1rem 2rem 1rem;
+}
+
+.padded.thin.grow.wrap {
+    min-width: 300px;
 }
 
 .flex {
@@ -258,7 +297,7 @@ footer {
 }
 
 .grouping {
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
 }
 
 .grouping > :first-child {
@@ -358,7 +397,7 @@ ul.links > li:not(:last-child) {
 }
 
 .group {
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0;
 }
 
 form.block > input,
@@ -380,7 +419,7 @@ body.full .lockwidth {
 
 body.full > header {
     /*padding-left: 1%;*/
-    padding-right: 1%;
+    padding: 0 1% 0 0;
 }
 
 body.full > main {
@@ -403,7 +442,7 @@ body.full > footer {
     border: 1px solid #CCC;
     border-radius: 2px;
     background: #EEE;
-    margin-bottom: 2em;
+    margin: 0 0 2em 0;
 }
 
 .square-set > .header {
@@ -442,3 +481,4 @@ div.table > div > div {
     left:0!important;
     z-index:99999;
 }
+
