@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import ImproperlyConfigured
 from django.core.urlresolvers import get_script_prefix, resolve, NoReverseMatch, Resolver404
 
-from django.utils.translation import ugettext_lazy as _
+# from django.utils.translation import ugettext_lazy as _
 from urllib import parse as urlparse
 
 from rest_framework.reverse import reverse
@@ -12,17 +12,31 @@ from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import Docu
 
 
 class ReferenceField(DocumentField):
+    """
+    Field representing an association between Mongo Documents used in the Serializer.
+    This field uses the references found in Mongoengine ReferenceField.
+
+    Attributes are the same as in HyperlinkedRelatedFields in DRF
+    Attributes:
+    view_name
+    depth
+    lookup_field
+    lookup_url_kwarg
+    format
+    queryset
+    """
     lookup_field = 'pk'
 
-    default_error_messages = {
-        'invalid_dbref': _('Unable to convert to internal value.'),
-        'invalid_doc': _('DBRef invalid dereference.'),
-        'required': _('This field is required.'),
-        'no_match': _('Invalid hyperlink - No URL match.'),
-        'incorrect_match': _('Invalid hyperlink - Incorrect URL match.'),
-        'does_not_exist': _('Invalid hyperlink - Object does not exist.'),
-        'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
-    }
+    # TODO : Implement as in DRF?
+    # default_error_messages  = {
+    # 'invalid_dbref': _('Unable to convert to internal value.'),
+    #      'invalid_doc': _('DBRef invalid dereference.'),
+    #      'required': _('This field is required.'),
+    #      'no_match': _('Invalid hyperlink - No URL match.'),
+    #      'incorrect_match': _('Invalid hyperlink - Incorrect URL match.'),
+    #      'does_not_exist': _('Invalid hyperlink - Object does not exist.'),
+    #      'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
+    #  }
 
     type_label = 'ReferenceField'
 
@@ -32,6 +46,7 @@ class ReferenceField(DocumentField):
         self.lookup_field = kwargs.pop('lookup_field', self.lookup_field)
         self.lookup_url_kwarg = kwargs.pop('lookup_url_kwarg', self.lookup_field)
         self.format = kwargs.pop('format', None)
+        self.queryset = kwargs.pop('queryset', None)
 
         # We include this simply for dependency injection in tests.
         # We can't add it as a class attributes or it would expect an
@@ -42,10 +57,9 @@ class ReferenceField(DocumentField):
     def use_pk_only_optimization(self):
         return self.lookup_field == 'pk'
 
-    # TODO: FIX BROKEN
     def get_queryset(self):
         def get(lookup_kwargs):
-            pass
+            return self.queryset
 
     def get_object(self, view_name, view_args, view_kwargs):
         """
@@ -93,9 +107,7 @@ class ReferenceField(DocumentField):
             self.fail('no_match')
 
         try:
-            expected_viewname = request.versioning_scheme.get_versioned_viewname(
-                self.view_name, request
-            )
+            expected_viewname = request.versioning_scheme.get_versioned_viewname(self.view_name, request)
         except AttributeError:
             expected_viewname = self.view_name
 
@@ -107,19 +119,19 @@ class ReferenceField(DocumentField):
         except (ObjectDoesNotExist, TypeError, ValueError):
             self.fail('does_not_exist')
 
-        # try:
-        #     dbref = self.model_field.to_python(data)
-        # except InvalidId:
-        #     raise ValidationError(self.error_messages['invalid_dbref'])
-        #
-        # instance = dereference.DeReference()([dbref])[0]
-        #
-        # # Check if dereference was successful
-        # if not isinstance(instance, Document):
-        #     msg = self.error_messages['invalid_doc']
-        #     raise ValidationError(msg)
-        #
-        # return instance
+            # try:
+            #     dbref = self.model_field.to_python(data)
+            # except InvalidId:
+            #     raise ValidationError(self.error_messages['invalid_dbref'])
+            #
+            # instance = dereference.DeReference()([dbref])[0]
+            #
+            # # Check if dereference was successful
+            # if not isinstance(instance, Document):
+            #     msg = self.error_messages['invalid_doc']
+            #     raise ValidationError(msg)
+            #
+            # return instance
 
     def to_representation(self, value):
         request = self.context.get('request', None)
@@ -154,19 +166,32 @@ class ReferenceField(DocumentField):
                 '`lookup_field` attribute on this field.'
             )
             raise ImproperlyConfigured(msg % self.view_name)
-        # return self.transform_object(value, self.depth - 1)
+            # return self.transform_object(value, self.depth - 1)
 
 
 class DjangoRefField(HyperlinkedRelatedField):
+    """
+    Field representing an association From a Mongo Document to a Django Model used in the Serializer.
+
+    Attributes are the same as in HyperlinkedRelatedFields in DRF
+    Attributes:
+    view_name
+    depth
+    lookup_field
+    lookup_url_kwarg
+    format
+    queryset
+    """
     lookup_field = 'pk'
 
-    default_error_messages = {
-        'required': _('This field is required.'),
-        'no_match': _('Invalid hyperlink - No URL match.'),
-        'incorrect_match': _('Invalid hyperlink - Incorrect URL match.'),
-        'does_not_exist': _('Invalid hyperlink - Object does not exist.'),
-        'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
-    }
+    # TODO : Implement as in DRF?
+    # default_error_messages = {
+    #      'required': _('This field is required.'),
+    #      'no_match': _('Invalid hyperlink - No URL match.'),
+    #      'incorrect_match': _('Invalid hyperlink - Incorrect URL match.'),
+    #      'does_not_exist': _('Invalid hyperlink - Object does not exist.'),
+    #      'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
+    #  }
 
     def __init__(self, view_name=None, **kwargs):
         assert view_name is not None, 'The `view_name` argument is required.'

@@ -22,6 +22,7 @@ def evaluate(query):
 
 
 class DataSerializer(mongo_serializers.DocumentSerializer):
+    # Django References
     user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
@@ -31,8 +32,11 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
 
 
 class EventSerializer(mongo_serializers.DocumentSerializer):
-    user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    # Mongo References
     data = mongo_fields.ReferenceField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
+
+    # Django References
+    user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
     signal = mongo_fields.DjangoRefField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
     provider = mongo_fields.DjangoRefField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
 
@@ -43,6 +47,7 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
 
 
 class MessageSerializer(mongo_serializers.DocumentSerializer):
+    # Mongo References
     event = mongo_fields.ReferenceField(view_name='event-detail', lookup_field='event', queryset=Event.objects.all())
 
     class Meta:
@@ -60,6 +65,7 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
+    # Django References
     user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id', queryset=User.objects.all())
     provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider', queryset=User.objects.all())
 
@@ -70,6 +76,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 
 class SettingsSerializer(mongo_serializers.DocumentSerializer):
+    # Django References
     user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
@@ -79,7 +86,10 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
 
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
+    # Mongo References
     settings = django_fields.MongoRefField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
+
+    # Django References
     signals = mongo_fields.DjangoRefField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
 
     class Meta:
