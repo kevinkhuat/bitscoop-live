@@ -37,7 +37,9 @@ function mapboxManager(dataInst) {
 		}));
 
 		L.control.fullscreen().addTo(this.map);
-		L.control.zoomslider().addTo(this.map);
+		if (window.devicePixelRatio < 1.5) {
+			L.control.zoomslider().addTo(this.map);
+		}
 	}
 
 	//Change the map's context

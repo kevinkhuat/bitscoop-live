@@ -41,26 +41,10 @@
     background-color: #CCC;
 }
 
-.search.dropdown {
-    position: relative;
-}
-
-.search.image {
-    height: 100px;
-    width: 100px;
-}
-
-.search.button {
-    background-color: #DDD;
-    padding: 5px;
-
-    text-decoration: none !important;
-
-    cursor: pointer;
-}
-
-.search.button.hover {
-    background-color: #DDD
+@media (orientation: landscape) {
+    .search {
+        margin: 0.25em 0;
+    }
 }
 
 .search.menu {
@@ -132,7 +116,8 @@
 
 @media screen and (orientation: landscape) {
     .sidebar {
-        width: 300px;
+        width: 50%;
+        max-width: 400px;
         flex-direction: column;
         position: relative;
         border-left: 2px;
@@ -170,7 +155,6 @@
     }
 
     .detail.full {
-        min-height: 600px;
         background-color: #EEE;
         height: 100%;
     }
@@ -201,7 +185,6 @@
 
     .detail .avatar img {
         width: 100%;
-        margin: 3px;
     }
 
     .detail .datetime {
@@ -241,7 +224,8 @@
     }
 
     .sidebar {
-        height: 400px;
+        height: 50%;
+        max-height: 300px;
         flex-direction: row;
         position: relative;
         border-top: 2px;
@@ -272,7 +256,6 @@
     }
 
     .detail.full {
-        min-width: 200px;
         background-color: #EEE;
         width: 100%;
     }
@@ -407,10 +390,6 @@
     position: relative;
 }
 
-.search.dropdown {
-
-}
-
 .leaflet-control-mapbox-geocoder-form input {
     margin: 0;
 }
@@ -428,46 +407,51 @@
 
 .links {
     margin: 10px 5px;
-    min-width: 10%;
+    min-width: 35%;
 }
 
-.dropdown > .buttons {
-    border: 1px solid gainsboro;
-    border-radius: 5px;
-}
-
-.dropdown .filter {
+.filter-button {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
-    width: 2.75em;
-    height: 2.75em;
-    padding: .8em;
+    width: 2em;
+    height: 2em;
+    padding: .5em;
     background-color: rgba(0,0,0,.05);
     text-align: center;
-    border-radius: .25em 0 0 .25em;
+    border-radius: .25em;
     line-height: 1;
     -webkit-box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
     box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
     cursor: pointer;
 }
 
+.filter-button:hover {
+    color: #0E9D58;
+}
+
+.search-button {
+    cursor: pointer;
+}
+
 .dropdown span {
     margin: 0;
-    padding: 0.8em 0;
-    width: 6em;
+    width: 5em;
     font-weight: bold;
     cursor: pointer;
 }
 
 .dropdown span:hover {
-    background-color: #DDD;
+    color: #0E9D58;
 }
 
 .menu {
     position: absolute;
-    z-index: 10;
+    width: 85%;
+    top: 2.5em;
+    left: 2.5em;
+    z-index: 1100;
     -webkit-transition: height 0.2s ease;
     -moz-transition: height 0.2s ease;
     transition: height 0.2s ease;
@@ -491,8 +475,9 @@
     text-align: left;
 }
 
-.menu .item:hover {
-    background-color: #CCC;
+@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {}
+    .menu .item:hover {
+        background-color: #CCC;
 }
 
 .menu .active {
@@ -512,26 +497,4 @@
 
 .menu .add-filter:hover {
     color: #0E9D58;
-}
-
-i.icon {
-    display: inline-block;
-    opacity: .75;
-    margin: 0;
-    width: 1.23em;
-    height: 1em;
-    font-family: Icons;
-    font-style: normal;
-    line-height: 1;
-    font-weight: 400;
-    text-decoration: inherit;
-    text-align: center;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-i.icon:hover {
-    background-color: #CCC;
 }

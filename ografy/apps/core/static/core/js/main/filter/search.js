@@ -118,7 +118,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 			return submitSearch(event);
 		});
 
-		$('span.text').click(function(event){
+		$('.search-button').click(function(event){
 			return submitSearch(event);
 		});
 

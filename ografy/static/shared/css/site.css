@@ -52,6 +52,10 @@
     .grow.center.wrap {
         margin: 0 5px 0 5px;
     }
+
+    .flex.center.views {
+        min-width: 15%;
+    }
 }
 
 @media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5){
@@ -77,6 +81,14 @@
 
     .app-header {
         flex-direction: column-reverse;
+    }
+
+    .viewsearch {
+        flex-direction: column;
+    }
+
+    .flex.center.views {
+        width: 100%;
     }
 }
 
@@ -153,6 +165,8 @@ input.full-width {
 
 main {
     padding: 25px 0;
+    height: 100%;
+    width: 100%;
 }
 
 header {
@@ -481,4 +495,3 @@ div.table > div > div {
     left:0!important;
     z-index:99999;
 }
-

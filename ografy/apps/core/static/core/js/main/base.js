@@ -50,12 +50,12 @@ function baseView() {
 	}
 
 	function bindFilterCommands() {
-		$('.dropdown i').click(function() {
-			$('.menu').removeClass('hidden');
+		$('.filter-button').click(function() {
+			$('.menu').toggleClass('hidden');
 		});
 
 		$(document.body).click(function(e){
-			if(e.target.className !== ('filter icon') &&
+			if(e.target.className !== ('filter-button icon-filter') &&
 				e.target.className !== ('item') &&
 				e.target.className !== ('item active')) {
 				$('.menu').addClass('hidden');

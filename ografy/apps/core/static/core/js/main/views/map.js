@@ -109,7 +109,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 
 
 		//Add the layer control to the map
-		map.layerControl = L.control.layers({ Directions: map.polyline }).addTo(map);
+		map.layerControl = L.control.layers({}, { Directions: map.polyline }).addTo(map);
 		//FIXME: This is most of what's needed to generate walking directions once the API is working
 //		var directions = L.mapbox.directions({
 //			profile: 'mapbox.driving'

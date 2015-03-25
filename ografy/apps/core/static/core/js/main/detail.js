@@ -15,6 +15,10 @@ function detailView(mapboxViewInst) {
 		$('.sidebar').html(list_detail);
 		setHeight();
 
+		$(window).resize(function() {
+			setHeight();
+		});
+
 		//If there will be a map, create the map.
 		//This needs to be done after the detail panel has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
