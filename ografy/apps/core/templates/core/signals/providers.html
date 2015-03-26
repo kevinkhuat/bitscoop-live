@@ -4,52 +4,6 @@
 {% block static %}
 	{{ block.super }}
 	<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
-	<style type="text/css">
-		.signal-button {
-			display: inline-block;
-			background-color: #EEE;
-
-			height: 200px;
-			width: 200px;
-			padding: 10px;
-			margin: 5px;
-			text-align: center;
-
-			cursor: pointer;
-			transition: width .5s ease;
-			text-decoration: none !important;
-		}
-
-		.provider-name {
-			font-size: 1.5em;
-			font-weight: bold;
-		}
-
-		.provider-description {
-			color: #000;
-		}
-
-		.signal-button > i {
-			position: relative;
-			top: 3px;
-			left: -5px;
-		}
-
-		.signal-button:hover {
-			background-color: #DDD;
-		}
-
-		#isotope-container {
-			padding: 5px;
-		}
-
-		.provider-count {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			margin: 0 5px;
-		}
-	</style>
 {% endblock %}
 
 
