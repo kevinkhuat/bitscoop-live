@@ -1,4 +1,4 @@
-//This was an attempt at dynamically resizing the information boxes on the front page ("Bring your services together", etc.)
+//FIXME: This was an attempt at dynamically resizing the information boxes on the front page ("Bring your services together", etc.)
 //so that each pair of boxes has the same height.
 //It wasn't working as intended, but I didn't want to delete it entirely in case I come back to it.
 
@@ -26,3 +26,15 @@
 //		}
 //	}
 //}
+$(document).ready(function() {
+	$('.user-button').click(function () {
+		$('.menu.main').toggleClass('hidden');
+	});
+
+	$(document.body).click(function (e) {
+		if (e.target.className !== ('item user-button') &&
+			e.target.className !== ('item')) {
+			$('.menu.main').addClass('hidden');
+		}
+	});
+});

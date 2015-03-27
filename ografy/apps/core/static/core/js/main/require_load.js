@@ -2,6 +2,7 @@ requirejs.config({
 	baseUrl: '',
 	paths: {
 		lib: 'static/lib',
+		staticjs: 'static/shared/js',
 		main: 'static/core/js/main'
 	},
 	shim: {
@@ -50,7 +51,9 @@ requirejs(['main/utls/cache',
 			'main/filter/objects/data/metadata',
 			'main/filter/objects/event/metadata',
 			'main/filter/objects/message/metadata',
-			'main/base'],
+			'main/base',
+			'static/shared/js/templates.js',
+			'static/shared/js/less.js'],
 
 	function() {
 		$(document).ready(function() {

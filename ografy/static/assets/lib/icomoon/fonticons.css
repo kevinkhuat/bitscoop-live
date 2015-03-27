@@ -43,6 +43,10 @@
 	content: "\f032";
 }
 
+.icon-check:before {
+    content: "\f03a";
+}
+
 .icon-triangle-down:before {
 	content: "\f05b";
 }

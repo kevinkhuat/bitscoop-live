@@ -51,14 +51,14 @@ function baseView() {
 
 	function bindFilterCommands() {
 		$('.filter-button').click(function() {
-			$('.menu').toggleClass('hidden');
+			$('.menu.filter').toggleClass('hidden');
 		});
 
 		$(document.body).click(function(e){
 			if(e.target.className !== ('filter-button icon-filter') &&
 				e.target.className !== ('item') &&
 				e.target.className !== ('item active')) {
-				$('.menu').addClass('hidden');
+				$('.menu.filter').addClass('hidden');
 			}
 		});
 	}

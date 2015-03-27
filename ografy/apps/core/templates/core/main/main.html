@@ -25,11 +25,11 @@
 
 		<script type="text/javascript" src="{% static 'assets/lib/nunjucks/nunjucks.js' %}"></script>
 		<script type="text/javascript" src="{% static 'assets/lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
-		<script type="text/javascript" src="{% static 'shared/js/templates.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
 		<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}"/>
 
-		<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}"/>
-		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}"/>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'core/css/main/main.less' %}"/>
+		<link rel="stylesheet/less" type="text/css" href="{% static 'shared/css/site.less' %}"/>
 	{% endblock %}
 
 </head>
@@ -44,7 +44,7 @@
 				<i class="filter-button icon-filter"></i>
 				<i class="search-button"></i>
 			</div>
-			<div class="menu hidden">
+			<div class="menu filter hidden">
 				<div class="item">
 					Events
 				</div>
@@ -64,10 +64,21 @@
 		<div class="flex center links">
 			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
-			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
-			<a id="provider_link" class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
-			<a id="logout_button" class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
-		</div>
+			<div>
+				<a class="item user-button">{{ request.user.identifier }}</a>
+				<div class="flex column menu main hidden">
+					<a class="item" href="{% url 'core_user_my_profile' %}">
+						User Home
+					</a>
+					<a class="item" href="{% url 'core_settings_personal' %}">
+						Settings
+					</a>
+					<a class="item" href="{% url 'core_logout' %}">
+						Log Out
+					</a>
+				</div>
+			</div>
+			</div>
 	</nav>
 </header>
 <main class="flex grow">
