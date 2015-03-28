@@ -32,9 +32,20 @@ $(document).ready(function() {
 	});
 
 	$(document.body).click(function (e) {
-		if (e.target.className !== ('item user-button') &&
+		if (e.target.className !== ('user-button') &&
 			e.target.className !== ('item')) {
 			$('.menu.main').addClass('hidden');
+		}
+	});
+
+	$('.drawer-toggle').click(function() {
+		$('.left.drawer').toggleClass('hidden');
+	});
+
+	$(document.body).click(function (e) {
+		if (e.target.className !== ('drawer-toggle icon-paragraph-justify') &&
+			e.target.className !== ('link')) {
+			$('.left.drawer').addClass('hidden');
 		}
 	});
 });

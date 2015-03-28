@@ -52,8 +52,7 @@ requirejs(['main/utls/cache',
 			'main/filter/objects/event/metadata',
 			'main/filter/objects/message/metadata',
 			'main/base',
-			'static/shared/js/templates.js',
-			'static/shared/js/less.js'],
+			'static/shared/js/templates.js'],
 
 	function() {
 		$(document).ready(function() {

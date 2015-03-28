@@ -20,8 +20,7 @@
 
 		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
 		<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}" />
-		<link rel="stylesheet/less" type="text/css" href="{% static 'shared/css/site.less' %}" />
-		<script type="text/javascript" src="{% static 'shared/js/less.js' %}" ></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
 		{% endblock %}
 	</head>
 
@@ -41,12 +40,9 @@
 					<a class="item" href="{% url 'core_providers' %}">Providers</a>
 					<a class="item" href="http://blog.ografy.io" target="_blank">Blog</a>
 					{% endblock %}
-				</div>
-
-				<div class="flex center">
 					{% if request.user.is_authenticated %}
-					<div>
-						<a class="item user-button">{{ request.user.identifier }}</a>
+					<div class="item">
+						<a class="user-button">{{ request.user.identifier }}</a>
 						<div class="flex column menu main hidden">
 							<a class="item" href="{% url 'core_user_my_profile' %}">
 								User Home

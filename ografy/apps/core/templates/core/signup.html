@@ -13,13 +13,13 @@
 		<p>For now you only need to provide a valid email address and a password. You can fill out the rest of your information later if you'd like.</p>-->
 	</div>
 
-	<div class="table centered backfill padded rounded" style="width:40rem;">
-		<div>
+	<div class="table centered backfill padded rounded flex column" style="width:30%;">
+		<div class="center grow">
 			<div class="center">
 				Sign up for Ografy
 			</div>
 		</div>
-		<div>
+		<div class="center grow">
 			<div>
 				<form action="{% url 'core_signup' %}" method="POST">
 					{% csrf_token %}

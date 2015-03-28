@@ -28,7 +28,7 @@ html {
 	}
 }
 
-#left {
+#left:not("hidden") {
 	max-width: 300px;
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5) {
 		margin: 0 2em 0 0;
@@ -40,11 +40,18 @@ html {
 		}
 		@media (orientation: portrait) {
 			margin: 0 0.5em 0 0;
-			width: 40%;
 		}
 	}
 }
 
+#content {
+	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio : 1.5) {
+		margin-left: 2em;
+	}
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		margin-left: 2em;
+	}
+}
 .padded.centered.wrap {
 	@media (orientation: portrait) {
 			margin: 10px 0 0 0;
@@ -266,6 +273,7 @@ ul.links {
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
+	background-color: #FFF;
 	& > li {
 		& > * {
 			display: block;
@@ -522,6 +530,66 @@ div.table {
 		.step {
 			padding: 15px 20px 15px 20px;
 		}
+	}
+}
+
+.drawer:not("hidden") {
+	width: 100%;
+	height: 100%;
+}
+
+.drawer.container {
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		position: absolute;
+		left: 0;
+		z-index: 10;
+		-webkit-transition: height 0.2s ease;
+		-moz-transition: height 0.2s ease;
+		transition: height 0.2s ease;
+		-webkit-transition: width 0.2s ease;
+		-moz-transition: width 0.2s ease;
+		transition: width 0.2s ease;
+	}
+
+}
+
+.drawer.hidden {
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		height: 0;
+		width: 0;
+		visibility: hidden;
+		-webkit-transition: height 0.2s ease;
+		-moz-transition: height 0.2s ease;
+		transition: height 0.2s ease;
+		-webkit-transition: width 0.2s ease;
+		-moz-transition: width 0.2s ease;
+		transition: width 0.2s ease;
+	}
+}
+
+.drawer-toggle {
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 2em;
+		height: 2em;
+		padding: .5em;
+		background-color: rgba(192, 192, 192, 1);
+		text-align: center;
+		border-radius: .25em;
+		line-height: 1;
+		-webkit-box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.05) inset;
+		box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.05) inset;
+		cursor: pointer;
+		display: inline-block;
+		float: left;
+	}
+	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+		width: 0;
+		height: 0;
+		visibility: hidden;
 	}
 }
 .ordered.steps .step.active:before, .steps .active.step .icon {
