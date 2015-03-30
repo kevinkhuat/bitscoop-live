@@ -54,6 +54,7 @@ def connect(request, pk):
         'title': 'Ografy - Connect to ' + provider.name,
         'content_class': 'left',
         'provider': provider,
+        'flex_override': True,
         'user_id': request.user.id,
         'postback_url': reverse('core_authorize')
     })

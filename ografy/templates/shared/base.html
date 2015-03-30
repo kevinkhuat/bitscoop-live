@@ -38,6 +38,8 @@
 					<a class="item" href="{% url 'core_start' %}">Get Started</a>
 					{% endif %}
 					<a class="item" href="{% url 'core_providers' %}">Providers</a>
+				</div>
+				<div class="flex center grow">
 					<a class="item" href="http://blog.ografy.io" target="_blank">Blog</a>
 					{% endblock %}
 					{% if request.user.is_authenticated %}
@@ -45,13 +47,20 @@
 						<a class="user-button">{{ request.user.identifier }}</a>
 						<div class="flex column menu main hidden">
 							<a class="item" href="{% url 'core_user_my_profile' %}">
+								<i class="icon-home3"></i>
 								User Home
 							</a>
+							<a class="item" href="{% url 'core_providers' %}">
+								<i class="icon-plus"></i>
+								Add account
+							</a>
 							<a class="item" href="{% url 'core_settings_personal' %}">
+								<i class="icon-cog" ></i>
 								Settings
 							</a>
 							<a class="item" href="{% url 'core_logout' %}">
-								Log Out
+								<i class="icon-sign-out"></i>
+								Logout
 							</a>
 						</div>
 					</div>
@@ -65,7 +74,7 @@
 
 		<main class="grow {{ main_class }}">
 			{% block main %}
-			<div class="flex grow lockwidth centered">
+			<div class="flex {% if flex_override %}flex_override {% endif %}grow lockwidth centered">
 				<aside id="left" class="{{ left_class }}">{% block left %}{% endblock %}</aside>
 				<div id="content" class="grow {{ content_class }}">{% block content %}{% endblock %}</div>
 				<aside id="right" class="{{ right_class }}">{% block right %}{% endblock %}</aside>
