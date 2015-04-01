@@ -28,7 +28,11 @@ class PersonalView(View):
 		form = UpdatePersonalForm({'email': user.email, # 'handle': user.handle,
 		                           'first_name': user.first_name, 'last_name': user.last_name})
 
-		return render(request, self.template_name, {'title': self.title, 'form': form})
+		return render(request, self.template_name, {
+		'title': self.title,
+		'lockwidth_override': True,
+		'form': form
+		})
 
 	def post(self, request):
 		User = get_user_model()
@@ -55,7 +59,11 @@ class PersonalView(View):
 
 			return redirect_by_name('core_settings_personal')
 		else:
-			return render(request, self.template_name, {'title': self.title, 'form': form})
+			return render(request, self.template_name, {
+			'title': self.title,
+			'lockwidth_override': True,
+			'form': form
+			})
 
 
 class SecurityView(View):
@@ -67,7 +75,10 @@ class SecurityView(View):
 		return super(SecurityView, self).dispatch(*args, **kwargs)
 
 	def get(self, request):
-		return render(request, self.template_name, {'title': self.title})
+		return render(request, self.template_name, {
+		'title': self.title,
+		'lockwidth_override': True,
+		})
 
 	def post(self, request):
 		user = request.user
@@ -84,7 +95,11 @@ class SecurityView(View):
 
 			return redirect_by_name('core_settings_personal')
 		else:
-			return render(request, self.template_name, {'title': self.title, 'form': form})
+			return render(request, self.template_name, {
+			'title': self.title,
+			'lockwidth_override': True,
+			'form': form
+			})
 
 
 class SignalView(View):
@@ -102,6 +117,7 @@ class SignalView(View):
 		return render(request, self.template_name, {
 		'title': self.title,
 		'signals': signals,
+		'lockwidth_override': True,
 		'verify_url': verify_url
 		})
 
@@ -140,4 +156,7 @@ class UserView(View):
 
 @login_required
 def base(request):
-	return render(request, 'core/settings/personal.html', {'title': 'Ografy - Base'})
+	return render(request, 'core/settings/personal.html', {
+	'title': 'Ografy - Base',
+	'lockwidth_override': True
+	})

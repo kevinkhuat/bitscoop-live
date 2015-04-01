@@ -2,7 +2,7 @@
 <html>
 <head lang="en-US">
 	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
 	<title>Ografy App</title>
 
 	{% load staticfiles %}
@@ -64,16 +64,14 @@
 		<div class="flex center links">
 			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<a class="spacer"></a>
+			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
 			<div>
-				<a class="user-button">{{ request.user.identifier }}</a>
+				<a class="user-button item">{{ request.user.identifier }}</a>
 					<div class="flex column menu main hidden">
 						<a class="item" href="{% url 'core_user_my_profile' %}">
 							<i class="icon-home3"></i>
 							User Home
-						</a>
-						<a class="item" href="{% url 'core_providers' %}">
-							<i class="icon-plus"></i>
-							Add account
 						</a>
 						<a class="item" href="{% url 'core_settings_personal' %}">
 							<i class="icon-cog" ></i>

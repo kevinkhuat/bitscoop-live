@@ -13,7 +13,10 @@ function detailView(mapboxViewInst) {
 		});
 
 		$('.sidebar').html(list_detail);
-		setHeight();
+
+		$('.sidebar').promise().done(function() {
+			setHeight();
+		});
 
 		$(window).resize(function() {
 			setHeight();

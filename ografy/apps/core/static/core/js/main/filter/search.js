@@ -131,7 +131,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//By default, there are no filters, and this is the only way to add
 		//the first one.  Additional filters can be created from the "+" button
 		//on existing filters.
-		$('.dropdown .add-filter').click(function() {
+		$('.menu .add-filter').click(function() {
 			addFilter();
 		});
 	}

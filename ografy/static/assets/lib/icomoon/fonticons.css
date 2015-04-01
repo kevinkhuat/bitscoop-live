@@ -704,6 +704,9 @@
 .icon-minus:before {
 	content: "\ea0b";
 }
+.icon-play2:before {
+    content: "\ea15";
+}
 
 .icon-arrow-down-left:before {
 	content: "\ea37";
@@ -1033,3 +1036,10 @@
 	content: "\e609";
 }
 
+.icon-file-text:before {
+    content: "\f011";
+}
+
+.icon-clippy:before {
+    content: "\f035";
+}

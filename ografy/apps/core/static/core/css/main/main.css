@@ -24,7 +24,7 @@
   cursor: pointer;
   transition: width .5s ease;
 }
-.filter.button:hover {
+.filter.button.hover {
   background-color: #DDD;
 }
 .filter.button.active {
@@ -242,9 +242,6 @@
     width: 100%;
   }
 }
-.sidebar.invisible {
-  visibility: hidden;
-}
 @media (orientation: landscape) {
   .sidebar.invisible {
     width: 0px;
@@ -277,11 +274,17 @@
 }
 .list.title {
   margin: 4px 10px 4px 4px;
+  padding: 5px;
   height: 30px;
   color: #000;
   text-decoration: none !important;
   font-size: 1em;
-  padding: 5px;
+}
+@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .list.title {
+    margin: 4px 0;
+    padding: 0;
+  }
 }
 .list.item-provider {
   width: 30%;
@@ -312,7 +315,7 @@
   text-decoration: none !important;
   font-size: 1em;
 }
-.list.item:hover {
+.list.item.hover {
   background-color: #488A2D;
   color: #FFF;
 }
@@ -357,7 +360,7 @@
   float: left;
   margin: auto 0.5em;
 }
-.filter-button:hover {
+.filter-button.hover {
   color: #0E9D58;
 }
 .search-button {
@@ -378,6 +381,15 @@
   font-weight: bold;
   cursor: pointer;
 }
-.dropdown span:hover {
+.dropdown span.hover {
   color: #0E9D58;
+}
+@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .main-list {
+    font-size: 14px;
+  }
+}
+.spacer {
+  height: 1.25em;
+  border-left: 1px solid #999;
 }

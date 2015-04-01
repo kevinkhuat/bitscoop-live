@@ -34,7 +34,7 @@
 
 }
 
-.filter.button:hover {
+.filter.button.hover {
     background-color: #DDD;
 }
 
@@ -247,7 +247,6 @@ main {
 }
 
 .sidebar.invisible {
-	visibility: hidden;
 	@media (orientation: landscape) {
 		width: 0px;
 		flex-direction: column;
@@ -278,11 +277,15 @@ main {
 }
 .list.title {
     margin: 4px 10px 4px 4px;
+    padding: 5px;
+	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		margin: 4px 0;
+		padding: 0;
+	}
     height: 30px;
     color: #000;
     text-decoration: none !important;
     font-size: 1em;
-    padding: 5px;
 }
 .list.item-provider {
     width: 30%;
@@ -313,7 +316,7 @@ main {
     text-decoration: none !important;
     font-size: 1em;
 }
-.list.item:hover {
+.list.item.hover {
     background-color: #488A2D;
     color: #FFF;
 }
@@ -362,7 +365,7 @@ main {
     float: left;
     margin: auto 0.5em;
 }
-.filter-button:hover {
+.filter-button.hover {
     color: #0E9D58;
 }
 .search-button {
@@ -384,7 +387,17 @@ main {
         font-weight: bold;
         cursor: pointer;
     }
-    span:hover {
+    span.hover {
         color: #0E9D58;
     }
+}
+.main-list {
+	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		font-size: 14px;
+	}
+}
+
+.spacer {
+	height: 1.25em;
+	border-left: 1px solid #999;
 }

@@ -29,7 +29,7 @@ html {
 }
 
 #content {
-	@media (orientation: landscape) {
+	@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5){
 		margin: 0 0 0 1em;
 	}
 }
@@ -50,14 +50,11 @@ html {
 	}
 }
 
-.flex.strech.lockwidth.centered {
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		flex-direction: column;
-	}
-}
-
 .app-header {
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		flex-direction: column-reverse;
+	}
+	@media (max-device-width: 500px) {
 		flex-direction: column-reverse;
 	}
 }
@@ -99,9 +96,6 @@ a {
 	text-decoration: none;
 	color: #0E9D58;
 }
-a:hover {
-	text-decoration: underline;
-}
 input {
 	font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
 	font-weight: 300;
@@ -137,11 +131,11 @@ header {
 			text-decoration: none !important;
 			color: #555;
 		}
-		a:hover {
+		a.hover {
 			color: #0E9D58;
 			cursor: pointer;
 		}
-		i:hover {
+		i.hover {
 			color: #0E9D58;
 			cursor: pointer;
 		}
@@ -190,7 +184,7 @@ footer {
 		width: 85%;
 	}
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		width: 75%;
+		width: 90%;
 	}
 	max-width: 1200px;
 	.menu.main {
@@ -202,6 +196,9 @@ footer {
 		}
 	}
 }
+.lockwidth.override {
+	width: 75%;
+}
 .no-pad {
 	padding: 0px !important;
 }
@@ -209,10 +206,15 @@ footer {
 	padding: 2rem;
 }
 .padded.thin {
-	padding: 2rem 1rem 2rem 1rem;
+	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+		padding: 2rem 1rem;
+	}
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		padding: 2rem 0;
+	}
 }
 .padded.thin.grow.wrap {
-	min-width: 100%;
+	min-width: 15em;
 }
 .flex {
 	display: flex;
@@ -243,7 +245,7 @@ footer {
 }
 .flex.center {
 	align-items: center;
-	min-width: 15%;
+	min-width: 30%;
 }
 .flex_override {
 	@media (orientation: portrait) {
@@ -254,6 +256,7 @@ footer {
 	flex-wrap: wrap;
 }
 .grouping {
+	background-color: #FFF;
 	margin: 0 0 20px 0;
 	& > :first-child {
 		border: 1px solid #D8D8D8;
@@ -289,7 +292,7 @@ ul.links {
 			text-decoration: none;
 			cursor: pointer;
 		}
-		& > :hover {
+		& > .hover {
 			background-color: #0E9D58 !important;
 			color: #FFFFFF;
 		}
@@ -360,7 +363,12 @@ body.full {
 		max-width: none;
 		min-width: 0;
 		.menu.main {
-			right: 0.5em;
+			@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+				right: inherit;
+			}
+			@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+				right: 0.5em;
+			}
 		}
 	}
 	.lockwidth.grow {
@@ -449,7 +457,7 @@ div.table {
 .provider-description {
 	color: #000;
 }
-.signal-button:hover {
+.signal-button.hover {
 	background-color: #DDD;
 }
 #isotope-container {
@@ -462,6 +470,7 @@ div.table {
 	margin: 0 5px;
 }
 .steps {
+	border: 1px solid rgba(40, 40, 40, .5);
 	border-radius: 0;
 	overflow: visible;
 	border-radius: 0;
@@ -515,10 +524,6 @@ div.table {
 	}
 	.step:first-child {
 		padding-left: 1.35em;
-		border-radius: .3125em 0 0 .3125em;
-	}
-	.active.step:first-child {
-		border-top-right-radius: 0;
 	}
 }
 #left {
@@ -539,7 +544,12 @@ div.table {
 		}
 	}
 	.step {
-		padding: 15px 20px 15px 20px;
+		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+			padding: 1em;
+		}
+		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+			padding: 0.5em;
+		}
 	}
 }
 
@@ -561,10 +571,12 @@ div.table {
 
 .drawer {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		position: absolute;
+		left: 0;
 		width: 70%;
-		-webkit-transition: width 0.2s ease;
-		-moz-transition: width 0.2s ease;
-		transition: width 0.2s ease;
+		-webkit-transition: left 0.2s ease;
+		-moz-transition: left 0.2s ease;
+		transition: left 0.2s ease;
 	}
 }
 
@@ -579,11 +591,12 @@ div.table {
 
 .drawer.hidden {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		width: 0;
-		visibility: hidden;
-		-webkit-transition: width 0.2s ease;
-		-moz-transition: width 0.2s ease;
-		transition: width 0.2s ease;
+		position: absolute;
+		left: -100%;
+//		visibility: hidden;
+		-webkit-transition: left 0.2s ease;
+		-moz-transition: left 0.2s ease;
+		transition: left 0.2s ease;
 	}
 }
 
@@ -604,13 +617,24 @@ div.table {
 		box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.05) inset;
 		cursor: pointer;
 		display: inline-block;
-		float: left;
+		position: absolute;
+		left: 70%;
+		-webkit-transition: left 0.2s ease;
+		-moz-transition: left 0.2s ease;
+		transition: left 0.2s ease;
 	}
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 		width: 0;
 		height: 0;
 		visibility: hidden;
 	}
+}
+
+.drawer-toggle.hidden {
+	left: 0;
+	-webkit-transition: left 0.2s ease;
+	-moz-transition: left 0.2s ease;
+	transition: left 0.2s ease;
 }
 .ordered.steps .step.active:before, .steps .active.step .icon {
 	color: #0E9D58;
@@ -673,7 +697,7 @@ div.table {
 	font-size: 1rem;
 	display: inline-block;
 	position: relative;
-	padding: 1em 2em 1em 3em;
+	padding: 1em 2em 1em 2em;
 	vertical-align: top;
 	background-color: #FFF;
 	color: #888;
@@ -713,10 +737,10 @@ i.step-icon {
 
 .grow.center.wrap {
 	@media (orientation: landscape) {
-		margin: 0 5px 0 5px;
+		margin: 5px 0;
 	}
 	@media (orientation: portrait) {
-		margin: 5px 0 5px 0;
+		margin: 5px 0;
 	}
 }
 
@@ -738,9 +762,10 @@ i.step-icon {
         padding: 0.25em 0.5em;
         text-align: left;
     }
-    .item:hover {
+    .item.hover {
         background-color: #CCC;
     }
+
     .active {
         background-color: #DDD;
     }
@@ -752,9 +777,6 @@ i.step-icon {
         width: 100%;
         padding: 0.25em 0.5em;
         text-align: left;
-    }
-    .add-filter:hover {
-        color: #0E9D58;
     }
 }
 
@@ -775,7 +797,27 @@ i.step-icon {
 	right: 0.5em;
 	top: 3em;
 	border: 1px solid @darkgray;
-	.item:hover{
+	.item.hover{
 		background-color: inherit;
+	}
+}
+
+.signup {
+	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+		width: 30%;
+	}
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		@media (orientation: portrait) {
+			width: 100%;
+		}
+		@media (orientation: landscape) {
+			width: 70%;
+		}
+	}
+}
+
+.user-button {
+	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		padding: 0 1em 0 0;
 	}
 }
