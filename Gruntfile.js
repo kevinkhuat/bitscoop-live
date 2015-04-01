@@ -55,6 +55,15 @@ module.exports = function(grunt) {
 			}
 		},
 
+		less: {
+			development: {
+				files: {
+					'ografy/apps/core/static/core/css/main/main.css': 'ografy/apps/core/static/core/css/main/main.less',
+					'ografy/static/shared/css/site.css': 'ografy/static/shared/css/site.less'
+				}
+			}
+		},
+
 		nunjucks: {
 			precompile: {
 				baseDir: 'ografy/apps/core/static/core/templates/main/**/',
@@ -73,7 +82,11 @@ module.exports = function(grunt) {
 			nunjucks: {
 	            files: 'ografy/apps/core/static/core/templates/main/**/*',
 	            tasks: ['nunjucks']
-	        }
+	        },
+			less: {
+				files: ['ografy/apps/core/static/core/css/main/main.less', 'ografy/static/shared/css/site.less'],
+				tasks: ['less']
+			}
 		}
 	});
 

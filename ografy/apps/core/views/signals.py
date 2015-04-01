@@ -54,6 +54,7 @@ def connect(request, pk):
         'title': 'Ografy - Connect to ' + provider.name,
         'content_class': 'left',
         'provider': provider,
+        'flex_override': True,
         'user_id': request.user.id,
         'postback_url': reverse('core_authorize')
     })
@@ -84,7 +85,7 @@ def providers(request):
     return render(request, 'core/signals/providers.html', {
         'title': 'Ografy - Providers',
         'body_class': 'full',
-        'content_class': 'bordered left',
+        'left_class': 'bordered right',
         'providers': providers,
         'connect_url': connect_url
     })

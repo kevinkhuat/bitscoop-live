@@ -2,7 +2,7 @@
 <html>
 <head lang="en-US">
 	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
 	<title>Ografy App</title>
 
 	{% load staticfiles %}
@@ -22,11 +22,10 @@
 		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css'/>
 		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css'/>
 		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
-{#		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css"/>#}
 
 		<script type="text/javascript" src="{% static 'assets/lib/nunjucks/nunjucks.js' %}"></script>
 		<script type="text/javascript" src="{% static 'assets/lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
-		<script type="text/javascript" src="{% static 'shared/js/templates.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
 		<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}"/>
 
 		<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}"/>
@@ -37,61 +36,54 @@
 <body class="flex full">
 <header class="bg gray light bottom">
 	<nav class="flex stretch app-header">
-		<div class="flex center grow">
-			<img class="banner-logo" src="{% static 'assets/logo_240.png' %}" alt="Ografy"/>
-			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
-			<a class="map-view-button item"><i class="icon-map22"></i></a>
-
+		<div class="flex center grow search">
 			<form id="search-form" class="flex grow">
 				<input class="search-bar grow" type="text" placeholder="Search your data"/>
 			</form>
-{#			<div class="ui simple dropdown labeled icon button">#}
-{#				<i class="filter icon"></i>#}
-{#				<span class="text">Filter Search</span>#}
-{##}
-{#				<div class="menu">#}
-{#					<div class="item">#}
-{#						Events#}
-{#					</div>#}
-{#					<div class="item">#}
-{#						Messages#}
-{#					</div>#}
-{#					<div class="item">#}
-{#						Transactions#}
-{#					</div>#}
-{#					<div class="divider"></div>#}
-{#					<div class="item add-filter">#}
-{#						Add custom filters#}
-{#					</div>#}
-{#				</div>#}
-{#			</div>#}
-			<div class="dropdown">
-				<div class="buttons">
-					<i class="filter icon">F</i>
-					<span class="text">Search</span>
+			<div class="buttons">
+				<i class="filter-button icon-filter"></i>
+				<i class="search-button"></i>
+			</div>
+			<div class="menu filter hidden">
+				<div class="item">
+					Events
 				</div>
-				<div class="menu hidden">
-					<div class="item">
-						Events
-					</div>
-					<div class="item">
-						Messages
-					</div>
-					<div class="item">
-						Transactions
-					</div>
-					<div class="divider"></div>
-					<div class="add-filter">
-						Add custom filters
-					</div>
+				<div class="item">
+					Messages
+				</div>
+				<div class="item">
+					Transactions
+				</div>
+				<div class="divider"></div>
+				<div class="add-filter">
+					Add custom filters
 				</div>
 			</div>
 		</div>
+
 		<div class="flex center links">
-			<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
-			<a id="provider_link" class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
-			<a id="logout_button" class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
-		</div>
+			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
+			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<a class="spacer"></a>
+			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<div>
+				<a class="user-button item">{{ request.user.identifier }}</a>
+					<div class="flex column menu main hidden">
+						<a class="item" href="{% url 'core_user_my_profile' %}">
+							<i class="icon-home3"></i>
+							User Home
+						</a>
+						<a class="item" href="{% url 'core_settings_personal' %}">
+							<i class="icon-cog" ></i>
+							Settings
+						</a>
+						<a class="item" href="{% url 'core_logout' %}">
+							<i class="icon-sign-out"></i>
+							Logout
+						</a>
+					</div>
+			</div>
+			</div>
 	</nav>
 </header>
 <main class="flex grow">
