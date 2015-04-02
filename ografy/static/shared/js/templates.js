@@ -181,7 +181,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex filter box\">\n\t<div class=\"grow filter options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"filter button remove\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"filter button add\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
+output += "<div class=\"flex filter box\">\n\t<div class=\"wrap grow filter options\">\n\t</div>\n\t<div class=\"add-remove-buttons\">\n\t\t<div class=\"filter button remove\">\n\t\t\t<i class=\"icon-minus\"></i>\n\t\t</div>\n\t\t<div class=\"filter button add\">\n\t\t\t<i class=\"icon-plus\"></i>\n\t\t</div>\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -266,7 +266,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"from text\">\n\t<input class='from-text small' placeholder=\"Name\">\n</div>";
+output += "<div class=\"from text\">\n\t<input class='from-text' placeholder=\"Name\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {

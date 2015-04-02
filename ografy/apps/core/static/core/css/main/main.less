@@ -9,7 +9,7 @@
 
 .filter {
     display: inline-block;
-    background: #AAA;
+    background: #CCC;
 
 }
 
@@ -20,27 +20,17 @@
 }
 
 .filter.button {
-    background-color: #EEE;
-
     font-weight: bold;
-
-    padding: 5px;
-    margin: 0 5px;
-
+    padding: 0.25em 0.5em 0.25em 0;
     text-align: center;
     text-decoration: none !important;
-
     cursor: pointer;
     transition: width .5s ease;
 
 }
 
 .filter.button.hover {
-    background-color: #DDD;
-}
-
-.filter.button.active {
-    background-color: #CCC;
+    color: #0E9D58;
 }
 
 .search {
@@ -69,21 +59,24 @@
 select {
     display: inline-block;
     padding: 5px;
-    margin:  0.6em 0.3em;
+    margin:  0.2em 0.3em;
 }
 
 .text {
     display: inline-block;
-    margin: 0 0 0 6px;
+	input {
+		margin: 0.1em 0 0.1em 0.2em;
+	}
 }
 .filter.box {
 	width: 95%;
 	position: relative;
 	margin: 0 0 0 5%;
-	border-bottom: solid 1px;
 }
 .filter.options {
 	float: left;
+	display: inherit;
+	text-align: start !important;
     margin: auto 0 auto 0 !important;
 }
 
@@ -302,7 +295,7 @@ main {
     width: 100%;
     color: #000;
     padding: 5px 0px;
-    background-color: #EEE;
+    background-color: #F8F8F8;
     transition: width .5s ease;
     cursor: pointer;
     vertical-align: middle;
@@ -310,7 +303,7 @@ main {
     font-size: 1em;
 }
 .list.item.hover {
-    background-color: #488A2D;
+    background-color: #0E9D58;
     color: #FFF;
 }
 .list.item.active {
@@ -360,10 +353,6 @@ main {
 }
 .filter-button.hover {
     color: #0E9D58;
-}
-.filters {
-	overflow-y: auto;
-	max-height: 5em;
 }
 .search-button {
     width: 2em;

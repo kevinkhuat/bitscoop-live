@@ -104,7 +104,7 @@ input {
   border-radius: 0.1em;
   border: 1px solid #BBB;
   outline: none;
-  margin: 0.4em 0em;
+  margin: 0.4em 0.2em;
 }
 input .checkbox {
   float: left;
@@ -754,16 +754,28 @@ i.step-icon {
   top: 2.5em;
   left: 2.5em;
   z-index: 1100;
+  overflow-y: auto;
+  max-height: 20em;
   -webkit-transition: height 0.2s ease;
   -moz-transition: height 0.2s ease;
   transition: height 0.2s ease;
   background-color: #EEE;
   border-radius: 3px;
 }
+@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .menu {
+    width: 125%;
+  }
+}
+@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .menu {
+    max-height: 10em;
+  }
+}
 .menu .item {
   display: inline-block;
   width: 90%;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 0.25em;
   text-align: left;
 }
 .menu .active {

@@ -83,9 +83,9 @@ function dataStore() {
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(searchString) {
+	function search(eventType, searchString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/event?filter=' + searchString;
+		var url = 'opi/' + eventType + '?filter=' + searchString;
 		$.ajax({
 			url: url,
 			type: 'GET',

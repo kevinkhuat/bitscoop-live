@@ -51,9 +51,25 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//These will call the add and remove filter functions on click.
 		$(inputSelection).find('.filter.box:last .filter.button.add').on('click', function() {
 			addFilter($(this).closest('.filters'));
+		}).mouseenter(function() {
+			$(this).addClass('hover');
+		})
+		.mouseleave(function() {
+			$(this).removeClass('hover');
+		})
+		.click(function() {
+			$(this).removeClass('hover');
 		});
 		$(inputSelection).find('.filter.box:last .filter.button.remove').on('click', function() {
 			removeFilter(this);
+		}).mouseenter(function() {
+			$(this).addClass('hover');
+		})
+		.mouseleave(function() {
+			$(this).removeClass('hover');
+		})
+		.click(function() {
+			$(this).removeClass('hover');
 		});
 	}
 
@@ -66,48 +82,55 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//Prevent normal form submission from bubbling any further up.
 		event.stopPropagation();
 
-		var filterString = '';
+		var typeList = $('.type-grouping');
 
-		//Get a list of the filters that are being used
-		var filtersList = $('.filter.options');
+		for (var k = 0; k < typeList.length; k++) {
+			var thisType = typeList[k];
+			if ($(thisType).find(':checkbox:checked').length > 0) {
+				var filterString = '';
 
-		//For each filter, construct the appropriate filter string and add it to the
-		//full filter string that will be submitted to the database.
-		for (var i = 0; i < filtersList.length; i++) {
-			var currentFilter = filtersList[i];
+				//Get a list of the filters that are being used
+				var filtersList = $(thisType).find('.filter.options');
 
-			//Determine what type of filter this is
-			var type = $(currentFilter).children('.initial')[0].value;
+				//For each filter, construct the appropriate filter string and add it to the
+				//full filter string that will be submitted to the database.
+				for (var i = 0; i < filtersList.length; i++) {
+					var currentFilter = filtersList[i];
 
-			//If this isn't the first filter, append an AND to the top-level filter string.
-			if (i !== 0) {
-				filterString += ' or ';
-			}
+					//Determine what type of filter this is
+					var type = $(currentFilter).children('.initial')[0].value;
 
-			//Construct the filter string based on the filter type
-			if (type == 'date') {
-				filterString += '(' + filters().date().toString(currentFilter) + ')';
-			}
-			else if (type == 'time') {
-				filterString += '(' + filters().time().toString(currentFilter) + ')';
-			}
-			else if (type == 'provider') {
-				filterString += '(' + filters().provider().toString(currentFilter) + ')';
-			}
-			else if (type == 'to') {
-				filterString += '(' + filters().to().toString(currentFilter) + ')';
-			}
-			else if (type == 'from') {
-				filterString += '(' + filters().from().toString(currentFilter) + ')';
+					//If this isn't the first filter, append an AND to the top-level filter string.
+					if (i !== 0) {
+						filterString += ' or ';
+					}
+
+					//Construct the filter string based on the filter type
+					if (type == 'date') {
+						filterString += '(' + filters().date().toString(currentFilter) + ')';
+					}
+					else if (type == 'time') {
+						filterString += '(' + filters().time().toString(currentFilter) + ')';
+					}
+					else if (type == 'provider') {
+						filterString += '(' + filters().provider().toString(currentFilter) + ')';
+					}
+					else if (type == 'to') {
+						filterString += '(' + filters().to().toString(currentFilter) + ')';
+					}
+					else if (type == 'from') {
+						filterString += '(' + filters().from().toString(currentFilter) + ')';
+					}
+				}
+
+				//Set the Query and Filters in the URL parser
+				urlParserInst.setSearchQuery($('.search-bar').val());
+				urlParserInst.setSearchFilters(filterString);
+
+				//Perform a search based on the search terms and filters
+				dataInst.search(thisType.id, filterString, mapViewInst, listViewInst);
 			}
 		}
-
-		//Set the Query and Filters in the URL parser
-		urlParserInst.setSearchQuery($('.search-bar').val());
-		urlParserInst.setSearchFilters(filterString);
-
-		//Perform a search based on the search terms and filters
-		dataInst.search(filterString, mapViewInst, listViewInst);
 
 		return false;
 	}

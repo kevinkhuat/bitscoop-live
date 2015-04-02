@@ -93,33 +93,17 @@ $(document).ready(function() {
 		.add('ul.links > li > *')
 		.add('.filter-button')
 		.add('.dropdown span')
-		.add('.filter.button')
 		.add('.list.item')
 		.mouseenter(function() {
 			$(this).addClass('hover');
-		});
-
-	$('header nav .item')
-		.add('.menu .add-filter')
-		.add('.signal-button')
-		.add('ul.links > li > *')
-		.add('.filter-button')
-		.add('.dropdown span')
-		.add('.filter.button')
-		.add('.list.item')
+		})
 		.mouseleave(function() {
 			$(this).removeClass('hover');
-		});
-
-	$('header nav .item')
-		.add('.menu .add-filter')
-		.add('.signal-button')
-		.add('ul.links > li > *')
-		.add('.filter-button')
-		.add('.dropdown span')
-		.add('.filter.button')
-		.add('.list.item')
+		})
 		.click(function() {
 			$(this).removeClass('hover');
 		});
+
+
+
 });
