@@ -57,7 +57,8 @@ function baseView() {
 		$(document.body).click(function(e){
 			if(e.target.className !== ('filter-button icon-filter') &&
 				e.target.className !== ('item') &&
-				e.target.className !== ('item active')) {
+				e.target.className !== ('item active') &&
+				!e.target.closest('.filter')) {
 				$('.menu.filter').addClass('hidden');
 			}
 		});

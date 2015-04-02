@@ -266,7 +266,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"from text\">\n\t<input class='from-text' placeholder=\"Name\">\n</div>";
+output += "<div class=\"from text\">\n\t<input class='from-text small' placeholder=\"Name\">\n</div>";
 cb(null, output);
 ;
 } catch (e) {

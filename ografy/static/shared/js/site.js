@@ -51,8 +51,44 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.menu .item')
-		.add('header nav .item')
+	$('.fullscreen').click(function() {
+		if (document.webkitFullscreenEnabled) {
+			if (document.webkitIsFullScreen) {
+				document.webkitCancelFullScreen();
+			}
+			else {
+				document.documentElement.webkitRequestFullscreen();
+			}
+		}
+		else if (document.mozFullScreenEnabled) {
+			if (document.mozFullScreen) {
+				document.mozCancelFullScreen();
+			}
+			else {
+				document.documentElement.mozRequestFullScreen();
+			}
+		}
+		else if (document.msFullscreenEnabled) {
+			if (document.msIsFullScreen) {
+				document.msCancelFullScreen();
+			}
+			else {
+				document.documentElement.msRequestFullscreen();
+			}
+		}
+		else {
+			if (document.isFullScreen) {
+				document.cancelFullScreen();
+			}
+			else {
+				document.documentElement.requestFullscreen();
+			}
+		}
+
+	});
+
+	$('header nav .item')
+		.add('.menu .add-filter')
 		.add('.signal-button')
 		.add('ul.links > li > *')
 		.add('.filter-button')
@@ -63,8 +99,8 @@ $(document).ready(function() {
 			$(this).addClass('hover');
 		});
 
-	$('.menu .item')
-		.add('header nav .item')
+	$('header nav .item')
+		.add('.menu .add-filter')
 		.add('.signal-button')
 		.add('ul.links > li > *')
 		.add('.filter-button')
@@ -75,8 +111,8 @@ $(document).ready(function() {
 			$(this).removeClass('hover');
 		});
 
-	$('.menu .item')
-		.add('header nav .item')
+	$('header nav .item')
+		.add('.menu .add-filter')
 		.add('.signal-button')
 		.add('ul.links > li > *')
 		.add('.filter-button')

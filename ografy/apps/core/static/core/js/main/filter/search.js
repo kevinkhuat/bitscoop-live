@@ -6,14 +6,14 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 	//render function.
 	//Bind an event listener that triggers when the initial dropdown changes.
 	//This listener will call the appropriate render function based on which option was selected.
-	function addDropdown() {
+	function addDropdown(inputSelection) {
 		var newDropdown = nunjucks.render('search/initial_filter_dropdown.html');
-		$('.filter.box:last').find('.filter.options').html(newDropdown);
+		$(inputSelection).find('.filter.box:last .filter.options').html(newDropdown);
 
-		var initDropdown = $('.filter.box:last').find('.initial')[0];
+		var initDropdown = $(inputSelection).find('.filter.box:last .initial')[0];
 		filters().date().dropdown(initDropdown);
 
-		$('.filter.box:last').find('.initial').change(function() {
+		$(inputSelection).find('.filter.box:last .initial').change(function() {
 			var currentElement = this;
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
@@ -36,23 +36,23 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 
 	//Adds a new filter by rendering the base elements and then adding the initial dropdown
 	//which will in turn add all of the other dropdowns and elements it needs.
-	function addFilter() {
-		createFilterBase();
-		addDropdown();
+	function addFilter(inputSelection) {
+		createFilterBase(inputSelection);
+		addDropdown(inputSelection);
 	}
 
 	//Create the base elements of a filter
-	function createFilterBase() {
+	function createFilterBase(inputSelection) {
 		//Render the base framework of a filter from a template using Nunjucks.
 		var newFilter = nunjucks.render('search/filter.html');
-		$('.filter.container').append(newFilter);
+		$(inputSelection).append(newFilter);
 
 		//Bind event listeners to the add filter and remove filter buttons.
 		//These will call the add and remove filter functions on click.
-		$('.filter.box:last').find('.filter.button.add').on('click', function() {
-			addFilter();
+		$(inputSelection).find('.filter.box:last .filter.button.add').on('click', function() {
+			addFilter($(this).closest('.filters'));
 		});
-		$('.filter.box:last').find('.filter.button.remove').on('click', function() {
+		$(inputSelection).find('.filter.box:last .filter.button.remove').on('click', function() {
 			removeFilter(this);
 		});
 	}
@@ -132,7 +132,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//the first one.  Additional filters can be created from the "+" button
 		//on existing filters.
 		$('.menu .add-filter').click(function() {
-			addFilter();
+			addFilter($(this).parent().siblings('.filters'));
 		});
 	}
 

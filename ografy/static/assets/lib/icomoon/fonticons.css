@@ -1036,6 +1036,10 @@
 	content: "\e609";
 }
 
+.icon-enlarge:before {
+    content: "\e989";
+}
+
 .icon-file-text:before {
     content: "\f011";
 }

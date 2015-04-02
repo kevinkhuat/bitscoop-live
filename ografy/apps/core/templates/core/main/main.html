@@ -45,18 +45,44 @@
 				<i class="search-button"></i>
 			</div>
 			<div class="menu filter hidden">
-				<div class="item">
-					Events
+				<div class="type-grouping">
+					<div class="flex">
+						<input type="checkbox">
+						<div class="grow item">
+							Events
+						</div>
+						<div class="add-filter">
+							<i class="icon-plus"></i>
+						</div>
+					</div>
+					<div class="filters">
+					</div>
 				</div>
-				<div class="item">
-					Messages
+				<div class="type-grouping">
+					<div class="flex">
+						<input type="checkbox">
+						<div class="grow item">
+							Messages
+						</div>
+						<div class="add-filter">
+							<i class="icon-plus"></i>
+						</div>
+					</div>
+					<div class="filters">
+					</div>
 				</div>
-				<div class="item">
-					Transactions
-				</div>
-				<div class="divider"></div>
-				<div class="add-filter">
-					Add custom filters
+				<div class="type-grouping">
+					<div class="flex">
+						<input type="checkbox">
+						<div class="grow item">
+							Transactions
+						</div>
+						<div class="add-filter">
+							<i class="icon-plus"></i>
+						</div>
+					</div>
+					<div class="filters">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -65,6 +91,7 @@
 			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
 			<a class="map-view-button item"><i class="icon-map22"></i></a>
 			<a class="spacer"></a>
+			<a class="fullscreen item"><i class="icon-enlarge"></i></a>
 			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
 			<div>
 				<a class="user-button item">{{ request.user.identifier }}</a>
