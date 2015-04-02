@@ -106,6 +106,9 @@ input {
   outline: none;
   margin: 0.4em 0em;
 }
+input .checkbox {
+  float: left;
+}
 input:focus {
   -moz-box-shadow: 0 0 6px -1px #0e9d58;
   -webkit-box-shadow: 0 0 6px -1px #0e9d58;
@@ -741,6 +744,10 @@ i.step-icon {
     margin: 5px 0;
   }
 }
+.type-grouping input {
+  padding: 0.1em;
+  display: inline-block;
+}
 .menu {
   position: absolute;
   width: 85%;
@@ -754,13 +761,10 @@ i.step-icon {
   border-radius: 3px;
 }
 .menu .item {
-  cursor: pointer;
-  width: 100%;
+  display: inline-block;
+  width: 90%;
   padding: 0.25em 0.5em;
   text-align: left;
-}
-.menu .item.hover {
-  background-color: #CCC;
 }
 .menu .active {
   background-color: #DDD;
@@ -769,10 +773,18 @@ i.step-icon {
   border: 1px #BBB solid;
 }
 .menu .add-filter {
+  display: inline-block;
+  float: right;
   cursor: pointer;
-  width: 100%;
   padding: 0.25em 0.5em;
   text-align: left;
+}
+.menu .add-filter.hover {
+  color: #0E9D58;
+  cursor: pointer;
+}
+.menu .type-grouping {
+  padding: 0.1em 0;
 }
 .menu.hidden {
   height: 0;

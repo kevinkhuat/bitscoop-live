@@ -18,7 +18,7 @@
   background-color: #EEE;
   font-weight: bold;
   padding: 5px;
-  margin: 5px;
+  margin: 0 5px;
   text-align: center;
   text-decoration: none !important;
   cursor: pointer;
@@ -52,37 +52,27 @@
   transition: opacity 0.2s ease;
   z-index: 11;
 }
-.initial {
+select {
   display: inline-block;
   padding: 5px;
-  margin: 0 0 0 5px;
-}
-.date {
-  display: inline-block;
-  padding: 5px;
-  margin: 0 0 0 5px;
-}
-.time {
-  display: inline-block;
-  padding: 5px;
-  margin: 0 0 0 5px;
-}
-.provider {
-  display: inline-block;
-  padding: 5px;
-  margin: 0 0 0 5px;
+  margin: 0.6em 0.3em;
 }
 .text {
   display: inline-block;
   margin: 0 0 0 6px;
 }
 .filter.box {
+  width: 95%;
+  position: relative;
+  margin: 0 0 0 5%;
   border-bottom: solid 1px;
 }
 .filter.options {
+  float: left;
   margin: auto 0 auto 0 !important;
 }
 .add-remove-buttons {
+  float: right;
   display: inline-block;
   margin: auto 0 auto 0 !important;
 }
@@ -362,6 +352,10 @@
 }
 .filter-button.hover {
   color: #0E9D58;
+}
+.filters {
+  overflow-y: auto;
+  max-height: 5em;
 }
 .search-button {
   width: 2em;
