@@ -1040,10 +1040,22 @@
     content: "\e989";
 }
 
+.icon-notification:before {
+    content: "\ea08";
+}
+
 .icon-file-text:before {
     content: "\f011";
 }
 
+.icon-comment2:before {
+    content: "\f02b";
+}
+
 .icon-clippy:before {
     content: "\f035";
+}
+
+.icon-credit-card:before {
+    content: "\f045";
 }

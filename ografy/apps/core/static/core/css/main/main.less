@@ -88,6 +88,7 @@ select {
 
 main {
 	@media (orientation: portrait) {
+		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 }
@@ -97,6 +98,7 @@ main {
 	@media (orientation: landscape) {
 		width: 50%;
 		max-width: 400px;
+		-webkit-flex-direction: column;
 		flex-direction: column;
 		border-left: 2px;
 		border-left-style: solid;
@@ -108,6 +110,7 @@ main {
 	@media (orientation: portrait) {
 		height: 50%;
 		max-height: 300px;
+		-webkit-flex-direction: row;
 		flex-direction: row;
 		border-top: 2px;
 		border-top-style: solid;
@@ -235,6 +238,7 @@ main {
 .sidebar.invisible {
 	@media (orientation: landscape) {
 		width: 0px;
+		-webkit-flex-direction: column;
 		flex-direction: column;
 		-webkit-transition: width 0.2s ease;
 		-moz-transition: width 0.2s ease;
@@ -242,6 +246,7 @@ main {
 	}
 	@media (orientation: portrait) {
 		height: 0px;
+		-webkit-flex-direction: row;
 		flex-direction: row;
 		visibility: hidden;
 		-webkit-transition: height 0.2s ease;

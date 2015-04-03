@@ -94,6 +94,7 @@ $(document).ready(function() {
 		.add('.filter-button')
 		.add('.dropdown span')
 		.add('.list.item')
+		.add('.selector')
 		.mouseenter(function() {
 			$(this).addClass('hover');
 		})
@@ -104,6 +105,9 @@ $(document).ready(function() {
 			$(this).removeClass('hover');
 		});
 
+	$('.selector').click(function() {
+		$(this).toggleClass('active');
+	});
 
 
 });

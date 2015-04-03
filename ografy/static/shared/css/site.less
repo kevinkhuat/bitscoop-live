@@ -52,22 +52,27 @@ html {
 
 .app-header {
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		-webkit-flex-direction: column-reverse;
 		flex-direction: column-reverse;
 	}
 	@media (max-device-width: 500px) {
+		-webkit-flex-direction: column-reverse;
 		flex-direction: column-reverse;
 	}
 }
 
 .viewsearch {
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 }
 
 body {
 	color: #555;
+	display: -webkit-flex;
 	display: flex;
+	-webkit-flex-direction: column;
 	flex-direction: column;
 	min-height: 100%;
 }
@@ -220,42 +225,53 @@ footer {
 	min-width: 15em;
 }
 .flex {
+	display: -webkit-flex;
 	display: flex;
 	& > .grow {
+		-webkit-flex: 1;
 		flex: 1;
 		position: relative;
 	}
 }
 .flex.column {
+	-webkit-flex-direction: column;
 	flex-direction: column;
 }
 .flex.column.reverse {
+	-webkit-flex-direction: column-reverse;
 	flex-direction: column-reverse;
 }
 .flex.row {
+	-webkitflex-direction: row;
 	flex-direction: row;
 }
 .flex.row.reverse {
+	-webkit-flex-direction: row-reverse;
 	flex-direction: row-reverse;
 }
 .flex.stretch {
+	-webkit-align-items: stretch;
 	align-items: stretch;
 }
 .flex.stretch.lockwidth.centered {
 	@media (orientation: portrait) and (max-width: 500px) {
+		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 }
 .flex.center {
+	-webkit-align-items: center;
 	align-items: center;
 	min-width: 30%;
 }
 .flex_override {
 	@media (orientation: portrait) {
+		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 }
 .wrap {
+	-webkit-flex-wrap: wrap;
 	flex-wrap: wrap;
 }
 .grouping {
@@ -487,6 +503,7 @@ div.table {
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: .3125rem;
+	-webkit-flex-direction: column;
 	flex-direction: column;
 	.step {
 		position: relative;
@@ -780,9 +797,16 @@ i.step-icon {
         padding: 0.25em 0.25em;
         text-align: left;
     }
-    .active {
-        background-color: #DDD;
-    }
+	.selector {
+		padding: 0.4em 0 0 0.4em;
+	}
+	.selector.active {
+		color: #5BBD72;
+	}
+	.selector.hover {
+		color: #0E9D58;
+		cursor: pointer;
+	}
     .divider {
         border: 1px #BBB solid;
     }

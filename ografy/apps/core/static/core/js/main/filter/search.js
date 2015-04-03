@@ -51,25 +51,22 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		//These will call the add and remove filter functions on click.
 		$(inputSelection).find('.filter.box:last .filter.button.add').on('click', function() {
 			addFilter($(this).closest('.filters'));
-		}).mouseenter(function() {
-			$(this).addClass('hover');
-		})
-		.mouseleave(function() {
-			$(this).removeClass('hover');
-		})
-		.click(function() {
-			$(this).removeClass('hover');
 		});
+
+		$(inputSelection).find('.filter.box:last .filter.button.add')
+			.add('.filter.box:last .filter.button.remove')
+			.mouseenter(function() {
+				$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				$(this).removeClass('hover');
+			});
+
 		$(inputSelection).find('.filter.box:last .filter.button.remove').on('click', function() {
 			removeFilter(this);
-		}).mouseenter(function() {
-			$(this).addClass('hover');
-		})
-		.mouseleave(function() {
-			$(this).removeClass('hover');
-		})
-		.click(function() {
-			$(this).removeClass('hover');
 		});
 	}
 
@@ -86,7 +83,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 
 		for (var k = 0; k < typeList.length; k++) {
 			var thisType = typeList[k];
-			if ($(thisType).find(':checkbox:checked').length > 0) {
+			if ($(thisType).find('.selector.active').length > 0) {
 				var filterString = '';
 
 				//Get a list of the filters that are being used
