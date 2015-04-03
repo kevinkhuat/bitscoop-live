@@ -236,6 +236,7 @@ select {
 @media (orientation: landscape) {
   .sidebar.invisible {
     width: 0px;
+    border-left: 0;
     -webkit-flex-direction: column;
     flex-direction: column;
     -webkit-transition: width 0.2s ease;
@@ -246,6 +247,7 @@ select {
 @media (orientation: portrait) {
   .sidebar.invisible {
     height: 0px;
+    border-top: 0;
     -webkit-flex-direction: row;
     flex-direction: row;
     visibility: hidden;
@@ -353,8 +355,14 @@ select {
   float: left;
   margin: auto 0.5em;
 }
+.filter-button::before {
+  top: 0px;
+}
 .filter-button.hover {
   color: #0E9D58;
+}
+.filter-button.active {
+  background-color: #488A2D;
 }
 .search-button {
   width: 2em;

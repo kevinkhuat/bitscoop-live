@@ -105,8 +105,18 @@ $(document).ready(function() {
 			$(this).removeClass('hover');
 		});
 
+	$('.menu .add-filter').click(function() {
+		$('.filter-button').addClass('active');
+	});
+
 	$('.selector').click(function() {
 		$(this).toggleClass('active');
+		if ($('.selector').not('.active').length > 0) {
+			$('.filter-button').addClass('active');
+		}
+		else {
+			$('.filter-button').removeClass('active');
+		}
 	});
 
 

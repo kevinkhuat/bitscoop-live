@@ -238,6 +238,7 @@ main {
 .sidebar.invisible {
 	@media (orientation: landscape) {
 		width: 0px;
+		border-left: 0;
 		-webkit-flex-direction: column;
 		flex-direction: column;
 		-webkit-transition: width 0.2s ease;
@@ -246,6 +247,7 @@ main {
 	}
 	@media (orientation: portrait) {
 		height: 0px;
+		border-top: 0;
 		-webkit-flex-direction: row;
 		flex-direction: row;
 		visibility: hidden;
@@ -356,8 +358,14 @@ main {
     float: left;
     margin: auto 0.5em;
 }
+.filter-button::before {
+	top: 0px;
+}
 .filter-button.hover {
     color: #0E9D58;
+}
+.filter-button.active {
+	background-color: #488A2D;
 }
 .search-button {
     width: 2em;

@@ -28,8 +28,8 @@ html {
 	}
 }
 
-#content {
-	@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5){
+#content.left {
+	@media (orientation: landscape) {
 		margin: 0 0 0 1em;
 	}
 }
@@ -101,6 +101,10 @@ a {
 	text-decoration: none;
 	color: #0E9D58;
 }
+::before {
+	position: relative;
+	top: 2px;
+}
 input {
 	font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
 	font-weight: 300;
@@ -108,7 +112,7 @@ input {
 	border-radius: 0.1em;
 	border: 1px solid #BBB;
 	outline: none;
-	margin: 0.4em 0.2em;
+	margin: 0.4em 0;
 	.checkbox {
 		float: left;
 	}
@@ -200,7 +204,7 @@ footer {
 			right: inherit;
 		}
 		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			right: -2em;
+			right: -0.5em;
 		}
 	}
 }
@@ -296,7 +300,7 @@ footer {
 	}
 	input {
 		width: 100%;
-		max-width: 300px;
+		max-width: 20em;
 	}
 }
 ul.links {
@@ -593,7 +597,7 @@ div.table {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		position: absolute;
 		left: 0;
-		width: 70%;
+		width: 10em;
 		-webkit-transition: left 0.2s ease;
 		-moz-transition: left 0.2s ease;
 		transition: left 0.2s ease;
@@ -622,7 +626,7 @@ div.table {
 
 .drawer-toggle {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		-webkit-box-sizing: border-box;
+		-webkit-box-sizing: bzzorder-box;
 		-moz-box-sizing: border-box;
 		-ms-box-sizing: border-box;
 		box-sizing: border-box;
@@ -638,7 +642,7 @@ div.table {
 		cursor: pointer;
 		display: inline-block;
 		position: absolute;
-		left: 70%;
+		left: 10em;
 		-webkit-transition: left 0.2s ease;
 		-moz-transition: left 0.2s ease;
 		transition: left 0.2s ease;
@@ -702,6 +706,10 @@ div.table {
 	border: 1px solid #BBB;
 	outline: none;
 	margin: 0.4em 0em;
+	display: inline-block;
+	width: 100%;
+	max-width: 20em;
+	text-align: center;
 }
 .link-button:link {
 	text-decoration: none;
@@ -793,12 +801,15 @@ i.step-icon {
     border-radius: 3px;
     .item {
 		display: inline-block;
-        width: 90%;
-        padding: 0.25em 0.25em;
+        padding: 0.4em 0.25em 0 0.25em;
         text-align: left;
+		margin: 0;
     }
 	.selector {
-		padding: 0.4em 0 0 0.4em;
+		padding: 0.4em 0.8em 0 1em;
+		i::before {
+			top: 0px;
+		}
 	}
 	.selector.active {
 		color: #5BBD72;

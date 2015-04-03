@@ -28,8 +28,8 @@ html {
     font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
   }
 }
-@media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
-  #content {
+@media (orientation: landscape) {
+  #content.left {
     margin: 0 0 0 1em;
   }
 }
@@ -102,6 +102,10 @@ a {
   text-decoration: none;
   color: #0E9D58;
 }
+::before {
+  position: relative;
+  top: 2px;
+}
 input {
   font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -109,7 +113,7 @@ input {
   border-radius: 0.1em;
   border: 1px solid #BBB;
   outline: none;
-  margin: 0.4em 0.2em;
+  margin: 0.4em 0;
 }
 input .checkbox {
   float: left;
@@ -204,7 +208,7 @@ footer {
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .lockwidth .menu.main {
-    right: -2em;
+    right: -0.5em;
   }
 }
 .lockwidth.override {
@@ -302,7 +306,7 @@ footer {
 }
 .grouping input {
   width: 100%;
-  max-width: 300px;
+  max-width: 20em;
 }
 ul.links {
   padding: 0;
@@ -595,7 +599,7 @@ div.table > div > div {
   .drawer {
     position: absolute;
     left: 0;
-    width: 70%;
+    width: 10em;
     -webkit-transition: left 0.2s ease;
     -moz-transition: left 0.2s ease;
     transition: left 0.2s ease;
@@ -619,7 +623,7 @@ div.table > div > div {
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .drawer-toggle {
-    -webkit-box-sizing: border-box;
+    -webkit-box-sizing: bzzorder-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
@@ -635,7 +639,7 @@ div.table > div > div {
     cursor: pointer;
     display: inline-block;
     position: absolute;
-    left: 70%;
+    left: 10em;
     -webkit-transition: left 0.2s ease;
     -moz-transition: left 0.2s ease;
     transition: left 0.2s ease;
@@ -699,6 +703,10 @@ div.table > div > div {
   border: 1px solid #BBB;
   outline: none;
   margin: 0.4em 0em;
+  display: inline-block;
+  width: 100%;
+  max-width: 20em;
+  text-align: center;
 }
 .link-button:link {
   text-decoration: none;
@@ -791,12 +799,15 @@ i.step-icon {
 }
 .menu .item {
   display: inline-block;
-  width: 90%;
-  padding: 0.25em 0.25em;
+  padding: 0.4em 0.25em 0 0.25em;
   text-align: left;
+  margin: 0;
 }
 .menu .selector {
-  padding: 0.4em 0 0 0.4em;
+  padding: 0.4em 0.8em 0 1em;
+}
+.menu .selector i::before {
+  top: 0px;
 }
 .menu .selector.active {
   color: #5BBD72;

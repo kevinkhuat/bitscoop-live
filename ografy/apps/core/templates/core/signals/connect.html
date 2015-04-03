@@ -51,11 +51,9 @@
 				<div class="grouping-content">
 					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 				</div>
-				<div style="margin: 5px 0 5px 0">
-					<a class="bold button-green link-button" name="social-{{ provider.backend_name }}" href="{% url "social:begin" backend=provider.backend_name %}">
-						Connect to {{ provider.name }}
-					</a>
-				</div>
+				<a class="bold button-green link-button" name="social-{{ provider.backend_name }}" href="{% url "social:begin" backend=provider.backend_name %}">
+					Connect to {{ provider.name }}
+				</a>
 			</div>
 		</div>
 		<div class="grouping">

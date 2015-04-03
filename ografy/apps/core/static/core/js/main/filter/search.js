@@ -62,11 +62,31 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 				$(this).removeClass('hover');
 			})
 			.click(function() {
+
 				$(this).removeClass('hover');
 			});
 
 		$(inputSelection).find('.filter.box:last .filter.button.remove').on('click', function() {
+			var customFilter = false;
+			var filterList = $('.filters');
 			removeFilter(this);
+			for (var i = 0; i < filterList.length; i++) {
+					if ($(filterList[i]).children().length > 0) {
+						customFilter = true;
+					}
+				}
+
+				if (customFilter === true) {
+					$('.filter-button').addClass('active');
+				}
+				else {
+					if ($('.selector').not('.active').length > 0) {
+						$('.filter-button').addClass('active');
+					}
+					else {
+						$('.filter-button').removeClass('active');
+					}
+				}
 		});
 	}
 
