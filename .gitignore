@@ -1,6 +1,9 @@
 # Compiled source #
 ###################
 *.pyc
+/ografy/apps/core/static/core/css/main/main.css
+/ografy/static/shared/js/templates.js
+/ografy/static/shared/css/site.css
 
 # Packages #
 ############
