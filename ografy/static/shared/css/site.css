@@ -201,6 +201,9 @@ footer {
     width: 90%;
   }
 }
+.lockwidth .menu.main {
+  overflow-y: hidden;
+}
 @media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
   .lockwidth .menu.main {
     right: inherit;
@@ -213,6 +216,9 @@ footer {
 }
 .lockwidth.override {
   width: 75%;
+}
+.lockwidth.override #content {
+  margin: 0 0 0 1em;
 }
 .no-pad {
   padding: 0px !important;
@@ -307,6 +313,9 @@ footer {
 .grouping input {
   width: 100%;
   max-width: 20em;
+}
+.grouping input[type=radio] {
+  max-width: 1em;
 }
 ul.links {
   padding: 0;
@@ -498,7 +507,6 @@ div.table > div > div {
   border: 1px solid rgba(40, 40, 40, 0.5);
   overflow: visible;
   border-radius: 0;
-  cursor: pointer;
   font-size: 0;
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -539,7 +547,6 @@ div.table > div > div {
 }
 .steps .step.active {
   background: #f0f0f0;
-  cursor: auto;
 }
 .steps .step.active .title {
   color: #0E9D58;
@@ -559,7 +566,7 @@ div.table > div > div {
 }
 @media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (orientation: landscape) and (max-device-pixel-ratio: 1.5) {
   #left {
-    max-width: 20%;
+    max-width: 100%;
   }
 }
 @media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5) and (orientation: landscape), (orientation: landscape) and (min-device-pixel-ratio: 1.5) and (orientation: landscape) {
@@ -713,7 +720,6 @@ div.table > div > div {
 }
 .active.step,
 .steps .step.active {
-  cursor: auto;
   background-color: #EEE;
   color: #FFF;
   font-weight: 700;
@@ -734,7 +740,6 @@ div.table > div > div {
 }
 .disabled.step,
 .steps .disabled.step {
-  cursor: auto;
   background-color: #FFF;
   color: #CBCBCB;
 }

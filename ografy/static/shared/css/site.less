@@ -200,6 +200,7 @@ footer {
 	}
 	max-width: 1200px;
 	.menu.main {
+		overflow-y: hidden;
 		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 			right: inherit;
 		}
@@ -210,6 +211,9 @@ footer {
 }
 .lockwidth.override {
 	width: 75%;
+	#content {
+		margin: 0 0 0 1em;
+	}
 }
 .no-pad {
 	padding: 0px !important;
@@ -301,6 +305,9 @@ footer {
 	input {
 		width: 100%;
 		max-width: 20em;
+	}
+	input[type=radio] {
+		max-width: 1em;
 	}
 }
 ul.links {
@@ -497,7 +504,6 @@ div.table {
 	border-radius: 0;
 	overflow: visible;
 	border-radius: 0;
-	cursor: pointer;
 	font-size: 0;
 	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
 	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
@@ -539,9 +545,7 @@ div.table {
 		}
 	}
 	.step.active {
-		cursor: auto;
 		background: #f0f0f0;
-		cursor: auto;
 		.title {
 			color: #0E9D58;
 		}
@@ -559,7 +563,7 @@ div.table {
 	}
 	@media (orientation: landscape) {
 		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
-			max-width: 20%;
+			max-width: 100%;
 		}
 		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 			@media (orientation: landscape) {
@@ -716,7 +720,6 @@ div.table {
 }
 
 .active.step, .steps .step.active {
-	cursor: auto;
 	background-color: #EEE;
 	color: #FFF;
 	font-weight: 700;
@@ -735,7 +738,6 @@ div.table {
 	box-sizing: border-box;
 }
 .disabled.step, .steps .disabled.step {
-	cursor: auto;
 	background-color: #FFF;
 	color: #CBCBCB;
 }
