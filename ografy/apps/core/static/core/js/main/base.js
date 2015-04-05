@@ -26,7 +26,7 @@ function baseView() {
 	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst, urlParserInst);
 
 	//Search components
-	var searchViewInst = searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserInst);
+	var searchViewInst = searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewInst, urlParserInst);
 	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views

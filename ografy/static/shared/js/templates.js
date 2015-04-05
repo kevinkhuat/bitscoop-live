@@ -193,6 +193,23 @@ root: root
 };
 })();
 })();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/area/area.html"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<select class=\"area\">\n\t<option value=\"within\">Inside selection</option>\n\t<option value=\"without\">Outside selection</option>\n</select>";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["search/filters/date/date_after_field.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -385,7 +402,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<select class=\"initial\">\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"provider\">Provider</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
+output += "<select class=\"initial\">\n\t<option value=\"provider\">Provider</option>\n\t<option value=\"area\">Area</option>\n\t<option value=\"date\">Date</option>\n\t<option value=\"time\">Time</option>\n\t<option value=\"to\">To</option>\n\t<option value=\"from\">From</option>\n</select>";
 cb(null, output);
 ;
 } catch (e) {

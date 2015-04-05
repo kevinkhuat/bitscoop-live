@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserInst) {
+function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewInst, urlParserInst) {
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its
@@ -11,7 +11,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		$(inputSelection).find('.filter.box:last .filter.options').html(newDropdown);
 
 		var initDropdown = $(inputSelection).find('.filter.box:last .initial')[0];
-		filters().date().dropdown(initDropdown);
+		filters().provider().dropdown(initDropdown);
 
 		$(inputSelection).find('.filter.box:last .initial').change(function() {
 			var currentElement = this;
@@ -30,6 +30,9 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 			}
 			else if (currentElement.value == 'from') {
 				filters().from().dropdown(currentElement);
+			}
+			else if (currentElement.value == 'area') {
+				filters().area().dropdown(currentElement);
 			}
 		});
 	}
@@ -62,7 +65,6 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 				$(this).removeClass('hover');
 			})
 			.click(function() {
-
 				$(this).removeClass('hover');
 			});
 
@@ -138,6 +140,9 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 					else if (type == 'from') {
 						filterString += '(' + filters().from().toString(currentFilter) + ')';
 					}
+					else if (type == 'area') {
+						filterString += '(' + filters().area().toString(currentFilter) + ')';
+					}
 				}
 
 				//Set the Query and Filters in the URL parser
@@ -178,6 +183,36 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 
 	function filters() {
 		//Render the elements needed to filter on From a given person
+		function area() {
+			function dropdown(currentElement) {
+				var parent = currentElement.parentElement;
+
+				//Render the From field using Nunjucks and add it to the DOM
+				var newField = nunjucks.render('search/filters/area/area.html');
+				$(parent).append(newField);
+			}
+
+			function toString(currentFilter) {
+				var returnString = 'geo_within_polygon=[';
+				var loopEnd = mapboxViewInst.map.polySelect.length;
+				for (var i = 0; i < loopEnd; i++) {
+					var thisLatLng = mapboxViewInst.map.polySelect[i];
+					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']';
+					if (i !== loopEnd-1) {
+						returnString += ',';
+					}
+				}
+				returnString += ']';
+				console.log(returnString);
+				return returnString;
+			}
+
+			return {
+				dropdown: dropdown,
+				toString: toString
+			}
+		}
+
 		function from() {
 			function dropdown(currentElement) {
 				var parent = currentElement.parentElement;
@@ -436,6 +471,7 @@ function searchView(dataInst, cacheInst, mapViewInst, listViewInst, urlParserIns
 		}
 
 		return {
+			area: area,
 			from: from,
 			date: date,
 			provider: provider,
