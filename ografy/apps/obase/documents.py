@@ -14,7 +14,7 @@ mongoengine.connect(
 )
 
 
-class Data(mongoengine.DynamicDocument):
+class Data(mongoengine.Document):
     """The data class for all uncategorizable data.
 
     #. *created* the date created

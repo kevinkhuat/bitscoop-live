@@ -1,15 +1,7 @@
-from django.core.exceptions import ValidationError
-from django.core.urlresolvers import NoReverseMatch, ImproperlyConfigured
 from django.utils.encoding import smart_str
-from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import serializers, relations
-from rest_framework.reverse import reverse
-from bson.errors import InvalidId
-
-from mongoengine import dereference
+from rest_framework import serializers
 from mongoengine.base.document import BaseDocument
-from mongoengine.document import Document
 from mongoengine.fields import ObjectId
 
 
@@ -79,105 +71,6 @@ class DocumentField(serializers.Field):
 
     def to_representation(self, value):
         return self.transform_object(value, 1)
-
-
-class ReferenceField(DocumentField):
-    """
-    For ReferenceField.
-    We always dereference DBRef object before serialization
-    TODO: Maybe support DBRef too?
-    """
-    default_error_messages = {
-        'invalid_dbref': _('Unable to convert to internal value.'),
-        'invalid_doc': _('DBRef invalid dereference.'),
-    }
-
-    type_label = 'ReferenceField'
-
-    def __init__(self, *args, **kwargs):
-        self.depth = kwargs.pop('depth')
-        super(ReferenceField, self).__init__(*args, **kwargs)
-
-    def to_internal_value(self, data):
-        try:
-            dbref = self.model_field.to_python(data)
-        except InvalidId:
-            raise ValidationError(self.error_messages['invalid_dbref'])
-
-        instance = dereference.DeReference()([dbref])[0]
-
-        # Check if dereference was successful
-        if not isinstance(instance, Document):
-            msg = self.error_messages['invalid_doc']
-            raise ValidationError(msg)
-
-        return instance
-
-    def to_representation(self, value):
-        return self.transform_object(value, self.depth - 1)
-
-
-class URLField(DocumentField):
-
-    type_label = 'ReferenceField'
-
-    def __init__(self, view_name=None, **kwargs):
-        assert view_name is not None, 'The `view_name` argument is required.'
-        self.view_name = view_name
-        self.lookup_field = kwargs.pop('lookup_field', self.lookup_field)
-        self.lookup_url_kwarg = kwargs.pop('lookup_url_kwarg', self.lookup_field)
-        self.reverse = reverse
-        super(ReferenceField, self).__init__(**kwargs)
-
-    def get_url(self, obj, view_name, request, format):
-        """
-        Given an object, return the URL that hyperlinks to the object.
-
-        May raise a `NoReverseMatch` if the `view_name` and `lookup_field`
-        attributes are not configured to correctly match the URL conf.
-        """
-        # Unsaved objects will not yet have a valid URL.
-        if obj.pk is None:
-            return None
-
-        lookup_value = getattr(obj, self.lookup_field)
-        kwargs = {self.lookup_url_kwarg: lookup_value}
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
-
-    def to_representation(self, value):
-        # return self.transform_object(value, self.depth - 1)
-        request = self.context.get('request', None)
-        format = self.context.get('format', None)
-
-        assert request is not None, (
-            "`%s` requires the request in the serializer"
-            " context. Add `context={'request': request}` when instantiating "
-            "the serializer." % self.__class__.__name__
-        )
-
-        # By default use whatever format is given for the current context
-        # unless the target is a different type to the source.
-        #
-        # Eg. Consider a HyperlinkedIdentityField pointing from a json
-        # representation to an html property of that representation...
-        #
-        # '/snippets/1/' should link to '/snippets/1/highlight/'
-        # ...but...
-        # '/snippets/1/.json' should link to '/snippets/1/highlight/.html'
-        if format and self.format and self.format != format:
-            format = self.format
-
-        # Return the hyperlink, or error if incorrectly configured.
-        try:
-            return self.get_url(value, self.view_name, request, format)
-        except NoReverseMatch:
-            msg = (
-                'Could not resolve URL for hyperlinked relationship using '
-                'view name "%s". You may have failed to include the related '
-                'model in your API, or incorrectly configured the '
-                '`lookup_field` attribute on this field.'
-            )
-            raise ImproperlyConfigured(msg % self.view_name)
 
 
 class ListField(DocumentField):
@@ -278,19 +171,3 @@ class SortedListField(DocumentField):
 
     def to_representation(self, value):
         return self.transform_object(value, self.depth - 1)
-
-
-# class RelatedField(DocumentField, relations.RelatedField):
-#     pass
-#
-#
-# class StringRelatedField(DocumentField, relations.StringRelatedField):
-#     pass
-#
-#
-# class PrimaryKeyRelatedField(DocumentField, relations.PrimaryKeyRelatedField):
-#     pass
-#
-#
-# class HyperlinkedRelatedField(DocumentField, relations.HyperlinkedRelatedField):
-#     pass
