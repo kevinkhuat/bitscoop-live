@@ -86,6 +86,7 @@ def providers(request):
         'title': 'Ografy - Providers',
         'body_class': 'full',
         'left_class': 'bordered right',
+        'providers_override': True,
         'providers': providers,
         'connect_url': connect_url
     })
@@ -100,12 +101,14 @@ def verify(request, pk):
         if signal.connected is False or signal.complete is True or signal.enabled is True:
             return render(request, 'core/signals/authorize.html', {
                 'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
+                'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
             })
         else:
             return render(request, 'core/signals/verify.html', {
                 'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
+                'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
             })

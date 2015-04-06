@@ -410,9 +410,6 @@ body.full .lockwidth {
     right: 0.5em;
   }
 }
-body.full .lockwidth.grow {
-  height: 100%;
-}
 body.full > header {
   padding: 0 1% 0 0;
 }
@@ -433,7 +430,6 @@ body.full > footer {
   border: 1px solid #CCC;
   border-radius: 2px;
   background: #EEE;
-  margin: 0 0 2em 0;
 }
 .square-set > .header {
   text-align: center;
@@ -452,19 +448,19 @@ div.table > div > div {
   display: table-cell;
 }
 .leaflet-container:-webkit-full-screen {
-  position: fixed!important;
-  width: 100%!important;
-  height: 100%!important;
-  top: 0!important;
-  left: 0!important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
   z-index: 99999;
 }
 .leaflet-container.leaflet-fullscreen-on {
-  position: fixed!important;
-  width: 100%!important;
-  height: 100%!important;
-  top: 0!important;
-  left: 0!important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
   z-index: 99999;
 }
 .signal-button {
@@ -507,6 +503,7 @@ div.table > div > div {
   border: 1px solid rgba(40, 40, 40, 0.5);
   overflow: visible;
   border-radius: 0;
+  cursor: pointer;
   font-size: 0;
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -547,6 +544,7 @@ div.table > div > div {
 }
 .steps .step.active {
   background: #f0f0f0;
+  cursor: auto;
 }
 .steps .step.active .title {
   color: #0E9D58;
@@ -566,7 +564,7 @@ div.table > div > div {
 }
 @media (orientation: landscape) and (-webkit-max-device-pixel-ratio: 1.5), (orientation: landscape) and (max-device-pixel-ratio: 1.5) {
   #left {
-    max-width: 100%;
+    max-width: 20%;
   }
 }
 @media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5) and (orientation: landscape), (orientation: landscape) and (min-device-pixel-ratio: 1.5) and (orientation: landscape) {
@@ -630,7 +628,7 @@ div.table > div > div {
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .drawer-toggle {
-    -webkit-box-sizing: bzzorder-box;
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
@@ -720,6 +718,7 @@ div.table > div > div {
 }
 .active.step,
 .steps .step.active {
+  cursor: auto;
   background-color: #EEE;
   color: #FFF;
   font-weight: 700;
@@ -740,6 +739,7 @@ div.table > div > div {
 }
 .disabled.step,
 .steps .disabled.step {
+  cursor: auto;
   background-color: #FFF;
   color: #CBCBCB;
 }
@@ -804,7 +804,7 @@ i.step-icon {
 }
 .menu .item {
   display: inline-block;
-  padding: 0.4em 0.25em 0 0.25em;
+  padding: 0.25em;
   text-align: left;
   margin: 0;
 }
@@ -853,6 +853,7 @@ i.step-icon {
   left: inherit;
   right: 0.5em;
   top: 3em;
+  overflow-y: hidden;
   border: 1px solid #cccccc;
 }
 .menu.main .item.hover {
