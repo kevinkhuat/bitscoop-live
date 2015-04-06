@@ -106,35 +106,35 @@
 {% endblock %}
 
 {% block left %}
-	<div class="ui vertical steps">
+	<div class="flex column steps">
 		<div class="step">
 			<div class="content">
 				<div class="title-align">
-					<i class="block layout icon"></i>
+					<i class="block icon-link step-icon"></i>
 
-					<div class="title">Connect to {{ signal.name }}</div>
+					<div class="title">Connect to {{ provider.name }}</div>
 				</div>
-				<div class="description">Connect your {{ signal.name }} account to your Ografy account</div>
+				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
 			</div>
 		</div>
 		<div class="active step">
 			<div class="content">
 				<div class="title-align">
-					<i class="certificate icon"></i>
+					<i class="step-icon icon-uniF75F"></i>
 
 					<div class="title">Authorize Access</div>
 				</div>
-				<div class="description">Authorize your {{ signal.name }} account's connection to Ografy</div>
+				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
 			</div>
 		</div>
 		<div class="disabled step">
 			<div class="content">
 				<div class="title-align">
-					<i class="checkmark icon"></i>
+					<i class="step-icon icon-check"></i>
 
 					<div class="title">Verify Settings</div>
 				</div>
-				<div class="description">Ensure that your connection settings to {{ signal.name }} are correct</div>
+				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
 			</div>
 		</div>
 	</div>

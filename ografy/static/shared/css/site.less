@@ -225,6 +225,7 @@ footer {
 	}
 	max-width: 1200px;
 	.menu.main {
+		overflow-y: hidden;
 		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 			right: inherit;
 		}
@@ -236,8 +237,10 @@ footer {
 
 .lockwidth.override {
 	width: 75%;
+	#content {
+		margin: 0 0 0 1em;
+	}
 }
-
 .no-pad {
 	padding: 0px !important;
 }
@@ -343,8 +346,10 @@ footer {
 		width: 100%;
 		max-width: 20em;
 	}
+	input[type=radio] {
+		max-width: 1em;
+	}
 }
-
 ul.links {
 	padding: 0;
 	margin: 0;
@@ -451,9 +456,6 @@ body.full {
 			}
 		}
 	}
-	.lockwidth.grow {
-		height: 100%;
-	}
 	& > header {
 		padding: 0 1% 0 0;
 	}
@@ -476,7 +478,6 @@ body.full {
 	border: 1px solid #CCC;
 	border-radius: 2px;
 	background: #EEE;
-	margin: 0 0 2em 0;
 	& > .header {
 		text-align: center;
 		position: relative;
@@ -882,7 +883,7 @@ i.step-icon {
 	border-radius: 3px;
 	.item {
 		display: inline-block;
-		padding: 0.4em 0.25em 0 0.25em;
+		padding: 0.25em;
 		text-align: left;
 		margin: 0;
 	}
@@ -934,6 +935,7 @@ i.step-icon {
 	left: inherit;
 	right: 0.5em;
 	top: 3em;
+	overflow-y: hidden;
 	border: 1px solid @darkgray;
 	.item.hover {
 		background-color: inherit;
