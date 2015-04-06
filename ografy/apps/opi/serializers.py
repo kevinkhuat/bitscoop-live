@@ -6,7 +6,8 @@ from ografy.apps.core.models import Provider, Signal, User
 from ografy.apps.obase.documents import Data, Event, Message
 from ografy.apps.tastydata.serializers.custom_drf import related_fields as django_fields
 from ografy.apps.tastydata.serializers.custom_drf_mongoengine import related_fields as mongo_fields
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine import serializers as mongo_serializers
+from ografy.apps.tastydata import serializers as mongo_serializers
+
 
 
 # TODO: Move to API, Tastadata View, or View?

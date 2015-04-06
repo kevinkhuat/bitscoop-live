@@ -11,7 +11,7 @@ from mongoengine import fields as me_fields
 from rest_framework import serializers
 from rest_framework import fields as drf_fields
 
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.utils import get_field_info
+from ografy.apps.tastydata.utils import get_field_info
 from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
 
 
