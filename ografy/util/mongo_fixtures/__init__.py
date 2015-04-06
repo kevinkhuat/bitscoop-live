@@ -22,7 +22,8 @@ def create_demo_user():
         is_staff=False,
         is_active=True,
         is_verified=True,
-        password_date=datetime.datetime(2015, 2, 25, 16, 14, 15)
+        password_date=datetime.datetime(2015, 2, 25, 16, 14, 15),
+        last_login=datetime.datetime(2015, 2, 25, 16, 14, 15)
     )
 
 
