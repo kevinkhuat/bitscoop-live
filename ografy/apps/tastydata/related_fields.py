@@ -169,7 +169,7 @@ class ReferenceField(DocumentField):
             # return self.transform_object(value, self.depth - 1)
 
 
-class DjangoRefField(HyperlinkedRelatedField):
+class DjangoField(HyperlinkedRelatedField):
     """
     Field representing an association From a Mongo Document to a Django Model used in the Serializer.
 
@@ -208,7 +208,7 @@ class DjangoRefField(HyperlinkedRelatedField):
         super(HyperlinkedRelatedField, self).__init__(**kwargs)
 
 
-class MongoRefField(ReferenceField):
+class MongoField(ReferenceField):
     """
     Field representing an association from a Django Model to a Mongo Document used in the Serializer.
 
