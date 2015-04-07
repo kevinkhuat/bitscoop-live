@@ -34,8 +34,8 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			headers: {
 				'X-CSRFToken': cookie
 			}
-		}).done(function (data, xhr, response) {
-			L.mapbox.accessToken = data['OGRAFY_MAPBOX_ACCESS_TOKEN'];
+		}).done(function(data, xhr, response) {
+			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
 			mapboxViewInst.initializeMap();
 			map = mapboxViewInst.map;
 			geoJSON = mapboxViewInst.geoJSON;

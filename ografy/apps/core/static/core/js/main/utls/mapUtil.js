@@ -54,19 +54,19 @@ function mapboxManager(dataInst) {
 
 			this.map.on('draw:created', showPolygonArea);
 			this.map.on('draw:edited', showPolygonAreaEdited);
+		}
 
-			function showPolygonAreaEdited(e) {
-				e.layers.eachLayer(function(layer) {
-					showPolygonArea({ layer: layer });
-				});
-			}
-			function showPolygonArea(e) {
-				map.featureGroup.clearLayers();
-				map.featureGroup.addLayer(e.layer);
-				map.polySelect = e.layer._latlngs;
-				e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');
-				e.layer.openPopup();
-			}
+		function showPolygonAreaEdited(e) {
+			e.layers.eachLayer(function(layer) {
+				showPolygonArea({ layer: layer });
+			});
+		}
+		function showPolygonArea(e) {
+			map.featureGroup.clearLayers();
+			map.featureGroup.addLayer(e.layer);
+			map.polySelect = e.layer._latlngs;
+			e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');
+			e.layer.openPopup();
 		}
 	}
 

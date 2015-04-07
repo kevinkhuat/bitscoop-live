@@ -73,22 +73,22 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			var filterList = $('.filters');
 			removeFilter(this);
 			for (var i = 0; i < filterList.length; i++) {
-					if ($(filterList[i]).children().length > 0) {
-						customFilter = true;
-					}
+				if ($(filterList[i]).children().length > 0) {
+					customFilter = true;
 				}
+			}
 
-				if (customFilter === true) {
+			if (customFilter === true) {
+				$('.filter-button').addClass('active');
+			}
+			else {
+				if ($('.selector').not('.active').length > 0) {
 					$('.filter-button').addClass('active');
 				}
 				else {
-					if ($('.selector').not('.active').length > 0) {
-						$('.filter-button').addClass('active');
-					}
-					else {
-						$('.filter-button').removeClass('active');
-					}
+					$('.filter-button').removeClass('active');
 				}
+			}
 		});
 	}
 
@@ -163,7 +163,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			return submitSearch(event);
 		});
 
-		$('.search-button').click(function(event){
+		$('.search-button').click(function(event) {
 			return submitSearch(event);
 		});
 
@@ -198,7 +198,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 				for (var i = 0; i < loopEnd; i++) {
 					var thisLatLng = mapboxViewInst.map.polySelect[i];
 					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']';
-					if (i !== loopEnd-1) {
+					if (i !== loopEnd - 1) {
 						returnString += ',';
 					}
 				}
@@ -210,7 +210,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			return {
 				dropdown: dropdown,
 				toString: toString
-			}
+			};
 		}
 
 		function from() {
