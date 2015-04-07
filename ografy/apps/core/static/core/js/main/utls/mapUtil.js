@@ -14,8 +14,6 @@ function mapboxManager(dataInst) {
 			features: []
 		};
 
-		L.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';
-
 		//The instantiation of a map takes the DOM element where the map will be stored
 		//as a parameter, hence why the DOM element must exist before this function is called.
 		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {
@@ -70,8 +68,6 @@ function mapboxManager(dataInst) {
 				e.layer.openPopup();
 			}
 		}
-
-
 	}
 
 	//Change the map's context

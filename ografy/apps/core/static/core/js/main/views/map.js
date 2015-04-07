@@ -24,9 +24,22 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//Create a MapBox map.
 		//This needs to be done after the map container has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
-		mapboxViewInst.initializeMap();
-		map = mapboxViewInst.map;
-		geoJSON = mapboxViewInst.geoJSON;
+
+		var cookie = sessionsCookies().getCsrfToken();
+		var url = 'app/keys/mapbox';
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			headers: {
+				'X-CSRFToken': cookie
+			}
+		}).done(function (data, xhr, response) {
+			L.mapbox.accessToken = data['OGRAFY_MAPBOX_ACCESS_TOKEN'];
+			mapboxViewInst.initializeMap();
+			map = mapboxViewInst.map;
+			geoJSON = mapboxViewInst.geoJSON;
+		});
 	}
 
 	//Creates a new layer of markers on the map

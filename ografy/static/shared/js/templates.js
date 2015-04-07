@@ -1,20 +1,3 @@
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["Polyselect.html"] = (function() {function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-output += "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=utf-8 />\n<title>Show drawn polygon area</title>\n<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />\n<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>\n<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />\n<style>\n  body { margin:0; padding:0; }\n  #map { position:absolute; top:0; bottom:0; width:100%; }\n</style>\n</head>\n<body>\n<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />\n<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>\n<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js'></script>\n\n<div id='map'></div>\n\n<script>\nL.mapbox.accessToken = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg';\nvar map = L.mapbox.map('map', 'examples.map-i86nkdio')\n    .setView([38.89399, -77.03659], 17);\n\nvar featureGroup = L.featureGroup().addTo(map);\n\nvar drawControl = new L.Control.Draw({\n  edit: {\n    featureGroup: featureGroup\n  },\n  draw: {\n    polygon: true,\n    polyline: false,\n    rectangle: false,\n    circle: false,\n    marker: false\n  }\n}).addTo(map);\n\nmap.on('draw:created', showPolygonArea);\nmap.on('draw:edited', showPolygonAreaEdited);\n\nfunction showPolygonAreaEdited(e) {\n  e.layers.eachLayer(function(layer) {\n    showPolygonArea({ layer: layer });\n  });\n}\nfunction showPolygonArea(e) {\n  featureGroup.clearLayers();\n  featureGroup.addLayer(e.layer);\n  e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');\n  e.layer.openPopup();\n}\n</script>\n</body>\n</html>";
-cb(null, output);
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-})();
-})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["base.html"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;

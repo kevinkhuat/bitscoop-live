@@ -11,7 +11,7 @@ import ografy.apps.core.views.search as search_views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
 
-    url(r'^app?$', main_views.main, name='core_main'),
+    url(r'^app/keys/mapbox?$', main_views.mapbox_token, name='mapbox_token'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),
     url(r'^settings/personal/?$', settings_views.PersonalView.as_view(), name='core_settings_personal'),
