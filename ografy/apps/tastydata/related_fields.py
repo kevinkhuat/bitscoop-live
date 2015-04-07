@@ -41,8 +41,8 @@ class ReferenceField(DocumentField):
     type_label = 'ReferenceField'
 
     def __init__(self, *args, **kwargs):
-        self.view_name = kwargs.pop('view_name', self.view_name)
-        self.depth = kwargs.pop('depth')
+        self.view_name = kwargs.pop('view_name', None)
+        self.depth = kwargs.pop('depth', 5)
         self.lookup_field = kwargs.pop('lookup_field', self.lookup_field)
         self.lookup_url_kwarg = kwargs.pop('lookup_url_kwarg', self.lookup_field)
         self.format = kwargs.pop('format', None)
@@ -193,6 +193,8 @@ class DjangoField(HyperlinkedRelatedField):
     #      'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
     #  }
 
+    type_label = 'DjangoField'
+
     def __init__(self, view_name=None, **kwargs):
         assert view_name is not None, 'The `view_name` argument is required.'
         self.view_name = view_name
@@ -234,7 +236,7 @@ class MongoField(ReferenceField):
     #      'incorrect_type': _('Incorrect type. Expected URL string, received {data_type}.'),
     #  }
 
-    type_label = 'MongoRefField'
+    type_label = 'MongoField'
 
     def __init__(self, *args, **kwargs):
         self.view_name = kwargs.pop('view_name', self.view_name)

@@ -12,7 +12,8 @@ from rest_framework import serializers
 from rest_framework import fields as drf_fields
 
 from ografy.apps.tastydata.utils import get_field_info
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine.fields import ReferenceField, ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
+from ografy.apps.tastydata.fields import ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
+from ografy.apps.tastydata.related_fields import ReferenceField, DjangoField, MongoField
 
 
 def raise_errors_on_nested_writes(method_name, serializer, validated_data):
@@ -143,6 +144,11 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.PointField: BaseGeoField,
         me_fields.PolygonField: BaseGeoField,
         me_fields.LineStringField: BaseGeoField,
+    }
+
+    tastydata_mapping = {
+        DjangoField: DjangoField,
+        MongoField: MongoField
     }
 
     field_mapping.update(_drfme_field_mapping)
@@ -308,7 +314,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         if type(model_field) in self._drfme_field_mapping:
             kwargs['model_field'] = model_field
 
-        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField, me_fields.SortedListField):
+        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField, me_fields.SortedListField, DjangoField, MongoField):
             kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if type(model_field) is me_fields.ObjectIdField:

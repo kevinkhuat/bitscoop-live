@@ -32,7 +32,7 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
 
 class EventSerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
-    data = related_fields.ReferenceField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
+    data = related_fields.ReferenceField(lookup_field='data', queryset=Data.objects.all(), view_name='data-detail')
 
     # Django References
     # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
@@ -47,7 +47,7 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
 
 class MessageSerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
-    event = related_fields.ReferenceField(view_name='event-detail', lookup_field='event', queryset=Event.objects.all())
+    event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
     class Meta:
         model = Message
