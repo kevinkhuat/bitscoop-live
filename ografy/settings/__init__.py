@@ -421,3 +421,9 @@ HANDLE_VALIDATORS = [
 
 PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
+
+############
+# API KEYS #
+############
+
+OGRAFY_MAPBOX_ACCESS_TOKEN = os.environ['OGRAFY_MAPBOX_ACCESS_TOKEN']

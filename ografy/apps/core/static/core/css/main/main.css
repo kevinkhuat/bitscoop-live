@@ -7,7 +7,7 @@
 }
 .filter {
   display: inline-block;
-  background: #CCC;
+  background: #cccccc;
 }
 .filter.container {
   font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -23,7 +23,7 @@
   transition: width .5s ease;
 }
 .filter.button.hover {
-  color: #0E9D58;
+  color: #0e9d58;
 }
 .search {
   margin: 0.25em 0;
@@ -34,7 +34,7 @@
   display: none;
   top: 50px;
   margin: 0em;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   min-width: 100%;
   white-space: nowrap;
   font-size: 0.875em;
@@ -115,14 +115,14 @@ select {
   }
 }
 .sidebar .detail .main-label {
-  background-color: #488A2D;
-  color: #FFF;
+  background-color: #4183c4;
+  color: #ffffff;
   width: 100%;
   padding: 3px 0 3px 0;
   min-height: 60px;
 }
 .sidebar .detail .label {
-  background-color: #CCC;
+  background-color: #cccccc;
   width: 100%;
   padding: 3px 0 3px 0;
   float: left;
@@ -194,7 +194,7 @@ select {
   }
 }
 .sidebar .detail.text-half {
-  background-color: #EEE;
+  background-color: #eeeeee;
 }
 @media (orientation: landscape) {
   .sidebar .detail.text-half {
@@ -221,7 +221,7 @@ select {
   }
 }
 .sidebar .detail.full {
-  background-color: #EEE;
+  background-color: #eeeeee;
 }
 @media (orientation: landscape) {
   .sidebar .detail.full {
@@ -271,7 +271,7 @@ select {
   margin: 4px 10px 4px 4px;
   padding: 5px;
   height: 30px;
-  color: #000;
+  color: #000000;
   text-decoration: none !important;
   font-size: 1em;
 }
@@ -301,9 +301,9 @@ select {
 .list.item {
   margin: 4px 0px;
   width: 100%;
-  color: #000;
+  color: #000000;
   padding: 5px 0px;
-  background-color: #F8F8F8;
+  background-color: #cccccc;
   transition: width .5s ease;
   cursor: pointer;
   vertical-align: middle;
@@ -311,11 +311,11 @@ select {
   font-size: 1em;
 }
 .list.item.hover {
-  background-color: #0E9D58;
-  color: #FFF;
+  background-color: #0e9d58;
+  color: #ffffff;
 }
 .list.item.active {
-  background-color: #CCC;
+  background-color: #cccccc;
 }
 .data-view {
   position: relative;
@@ -359,10 +359,10 @@ select {
   top: 0px;
 }
 .filter-button.hover {
-  color: #0E9D58;
+  color: #0e9d58;
 }
 .filter-button.active {
-  background-color: #488A2D;
+  background-color: #4183c4;
 }
 .search-button {
   width: 2em;
@@ -383,7 +383,7 @@ select {
   cursor: pointer;
 }
 .dropdown span.hover {
-  color: #0E9D58;
+  color: #0e9d58;
 }
 @media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .main-list {
@@ -392,5 +392,5 @@ select {
 }
 .spacer {
   height: 1.25em;
-  border-left: 1px solid #999;
+  border-left: 1px solid #999999;
 }

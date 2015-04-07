@@ -54,8 +54,8 @@ function baseView() {
 			$('.menu.filter').toggleClass('hidden');
 		});
 
-		$(document.body).click(function(e){
-			if(!e.target.classList.contains('filter-button') &&
+		$(document.body).click(function(e) {
+			if (!e.target.classList.contains('filter-button') &&
 				!e.target.classList.contains('item') &&
 				!e.target.closest('.filter')) {
 				$('.menu.filter').addClass('hidden');
