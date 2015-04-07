@@ -22,7 +22,7 @@ def evaluate(query):
 
 class DataSerializer(tasty_serializers.DocumentSerializer):
     # Django References
-    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
         model = Data
@@ -35,9 +35,9 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
     data = related_fields.ReferenceField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
 
     # Django References
-    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
-    signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
-    provider = related_fields.DjangoField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
+    # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    # signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
+    # provider = related_fields.DjangoField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
 
     class Meta:
         model = Event
@@ -65,8 +65,8 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
     # Django References
-    user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id', queryset=User.objects.all())
-    provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider', queryset=User.objects.all())
+    # user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id', queryset=User.objects.all())
+    # provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider', queryset=User.objects.all())
 
     class Meta:
         model = Signal
@@ -76,7 +76,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
 class SettingsSerializer(tasty_serializers.DocumentSerializer):
     # Django References
-    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
         model = Settings
@@ -86,10 +86,10 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
     # Mongo References
-    settings = related_fields.MongoField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
+    # settings = related_fields.MongoField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
 
     # Django References
-    signals = related_fields.DjangoField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
+    # signals = related_fields.DjangoField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
 
     class Meta:
         model = User
