@@ -4,10 +4,8 @@ from rest_framework import serializers as django_serializers
 from ografy.apps.core.documents import Settings
 from ografy.apps.core.models import Provider, Signal, User
 from ografy.apps.obase.documents import Data, Event, Message
-from ografy.apps.tastydata.serializers.custom_drf import related_fields as django_fields
-from ografy.apps.tastydata.serializers.custom_drf_mongoengine import related_fields as mongo_fields
-from ografy.apps.tastydata import serializers as mongo_serializers
-
+from ografy.apps.tastydata import related_fields
+from ografy.apps.tastydata import serializers as tasty_serializers
 
 
 # TODO: Move to API, Tastadata View, or View?
@@ -22,9 +20,9 @@ def evaluate(query):
             return data
 
 
-class DataSerializer(mongo_serializers.DocumentSerializer):
+class DataSerializer(tasty_serializers.DocumentSerializer):
     # Django References
-    user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
         model = Data
@@ -32,14 +30,14 @@ class DataSerializer(mongo_serializers.DocumentSerializer):
         depth = 5
 
 
-class EventSerializer(mongo_serializers.DocumentSerializer):
+class EventSerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
-    data = mongo_fields.ReferenceField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
+    data = related_fields.ReferenceField(view_name='event-detail', lookup_field='data', queryset=Data.objects.all())
 
     # Django References
-    user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
-    signal = mongo_fields.DjangoRefField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
-    provider = mongo_fields.DjangoRefField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
+    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
+    provider = related_fields.DjangoField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
 
     class Meta:
         model = Event
@@ -47,9 +45,9 @@ class EventSerializer(mongo_serializers.DocumentSerializer):
         depth = 5
 
 
-class MessageSerializer(mongo_serializers.DocumentSerializer):
+class MessageSerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
-    event = mongo_fields.ReferenceField(view_name='event-detail', lookup_field='event', queryset=Event.objects.all())
+    event = related_fields.ReferenceField(view_name='event-detail', lookup_field='event', queryset=Event.objects.all())
 
     class Meta:
         model = Message
@@ -76,9 +74,9 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
         depth = 5
 
 
-class SettingsSerializer(mongo_serializers.DocumentSerializer):
+class SettingsSerializer(tasty_serializers.DocumentSerializer):
     # Django References
-    user = mongo_fields.DjangoRefField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
 
     class Meta:
         model = Settings
@@ -88,10 +86,10 @@ class SettingsSerializer(mongo_serializers.DocumentSerializer):
 
 class UserSerializer(django_serializers.HyperlinkedModelSerializer):
     # Mongo References
-    settings = django_fields.MongoRefField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
+    settings = related_fields.MongoField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
 
     # Django References
-    signals = mongo_fields.DjangoRefField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
+    signals = related_fields.DjangoField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
 
     class Meta:
         model = User
