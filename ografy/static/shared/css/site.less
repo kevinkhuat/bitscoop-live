@@ -1,5 +1,17 @@
-@darkgray: #CCC;
+@ografy-green: #0E9D58;
+@blue: #4183c4;
+@green: #6cc644;
+@red:#bd2c00;
+@orange: #f93;
+@purple: #6e5494;
 
+@white: #FFF;
+@pale-gray: #EEE;
+@light-gray: #CCC;
+@mid-gray: #999;
+@dark-gray: #666;
+@deep-gray: #333;
+@black: #000;
 * {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -13,7 +25,7 @@
 html {
 	-webkit-text-size-adjust: none;
 	font-weight: 400;
-	background-color: #FFF;
+	background-color: @white;
 	height: 100%;
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 		font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -70,7 +82,7 @@ html {
 }
 
 body {
-	color: #555;
+	color: @dark-gray;
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-direction: column;
@@ -100,14 +112,14 @@ h2 {
 }
 
 h3 {
-	color: #0E9D58;
+	color: @ografy-green;
 	font-size: 1.5em;
 	font-style: italic;
 }
 
 a {
 	text-decoration: none;
-	color: #0E9D58;
+	color: @orange;
 }
 
 ::before {
@@ -129,9 +141,9 @@ input {
 }
 
 input:focus {
-	-moz-box-shadow: 0 0 6px -1px #0E9D58;
-	-webkit-box-shadow: 0 0 6px -1px #0E9D58;
-	box-shadow: 0 0 6px -1px #0E9D58;
+	-moz-box-shadow: 0 0 6px -1px @ografy-green;
+	-webkit-box-shadow: 0 0 6px -1px @ografy-green;
+	box-shadow: 0 0 6px -1px @ografy-green;
 }
 
 input.full-width {
@@ -155,14 +167,14 @@ header {
 		}
 		a {
 			text-decoration: none !important;
-			color: #555;
+			color: @dark-gray;
 		}
 		a.hover {
-			color: #0E9D58;
+			color: @ografy-green;
 			cursor: pointer;
 		}
 		i.hover {
-			color: #0E9D58;
+			color: @ografy-green;
 			cursor: pointer;
 		}
 	}
@@ -209,7 +221,7 @@ footer {
 }
 
 .green {
-	color: #0E9D58 !important;
+	color: @ografy-green !important;
 }
 
 .inline-block {
@@ -323,13 +335,13 @@ footer {
 }
 
 .grouping {
-	background-color: #FFF;
+	background-color: @white;
 	margin: 0 0 20px 0;
 	& > :first-child {
 		border: 1px solid #D8D8D8;
 		border-radius: 4px 4px 0 0;
 		font-weight: bold;
-		background-color: #EEE;
+		background-color: @pale-gray;
 		padding: 8px 15px;
 	}
 	& > :last-child {
@@ -354,7 +366,7 @@ ul.links {
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
-	background-color: #FFF;
+	background-color: @white;
 	& > li {
 		& > * {
 			display: block;
@@ -363,12 +375,12 @@ ul.links {
 			cursor: pointer;
 		}
 		& > .hover {
-			background-color: #0E9D58 !important;
-			color: #FFFFFF;
+			background-color: @ografy-green !important;
+			color: @white;
 		}
 		& > .active {
 			background-color: #12CC72;
-			color: #FFFFFF;
+			color: @white;
 		}
 	}
 	& > li:not(:last-child) {
@@ -377,29 +389,29 @@ ul.links {
 }
 
 .bg.gray.darker {
-	background-color: #333;
-	color: #FFF;
+	background-color: @deep-gray;
+	color: @white;
 }
 
 .bg.gray {
-	background-color: #333;
-	color: #555;
+	background-color: @deep-gray;
+	color: @dark-gray;
 }
 
 .bg.gray.light {
-	background-color: #EEE;
-	color: #555;
+	background-color: @pale-gray;
+	color: @dark-gray;
 	border-color: #CCC;
 }
 
 .bg.gray.lighter {
 	background-color: #F3F3F3;
-	color: #555;
+	color: @dark-gray;
 }
 
 .bg.black {
-	background-color: #000;
-	color: #FFF;
+	background-color: @black;
+	color: @white;
 }
 
 .bg.black.translucent {
@@ -407,8 +419,8 @@ ul.links {
 }
 
 .bg.green {
-	background-color: #0E9D58;
-	color: #FFF;
+	background-color: @ografy-green;
+	color: @white;
 }
 
 .bordered {
@@ -477,15 +489,15 @@ body.full {
 .square-set {
 	border: 1px solid #CCC;
 	border-radius: 2px;
-	background: #EEE;
+	background: @pale-gray;
 	& > .header {
 		text-align: center;
 		position: relative;
 		top: -2.25em;
 		& > i {
 			font-size: 2.5em;
-			background-color: #0E9D58;
-			color: #FFF;
+			background-color: @ografy-green;
+			color: @white;
 			padding: 0.35em;
 			border: 2px solid #CCC;
 			border-radius: 1em;
@@ -521,7 +533,7 @@ div.table {
 
 .signal-button {
 	display: inline-block;
-	background-color: #EEE;
+	background-color: @blue;
 	height: 11em;
 	width: 11em;
 	padding: 0.8em;
@@ -543,11 +555,11 @@ div.table {
 }
 
 .provider-description {
-	color: #000;
+	color: @black;
 }
 
 .signal-button.hover {
-	background-color: #DDD;
+	background-color: @purple;
 }
 
 #isotope-container {
@@ -582,7 +594,7 @@ div.table {
 		position: relative;
 		margin: 0;
 		vertical-align: top;
-		background: #fff;
+		background: @white;
 		color: rgba(40, 40, 40, .5);
 		box-shadow: 0 0 0 1px #d4d4d5;
 		border-radius: 0;
@@ -612,7 +624,7 @@ div.table {
 		background: #f0f0f0;
 		cursor: auto;
 		.title {
-			color: #0E9D58;
+			color: @ografy-green;
 		}
 	}
 	.step:first-child {
@@ -732,7 +744,7 @@ div.table {
 }
 
 .ordered.steps .step.active:before, .steps .active.step .icon {
-	color: #0E9D58;
+	color: @ografy-green;
 }
 
 .steps .disabled.step, .steps .disabled.step .description, .steps .disabled.step .title {
@@ -749,12 +761,12 @@ div.table {
 
 .button-green {
 	background-color: #5BBD72;
-	color: #FFFFFF;
+	color: @white;
 }
 
 .premium-message {
 	background-color: #5BBD72;
-	color: #FFFFFF !important;
+	color: @white !important;
 	padding: 15px 15px 15px 30px;
 }
 
@@ -796,8 +808,8 @@ div.table {
 
 .active.step, .steps .step.active {
 	cursor: auto;
-	background-color: #EEE;
-	color: #FFF;
+	background-color: @pale-gray;
+	color: @white;
 	font-weight: 700;
 }
 
@@ -807,7 +819,7 @@ div.table {
 	position: relative;
 	padding: 1em 2em 1em 2em;
 	vertical-align: top;
-	background-color: #FFF;
+	background-color: @white;
 	color: #888;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -817,12 +829,12 @@ div.table {
 
 .disabled.step, .steps .disabled.step {
 	cursor: auto;
-	background-color: #FFF;
+	background-color: @white;
 	color: #CBCBCB;
 }
 
 i.step-icon {
-	color: #0E9D58;
+	color: @ografy-green;
 	font-size: 1em;
 	display: inline-block;
 	opacity: .75;
@@ -879,7 +891,7 @@ i.step-icon {
 	-webkit-transition: height 0.2s ease;
 	-moz-transition: height 0.2s ease;
 	transition: height 0.2s ease;
-	background-color: #EEE;
+	background-color: @pale-gray;
 	border-radius: 3px;
 	.item {
 		display: inline-block;
@@ -897,7 +909,7 @@ i.step-icon {
 		color: #5BBD72;
 	}
 	.selector.hover {
-		color: #0E9D58;
+		color: @ografy-green;
 		cursor: pointer;
 	}
 	.divider {
@@ -911,7 +923,7 @@ i.step-icon {
 		text-align: left;
 	}
 	.add-filter.hover {
-		color: #0E9D58;
+		color: @ografy-green;
 		cursor: pointer;
 	}
 	.type-grouping {
@@ -936,7 +948,7 @@ i.step-icon {
 	right: 0.5em;
 	top: 3em;
 	overflow-y: hidden;
-	border: 1px solid @darkgray;
+	border: 1px solid @dark-gray;
 	.item.hover {
 		background-color: inherit;
 	}

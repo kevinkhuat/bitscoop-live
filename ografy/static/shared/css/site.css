@@ -10,7 +10,7 @@
 html {
   -webkit-text-size-adjust: none;
   font-weight: 400;
-  background-color: #FFF;
+  background-color: #ffffff;
   height: 100%;
 }
 @media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
@@ -67,7 +67,7 @@ html {
   }
 }
 body {
-  color: #555;
+  color: #666666;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -94,13 +94,13 @@ h2 {
   font-size: 1.8em;
 }
 h3 {
-  color: #0E9D58;
+  color: #0e9d58;
   font-size: 1.5em;
   font-style: italic;
 }
 a {
   text-decoration: none;
-  color: #0E9D58;
+  color: #ff9933;
 }
 ::before {
   position: relative;
@@ -142,14 +142,14 @@ header nav .item {
 }
 header nav a {
   text-decoration: none !important;
-  color: #555;
+  color: #666666;
 }
 header nav a.hover {
-  color: #0E9D58;
+  color: #0e9d58;
   cursor: pointer;
 }
 header nav i.hover {
-  color: #0E9D58;
+  color: #0e9d58;
   cursor: pointer;
 }
 footer {
@@ -183,7 +183,7 @@ footer {
   margin-right: auto !important;
 }
 .green {
-  color: #0E9D58 !important;
+  color: #0e9d58 !important;
 }
 .inline-block {
   display: inline-block;
@@ -290,14 +290,14 @@ footer {
   flex-wrap: wrap;
 }
 .grouping {
-  background-color: #FFF;
+  background-color: #ffffff;
   margin: 0 0 20px 0;
 }
 .grouping > :first-child {
   border: 1px solid #D8D8D8;
   border-radius: 4px 4px 0 0;
   font-weight: bold;
-  background-color: #EEE;
+  background-color: #eeeeee;
   padding: 8px 15px;
 }
 .grouping > :last-child {
@@ -321,7 +321,7 @@ ul.links {
   padding: 0;
   margin: 0;
   list-style-type: none;
-  background-color: #FFF;
+  background-color: #ffffff;
 }
 ul.links > li > * {
   display: block;
@@ -330,43 +330,43 @@ ul.links > li > * {
   cursor: pointer;
 }
 ul.links > li > .hover {
-  background-color: #0E9D58 !important;
-  color: #FFFFFF;
+  background-color: #0e9d58 !important;
+  color: #ffffff;
 }
 ul.links > li > .active {
   background-color: #12CC72;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 ul.links > li:not(:last-child) {
   border-bottom: 1px solid #EAEAEA;
 }
 .bg.gray.darker {
-  background-color: #333;
-  color: #FFF;
+  background-color: #333333;
+  color: #ffffff;
 }
 .bg.gray {
-  background-color: #333;
-  color: #555;
+  background-color: #333333;
+  color: #666666;
 }
 .bg.gray.light {
-  background-color: #EEE;
-  color: #555;
+  background-color: #eeeeee;
+  color: #666666;
   border-color: #CCC;
 }
 .bg.gray.lighter {
   background-color: #F3F3F3;
-  color: #555;
+  color: #666666;
 }
 .bg.black {
-  background-color: #000;
-  color: #FFF;
+  background-color: #000000;
+  color: #ffffff;
 }
 .bg.black.translucent {
   background-color: rgba(0, 0, 0, 0.8);
 }
 .bg.green {
-  background-color: #0E9D58;
-  color: #FFF;
+  background-color: #0e9d58;
+  color: #ffffff;
 }
 .bordered {
   border: 0 solid #CCC;
@@ -429,7 +429,7 @@ body.full > footer {
 .square-set {
   border: 1px solid #CCC;
   border-radius: 2px;
-  background: #EEE;
+  background: #eeeeee;
 }
 .square-set > .header {
   text-align: center;
@@ -438,8 +438,8 @@ body.full > footer {
 }
 .square-set > .header > i {
   font-size: 2.5em;
-  background-color: #0E9D58;
-  color: #FFF;
+  background-color: #0e9d58;
+  color: #ffffff;
   padding: 0.35em;
   border: 2px solid #CCC;
   border-radius: 1em;
@@ -465,7 +465,7 @@ div.table > div > div {
 }
 .signal-button {
   display: inline-block;
-  background-color: #EEE;
+  background-color: #4183c4;
   height: 11em;
   width: 11em;
   padding: 0.8em;
@@ -485,10 +485,10 @@ div.table > div > div {
   font-weight: bold;
 }
 .provider-description {
-  color: #000;
+  color: #000000;
 }
 .signal-button.hover {
-  background-color: #DDD;
+  background-color: #6e5494;
 }
 #isotope-container {
   padding: 5px;
@@ -520,7 +520,7 @@ div.table > div > div {
   position: relative;
   margin: 0;
   vertical-align: top;
-  background: #fff;
+  background: #ffffff;
   color: rgba(40, 40, 40, 0.5);
   box-shadow: 0 0 0 1px #d4d4d5;
   border-radius: 0;
@@ -547,7 +547,7 @@ div.table > div > div {
   cursor: auto;
 }
 .steps .step.active .title {
-  color: #0E9D58;
+  color: #0e9d58;
 }
 .steps .step:first-child {
   padding-left: 1.35em;
@@ -665,7 +665,7 @@ div.table > div > div {
 }
 .ordered.steps .step.active:before,
 .steps .active.step .icon {
-  color: #0E9D58;
+  color: #0e9d58;
 }
 .steps .disabled.step,
 .steps .disabled.step .description,
@@ -680,11 +680,11 @@ div.table > div > div {
 }
 .button-green {
   background-color: #5BBD72;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .premium-message {
   background-color: #5BBD72;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   padding: 15px 15px 15px 30px;
 }
 .radio.checkbox label:before {
@@ -719,8 +719,8 @@ div.table > div > div {
 .active.step,
 .steps .step.active {
   cursor: auto;
-  background-color: #EEE;
-  color: #FFF;
+  background-color: #eeeeee;
+  color: #ffffff;
   font-weight: 700;
 }
 .step,
@@ -730,7 +730,7 @@ div.table > div > div {
   position: relative;
   padding: 1em 2em 1em 2em;
   vertical-align: top;
-  background-color: #FFF;
+  background-color: #ffffff;
   color: #888;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -740,11 +740,11 @@ div.table > div > div {
 .disabled.step,
 .steps .disabled.step {
   cursor: auto;
-  background-color: #FFF;
+  background-color: #ffffff;
   color: #CBCBCB;
 }
 i.step-icon {
-  color: #0E9D58;
+  color: #0e9d58;
   font-size: 1em;
   display: inline-block;
   opacity: .75;
@@ -789,7 +789,7 @@ i.step-icon {
   -webkit-transition: height 0.2s ease;
   -moz-transition: height 0.2s ease;
   transition: height 0.2s ease;
-  background-color: #EEE;
+  background-color: #eeeeee;
   border-radius: 3px;
 }
 @media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
@@ -818,7 +818,7 @@ i.step-icon {
   color: #5BBD72;
 }
 .menu .selector.hover {
-  color: #0E9D58;
+  color: #0e9d58;
   cursor: pointer;
 }
 .menu .divider {
@@ -832,7 +832,7 @@ i.step-icon {
   text-align: left;
 }
 .menu .add-filter.hover {
-  color: #0E9D58;
+  color: #0e9d58;
   cursor: pointer;
 }
 .menu .type-grouping {
@@ -854,7 +854,7 @@ i.step-icon {
   right: 0.5em;
   top: 3em;
   overflow-y: hidden;
-  border: 1px solid #cccccc;
+  border: 1px solid #666666;
 }
 .menu.main .item.hover {
   background-color: inherit;

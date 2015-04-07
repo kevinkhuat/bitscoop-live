@@ -1,3 +1,18 @@
+@ografy-green: #0E9D58;
+@blue: #4183c4;
+@green: #6cc644;
+@red:#bd2c00;
+@orange: #f93;
+@purple: #6e5494;
+
+@white: #FFF;
+@pale-gray: #EEE;
+@light-gray: #CCC;
+@mid-gray: #999;
+@dark-gray: #666;
+@deep-gray: #333;
+@black: #000;
+
 .search-bar {
     margin: 0 10px;
 }
@@ -9,7 +24,7 @@
 
 .filter {
     display: inline-block;
-    background: #CCC;
+    background: @light-gray;
 
 }
 
@@ -30,7 +45,7 @@
 }
 
 .filter.button.hover {
-    color: #0E9D58;
+    color: @ografy-green;
 }
 
 .search {
@@ -43,7 +58,7 @@
     display: none;
     top: 50px;
     margin: 0em;
-    background-color: #FFFFFF;
+    background-color: @white;
     min-width: 100%;
     white-space: nowrap;
     font-size: 0.875em;
@@ -123,15 +138,15 @@ main {
 			font-size: 1.12em;
 		}
 		.main-label {
-			background-color: #488A2D;
-			color: #FFF;
+			background-color: @blue;
+			color: @white;
 			width: 100%;
 			padding: 3px 0 3px 0;
 			min-height: 60px;
 		}
 
 		.label {
-			background-color: #CCC;
+			background-color: @light-gray;
 			width: 100%;
 			padding: 3px 0 3px 0;
 			float: left;
@@ -204,7 +219,7 @@ main {
 		}
 	}
 	.detail.text-half {
-		background-color: #EEE;
+		background-color: @pale-gray;
 		@media (orientation: landscape) {
 			min-height: 300px;
 			height: 50%;
@@ -225,7 +240,7 @@ main {
 		}
 	}
 	.detail.full {
-		background-color: #EEE;
+		background-color: @pale-gray;
 		@media (orientation: landscape) {
 			height: 100%;
 		}
@@ -276,7 +291,7 @@ main {
 		padding: 0;
 	}
     height: 30px;
-    color: #000;
+    color: @black;
     text-decoration: none !important;
     font-size: 1em;
 }
@@ -300,9 +315,9 @@ main {
 .list.item {
     margin: 4px 0px;
     width: 100%;
-    color: #000;
+    color: @black;
     padding: 5px 0px;
-    background-color: #F8F8F8;
+    background-color: @light-gray;
     transition: width .5s ease;
     cursor: pointer;
     vertical-align: middle;
@@ -310,11 +325,11 @@ main {
     font-size: 1em;
 }
 .list.item.hover {
-    background-color: #0E9D58;
-    color: #FFF;
+    background-color: @ografy-green;
+    color: @white;
 }
 .list.item.active {
-    background-color: #CCC;
+    background-color: @light-gray;
 }
 .data-view {
     position: relative;
@@ -362,10 +377,10 @@ main {
 	top: 0px;
 }
 .filter-button.hover {
-    color: #0E9D58;
+    color: @ografy-green;
 }
 .filter-button.active {
-	background-color: #488A2D;
+	background-color: @blue;
 }
 .search-button {
     width: 2em;
@@ -387,7 +402,7 @@ main {
         cursor: pointer;
     }
     span.hover {
-        color: #0E9D58;
+        color: @ografy-green;
     }
 }
 .main-list {
@@ -398,5 +413,5 @@ main {
 
 .spacer {
 	height: 1.25em;
-	border-left: 1px solid #999;
+	border-left: 1px solid @mid-gray;
 }
