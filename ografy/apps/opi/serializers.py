@@ -41,7 +41,7 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'created', 'updated', 'user', 'signal', 'provider', 'provider_name', 'datetime', 'location') #, 'data'
+        fields = ('id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime', 'location', 'type', 'name') #, 'data'
         depth = 5
 
 
