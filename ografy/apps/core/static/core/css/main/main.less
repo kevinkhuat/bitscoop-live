@@ -1,4 +1,3 @@
-@ografy-green: #0E9D58;
 @blue: #4183c4;
 @green: #6cc644;
 @red:#bd2c00;
@@ -13,43 +12,50 @@
 @deep-gray: #333;
 @black: #000;
 
+@dark-transparent: rgba(40, 40, 40, .5);
+@black-transparent: rgba(0, 0, 0, .1);
+
+@background-color: @dark-gray;
+@foreground-color: @deep-gray;
+@text-color: @white;
+
 .search-bar {
-    margin: 0 10px;
+	margin: 0 10px;
 }
 
 .banner-logo {
-    max-width: 50px;
-    padding: 0 1% 0 0;
+	max-width: 50px;
+	padding: 0 1% 0 0;
 }
 
 .filter {
-    display: inline-block;
-    background: @light-gray;
+	display: inline-block;
+	background: @light-gray;
 
 }
 
 .filter.container {
-    font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
-    max-height: 185px;
-    overflow-y: auto;
+	font: 14px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+	max-height: 185px;
+	overflow-y: auto;
 }
 
 .filter.button {
-    font-weight: bold;
-    padding: 0.25em 0.5em 0.25em 0;
-    text-align: center;
-    text-decoration: none !important;
-    cursor: pointer;
-    transition: width .5s ease;
+	font-weight: bold;
+	padding: 0.25em 0.5em 0.25em 0;
+	text-align: center;
+	text-decoration: none !important;
+	cursor: pointer;
+	transition: width .5s ease;
 
 }
 
 .filter.button.hover {
-    color: @ografy-green;
+	color: @green;
 }
 
 .search {
-    margin: 0.25em 0;
+	margin: 0.25em 0;
 }
 
 .search.menu {
@@ -63,22 +69,22 @@
     white-space: nowrap;
     font-size: 0.875em;
     text-shadow: none;
-    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 0px 0px 0.325em 0.325em;
+    -webkit-box-shadow: 0 0 1px 1px @black-transparent;
+    box-shadow: 0 0 1px 1px @black-transparent;
+    border-radius: 0 0 0.325em 0.325em;
     -webkit-transition: opacity 0.2s ease;
     -moz-transition: opacity 0.2s ease;
     transition: opacity 0.2s ease;
     z-index: 11;
 }
 select {
-    display: inline-block;
-    padding: 5px;
-    margin:  0.2em 0.3em;
+	display: inline-block;
+	padding: 5px;
+	margin:  0.2em 0.3em;
 }
 
 .text {
-    display: inline-block;
+	display: inline-block;
 	input {
 		margin: 0.1em 0 0.1em 0.2em;
 	}
@@ -92,13 +98,13 @@ select {
 	float: left;
 	display: inherit;
 	text-align: start !important;
-    margin: auto 0 auto 0 !important;
+	margin: auto 0 auto 0 !important;
 }
 
 .add-remove-buttons {
 	float: right;
-    display: inline-block;
-    margin: auto 0 auto 0 !important;
+	display: inline-block;
+	margin: auto 0 auto 0 !important;
 }
 
 main {
@@ -115,8 +121,7 @@ main {
 		max-width: 400px;
 		-webkit-flex-direction: column;
 		flex-direction: column;
-		border-left: 2px;
-		border-left-style: solid;
+		border-left: 2px solid;
 		-webkit-transition: width 0.2s ease;
 		-moz-transition: width 0.2s ease;
 		transition: width 0.2s ease;
@@ -127,8 +132,7 @@ main {
 		max-height: 300px;
 		-webkit-flex-direction: row;
 		flex-direction: row;
-		border-top: 2px;
-		border-top-style: solid;
+		border-top: 2px solid;
 		-webkit-transition: height 0.2s ease;
 		-moz-transition: height 0.2s ease;
 		transition: height 0.2s ease;
@@ -202,7 +206,7 @@ main {
 			}
 			@media (orientation: portrait) {
 				min-width: 80px;
-        		width: 100%;
+				width: 100%;
 			}
 		}
 
@@ -252,7 +256,7 @@ main {
 
 .sidebar.invisible {
 	@media (orientation: landscape) {
-		width: 0px;
+		width: 0;
 		border-left: 0;
 		-webkit-flex-direction: column;
 		flex-direction: column;
@@ -261,7 +265,7 @@ main {
 		transition: width 0.2s ease;
 	}
 	@media (orientation: portrait) {
-		height: 0px;
+		height: 0;
 		border-top: 0;
 		-webkit-flex-direction: row;
 		flex-direction: row;
@@ -273,50 +277,50 @@ main {
 }
 
 #mapbox {
-    height: 100%;
-    width: 100%;
-    position: absolute;
+	height: 100%;
+	width: 100%;
+	position: absolute;
 }
 .list.content {
-    height: 100%;
-    max-height: 96%;
-    position: relative;
-    overflow-y: auto;
+	height: 100%;
+	max-height: 96%;
+	position: relative;
+	overflow-y: auto;
 }
 .list.title {
-    margin: 4px 10px 4px 4px;
-    padding: 5px;
+	margin: 4px 10px 4px 4px;
+	padding: 5px;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		margin: 4px 0;
 		padding: 0;
 	}
-    height: 30px;
-    color: @black;
-    text-decoration: none !important;
-    font-size: 1em;
+	height: 30px;
+	color: @black;
+	text-decoration: none !important;
+	font-size: 1em;
 }
 .list.item-provider {
-    width: 30%;
-    display: inline-block;
-    margin: 0 0 0 5px;
+	width: 30%;
+	display: inline-block;
+	margin: 0 0 0 5px;
 }
 .list.item-date {
-    display: inline-block;
-    width: 20%;
+	display: inline-block;
+	width: 20%;
 }
 .list.item-name {
-    display: inline-block;
-    width: 20%;
+	display: inline-block;
+	width: 20%;
 }
-.list.item-data {
-    display: inline-block;
-    width: 25%;
+.list.item-time {
+	display: inline-block;
+	width: 25%;
 }
 .list.item {
-    margin: 4px 0px;
+    margin: 4px 0;
     width: 100%;
     color: @black;
-    padding: 5px 0px;
+    padding: 5px 0;
     background-color: @light-gray;
     transition: width .5s ease;
     cursor: pointer;
@@ -325,34 +329,35 @@ main {
     font-size: 1em;
 }
 .list.item.hover {
-    background-color: @ografy-green;
+    background-color: @green;
     color: @white;
 }
 .list.item.active {
-    background-color: @light-gray;
+	background-color: @light-gray;
 }
 .data-view {
-    position: relative;
+	position: relative;
+	overflow-y: auto;
 }
 .leaflet-control-mapbox-geocoder-form {
-    input {
-        margin: 0;
-    }
+	input {
+		margin: 0;
+	}
 }
 .leaflet-container {
-    .leaflet-control-zoomslider-body {
-        -webkit-box-sizing: content-box;
-        -moz-box-sizing: content-box;
-        box-sizing: content-box;
-    }
+	.leaflet-control-zoomslider-body {
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+	}
 }
 .leaflet-control-zoomslider-knob {
-    width: 14px;
-    height: 6px;
+	width: 14px;
+	height: 6px;
 }
 .links {
-    margin: 10px 5px;
-    min-width: 15%;
+	margin: 10px 5px;
+	min-width: 15%;
 }
 .filter-button {
     -webkit-box-sizing: border-box;
@@ -362,22 +367,22 @@ main {
     width: 2em;
     height: 2em;
     padding: .5em;
-    background-color: rgba(0,0,0,.05);
+    background-color: @black-transparent;
     text-align: center;
     border-radius: .25em;
     line-height: 1;
-    -webkit-box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
-    box-shadow: -1px 0 0 0 rgba(0,0,0,.05) inset;
+    -webkit-box-shadow: -1px 0 0 0 @black-transparentinset;
+    box-shadow: -1px 0 0 0 @black-transparent inset;
     cursor: pointer;
     display: inline-block;
     float: left;
     margin: auto 0.5em;
 }
 .filter-button::before {
-	top: 0px;
+	top: 0;
 }
 .filter-button.hover {
-    color: @ografy-green;
+    color: @green;
 }
 .filter-button.active {
 	background-color: @blue;
@@ -389,8 +394,8 @@ main {
     cursor: pointer;
     background-image: url("https://static.ografy.io/assets/ografy_search.png");
     background-repeat: no-repeat;
-    background-size: contain;
     background-position: 0 50%;
+    background-size: contain;
     float: right;
     margin: auto 0.5em;
 }
@@ -402,7 +407,7 @@ main {
         cursor: pointer;
     }
     span.hover {
-        color: @ografy-green;
+        color: @green;
     }
 }
 .main-list {
@@ -415,3 +420,74 @@ main {
 	height: 1.25em;
 	border-left: 1px solid @mid-gray;
 }
+
+table {
+	border: 1px solid #ccc;
+	@media (orientation: portrait) {
+		border: 0;
+		thead {
+			display: none;
+		}
+	}
+	width: 100%;
+	margin:0;
+	padding:0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	tbody {
+		tr {
+			cursor: pointer;
+		}
+		tr.hover {
+			background-color: @pale-gray;
+		}
+	}
+	tr {
+		border: 1px solid #ddd;
+		padding: 5px;
+		@media (orientation: portrait) {
+			margin-bottom: 10px;
+			display: block;
+			border-bottom: 2px solid @pale-gray;
+		}
+	}
+	td {
+		padding: 10px;
+		text-align: center;
+		@media (orientation: portrait) {
+			display: block;
+			text-align: right;
+			font-size: 13px;
+			border-bottom: 1px dotted @light-gray;
+		}
+	}
+
+	td:last-child {
+		@media (orientation: portrait) {
+			border-bottom: 0;
+		}
+	}
+	td:before {
+		@media (orientation: portrait) {
+			content: attr(data-label);
+			float: left;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+	}
+	th {
+		padding: 10px;
+		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	thead th {
+		cursor: pointer;
+		background-color: @blue;
+	}
+	thead th.hover {
+		background-color: @red;
+		color: @white;
+	}
+}
+

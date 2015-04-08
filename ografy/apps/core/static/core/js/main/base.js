@@ -82,7 +82,7 @@ function baseView() {
 		dataInst.getCurrentView().renderBase(function() {
 			console.log(searchString);
 			urlParserInst.setSearchFilters(searchString);
-			dataInst.search('event', searchString);
+			dataInst.search('event', searchString, '-datetime');
 		});
 
 		//Render the default page view

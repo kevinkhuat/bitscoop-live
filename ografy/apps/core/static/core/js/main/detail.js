@@ -45,7 +45,7 @@ function detailView(mapboxViewInst) {
 	function updateContent(eventName, eventDateTime, eventLocation, eventData) {
 		$('.sidebar').removeClass('invisible');
 		var dateTimeArray = eventDateTime.split(',');
-		$('.detail.main .label').html(eventName);
+		$('.detail .main-label').html(eventName);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(eventLocation);

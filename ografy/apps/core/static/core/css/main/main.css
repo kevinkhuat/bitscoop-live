@@ -294,7 +294,7 @@ select {
   display: inline-block;
   width: 20%;
 }
-.list.item-data {
+.list.item-time {
   display: inline-block;
   width: 25%;
 }
@@ -319,6 +319,7 @@ select {
 }
 .data-view {
   position: relative;
+  overflow-y: auto;
 }
 .leaflet-control-mapbox-geocoder-form input {
   margin: 0;
@@ -393,4 +394,76 @@ select {
 .spacer {
   height: 1.25em;
   border-left: 1px solid #999999;
+}
+table {
+  border: 1px solid #ccc;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+@media (orientation: portrait) {
+  table {
+    border: 0;
+  }
+  table thead {
+    display: none;
+  }
+}
+table tbody tr {
+  cursor: pointer;
+}
+table tbody tr.hover {
+  background-color: #eeeeee;
+}
+table tr {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+@media (orientation: portrait) {
+  table tr {
+    margin-bottom: 10px;
+    display: block;
+    border-bottom: 2px solid #ddd;
+  }
+}
+table td {
+  padding: 10px;
+  text-align: center;
+}
+@media (orientation: portrait) {
+  table td {
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    border-bottom: 1px dotted #ccc;
+  }
+}
+@media (orientation: portrait) {
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+@media (orientation: portrait) {
+  table td:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+table th {
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+table thead th {
+  cursor: pointer;
+  background-color: #4183c4;
+}
+table thead th.hover {
+  background-color: #bd2c00;
+  color: #ffffff;
 }
