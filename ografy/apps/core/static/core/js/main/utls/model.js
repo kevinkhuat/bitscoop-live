@@ -83,9 +83,10 @@ function dataStore() {
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(eventType, searchString) {
+	function search(eventType, searchString, orderString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/' + eventType + '?filter=' + searchString;
+		var url = 'opi/' + eventType + '?page=1&ordering='+ orderString + '&filter=' + searchString;
+		console.log(url);
 		$.ajax({
 			url: url,
 			type: 'GET',
@@ -94,19 +95,21 @@ function dataStore() {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
-			if (data.length > 0) {
-				for (var index in data) {
-					data[index].updated = new Date(data[index].updated).toLocaleString();
-					data[index].created = new Date(data[index].created).toLocaleString();
-					data[index].datetime = new Date(data[index].datetime).toLocaleString();
+			if (data.count > 0) {
+				results = data.results
+				for (var index in results) {
+					results[index].updated = new Date(results[index].updated).toLocaleString();
+					results[index].created = new Date(results[index].created).toLocaleString();
+					results[index].datetime = new Date(results[index].datetime).toLocaleString();
 				}
-				resultData = data.sort(function(a, b) {
-					return Date.parse(b.datetime) - Date.parse(a.datetime);
-				});
+				//resultData = results.sort(function(a, b) {
+				//	return Date.parse(b.datetime) - Date.parse(a.datetime);
+				//});
+				resultData = results;
 				updateData();
 				currentViewInst.updateContent();
 			}
-			else if (data.length === 0) {
+			else if (data.count === 0) {
 			}
 		});
 	}

@@ -23,16 +23,34 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
 		var resultData = dataInst.getResultData().reverse();
+		for (var i = 0; i < resultData.length; i++) {
+			var item = resultData[i];
+			var split = item.datetime.split(',');
+			item.date = split[0];
+			item.time = split[1];
+		}
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			resultData: resultData
 		});
-		$('.list.content').html(listItems);
+		$('tbody').html(listItems);
+
+		$('thead th')
+			.add('tbody tr')
+			.mouseenter(function() {
+			$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				$(this).removeClass('hover');
+			});
 
 		setHeight();
 
 		//Bind an event listener that triggers when any list item is clicked
-		$('.list.item').click(function() {
+		$('tbody tr').click(function() {
 			//Remove 'active' from items other than the one that was clicked on
 			//Then toggle 'active' on the clicked item
 			var selectedItem = $(this);

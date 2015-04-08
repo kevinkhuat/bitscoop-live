@@ -1,10 +1,13 @@
 from rest_framework import permissions, status
+from rest_framework.filters import OrderingFilter
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
+from ografy.apps.core.pagination import TwentyItemPagination
 from ografy.apps.tastydata.views import DjangoAPIView, MongoAPIView
 
 
@@ -23,25 +26,18 @@ class APIEndpoints(DjangoAPIView):
         })
 
 
-class DataView(MongoAPIView):
+class DataView(MongoAPIView, ListAPIView):
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = obase_api.DataApi.get(
+        get_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
         )
         data_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            data_list,
-            many=True,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_data_list = ListAPIView.list(self, data_list)
+        return paginated_data_list
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -136,9 +132,14 @@ class DataSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class EventView(MongoAPIView):
-    serializer = opi_serializer.EventSerializer
+class EventView(MongoAPIView, ListAPIView):
+    filter_backends = (OrderingFilter,)
+    ordering = ('datetime')
+    ordering_fields = ('provider_name', 'datetime', 'name')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.EventSerializer
+    serializer_class = opi_serializer.EventSerializer
 
     def get(self, request, format=None):
         get_query = obase_api.EventApi.get(
@@ -146,15 +147,8 @@ class EventView(MongoAPIView):
             request.auth_filter
         )
         event_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            event_list,
-            many=True,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_event_list = ListAPIView.list(self, event_list)
+        return paginated_event_list
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -269,26 +263,19 @@ class EventSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class MessageView(MongoAPIView):
+class MessageView(MongoAPIView, ListAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = obase_api.MessageApi.get(
+        get_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
         )
         message_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            message_list,
-            context={
-                'request': request
-            },
-            many=True
-        )
-
-        return Response(serialized_response)
+        paginated_message_list = ListAPIView.list(self, message_list)
+        return paginated_message_list
 
     def post(self, request, format=None):
         # TODO: Better user filter
