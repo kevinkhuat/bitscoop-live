@@ -26,7 +26,7 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Data
-        fields = ('id', 'user', 'created', 'updated', 'data_blob')
+        fields = ('id', 'created', 'updated', 'data_blob') # , 'user'
         depth = 5
 
 

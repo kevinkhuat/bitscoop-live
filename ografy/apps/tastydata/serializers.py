@@ -10,6 +10,7 @@ from mongoengine.errors import ValidationError as me_ValidationError
 from mongoengine import fields as me_fields
 from rest_framework import serializers
 from rest_framework import fields as drf_fields
+from rest_framework.fields import empty
 
 from ografy.apps.tastydata.utils import get_field_info
 from ografy.apps.tastydata.fields import ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
@@ -110,7 +111,7 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     """
 
-    def __init__(self, instance=None, data=None, **kwargs):
+    def __init__(self, instance=None, data=empty, **kwargs):
         super(DocumentSerializer, self).__init__(instance=instance, data=data, **kwargs)
         if not hasattr(self.Meta, 'model'):
             raise AssertionError('You should set `model` attribute on %s.' % type(self).__name__)

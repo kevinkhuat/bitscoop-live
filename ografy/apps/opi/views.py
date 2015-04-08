@@ -27,8 +27,13 @@ class APIEndpoints(DjangoAPIView):
 
 
 class DataView(MongoAPIView, ListAPIView):
-    serializer = opi_serializer.DataSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = ('created')
+    ordering_fields = ('user', 'created', 'updated')
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = TwentyItemPagination
+    serializer = opi_serializer.DataSerializer
+    serializer_class = opi_serializer.DataSerializer
 
     def get(self, request, format=None):
         get_query = obase_api.EventApi.get(
