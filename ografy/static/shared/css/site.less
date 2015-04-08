@@ -1,4 +1,3 @@
-@ografy-green: #0E9D58;
 @blue: #4183c4;
 @green: #6cc644;
 @red:#bd2c00;
@@ -12,6 +11,15 @@
 @dark-gray: #666;
 @deep-gray: #333;
 @black: #000;
+
+@dark-transparent: rgba(40, 40, 40, .5);
+@black-transparent: rgba(0, 0, 0, .1);
+
+@background-color: @dark-gray;
+@foreground-color: @deep-gray;
+@text-color: @white;
+
+
 * {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -25,7 +33,7 @@
 html {
 	-webkit-text-size-adjust: none;
 	font-weight: 400;
-	background-color: @white;
+	background-color: @background-color;
 	height: 100%;
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 		font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -82,7 +90,7 @@ html {
 }
 
 body {
-	color: @dark-gray;
+	color: @foreground-color;
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-direction: column;
@@ -112,7 +120,7 @@ h2 {
 }
 
 h3 {
-	color: @ografy-green;
+	color: @green;
 	font-size: 1.5em;
 	font-style: italic;
 }
@@ -141,9 +149,9 @@ input {
 }
 
 input:focus {
-	-moz-box-shadow: 0 0 6px -1px @ografy-green;
-	-webkit-box-shadow: 0 0 6px -1px @ografy-green;
-	box-shadow: 0 0 6px -1px @ografy-green;
+	-moz-box-shadow: 0 0 6px -1px @green;
+	-webkit-box-shadow: 0 0 6px -1px @green;
+	box-shadow: 0 0 6px -1px @green;
 }
 
 input.full-width {
@@ -167,14 +175,14 @@ header {
 		}
 		a {
 			text-decoration: none !important;
-			color: @dark-gray;
+			color: @text-color;
 		}
 		a.hover {
-			color: @ografy-green;
+			color: @green;
 			cursor: pointer;
 		}
 		i.hover {
-			color: @ografy-green;
+			color: @green;
 			cursor: pointer;
 		}
 	}
@@ -195,8 +203,8 @@ footer {
 }
 
 .backfill {
-	border: 1px solid #7A7A7A;
-	box-shadow: 0 0 10px -3px #3A3A3A;
+	border: 1px solid @deep-gray;
+	box-shadow: 0 0 10px -3px @dark-gray;
 }
 
 .bigger {
@@ -221,7 +229,7 @@ footer {
 }
 
 .green {
-	color: @ografy-green !important;
+	color: @green !important;
 }
 
 .inline-block {
@@ -254,7 +262,7 @@ footer {
 	}
 }
 .no-pad {
-	padding: 0px !important;
+	padding: 0 !important;
 }
 
 .padded {
@@ -338,19 +346,19 @@ footer {
 	background-color: @white;
 	margin: 0 0 20px 0;
 	& > :first-child {
-		border: 1px solid #D8D8D8;
+		border: 1px solid @dark-gray;
 		border-radius: 4px 4px 0 0;
 		font-weight: bold;
 		background-color: @pale-gray;
 		padding: 8px 15px;
 	}
 	& > :last-child {
-		border: 1px solid #D8D8D8;
+		border: 1px solid @dark-gray;
 		border-top: none;
 		padding: 10px;
 	}
 	& > .signal-toggle:not(:last-child) {
-		border: 1px solid #D8D8D8;
+		border: 1px solid @dark-gray;
 		border-top: none;
 		padding: 10px;
 	}
@@ -375,16 +383,16 @@ ul.links {
 			cursor: pointer;
 		}
 		& > .hover {
-			background-color: @ografy-green !important;
+			background-color: @green !important;
 			color: @white;
 		}
 		& > .active {
-			background-color: #12CC72;
+			background-color: @dark-gray;
 			color: @white;
 		}
 	}
 	& > li:not(:last-child) {
-		border-bottom: 1px solid #EAEAEA;
+		border-bottom: 1px solid @deep-gray;
 	}
 }
 
@@ -405,7 +413,7 @@ ul.links {
 }
 
 .bg.gray.lighter {
-	background-color: #F3F3F3;
+	background-color: @foreground-color;
 	color: @dark-gray;
 }
 
@@ -419,12 +427,12 @@ ul.links {
 }
 
 .bg.green {
-	background-color: @ografy-green;
+	background-color: @green;
 	color: @white;
 }
 
 .bordered {
-	border: 0 solid #CCC;
+	border: 0 solid @light-gray;
 }
 
 .bordered.top {
@@ -474,8 +482,8 @@ body.full {
 	& > main {
 		padding: 0;
 		position: relative;
-		left: 0px;
-		top: 0px;
+		left: 0;
+		top: 0;
 	}
 	#content {
 		overflow-y: auto;
@@ -487,7 +495,7 @@ body.full {
 }
 
 .square-set {
-	border: 1px solid #CCC;
+	border: 1px solid @dark-gray;
 	border-radius: 2px;
 	background: @pale-gray;
 	& > .header {
@@ -496,10 +504,10 @@ body.full {
 		top: -2.25em;
 		& > i {
 			font-size: 2.5em;
-			background-color: @ografy-green;
+			background-color: @green;
 			color: @white;
 			padding: 0.35em;
-			border: 2px solid #CCC;
+			border: 2px solid @dark-gray;
 			border-radius: 1em;
 		}
 	}
@@ -574,14 +582,12 @@ div.table {
 }
 
 .steps {
-	border: 1px solid rgba(40, 40, 40, .5);
-	border-radius: 0;
+	border: 1px solid @dark-transparent;
 	overflow: visible;
-	border-radius: 0;
 	cursor: pointer;
 	font-size: 0;
-	-webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
-	box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
+	-webkit-box-shadow: 0 0 0 1px @black-transparent;
+	box-shadow: 0 0 0 1px @black-transparent;
 	line-height: 1;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -595,11 +601,10 @@ div.table {
 		margin: 0;
 		vertical-align: top;
 		background: @white;
-		color: rgba(40, 40, 40, .5);
-		box-shadow: 0 0 0 1px #d4d4d5;
+		color: @dark-transparent;
+		box-shadow: 0 0 0 1px @mid-gray;
 		border-radius: 0;
 		.icon {
-			float: left;
 			float: left;
 		}
 		.title {
@@ -608,23 +613,20 @@ div.table {
 		}
 		.title-align {
 			vertical-align: middle;
-			vertical-align: middle;
-			vertical-align: middle;
 		}
 		.description {
 			font-weight: 400;
 			font-size: .8em;
-			color: rgba(40, 40, 40, .5);
+			color: @dark-transparent;
 			margin-top: 5px;
 			margin-bottom: 5px;
 		}
 	}
 	.step.active {
 		cursor: auto;
-		background: #f0f0f0;
-		cursor: auto;
+		background: @deep-gray;
 		.title {
-			color: @ografy-green;
+			color: @green;
 		}
 	}
 	.step:first-child {
@@ -715,12 +717,12 @@ div.table {
 		width: 2em;
 		height: 2em;
 		padding: .5em;
-		background-color: rgba(192, 192, 192, 1);
+		background-color: @dark-transparent;
 		text-align: center;
 		border-radius: .25em;
 		line-height: 1;
-		-webkit-box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.05) inset;
-		box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.05) inset;
+		-webkit-box-shadow: -1px 0 0 0 @black-transparent inset;
+		box-shadow: -1px 0 0 0 @black-transparent inset;
 		cursor: pointer;
 		display: inline-block;
 		position: absolute;
@@ -744,11 +746,11 @@ div.table {
 }
 
 .ordered.steps .step.active:before, .steps .active.step .icon {
-	color: @ografy-green;
+	color: @green;
 }
 
 .steps .disabled.step, .steps .disabled.step .description, .steps .disabled.step .title {
-	color: rgba(40, 40, 40, .3);
+	color: @dark-transparent;
 }
 
 .permission-toggle {
@@ -760,12 +762,12 @@ div.table {
 }
 
 .button-green {
-	background-color: #5BBD72;
+	background-color: @green;
 	color: @white;
 }
 
 .premium-message {
-	background-color: #5BBD72;
+	background-color: @red;
 	color: @white !important;
 	padding: 15px 15px 15px 30px;
 }
@@ -795,7 +797,7 @@ div.table {
 	border-radius: 0.1em;
 	border: 1px solid #BBB;
 	outline: none;
-	margin: 0.4em 0em;
+	margin: 0.4em 0;
 	display: inline-block;
 	width: 100%;
 	max-width: 20em;
@@ -820,7 +822,7 @@ div.table {
 	padding: 1em 2em 1em 2em;
 	vertical-align: top;
 	background-color: @white;
-	color: #888;
+	color: @mid-gray;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -830,11 +832,11 @@ div.table {
 .disabled.step, .steps .disabled.step {
 	cursor: auto;
 	background-color: @white;
-	color: #CBCBCB;
+	color: @mid-gray;
 }
 
 i.step-icon {
-	color: @ografy-green;
+	color: @green;
 	font-size: 1em;
 	display: inline-block;
 	opacity: .75;
@@ -854,7 +856,7 @@ i.step-icon {
 
 .disabled.step {
 	i.step-icon {
-		color: rgba(40, 40, 40, .3);
+		color: @dark-transparent;
 	}
 }
 
@@ -902,18 +904,18 @@ i.step-icon {
 	.selector {
 		padding: 0.4em 0.8em 0 1em;
 		i::before {
-			top: 0px;
+			top: 0;
 		}
 	}
 	.selector.active {
-		color: #5BBD72;
+		color: @green;
 	}
 	.selector.hover {
-		color: @ografy-green;
+		color: @green;
 		cursor: pointer;
 	}
 	.divider {
-		border: 1px #BBB solid;
+		border: 1px @foreground-color solid;
 	}
 	.add-filter {
 		display: inline-block;
@@ -923,7 +925,7 @@ i.step-icon {
 		text-align: left;
 	}
 	.add-filter.hover {
-		color: @ografy-green;
+		color: @green;
 		cursor: pointer;
 	}
 	.type-grouping {
