@@ -1651,7 +1651,7 @@
 				"user_id": 2,
 				"signal_id": 6,
 				"provider_id": 13,
-				"provider_name":"Instagram",
+				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 19:34:13-08:00",
 				"location": [-118.24061390000001,34.0727553]

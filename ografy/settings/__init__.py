@@ -400,8 +400,9 @@ STATICFILES_DIRS = (
 ##################
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS': 'ografy.apps.core.pagination.TwentyItemPageView',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 2
+    # 'PAGINATE_BY': 2
 }
 
 

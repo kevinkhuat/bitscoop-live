@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex column grow\">\n\t<div class=\"filter container\"></div>\n\t<div class=\"data-view flex grow\"></div>\n\t<div id=\"event-list\"></div>\n</div>\n<aside class=\"sidebar flex\">\n</aside>\n";
+output += "<div class=\"flex column grow\">\n\t<div class=\"data-view flex grow\"></div>\n\t<div id=\"event-list\"></div>\n</div>\n<aside class=\"sidebar flex\">\n</aside>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -86,7 +86,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-list grow\">\n\t<div class=\"list title\">\n\t\t<div class=\"list item-provider bold\">\n\t\t\tProvider Name\n\t\t</div>\n\t\t<div class=\"list item-date bold\">\n\t\t\tDate - Time\n\t\t</div>\n\t\t<div class=\"list item-name bold\">\n\t\t\tName\n\t\t</div>\n\t\t<div class=\"list item-data bold\">\n\t\t\tData\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
+output += "<table id=\"listView\">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>Provider Name</th>\n\t\t\t<th>Date</th>\n\t\t\t<th>Time</th>\n\t\t\t<th>Name</th>\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t</tbody>\n</table>";
 cb(null, output);
 ;
 } catch (e) {
@@ -116,17 +116,17 @@ frame.set("loop.revindex0", t_2 - t_1 - 1);
 frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
-output += "\n<div class=\"list item\" id=\"";
+output += "\n<tr id=";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
-output += "\">\n\t<div class=\"list item-provider\">\n\t\t";
+output += ">\n\t<td data-label=\"Provider\">";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list item-date\">\n\t\t";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"datetime", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list item-name\">\n\t\t";
+output += "</td>\n\t<td data-label=\"Date\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"date", env.autoesc), env.autoesc);
+output += "</td>\n\t<td data-label=\"Time\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"time", env.autoesc), env.autoesc);
+output += "</td>\n\t<td data-label=\"Name\">";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"list item-data\">\n\t\t";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"data", env.autoesc), env.autoesc);
-output += "\n\t</div>\n</div>\n";
+output += "</td>\n</tr>\n";
 ;
 }
 }

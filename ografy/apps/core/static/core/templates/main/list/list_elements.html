@@ -1,16 +1,8 @@
 {% for item in resultData %}
-<div class="list item" id="{{ item.id }}">
-	<div class="list item-provider">
-		{{ item.provider_name }}
-	</div>
-	<div class="list item-date">
-		{{ item.datetime }}
-	</div>
-	<div class="list item-name">
-		{{ item.name }}
-	</div>
-	<div class="list item-data">
-		{{ item.data }}
-	</div>
-</div>
+<tr id={{ item.id }}>
+	<td data-label="Provider">{{ item.provider_name }}</td>
+	<td data-label="Date">{{ item.date }}</td>
+	<td data-label="Time">{{ item.time }}</td>
+	<td data-label="Name">{{ item.name }}</td>
+</tr>
 {% endfor %}

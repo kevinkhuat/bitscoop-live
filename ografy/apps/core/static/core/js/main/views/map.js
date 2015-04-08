@@ -7,16 +7,14 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 	//Render the base framework of the Map View
 	function renderBase(callback) {
 		//Render the map content
-		renderContent();
+		renderContent(callback);
 
 		//Render the detail panel content without a map
 		detailViewInst.renderContent(false);
-
-		callback();
 	}
 
 	//Render the map content
-	function renderContent() {
+	function renderContent(callback) {
 		//Render the container for the map using Nunjucks and insert it into the DOM
 		var map_framework = nunjucks.render('map/map.html');
 		$('.data-view').html(map_framework);
@@ -39,6 +37,8 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			mapboxViewInst.initializeMap();
 			map = mapboxViewInst.map;
 			geoJSON = mapboxViewInst.geoJSON;
+			callback();
+
 		});
 	}
 
@@ -180,7 +180,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			detailViewInst.updateContent(feature.properties.description, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data));
+			detailViewInst.updateContent(feature.properties.title, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data));
 		});
 	}
 
