@@ -1,6 +1,6 @@
 @blue: #4183c4;
 @green: #6cc644;
-@red:#bd2c00;
+@red: #bd2c00;
 @orange: #f93;
 @purple: #6e5494;
 
@@ -12,8 +12,8 @@
 @deep-gray: #333;
 @black: #000;
 
-@dark-transparent: rgba(40, 40, 40, .5);
-@black-transparent: rgba(0, 0, 0, .1);
+@dark-translucent: rgba(40, 40, 40, .5);
+@black-translucent: rgba(0, 0, 0, .1);
 
 @background-color: @dark-gray;
 @foreground-color: @deep-gray;
@@ -26,12 +26,6 @@
 .banner-logo {
 	max-width: 50px;
 	padding: 0 1% 0 0;
-}
-
-.filter {
-	display: inline-block;
-	background: @light-gray;
-
 }
 
 .filter.container {
@@ -69,8 +63,8 @@
     white-space: nowrap;
     font-size: 0.875em;
     text-shadow: none;
-    -webkit-box-shadow: 0 0 1px 1px @black-transparent;
-    box-shadow: 0 0 1px 1px @black-transparent;
+    -webkit-box-shadow: 0 0 1px 1px @black-translucent;
+    box-shadow: 0 0 1px 1px @black-translucent;
     border-radius: 0 0 0.325em 0.325em;
     -webkit-transition: opacity 0.2s ease;
     -moz-transition: opacity 0.2s ease;
@@ -367,12 +361,12 @@ main {
     width: 2em;
     height: 2em;
     padding: .5em;
-    background-color: @black-transparent;
+    background-color: @black-translucent;
     text-align: center;
     border-radius: .25em;
     line-height: 1;
-    -webkit-box-shadow: -1px 0 0 0 @black-transparentinset;
-    box-shadow: -1px 0 0 0 @black-transparent inset;
+    -webkit-box-shadow: -1px 0 0 0 @black-translucent;
+    box-shadow: -1px 0 0 0 @black-translucent inset;
     cursor: pointer;
     display: inline-block;
     float: left;

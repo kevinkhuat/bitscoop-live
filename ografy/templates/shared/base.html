@@ -24,7 +24,7 @@
 
 	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
 		{% block body %}
-		<header class="bg gray light bordered bottom {{ header_class }}">
+		<header class="bg foreground bordered bottom {{ header_class }}">
 			<nav class="flex stretch lockwidth {% if lockwidth_override %}override {% endif %}centered">
 				<div class="flex center wrap grow">
 					{% block branding %}
@@ -96,7 +96,7 @@
 			{% endblock %}
 		</main>
 
-		<footer class="bg gray light bordered top {{ footer_class }}">
+		<footer class="bg foreground bordered top {{ footer_class }}">
 			<div class="lockwidth {% if lockwidth_override %}override {% endif %}centered center">
 				&copy 2014 Ografy, LLC.<br/>
 				<a href="{% url 'core_contact' %}">Contact Us</a>

@@ -17,7 +17,7 @@
 				<p>Search and explore your data from all of your digital accounts.</p>
 				<p>Get more out of your favorite applications and services.</p>
 			</div>
-			<div class="bg gray light padded wrap centered">
+			<div class="bg background light padded wrap centered">
 				<form action="{% url 'core_signup' %}" method="POST">
 					<div class="group">
 						{% csrf_token %}
@@ -25,7 +25,7 @@
 						<input class="full-width" type="text" name="handle" placeholder="Username" />
 						<input class="full-width" type="password" name="password" placeholder="Password" />
 					</div>
-					<input class="ui button positive" type="submit" value="Sign Up" />
+					<input class="button-green" type="submit" value="Sign Up" />
 				</form>
 			</div>
 		</div>

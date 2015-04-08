@@ -1,6 +1,6 @@
 @blue: #4183c4;
 @green: #6cc644;
-@red:#bd2c00;
+@red: #bd2c00;
 @orange: #f93;
 @purple: #6e5494;
 
@@ -12,12 +12,13 @@
 @deep-gray: #333;
 @black: #000;
 
-@dark-transparent: rgba(40, 40, 40, .5);
-@black-transparent: rgba(0, 0, 0, .1);
+@dark-translucent: rgba(40, 40, 40, .5);
+@black-translucent: rgba(0, 0, 0, .1);
 
 @background-color: @dark-gray;
 @foreground-color: @deep-gray;
 @text-color: @white;
+@text-disabled: @pale-gray;
 
 
 * {
@@ -396,34 +397,18 @@ ul.links {
 	}
 }
 
-.bg.gray.darker {
-	background-color: @deep-gray;
-	color: @white;
+.bg.background {
+	background-color: @background-color;
+	color: @text-color;
 }
 
-.bg.gray {
-	background-color: @deep-gray;
-	color: @dark-gray;
-}
-
-.bg.gray.light {
-	background-color: @pale-gray;
-	color: @dark-gray;
-	border-color: #CCC;
-}
-
-.bg.gray.lighter {
+.bg.foreground {
 	background-color: @foreground-color;
-	color: @dark-gray;
-}
-
-.bg.black {
-	background-color: @black;
-	color: @white;
+	color: @text-color;
 }
 
 .bg.black.translucent {
-	background-color: rgba(0, 0, 0, 0.8);
+	background-color: @black-translucent;
 }
 
 .bg.green {
@@ -541,7 +526,8 @@ div.table {
 
 .signal-button {
 	display: inline-block;
-	background-color: @blue;
+	background-color: @foreground-color;
+	color: @text-color;
 	height: 11em;
 	width: 11em;
 	padding: 0.8em;
@@ -563,11 +549,11 @@ div.table {
 }
 
 .provider-description {
-	color: @black;
+	color: @text-disabled;
 }
 
 .signal-button.hover {
-	background-color: @purple;
+	background-color: @green;
 }
 
 #isotope-container {
@@ -582,12 +568,12 @@ div.table {
 }
 
 .steps {
-	border: 1px solid @dark-transparent;
+	border: 1px solid @dark-translucent;
 	overflow: visible;
 	cursor: pointer;
 	font-size: 0;
-	-webkit-box-shadow: 0 0 0 1px @black-transparent;
-	box-shadow: 0 0 0 1px @black-transparent;
+	-webkit-box-shadow: 0 0 0 1px @black-translucent;
+	box-shadow: 0 0 0 1px @black-translucent;
 	line-height: 1;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -601,7 +587,7 @@ div.table {
 		margin: 0;
 		vertical-align: top;
 		background: @white;
-		color: @dark-transparent;
+		color: @dark-translucent;
 		box-shadow: 0 0 0 1px @mid-gray;
 		border-radius: 0;
 		.icon {
@@ -617,7 +603,7 @@ div.table {
 		.description {
 			font-weight: 400;
 			font-size: .8em;
-			color: @dark-transparent;
+			color: @dark-translucent;
 			margin-top: 5px;
 			margin-bottom: 5px;
 		}
@@ -717,12 +703,12 @@ div.table {
 		width: 2em;
 		height: 2em;
 		padding: .5em;
-		background-color: @dark-transparent;
+		background-color: @dark-translucent;
 		text-align: center;
 		border-radius: .25em;
 		line-height: 1;
-		-webkit-box-shadow: -1px 0 0 0 @black-transparent inset;
-		box-shadow: -1px 0 0 0 @black-transparent inset;
+		-webkit-box-shadow: -1px 0 0 0 @black-translucent inset;
+		box-shadow: -1px 0 0 0 @black-translucent inset;
 		cursor: pointer;
 		display: inline-block;
 		position: absolute;
@@ -750,7 +736,7 @@ div.table {
 }
 
 .steps .disabled.step, .steps .disabled.step .description, .steps .disabled.step .title {
-	color: @dark-transparent;
+	color: @dark-translucent;
 }
 
 .permission-toggle {
@@ -856,7 +842,7 @@ i.step-icon {
 
 .disabled.step {
 	i.step-icon {
-		color: @dark-transparent;
+		color: @dark-translucent;
 	}
 }
 
@@ -893,7 +879,7 @@ i.step-icon {
 	-webkit-transition: height 0.2s ease;
 	-moz-transition: height 0.2s ease;
 	transition: height 0.2s ease;
-	background-color: @pale-gray;
+	background-color: @background-color;
 	border-radius: 3px;
 	.item {
 		display: inline-block;
