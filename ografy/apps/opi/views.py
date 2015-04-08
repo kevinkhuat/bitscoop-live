@@ -31,7 +31,7 @@ class DataView(MongoAPIView, ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        get_query = obase_api.EventApi.get(
+        get_query = obase_api.DataApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -62,8 +62,13 @@ class DataView(MongoAPIView, ListAPIView):
 
 
 class DataSingleView(MongoAPIView):
-    serializer = opi_serializer.DataSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = ('updated')
+    ordering_fields = ('updated', 'user_id')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.DataSerializer
+    serializer_class = opi_serializer.DataSerializer
 
     def delete(self, request, pk, format=None):
         obase_api.DataApi.delete(
@@ -265,11 +270,16 @@ class EventSingleView(MongoAPIView):
 
 class MessageView(MongoAPIView, ListAPIView):
     # TODO: Check user association on any updates & add access permissions
-    serializer = opi_serializer.MessageSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = ('message_to')
+    ordering_fields = ('message_to', 'message_from')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.MessageSerializer
+    serializer_class = opi_serializer.MessageSerializer
 
     def get(self, request, format=None):
-        get_query = obase_api.EventApi.get(
+        get_query = obase_api.MessageApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -404,25 +414,23 @@ class MessageSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class ProviderView(DjangoAPIView):
-    serializer = opi_serializer.ProviderSerializer
+class ProviderView(DjangoAPIView, ListAPIView):
+    filter_backends = (OrderingFilter,)
+    ordering = ('name')
+    ordering_fields = ('id', 'name')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.ProviderSerializer
+    serializer_class = opi_serializer.ProviderSerializer
 
     def get(self, request, format=None):
-        get_query = core_api.ProviderApi.get(
+        get_query = obase_api.ProviderApi.get(
             request.query_filter &
             request.auth_filter
         )
         provider_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            provider_list,
-            many=True,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_provider_list = ListAPIView.list(self, provider_list)
+        return paginated_provider_list
 
 
 class ProviderSingleView(DjangoAPIView):
@@ -438,25 +446,24 @@ class ProviderSingleView(DjangoAPIView):
         return Response(self.serialize(provider_object, context={'request': request}))
 
 
-class SettingsView(MongoAPIView):
+class SettingsView(MongoAPIView, ListAPIView):
     # TODO: Restrict to admins or remove?
-    serializer = opi_serializer.SettingsSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = ('message_to')
+    ordering_fields = ('message_to', 'message_from')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.SettingsSerializer
+    serializer_class = opi_serializer.SettingsSerializer
 
     def get(self, request, format=None):
-        get_query = core_api.SignalApi.get(
+        get_query = obase_api.SettingsApi.get(
             request.query_filter &
             request.auth_filter
         )
         settings_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            settings_list,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_settings_list = ListAPIView.list(self, settings_list)
+        return paginated_settings_list
 
 
 class SettingsSingleView(MongoAPIView):
@@ -503,25 +510,23 @@ class SettingsSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class SignalView(DjangoAPIView):
-    serializer = opi_serializer.SignalSerializer
+class SignalView(DjangoAPIView, ListAPIView):
+    filter_backends = (OrderingFilter,)
+    ordering = ('provider_id')
+    ordering_fields = ('provider_id', 'name', 'updated')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.SignalSerializer
+    serializer_class = opi_serializer.SignalSerializer
 
     def get(self, request, format=None):
-        get_query = core_api.SignalApi.get(
+        get_query = obase_api.SignalApi.get(
             request.query_filter &
             request.auth_filter
         )
         signal_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            signal_list,
-            many=True,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_signal_list = ListAPIView.list(self, signal_list)
+        return paginated_signal_list
 
     def post(self, request, format=None):
         # TODO: Better user filter
@@ -634,24 +639,23 @@ class SignalSingleView(DjangoAPIView):
         return Response(serialized_response)
 
 
-class UserView(DjangoAPIView):
-    serializer = opi_serializer.UserSerializer
+class UserView(DjangoAPIView, ListAPIView):
+    filter_backends = (OrderingFilter,)
+    ordering = ('handle')
+    ordering_fields = ('handle', 'first_name', 'last_name')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.UserSerializer
+    serializer_class = opi_serializer.UserSerializer
 
     def get(self, request, format=None):
-        get_query = core_api.UserApi.get(
+        get_query = obase_api.UserApi.get(
+            request.query_filter &
             request.auth_filter
         )
         user_list = opi_serializer.evaluate(get_query)
-        serialized_response = self.serialize(
-            user_list,
-            many=True,
-            context={
-                'request': request
-            }
-        )
-
-        return Response(serialized_response)
+        paginated_user_list = ListAPIView.list(self, user_list)
+        return paginated_user_list
 
 
 class UserSingleView(DjangoAPIView):
