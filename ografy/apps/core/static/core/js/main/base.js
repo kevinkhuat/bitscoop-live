@@ -6,11 +6,11 @@ function baseView() {
 	//Cache Instance
 	var cacheInst = cacheManager();
 
-	//Data Instance
-	var dataInst = dataStore();
-
 	//URL Parser Instance
 	var urlParserInst = urlParser();
+
+	//Data Instance
+	var dataInst = dataStore(urlParserInst);
 
 	//Cookie/Session Handler
 	var sessionInst = sessionsCookies();
@@ -80,9 +80,12 @@ function baseView() {
 
 		//Call the renderBase function for the current view with a callback to perform a search on the search string
 		dataInst.getCurrentView().renderBase(function() {
+			var order;
 			console.log(searchString);
 			urlParserInst.setSearchFilters(searchString);
-			dataInst.search('event', searchString, '-datetime');
+			dataInst.setCurrentOrder('-datetime');
+			order = dataInst.getCurrentOrder();
+			dataInst.search('event', searchString, order);
 		});
 
 		//Render the default page view

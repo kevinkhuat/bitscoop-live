@@ -1,6 +1,9 @@
 from rest_framework.pagination import PageNumberPagination, Response
 
 class TwentyItemPagination(PageNumberPagination):
+	page_size = 20
+	page_size_query_param = 'page_size'
+	max_page_size = 20
 	def get_paginated_response(self, data):
 		return Response({
 			'links': {
@@ -8,8 +11,6 @@ class TwentyItemPagination(PageNumberPagination):
 				'previous': self.get_previous_link()
 			},
 			'count': self.page.paginator.count,
+		    'page_size': self.page_size,
 			'results': data
 		})
-	page_size = 20
-	page_size_query_param = 'page_size'
-	max_page_size = 20
