@@ -262,10 +262,8 @@ select {
   overflow-y: auto;
 }
 .list.title {
-  margin: 4px 10px 4px 4px;
   padding: 5px;
-  height: 30px;
-  color: #000000;
+  color: #333333;
   text-decoration: none !important;
   font-size: 1em;
 }
@@ -275,34 +273,27 @@ select {
     padding: 0;
   }
 }
-.list.item-provider {
-  width: 30%;
+.list.title .list {
+  cursor: pointer;
+  background-color: #4183c4;
   display: inline-block;
-  margin: 0 0 0 5px;
+  padding: 0.5em;
 }
-.list.item-date {
-  display: inline-block;
-  width: 20%;
-}
-.list.item-name {
-  display: inline-block;
-  width: 20%;
-}
-.list.item-time {
-  display: inline-block;
-  width: 25%;
+.list.title .list.hover {
+  background-color: #bd2c00;
+  color: #ffffff;
 }
 .list.item {
-  margin: 4px 0;
   width: 100%;
-  color: #000000;
-  padding: 5px 0;
-  background-color: #cccccc;
+  color: #cccccc;
   transition: width .5s ease;
   cursor: pointer;
   vertical-align: middle;
   text-decoration: none !important;
   font-size: 1em;
+}
+.list.item > * {
+  padding: 0.5em 0.8em;
 }
 .list.item.hover {
   background-color: #6cc644;
@@ -313,7 +304,6 @@ select {
 }
 .data-view {
   position: relative;
-  overflow-y: auto;
 }
 .leaflet-control-mapbox-geocoder-form input {
   margin: 0;
@@ -389,75 +379,29 @@ select {
   height: 1.25em;
   border-left: 1px solid #999999;
 }
-table {
-  border: 1px solid #ccc;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-@media (orientation: portrait) {
-  table {
-    border: 0;
-  }
-  table thead {
-    display: none;
-  }
-}
-table tbody tr {
-  cursor: pointer;
-}
-table tbody tr.hover {
+.order {
+  position: absolute;
+  left: 45%;
+  bottom: 0.5em;
   background-color: #eeeeee;
+  padding: 0.2em;
 }
-table tr {
-  border: 1px solid #ddd;
-  padding: 5px;
+.order > * {
+  display: inline-block;
 }
-@media (orientation: portrait) {
-  table tr {
-    margin-bottom: 10px;
-    display: block;
-    border-bottom: 2px solid #eeeeee;
-  }
+.order i {
+  font-size: 2em;
 }
-table td {
-  padding: 10px;
-  text-align: center;
+.page {
+  transform: translateY(-35%);
 }
-@media (orientation: portrait) {
-  table td {
-    display: block;
-    text-align: right;
-    font-size: 13px;
-    border-bottom: 1px dotted #cccccc;
-  }
-}
-@media (orientation: portrait) {
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
-@media (orientation: portrait) {
-  table td:before {
-    content: attr(data-label);
-    float: left;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-}
-table th {
-  padding: 10px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-table thead th {
+.next-page.hover,
+.previous-page.hover {
+  color: #0e9d58;
   cursor: pointer;
-  background-color: #4183c4;
 }
-table thead th.hover {
-  background-color: #bd2c00;
-  color: #ffffff;
+.next-page.disabled,
+.previous-page.disabled {
+  color: transparent;
+  cursor: auto;
 }

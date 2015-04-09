@@ -10,6 +10,7 @@ class TwentyItemPagination(PageNumberPagination):
                         'previous': self.get_previous_link()
                     },
                 'count': self.page.paginator.count,
+                'page_size': self.page_size,
                 'results': data
             })
 
@@ -27,6 +28,7 @@ class OneHundredItemPagination(PageNumberPagination):
                         'previous': self.get_previous_link()
                     },
                 'count': self.page.paginator.count,
+                'page_size': self.page_size,
                 'results': data
             })
 
@@ -44,6 +46,7 @@ class FiveHundredItemPagination(PageNumberPagination):
                         'previous': self.get_previous_link()
                     },
                 'count': self.page.paginator.count,
+                'page_size': self.page_size,
                 'results': data
             })
 

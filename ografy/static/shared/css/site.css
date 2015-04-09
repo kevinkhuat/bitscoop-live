@@ -668,6 +668,7 @@ div.table > div > div {
 .button-green {
   background-color: #6cc644;
   color: #ffffff;
+  margin: 0 auto;
 }
 .premium-message {
   background-color: #bd2c00;

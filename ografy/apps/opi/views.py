@@ -1,6 +1,6 @@
 from rest_framework import permissions, status
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
@@ -10,6 +10,28 @@ from ografy.apps.obase import api as obase_api
 from ografy.apps.tastydata.pagination import TwentyItemPagination, OneHundredItemPagination, FiveHundredItemPagination
 from ografy.apps.tastydata.views import DjangoAPIView, MongoAPIView
 
+class ListMixin(object):
+    """
+    List a queryset.
+    """
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(request)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class NewListAPIView(ListMixin,
+                  GenericAPIView):
+    """
+    Concrete view for listing a queryset.
+    """
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 class APIEndpoints(DjangoAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -26,7 +48,7 @@ class APIEndpoints(DjangoAPIView):
         })
 
 
-class DataView(MongoAPIView, ListAPIView):
+class DataView(MongoAPIView, NewListAPIView):
     filter_backends = (OrderingFilter,)
     ordering = 'created'
     ordering_fields = ('user', 'created', 'updated')
@@ -41,7 +63,7 @@ class DataView(MongoAPIView, ListAPIView):
             request.auth_filter
         )
         data_list = opi_serializer.evaluate(get_query)
-        paginated_data_list = ListAPIView.list(self, data_list)
+        paginated_data_list = NewListAPIView.list(self, data_list)
         return paginated_data_list
 
     def post(self, request):
@@ -140,7 +162,7 @@ class DataSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class EventView(MongoAPIView, ListAPIView):
+class EventView(MongoAPIView, NewListAPIView):
     filter_backends = (OrderingFilter,)
     ordering = 'datetime'
     ordering_fields = ('provider_name', 'datetime', 'name')
@@ -155,7 +177,7 @@ class EventView(MongoAPIView, ListAPIView):
             request.auth_filter
         )
         event_list = opi_serializer.evaluate(get_query)
-        paginated_event_list = ListAPIView.list(self, event_list)
+        paginated_event_list = NewListAPIView.list(self, event_list)
         return paginated_event_list
 
     def post(self, request, format=None):
@@ -274,8 +296,7 @@ class EventSingleView(MongoAPIView):
 
         return Response(serialized_response)
 
-
-class MessageView(MongoAPIView, ListAPIView):
+class MessageView(MongoAPIView, ListMixin):
     # TODO: Check user association on any updates & add access permissions
     filter_backends = (OrderingFilter,)
     ordering = 'id'
@@ -291,7 +312,7 @@ class MessageView(MongoAPIView, ListAPIView):
             request.auth_filter
         )
         message_list = opi_serializer.evaluate(get_query)
-        paginated_message_list = ListAPIView.list(self, message_list)
+        paginated_message_list = NewListAPIView.list(self, message_list)
         return paginated_message_list
 
     def post(self, request):
