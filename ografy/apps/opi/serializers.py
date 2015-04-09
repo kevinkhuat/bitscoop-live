@@ -10,14 +10,14 @@ from ografy.apps.tastydata import serializers as tasty_serializers
 
 # TODO: Move to API, Tastadata View, or View?
 def evaluate(query):
-    if type(query) is not QuerySet:
+    if not isinstance(query, QuerySet):
         return query
     else:
         data = list(query)
         if data is None:
             return []
         else:
-            if len(data) is 1:
+            if len(data) == 1:
                 return data[0]
             return data
 

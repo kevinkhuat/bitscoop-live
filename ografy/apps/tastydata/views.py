@@ -24,6 +24,8 @@ class APIView(BaseAPIView):
         return self.serializer.Meta.fields
 
     def serialize(self, inst, **kwargs):
+        if not inst:
+            return []
         return self.__class__.serializer(inst, **kwargs).data
 
     def deserialize(self, data, **kwargs):
