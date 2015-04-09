@@ -1,3 +1,4 @@
+@ografy-green: #0E9D58;
 @blue: #4183c4;
 @green: #6cc644;
 @red: #bd2c00;
@@ -282,45 +283,36 @@ main {
 	overflow-y: auto;
 }
 .list.title {
-	margin: 4px 10px 4px 4px;
 	padding: 5px;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		margin: 4px 0;
 		padding: 0;
 	}
-	height: 30px;
-	color: @black;
+	color: @deep-gray;
 	text-decoration: none !important;
 	font-size: 1em;
-}
-.list.item-provider {
-	width: 30%;
-	display: inline-block;
-	margin: 0 0 0 5px;
-}
-.list.item-date {
-	display: inline-block;
-	width: 20%;
-}
-.list.item-name {
-	display: inline-block;
-	width: 20%;
-}
-.list.item-time {
-	display: inline-block;
-	width: 25%;
+	.list {
+		cursor: pointer;
+		background-color: @blue;
+		display: inline-block;
+		padding: 0.5em;
+	}
+	.list.hover {
+		background-color: @red;
+		color: @white;
+	}
 }
 .list.item {
-    margin: 4px 0;
-    width: 100%;
-    color: @black;
-    padding: 5px 0;
-    background-color: @light-gray;
-    transition: width .5s ease;
-    cursor: pointer;
-    vertical-align: middle;
-    text-decoration: none !important;
-    font-size: 1em;
+	width: 100%;
+	color: @light-gray;
+	transition: width .5s ease;
+	cursor: pointer;
+	vertical-align: middle;
+	text-decoration: none !important;
+	font-size: 1em;
+	& > * {
+		padding: 0.5em 0.8em;
+	}
 }
 .list.item.hover {
     background-color: @green;
@@ -415,73 +407,28 @@ main {
 	border-left: 1px solid @mid-gray;
 }
 
-table {
-	border: 1px solid #ccc;
-	@media (orientation: portrait) {
-		border: 0;
-		thead {
-			display: none;
-		}
+.order {
+	position: absolute;
+	left: 45%;
+	bottom: 0.5em;
+	background-color: @pale-gray;
+	padding: 0.2em;
+	& > * {
+		display: inline-block;
 	}
-	width: 100%;
-	margin:0;
-	padding:0;
-	border-collapse: collapse;
-	border-spacing: 0;
-	tbody {
-		tr {
-			cursor: pointer;
-		}
-		tr.hover {
-			background-color: @pale-gray;
-		}
-	}
-	tr {
-		border: 1px solid #ddd;
-		padding: 5px;
-		@media (orientation: portrait) {
-			margin-bottom: 10px;
-			display: block;
-			border-bottom: 2px solid @pale-gray;
-		}
-	}
-	td {
-		padding: 10px;
-		text-align: center;
-		@media (orientation: portrait) {
-			display: block;
-			text-align: right;
-			font-size: 13px;
-			border-bottom: 1px dotted @light-gray;
-		}
-	}
-
-	td:last-child {
-		@media (orientation: portrait) {
-			border-bottom: 0;
-		}
-	}
-	td:before {
-		@media (orientation: portrait) {
-			content: attr(data-label);
-			float: left;
-			text-transform: uppercase;
-			font-weight: bold;
-		}
-	}
-	th {
-		padding: 10px;
-		text-align: center;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-	}
-	thead th {
-		cursor: pointer;
-		background-color: @blue;
-	}
-	thead th.hover {
-		background-color: @red;
-		color: @white;
+	i {
+		font-size: 2em;
 	}
 }
+.page {
+	transform: translateY(-35%);
+}
 
+.next-page.hover, .previous-page.hover {
+	color: @ografy-green;
+	cursor: pointer;
+}
+.next-page.disabled, .previous-page.disabled {
+	color: transparent;
+	cursor: auto;
+}

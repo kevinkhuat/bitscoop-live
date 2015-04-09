@@ -1,0 +1,9 @@
+<div>
+	<i class="previous-page {% if order.total_results == 0 or order.start_index == 1 %}disabled {% endif %}icon-triangle-left"></i>
+</div>
+<div class="page">
+	{{ order.total_results }} Results - Showing {{ order.start_index }} to {{ order.end_index }}
+</div>
+<div>
+	<i class="next-page {% if order.total_results == 0 or order.end_index == order.total_results %}disabled {% endif %}icon-triangle-right"></i>
+</div>

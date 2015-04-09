@@ -1,7 +1,21 @@
 //View pertaining to obtaining and searching for data
-function dataStore() {
+function dataStore(urlParserInst) {
 	//This is the array of events that is returned from a search
 	var resultData = [];
+
+	//Number of results from the search
+	var resultCount = 0;
+
+	//Number of pages from the search
+	var resultPages = 0;
+
+	//Current page of results
+	var resultCurrentPage = 1;
+
+	var resultPageSize = 0;
+
+	var resultCurrentStartIndex = 0;
+	var resultCurrentEndIndex = 0;
 
 	//This is a dictionary of the IDs of events that have been obtained in previous searches
 	var eventIndex = {};
@@ -17,6 +31,8 @@ function dataStore() {
 	//should be displayed.
 	var eventHTML = '';
 
+	var currentOrder = '-datetime';
+
 	var currentViewInst = '';
 
 	//Data model
@@ -26,6 +42,38 @@ function dataStore() {
 
 	function getResultData() {
 		return resultData;
+	}
+
+	function getResultCount() {
+		return resultCount;
+	}
+
+	function getResultCurrentPage() {
+		return resultCurrentPage;
+	}
+
+	function getResultTotalPages() {
+		return resultPages;
+	}
+
+	function getResultCurrentStartIndex() {
+		return resultCurrentStartIndex;
+	}
+
+	function getResultCurrentEndIndex() {
+		return resultCurrentEndIndex;
+	}
+
+	function setResultCurrentPage(page_num) {
+		resultCurrentPage = page_num;
+	}
+
+	function getCurrentOrder() {
+		return currentOrder;
+	}
+
+	function setCurrentOrder(new_order) {
+		currentOrder = new_order;
 	}
 
 	function setCurrentView(inst) {
@@ -82,10 +130,60 @@ function dataStore() {
 		}
 	}
 
+	function createPageBar() {
+		var orderBar = nunjucks.render('search/order.html',
+			{
+				order: {
+					total_results: resultCount,
+					start_index: resultCurrentStartIndex,
+					end_index: resultCurrentEndIndex
+				}
+		});
+		$('.order').html(orderBar);
+
+		$('.previous-page').not('.disabled')
+			.mouseenter(function() {
+				$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				$(this).removeClass('hover');
+				setResultCurrentPage(getResultCurrentPage() - 1);
+				if(getResultCurrentPage === 1) {
+					$('.previous-page').addClass('disabled');
+				}
+				if (getResultTotalPages() !== 1) {
+					$('.next-page').removeClass('disabled');
+				}
+				search('event', urlParserInst.getSearchFilters(), getCurrentOrder());
+			});
+
+		$('.next-page').not('.disabled')
+			.mouseenter(function() {
+				$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				$(this).removeClass('hover');
+				setResultCurrentPage(getResultCurrentPage() + 1);
+				if (getResultCurrentPage() === getResultTotalPages()) {
+					$('.next-page').addClass('disabled');
+				}
+				if (getResultTotalPages !== 1) {
+					$('.previous-page').removeClass('disabled');
+				}
+				search('event', urlParserInst.getSearchFilters(), getCurrentOrder());
+			});
+	}
+
 	//Search for items in the database based on the search parameters and filters
 	function search(eventType, searchString, orderString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/' + eventType + '?page=1&ordering='+ orderString + '&filter=' + searchString;
+		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering='+ orderString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -96,7 +194,12 @@ function dataStore() {
 			}
 		}).done(function(data, xhr, response) {
 			if (data.count > 0) {
-				results = data.results
+				resultCount = data.count;
+				resultPageSize = data.page_size;
+				resultPages = Math.ceil(resultCount/resultPageSize);
+				resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
+				resultCurrentEndIndex = (resultCurrentPage*resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage*resultPageSize);
+				results = data.results;
 				for (var index in results) {
 					results[index].updated = new Date(results[index].updated).toLocaleString();
 					results[index].created = new Date(results[index].created).toLocaleString();
@@ -107,6 +210,7 @@ function dataStore() {
 				//});
 				resultData = results;
 				updateData();
+				createPageBar();
 				currentViewInst.updateContent();
 			}
 			else if (data.count === 0) {
@@ -115,10 +219,19 @@ function dataStore() {
 	}
 
 	return {
+		createPageBar: createPageBar,
 		getEventData: getEventData,
+		getResultCount: getResultCount,
 		getResultData: getResultData,
-		setCurrentView: setCurrentView,
+		getResultCurrentPage: getResultCurrentPage,
+		setResultCurrentPage: setResultCurrentPage,
+		getResultCurrentStartIndex: getResultCurrentStartIndex,
+		getResultCurrentEndIndex: getResultCurrentEndIndex,
+		getResultTotalPages: getResultTotalPages,
+		getCurrentOrder: getCurrentOrder,
+		setCurrentOrder: setCurrentOrder,
 		getCurrentView: getCurrentView,
+		setCurrentView: setCurrentView,
 		updateData: updateData,
 		search: search
 	};

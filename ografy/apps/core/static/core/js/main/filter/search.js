@@ -111,6 +111,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 				//Get a list of the filters that are being used
 				var filtersList = $(thisType).find('.filter.options');
 
+				var order;
 				//For each filter, construct the appropriate filter string and add it to the
 				//full filter string that will be submitted to the database.
 				for (var i = 0; i < filtersList.length; i++) {
@@ -149,8 +150,9 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 				urlParserInst.setSearchQuery($('.search-bar').val());
 				urlParserInst.setSearchFilters(filterString);
 
+				order = dataInst.getCurrentOrder();
 				//Perform a search based on the search terms and filters
-				dataInst.search(thisType.id, filterString, mapViewInst, listViewInst);
+				dataInst.search(thisType.id, filterString, order);
 			}
 		}
 

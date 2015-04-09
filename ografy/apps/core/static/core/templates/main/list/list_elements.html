@@ -1,8 +1,13 @@
 {% for item in resultData %}
-<tr id={{ item.id }}>
-	<td data-label="Provider">{{ item.provider_name }}</td>
-	<td data-label="Date">{{ item.date }}</td>
-	<td data-label="Time">{{ item.time }}</td>
-	<td data-label="Name">{{ item.name }}</td>
-</tr>
+<div class="flex list item" id="{{ item.id }}">
+	<div class="grow list item-provider">
+		{{ item.provider_name }}
+	</div>
+	<div class="grow list item-datetime">
+		{{ item.datetime }}
+	</div>
+	<div class="grow list item-name">
+		{{ item.name }}
+	</div>
+</div>
 {% endfor %}
