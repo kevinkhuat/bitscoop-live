@@ -17,6 +17,8 @@ def evaluate(query):
         if data is None:
             return []
         else:
+            if len(data) is 1:
+                return data[0]
             return data
 
 
@@ -93,5 +95,5 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'signals', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified', 'settings')
+        fields = ('id', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified') #, 'settings', 'signals'
         depth = 5

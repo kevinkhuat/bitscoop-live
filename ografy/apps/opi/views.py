@@ -7,7 +7,7 @@ from rest_framework.reverse import reverse
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
-from ografy.apps.core.pagination import TwentyItemPagination
+from ografy.apps.tastydata.pagination import TwentyItemPagination, OneHundredItemPagination, FiveHundredItemPagination
 from ografy.apps.tastydata.views import DjangoAPIView, MongoAPIView
 
 
@@ -19,8 +19,8 @@ class APIEndpoints(DjangoAPIView):
             'data': reverse('data-list', request=request, format=format),
             'event': reverse('event-list', request=request, format=format),
             'message': reverse('message-list', request=request, format=format),
-            'settings': reverse('settings-list', request=request, format=format),
             'provider': reverse('provider-list', request=request, format=format),
+            'settings': reverse('settings-list', request=request, format=format),
             'signal': reverse('signal-list', request=request, format=format),
             'user': reverse('user-list', request=request, format=format),
         })
@@ -28,14 +28,14 @@ class APIEndpoints(DjangoAPIView):
 
 class DataView(MongoAPIView, ListAPIView):
     filter_backends = (OrderingFilter,)
-    ordering = ('created')
+    ordering = 'created'
     ordering_fields = ('user', 'created', 'updated')
     permission_classes = (permissions.IsAuthenticated,)
     pagination_class = TwentyItemPagination
     serializer = opi_serializer.DataSerializer
     serializer_class = opi_serializer.DataSerializer
 
-    def get(self, request, format=None):
+    def get(self, request):
         get_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
@@ -44,7 +44,7 @@ class DataView(MongoAPIView, ListAPIView):
         paginated_data_list = ListAPIView.list(self, data_list)
         return paginated_data_list
 
-    def post(self, request, format=None):
+    def post(self, request):
         # TODO: Better user filter
         post_data = self.deserialize(
             request.data,
@@ -70,7 +70,7 @@ class DataSingleView(MongoAPIView):
     serializer = opi_serializer.DataSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, pk):
         obase_api.DataApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
@@ -86,7 +86,8 @@ class DataSingleView(MongoAPIView):
         serialized_response = self.serialize(
             data_object,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -108,7 +109,8 @@ class DataSingleView(MongoAPIView):
         serialized_response = self.serialize(
             data,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -130,7 +132,8 @@ class DataSingleView(MongoAPIView):
         serialized_response = self.serialize(
             data,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -139,14 +142,14 @@ class DataSingleView(MongoAPIView):
 
 class EventView(MongoAPIView, ListAPIView):
     filter_backends = (OrderingFilter,)
-    ordering = ('datetime')
+    ordering = 'datetime'
     ordering_fields = ('provider_name', 'datetime', 'name')
     pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
     serializer = opi_serializer.EventSerializer
     serializer_class = opi_serializer.EventSerializer
 
-    def get(self, request, format=None):
+    def get(self, request):
         get_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
@@ -171,7 +174,8 @@ class EventView(MongoAPIView, ListAPIView):
         serialized_response = self.serialize(
             event,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -183,7 +187,7 @@ class EventSingleView(MongoAPIView):
     serializer = opi_serializer.EventSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, pk):
         obase_api.EventApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
@@ -199,7 +203,8 @@ class EventSingleView(MongoAPIView):
         serialized_response = self.serialize(
             event_object,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -210,7 +215,7 @@ class EventSingleView(MongoAPIView):
         patch_event = self.deserialize(
             request.data,
             context={
-                'request': request
+                'request': request,
             }
         )
         patch_event.user_id = request.user.id
@@ -222,7 +227,8 @@ class EventSingleView(MongoAPIView):
         serialized_response = self.serialize(
             event,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -245,7 +251,8 @@ class EventSingleView(MongoAPIView):
         serialized_response = self.serialize(
             event,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -270,10 +277,15 @@ class EventSingleView(MongoAPIView):
 
 class MessageView(MongoAPIView, ListAPIView):
     # TODO: Check user association on any updates & add access permissions
-    serializer = opi_serializer.MessageSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = 'id'
+    ordering_fields = ('id', 'message_to', 'message_from', 'message_body')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.MessageSerializer
+    serializer_class = opi_serializer.MessageSerializer
 
-    def get(self, request, format=None):
+    def get(self, request):
         get_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
@@ -282,7 +294,7 @@ class MessageView(MongoAPIView, ListAPIView):
         paginated_message_list = ListAPIView.list(self, message_list)
         return paginated_message_list
 
-    def post(self, request, format=None):
+    def post(self, request):
         # TODO: Better user filter
         post_message = self.deserialize(
             request.data,
@@ -309,7 +321,7 @@ class MessageSingleView(MongoAPIView):
     serializer = opi_serializer.MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, pk):
         obase_api.MessageApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
@@ -325,7 +337,9 @@ class MessageSingleView(MongoAPIView):
         serialized_response = self.serialize(
             message_object,
             context={
-                'request': request}
+                'request': request,
+                'format': format
+            }
         )
 
         return Response(serialized_response)
@@ -347,7 +361,8 @@ class MessageSingleView(MongoAPIView):
         serialized_response = self.serialize(
             message,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -370,7 +385,8 @@ class MessageSingleView(MongoAPIView):
         serialized_response = self.serialize(
             message,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -410,20 +426,25 @@ class MessageSingleView(MongoAPIView):
 
 
 class ProviderView(DjangoAPIView):
-    serializer = opi_serializer.ProviderSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = 'id'
+    ordering_fields = ('id', 'name', 'backend_name')
+    pagination_class = FiveHundredItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.ProviderSerializer
+    serializer_class = opi_serializer.ProviderSerializer
 
     def get(self, request, format=None):
         get_query = core_api.ProviderApi.get(
-            request.query_filter &
-            request.auth_filter
+            request.query_filter
         )
         provider_list = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             provider_list,
             many=True,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -437,16 +458,27 @@ class ProviderSingleView(DjangoAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.ProviderApi.get(
             request.auth_filter &
-            MongoAPIView.Meta.Q(pk=pk)
+            DjangoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(get_query)
-        return Response(self.serialize(provider_object, context={'request': request}))
+        return Response(self.serialize(
+            provider_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        ))
 
 
 class SettingsView(MongoAPIView):
     # TODO: Restrict to admins or remove?
-    serializer = opi_serializer.SettingsSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = 'id'
+    ordering_fields = ('id', 'message_to', 'message_from', 'message_body')
+    pagination_class = OneHundredItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.SettingsSerializer
+    serializer_class = opi_serializer.SettingsSerializer
 
     def get(self, request, format=None):
         get_query = core_api.SignalApi.get(
@@ -457,7 +489,8 @@ class SettingsView(MongoAPIView):
         serialized_response = self.serialize(
             settings_list,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -478,7 +511,8 @@ class SettingsSingleView(MongoAPIView):
         serialized_response = self.serialize(
             settings_object,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -501,7 +535,8 @@ class SettingsSingleView(MongoAPIView):
         serialized_response = self.serialize(
             settings,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -509,8 +544,13 @@ class SettingsSingleView(MongoAPIView):
 
 
 class SignalView(DjangoAPIView):
-    serializer = opi_serializer.SignalSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = 'id'
+    ordering_fields = ('id', 'user', 'provider', 'created')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.SignalSerializer
+    serializer_class = opi_serializer.SignalSerializer
 
     def get(self, request, format=None):
         get_query = core_api.SignalApi.get(
@@ -522,7 +562,8 @@ class SignalView(DjangoAPIView):
             signal_list,
             many=True,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -543,7 +584,8 @@ class SignalView(DjangoAPIView):
         serialized_response = self.serialize(
             signal,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -555,23 +597,24 @@ class SignalSingleView(DjangoAPIView):
     serializer = opi_serializer.SignalSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, pk):
         core_api.SignalApi.delete(
             request.auth_filter &
-            MongoAPIView.Meta.Q(pk=pk)
+            DjangoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         get_query = core_api.SignalApi.get(
             request.auth_filter &
-            MongoAPIView.Meta.Q(pk=pk)
+            DjangoAPIView.Meta.Q(pk=pk)
         )
         signal_object = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             signal_object,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -594,7 +637,8 @@ class SignalSingleView(DjangoAPIView):
         serialized_response = self.serialize(
             data,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -617,7 +661,8 @@ class SignalSingleView(DjangoAPIView):
         serialized_response = self.serialize(
             signal,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -626,7 +671,7 @@ class SignalSingleView(DjangoAPIView):
     def provider(self, request, pk, **kwargs):
         get_query = core_api.ProviderApi.get(
             request.auth_filter &
-            MongoAPIView.Meta.Q(pk=pk)
+            DjangoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
@@ -640,19 +685,25 @@ class SignalSingleView(DjangoAPIView):
 
 
 class UserView(DjangoAPIView):
-    serializer = opi_serializer.UserSerializer
+    filter_backends = (OrderingFilter,)
+    ordering = 'id'
+    ordering_fields = ('id', 'email', 'handle', 'date_joined')
+    pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = opi_serializer.UserSerializer
+    serializer_class = opi_serializer.UserSerializer
 
     def get(self, request, format=None):
         get_query = core_api.UserApi.get(
-            request.auth_filter
+            request.query_filter
         )
         user_list = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             user_list,
             many=True,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
@@ -667,14 +718,13 @@ class UserSingleView(DjangoAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.UserApi.get(
             val=pk
-            # request.auth_filter &
-            # MongoAPIView.Meta.Q(pk=pk)
         )
         user_object = opi_serializer.evaluate(get_query)
         serialized_response = self.serialize(
             user_object,
             context={
-                'request': request
+                'request': request,
+                'format': format
             }
         )
 
