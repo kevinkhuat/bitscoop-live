@@ -131,16 +131,24 @@ function dataStore(urlParserInst) {
 	}
 
 	function createPageBar() {
+
 		var orderBar = nunjucks.render('search/order.html',
 			{
 				order: {
 					total_results: resultCount,
 					start_index: resultCurrentStartIndex,
-					end_index: resultCurrentEndIndex
+					end_index: resultCurrentEndIndex,
+					mobile: (window.window.devicePixelRatio > 1.5)
 				}
 		});
 		$('.order').html(orderBar);
+		if (currentOrder.slice(0,1) === '+') {
+			$('.menu.sort').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-up');
+		}
+		else {
 
+			$('.menu.sort').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-down');
+		}
 		$('.previous-page').not('.disabled')
 			.mouseenter(function() {
 				$(this).addClass('hover');
@@ -149,7 +157,9 @@ function dataStore(urlParserInst) {
 				$(this).removeClass('hover');
 			})
 			.click(function() {
-				$(this).removeClass('hover');
+				if (window.window.devicePixelRatio > 1.5) {
+					$(this).removeClass('hover');
+				}
 				setResultCurrentPage(getResultCurrentPage() - 1);
 				if(getResultCurrentPage === 1) {
 					$('.previous-page').addClass('disabled');
@@ -168,7 +178,9 @@ function dataStore(urlParserInst) {
 				$(this).removeClass('hover');
 			})
 			.click(function() {
-				$(this).removeClass('hover');
+				if (window.window.devicePixelRatio > 1.5) {
+					$(this).removeClass('hover');
+				}
 				setResultCurrentPage(getResultCurrentPage() + 1);
 				if (getResultCurrentPage() === getResultTotalPages()) {
 					$('.next-page').addClass('disabled');
@@ -177,6 +189,54 @@ function dataStore(urlParserInst) {
 					$('.previous-page').removeClass('disabled');
 				}
 				search('event', urlParserInst.getSearchFilters(), getCurrentOrder());
+			});
+
+		$('.sort-button')
+			.mouseenter(function() {
+				$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				if (window.window.devicePixelRatio > 1.5) {
+					$(this).removeClass('hover');
+				}
+				$('.menu.sort').toggleClass('hidden');
+			});
+
+			$(document.body).click(function(e) {
+				if (!e.target.closest('.order')) {
+					$('.menu.sort').addClass('hidden');
+				}
+			});
+
+		$('.menu.sort .item')
+			.mouseenter(function() {
+				$(this).addClass('hover');
+			})
+			.mouseleave(function() {
+				$(this).removeClass('hover');
+			})
+			.click(function() {
+				if (window.window.devicePixelRatio > 1.5) {
+					$(this).removeClass('hover');
+				}
+				setResultCurrentPage(1);
+				//Change the current header's order icon
+				//If it's currently ordering by something, order by the other way
+				if (currentOrder[0] === '-') {
+					searchOrder = '+' + $(this)[0].id;
+				}
+				else if (currentOrder[0] === '+') {
+					searchOrder = '-' + $(this)[0].id;
+				}
+
+				setCurrentOrder(searchOrder);
+				//Do a search with the new order
+				//FIXME: calling the API for every new ordering request is not remotely ideal,
+				//so this needs to be changed at some point
+				search('event', urlParserInst.getSearchFilters(), searchOrder);
 			});
 	}
 
@@ -205,9 +265,6 @@ function dataStore(urlParserInst) {
 					results[index].created = new Date(results[index].created).toLocaleString();
 					results[index].datetime = new Date(results[index].datetime).toLocaleString();
 				}
-				//resultData = results.sort(function(a, b) {
-				//	return Date.parse(b.datetime) - Date.parse(a.datetime);
-				//});
 				resultData = results;
 				updateData();
 				createPageBar();

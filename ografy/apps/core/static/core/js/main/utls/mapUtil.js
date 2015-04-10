@@ -84,7 +84,7 @@ function mapboxManager(dataInst) {
 	}
 
 	function addData(geoJSON) {
-		var newData = dataInst.getResultData().reverse();
+		var newData = dataInst.getResultData();
 
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in newData) {

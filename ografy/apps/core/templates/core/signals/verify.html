@@ -3,39 +3,6 @@
 
 {% block static %}
 	{{ block.super }}
-	<style type="text/css">
-		.permission-toggle {
-			padding: 5px 0 5px 0;
-		}
-
-		.grouping-content {
-			padding: 10px 0 10px 0;
-		}
-
-		.button-green {
-			background-color: #5BBD72;
-			color: #FFFFFF;
-		}
-
-		.premium-message {
-			background-color: #5BBD72;
-			color: #FFFFFF !important;
-			padding: 0.5em;
-		}
-
-		.ui.radio.checkbox label:before {
-			margin: 0 0 0 10px;
-		}
-
-		.ui.radio.checkbox .premium-message::before {
-			margin: 15px 0 0 10px;
-		}
-
-		.text-input-width {
-			width: 400px;
-		}
-	</style>
-
 	<script type="application/javascript">
 		function getCookie(name) {
 			var cookieValue = null;
@@ -122,35 +89,25 @@
 		<div class="grouping">
 			<div class="bigger">{{ signal.name }} Connection Permissions</div>
 			<div>
-				<div name="permission-email" class="flex row permission-toggle">
-					<div class="toggle checkbox">
-						<input type="checkbox" checked="checked">
-						<label>Email</label>
-					</div>
+				<div name="permission-email" class="permission-toggle">
+					<input type="checkbox" checked="checked">
+					<div>Email</div>
 				</div>
-				<div name="permission-contacts" class="flex row permission-toggle">
-					<div class="toggle checkbox">
-						<input type="checkbox" checked="checked">
-						<label>Contacts</label>
-					</div>
+				<div name="permission-contacts" class="permission-toggle">
+					<input type="checkbox" checked="checked">
+					<div>Contacts</div>
 				</div>
-				<div name="permission-friends" class="flex row permission-toggle">
-					<div class="toggle checkbox">
-						<input type="checkbox" checked="checked">
-						<label>Friends</label>
-					</div>
+				<div name="permission-friends" class="permission-toggle">
+					<input type="checkbox" checked="checked">
+					<div>Friends</div>
 				</div>
-				<div name="permission-info" class="flex row permission-toggle">
-					<div class="toggle checkbox">
-						<input type="checkbox" checked="checked">
-						<label>Personal Info</label>
-					</div>
+				<div name="permission-info" class="permission-toggle">
+					<input type="checkbox" checked="checked">
+					<div>Personal Info</div>
 				</div>
-				<div name="permission-activity" class="flex row permission-toggle">
-					<div class="toggle checkbox">
-						<input type="checkbox" checked="checked">
-						<label>Activity</label>
-					</div>
+				<div name="permission-activity" class="permission-toggle">
+					<input type="checkbox" checked="checked">
+					<div>Activity</div>
 				</div>
 			</div>
 		</div>
@@ -158,9 +115,9 @@
 			<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
 			<div class="form">
 				<div class="grouped fields" id="frequency">
-					<label for="frequency">
+					<div class="title">
 						Select the frequency you would like this service to update
-					</label>
+					</div>
 
 					<div class="field">
 						<div>

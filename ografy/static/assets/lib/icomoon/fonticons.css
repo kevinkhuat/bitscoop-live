@@ -605,6 +605,10 @@
 	content: "\e68f";
 }
 
+.icon-sort:before {
+    content: "\e6d3";
+}
+
 .icon-home:before {
     content: "\e900";
 }
@@ -1058,4 +1062,12 @@
 
 .icon-credit-card:before {
     content: "\f045";
+}
+
+.icon-sort-amount-asc:before {
+    content: "\ea4c";
+}
+
+.icon-sort-amount-desc:before {
+    content: "\ea4d";
 }

@@ -310,10 +310,6 @@ footer {
   border-top: none;
   padding: 10px;
 }
-.grouping input {
-  width: 100%;
-  max-width: 20em;
-}
 .grouping input[type=radio] {
   max-width: 1em;
 }
@@ -660,7 +656,13 @@ div.table > div > div {
   color: rgba(40, 40, 40, 0.5);
 }
 .permission-toggle {
-  padding: 5px 0 5px 0;
+  padding: 0.2em 0;
+}
+.permission-toggle * {
+  display: inline-block;
+}
+.permission-toggle input {
+  margin: 0.5em;
 }
 .grouping-content {
   padding: 10px 0 10px 0;
@@ -673,7 +675,7 @@ div.table > div > div {
 .premium-message {
   background-color: #bd2c00;
   color: #ffffff !important;
-  padding: 15px 15px 15px 30px;
+  padding: 0.5em;
 }
 .radio.checkbox label:before {
   margin: 0 0 0 10px;
@@ -777,7 +779,7 @@ i.step-icon {
   -webkit-transition: height 0.2s ease;
   -moz-transition: height 0.2s ease;
   transition: height 0.2s ease;
-  background-color: #666666;
+  background-color: #333333;
   border-radius: 3px;
 }
 @media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
@@ -847,6 +849,21 @@ i.step-icon {
 .menu.main .item.hover {
   background-color: inherit;
 }
+.menu.sort {
+  position: absolute;
+  z-index: 1100;
+  left: inherit;
+  top: -5.5em;
+  overflow-y: hidden;
+  border: 1px solid #666666;
+}
+.menu.sort i {
+  font-size: 1em;
+}
+.menu.sort .item.hover {
+  color: #6cc644;
+  cursor: pointer;
+}
 @media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
   .signup {
     width: 30%;
@@ -866,4 +883,7 @@ i.step-icon {
   .user-button {
     padding: 0 1em 0 0;
   }
+}
+.fields .title {
+  margin: 0 0 1em 0;
 }

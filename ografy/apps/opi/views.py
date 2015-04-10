@@ -296,7 +296,7 @@ class EventSingleView(MongoAPIView):
 
         return Response(serialized_response)
 
-class MessageView(MongoAPIView, ListMixin):
+class MessageView(MongoAPIView, NewListAPIView):
     # TODO: Check user association on any updates & add access permissions
     filter_backends = (OrderingFilter,)
     ordering = 'id'
