@@ -1,5 +1,7 @@
 from django.db.models import Q as Django_Q
+from django.db.models import QuerySet as Django_QuerySet
 from mongoengine import Q as Mongo_Q
+from mongoengine import QuerySet as Mongo_QuerySet
 from rest_framework.views import APIView as BaseAPIView
 
 from ografy.apps.tastydata import parse_filter
@@ -58,8 +60,10 @@ class APIView(BaseAPIView):
 class DjangoAPIView(APIView):
     class Meta:
         Q = Django_Q
+        QuerySet = Django_QuerySet
 
 
 class MongoAPIView(APIView):
     class Meta:
         Q = Mongo_Q
+        QuerySet = Mongo_QuerySet

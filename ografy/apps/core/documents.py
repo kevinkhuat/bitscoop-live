@@ -14,7 +14,7 @@ mongoengine.connect(
 )
 
 
-class Settings(mongoengine.DynamicDocument):
+class Settings(mongoengine.Document):
     """The data class for user settings data.
 
     #. *created* the date created
@@ -23,7 +23,7 @@ class Settings(mongoengine.DynamicDocument):
     """
 
     # To be managed by the REST API
-    user = mongoengine.IntField(required=True)
+    user_id = mongoengine.IntField(required=True)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
