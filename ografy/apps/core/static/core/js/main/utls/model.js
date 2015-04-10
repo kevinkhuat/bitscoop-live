@@ -40,6 +40,14 @@ function dataStore(urlParserInst) {
 		return eventData;
 	}
 
+	function getEventSingleData(id) {
+		for (i in eventData) {
+			if (eventData[i].id === id) {
+				return eventData[i];
+			}
+		}
+	}
+
 	function getResultData() {
 		return resultData;
 	}
@@ -278,6 +286,7 @@ function dataStore(urlParserInst) {
 	return {
 		createPageBar: createPageBar,
 		getEventData: getEventData,
+		getEventSingleData: getEventSingleData,
 		getResultCount: getResultCount,
 		getResultData: getResultData,
 		getResultCurrentPage: getResultCurrentPage,

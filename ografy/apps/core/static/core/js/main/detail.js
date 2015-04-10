@@ -14,10 +14,6 @@ function detailView(mapboxViewInst) {
 
 		$('.sidebar').html(list_detail);
 
-		$('.sidebar').promise().done(function() {
-			setHeight();
-		});
-
 		$(window).resize(function() {
 			setHeight();
 		});
@@ -42,7 +38,7 @@ function detailView(mapboxViewInst) {
 	}
 
 	//Update content
-	function updateContent(eventName, eventDateTime, eventLocation, eventData) {
+	function updateContent(eventName, eventDateTime, eventLocation) {
 		$('.sidebar').removeClass('invisible');
 		var dateTimeArray = eventDateTime.split(',');
 		$('.detail .main-label').html(eventName);
@@ -50,6 +46,9 @@ function detailView(mapboxViewInst) {
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(eventLocation);
 		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
+		$('.sidebar').promise().done(function() {
+			setHeight();
+		});
 	}
 
 	//Insert default text into the detail content
@@ -95,6 +94,7 @@ function detailView(mapboxViewInst) {
 	function setHeight() {
 		var detailHeight = $('.detail').height();
 		var mainLabelHeight = $('.main-label').height();
+		console.log(detailHeight + ' ' + mainLabelHeight);
 		$('.information').height(detailHeight - mainLabelHeight);
 	}
 

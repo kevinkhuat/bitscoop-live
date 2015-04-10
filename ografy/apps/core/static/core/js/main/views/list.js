@@ -75,6 +75,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		});
 		$('.list.content').html(listItems);
 
+		$('.list.title').find('i').attr('class', '');
 		if (currentOrder.slice(0,1) === '+') {
 			$('.list.title').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
@@ -102,20 +103,9 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 
 				//If the clicked item is now active, get the item's information from the database
 				if (selectedItem.hasClass('active')) {
-					$.ajax({
-						url: 'opi/event/' + selectedItem.attr('id'),
-						type: 'GET',
-						dataType: 'json',
-						headers: {
-							'X-CSRFToken': sessionInst.getCsrfToken()
-						}
-					}).done(function(data, xhr, response) {
-						//When the data has been acquired, update the detail content and detail map
-						//with the new data
-						var single_data = data;
-						detailViewInst.updateContent(single_data.provider_name, single_data.datetime, String(single_data.location.coordinates), String(single_data.data));
-						detailViewInst.updateMap(single_data.provider_name, map, single_data.location.coordinates);
-					});
+					var event = dataInst.getEventSingleData(selectedItem.attr('id'));
+					detailViewInst.updateContent(event.provider_name, event.datetime, String(event.location.coordinates));
+					detailViewInst.updateMap(event.provider_name, map, event.location.coordinates);
 				}
 				//If the clicked item is now inactive (occurs when you click an active item),
 				//clear the detail panel content and map
@@ -124,7 +114,6 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 					detailViewInst.clearMap(map);
 				}
 			});
-
 		setHeight();
 	}
 

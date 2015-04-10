@@ -213,7 +213,6 @@ main {
 		.information {
 			overflow-y: auto;
 			@media (orientation: portrait) {
-				height: 344px;
 				width: 100%;
 			}
 		}
@@ -225,7 +224,6 @@ main {
 			height: 50%;
 		}
 		@media (orientation: portrait) {
-			min-width: 300px;
 			width: 50%
 		}
 	}
@@ -235,7 +233,6 @@ main {
 			height: 50%;
 		}
 		@media (orientation: portrait) {
-			min-width: 250px;
 			width: 50%
 		}
 	}
@@ -298,7 +295,7 @@ main {
 		background-color: @red;
 		color: @white;
 	}
-	@media (orientation: portrait) {
+	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		display: none;
 	}
 }
@@ -312,20 +309,20 @@ main {
 	font-size: 1em;
 	& > * {
 		padding: 0.5em 0.8em;
-		@media(orientation: portrait) {
+		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 			display: block;
 			text-align: right;
 		}
 	}
 	& > :before {
-		@media(orientation: portrait) {
+		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 			content: attr(data-label);
 			float: left;
 			text-transform: uppercase;
 			font-weight: bold;
 		}
 	}
-	@media (orientation: portrait) {
+	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		display: block;
 		border-bottom: 1px solid @white;
 	}
@@ -335,7 +332,7 @@ main {
     color: @white;
 }
 .list.item.active {
-	background-color: @light-gray;
+	background-color: @red;
 }
 .data-view {
 	position: relative;
