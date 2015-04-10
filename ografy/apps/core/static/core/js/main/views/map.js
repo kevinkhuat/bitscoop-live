@@ -180,7 +180,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			detailViewInst.updateContent(feature.properties.title, feature.properties.datetime, String(feature.geometry.coordinates), String(feature.properties.data));
+			detailViewInst.updateContent(feature.properties.title, feature.properties.datetime, String(feature.geometry.coordinates));
 		});
 	}
 
