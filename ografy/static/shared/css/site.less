@@ -363,10 +363,6 @@ footer {
 		border-top: none;
 		padding: 10px;
 	}
-	input {
-		width: 100%;
-		max-width: 20em;
-	}
 	input[type=radio] {
 		max-width: 1em;
 	}
@@ -740,7 +736,13 @@ div.table {
 }
 
 .permission-toggle {
-	padding: 5px 0 5px 0;
+	padding: 0.2em 0;
+	* {
+		display: inline-block;
+	}
+	input {
+		margin: 0.5em;
+	}
 }
 
 .grouping-content {
@@ -756,7 +758,7 @@ div.table {
 .premium-message {
 	background-color: @red;
 	color: @white !important;
-	padding: 15px 15px 15px 30px;
+	padding: 0.5em;
 }
 
 .radio.checkbox {
@@ -880,7 +882,7 @@ i.step-icon {
 	-webkit-transition: height 0.2s ease;
 	-moz-transition: height 0.2s ease;
 	transition: height 0.2s ease;
-	background-color: @background-color;
+	background-color: @foreground-color;
 	border-radius: 3px;
 	.item {
 		display: inline-block;
@@ -943,6 +945,22 @@ i.step-icon {
 	}
 }
 
+.menu.sort {
+	position: absolute;
+	z-index: 1100;
+	left: inherit;
+	top: -5.5em;
+	overflow-y: hidden;
+	border: 1px solid @dark-gray;
+	i {
+		font-size: 1em;
+	}
+	.item.hover {
+		color: @green;
+		cursor: pointer;
+	}
+}
+
 .signup {
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 		width: 30%;
@@ -961,4 +979,7 @@ i.step-icon {
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		padding: 0 1em 0 0;
 	}
+}
+.fields .title {
+	margin: 0 0 1em 0;
 }

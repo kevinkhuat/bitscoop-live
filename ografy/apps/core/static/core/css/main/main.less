@@ -62,6 +62,7 @@
 }
 
 .filter.button {
+	display: inline-block;
 	font-weight: bold;
 	padding: 0.25em 0.5em 0.25em 0;
 	text-align: center;
@@ -302,18 +303,14 @@ main {
 	width: 100%;
 	position: absolute;
 }
+
 .list.content {
-	height: 100%;
 	max-height: 96%;
 	position: relative;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 .list.title {
-	padding: 5px;
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		margin: 4px 0;
-		padding: 0;
-	}
 	color: @deep-gray;
 	text-decoration: none !important;
 	font-size: 1em;
@@ -327,6 +324,9 @@ main {
 		background-color: @red;
 		color: @white;
 	}
+	@media (orientation: portrait) {
+		display: none;
+	}
 }
 .list.item {
 	width: 100%;
@@ -338,6 +338,22 @@ main {
 	font-size: 1em;
 	& > * {
 		padding: 0.5em 0.8em;
+		@media(orientation: portrait) {
+			display: block;
+			text-align: right;
+		}
+	}
+	& > :before {
+		@media(orientation: portrait) {
+			content: attr(data-label);
+			float: left;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+	}
+	@media (orientation: portrait) {
+		display: block;
+		border-bottom: 1px solid @white;
 	}
 }
 .list.item.hover {
@@ -422,8 +438,14 @@ main {
     }
 }
 .main-list {
+	margin-bottom: 2.6em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		font-size: 14px;
+		margin-bottom: 3.5em;
 	}
 }
 
@@ -434,9 +456,13 @@ main {
 
 .order {
 	position: absolute;
-	left: 45%;
-	bottom: 0.5em;
-	background-color: @pale-gray;
+	right: 1em;
+	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		right: 1em;
+	}
+	bottom: 0;
+	background-color: @deep-gray;
+	color: @white;
 	padding: 0.2em;
 	& > * {
 		display: inline-block;
@@ -444,9 +470,26 @@ main {
 	i {
 		font-size: 2em;
 	}
+	.sort-button {
+		transform: translateY(-10%);
+		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+			transform: translateY(-15%);
+		}
+		& > i {
+			font-size: 1.5em;
+			margin: 0 0.2em;
+		}
+	}
+	.sort-button.hover {
+		color: @green;
+		cursor: pointer;
+	}
 }
-.page {
+.result {
 	transform: translateY(-35%);
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		transform: translateY(-45%);
+	}
 }
 
 .next-page.hover, .previous-page.hover {

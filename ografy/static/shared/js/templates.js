@@ -86,7 +86,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-list grow\">\n\t<div class=\"flex list title\">\n\t\t<div id=\"provider_name\" class=\"grow list item-provider bold\">\n\t\t\tProvider Name\n\t\t\t<i></i>\n\t\t</div>\n\t\t<div id=\"datetime\" class=\"grow list item-datetime bold\">\n\t\t\tDate/Time\n\t\t\t<i></i>\n\t\t</div>\n\t\t<div id=\"name\" class=\"grow list item-name bold\">\n\t\t\tName\n\t\t\t<i></i>\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
+output += "<div class=\"main-list grow\">\n\t<div class=\"flex list title\">\n\t\t<div id=\"provider_name\" class=\"grow list provider_name bold\">\n\t\t\tProvider\n\t\t\t<i></i>\n\t\t</div>\n\t\t<div id=\"datetime\" class=\"grow list datetime bold\">\n\t\t\tDate/Time\n\t\t\t<i></i>\n\t\t</div>\n\t\t<div id=\"name\" class=\"grow list name bold\">\n\t\t\tName\n\t\t\t<i></i>\n\t\t</div>\n\t</div>\n\t<div class=\"list content\">\n\t</div>\n</div>";
 cb(null, output);
 ;
 } catch (e) {
@@ -118,11 +118,11 @@ frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n<div class=\"flex list item\" id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"id", env.autoesc), env.autoesc);
-output += "\">\n\t<div class=\"grow list item-provider\">\n\t\t";
+output += "\">\n\t<div data-label=\"Provider\" class=\"grow list provider_name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"provider_name", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"grow list item-datetime\">\n\t\t";
+output += "\n\t</div>\n\t<div data-label=\"Date/Time\" class=\"grow list datetime\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"datetime", env.autoesc), env.autoesc);
-output += "\n\t</div>\n\t<div class=\"grow list item-name\">\n\t\t";
+output += "\n\t</div>\n\t<div data-label= \"Name\" class=\"grow list name\">\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name", env.autoesc), env.autoesc);
 output += "\n\t</div>\n</div>\n";
 ;
@@ -400,17 +400,32 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div>\n\t<i class=\"previous-page ";
+output += "<div class=\"sort-button\">\n\t<i class=\"icon-sort-amount-desc\"></i>\n</div>\n<div class=\"flex column menu sort hidden\">\n\t<div id=\"provider_name\" class=\"item\">\n\t\tProvider\n\t\t<i></i>\n\t</div>\n\t<div id=\"datetime\" class=\"item\">\n\t\tDate/Time\n\t\t<i></i>\n\t</div>\n\t<div id=\"name\" class=\"item\">\n\t\tName\n\t\t<i></i>\n\t</div>\n</div>\n<div>\n\t<i class=\"previous-page ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"total_results", env.autoesc) == 0 || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"start_index", env.autoesc) == 1) {
 output += "disabled ";
 ;
 }
-output += "icon-triangle-left\"></i>\n</div>\n<div class=\"page\">\n\t";
+output += "icon-triangle-left\"></i>\n</div>\n<div class=\"result\">\n\t";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"mobile", env.autoesc)) {
+output += "\n\t\t";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"total_results", env.autoesc), env.autoesc);
+output += " [";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"start_index", env.autoesc), env.autoesc);
+output += "-";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"end_index", env.autoesc), env.autoesc);
+output += "]\n\t";
+;
+}
+else {
+output += "\n\t\t";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"total_results", env.autoesc), env.autoesc);
 output += " Results - Showing ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"start_index", env.autoesc), env.autoesc);
 output += " to ";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"end_index", env.autoesc), env.autoesc);
+output += "\n\t";
+;
+}
 output += "\n</div>\n<div>\n\t<i class=\"next-page ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"total_results", env.autoesc) == 0 || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"end_index", env.autoesc) == runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "order")),"total_results", env.autoesc)) {
 output += "disabled ";

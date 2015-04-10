@@ -32,8 +32,7 @@ $(document).ready(function() {
 	});
 
 	$(document.body).click(function(e) {
-		if (e.target.className !== ('user-button item') &&
-			e.target.className !== ('item')) {
+		if (!e.target.classList.contains('item')) {
 			$('.menu.main').addClass('hidden');
 		}
 	});
@@ -44,8 +43,8 @@ $(document).ready(function() {
 	});
 
 	$(document.body).click(function(e) {
-		if (e.target.className !== ('drawer-toggle icon-paragraph-justify') &&
-			e.target.className !== ('link')) {
+		if (!e.target.classList.contains('drawer-toggle') &&
+			!e.target.classList.contains('link')) {
 			$('.left.drawer').addClass('hidden');
 			$('.drawer-toggle').addClass('hidden');
 		}
@@ -101,7 +100,9 @@ $(document).ready(function() {
 			$(this).removeClass('hover');
 		})
 		.click(function() {
-			$(this).removeClass('hover');
+			if (window.window.devicePixelRatio > 1.5) {
+				$(this).removeClass('hover');
+			}
 		});
 
 	$('.menu .add-filter').click(function() {

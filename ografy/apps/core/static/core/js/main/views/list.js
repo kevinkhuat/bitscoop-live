@@ -7,14 +7,6 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		var list = nunjucks.render('list/list.html');
 		$('.data-view').html(list);
 
-		var orderBar = nunjucks.render('search/order.html',
-			{
-				order: {
-					page_num: dataInst.getResultCurrentPage(),
-					num_pages: dataInst.getResultTotalPages()
-				}
-		});
-		$('.data-view').add(orderBar);
 		//Create an instance of the Detail panel, get the map and geoJSON properties it created,
 		//then render the List View's content.
 		var thisDetailViewInst = detailViewInst.renderContent(true);
@@ -36,7 +28,9 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 			.click(function() {
 				var searchOrder;
 
-				$(this).removeClass('hover');
+				if (window.window.devicePixelRatio > 1.5) {
+					$(this).removeClass('hover');
+				}
 				dataInst.setResultCurrentPage(1);
 				//Remove the order icons from every other header, as we're only ordering by one field at a time for now
 				$(this).siblings().children().removeClass('icon-triangle-up').removeClass('icon-triangle-down');
@@ -73,6 +67,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	//Update the List View content
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
+		var currentOrder = dataInst.getCurrentOrder();
 		var resultData = dataInst.getResultData();
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
@@ -80,6 +75,12 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		});
 		$('.list.content').html(listItems);
 
+		if (currentOrder.slice(0,1) === '+') {
+			$('.list.title').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-up');
+		}
+		else {
+			$('.list.title').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-down');
+		}
 		//Bind an event listener that triggers when any list item is clicked or moused over/off
 		$('.list.item')
 			.mouseenter(function() {
@@ -92,7 +93,10 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 				//Remove 'active' from items other than the one that was clicked on
 				//Then toggle 'active' on the clicked item
 				var selectedItem = $(this);
-				selectedItem.removeClass('hover');
+
+				if (window.window.devicePixelRatio > 1.5) {
+					selectedItem.removeClass('hover');
+				}
 				selectedItem.siblings().removeClass('active');
 				selectedItem.toggleClass('active');
 
@@ -130,7 +134,13 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	//This allows for making the content scrollable while leaving the header alone.
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
-		$('.list.content').height(parentHeight - 30);
+		var headerHeight = $('.list.title').height();
+		if (window.innerHeight < window.innerWidth) {
+			$('.list.content').height(parentHeight - headerHeight);
+		}
+		else {
+			$('.list.content').height(parentHeight);
+		}
 	}
 
 	$(window).resize(function() {

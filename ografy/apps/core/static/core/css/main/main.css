@@ -11,6 +11,7 @@
   overflow-y: auto;
 }
 .filter.button {
+  display: inline-block;
   font-weight: bold;
   padding: 0.25em 0.5em 0.25em 0;
   text-align: center;
@@ -256,22 +257,15 @@ select {
   position: absolute;
 }
 .list.content {
-  height: 100%;
   max-height: 96%;
   position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .list.title {
-  padding: 5px;
   color: #333333;
   text-decoration: none !important;
   font-size: 1em;
-}
-@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-  .list.title {
-    margin: 4px 0;
-    padding: 0;
-  }
 }
 .list.title .list {
   cursor: pointer;
@@ -282,6 +276,11 @@ select {
 .list.title .list.hover {
   background-color: #bd2c00;
   color: #ffffff;
+}
+@media (orientation: portrait) {
+  .list.title {
+    display: none;
+  }
 }
 .list.item {
   width: 100%;
@@ -294,6 +293,26 @@ select {
 }
 .list.item > * {
   padding: 0.5em 0.8em;
+}
+@media (orientation: portrait) {
+  .list.item > * {
+    display: block;
+    text-align: right;
+  }
+}
+@media (orientation: portrait) {
+  .list.item > :before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+@media (orientation: portrait) {
+  .list.item {
+    display: block;
+    border-bottom: 1px solid #ffffff;
+  }
 }
 .list.item.hover {
   background-color: #6cc644;
@@ -370,9 +389,17 @@ select {
 .dropdown span.hover {
   color: #6cc644;
 }
+.main-list {
+  margin-bottom: 2.6em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
 @media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .main-list {
     font-size: 14px;
+    margin-bottom: 3.5em;
   }
 }
 .spacer {
@@ -381,10 +408,16 @@ select {
 }
 .order {
   position: absolute;
-  left: 45%;
-  bottom: 0.5em;
-  background-color: #eeeeee;
+  right: 1em;
+  bottom: 0;
+  background-color: #333333;
+  color: #ffffff;
   padding: 0.2em;
+}
+@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .order {
+    right: 1em;
+  }
 }
 .order > * {
   display: inline-block;
@@ -392,8 +425,29 @@ select {
 .order i {
   font-size: 2em;
 }
-.page {
+.order .sort-button {
+  transform: translateY(-10%);
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .order .sort-button {
+    transform: translateY(-15%);
+  }
+}
+.order .sort-button > i {
+  font-size: 1.5em;
+  margin: 0 0.2em;
+}
+.order .sort-button.hover {
+  color: #6cc644;
+  cursor: pointer;
+}
+.result {
   transform: translateY(-35%);
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .result {
+    transform: translateY(-45%);
+  }
 }
 .next-page.hover,
 .previous-page.hover {
