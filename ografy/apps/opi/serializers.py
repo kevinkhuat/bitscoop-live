@@ -1,4 +1,3 @@
-from django.db.models.query import QuerySet
 from rest_framework import serializers as django_serializers
 
 from ografy.apps.core.documents import Settings
@@ -9,16 +8,24 @@ from ografy.apps.tastydata import serializers as tasty_serializers
 
 
 # TODO: Move to API, Tastadata View, or View?
-def evaluate(query):
+def evaluate(query, QuerySet):
+    # If the queryset has already been evaluated by the internal API send the result directly to the serializer
     if not isinstance(query, QuerySet):
         return query
     else:
-        data = list(query)
+        # evaluating badly formed queries just result in an empty response
+        try:
+            data = list(query)
+        except Exception:
+            return []
+        # If the result of the query is none, send an empty set to the serializer
         if data is None:
             return []
         else:
+            # If there is only one result, send that result to the serializer
             if len(data) == 1:
                 return data[0]
+            # otherwise send the list to the serializer
             return data
 
 
