@@ -25,7 +25,6 @@ function detailView(mapboxViewInst) {
 			mapboxViewInst.initializeMap();
 			map = mapboxViewInst.map;
 			geoJSON = mapboxViewInst.geoJSON;
-//			mapboxViewInst.renderDetailMap();
 		}
 
 		//Populate content with default data
@@ -58,8 +57,9 @@ function detailView(mapboxViewInst) {
 
 	//Update the map with a new event's information
 	function updateMap(eventName, map, coordinates) {
+		map.removeLayer(map.featureLayer);
 		//Create a MapBox GeoJSON element with the new information
-		var geoJSON = {
+		map.featureLayer = L.mapbox.featureLayer({
 			// this feature is in the GeoJSON format: see geojson.org
 			// for the full specification
 			type: 'Feature',
@@ -78,10 +78,10 @@ function detailView(mapboxViewInst) {
 				'marker-color': '#BE9A6B',
 				'marker-symbol': 'post'
 			}
-		};
+		}).addTo(map);
 
-		//Add the new element to the map
-		map.featureLayer.setGeoJSON(geoJSON);
+		////Add the new element to the map
+		//map.featureLayer.setGeoJSON(geoJSON);
 
 		//Center the map on the new element
 		map.setView([coordinates[1], coordinates[0]], 13, {

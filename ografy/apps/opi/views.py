@@ -198,8 +198,8 @@ class DataSingleView(MongoAPIView):
 
 class EventView(MongoAPIView, OPIListView):
     filter_backends = (OrderingFilter,)
-    ordering = 'user_id'
-    ordering_fields = ('created', 'updated', 'user_id', 'signal_id')
+    ordering = 'datetime'
+    ordering_fields = ('provider_name', 'datetime', 'name', 'created', 'updated', 'user_id', 'signal_id')
     pagination_class = TwentyItemPagination
     permission_classes = (permissions.IsAuthenticated,)
     serializer = opi_serializer.EventSerializer
