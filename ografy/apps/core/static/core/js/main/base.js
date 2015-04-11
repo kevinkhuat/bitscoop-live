@@ -32,6 +32,7 @@ function baseView() {
 	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
 		$('.list-view-button').click(function() {
+			urlParserInst.setView('list');
 			dataInst.setCurrentView(listViewInst);
 			listViewInst.renderBase(function() {
 				listViewInst.updateContent();
@@ -42,6 +43,7 @@ function baseView() {
 		//});
 
 		$('.map-view-button').click(function() {
+			urlParserInst.setView('map');
 			dataInst.setCurrentView(mapViewInst);
 			mapViewInst.renderBase(function() {
 				mapViewInst.updateContent();
@@ -75,17 +77,28 @@ function baseView() {
 		//Get the intial search
 		var searchString = getInitialSearchString();
 
+		var sort = getInitialSort();
+
 		//Set the initial view
 		setInitialView();
 
 		//Call the renderBase function for the current view with a callback to perform a search on the search string
-		dataInst.getCurrentView().renderBase(function() {
-			var order;
-			console.log(searchString);
-			urlParserInst.setSearchFilters(searchString);
-			dataInst.setCurrentOrder('-datetime');
-			order = dataInst.getCurrentOrder();
-			dataInst.search('event', searchString, order);
+		var cookie = sessionsCookies().getCsrfToken();
+		var url = 'app/keys/mapbox';
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			headers: {
+				'X-CSRFToken': cookie
+			}
+		}).done(function(data, xhr, response) {
+			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
+			dataInst.getCurrentView().renderBase(function () {
+				console.log(searchString);
+				urlParserInst.setSearchFilters(searchString);
+				dataInst.search('event', searchString, sort);
+			});
 		});
 
 		//Render the default page view
@@ -113,6 +126,17 @@ function baseView() {
 		}
 
 		return searchString;
+	}
+
+	function getInitialSort() {
+		var sort = urlParserInst.getSort();
+
+		if (sort.length === 0) {
+			sort = '-datetime';
+			urlParserInst.setSort(sort);
+		}
+
+		return sort;
 	}
 
 	function setInitialView() {

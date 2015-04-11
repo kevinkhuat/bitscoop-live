@@ -833,8 +833,6 @@ i.step-icon {
   padding: 0.1em 0;
 }
 .menu.hidden {
-  height: 0;
-  width: 0;
   visibility: hidden;
   -webkit-transition: height 0.2s ease;
   -moz-transition: height 0.2s ease;

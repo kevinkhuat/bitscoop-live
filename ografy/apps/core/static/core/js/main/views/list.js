@@ -1,5 +1,7 @@
 //Render the List View on the main page
 function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
+
+	var contentHeight = 0;
 	//Render the base framework of the List View
 	function renderBase(callback) {
 		//Render the list title and the container for the list elements using Nunjucks
@@ -26,36 +28,37 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 				$(this).removeClass('hover');
 			})
 			.click(function() {
-				var searchOrder;
+				var searchSort;
 
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
 				dataInst.setResultCurrentPage(1);
-				//Remove the order icons from every other header, as we're only ordering by one field at a time for now
+				//Remove the sort icons from every other header, as we're only sorting by one field at a time for now
 				$(this).siblings().children().removeClass('icon-triangle-up').removeClass('icon-triangle-down');
 				var childIcon = $(this).children();
-				//Change the current header's order icon
-				//If it's currently ordering by something, order by the other way
+				//Change the current header's sort icon
+				//If it's currently sorting by something, sort by the other way
 				if ($(childIcon).hasClass('icon-triangle-up')) {
 					$(childIcon).attr('class', 'icon-triangle-down');
-					searchOrder = '-' + $(this)[0].id;
+					searchSort = '-' + $(this)[0].id;
 				}
 				else if ($(childIcon).hasClass('icon-triangle-down')) {
 					$(childIcon).attr('class', 'icon-triangle-up');
-					searchOrder = '+' + $(this)[0].id;
+					searchSort = '+' + $(this)[0].id;
 				}
-				//If it's not ordering by anything, order up.
+				//If it's not sorting by anything, sort up.
 				else {
 					$(childIcon).attr('class', 'icon-triangle-up');
-					searchOrder = '+' + $(this)[0].id;
+					searchSort = '+' + $(this)[0].id;
 				}
 
-				dataInst.setCurrentOrder(searchOrder);
-				//Do a search with the new order
-				//FIXME: calling the API for every new ordering request is not remotely ideal,
+				urlParserInst.setSort(searchSort);
+				urlParserInst.updateHash();
+				//Do a search with the new sort
+				//FIXME: calling the API for every new sorting request is not remotely ideal,
 				//so this needs to be changed at some point
-				dataInst.search('event', urlParserInst.getSearchFilters(), searchOrder);
+				dataInst.search('event', urlParserInst.getSearchFilters(), searchSort);
 			});
 		renderContent(map, geoJSON);
 		callback();
@@ -64,10 +67,19 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	function renderContent(map, geoJSON) {
 		map.removeLayer(map.featureLayer);
 	}
+
+	function restoreHeight() {
+		return contentHeight;
+	}
+
+	function saveHeight(height) {
+		contentHeight = height;
+	}
+
 	//Update the List View content
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
-		var currentOrder = dataInst.getCurrentOrder();
+		var currentSort = urlParserInst.getSort();
 		var resultData = dataInst.getResultData();
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
@@ -76,11 +88,11 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		$('.list.content').html(listItems);
 
 		$('.list.title').find('i').attr('class', '');
-		if (currentOrder.slice(0,1) === '+') {
-			$('.list.title').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-up');
+		if (currentSort.slice(0,1) === '+') {
+			$('.list.title').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
-			$('.list.title').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-down');
+			$('.list.title').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
 		}
 		//Bind an event listener that triggers when any list item is clicked or moused over/off
 		$('.list.item')
@@ -104,17 +116,28 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 				//If the clicked item is now active, get the item's information from the database
 				if (selectedItem.hasClass('active')) {
 					var event = dataInst.getEventSingleData(selectedItem.attr('id'));
-					detailViewInst.updateContent(event.provider_name, event.datetime, String(event.location.coordinates));
-					detailViewInst.updateMap(event.provider_name, map, event.location.coordinates);
+					if ($('.sidebar').hasClass('invisible')) {
+						$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+							function (e) {
+								map.invalidateSize();
+								setHeight();
+								$('.main-list').addClass('shrunk');
+							});
+					}
+					detailViewInst.updateContent(event.provider_name, event.datetime, event.location.coordinates);
+					$('.sidebar')
 				}
 				//If the clicked item is now inactive (occurs when you click an active item),
 				//clear the detail panel content and map
 				else {
 					detailViewInst.hideContent();
 					detailViewInst.clearMap(map);
+					$('.list.content').height(restoreHeight());
+					$('.main-list').removeClass('shrunk');
 				}
 			});
 		setHeight();
+		saveHeight($('.list.content').height());
 	}
 
 	//This is used to set the height of the div containing the list content.
@@ -123,12 +146,13 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	//This allows for making the content scrollable while leaving the header alone.
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
+		console.log(parentHeight);
 		var headerHeight = $('.list.title').height();
 		if (window.innerHeight < window.innerWidth) {
 			$('.list.content').height(parentHeight - headerHeight);
 		}
 		else {
-			$('.list.content').height(parentHeight);
+			$('.list.content').height($('.main-list').height());
 		}
 	}
 

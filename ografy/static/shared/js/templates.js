@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"flex column grow\">\n\t<div class=\"data-view flex grow\"></div>\n\t<div id=\"event-list\"></div>\n</div>\n<aside class=\"sidebar flex\">\n</aside>\n<div class=\"order\">\n</div>\n";
+output += "<div class=\"flex column grow\">\n\t<div class=\"data-view flex grow\"></div>\n\t<div id=\"event-list\"></div>\n</div>\n<aside class=\"sidebar flex invisible\">\n</aside>\n<div class=\"order\">\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

@@ -387,7 +387,7 @@ select {
   color: #6cc644;
 }
 .main-list {
-  margin-bottom: 2.6em;
+  margin: 0 0 2.6em 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -396,14 +396,18 @@ select {
 @media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
   .main-list {
     font-size: 14px;
-    margin-bottom: 3.5em;
+    margin: 0 0 3.5em 0;
   }
+}
+.main-list.shrunk {
+  margin: 0;
 }
 .spacer {
   height: 1.25em;
   border-left: 1px solid #999999;
 }
 .order {
+  z-index: 1100;
   position: absolute;
   right: 1em;
   bottom: 0;
@@ -448,7 +452,7 @@ select {
 }
 .next-page.hover,
 .previous-page.hover {
-  color: #0e9d58;
+  color: #6cc644;
   cursor: pointer;
 }
 .next-page.disabled,

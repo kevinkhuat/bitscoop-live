@@ -435,15 +435,18 @@ main {
     }
 }
 .main-list {
-	margin-bottom: 2.6em;
+	margin: 0 0 2.6em 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		font-size: 14px;
-		margin-bottom: 3.5em;
+		margin: 0 0 3.5em 0;
 	}
+}
+.main-list.shrunk {
+	margin: 0;
 }
 
 .spacer {
@@ -452,6 +455,7 @@ main {
 }
 
 .order {
+	z-index: 1100;
 	position: absolute;
 	right: 1em;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
@@ -490,7 +494,7 @@ main {
 }
 
 .next-page.hover, .previous-page.hover {
-	color: @ografy-green;
+	color: @green;
 	cursor: pointer;
 }
 .next-page.disabled, .previous-page.disabled {

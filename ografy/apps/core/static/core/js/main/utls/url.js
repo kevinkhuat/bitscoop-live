@@ -161,6 +161,7 @@ function urlParser() {
 
 	function setView(input) {
 		currentView = input;
+		updateHash();
 	}
 
 	function setSearchFilters(input) {
@@ -175,7 +176,7 @@ function urlParser() {
 	//has its focus coordinates updated as well, or a new search puts that search's filters and query into the URL
 	function updateHash() {
 		encodedFilters = encodeURI(getSearchFilters());
-		var urlString = 'view=' + currentView + '&zoom=' + currentZoom + '&focus=' + currentFocus[0] + ',' + currentFocus[1] + '&filters=' + encodedFilters;
+		var urlString = 'view=' + currentView + '&sort=' + currentSort + '&zoom=' + currentZoom + '&focus=' + currentFocus[0] + ',' + currentFocus[1] + '&filters=' + encodedFilters;
 		window.location.hash = urlString;
 	}
 
