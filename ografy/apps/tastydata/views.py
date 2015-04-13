@@ -2,12 +2,46 @@ from django.db.models import Q as Django_Q
 from django.db.models import QuerySet as Django_QuerySet
 from mongoengine import Q as Mongo_Q
 from mongoengine import QuerySet as Mongo_QuerySet
+from rest_framework import permissions
 from rest_framework.views import APIView as BaseAPIView
+from rest_framework.generics import GenericAPIView
+from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
 
+import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.tastydata import parse_filter
+from ografy.apps.tastydata.pagination import TwentyItemPagination
+
+
+class ListMixin(object):
+    """
+    List a QuerySet.
+    """
+    def list(self, request, *args, **kwargs):
+        QuerySet = self.filter_queryset(request)
+
+        page = self.paginate_queryset(QuerySet)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(QuerySet, many=True)
+        return Response(serializer.data)
+
+
+class OPIListView(ListMixin, GenericAPIView):
+    """
+    Concrete view for listing a QuerySet.
+    """
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class APIView(BaseAPIView):
+    filter_backends = (OrderingFilter,)
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = TwentyItemPagination
+
     class Meta:
         Q = Django_Q
 
@@ -58,12 +92,34 @@ class APIView(BaseAPIView):
 
 
 class DjangoAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     class Meta:
         Q = Django_Q
         QuerySet = Django_QuerySet
 
 
+class DjangoAPIListView(DjangoAPIView, OPIListView):
+    ordering = 'id'
+
+    class Meta:
+        Q = DjangoAPIView.Meta.Q
+        QuerySet = DjangoAPIView.Meta.QuerySet
+        list = OPIListView.list
+
+
 class MongoAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     class Meta:
         Q = Mongo_Q
         QuerySet = Mongo_QuerySet
+
+
+class MongoAPIListView(MongoAPIView, OPIListView):
+    ordering = 'created'
+
+    class Meta:
+        Q = MongoAPIView.Meta.Q
+        QuerySet = MongoAPIView.Meta.QuerySet
+        list = OPIListView.list

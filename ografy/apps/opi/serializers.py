@@ -7,7 +7,6 @@ from ografy.apps.tastydata import related_fields
 from ografy.apps.tastydata import serializers as tasty_serializers
 
 
-# TODO: Move to API, Tastadata View, or View?
 def evaluate(query, QuerySet):
     # If the queryset has already been evaluated by the internal API send the result directly to the serializer
     if not isinstance(query, QuerySet):
