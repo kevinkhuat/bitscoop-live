@@ -73,8 +73,8 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
     # Django References
-    # user = django_serializers.HyperlinkedRelatedField(view_name='user-detail', lookup_field='user.id', queryset=User.objects.all())
-    # provider = django_serializers.HyperlinkedRelatedField(view_name='provider-detail', lookup_field='provider', queryset=User.objects.all())
+    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
+    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
 
     class Meta:
         model = Signal
