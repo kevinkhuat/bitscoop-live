@@ -86,8 +86,11 @@ module.exports = function(grunt) {
 	            tasks: ['nunjucks']
 	        },
 			less: {
-				files: ['ografy/apps/core/static/core/css/main/main-dark.less',
+				files: [
+						'ografy/apps/core/static/core/css/main/main.less',
+						'ografy/apps/core/static/core/css/main/main-dark.less',
 						'ografy/apps/core/static/core/css/main/main-light.less',
+						'ografy/static/shared/css/site.less',
 						'ografy/static/shared/css/site-dark.less',
 						'ografy/static/shared/css/site-light.less'
 				],

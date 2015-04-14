@@ -22,7 +22,7 @@ var output = "";
 try {
 output += "<div class=\"detail grow";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += " text-half ";
+output += " text-half hidden";
 ;
 }
 else {
@@ -31,7 +31,7 @@ output += " full ";
 }
 output += "\">\n\t<div id=\"detail-main-label\" class=\"center main-label\">\n\t\tSelect an Event\n\t</div>\n\t<div class=\"information\">\n\t\t<div id=\"avatar-datetime\" class=\"flex avatar-datetime\">\n\t\t\t<div class=\"avatar\">\n\t\t\t\t<img src=\"https://static.ografy.io/assets/logo_240.png\" alt=\"Avatar\" />\n\t\t\t</div>\n\t\t\t<div id=\"detail-datetime\" class=\"datetime\">\n\t\t\t\t<div id=\"detail-date\" class=\"detail-date\">\n\t\t\t\t\t<label class=\"center label\">Date</label>\n\t\t\t\t\t<div id=\"detail-date-content\" class=\"center content\">\n\t\t\t\t\t\tSelect an Event\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div id=\"detail-time\" class=\"detail-time\">\n\t\t\t\t\t<label class=\"center label\">Time</label>\n\t\t\t\t\t<div id=\"detail-time-content\" class=\"center content\">\n\t\t\t\t\t\tSelect an Event\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div id=\"detail-location\" class=\"detail-location\">\n\t\t\t<label class=\"center label\">Location</label>\n\t\t\t<div id=\"detail-location-content\" class=\"center content\">\n\t\t\t\tSelect an Event\n\t\t\t</div>\n\t\t</div>\n\t\t<div id=\"detail-data\" class=\"detail-data\">\n\t\t\t<label class=\"center label\">Message Body</label>\n\t\t\t<div id=\"detail-data-content\" class=\"center content\">\n\t\t\t\tThis is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 if(runtime.contextOrFrameLookup(context, frame, "showMap")) {
-output += "\n<div class=\"detail map-half flex grow\">\n\t<div id='mapbox' class='grow'></div>\n</div>\n";
+output += "\n<div class=\"detail map-half hidden drawer\">\n\t<i class=\"drawer-toggle map hidden icon-map2\"></i>\n\t<div class=\"map container flex\">\n\t\t<div id='mapbox' class='grow'></div>\n\t</div>\n</div>\n";
 ;
 }
 cb(null, output);
