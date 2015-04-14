@@ -15,11 +15,13 @@
 @dark-translucent: rgba(40, 40, 40, .5);
 @black-translucent: rgba(0, 0, 0, .1);
 
-@background-color: @dark-gray;
-@foreground-color: @deep-gray;
+@background-color: @deep-gray;
+@foreground-color: @dark-gray;
 @text-color: @white;
 @text-disabled: @pale-gray;
 
+@color-1: @green;
+@color-2: @blue;
 
 * {
 	-moz-box-sizing: border-box;
@@ -204,8 +206,8 @@ footer {
 }
 
 .backfill {
-	border: 1px solid @deep-gray;
-	box-shadow: 0 0 10px -3px @dark-gray;
+	border: 1px solid @background-color;
+	box-shadow: 0 0 10px -3px @foreground-color;
 }
 
 .bigger {
@@ -347,19 +349,19 @@ footer {
 	background-color: @white;
 	margin: 0 0 20px 0;
 	& > :first-child {
-		border: 1px solid @dark-gray;
+		border: 1px solid @foreground-color;
 		border-radius: 4px 4px 0 0;
 		font-weight: bold;
 		background-color: @pale-gray;
 		padding: 8px 15px;
 	}
 	& > :last-child {
-		border: 1px solid @dark-gray;
+		border: 1px solid @foreground-color;
 		border-top: none;
 		padding: 10px;
 	}
 	& > .signal-toggle:not(:last-child) {
-		border: 1px solid @dark-gray;
+		border: 1px solid @foreground-color;
 		border-top: none;
 		padding: 10px;
 	}
@@ -384,12 +386,12 @@ ul.links {
 			color: @white;
 		}
 		& > .active {
-			background-color: @dark-gray;
+			background-color: @foreground-color;
 			color: @white;
 		}
 	}
 	& > li:not(:last-child) {
-		border-bottom: 1px solid @deep-gray;
+		border-bottom: 1px solid @background-color;
 	}
 }
 
@@ -476,7 +478,7 @@ body.full {
 }
 
 .square-set {
-	border: 1px solid @dark-gray;
+	border: 1px solid @foreground-color;
 	border-radius: 2px;
 	background: @pale-gray;
 	& > .header {
@@ -488,7 +490,7 @@ body.full {
 			background-color: @green;
 			color: @white;
 			padding: 0.35em;
-			border: 2px solid @dark-gray;
+			border: 2px solid @foreground-color;
 			border-radius: 1em;
 		}
 	}
@@ -606,7 +608,7 @@ div.table {
 	}
 	.step.active {
 		cursor: auto;
-		background: @deep-gray;
+		background: @background-color;
 		.title {
 			color: @green;
 		}
@@ -683,7 +685,6 @@ div.table {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		position: absolute;
 		left: -100%;
-		//		visibility: hidden;
 		-webkit-transition: left 0.2s ease;
 		-moz-transition: left 0.2s ease;
 		transition: left 0.2s ease;
@@ -699,7 +700,7 @@ div.table {
 		width: 2em;
 		height: 2em;
 		padding: .5em;
-		background-color: @deep-gray;
+		background-color: @background-color;
 		text-align: center;
 		border-radius: .25em;
 		line-height: 1;
@@ -927,8 +928,6 @@ i.step-icon {
 }
 
 .menu.hidden {
-	height: 0;
-	width: 0;
 	visibility: hidden;
 	-webkit-transition: height 0.2s ease;
 	-moz-transition: height 0.2s ease;
@@ -943,7 +942,7 @@ i.step-icon {
 	right: 0.5em;
 	top: 3em;
 	overflow-y: hidden;
-	border: 1px solid @dark-gray;
+	border: 1px solid @foreground-color;
 	.item.hover {
 		background-color: inherit;
 	}
@@ -955,7 +954,7 @@ i.step-icon {
 	left: inherit;
 	top: -5.5em;
 	overflow-y: hidden;
-	border: 1px solid @dark-gray;
+	border: 1px solid @foreground-color;
 	i {
 		font-size: 1em;
 	}

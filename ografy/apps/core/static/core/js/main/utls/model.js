@@ -1,5 +1,5 @@
 //View pertaining to obtaining and searching for data
-function dataStore(urlParserInst) {
+function dataStore(urlParserInst, detailViewInst) {
 	//This is the array of events that is returned from a search
 	var resultData = [];
 
@@ -31,7 +31,7 @@ function dataStore(urlParserInst) {
 	//should be displayed.
 	var eventHTML = '';
 
-	var currentOrder = '-datetime';
+	var currentSort = '-datetime';
 
 	var currentViewInst = '';
 
@@ -41,7 +41,7 @@ function dataStore(urlParserInst) {
 	}
 
 	function getEventSingleData(id) {
-		for (i in eventData) {
+		for (var i in eventData) {
 			if (eventData[i].id === id) {
 				return eventData[i];
 			}
@@ -74,14 +74,6 @@ function dataStore(urlParserInst) {
 
 	function setResultCurrentPage(page_num) {
 		resultCurrentPage = page_num;
-	}
-
-	function getCurrentOrder() {
-		return currentOrder;
-	}
-
-	function setCurrentOrder(new_order) {
-		currentOrder = new_order;
 	}
 
 	function setCurrentView(inst) {
@@ -139,7 +131,7 @@ function dataStore(urlParserInst) {
 	}
 
 	function createPageBar() {
-
+		var currentSort = urlParserInst.getSort();
 		var orderBar = nunjucks.render('search/order.html',
 			{
 				order: {
@@ -150,12 +142,12 @@ function dataStore(urlParserInst) {
 				}
 		});
 		$('.order').html(orderBar);
-		if (currentOrder.slice(0,1) === '+') {
-			$('.menu.sort').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-up');
+
+		if (currentSort.slice(0, 1) === '+') {
+			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
-
-			$('.menu.sort').find('#' + currentOrder.slice(1)).find('i').attr('class', 'icon-triangle-down');
+			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
 		}
 		$('.previous-page').not('.disabled')
 			.mouseenter(function() {
@@ -169,13 +161,13 @@ function dataStore(urlParserInst) {
 					$(this).removeClass('hover');
 				}
 				setResultCurrentPage(getResultCurrentPage() - 1);
-				if(getResultCurrentPage === 1) {
+				if (getResultCurrentPage === 1) {
 					$('.previous-page').addClass('disabled');
 				}
 				if (getResultTotalPages() !== 1) {
 					$('.next-page').removeClass('disabled');
 				}
-				search('event', urlParserInst.getSearchFilters(), getCurrentOrder());
+				search('event', urlParserInst.getSearchFilters(), currentSort);
 			});
 
 		$('.next-page').not('.disabled')
@@ -196,7 +188,7 @@ function dataStore(urlParserInst) {
 				if (getResultTotalPages !== 1) {
 					$('.previous-page').removeClass('disabled');
 				}
-				search('event', urlParserInst.getSearchFilters(), getCurrentOrder());
+				search('event', urlParserInst.getSearchFilters(), currentSort);
 			});
 
 		$('.sort-button')
@@ -213,11 +205,11 @@ function dataStore(urlParserInst) {
 				$('.menu.sort').toggleClass('hidden');
 			});
 
-			$(document.body).click(function(e) {
-				if (!e.target.closest('.order')) {
-					$('.menu.sort').addClass('hidden');
-				}
-			});
+		$(document.body).click(function(e) {
+			if (!e.target.closest('.order')) {
+				$('.menu.sort').addClass('hidden');
+			}
+		});
 
 		$('.menu.sort .item')
 			.mouseenter(function() {
@@ -227,31 +219,34 @@ function dataStore(urlParserInst) {
 				$(this).removeClass('hover');
 			})
 			.click(function() {
+				detailViewInst.hideContent();
+				var searchSort;
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
 				setResultCurrentPage(1);
-				//Change the current header's order icon
-				//If it's currently ordering by something, order by the other way
-				if (currentOrder[0] === '-') {
-					searchOrder = '+' + $(this)[0].id;
+				//Change the current header's sort icon
+				//If it's currently sorting by something, sort by the other way
+				if (currentSort[0] === '-') {
+					searchSort = '+' + $(this)[0].id;
 				}
-				else if (currentOrder[0] === '+') {
-					searchOrder = '-' + $(this)[0].id;
+				else if (currentSort[0] === '+') {
+					searchSort = '-' + $(this)[0].id;
 				}
 
-				setCurrentOrder(searchOrder);
-				//Do a search with the new order
-				//FIXME: calling the API for every new ordering request is not remotely ideal,
+				urlParserInst.setSort(searchSort);
+				urlParserInst.updateHash();
+				//Do a search with the new sort
+				//FIXME: calling the API for every new sorting request is not remotely ideal,
 				//so this needs to be changed at some point
-				search('event', urlParserInst.getSearchFilters(), searchOrder);
+				search('event', urlParserInst.getSearchFilters(), urlParserInst.getSort());
 			});
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(eventType, searchString, orderString) {
+	function search(eventType, searchString, sortString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering='+ orderString + '&filter=' + searchString;
+		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -264,9 +259,9 @@ function dataStore(urlParserInst) {
 			if (data.count > 0) {
 				resultCount = data.count;
 				resultPageSize = data.page_size;
-				resultPages = Math.ceil(resultCount/resultPageSize);
+				resultPages = Math.ceil(resultCount / resultPageSize);
 				resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
-				resultCurrentEndIndex = (resultCurrentPage*resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage*resultPageSize);
+				resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
 				results = data.results;
 				for (var index in results) {
 					results[index].updated = new Date(results[index].updated).toLocaleString();
@@ -294,8 +289,6 @@ function dataStore(urlParserInst) {
 		getResultCurrentStartIndex: getResultCurrentStartIndex,
 		getResultCurrentEndIndex: getResultCurrentEndIndex,
 		getResultTotalPages: getResultTotalPages,
-		getCurrentOrder: getCurrentOrder,
-		setCurrentOrder: setCurrentOrder,
 		getCurrentView: getCurrentView,
 		setCurrentView: setCurrentView,
 		updateData: updateData,

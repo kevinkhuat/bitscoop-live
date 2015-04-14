@@ -38,16 +38,25 @@ function detailView(mapboxViewInst) {
 
 	//Update content
 	function updateContent(eventName, eventDateTime, eventLocation) {
-		$('.sidebar').removeClass('invisible');
+		var sidebar = $('.sidebar');
+		if (sidebar.hasClass('invisible')) {
+			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					if ($('.sidebar').children('.map-half').length !== 0) {
+						map.invalidateSize();
+					}
+					setHeight();
+				});
+		}
 		var dateTimeArray = eventDateTime.split(',');
 		$('.detail .main-label').html(eventName);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
-		$('.detail-location .content').html(eventLocation);
+		$('.detail-location .content').html(String(eventLocation));
 		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
-		$('.sidebar').promise().done(function() {
-			setHeight();
-		});
+		if (!$('.detail').hasClass('full')) {
+			updateMap(eventName, map, eventLocation);
+		}
 	}
 
 	//Insert default text into the detail content
@@ -94,7 +103,6 @@ function detailView(mapboxViewInst) {
 	function setHeight() {
 		var detailHeight = $('.detail').height();
 		var mainLabelHeight = $('.main-label').height();
-		console.log(detailHeight + ' ' + mainLabelHeight);
 		$('.information').height(detailHeight - mainLabelHeight);
 	}
 

@@ -23,23 +23,10 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//This needs to be done after the map container has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
 
-		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'app/keys/mapbox';
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'json',
-			headers: {
-				'X-CSRFToken': cookie
-			}
-		}).done(function(data, xhr, response) {
-			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
-			mapboxViewInst.initializeMap();
-			map = mapboxViewInst.map;
-			geoJSON = mapboxViewInst.geoJSON;
-			callback();
-
-		});
+		mapboxViewInst.initializeMap();
+		map = mapboxViewInst.map;
+		geoJSON = mapboxViewInst.geoJSON;
+		callback();
 	}
 
 	//Creates a new layer of markers on the map
@@ -58,8 +45,10 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
+		var newData = dataInst.getResultData();
+
 		//Adds result data to a geoJSON layer
-		geoJSON = mapboxViewInst.addData(geoJSON);
+		geoJSON = mapboxViewInst.addData(geoJSON, newData);
 
 		//Add the new element to the map
 		map.featureLayer = L.mapbox.featureLayer(geoJSON);

@@ -1,5 +1,5 @@
 //View pertaining to the MapBox map
-function mapboxManager(dataInst) {
+function mapboxManager() {
 	var map, geoJSON;
 
 	//The map needs to be created for the functions associated with this view to work
@@ -83,9 +83,7 @@ function mapboxManager(dataInst) {
 		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
 	}
 
-	function addData(geoJSON) {
-		var newData = dataInst.getResultData();
-
+	function addData(geoJSON, newData) {
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in newData) {
 			geoJSON.features.push({

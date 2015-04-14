@@ -17,35 +17,19 @@
 
 
 //-------------------------------
-// Theme: Dark
-
-@background-color: @dark-gray;
-@foreground-color: @deep-gray;
-@text-color: @white;
-@text-disabled: @light-gray;
-
-@color-1: @green;
-@color-2: @blue;
-
-//---------------------------------
-
-
-//-------------------------------
 // Theme: Light
 
-@background-color: @dark-gray;
-@foreground-color: @deep-gray;
-@text-color: @white;
+@background-color: @light-gray;
+@foreground-color: @white;
+@list-background-color: @white;
+@detail-background-color: @dark-gray;
+@text-color: @black;
 @text-disabled: @light-gray;
 
 @color-1: @green;
 @color-2: @blue;
 
 //---------------------------------
-
-
-
-
 .search-bar {
 	margin: 0 10px;
 }
@@ -137,6 +121,7 @@ main {
 }
 
 .sidebar {
+	color: @text-color;
 	position: relative;
 	@media (orientation: landscape) {
 		width: 50%;
@@ -165,14 +150,13 @@ main {
 		}
 		.main-label {
 			background-color: @blue;
-			color: @white;
 			width: 100%;
 			padding: 3px 0 3px 0;
 			min-height: 60px;
 		}
 
 		.label {
-			background-color: @light-gray;
+			background-color: @detail-background-color;
 			width: 100%;
 			padding: 3px 0 3px 0;
 			float: left;
@@ -244,7 +228,7 @@ main {
 		}
 	}
 	.detail.text-half {
-		background-color: @pale-gray;
+		background-color: @background-color;
 		@media (orientation: landscape) {
 			min-height: 300px;
 			height: 50%;
@@ -327,7 +311,8 @@ main {
 }
 .list.item {
 	width: 100%;
-	color: @light-gray;
+	color: @text-color;
+	background-color: @list-background-color;
 	transition: width .5s ease;
 	cursor: pointer;
 	vertical-align: middle;
@@ -350,7 +335,7 @@ main {
 	}
 	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		display: block;
-		border-bottom: 1px solid @white;
+		border-bottom: 1px solid @text-color;
 	}
 }
 .list.item.hover {
@@ -435,15 +420,18 @@ main {
     }
 }
 .main-list {
-	margin-bottom: 2.6em;
+	margin: 0 0 2.6em 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		font-size: 14px;
-		margin-bottom: 3.5em;
+		margin: 0 0 3.5em 0;
 	}
+}
+.main-list.shrunk {
+	margin: 0;
 }
 
 .spacer {
@@ -452,14 +440,12 @@ main {
 }
 
 .order {
+	z-index: 1100;
 	position: absolute;
-	right: 1em;
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		right: 1em;
-	}
 	bottom: 0;
-	background-color: @deep-gray;
-	color: @white;
+	right: 0.5em;
+	background-color: @background-color;
+	color: @text-color;
 	padding: 0.2em;
 	& > * {
 		display: inline-block;
@@ -490,7 +476,7 @@ main {
 }
 
 .next-page.hover, .previous-page.hover {
-	color: @ografy-green;
+	color: @green;
 	cursor: pointer;
 }
 .next-page.disabled, .previous-page.disabled {
