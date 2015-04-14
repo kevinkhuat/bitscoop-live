@@ -54,7 +54,7 @@ $(document).ready(function() {
 		if (!e.target.classList.contains('drawer-toggle') &&
 			!e.target.classList.contains('link')) {
 			$('.left.drawer').addClass('hidden');
-			$('.drawer-toggle').addClass('hidden');
+			$('.drawer-toggle').not('.map').addClass('hidden');
 		}
 	});
 

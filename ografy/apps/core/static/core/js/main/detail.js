@@ -30,6 +30,15 @@ function detailView(mapboxViewInst) {
 		//Populate content with default data
 		hideContent();
 
+		$('.map.drawer-toggle').click(function() {
+			$('.map.drawer-toggle').toggleClass('hidden');
+			$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					$('.text-half').toggleClass('hidden');
+					map.invalidateSize();
+					setHeight();
+				});
+		});
 //		return {
 //			map: map,
 //			geoJSON: geoJSON
