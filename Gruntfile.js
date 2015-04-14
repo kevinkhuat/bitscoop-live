@@ -58,8 +58,10 @@ module.exports = function(grunt) {
 		less: {
 			development: {
 				files: {
-					'ografy/apps/core/static/core/css/main/main.css': 'ografy/apps/core/static/core/css/main/main.less',
-					'ografy/static/shared/css/site.css': 'ografy/static/shared/css/site.less'
+					'ografy/apps/core/static/core/css/main/main-dark.css': 'ografy/apps/core/static/core/css/main/main-dark.less',
+					'ografy/apps/core/static/core/css/main/main-light.css': 'ografy/apps/core/static/core/css/main/main-light.less',
+					'ografy/static/shared/css/site-dark.css': 'ografy/static/shared/css/site-dark.less',
+					'ografy/static/shared/css/site-light.css': 'ografy/static/shared/css/site-light.less'
 				}
 			}
 		},
@@ -84,7 +86,11 @@ module.exports = function(grunt) {
 	            tasks: ['nunjucks']
 	        },
 			less: {
-				files: ['ografy/apps/core/static/core/css/main/main.less', 'ografy/static/shared/css/site.less'],
+				files: ['ografy/apps/core/static/core/css/main/main-dark.less',
+						'ografy/apps/core/static/core/css/main/main-light.less',
+						'ografy/static/shared/css/site-dark.less',
+						'ografy/static/shared/css/site-light.less'
+				],
 				tasks: ['less']
 			}
 		}

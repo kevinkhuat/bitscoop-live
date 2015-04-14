@@ -27,6 +27,14 @@
 //	}
 //}
 $(document).ready(function() {
+	var renderDark = true;
+
+	if (renderDark) {
+		setColorScheme ('dark');
+	}
+	else {
+		setColorScheme ('light');
+	}
 	$('.user-button').click(function() {
 		$('.menu.main').toggleClass('hidden');
 	});
@@ -119,3 +127,18 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function setColorScheme(scheme) {
+		var renderStyle = (scheme === 'light') ? ('light') : 'dark';
+		var mainLink  = document.createElement('link');
+		var siteLink  = document.createElement('link');
+		mainLink.rel = "stylesheet";
+		siteLink.rel  = "stylesheet";
+		mainLink.type = "text/css";
+		siteLink.type = "text/css";
+		mainLink.href = "/static/core/css/main/main-" + renderStyle + ".css";
+		siteLink.href = "/static/shared/css/site-" + renderStyle + ".css";
+
+		document.head.appendChild(mainLink);
+		document.head.appendChild(siteLink);
+	}

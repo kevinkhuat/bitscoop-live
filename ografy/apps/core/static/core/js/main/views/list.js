@@ -1,6 +1,5 @@
 //Render the List View on the main page
 function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
-
 	var contentHeight = 0;
 	//Render the base framework of the List View
 	function renderBase(callback) {
@@ -22,7 +21,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		//Other click functionality detailed below
 		$('.list.title > .list')
 			.mouseenter(function() {
-			$(this).addClass('hover');
+				$(this).addClass('hover');
 			})
 			.mouseleave(function() {
 				$(this).removeClass('hover');
@@ -88,7 +87,7 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 		$('.list.content').html(listItems);
 
 		$('.list.title').find('i').attr('class', '');
-		if (currentSort.slice(0,1) === '+') {
+		if (currentSort.slice(0, 1) === '+') {
 			$('.list.title').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
@@ -116,16 +115,23 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 				//If the clicked item is now active, get the item's information from the database
 				if (selectedItem.hasClass('active')) {
 					var event = dataInst.getEventSingleData(selectedItem.attr('id'));
+					var previousSiblings = selectedItem.prevAll();
+					var scrollHeight = 0;
 					if ($('.sidebar').hasClass('invisible')) {
 						$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-							function (e) {
+							function(e) {
+								scrollHeight = previousSiblings.height() * previousSiblings.length;
+								$('.list.content').animate({ scrollTop: scrollHeight }, 100);
 								map.invalidateSize();
 								setHeight();
 								$('.main-list').addClass('shrunk');
 							});
 					}
+					else {
+						scrollHeight = previousSiblings.height() * previousSiblings.length;
+						$('.list.content').animate({ scrollTop: scrollHeight }, 100);
+					}
 					detailViewInst.updateContent(event.provider_name, event.datetime, event.location.coordinates);
-					$('.sidebar')
 				}
 				//If the clicked item is now inactive (occurs when you click an active item),
 				//clear the detail panel content and map
@@ -146,7 +152,6 @@ function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIn
 	//This allows for making the content scrollable while leaving the header alone.
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
-		console.log(parentHeight);
 		var headerHeight = $('.list.title').height();
 		if (window.innerHeight < window.innerWidth) {
 			$('.list.content').height(parentHeight - headerHeight);

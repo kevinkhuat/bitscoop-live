@@ -1,5 +1,5 @@
 //View pertaining to obtaining and searching for data
-function dataStore(urlParserInst) {
+function dataStore(urlParserInst, detailViewInst) {
 	//This is the array of events that is returned from a search
 	var resultData = [];
 
@@ -41,7 +41,7 @@ function dataStore(urlParserInst) {
 	}
 
 	function getEventSingleData(id) {
-		for (i in eventData) {
+		for (var i in eventData) {
 			if (eventData[i].id === id) {
 				return eventData[i];
 			}
@@ -143,11 +143,10 @@ function dataStore(urlParserInst) {
 		});
 		$('.order').html(orderBar);
 
-		if (currentSort.slice(0,1) === '+') {
+		if (currentSort.slice(0, 1) === '+') {
 			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
-
 			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
 		}
 		$('.previous-page').not('.disabled')
@@ -162,7 +161,7 @@ function dataStore(urlParserInst) {
 					$(this).removeClass('hover');
 				}
 				setResultCurrentPage(getResultCurrentPage() - 1);
-				if(getResultCurrentPage === 1) {
+				if (getResultCurrentPage === 1) {
 					$('.previous-page').addClass('disabled');
 				}
 				if (getResultTotalPages() !== 1) {
@@ -206,11 +205,11 @@ function dataStore(urlParserInst) {
 				$('.menu.sort').toggleClass('hidden');
 			});
 
-			$(document.body).click(function(e) {
-				if (!e.target.closest('.order')) {
-					$('.menu.sort').addClass('hidden');
-				}
-			});
+		$(document.body).click(function(e) {
+			if (!e.target.closest('.order')) {
+				$('.menu.sort').addClass('hidden');
+			}
+		});
 
 		$('.menu.sort .item')
 			.mouseenter(function() {
@@ -220,6 +219,7 @@ function dataStore(urlParserInst) {
 				$(this).removeClass('hover');
 			})
 			.click(function() {
+				detailViewInst.hideContent();
 				var searchSort;
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
@@ -246,7 +246,7 @@ function dataStore(urlParserInst) {
 	//Search for items in the database based on the search parameters and filters
 	function search(eventType, searchString, sortString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering='+ sortString + '&filter=' + searchString;
+		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -259,9 +259,9 @@ function dataStore(urlParserInst) {
 			if (data.count > 0) {
 				resultCount = data.count;
 				resultPageSize = data.page_size;
-				resultPages = Math.ceil(resultCount/resultPageSize);
+				resultPages = Math.ceil(resultCount / resultPageSize);
 				resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
-				resultCurrentEndIndex = (resultCurrentPage*resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage*resultPageSize);
+				resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
 				results = data.results;
 				for (var index in results) {
 					results[index].updated = new Date(results[index].updated).toLocaleString();

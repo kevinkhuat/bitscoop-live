@@ -1,6 +1,8 @@
 //Render the base elements of the main page and bind the navigation event listeners
 //Also call for rendering of the default page view
 function baseView() {
+	var renderDark = false;
+
 	//Instantiate instances of the views that the main page uses
 
 	//Cache Instance
@@ -9,17 +11,17 @@ function baseView() {
 	//URL Parser Instance
 	var urlParserInst = urlParser();
 
-	//Data Instance
-	var dataInst = dataStore(urlParserInst);
+	//Mapbox handler
+	var mapboxViewInst = mapboxManager();
 
 	//Cookie/Session Handler
 	var sessionInst = sessionsCookies();
 
-	//Mapbox handler
-	var mapboxViewInst = mapboxManager(dataInst);
-
 	//View components
 	var detailViewInst = detailView(mapboxViewInst);
+
+	//Data Instance
+	var dataInst = dataStore(urlParserInst, detailViewInst);
 
 	//Views
 	var listViewInst = listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst);
@@ -31,12 +33,25 @@ function baseView() {
 
 	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
+		var sidebar = $('.sidebar');
+
 		$('.list-view-button').click(function() {
 			urlParserInst.setView('list');
 			dataInst.setCurrentView(listViewInst);
-			listViewInst.renderBase(function() {
-				listViewInst.updateContent();
-			});
+			if (!sidebar.hasClass('invisible')) {
+				detailViewInst.hideContent();
+				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function (e) {
+						listViewInst.renderBase(function () {
+							listViewInst.updateContent();
+						});
+					});
+			}
+			else {
+				listViewInst.renderBase(function () {
+					listViewInst.updateContent();
+				});
+			}
 		});
 
 		//$('.timeline-view-button').click(function() {
@@ -45,9 +60,21 @@ function baseView() {
 		$('.map-view-button').click(function() {
 			urlParserInst.setView('map');
 			dataInst.setCurrentView(mapViewInst);
-			mapViewInst.renderBase(function() {
-				mapViewInst.updateContent();
-			});
+			if (!sidebar.hasClass('invisible')) {
+				detailViewInst.hideContent();
+				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					mapViewInst.renderBase(function () {
+						mapViewInst.updateContent();
+					});
+				});
+			}
+			else {
+				mapViewInst.renderBase(function () {
+					mapViewInst.updateContent();
+				});
+			}
+
 		});
 	}
 
@@ -65,8 +92,28 @@ function baseView() {
 		});
 	}
 
+	function setColorScheme(scheme) {
+		var renderStyle = (scheme === 'light') ? ('light') : 'dark';
+		var mainLink  = document.createElement('link');
+		var siteLink  = document.createElement('link');
+		mainLink.rel = "stylesheet";
+		siteLink.rel  = "stylesheet";
+		mainLink.type = "text/css";
+		siteLink.type = "text/css";
+		mainLink.href = "/static/core/css/main/main-" + renderStyle + ".css";
+		siteLink.href = "/static/shared/css/site-" + renderStyle + ".css";
+
+		document.head.appendChild(mainLink);
+		document.head.appendChild(siteLink);
+	}
 	//Render the base page, which consists of the header bar and the content area
 	function render() {
+		if (renderDark) {
+			setColorScheme ('dark');
+		}
+		else {
+			setColorScheme ('light');
+		}
 		//Use Nunjucks to render the base page from a template and insert it into the page
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);
@@ -94,7 +141,7 @@ function baseView() {
 			}
 		}).done(function(data, xhr, response) {
 			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
-			dataInst.getCurrentView().renderBase(function () {
+			dataInst.getCurrentView().renderBase(function() {
 				console.log(searchString);
 				urlParserInst.setSearchFilters(searchString);
 				dataInst.search('event', searchString, sort);

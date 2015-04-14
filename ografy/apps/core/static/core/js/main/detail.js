@@ -41,8 +41,10 @@ function detailView(mapboxViewInst) {
 		var sidebar = $('.sidebar');
 		if (sidebar.hasClass('invisible')) {
 			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-				function (e) {
-					map.invalidateSize();
+				function(e) {
+					if ($('.sidebar').children('.map-half').length !== 0) {
+						map.invalidateSize();
+					}
 					setHeight();
 				});
 		}
