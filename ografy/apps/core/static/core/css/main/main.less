@@ -150,7 +150,7 @@ main {
 			background-color: @blue;
 			width: 100%;
 			padding: 3px 0 3px 0;
-			min-height: 60px;
+			min-height: 40px;
 		}
 
 		.label {
@@ -225,7 +225,6 @@ main {
 		position: relative;
 		background-color: @background-color;
 		@media (orientation: landscape) {
-			min-height: 300px;
 			height: 50%;
 			width: 100%;
 		}
@@ -234,31 +233,17 @@ main {
 			width: 50%
 		}
 	}
-	.detail.text-half.hidden {
-		position: relative;
-		background-color: @background-color;
-		@media (orientation: landscape) {
-			min-height: 300px;
-			height: 100%;
-			width: 100%;
-		}
-		@media (orientation: portrait) {
-			height: 100%;
-			width: 100%
-		}
-	}
 	.detail.map-half {
 		position: relative;
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
 		@media (orientation: landscape) {
-			display: block;
-			min-height: 250px;
 			height: 50%;
+			width: 100%;
 		}
 		@media (orientation: portrait) {
-			display: inline-block;
+			height: 100%;
 			width: 50%;
 		}
 	}
@@ -267,12 +252,12 @@ main {
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
 		@media (orientation: landscape) {
-			display: block;
 			height: 0;
+			width: 100%;
 			min-height: 0;
 		}
 		@media (orientation: portrait) {
-			display: inline-block;
+			height: 100%;
 			width: 0;
 			min-width: 0;
 		}
@@ -281,8 +266,10 @@ main {
 		background-color: @detail-background-color;
 		@media (orientation: landscape) {
 			height: 100%;
+			width: 100%;
 		}
 		@media (orientation: portrait) {
+			height: 100%;
 			width: 100%;
 		}
 	}
@@ -473,7 +460,7 @@ main {
 	position: absolute;
 	bottom: 0;
 	right: 0.5em;
-	background-color: @background-color;
+	background-color: @pale-gray;
 	color: @text-color;
 	padding: 0.2em;
 	& > * {

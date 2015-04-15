@@ -23,7 +23,7 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//This needs to be done after the map container has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
 
-		mapboxViewInst.initializeMap();
+		mapboxViewInst.initializeMap(true);
 		map = mapboxViewInst.map;
 		geoJSON = mapboxViewInst.geoJSON;
 		callback();

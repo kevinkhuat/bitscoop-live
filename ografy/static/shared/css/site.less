@@ -16,7 +16,8 @@
 @black-translucent: rgba(0, 0, 0, .1);
 
 @background-color: @white;
-@foreground-color: @pale-gray;
+@foreground-color: @light-gray;
+@accent-color: @pale-gray;
 @text-color: @black;
 @text-disabled: @light-gray;
 
@@ -93,7 +94,7 @@ html {
 }
 
 body {
-	color: @foreground-color;
+	color: @text-color;
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-direction: column;
@@ -346,13 +347,14 @@ footer {
 }
 
 .grouping {
-	background-color: @white;
+	color: @text-color;
+	background-color: @foreground-color;
 	margin: 0 0 20px 0;
 	& > :first-child {
 		border: 1px solid @foreground-color;
 		border-radius: 4px 4px 0 0;
 		font-weight: bold;
-		background-color: @pale-gray;
+		background-color: @accent-color;
 		padding: 8px 15px;
 	}
 	& > :last-child {
@@ -376,6 +378,8 @@ ul.links {
 	background-color: @white;
 	& > li {
 		& > * {
+			color: @text-color;
+			background-color: @background-color;
 			display: block;
 			padding: 8px 12px;
 			text-decoration: none;
@@ -542,12 +546,13 @@ div.table {
 }
 
 .provider-name {
+	color: @blue;
 	font-size: 1.5em;
 	font-weight: bold;
 }
 
 .provider-description {
-	color: @text-disabled;
+	color: @text-color;
 }
 
 .signal-button.hover {
@@ -691,6 +696,16 @@ div.table {
 	}
 }
 
+.drawer.map.hidden {
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		position: relative;
+		left: inherit;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+	}
+}
+
 .drawer-toggle {
 	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		-webkit-box-sizing: border-box;
@@ -700,7 +715,7 @@ div.table {
 		width: 2em;
 		height: 2em;
 		padding: .5em;
-		background-color: @background-color;
+		background-color: @accent-color;
 		text-align: center;
 		border-radius: .25em;
 		line-height: 1;
@@ -713,7 +728,7 @@ div.table {
 		-webkit-transition: left 0.2s ease;
 		-moz-transition: left 0.2s ease;
 		transition: left 0.2s ease;
-		color: @white;
+		color: @text-color;
 	}
 	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
 		width: 0;
@@ -730,7 +745,7 @@ div.table {
 	width: 2em;
 	height: 2em;
 	padding: .5em;
-	background-color: @foreground-color;
+	background-color: @accent-color;
 	color: @text-color;
 	text-align: center;
 	border-radius: .25em;
@@ -751,6 +766,7 @@ div.table {
 	@media (orientation: portrait) {
 		right: 100%;
 		top: inherit;
+		left: initial;
 	}
 }
 
@@ -759,7 +775,6 @@ div.table {
 	}
 .drawer-toggle.hidden {
 	left: inherit;
-	bottom: 0;
 	-webkit-transition: left 0.2s ease;
 	-moz-transition: left 0.2s ease;
 	transition: left 0.2s ease;
@@ -920,12 +935,12 @@ i.step-icon {
 
 .menu {
 	position: absolute;
-	width: 85%;
+	width: 100%;
 	@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
 		width: 125%;
 	}
 	top: 2.5em;
-	left: 2.5em;
+	left: 0;
 	z-index: 1100;
 	overflow-y: auto;
 	max-height: 20em;
@@ -935,7 +950,7 @@ i.step-icon {
 	-webkit-transition: height 0.2s ease;
 	-moz-transition: height 0.2s ease;
 	transition: height 0.2s ease;
-	background-color: @foreground-color;
+	background-color: @accent-color;
 	border-radius: 3px;
 	.item {
 		display: inline-block;
