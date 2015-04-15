@@ -1,8 +1,6 @@
 //Render the base elements of the main page and bind the navigation event listeners
 //Also call for rendering of the default page view
 function baseView() {
-	var renderDark = false;
-
 	//Instantiate instances of the views that the main page uses
 
 	//Cache Instance
@@ -91,29 +89,9 @@ function baseView() {
 			}
 		});
 	}
-
-	function setColorScheme(scheme) {
-		var renderStyle = (scheme === 'light') ? ('light') : 'dark';
-		var mainLink  = document.createElement('link');
-		var siteLink  = document.createElement('link');
-		mainLink.rel = "stylesheet";
-		siteLink.rel  = "stylesheet";
-		mainLink.type = "text/css";
-		siteLink.type = "text/css";
-		mainLink.href = "/static/core/css/main/main-" + renderStyle + ".css";
-		siteLink.href = "/static/shared/css/site-" + renderStyle + ".css";
-
-		document.head.appendChild(mainLink);
-		document.head.appendChild(siteLink);
-	}
+	
 	//Render the base page, which consists of the header bar and the content area
 	function render() {
-		if (renderDark) {
-			setColorScheme ('dark');
-		}
-		else {
-			setColorScheme ('light');
-		}
 		//Use Nunjucks to render the base page from a template and insert it into the page
 		var base_framework = nunjucks.render('base.html');
 		$('main').html(base_framework);

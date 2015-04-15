@@ -8,7 +8,7 @@ function mapboxManager() {
 	//Create the MapBox map
 	//Note that this must be run after the map container has been inserted into the DOM
 	//in order to run right
-	function initializeMap() {
+	function initializeMap(enableExtraControls) {
 		this.geoJSON = {
 			type: 'FeatureCollection',
 			features: []
@@ -35,11 +35,11 @@ function mapboxManager() {
 		}));
 
 		L.control.fullscreen().addTo(this.map);
-		if (window.devicePixelRatio < 1.5) {
-			L.control.zoomslider().addTo(this.map);
+		if (window.devicePixelRatio < 1.5 && enableExtraControls) {
 			var map = this.map;
-			map.featureGroup = L.featureGroup().addTo(this.map);
-			var drawControl = new L.Control.Draw({
+			map.zoomslider = L.control.zoomslider().addTo(map);
+			map.featureGroup = L.featureGroup().addTo(map);
+			map.drawControl = new L.Control.Draw({
 				edit: {
 					featureGroup: map.featureGroup
 					},
@@ -50,7 +50,7 @@ function mapboxManager() {
 					circle: false,
 					marker: false
 				}
-			}).addTo(this.map);
+			}).addTo(map);
 
 			this.map.on('draw:created', showPolygonArea);
 			this.map.on('draw:edited', showPolygonAreaEdited);
