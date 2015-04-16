@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^connect/?$', signals_views.providers, name='core_providers'),
     url(r'^connect/(?P<pk>[0-9]+)/?$', signals_views.connect, name='core_connect'),
     url(r'^connect/(?P<name>[a-zA-Z]+)/?$', signals_views.connect_name, name='core_connect_name'),
+    url(r'^verify/?$', signals_views.verify, name='core_verify_base'),
     url(r'^verify/(?P<pk>[0-9]+)/?$', signals_views.verify, name='core_verify'),
 
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),

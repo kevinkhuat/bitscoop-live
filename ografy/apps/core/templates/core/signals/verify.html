@@ -19,20 +19,6 @@
 			}
 			return cookieValue;
 		}
-
-		function verifiedSignal(signal_id, data) {
-			$.ajax({
-				url: '/verify/' + signal_id,
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					"data": data
-				},
-				headers: {
-					"X-CSRFToken": getCookie('csrftoken')
-				}
-			})
-		}
 	</script>
 {% endblock %}
 
@@ -121,31 +107,31 @@
 
 					<div class="field">
 						<div>
-							<input type="radio" name="update-frequency">
+							<input updateFrequency=0 type="radio" name="update-frequency">
 							<label class="premium-message">Premium On Demand</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input type="radio" name="update-frequency">
+							<input updateFrequency=1 type="radio" name="update-frequency" checked="checked">
 							<label>Daily</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input type="radio" name="update-frequency">
+							<input updateFrequency=2 type="radio" name="update-frequency">
 							<label>Weekly</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input type="radio" name="update-frequency">
+							<input updateFrequency=3 type="radio" name="update-frequency">
 							<label>Manual</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input type="radio" name="update-frequency">
+							<input updateFrequency=4 type="radio" name="update-frequency">
 							<label>Once</label>
 						</div>
 					</div>

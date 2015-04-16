@@ -98,7 +98,7 @@ def verify(request, pk):
         signal.connected = True
         signal.save()
 
-        if signal.connected is False or signal.complete is True or signal.enabled is True:
+        if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
                 'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
                 'flex_override': True,
@@ -113,9 +113,10 @@ def verify(request, pk):
                 'signal': signal
             })
     elif request.method == 'POST':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk))
+        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
+        signal.frequency = request.POST['updateFrequency'];
         signal.save()
 
         return HttpResponseRedirect(reverse('core_index'))
