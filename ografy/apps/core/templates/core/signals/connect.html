@@ -1,6 +1,10 @@
 {% extends 'core/settings/base.html' %}
 {% load staticfiles %}
 
+{% block static %}
+{{ block.super }}
+{% endblock %}
+
 {% block left %}
 <div class="flex column steps">
 	<div class="active step">

@@ -15,7 +15,7 @@
 @dark-translucent: rgba(40, 40, 40, .5);
 @black-translucent: rgba(0, 0, 0, .1);
 
-
+@iconpath: '/static/';
 //-------------------------------
 // Theme: Light
 
@@ -86,7 +86,7 @@
 select {
 	display: inline-block;
 	padding: 5px;
-	margin:  0.2em 0.3em;
+	margin: 0.2em 0.3em;
 }
 
 .text {
@@ -416,7 +416,7 @@ main {
 	height: 2em;
 	display: inline-block;
 	cursor: pointer;
-	background-image: url("https://static.ografy.io/assets/ografy_search.png");
+	background-image: url("@{iconpath}assets/ografy_search.png");
 	background-repeat: no-repeat;
 	background-position: 0 50%;
 	background-size: contain;

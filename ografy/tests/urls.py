@@ -10,7 +10,6 @@ handler500 = errors.view500
 
 urlpatterns = patterns('',
     url(r'^auth', include('ografy.apps.xauth.urls')),
-    url(r'^demo', include('ografy.apps.demo.urls')),
     #url(r'^help', include('ografy.apps.helpr.urls')),
     url(r'^opi', include('ografy.apps.opi.urls')),
 
