@@ -150,7 +150,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 				urlParserInst.setSearchQuery($('.search-bar').val());
 				urlParserInst.setSearchFilters(filterString);
 
-				order = dataInst.getCurrentOrder();
+				order = urlParserInst.getSort();
 				//Perform a search based on the search terms and filters
 				dataInst.search(thisType.id, filterString, order);
 			}

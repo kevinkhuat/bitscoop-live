@@ -5,7 +5,7 @@ from rest_framework.response import Response
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.obase import api as obase_api
-from ografy.apps.tastydata.pagination import OneHundredItemPagination, FiveHundredItemPagination
+from ografy.apps.tastydata.pagination import OgrafyItemPagination
 from ografy.apps.tastydata.views import DjangoAPIView, DjangoAPIListView, MongoAPIView, MongoAPIListView
 
 
@@ -420,7 +420,7 @@ class MessageSingleView(MongoAPIView):
 
 class ProviderView(DjangoAPIListView):
     ordering_fields = ('id', 'name', 'backend_name')
-    pagination_class = FiveHundredItemPagination
+    pagination_class = OgrafyItemPagination
     serializer = opi_serializer.ProviderSerializer
     serializer_class = opi_serializer.ProviderSerializer
 
@@ -455,7 +455,7 @@ class SettingsView(MongoAPIListView):
     # TODO: Restrict to admins or remove?
     ordering = 'id'
     ordering_fields = ('id', 'user', 'created', 'updated')
-    pagination_class = OneHundredItemPagination
+    pagination_class = OgrafyItemPagination
     serializer = opi_serializer.SettingsSerializer
     serializer_class = opi_serializer.SettingsSerializer
 
