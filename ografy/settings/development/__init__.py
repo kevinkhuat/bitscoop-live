@@ -41,7 +41,7 @@ MONGODB = {
 # DEBUGGING #
 #############
 
-DEBUG = True
+DEBUG = False
 
 
 ###########

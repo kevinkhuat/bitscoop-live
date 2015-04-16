@@ -2,37 +2,37 @@
 <html>
 <head lang="en-US">
 	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
 	<title>Ografy App</title>
 
 	{% load staticfiles %}
 	{% block static %}
-		{#TODO: super ugly, move dependances to require#}
-		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js"></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.uncompressed.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.js'></script>
-		<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-		<script type="text/javascript" src="http://www.geoplugin.net/javascript.gp"></script>
-		<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css'/>
-		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css'/>
-		<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' />
-		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css'/>
-		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css'/>
-		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
-		<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css'/>
+	{#TODO: super ugly, move dependencies to require#}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js"></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.uncompressed.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+	<script type="text/javascript" src="http://www.geoplugin.net/javascript.gp"></script>
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css'/>
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' />
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css'/>
 
-		<script type="text/javascript" src="{% static 'assets/lib/nunjucks/nunjucks.js' %}"></script>
-		<script type="text/javascript" src="{% static 'assets/lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
-		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
-		<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}"/>
+	<script type="text/javascript" src="{% static 'assets/lib/nunjucks/nunjucks.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
+	<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}"/>
 
-		<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main-light.css' %}"/>
-		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main-light.css' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}"/>
 	{% endblock %}
 
 </head>

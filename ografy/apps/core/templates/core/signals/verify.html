@@ -2,158 +2,158 @@
 {% load staticfiles %}
 
 {% block static %}
-	{{ block.super }}
-	<script type="application/javascript">
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
-				var cookies = document.cookie.split(';');
-				for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					// Does this cookie string begin with the name we want?
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
+{{ block.super }}
+<script type="application/javascript">
+	function getCookie(name) {
+		var cookieValue = null;
+		if (document.cookie && document.cookie != '') {
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
 				}
 			}
-			return cookieValue;
 		}
+		return cookieValue;
+	}
 
-		function verifiedSignal(signal_id, data) {
-			$.ajax({
-				url: '/verify/' + signal_id,
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					"data": data
-				},
-				headers: {
-					"X-CSRFToken": getCookie('csrftoken')
-				}
-			})
-		}
-	</script>
+	function verifiedSignal(signal_id, data) {
+		$.ajax({
+			url: '/verify/' + signal_id,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				"data": data
+			},
+			headers: {
+				"X-CSRFToken": getCookie('csrftoken')
+			}
+		})
+	}
+</script>
 {% endblock %}
 
 {% block left %}
-	<div class="flex column steps">
-		<div class="step">
-			<div class="content">
-				<div class="title-align">
-					<i class="block icon-link step-icon"></i>
+<div class="flex column steps">
+	<div class="step">
+		<div class="content">
+			<div class="title-align">
+				<i class="block icon-link step-icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
-				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="title">Connect to {{ provider.name }}</div>
 			</div>
-		</div>
-		<div class="step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-uniF75F"></i>
-
-					<div class="title">Authorize Access</div>
-				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
-			</div>
-		</div>
-		<div class="active step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-check"></i>
-
-					<div class="title">Verify Settings</div>
-				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
-			</div>
+			<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
 		</div>
 	</div>
+	<div class="step">
+		<div class="content">
+			<div class="title-align">
+				<i class="step-icon icon-uniF75F"></i>
+
+				<div class="title">Authorize Access</div>
+			</div>
+			<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+		</div>
+	</div>
+	<div class="active step">
+		<div class="content">
+			<div class="title-align">
+				<i class="step-icon icon-check"></i>
+
+				<div class="title">Verify Settings</div>
+			</div>
+			<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block content %}
-	<div class="step-verify">
-		<div class="grouping">
-			<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
-			<div>
-				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ signal.name }}</span>
-				</div>
-				<span class="bold">Name your connection to {{ signal.name }}</span>
-
-				<form>
-					<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
-				</form>
-			</div>
-		</div>
-		<div class="grouping">
-			<div class="bigger">{{ signal.name }} Connection Permissions</div>
-			<div>
-				<div name="permission-email" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Email</div>
-				</div>
-				<div name="permission-contacts" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Contacts</div>
-				</div>
-				<div name="permission-friends" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Friends</div>
-				</div>
-				<div name="permission-info" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Personal Info</div>
-				</div>
-				<div name="permission-activity" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Activity</div>
-				</div>
-			</div>
-		</div>
-		<div class="grouping">
-			<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
-			<div class="form">
-				<div class="grouped fields" id="frequency">
-					<div class="title">
-						Select the frequency you would like this service to update
-					</div>
-
-					<div class="field">
-						<div>
-							<input type="radio" name="update-frequency">
-							<label class="premium-message">Premium On Demand</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input type="radio" name="update-frequency">
-							<label>Daily</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input type="radio" name="update-frequency">
-							<label>Weekly</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input type="radio" name="update-frequency">
-							<label>Manual</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input type="radio" name="update-frequency">
-							<label>Once</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="step-verify">
+	<div class="grouping">
+		<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
 		<div>
-			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal({{ signal.id }})"/>
+			<div class="grouping-content">
+				<span>Details and stuff about connection settings to {{ signal.name }}</span>
+			</div>
+			<span class="bold">Name your connection to {{ signal.name }}</span>
+
+			<form>
+				<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
+			</form>
 		</div>
 	</div>
+	<div class="grouping">
+		<div class="bigger">{{ signal.name }} Connection Permissions</div>
+		<div>
+			<div name="permission-email" class="permission-toggle">
+				<input type="checkbox" checked="checked">
+				<div>Email</div>
+			</div>
+			<div name="permission-contacts" class="permission-toggle">
+				<input type="checkbox" checked="checked">
+				<div>Contacts</div>
+			</div>
+			<div name="permission-friends" class="permission-toggle">
+				<input type="checkbox" checked="checked">
+				<div>Friends</div>
+			</div>
+			<div name="permission-info" class="permission-toggle">
+				<input type="checkbox" checked="checked">
+				<div>Personal Info</div>
+			</div>
+			<div name="permission-activity" class="permission-toggle">
+				<input type="checkbox" checked="checked">
+				<div>Activity</div>
+			</div>
+		</div>
+	</div>
+	<div class="grouping">
+		<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
+		<div class="form">
+			<div class="grouped fields" id="frequency">
+				<div class="title">
+					Select the frequency you would like this service to update
+				</div>
+
+				<div class="field">
+					<div>
+						<input type="radio" name="update-frequency">
+						<label class="premium-message">Premium On Demand</label>
+					</div>
+				</div>
+				<div class="field">
+					<div>
+						<input type="radio" name="update-frequency">
+						<label>Daily</label>
+					</div>
+				</div>
+				<div class="field">
+					<div>
+						<input type="radio" name="update-frequency">
+						<label>Weekly</label>
+					</div>
+				</div>
+				<div class="field">
+					<div>
+						<input type="radio" name="update-frequency">
+						<label>Manual</label>
+					</div>
+				</div>
+				<div class="field">
+					<div>
+						<input type="radio" name="update-frequency">
+						<label>Once</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal({{ signal.id }})"/>
+	</div>
+</div>
 {% endblock %}
