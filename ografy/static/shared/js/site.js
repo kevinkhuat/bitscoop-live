@@ -119,3 +119,24 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function verifiedSignal(signal_id) {
+	var udpateFrequency = $('input:radio:checked').attr('updateFrequency');
+	var data = {};
+	data.updateFrequency = udpateFrequency;
+
+	$.ajax({
+		url: '/verify/' + signal_id,
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		headers: {
+			"X-CSRFToken": getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('pants');
+		window.location.pathname = response.redirect;
+	}).fail(function() {
+		console.log('fail');
+	});
+}

@@ -6,50 +6,50 @@
 {% endblock %}
 
 {% block left %}
-<div class="flex column steps">
-	<div class="step">
-		<div class="content">
-			<div class="title-align">
-				<i class="block icon-link step-icon"></i>
+	<div class="flex column steps">
+		<div class="step">
+			<div class="content">
+				<div class="title-align">
+					<i class="block icon-link step-icon"></i>
 
-				<div class="title">Connect to {{ provider.name }}</div>
+					<div class="title">Connect to {{ provider.name }}</div>
+				</div>
+				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
 			</div>
-			<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+		</div>
+		<div class="active step">
+			<div class="content">
+				<div class="title-align">
+					<i class="step-icon icon-uniF75F"></i>
+
+					<div class="title">Authorize Access</div>
+				</div>
+				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+			</div>
+		</div>
+		<div class="disabled step">
+			<div class="content">
+				<div class="title-align">
+					<i class="step-icon icon-check"></i>
+
+					<div class="title">Verify Settings</div>
+				</div>
+				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+			</div>
 		</div>
 	</div>
-	<div class="active step">
-		<div class="content">
-			<div class="title-align">
-				<i class="step-icon icon-uniF75F"></i>
-
-				<div class="title">Authorize Access</div>
-			</div>
-			<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
-		</div>
-	</div>
-	<div class="disabled step">
-		<div class="content">
-			<div class="title-align">
-				<i class="step-icon icon-check"></i>
-
-				<div class="title">Verify Settings</div>
-			</div>
-			<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
-		</div>
-	</div>
-</div>
 {% endblock %}
 
 {% block content %}
-<div class="step-authorize">
-	<div class="grouping">
-		<div class="bigger">Authorize Access to {{ signal.name }}</div>
-		<div>
-			<h3 class="bold green-big center">Please use the the pop-up to authorize your Ografy connection
-				with {{ signal.name }}</h3>
-			<input class="bold button-green" value="Retry {{ signal.name }} Connection">
-			<input class="bold button-green" style="width: 225px;" value="Cancel {{ signal.name }} Association">
+	<div class="step-authorize">
+		<div class="grouping">
+			<div class="bigger">Authorize Access to {{ signal.name }}</div>
+			<div>
+				<h3 class="bold green-big center">Please use the the pop-up to authorize your Ografy connection
+					with {{ signal.name }}</h3>
+				<a class="bold button-green link-button" href="{% url "core_signals" %}">Retry {{ signal.name }} Connection</a>
+				<a class="bold button-green link-button" href="{% url "core_providers" %}">Cancel {{ signal.name }} Association</a>
+			</div>
 		</div>
 	</div>
-</div>
 {% endblock %}

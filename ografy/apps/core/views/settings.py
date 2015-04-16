@@ -26,8 +26,7 @@ class PersonalView(View):
     def get(self, request):
         user = request.user
         form = UpdatePersonalForm({
-            'email': user.email,
-            # 'handle': user.handle,
+            'email': user.email, # 'handle': user.handle,
             'first_name': user.first_name,
             'last_name': user.last_name
         })
@@ -64,9 +63,9 @@ class PersonalView(View):
             return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
-                'title': self.title,
-                'lockwidth_override': True,
-                'form': form
+            'title': self.title,
+            'lockwidth_override': True,
+            'form': form
             })
 
 
@@ -80,8 +79,8 @@ class SecurityView(View):
 
     def get(self, request):
         return render(request, self.template_name, {
-            'title': self.title,
-            'lockwidth_override': True,
+        'title': self.title,
+        'lockwidth_override': True,
         })
 
     def post(self, request):
@@ -100,9 +99,9 @@ class SecurityView(View):
             return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
-                'title': self.title,
-                'lockwidth_override': True,
-                'form': form
+            'title': self.title,
+            'lockwidth_override': True,
+            'form': form
             })
 
 
@@ -116,7 +115,7 @@ class SignalView(View):
 
     def get(self, request):
         signals = list(core_api.SignalApi.get(Q(user=request.user.id) | Q(complete=True)))
-        verify_url = reverse('core_providers')
+        verify_url = reverse('core_verify_base')
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -128,8 +127,8 @@ class SignalView(View):
 class UserView(View):
     def my_profile(request):
         return render(request, 'core/user/my_profile.html', {
-            'title': 'Ografy - {0}'.format(request.user.identifier),
-            'user': request.user
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'user': request.user
         })
 
     def profile(request, handle):
@@ -161,6 +160,6 @@ class UserView(View):
 @login_required
 def base(request):
     return render(request, 'core/settings/personal.html', {
-        'title': 'Ografy - Base',
-        'lockwidth_override': True
+    'title': 'Ografy - Base',
+    'lockwidth_override': True
     })
