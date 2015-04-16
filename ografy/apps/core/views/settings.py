@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -24,10 +25,17 @@ class PersonalView(View):
 
     def get(self, request):
         user = request.user
-        form = UpdatePersonalForm({'email': user.email, # 'handle': user.handle,
-            'first_name': user.first_name, 'last_name': user.last_name})
+        form = UpdatePersonalForm({
+            'email': user.email, # 'handle': user.handle,
+            'first_name': user.first_name,
+            'last_name': user.last_name
+        })
 
-        return render(request, self.template_name, {'title': self.title, 'form': form})
+        return render(request, self.template_name, {
+            'title': self.title,
+            'lockwidth_override': True,
+            'form': form
+        })
 
     def post(self, request):
         User = get_user_model()
@@ -54,7 +62,11 @@ class PersonalView(View):
 
             return redirect_by_name('core_settings_personal')
         else:
-            return render(request, self.template_name, {'title': self.title, 'form': form})
+            return render(request, self.template_name, {
+            'title': self.title,
+            'lockwidth_override': True,
+            'form': form
+            })
 
 
 class SecurityView(View):
@@ -66,7 +78,10 @@ class SecurityView(View):
         return super(SecurityView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, self.template_name, {'title': self.title})
+        return render(request, self.template_name, {
+        'title': self.title,
+        'lockwidth_override': True,
+        })
 
     def post(self, request):
         user = request.user
@@ -83,7 +98,11 @@ class SecurityView(View):
 
             return redirect_by_name('core_settings_personal')
         else:
-            return render(request, self.template_name, {'title': self.title, 'form': form})
+            return render(request, self.template_name, {
+            'title': self.title,
+            'lockwidth_override': True,
+            'form': form
+            })
 
 
 class SignalView(View):
@@ -96,14 +115,51 @@ class SignalView(View):
 
     def get(self, request):
         signals = list(core_api.SignalApi.get(Q(user=request.user.id) | Q(complete=True)))
-        verify_url = reverse('core_providers')
+        verify_url = reverse('core_verify_base')
 
         return render(request, self.template_name, {
             'title': self.title,
             'signals': signals,
+            'lockwidth_override': True,
             'verify_url': verify_url
+        })
+
+class UserView(View):
+    def my_profile(request):
+        return render(request, 'core/user/my_profile.html', {
+        'title': 'Ografy - {0}'.format(request.user.identifier),
+        'user': request.user
+        })
+
+    def profile(request, handle):
+        User = get_user_model()
+
+        user = User.objects.filter(handle__iexact=handle).first()
+
+        if user is None:
+            raise Http404
+
+            template = 'core/user/profile.html'
+            # if user == request.user:
+            #     template = 'user/my_profile.html'
+            # else:
+            #     template = 'user/profile.html'
+
+            return render(request, template, {
+                'title': 'Ografy - {0}'.format(user.handle),
+                'user': user
+            })
+
+
+    def signals(request, pk):
+        return render(request, 'core/user/signals.html', {
+            # 'title': 'Ografy - {0}'.format(request.user.identifier),
+            # 'user': request.user
         })
 
 @login_required
 def base(request):
-    return render(request, 'core/settings/personal.html', {'title': 'Ografy - Base'})
+    return render(request, 'core/settings/personal.html', {
+    'title': 'Ografy - Base',
+    'lockwidth_override': True
+    })

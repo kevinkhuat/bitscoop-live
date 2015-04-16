@@ -1,0 +1,13 @@
+{% for item in resultData %}
+<div class="flex list item" id="{{ item.id }}">
+	<div data-label="Provider" class="grow list provider_name">
+		{{ item.provider_name }}
+	</div>
+	<div data-label="Date/Time" class="grow list datetime">
+		{{ item.datetime }}
+	</div>
+	<div data-label= "Name" class="grow list name">
+		{{ item.name }}
+	</div>
+</div>
+{% endfor %}

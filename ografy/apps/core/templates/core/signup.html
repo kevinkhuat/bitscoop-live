@@ -2,7 +2,7 @@
 
 {% block content %}
 <section class="lockwidth centered">
-	<div class="center centered" style="width:50%;">
+	<div class="center centered signup">
 		<h2>Welcome to Ografy!</h2>
 		<p>We're excited to have you join us!</p>
 		<p>
@@ -13,13 +13,13 @@
 		<p>For now you only need to provide a valid email address and a password. You can fill out the rest of your information later if you'd like.</p>-->
 	</div>
 
-	<div class="table centered backfill padded rounded" style="width:40rem;">
-		<div>
+	<div class="table centered backfill padded rounded flex column signup">
+		<div class="center centered grow" style="margin: 0 0 0.5em 0;">
 			<div class="center">
 				Sign up for Ografy
 			</div>
 		</div>
-		<div>
+		<div class="center centered grow">
 			<div>
 				<form action="{% url 'core_signup' %}" method="POST">
 					{% csrf_token %}
@@ -45,7 +45,7 @@
 					</div>
 					<div>{{ form.non_field_errors }}</div>
 					<div class="center">
-						<input class="ui button positive" type="submit" value="Sign up" />
+						<input class="button-green" type="submit" value="Sign up" style="margin: 0.5em 0 0 0"/>
 					</div>
 				</form>
 			</div>

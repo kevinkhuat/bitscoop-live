@@ -13,10 +13,7 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js',
-					'!ografy/apps/demo/**/*.js',
-					'!ografy/static/lib/**/*.js',
-					'!ografy/static/shared/js/templates.js'
+					'ografy/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -30,10 +27,7 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js',
-					'!ografy/apps/demo/**/*.js',
-					'!ografy/static/lib/**/*.js',
-					'!ografy/static/shared/js/templates.js'
+					'ografy/**/*.js'
 				]
 			}
 		},
@@ -53,15 +47,26 @@ module.exports = function(grunt) {
 			}
 		},
 
+		less: {
+			development: {
+				files: {
+					'build/static/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
+					'build/static/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
+					'build/static/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
+					'build/static/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
+				}
+			}
+		},
+
 		nunjucks: {
 			precompile: {
-				baseDir: 'ografy/apps/core/static/core/templates/main/**/',
-				src: 'ografy/apps/core/static/core/templates/main/**/*',
-				dest: 'ografy/static/shared/js/templates.js',
+				baseDir: 'ografy/apps/core/nunjucks/core/**/',
+				src: 'ografy/apps/core/nunjucks/core/**/*',
+				dest: 'build/static/shared/js/templates.js',
 				options: {
 					//env: require('./nunjucks-environment'),
 					name: function(filename) {
-						return filename.replace('ografy/apps/core/static/core/templates/main/', '');
+						return filename.replace('ografy/apps/core/nunjucks/core/', '');
 					}
 				}
 			}
@@ -69,9 +74,24 @@ module.exports = function(grunt) {
 
 		watch: {
 			nunjucks: {
-	            files: 'ografy/apps/core/static/core/templates/main/**/*',
-	            tasks: ['nunjucks']
-	        }
+				files: 'ografy/apps/core/nunjucks/**/*',
+				tasks: [
+					'nunjucks'
+				]
+			},
+			less: {
+				files: [
+					'ografy/apps/core/static/core/less/main.less',
+					'ografy/apps/core/static/core/less/main-dark.less',
+					'ografy/apps/core/static/core/less/main-light.less',
+					'ografy/static/shared/less/site.less',
+					'ografy/static/shared/less/site-dark.less',
+					'ografy/static/shared/less/site-light.less'
+				],
+				tasks: [
+					'less'
+				]
+			}
 		}
 	});
 

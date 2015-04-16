@@ -14,7 +14,7 @@ mongoengine.connect(
 )
 
 
-class Data(mongoengine.DynamicDocument):
+class Data(mongoengine.Document):
     """The data class for all uncategorizable data.
 
     #. *created* the date created
@@ -24,12 +24,12 @@ class Data(mongoengine.DynamicDocument):
 
     # To be managed by the REST API
     user_id = mongoengine.IntField(required=True)
-    # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
+
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
     # To be sourced from signals.js
-    data_blob = mongoengine.SortedListField(mongoengine.StringField())
+    data_blob = mongoengine.DictField()
 
 
 class Event(mongoengine.Document):
@@ -49,8 +49,12 @@ class Event(mongoengine.Document):
     #. *database_id* the id that Mongo uses to reference the event
     """
 
-    # To be managed by the REST API
-    # FIXME: Make sure this is a timezone aware datetime.now. Suggest using Django's version of now.
+    EVENT_TYPE = (
+        ('Event', 'Basic Event'),
+        ('Message', 'Message Event'),
+    )
+    type = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
@@ -62,8 +66,7 @@ class Event(mongoengine.Document):
     # To be sourced from signals.js
     datetime = mongoengine.DateTimeField()
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
-    # location = mongoengine.PointField()
-    location = mongoengine.ListField()
+    location = mongoengine.PointField()
 
     meta = {
         'indexes': [

@@ -263,7 +263,6 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'ografy.apps.core',
-    'ografy.apps.demo',
     #'ografy.apps.helpr',
     'ografy.apps.obase',
     'ografy.apps.opi',
@@ -400,8 +399,9 @@ STATICFILES_DIRS = (
 ##################
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS': 'ografy.apps.core.pagination.TwentyItemPageView',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 2
+    # 'PAGINATE_BY': 2
 }
 
 
@@ -421,3 +421,9 @@ HANDLE_VALIDATORS = [
 
 PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
+
+############
+# API KEYS #
+############
+
+OGRAFY_MAPBOX_ACCESS_TOKEN = os.environ['OGRAFY_MAPBOX_ACCESS_TOKEN']

@@ -9,33 +9,35 @@
 
 {% block main %}
 <section style="background:url({% static 'core/img/bg1.png' %}) left top; margin-top: -25px;">
-	<div class="flex row center lockwidth centered bg black translucent" style="padding:35px;">
-		<img src="{% static 'assets/logo_light_240.png' %}" />
-		<div class="grow center">
-			<h1>Discover your data</h1>
-			<p>Search and explore your data no matter where it is.</p>
-			<p>Get more out of your favorite applications and services.</p>
-		</div>
-		<div class="bg gray light padded" style="width:240px;">
-			<form action="{% url 'core_signup' %}" method="POST">
-				<div class="group">
-					{% csrf_token %}
-					<input class="full-width" type="text" name="email" placeholder="Email address" />
-					<input class="full-width" type="text" name="handle" placeholder="Username" />
-					<input class="full-width" type="password" name="password" placeholder="Password" />
-				</div>
-				<input class="ui button positive" type="submit" value="Sign Up" />
-			</form>
+	<div class="flex row center wrap lockwidth centered bg black translucent" style="padding:35px 10px;">
+		<img class="flex wrap centered" src="{% static 'assets/logo_light_240.png' %}" />
+		<div class="flex centered wrap">
+			<div class="grow center wrap" style="min-width: 50%">
+				<h1>Discover your data</h1>
+				<p>Search and explore your data from all of your digital accounts.</p>
+				<p>Get more out of your favorite applications and services.</p>
+			</div>
+			<div class="bg background light padded wrap centered">
+				<form action="{% url 'core_signup' %}" method="POST">
+					<div class="group">
+						{% csrf_token %}
+						<input class="full-width" type="text" name="email" placeholder="Email address" />
+						<input class="full-width" type="text" name="handle" placeholder="Username" />
+						<input class="full-width" type="password" name="password" placeholder="Password" />
+					</div>
+					<input class="button-green" type="submit" value="Sign Up" />
+				</form>
+			</div>
 		</div>
 	</div>
 </section>
 
 <!-- FIXME: The following content needs to be redone in line with the new aesthetic and structure. -->
 <section class="lockwidth centered">
-	<div class="table full-width">
-		<div>
-			<div class="padded" style="width: 50%;">
-				<div class="square-set padded" style="height: 371px;">
+	<div class="table full-width flex wrap">
+		<div class="flex wrap info">
+			<div class="padded thin grow wrap">
+				<div class="square-set padded">
 					<div class="header"><i class="icon-share"></i></div>
 					<h2 class="green center">Bring Services Together</h2>
 					<div class="table">
@@ -62,8 +64,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="padded">
-				<div class="square-set padded" style="height: 371px;">
+			<div class="padded thin grow wrap">
+				<div class="square-set padded">
 					<div class="header"><i class="icon-statistics"></i></div>
 					<h2 class="green center">Easily Re-stream Your Data</h2>
 					<div class="table">
@@ -83,9 +85,9 @@
 				</div>
 			</div>
 		</div>
-		<div>
-			<div class="padded">
-				<div class="square-set padded" style="height: 371px;">
+		<div class="flex wrap info">
+			<div class="padded thin grow wrap">
+				<div class="square-set padded">
 					<div class="header"><i class="icon-domain3"></i></div>
 					<h2 class="green center">What's Next?</h2>
 					<div class="table">
@@ -104,8 +106,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="padded">
-				<div class="square-set padded" style="height: 371px;">
+			<div class="padded thin grow wrap">
+				<div class="square-set padded">
 					<div class="header"><i class="icon-link"></i></div>
 					<h2 class="green center">Connect with us!</h2>
 					<div class="table">

@@ -56,8 +56,6 @@
 				$('signal-' + signal_id).remove();
 			});
 		}
-
-		$('.ui.checkbox').checkbox()
 	</script>
 {% endblock %}
 
@@ -70,7 +68,7 @@
 					<i class="icon-{{ signal.provider.backend_name }}"></i>
 					<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
 				</div>
-				<div class="ui toggle checkbox signal-enable-{{ signal.id }}">
+				<div class="toggle checkbox signal-enable-{{ signal.id }}">
 					<input type="checkbox">
 					<label></label>
 				</div>

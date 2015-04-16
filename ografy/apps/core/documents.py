@@ -14,7 +14,7 @@ mongoengine.connect(
 )
 
 
-class Settings(mongoengine.DynamicDocument):
+class Settings(mongoengine.Document):
     """The data class for user settings data.
 
     #. *created* the date created
@@ -27,5 +27,4 @@ class Settings(mongoengine.DynamicDocument):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
-    # To be sourced from signals.js
-    data_blob = mongoengine.SortedListField(mongoengine.StringField())
+    settings_dict = mongoengine.DictField()

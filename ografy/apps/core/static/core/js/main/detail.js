@@ -1,5 +1,5 @@
 //Render the detail panel on the right-hand side of the main page
-function detailView(utilsInst) {
+function detailView(mapboxViewInst) {
 	//Views
 	//Render the detail panel's content
 	function renderContent(showMap) {
@@ -11,46 +11,73 @@ function detailView(utilsInst) {
 		var list_detail = nunjucks.render('detail.html', {
 			showMap: showMap
 		});
-		$('.detail.sidebar').html(list_detail);
+
+		$('.sidebar').html(list_detail);
+
+		$(window).resize(function() {
+			setHeight();
+		});
 
 		//If there will be a map, create the map.
 		//This needs to be done after the detail panel has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
 		if (showMap) {
-			var mapbox = utilsInst.mapboxManager();
-			var map = mapbox.map;
-			var geoJSON = mapbox.geoJSON;
+			mapboxViewInst.initializeMap(false);
+			map = mapboxViewInst.map;
+			geoJSON = mapboxViewInst.geoJSON;
 		}
 
 		//Populate content with default data
-		clearContent();
+		hideContent();
 
-		return {
-			map: map,
-			geoJSON: geoJSON
-		};
+		$('.map.drawer-toggle').click(function() {
+			$('.map.drawer-toggle').toggleClass('hidden');
+			$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					$('.text-half').toggleClass('hidden');
+					map.invalidateSize();
+					setHeight();
+				});
+		});
+//		return {
+//			map: map,
+//			geoJSON: geoJSON
+//		};
 	}
 
 	//Update content
-	function updateContent(eventName, eventDate, eventLocation, eventData) {
-		$('.detail.main-label').html(eventName);
-		$('.detail.time-content').html(eventDate);
-		$('.detail.location-content').html(eventLocation);
-		$('.detail.body-content').html(eventData);
+	function updateContent(eventName, eventDateTime, eventLocation) {
+		var sidebar = $('.sidebar');
+		if (sidebar.hasClass('invisible')) {
+			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					if ($('.sidebar').children('.map-half').length !== 0) {
+						map.invalidateSize();
+					}
+					setHeight();
+				});
+		}
+		var dateTimeArray = eventDateTime.split(',');
+		$('.detail .main-label').html(eventName);
+		$('.detail-date .content').html(dateTimeArray[0].trim());
+		$('.detail-time .content').html(dateTimeArray[1].trim());
+		$('.detail-location .content').html(String(eventLocation));
+		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
+		if (!$('.detail').hasClass('full')) {
+			updateMap(eventName, map, eventLocation);
+		}
 	}
 
 	//Insert default text into the detail content
-	function clearContent() {
-		$('.detail.main-label').html('Select an Event at left to see its details.');
-		$('.detail.time-content').html('Select an Event at left to see its details.');
-		$('.detail.location-content').html('Select an Event at left to see its details.');
-		$('.detail.body-content').html('Select an Event at left to see its details.');
+	function hideContent() {
+		$('.sidebar').addClass('invisible');
 	}
 
 	//Update the map with a new event's information
 	function updateMap(eventName, map, coordinates) {
+		map.removeLayer(map.featureLayer);
 		//Create a MapBox GeoJSON element with the new information
-		var geoJSON = {
+		map.featureLayer = L.mapbox.featureLayer({
 			// this feature is in the GeoJSON format: see geojson.org
 			// for the full specification
 			type: 'Feature',
@@ -69,10 +96,10 @@ function detailView(utilsInst) {
 				'marker-color': '#BE9A6B',
 				'marker-symbol': 'post'
 			}
-		};
+		}).addTo(map);
 
-		//Add the new element to the map
-		map.featureLayer.setGeoJSON(geoJSON);
+		////Add the new element to the map
+		//map.featureLayer.setGeoJSON(geoJSON);
 
 		//Center the map on the new element
 		map.setView([coordinates[1], coordinates[0]], 13, {
@@ -80,6 +107,12 @@ function detailView(utilsInst) {
 				animate: true
 			}
 		});
+	}
+
+	function setHeight() {
+		var detailHeight = $('.detail').height();
+		var mainLabelHeight = $('.main-label').height();
+		$('.information').height(detailHeight - mainLabelHeight);
 	}
 
 	//Remove all markers from the map
@@ -90,7 +123,7 @@ function detailView(utilsInst) {
 	return {
 		renderContent: renderContent,
 		updateContent: updateContent,
-		clearContent: clearContent,
+		hideContent: hideContent,
 		updateMap: updateMap,
 		clearMap: clearMap
 	};

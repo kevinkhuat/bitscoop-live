@@ -1,12 +1,10 @@
-from django.contrib.auth import get_user_model
+import json
+
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
+from django.views.generic import View
 
-from ografy.apps.obase import api as obase_api
-from ografy.apps.obase.documents import Event
-
+from ografy.settings import OGRAFY_MAPBOX_ACCESS_TOKEN
 
 @login_required()
 def main(request):
@@ -16,45 +14,16 @@ def main(request):
         'user': request.user
     })
 
-#
 # @login_required()
-# def list_view(request):
-#     template = 'core/main/base.html'
+# class mapbox_token(View):
 #
-#     events = list(Event.objects(user_id=request.user.id))
-#
-#     return render(request, template, {
-#         'title': 'Ografy - {0}'.format(request.user.identifier),
-#         'body_class': 'full',
-#         'user': request.user,
-#         'events': events,
-#         'list': True
-#     })
-#
-#
-# @login_required()
-# def map(request):
-#     template = 'core/main/map.html'
-#
-#     events = list(Event.objects(user_id=request.user.id))
-#
-#     return render(request, template, {
-#         'title': 'Ografy - {0}'.format(request.user.identifier),
-#         'body_class': 'full',
-#         'user': request.user,
-#         'events': events
-#     })
-#
-#
-# @login_required()
-# def timeline(request):
-#     template = 'core/main/map.html'
-#
-#     events = list(Event.objects(user_id=request.user.id))
-#
-#     return render(request, template, {
-#         'title': 'Ografy - {0}'.format(request.user.identifier),
-#         'body_class': 'full',
-#         'user': request.user,
-#         'events': events
-#     })
+#     def get(self, request):
+#         data = {'OGRAFY_MAPBOX_ACCESS_TOKEN': OGRAFY_MAPBOX_ACCESS_TOKEN}
+#         return HttpResponse(json.dumps(data), content_type='application/json')
+
+@login_required()
+def mapbox_token(request):
+    data = {
+        'OGRAFY_MAPBOX_ACCESS_TOKEN': OGRAFY_MAPBOX_ACCESS_TOKEN
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')

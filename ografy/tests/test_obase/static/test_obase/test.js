@@ -1,19 +1,19 @@
 $(document).ready(function() {
 	// using jQuery
 	function getCookie(name) {
-	    var cookieValue = null;
-	    if (document.cookie && document.cookie != '') {
-	        var cookies = document.cookie.split(';');
-	        for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
-	            // Does this cookie string begin with the name we want?
-	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	                break;
-	            }
-	        }
-	    }
-	    return cookieValue;
+		var cookieValue = null;
+		if (document.cookie && document.cookie !== '') {
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
+				}
+			}
+		}
+		return cookieValue;
 	}
 
 	var csrftoken = getCookie('csrftoken');
@@ -29,7 +29,7 @@ $(document).ready(function() {
 			$.each(fields, function(i, name) {
 				var num, val;
 
-				val = that.find('input[name="event-' + name + '"]').val();
+				val = that.find('input[name="event-" + name + ""]').val();
 				num = parseInt(val);
 
 				data[name] = (isNaN(num) || val.charAt(4) == '-') ? val : num;
@@ -49,7 +49,7 @@ $(document).ready(function() {
 //				throw new Error('PUTing requires an ID');
 //			}
 
-			data['id'] = id;
+			data.id = id;
 
 			return data;
 		});
@@ -69,9 +69,11 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: '/obase/test',
-			headers: {"X-CSRFToken": csrftoken},
+			headers: {
+				'X-CSRFToken': csrftoken
+			}
 		}).done(function(data, xhr, response) {
-			console.log('pass')
+			console.log('pass');
 		});
 
 //		$.ajax({
@@ -79,7 +81,7 @@ $(document).ready(function() {
 //			type: method.toUpperCase(),
 //			data: formData,
 //			dataType: 'json',
-//			headers: {"X-CSRFToken": csrftoken}
+//			headers: {'X-CSRFToken': csrftoken}
 //		}).done(function(data, xhr, response) {
 //			$('#event-result').html(JSON.stringify(data));
 //		}).fail(function() {

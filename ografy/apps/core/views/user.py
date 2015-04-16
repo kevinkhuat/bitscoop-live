@@ -8,6 +8,7 @@ from django.shortcuts import render
 def my_profile(request):
     return render(request, 'core/user/my_profile.html', {
         'title': 'Ografy - {0}'.format(request.user.identifier),
+        'lockwidth_override': True,
         'user': request.user
     })
 
@@ -28,6 +29,7 @@ def profile(request, handle):
 
     return render(request, template, {
         'title': 'Ografy - {0}'.format(user.handle),
+        'lockwidth_override': True,
         'user': user
     })
 

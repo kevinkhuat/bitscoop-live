@@ -2,16 +2,20 @@
 
 
 {% block left %}
-<div style="padding-right:20px">
-	<div class="grouping">
-		<div>Account Settings</div>
-		<div class="flex column no-pad">
-			<ul class="links">
-				<li><a href="{% url 'core_settings_personal' %}">Personal info</a></li>
-				<li><a href="{% url 'core_settings_security' %}">Security</a></li>
-				<li><a href="{% url 'core_settings_signals' %}">Signals</a></li>
-			</ul>
+<div class="flex drawer container">
+	<div class="left drawer hidden">
+		<div class="grouping">
+			<div>Account Settings</div>
+			<div class="flex column no-pad">
+				<ul class="links">
+					<li><a href="{% url 'core_user_my_profile' %}" class="link">User Account</a></li>
+					<li><a href="{% url 'core_settings_personal' %}" class="link">Personal info</a></li>
+					<li><a href="{% url 'core_settings_security' %}" class="link">Security</a></li>
+					<li><a href="{% url 'core_settings_signals' %}" class="link">Signals</a></li>
+				</ul>
+			</div>
 		</div>
 	</div>
+	<i class="drawer-toggle hidden icon-paragraph-justify"></i>
 </div>
 {% endblock %}

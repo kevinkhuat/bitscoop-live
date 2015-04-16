@@ -54,6 +54,7 @@ def connect(request, pk):
         'title': 'Ografy - Connect to ' + provider.name,
         'content_class': 'left',
         'provider': provider,
+        'flex_override': True,
         'user_id': request.user.id,
         'postback_url': reverse('core_authorize')
     })
@@ -84,7 +85,8 @@ def providers(request):
     return render(request, 'core/signals/providers.html', {
         'title': 'Ografy - Providers',
         'body_class': 'full',
-        'content_class': 'bordered left',
+        'left_class': 'bordered right',
+        'providers_override': True,
         'providers': providers,
         'connect_url': connect_url
     })
@@ -96,22 +98,25 @@ def verify(request, pk):
         signal.connected = True
         signal.save()
 
-        if signal.connected is False or signal.complete is True or signal.enabled is True:
+        if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
                 'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
+                'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
             })
         else:
             return render(request, 'core/signals/verify.html', {
                 'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
+                'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
             })
     elif request.method == 'POST':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk))
+        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
+        signal.frequency = request.POST['updateFrequency'];
         signal.save()
 
         return HttpResponseRedirect(reverse('core_index'))

@@ -2,64 +2,127 @@
 <html>
 <head lang="en-US">
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
 	<title>Ografy App</title>
 
 	{% load staticfiles %}
 	{% block static %}
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3K97Y7RK2BsE_tQ7og6NjDQhhBky0hi8"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
-	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.19.3/css/semantic.min.css" />
+	{#TODO: super ugly, move dependencies to require#}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js"></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.uncompressed.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.js'></script>
+	<script type="text/javascript" src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+	<script type="text/javascript" src="http://www.geoplugin.net/javascript.gp"></script>
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css'/>
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' />
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css'/>
 
-	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/require/require.js' %}" data-main="{% static 'core/js/require_load.js' %}"></script>
-	<script type="text/javascript" src="{%  static 'shared/js/templates.js' %}"></script>
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+	<script type="text/javascript" src="{% static 'assets/lib/nunjucks/nunjucks.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
+	<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/lib/icomoon/fonticons.css' %}"/>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main/main.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main-light.css' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}"/>
 	{% endblock %}
 
 </head>
 <body class="flex full">
-	<header class="bg gray light bottom">
-		<nav class="flex stretch">
-			<div class="flex center grow">
-				<img class="banner-logo" src="{% static 'assets/logo_240.png' %}" alt="Ografy" />
-				<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
-				<a class="map-view-button item"><i class="icon-map22"></i></a>
-				<form id="search-form" class="flex grow">
-					<input class="search-bar grow" type="text" placeholder="Search your data"/>
-				</form>
-				<div class="ui simple dropdown labeled icon button">
-					<i class="filter icon"></i>
-					<span class="text">Filter Search</span>
-					<div class="menu">
-						<div class="item">
+<header class="bg foreground bottom">
+	<nav class="flex stretch app-header">
+		<div class="flex center grow search">
+			<form id="search-form" class="flex grow">
+				<input class="search-bar grow" type="text" placeholder="Search your data"/>
+			</form>
+			<div class="buttons">
+				<i class="filter-button icon-filter"></i>
+				<i class="search-button"></i>
+			</div>
+			<div class="menu filter hidden">
+				<div id='event' class="type-grouping">
+					<div class="flex">
+						<div class="selector active">
+							<i class="icon-notification"></i>
+						</div>
+						<div class="grow item">
 							Events
 						</div>
-						<div class="item">
+						<div class="add-filter">
+							<i class="icon-plus"></i>
+						</div>
+					</div>
+					<div class="filters">
+					</div>
+				</div>
+				<div id='message' class="type-grouping">
+					<div class="flex">
+						<div class="selector active">
+							<i class="icon-comment2"></i>
+						</div>
+						<div class="grow item">
 							Messages
 						</div>
-						<div class="item">
+						<div class="add-filter">
+							<i class="icon-plus"></i>
+						</div>
+					</div>
+					<div class="filters">
+					</div>
+				</div>
+				<div id='transaction' class="type-grouping">
+					<div class="flex">
+						<div class="selector active">
+							<i class="icon-credit-card"></i>
+						</div>
+						<div class="grow item">
 							Transactions
 						</div>
-						<div class="divider"></div>
-						<div class="item add-filter">
-							Add custom filters
+						<div class="add-filter">
+							<i class="icon-plus"></i>
 						</div>
+					</div>
+					<div class="filters">
 					</div>
 				</div>
 			</div>
-			<div class="flex center">
-				<a id="user_profile_link" class="item" href="{% url 'core_user_my_profile' %}">{{ request.user.identifier }}</a>
-				<a id="provider_link" class="item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
-				<a id="logout_button" class="item" href="{% url 'core_logout' %}"><i class="icon-sign-out"></i></a>
+		</div>
+
+		<div class="flex center links">
+			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
+			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<a class="spacer"></a>
+			<a class="fullscreen item"><i class="icon-enlarge"></i></a>
+			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<div>
+				<a class="user-button item">{{ request.user.identifier }}</a>
+					<div class="flex column menu main hidden">
+						<a class="item" href="{% url 'core_user_my_profile' %}">
+							<i class="icon-home3"></i>
+							User Home
+						</a>
+						<a class="item" href="{% url 'core_settings_personal' %}">
+							<i class="icon-cog" ></i>
+							Settings
+						</a>
+						<a class="item" href="{% url 'core_logout' %}">
+							<i class="icon-sign-out"></i>
+							Logout
+						</a>
+					</div>
 			</div>
-		</nav>
-	</header>
-	<main class="flex grow">
-	</main>
+			</div>
+	</nav>
+</header>
+<main class="flex grow">
+</main>
 </body>
 </html>

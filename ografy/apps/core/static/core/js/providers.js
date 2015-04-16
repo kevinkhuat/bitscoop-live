@@ -10,6 +10,10 @@ $(document).ready(function() {
 
 	var $container = $('#isotope-container').isotope({
 		// options
+		masonry: {
+			columnWidth: 5,
+			rowHeight: 5
+		}
 	});
 
 	// filter items on button click
