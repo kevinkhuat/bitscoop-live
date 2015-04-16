@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render, HttpResponseRedirect, Http404
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, Http404
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core import api as core_api
@@ -119,4 +119,4 @@ def verify(request, pk):
         signal.frequency = request.POST['updateFrequency'];
         signal.save()
 
-        return HttpResponseRedirect(reverse('core_index'))
+        return HttpResponse(reverse('core_settings_signals'))

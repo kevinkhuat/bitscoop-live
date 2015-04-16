@@ -69,7 +69,16 @@ TEMPLATE_DEBUG = True
 # STATIC #
 ##########
 
+STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, 'static'))
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.abspath(os.path.join(ROOT_PATH, '..', 'build', 'static')),
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 
 ############
