@@ -39,14 +39,14 @@ function baseView() {
 			if (!sidebar.hasClass('invisible')) {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-					function (e) {
-						listViewInst.renderBase(function () {
+					function(e) {
+						listViewInst.renderBase(function() {
 							listViewInst.updateContent();
 						});
 					});
 			}
 			else {
-				listViewInst.renderBase(function () {
+				listViewInst.renderBase(function() {
 					listViewInst.updateContent();
 				});
 			}
@@ -62,17 +62,16 @@ function baseView() {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
-					mapViewInst.renderBase(function () {
+					mapViewInst.renderBase(function() {
 						mapViewInst.updateContent();
 					});
 				});
 			}
 			else {
-				mapViewInst.renderBase(function () {
+				mapViewInst.renderBase(function() {
 					mapViewInst.updateContent();
 				});
 			}
-
 		});
 	}
 
@@ -89,7 +88,7 @@ function baseView() {
 			}
 		});
 	}
-	
+
 	//Render the base page, which consists of the header bar and the content area
 	function render() {
 		//Use Nunjucks to render the base page from a template and insert it into the page

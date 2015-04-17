@@ -1,8 +1,9 @@
 from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponse, HttpResponseRedirect
 from django.test import SimpleTestCase
-from ografy.apps.core.forms import SignUpForm
 from urllib.parse import urlparse
+
+from ografy.apps.core.forms import SignUpForm
 
 
 class TestCoreViews(SimpleTestCase):

@@ -263,7 +263,6 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'ografy.apps.core',
-    'ografy.apps.demo',
     #'ografy.apps.helpr',
     'ografy.apps.obase',
     'ografy.apps.opi',
