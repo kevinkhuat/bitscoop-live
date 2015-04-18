@@ -121,22 +121,28 @@ $(document).ready(function() {
 });
 
 function verifiedSignal(signal_id) {
-	var udpateFrequency = $('input:radio:checked').attr('updateFrequency');
 	var data = {};
-	data.updateFrequency = udpateFrequency;
+	data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
+	data.permissions = [];
 
+	$('input:checkbox').each(function() {
+		data.permissions.push($(this).prop('checked'));
+	});
+
+	data.permissions = JSON.stringify(data.permissions);
 	$.ajax({
 		url: '/verify/' + signal_id,
 		type: 'POST',
 		dataType: 'json',
 		data: data,
+		dataType: 'json',
 		headers: {
 			"X-CSRFToken": getCookie('csrftoken')
 		}
 	}).done(function(data, xhr, response) {
 		console.log('pants');
-		window.location.pathname = response.redirect;
-	}).fail(function() {
+		window.location.pathname = data;
+	}).fail(function(data, xhr, response) {
 		console.log('fail');
 	});
 }
