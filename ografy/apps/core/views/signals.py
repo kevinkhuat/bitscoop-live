@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -5,6 +7,8 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse, Http404
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core import api as core_api
+
+
 
 @login_required
 def authorize(request):
@@ -95,6 +99,7 @@ def providers(request):
 def verify(request, pk):
     if request.method == 'GET':
         signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
+        permissions = signal.permission_set.all()
         signal.connected = True
         signal.save()
 
@@ -110,13 +115,20 @@ def verify(request, pk):
                 'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
-                'signal': signal
+                'signal': signal,
+                'permissions': permissions
             })
     elif request.method == 'POST':
         signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
-        signal.frequency = request.POST['updateFrequency'];
+        signal.frequency = request.POST['updateFrequency']
         signal.save()
 
-        return HttpResponse(reverse('core_settings_signals'))
+        requestPermissions = json.loads(request.POST['permissions'])
+        permissions = signal.permission_set.all()
+        for count in range(0, len(permissions)):
+            permissions[count].enabled = requestPermissions[count]
+            permissions[count].save()
+
+        return HttpResponse(json.dumps(reverse('core_settings_signals')))

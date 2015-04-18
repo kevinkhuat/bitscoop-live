@@ -64,13 +64,6 @@ class Signal(models.Model):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
 
 
-class Permission(models.Model):
-    id = models.AutoField(primary_key=True)
-    signal = models.ForeignKey(Signal)
-    key = models.CharField(max_length=50, blank=False)
-    value = models.BooleanField(default=False)
-
-
 @autoconnect
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -145,3 +138,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             self._upper_handle = self.handle.upper()
         else:
             self._upper_handle = self.handle
+
+class permissionTemplate(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, blank=False)
+    url = models.CharField(max_length = 100, blank=False)
+    provider = models.ForeignKey(Provider)
+    enabled_by_default = models.BooleanField(default=True)
+
+class Permission(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, blank=False)
+    url = models.CharField(max_length = 100, blank=False)
+    provider = models.ForeignKey(Provider)
+    enabled = models.BooleanField(default=True)
+    user = models.ForeignKey(User)
+    template = models.ForeignKey(permissionTemplate)
+    signal = models.ForeignKey(Signal)
