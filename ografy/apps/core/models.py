@@ -60,6 +60,9 @@ class Signal(models.Model):
     created = models.DateTimeField(blank=False)
     updated = models.DateTimeField(blank=False)
 
+    access_token = models.CharField(max_length=100)
+    oauth_token = models.CharField(max_length=100)
+
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
 
