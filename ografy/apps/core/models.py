@@ -62,6 +62,7 @@ class Signal(models.Model):
 
     access_token = models.CharField(max_length=100)
     oauth_token = models.CharField(max_length=100)
+    oauth_token_secret = models.CharField(max_length=100)
 
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
@@ -142,7 +143,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             self._upper_handle = self.handle
 
-class permissionTemplate(models.Model):
+class PermissionTemplate(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, blank=False)
     url = models.CharField(max_length = 100, blank=False)
@@ -156,5 +157,5 @@ class Permission(models.Model):
     provider = models.ForeignKey(Provider)
     enabled = models.BooleanField(default=True)
     user = models.ForeignKey(User)
-    template = models.ForeignKey(permissionTemplate)
+    template = models.ForeignKey(PermissionTemplate)
     signal = models.ForeignKey(Signal)

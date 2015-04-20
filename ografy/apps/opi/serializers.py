@@ -1,7 +1,7 @@
 from rest_framework import serializers as django_serializers
 
 from ografy.apps.core.documents import Settings
-from ografy.apps.core.models import Provider, Signal, User
+from ografy.apps.core.models import Provider, Signal, User, Permission, PermissionTemplate
 from ografy.apps.obase.documents import Data, Event, Message
 from ografy.apps.tastydata import related_fields
 from ografy.apps.tastydata import serializers as tasty_serializers
@@ -78,9 +78,20 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Signal
-        fields = ('id', 'user', 'provider', 'name', 'psa_backend_uid', 'complete', 'connected', 'enabled', 'frequency', 'created', 'updated')
+        fields = ('id', 'user', 'provider', 'name', 'psa_backend_uid', 'complete', 'connected', 'enabled', 'frequency', 'created', 'updated', 'access_token', 'oauth_token', 'oauth_token_secret')
         depth = 5
 
+class PermissionSerializer(django_serializers.ModelSerializer):
+    class Meta:
+        model=PermissionTemplate
+        fields = ('id', 'name', 'url', 'provider', 'enabled', 'user', 'template', 'signal')
+        depth=5
+
+class PermissionTemplateSerializer(django_serializers.ModelSerializer):
+    class Meta:
+        model=PermissionTemplate
+        fields = ('id', 'name', 'url', 'provider', 'enabled_by_default')
+        depth=5
 
 class SettingsSerializer(tasty_serializers.DocumentSerializer):
     # Django References
