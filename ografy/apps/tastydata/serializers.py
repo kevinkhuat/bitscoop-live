@@ -44,9 +44,10 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
     # ...
     #     profile = ProfileSerializer()
     assert not any(
-        isinstance(field, serializers.BaseSerializer) and
-        not isinstance(field, EmbeddedDocumentSerializer) and
-        (key in validated_data) for key, field in serializer.fields.items()), (
+             '.' in field.source and (key in validated_data)
+             and isinstance(validated_data[key], (list, dict))
+             for key, field in serializer.fields.items()
+         ), (
         'The `.{method_name}()` method does not support writable nested'
         'fields by default.\nWrite an explicit `.{method_name}()` method for '
         'serializer `{module}.{class_name}`, or set `read_only=True` on '
@@ -187,7 +188,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = getattr(self.Meta, 'fields', None)
         exclude = getattr(self.Meta, 'exclude', None)
         depth = getattr(self.Meta, 'depth', 0)
-        extra_kwargs = getattr(self.Meta, 'extra_kwargs', {})
+        extra_kwargs = self.get_extra_kwargs()
 
         if fields and not isinstance(fields, (list, tuple)):
             raise TypeError('The `fields` option must be a list or tuple. Got %s.' %
@@ -199,14 +200,12 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         assert not (fields and exclude), "Cannot set both 'fields' and 'exclude'."
 
-        # extra_kwargs = self._include_additional_options(extra_kwargs)
-
         # # Retrieve metadata about fields & relationships on the model class.
         info = get_field_info(model)
 
         # Use the default set of field names if none is supplied explicitly.
         if fields is None:
-            fields = self._get_default_field_names(declared_fields, info)
+            fields = self.get_default_field_names(declared_fields, info)
             exclude = getattr(self.Meta, 'exclude', None)
             if exclude is not None:
                 for field_name in exclude:
@@ -262,6 +261,10 @@ class DocumentSerializer(serializers.ModelSerializer):
                     # Fields with choices get coerced into `ChoiceField`
                     # instead of using their regular typed field.
                     field_cls = drf_fields.ChoiceField
+                    kwargs = {
+                        key: kwargs[key] for key in kwargs
+                        if key in ['required', 'allow_blank', 'allow_null', 'choices']
+                    }
                 if not issubclass(field_cls, drf_fields.CharField) and not issubclass(field_cls, drf_fields.ChoiceField):
                     # `allow_blank` is only valid for textual fields.
                     kwargs.pop('allow_blank', None)
@@ -325,16 +328,25 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         if type(model_field) is me_fields.EmbeddedDocumentField:
             kwargs['document_type'] = model_field.document_type
+            kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if model_field.default:
             kwargs['required'] = False
             kwargs['default'] = model_field.default
 
+        if model_field.choices:
+            kwargs['choices'] = model_field.choices
+
+        if hasattr(model_field, 'null') and model_field.null:
+            kwargs['allow_null'] = True
+
         if model_field.__class__ == models.TextField:
             kwargs['widget'] = widgets.Textarea
 
         attribute_dict = {
-            me_fields.StringField: ['max_length'],
+            me_fields.StringField: ['min_length', 'max_length'],
+            me_fields.IntField: ['min_value', 'max_value'],
+            me_fields.FloatField: ['min_value', 'max_value'],
             me_fields.DecimalField: ['min_value', 'max_value'],
             me_fields.EmailField: ['max_length'],
             me_fields.FileField: ['max_length'],

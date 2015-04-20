@@ -98,6 +98,7 @@ class EmbeddedDocumentField(DocumentField):
         except KeyError:
             raise ValueError("EmbeddedDocumentField requires 'document_type' kwarg")
 
+        self.depth = kwargs.pop('depth')
         super(EmbeddedDocumentField, self).__init__(*args, **kwargs)
 
     def to_representation(self, value):
