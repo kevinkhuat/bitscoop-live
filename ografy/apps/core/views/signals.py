@@ -16,7 +16,7 @@ def authorize(request):
     # # Look up signals from API for current user where signal
     # # is not verified or complete.
     unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
-    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) | Q(complete=False) | Q(connected=False) | Q(enabled=False)))
+    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) & (Q(complete=False) | Q(connected=False))))
 
     signal_count = len(unverified_signals)
 
@@ -98,7 +98,7 @@ def providers(request):
 @login_required
 def verify(request, pk):
     if request.method == 'GET':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
+        signal = core_api.SignalApi.get(Q(id=pk)).get()
         permissions = signal.permission_set.all()
         signal.connected = True
         signal.save()
@@ -119,7 +119,7 @@ def verify(request, pk):
                 'permissions': permissions
             })
     elif request.method == 'POST':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
+        signal = core_api.SignalApi.get(Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
         signal.frequency = request.POST['updateFrequency']
