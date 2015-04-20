@@ -1,5 +1,5 @@
 //Render the Map View on the main page
-function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
+function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	var mapInst;
 	var map = 'pants';
 	var geoJSON = 'shorts';
