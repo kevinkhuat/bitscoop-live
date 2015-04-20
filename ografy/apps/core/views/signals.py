@@ -9,7 +9,6 @@ from social.apps.django_app.default.models import UserSocialAuth
 from ografy.apps.core import api as core_api
 
 
-
 @login_required
 def authorize(request):
 
@@ -98,10 +97,8 @@ def providers(request):
 @login_required
 def verify(request, pk):
     if request.method == 'GET':
-        signal = core_api.SignalApi.get(Q(id=pk)).get()
+        signal = core_api.SignalApi.get(Q(user=request.user.id) & Q(id=pk)).get()
         permissions = signal.permission_set.all()
-        signal.connected = True
-        signal.save()
 
         if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
@@ -111,6 +108,16 @@ def verify(request, pk):
                 'signal': signal
             })
         else:
+            extra_data = UserSocialAuth.objects.filter(user=request.user, uid=signal.psa_backend_uid)[0].extra_data;
+            if 'access_token' in extra_data:
+                access_token = extra_data['access_token']
+                if 'oauth_token' in access_token:
+                    signal.oauth_token = access_token['oauth_token']
+                    signal.oauth_token_secret = access_token['oauth_token_secret']
+                else:
+                    signal.access_token = access_token
+            signal.save()
+
             return render(request, 'core/signals/verify.html', {
                 'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
                 'flex_override': True,
@@ -119,7 +126,7 @@ def verify(request, pk):
                 'permissions': permissions
             })
     elif request.method == 'POST':
-        signal = core_api.SignalApi.get(Q(id=pk)).get()
+        signal = core_api.SignalApi.get(Q(user=request.user.id) & Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
         signal.frequency = request.POST['updateFrequency']
