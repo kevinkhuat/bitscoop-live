@@ -34,7 +34,10 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Data
-        fields = ('id', 'created', 'updated', 'data_blob') # , 'user'
+        fields = ('id',
+                  'created',
+                  'updated',
+                  'data_blob') # , 'user'
         depth = 5
 
 
@@ -49,7 +52,17 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'created', 'updated', 'user_id', 'signal_id', 'provider_id', 'provider_name', 'datetime', 'location', 'type', 'name') #, 'data'
+        fields = ('id',
+                  'created',
+                  'updated',
+                  'user_id',
+                  'signal_id',
+                  'provider_id',
+                  'provider_name',
+                  'datetime',
+                  'location',
+                  'type',
+                  'name') #, 'data'
         depth = 5
 
 
@@ -59,7 +72,10 @@ class MessageSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Message
-        fields = ('id', 'message_to', 'message_from', 'message_body') # 'event',
+        fields = ('id',
+                  'message_to',
+                  'message_from',
+                  'message_body') # 'event',
         depth = 5
 
 
@@ -67,7 +83,12 @@ class ProviderSerializer(django_serializers.ModelSerializer):
 
     class Meta:
         model = Provider
-        fields = ('id', 'name', 'backend_name', 'auth_backend', 'tags')
+        fields = ('id',
+                  'name',
+                  'backend_name',
+                  'auth_backend',
+                  'tags',
+                  'permission_template_set')
         depth = 5
 
 
@@ -78,20 +99,48 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Signal
-        fields = ('id', 'user', 'provider', 'name', 'psa_backend_uid', 'complete', 'connected', 'enabled', 'frequency', 'created', 'updated', 'access_token', 'oauth_token', 'oauth_token_secret')
+        fields = ('id',
+                  'user',
+                  'provider',
+                  'name',
+                  'psa_backend_uid',
+                  'complete',
+                  'connected',
+                  'enabled',
+                  'frequency',
+                  'created',
+                  'updated',
+                  'access_token',
+                  'oauth_token',
+                  'oauth_token_secret',
+                  'permission_set')
         depth = 5
+
 
 class PermissionSerializer(django_serializers.ModelSerializer):
     class Meta:
-        model=PermissionTemplate
-        fields = ('id', 'name', 'url', 'provider', 'enabled', 'user', 'template', 'signal')
-        depth=5
+        model = PermissionTemplate
+        fields = ('id',
+                  'name',
+                  'url',
+                  'provider',
+                  'enabled',
+                  'user',
+                  'permission_template',
+                  'signal')
+        depth = 5
+
 
 class PermissionTemplateSerializer(django_serializers.ModelSerializer):
     class Meta:
-        model=PermissionTemplate
-        fields = ('id', 'name', 'url', 'provider', 'enabled_by_default')
-        depth=5
+        model = PermissionTemplate
+        fields = ('id',
+                  'name',
+                  'url',
+                  'provider',
+                  'enabled_by_default')
+        depth = 5
+
 
 class SettingsSerializer(tasty_serializers.DocumentSerializer):
     # Django References
@@ -99,7 +148,11 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Settings
-        fields = ('id', 'user', 'created', 'updated', 'settings_dict')
+        fields = ('id',
+                  'user',
+                  'created',
+                  'updated',
+                  'settings_dict')
         depth = 5
 
 
@@ -108,9 +161,19 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
     # settings = related_fields.MongoField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
 
     # Django References
-    # signals = related_fields.DjangoField(view_name='signal-detail', lookup_field='user_id', queryset=Signal.objects.all())
+    # signals = django_serializers.HyperlinkedRelatedField(view_name='signal-list', lookup_field='user_id', queryset=Signal.objects.all())
+    # permissions
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'handle', 'first_name', 'last_name', 'date_joined', 'is_active', 'is_verified') #, 'settings', 'signals'
+        fields = ('id',
+                  'email',
+                  'handle',
+                  'first_name',
+                  'last_name',
+                  'date_joined',
+                  'is_active',
+                  'is_verified',
+                  'signal_set',
+                  'permission_set') #, 'settings'
         depth = 5

@@ -3,17 +3,11 @@
 function baseView() {
 	//Instantiate instances of the views that the main page uses
 
-	//Cache Instance
-	var cacheInst = cacheManager();
-
 	//URL Parser Instance
 	var urlParserInst = urlParser();
 
 	//Mapbox handler
 	var mapboxViewInst = mapboxManager();
-
-	//Cookie/Session Handler
-	var sessionInst = sessionsCookies();
 
 	//View components
 	var detailViewInst = detailView(mapboxViewInst);
@@ -22,11 +16,11 @@ function baseView() {
 	var dataInst = dataStore(urlParserInst, detailViewInst);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst);
-	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst, urlParserInst);
+	var listViewInst = listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst);
+	var mapViewInst = mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst);
 
 	//Search components
-	var searchViewInst = searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewInst, urlParserInst);
+	var searchViewInst = searchView(dataInst, mapboxViewInst, urlParserInst);
 	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views
