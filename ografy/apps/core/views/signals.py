@@ -109,13 +109,14 @@ def verify(request, pk):
             })
         else:
             extra_data = UserSocialAuth.objects.filter(user=request.user, uid=signal.psa_backend_uid)[0].extra_data;
-            if 'access_token' in extra_data:
+            if signal.provider.auth_type == 'Oauth1':
                 access_token = extra_data['access_token']
-                if 'oauth_token' in access_token:
-                    signal.oauth_token = access_token['oauth_token']
-                    signal.oauth_token_secret = access_token['oauth_token_secret']
-                else:
-                    signal.access_token = access_token
+                signal.oauth_token = access_token['oauth_token']
+                signal.oauth_token_secret = access_token['oauth_token_secret']
+            elif signal.provider.auth_type == 'Oauth2':
+                signal.access_token = extra_data['access_token']
+            else:
+                pass
             signal.save()
 
             return render(request, 'core/signals/verify.html', {

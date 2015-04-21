@@ -23,6 +23,7 @@ class Provider(models.Model):
     auth_backend = models.CharField(max_length=250)
     description = models.CharField(max_length=2500)
     tags = models.CharField(max_length=1000)
+    auth_type = models.CharField(max_length=100)
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)
