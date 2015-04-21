@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.tastydata import parse_filter
-from ografy.apps.tastydata.pagination import TwentyItemPagination
+from ografy.apps.tastydata.pagination import OgrafyItemPagination
 
 
 class ListMixin(object):
@@ -40,7 +40,7 @@ class OPIListView(ListMixin, GenericAPIView):
 class APIView(BaseAPIView):
     filter_backends = (OrderingFilter,)
     permission_classes = (permissions.IsAuthenticated,)
-    pagination_class = TwentyItemPagination
+    pagination_class = OgrafyItemPagination
 
     class Meta:
         Q = Django_Q

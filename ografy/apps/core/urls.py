@@ -11,6 +11,7 @@ import ografy.apps.core.views.search as search_views
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
 
+    #TODO: Make this general to any key we need to get, not hard-coded to Mapbox's token
     url(r'^app/keys/mapbox?$', main_views.mapbox_token, name='mapbox_token'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),

@@ -1,74 +1,73 @@
 {% extends 'core/settings/base.html' %}
 {% load staticfiles %}
 
-
 {% block static %}
-	{{ block.super }}
+{{ block.super }}
 {% endblock %}
 
 {% block left %}
-	<div class="flex column steps">
-		<div class="active step">
-			<div class="content">
-				<div class="title-align">
-					<i class="block icon-link step-icon"></i>
+<div class="flex column steps">
+	<div class="active step">
+		<div class="content">
+			<div class="title-align">
+				<i class="block icon-link step-icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
-				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="title">Connect to {{ provider.name }}</div>
 			</div>
-		</div>
-		<div class="disabled step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-uniF75F"></i>
-
-					<div class="title">Authorize Access</div>
-				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
-			</div>
-		</div>
-		<div class="disabled step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-check"></i>
-
-					<div class="title">Verify Settings</div>
-				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
-			</div>
+			<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
 		</div>
 	</div>
+	<div class="disabled step">
+		<div class="content">
+			<div class="title-align">
+				<i class="step-icon icon-uniF75F"></i>
+
+				<div class="title">Authorize Access</div>
+			</div>
+			<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+		</div>
+	</div>
+	<div class="disabled step">
+		<div class="content">
+			<div class="title-align">
+				<i class="step-icon icon-check"></i>
+
+				<div class="title">Verify Settings</div>
+			</div>
+			<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block content %}
-	<div class="step-connect">
-		<div class="grouping">
-			<div class="bigger">Connect to {{ provider.name }}</div>
-			<div>
-				<span>Connect your {{ provider.name }} account to Ografy</span>
+<div class="step-connect">
+	<div class="grouping">
+		<div class="bigger">Connect to {{ provider.name }}</div>
+		<div>
+			<span>Connect your {{ provider.name }} account to Ografy</span>
 
-				<div class="grouping-content">
-					<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
-				</div>
-				<a class="bold button-green link-button" name="social-{{ provider.backend_name }}" href="{% url "social:begin" backend=provider.backend_name %}">
-					Connect to {{ provider.name }}
-				</a>
+			<div class="grouping-content">
+				<span>Details and stuff about your {{ provider.name }} account to Ografy</span>
 			</div>
-		</div>
-		<div class="grouping">
-			<div class="bigger">Use API key to connect</div>
-			<div>
-				<span>Connect to {{ provider.name }} with your own API key</span>
-
-				<div class="grouping-content">
-					<span>Details about how to connect to {{ provider.name }} with your API key</span>
-				</div>
-				<form>
-					<input class="text-input-width" type="text" name="email" value="12345-abcdef-678910-ghijkl"/>
-					<input class="bold button-green" type="button" value="Verify"/>
-				</form>
-			</div>
+			<a class="bold button-green link-button" name="social-{{ provider.backend_name }}" href="{% url "social:begin" backend=provider.backend_name %}">
+				Connect to {{ provider.name }}
+			</a>
 		</div>
 	</div>
+	<div class="grouping">
+		<div class="bigger">Use API key to connect</div>
+		<div>
+			<span>Connect to {{ provider.name }} with your own API key</span>
+
+			<div class="grouping-content">
+				<span>Details about how to connect to {{ provider.name }} with your API key</span>
+			</div>
+			<form>
+				<input class="text-input-width" type="text" name="email" value="12345-abcdef-678910-ghijkl"/>
+				<input class="bold button-green" type="button" value="Verify"/>
+			</form>
+		</div>
+	</div>
+</div>
 {% endblock %}
