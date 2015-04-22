@@ -296,12 +296,16 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function toString(currentFilter) {
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
-					return 'Date gt ' + $(currentFilter).find('.date-start')[0].value;
+					return 'datetime gt ' + $(currentFilter).find('.date-start')[0].value;
 				}
 
 				//Add the text for "date before XXX"
 				function appendBefore(curretFilter) {
-					return 'Date lt ' + $(currentFilter).find('.date-end')[0].value;
+					return 'datetime lt ' + $(currentFilter).find('.date-end')[0].value;
+				}
+
+				function appendBetween(currentFilter) {
+					return 'datetime range ' + $(currentFilter).find('.date-start')[0].value + ', ' + $(currentFilter).find('.date-end')[0].value;
 				}
 
 				var returnString = '';
@@ -318,7 +322,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+					returnString += (appendBetween(currentFilter));
 				}
 
 				return returnString;
@@ -413,12 +417,16 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function toString(currentFilter) {
 				//Add the text for "time after XXX"
 				function appendAfter(currentFilter) {
-					return 'Time gt ' + $(currentFilter).find('.time-start')[0].value;
+					return 'datetime gt ' + $(currentFilter).find('.time-start')[0].value;
 				}
 
 				//Add the text for "time before XXX"
 				function appendBefore(currentFilter) {
-					return 'Time lt ' + $(currentFilter).find('.time-end')[0].value;
+					return 'datetime lt ' + $(currentFilter).find('.time-end')[0].value;
+				}
+
+				function appendBetween(currentFilter) {
+					return 'datetime range ' + $(currentFilter).find('.time-start')[0].value + ', ' + $(currentFilter).find('.time-end')[0].value;
 				}
 
 				var returnString = '';
@@ -435,7 +443,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+					returnString += (appendBetween(currentFilter));
 				}
 
 				return returnString;

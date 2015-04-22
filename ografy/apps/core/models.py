@@ -8,27 +8,6 @@ from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
 
 
-class PermissionTemplate(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, blank=False)
-    url = models.CharField(max_length=4096, blank=False)
-
-    enabled_by_default = models.BooleanField(default=True)
-
-
-class Permission(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, blank=False)
-    url = models.CharField(max_length=4096, blank=False)
-
-    enabled = models.BooleanField(default=True)
-
-    user = models.ForeignKey(User)
-    signal = models.ForeignKey(Signal)
-
-    permission_template = models.ForeignKey(PermissionTemplate)
-
-
 class Provider(models.Model):
     """
     Entity representing a Provider.
@@ -172,3 +151,25 @@ class User(AbstractBaseUser, PermissionsMixin):
             self._upper_handle = self.handle.upper()
         else:
             self._upper_handle = self.handle
+
+
+class PermissionTemplate(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200, blank=False)
+    url = models.CharField(max_length=4096, blank=False)
+    provider = models.ForeignKey(Provider)
+    enabled_by_default = models.BooleanField(default=True)
+
+
+class Permission(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200, blank=False)
+    url = models.CharField(max_length=4096, blank=False)
+
+    provider = models.ForeignKey(Provider)
+    enabled = models.BooleanField(default=True)
+
+    user = models.ForeignKey(User)
+    signal = models.ForeignKey(Signal)
+
+    permission_template = models.ForeignKey(PermissionTemplate)
