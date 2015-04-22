@@ -55,6 +55,8 @@ function mapboxManager() {
 
 			this.map.on('draw:created', showPolygonArea);
 			this.map.on('draw:edited', showPolygonAreaEdited);
+
+			$('.leaflet-draw').addClass('hidden');
 		}
 
 		function showPolygonAreaEdited(e) {

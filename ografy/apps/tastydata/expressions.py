@@ -1,6 +1,6 @@
 import re
 import types
-import datetime
+import json
 
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
@@ -24,12 +24,12 @@ from ografy.apps.tastydata.exceptions import InvalidFilterError
 #
 #   LOGICAL
 #       and, or, not
-ODATA_TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|[:\w-]+|\(|\)|(?:'[^\']*'))")
+ODATA_TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|[:\w-]+|\(|\)|(?:'[^\']*')|\[\[.+\]\])")
 # TODO: Consider implementing OData spec rather than Django ORM filters. Would we have to fork Django ORM?
 ODATA_COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',
-    'regex', 'iregex'
+    'regex', 'iregex', 'geo_within_polygon'
 }
 ODATA_LOGICAL = {'and', 'or'}
 
@@ -118,7 +118,10 @@ def _get_literal_value(value):
         pass
 
     if isinstance(value, str):
-        return value
+        try:
+            return json.loads(value)
+        except ValueError:
+            return value
 
     raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
 

@@ -15,6 +15,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 		$(inputSelection).find('.filter.box:last .initial').change(function() {
 			var currentElement = this;
+
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
 				filters().date().dropdown(currentElement);
@@ -34,6 +35,8 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			else if (currentElement.value == 'area') {
 				filters().area().dropdown(currentElement);
 			}
+
+			checkPolygonDisplay();
 		});
 	}
 
@@ -95,6 +98,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	//Remove the filter that the selected remove button is part of.
 	function removeFilter(currentButton) {
 		$(currentButton).parents('.filter.box').remove();
+		checkPolygonDisplay();
 	}
 
 	function submitSearch(event) {
@@ -183,6 +187,25 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		});
 	}
 
+	function checkPolygonDisplay() {
+		var initialSet = $('.initial');
+		var len = initialSet.length;
+		var showPolygon = false;
+
+		for (var i = 0; i < len; i++) {
+			if (initialSet[i].value === 'area') {
+				showPolygon = true;
+			}
+		}
+
+		if (showPolygon) {
+			$('.leaflet-draw').removeClass('hidden');
+		}
+		else {
+			$('.leaflet-draw').addClass('hidden');
+		}
+	}
+
 	function filters() {
 		//Render the elements needed to filter on From a given person
 		function area() {
@@ -195,16 +218,20 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			}
 
 			function toString(currentFilter) {
-				var returnString = 'geo_within_polygon=[';
+				currentValue = $(currentFilter).find('.area')[0].value;
+				if (currentValue === 'within') {
+					var returnString = 'location geo_within_polygon [';
+				}
+				else if (currentValue === 'without') {
+					var returnString = 'location not geo_within_polygon [';
+				}
 				var loopEnd = mapboxViewInst.map.polySelect.length;
 				for (var i = 0; i < loopEnd; i++) {
 					var thisLatLng = mapboxViewInst.map.polySelect[i];
-					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']';
-					if (i !== loopEnd - 1) {
-						returnString += ',';
-					}
+					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + '], ';
 				}
-				returnString += ']';
+				var thisLatLng = mapboxViewInst.map.polySelect[0];
+				returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']]';
 				console.log(returnString);
 				return returnString;
 			}
@@ -494,6 +521,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		addDropdown: addDropdown,
 		addFilter: addFilter,
 		bindEvents: bindEvents,
+		checkPolygonDisplay: checkPolygonDisplay,
 		createFilterBase: createFilterBase,
 		removeFilter: removeFilter,
 		filters: filters

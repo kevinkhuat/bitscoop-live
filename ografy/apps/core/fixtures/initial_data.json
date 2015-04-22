@@ -7,7 +7,7 @@
       "auth_backend": "social.backends.facebook.FacebookOAuth2",
       "description": "Online social networking service",
       "tags": "social",
-      "auth_type": "Oauth2"
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -19,7 +19,7 @@
       "auth_backend": "social.backends.twitter.TwitterOAuth",
       "description": "Online social networking service",
       "tags": "social",
-      "auth_type": "Oauth1"
+      "auth_type": 1
     },
     "model": "core.provider"
   },
@@ -31,7 +31,7 @@
       "auth_backend": "social.backends.steam.SteamOpenId",
       "description": "Internet-based digital distribution, multiplayer, and social networking platform",
       "tags": "gaming media social",
-      "auth_type": "OpenID"
+      "auth_type": 2
     },
     "model": "core.provider"
   },
@@ -42,7 +42,8 @@
       "backend_name": "amazon",
       "auth_backend": "social.backends.amazon.AmazonOAuth2",
       "description": "Electronic commerce company",
-      "tags": "development productivity"
+      "tags": "development productivity",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -53,7 +54,8 @@
       "backend_name": "dropbox",
       "auth_backend": "social.backends.dropbox.DropboxOAuth2",
       "description": "File hosting service",
-      "tags": "collaboration productivity"
+      "tags": "collaboration productivity",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -65,7 +67,7 @@
       "auth_backend": "social.backends.fitbit.FitbitOAuth",
       "description": "Activity trackers and wireless-enabled wearable devices",
       "tags": "fitness health",
-      "auth_type": "Oauth1"
+      "auth_type": 1
     },
     "model": "core.provider"
   },
@@ -76,7 +78,8 @@
       "backend_name": "foursquare",
       "auth_backend": "social.backends.foursquare.FoursquareOAuth2",
       "description": "Local search and discovery service",
-      "tags": "social"
+      "tags": "social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -87,7 +90,8 @@
       "backend_name": "github",
       "auth_backend": "social.backends.github.GithubOAuth2",
       "description": "Web-based Git repository hosting service",
-      "tags": "collaboration development productivity"
+      "tags": "collaboration development productivity",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -98,7 +102,8 @@
       "backend_name": "google",
       "auth_backend": "social.backends.google.GoogleOAuth2",
       "description": "Internet-related services and products",
-      "tags": "collaboration media productivity social"
+      "tags": "collaboration media productivity social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -109,7 +114,8 @@
       "backend_name": "instagram",
       "auth_backend": "social.backends.instagram.InstagramOAuth2",
       "description": "Mobile photo-sharing, video-sharing and social networking service",
-      "tags": "media social"
+      "tags": "media social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -120,7 +126,8 @@
       "backend_name": "linkedin",
       "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
       "description": "Business-oriented social networking service",
-      "tags": "productivity social"
+      "tags": "productivity social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -131,7 +138,8 @@
       "backend_name": "reddit",
       "auth_backend": "social.backends.reddit.RedditOAuth2",
       "description": "Entertainment, social networking service and news website",
-      "tags": "media social"
+      "tags": "media social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -142,7 +150,8 @@
       "backend_name": "spotify",
       "auth_backend": "social.backends.spotify.SpotifyOAuth2",
       "description": "Music streaming service",
-      "tags": "media music"
+      "tags": "media music",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -153,7 +162,8 @@
       "backend_name": "stackoverflow",
       "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2",
       "description": "Open Q&A network",
-      "tags": "collaboration development productivity social"
+      "tags": "collaboration development productivity social",
+      "auth_type": 0
     },
     "model": "core.provider"
   },
@@ -165,7 +175,7 @@
       "auth_backend": "social.backends.tumblr.TumblrOAuth",
       "description": "Microblogging platform and social networking website",
       "tags": "social",
-      "auth_type": "Oauth1"
+      "auth_type": 1
     },
     "model": "core.provider"
   },
@@ -177,7 +187,7 @@
       "auth_backend": "social.backends.vimeo.VimeoOAuth1",
       "description": "Video-sharing website",
       "tags": "media video",
-      "auth_type": "Oauth1"
+      "auth_type": 1
     },
     "model": "core.provider"
   }
