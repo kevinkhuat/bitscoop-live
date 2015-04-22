@@ -109,11 +109,11 @@ def verify(request, pk):
             })
         else:
             extra_data = UserSocialAuth.objects.filter(user=request.user, uid=signal.psa_backend_uid)[0].extra_data
-            if signal.provider.auth_type == 'Oauth1':
+            if signal.provider.auth_type == 1:
                 access_token = extra_data['access_token']
                 signal.oauth_token = access_token['oauth_token']
                 signal.oauth_token_secret = access_token['oauth_token_secret']
-            elif signal.provider.auth_type == 'Oauth2':
+            elif signal.provider.auth_type == 0:
                 signal.access_token = extra_data['access_token']
             else:
                 pass
