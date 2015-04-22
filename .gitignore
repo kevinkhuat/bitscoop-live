@@ -28,6 +28,7 @@ Thumbs.db
 # IDE generated files #
 #######################
 .idea
+.iml
 
 # Build Folders #
 #################
