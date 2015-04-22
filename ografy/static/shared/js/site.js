@@ -135,9 +135,8 @@ function verifiedSignal(signal_id) {
 		type: 'POST',
 		dataType: 'json',
 		data: data,
-		dataType: 'json',
 		headers: {
-			"X-CSRFToken": getCookie('csrftoken')
+			'X-CSRFToken': getCookie('csrftoken')
 		}
 	}).done(function(data, xhr, response) {
 		console.log('pants');
