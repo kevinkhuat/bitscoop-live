@@ -331,10 +331,6 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					return 'datetime lt ' + $(currentFilter).find('.date-end')[0].value;
 				}
 
-				function appendBetween(currentFilter) {
-					return 'datetime range ' + $(currentFilter).find('.date-start')[0].value + ', ' + $(currentFilter).find('.date-end')[0].value;
-				}
-
 				var returnString = '';
 
 				//By default set the delimeter to the first dropdown option since
@@ -349,7 +345,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBetween(currentFilter));
+					returnString += (appendBefore(currentFilter) + ' & ' + appendAfter(currentFilter));
 				}
 
 				return returnString;
