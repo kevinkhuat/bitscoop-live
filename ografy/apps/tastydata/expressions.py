@@ -8,22 +8,7 @@ from django.db.models.constants import LOOKUP_SEP
 from ografy.apps.tastydata.exceptions import InvalidFilterError
 
 
-#   FUNCTIONS
-#       String: substringof, endswith, startswith, length, indexof, replace, substring, tolower, toupper, trim, concat
-#       Date: day, hour, minute, month, second, year
-#       Math: round, floor, ceiling
-#
-#   COMPARERS
-#       ne, eq, lt, lte, gt, gte
-#
-#   OPERATORS
-#       mod, add, sub, mul, div
-#
-#   LOGICAL
-#       and, or, not
-
-TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|[:\w-]+|\(|\)|(?:'[^\']*')|\[\[.+\]\])")
-
+TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:'[^\']*'))")
 COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',
@@ -96,7 +81,7 @@ class Prefix(Symbol):
             self.nud = types.MethodType(nud, self)
 
 
-def _get_literal_value(value):
+def _get_literal_value(value, operator):
     if value == 'True' or value == 'true':
         return True
     elif value == 'False' or value == 'false':
@@ -114,10 +99,12 @@ def _get_literal_value(value):
     except ValueError:
         pass
 
-    try:
+    if operator == 'geo_within_polygon':
         return json.loads(value)
-    except ValueError:
+    else:
         return value
+
+    raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
 
 
 def _and_led(self, lhs, expr, **kwargs):
@@ -159,7 +146,7 @@ def tokenize(string, expression_class=Q):
             if operator not in COMPARERS:
                 raise InvalidFilterError('Unexpected filter function: `{0}`'.format(operator))
 
-            literal = _get_literal_value(raw_literal)
+            literal = _get_literal_value(raw_literal, operator)
 
             yield Predicate(field, operator, literal, expression_class=expression_class)
 

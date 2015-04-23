@@ -20,11 +20,14 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			if (currentElement.value == 'date') {
 				filters().date().dropdown(currentElement);
 			}
-			else if (currentElement.value == 'time') {
-				filters().time().dropdown(currentElement);
-			}
+			//else if (currentElement.value == 'time') {
+			//	filters().time().dropdown(currentElement);
+			//}
 			else if (currentElement.value == 'provider') {
 				filters().provider().dropdown(currentElement);
+			}
+			else if (currentElement.value == 'signal') {
+				filters().signal().dropdown(currentElement);
 			}
 			else if (currentElement.value == 'to') {
 				filters().to().dropdown(currentElement);
@@ -133,9 +136,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					if (type == 'date') {
 						filterString += '(' + filters().date().toString(currentFilter) + ')';
 					}
-					else if (type == 'time') {
-						filterString += '(' + filters().time().toString(currentFilter) + ')';
-					}
+					//else if (type == 'time') {
+					//	filterString += '(' + filters().time().toString(currentFilter) + ')';
+					//}
 					else if (type == 'provider') {
 						filterString += '(' + filters().provider().toString(currentFilter) + ')';
 					}
@@ -220,10 +223,10 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function toString(currentFilter) {
 				currentValue = $(currentFilter).find('.area')[0].value;
 				if (currentValue === 'within') {
-					var returnString = 'location geo_within_polygon [';
+					var returnString = 'location geo_within_polygon \'[';
 				}
 				else if (currentValue === 'without') {
-					var returnString = 'location not geo_within_polygon [';
+					var returnString = 'not (location geo_within_polygon \'[';
 				}
 				var loopEnd = mapboxViewInst.map.polySelect.length;
 				for (var i = 0; i < loopEnd; i++) {
@@ -231,7 +234,10 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + '], ';
 				}
 				var thisLatLng = mapboxViewInst.map.polySelect[0];
-				returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']]';
+				returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']]\'';
+				if (currentValue === 'without') {
+					returnString += ')';
+				}
 				console.log(returnString);
 				return returnString;
 			}
@@ -323,12 +329,12 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function toString(currentFilter) {
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
-					return 'datetime gt ' + $(currentFilter).find('.date-start')[0].value;
+					return 'datetime gt \'' + $(currentFilter).find('.date-start')[0].value + 'T' + $(currentFilter).find('.time-start')[0].value + '\'';
 				}
 
 				//Add the text for "date before XXX"
 				function appendBefore(curretFilter) {
-					return 'datetime lt ' + $(currentFilter).find('.date-end')[0].value;
+					return 'datetime lt \'' + $(currentFilter).find('.date-end')[0].value + 'T' + $(currentFilter).find('.time-end')[0].value + '\'';
 				}
 
 				var returnString = '';
@@ -345,7 +351,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBefore(currentFilter) + ' & ' + appendAfter(currentFilter));
+					returnString += appendBefore(currentFilter) + ' and ' + appendAfter(currentFilter);
 				}
 
 				return returnString;
@@ -364,7 +370,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function dropdown(currentElement) {
 				var parent = currentElement.parentElement;
 
-				//Render the From field using Nunjucks and add it to the DOM
+				//Render the provider list using Nunjucks and add it to the DOM
 				var newField = nunjucks.render('search/filters/provider/provider_dropdown.html');
 				$(parent).append(newField);
 			}
@@ -372,6 +378,40 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			//Consruct a filter string from an inputted From
 			function toString(currentFilter) {
 				return 'provider_name contains ' + $(currentFilter).find('.provider')[0].value;
+			}
+
+			return {
+				dropdown: dropdown,
+				toString: toString
+			};
+		}
+
+		function signal() {
+			function dropdown(currentElement) {
+				var cookie = sessionsCookies().getCsrfToken();
+				var parent = currentElement.parentElement;
+				$.ajax({
+					url: '/opi/signal',
+					type: 'GET',
+					dataType: 'json',
+					headers: {
+						'X-CSRFToken': cookie
+					}
+				}).done(function(data, xhr, response) {
+
+					var signals = data;
+
+					//Render the signal list using Nunjucks and add it to the DOM
+					var newField = nunjucks.render('search/filters/signal/signal_dropdown.html', signals);
+					$(parent).append(newField);
+				});
+
+
+			}
+
+			//Consruct a filter string from an inputted From
+			function toString(currentFilter) {
+				return 'signal_id exact ' + $(currentFilter).find('.signal')[0].value;
 			}
 
 			return {
@@ -508,6 +548,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			from: from,
 			date: date,
 			provider: provider,
+			signal: signal,
 			time: time,
 			to: to
 		};
