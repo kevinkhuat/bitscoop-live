@@ -13,7 +13,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/static/lib/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -27,7 +28,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/static/lib/**/*.js'
 				]
 			}
 		},

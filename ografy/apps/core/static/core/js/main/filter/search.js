@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewInst, urlParserInst) {
+function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its
@@ -15,6 +15,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 
 		$(inputSelection).find('.filter.box:last .initial').change(function() {
 			var currentElement = this;
+
 			$(currentElement).siblings().remove();
 			if (currentElement.value == 'date') {
 				filters().date().dropdown(currentElement);
@@ -34,6 +35,8 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			else if (currentElement.value == 'area') {
 				filters().area().dropdown(currentElement);
 			}
+
+			checkPolygonDisplay();
 		});
 	}
 
@@ -95,6 +98,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 	//Remove the filter that the selected remove button is part of.
 	function removeFilter(currentButton) {
 		$(currentButton).parents('.filter.box').remove();
+		checkPolygonDisplay();
 	}
 
 	function submitSearch(event) {
@@ -183,6 +187,25 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 		});
 	}
 
+	function checkPolygonDisplay() {
+		var initialSet = $('.initial');
+		var len = initialSet.length;
+		var showPolygon = false;
+
+		for (var i = 0; i < len; i++) {
+			if (initialSet[i].value === 'area') {
+				showPolygon = true;
+			}
+		}
+
+		if (showPolygon) {
+			$('.leaflet-draw').removeClass('hidden');
+		}
+		else {
+			$('.leaflet-draw').addClass('hidden');
+		}
+	}
+
 	function filters() {
 		//Render the elements needed to filter on From a given person
 		function area() {
@@ -195,16 +218,20 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			}
 
 			function toString(currentFilter) {
-				var returnString = 'geo_within_polygon=[';
+				currentValue = $(currentFilter).find('.area')[0].value;
+				if (currentValue === 'within') {
+					var returnString = 'location geo_within_polygon [';
+				}
+				else if (currentValue === 'without') {
+					var returnString = 'location not geo_within_polygon [';
+				}
 				var loopEnd = mapboxViewInst.map.polySelect.length;
 				for (var i = 0; i < loopEnd; i++) {
 					var thisLatLng = mapboxViewInst.map.polySelect[i];
-					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']';
-					if (i !== loopEnd - 1) {
-						returnString += ',';
-					}
+					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + '], ';
 				}
-				returnString += ']';
+				var thisLatLng = mapboxViewInst.map.polySelect[0];
+				returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']]';
 				console.log(returnString);
 				return returnString;
 			}
@@ -296,12 +323,12 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			function toString(currentFilter) {
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
-					return 'Date gt ' + $(currentFilter).find('.date-start')[0].value;
+					return 'datetime gt ' + $(currentFilter).find('.date-start')[0].value;
 				}
 
 				//Add the text for "date before XXX"
 				function appendBefore(curretFilter) {
-					return 'Date lt ' + $(currentFilter).find('.date-end')[0].value;
+					return 'datetime lt ' + $(currentFilter).find('.date-end')[0].value;
 				}
 
 				var returnString = '';
@@ -318,7 +345,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+					returnString += (appendBefore(currentFilter) + ' & ' + appendAfter(currentFilter));
 				}
 
 				return returnString;
@@ -413,12 +440,16 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 			function toString(currentFilter) {
 				//Add the text for "time after XXX"
 				function appendAfter(currentFilter) {
-					return 'Time gt ' + $(currentFilter).find('.time-start')[0].value;
+					return 'datetime gt ' + $(currentFilter).find('.time-start')[0].value;
 				}
 
 				//Add the text for "time before XXX"
 				function appendBefore(currentFilter) {
-					return 'Time lt ' + $(currentFilter).find('.time-end')[0].value;
+					return 'datetime lt ' + $(currentFilter).find('.time-end')[0].value;
+				}
+
+				function appendBetween(currentFilter) {
+					return 'datetime range ' + $(currentFilter).find('.time-start')[0].value + ', ' + $(currentFilter).find('.time-end')[0].value;
 				}
 
 				var returnString = '';
@@ -435,7 +466,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 					returnString += appendBefore(currentFilter);
 				}
 				else if (delimeter.value == 'between') {
-					returnString += (appendBefore(currentFilter) + ' AND ' + appendAfter(currentFilter));
+					returnString += (appendBetween(currentFilter));
 				}
 
 				return returnString;
@@ -486,6 +517,7 @@ function searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewIn
 		addDropdown: addDropdown,
 		addFilter: addFilter,
 		bindEvents: bindEvents,
+		checkPolygonDisplay: checkPolygonDisplay,
 		createFilterBase: createFilterBase,
 		removeFilter: removeFilter,
 		filters: filters

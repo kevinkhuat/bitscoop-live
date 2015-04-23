@@ -35,7 +35,8 @@ function mapboxManager() {
 		}));
 
 		L.control.fullscreen().addTo(this.map);
-		if (window.devicePixelRatio < 1.5 && enableExtraControls) {
+		var mobileDisplay = ((window.innerWidth < 1080 && window.devicePixelRatio >= 1.5) || (window.devicePixelRatio >= 3));
+		if (!mobileDisplay) {
 			var map = this.map;
 			map.zoomslider = L.control.zoomslider().addTo(map);
 			map.featureGroup = L.featureGroup().addTo(map);
@@ -54,6 +55,8 @@ function mapboxManager() {
 
 			this.map.on('draw:created', showPolygonArea);
 			this.map.on('draw:edited', showPolygonAreaEdited);
+
+			$('.leaflet-draw').addClass('hidden');
 		}
 
 		function showPolygonAreaEdited(e) {

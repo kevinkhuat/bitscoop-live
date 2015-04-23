@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from social.pipeline.partial import partial
 from social.pipeline.social_auth import associate_user
 
-from ografy.apps.core.models import Provider, Signal
+from ografy.apps.core.models import Provider, Signal, Permission
 
 
 @partial
@@ -25,6 +25,7 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
         user = association['user']
         social = association['social']
         provider = Provider.objects.get(backend_name=backend.name)
+        permissionsTemplates = provider.permissiontemplate_set.all()
         signal = Signal(
             user=user,
             provider=provider,
@@ -34,8 +35,17 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
             complete=False,
             enabled=False,
             created=datetime.now(),
-            updated=datetime.now()
-            )
+            updated=datetime.now())
         signal.save()
 
+        for temp_permission in permissionsTemplates:
+            permission = Permission(
+                user=user,
+                provider=temp_permission.provider,
+                name=temp_permission.name,
+                url=temp_permission.url,
+                enabled=temp_permission.enabled_by_default,
+                permission_template_id=temp_permission.id,
+                signal_id=signal.id)
+            permission.save()
     return association

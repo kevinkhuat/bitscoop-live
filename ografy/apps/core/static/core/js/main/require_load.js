@@ -11,7 +11,6 @@ requirejs.config({
 				'main/detail',
 				'main/views/list',
 				'main/views/map',
-				'main/utls/cache',
 				'main/utls/model',
 				'main/utls/mapUtil',
 				'main/utls/session',
@@ -21,7 +20,6 @@ requirejs.config({
 		},
 		'main/detail': {
 			deps: [
-				'main/utls/cache',
 				'main/utls/mapUtil',
 				'main/utls/model',
 				'main/utls/session'
@@ -29,7 +27,6 @@ requirejs.config({
 		},
 		'main/list': {
 			deps: [
-				'main/utls/cache',
 				'main/utls/mapUtil',
 				'main/utls/model',
 				'main/utls/session'
@@ -37,7 +34,6 @@ requirejs.config({
 		},
 		'main/map': {
 			deps: [
-				'main/utls/cache',
 				'main/utls/mapUtil',
 				'main/utls/model',
 				'main/utls/session'
@@ -48,7 +44,6 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs([
-		'main/utls/cache',
 		'main/utls/mapUtil',
 		'main/utls/model',
 		'main/utls/session',

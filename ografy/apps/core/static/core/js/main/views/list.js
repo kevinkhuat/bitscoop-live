@@ -1,5 +1,5 @@
 //Render the List View on the main page
-function listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
+function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	var contentHeight = 0;
 	//Render the base framework of the List View
 	function renderBase(callback) {

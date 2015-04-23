@@ -15,6 +15,18 @@
 @dark-translucent: rgba(40, 40, 40, .5);
 @black-translucent: rgba(0, 0, 0, .1);
 
+@mobile:
+	~"(max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(-webkit-min-device-pixel-ratio: 3)",
+	~"(min-device-pixel-ratio: 3)";
+
+@mobile-portrait:
+	~"(orientation: portrait) and (max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (-webkit-min-device-pixel-ratio: 3)",
+	~"(orientation: portrait) and (min-device-pixel-ratio: 3)";
+
 @iconpath: '/static/';
 //-------------------------------
 // Theme: Light
@@ -319,8 +331,8 @@ main {
 		background-color: @red;
 		color: @white;
 	}
-	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		display: none;
+	@media (orientation: portrait), @mobile {
+			display: none;
 	}
 }
 .list.item {
@@ -334,22 +346,22 @@ main {
 	font-size: 1em;
 	& > * {
 		padding: 0.5em 0.8em;
-		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			display: block;
-			text-align: right;
+		@media (orientation: portrait), @mobile{
+				display: block;
+				text-align: right;
 		}
 	}
 	& > :before {
-		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			content: attr(data-label);
-			float: left;
-			text-transform: uppercase;
-			font-weight: bold;
+		@media (orientation: portrait), @mobile {
+				content: attr(data-label);
+				float: left;
+				text-transform: uppercase;
+				font-weight: bold;
 		}
 	}
-	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		display: block;
-		border-bottom: 1px solid @text-color;
+	@media (orientation: portrait), @mobile{
+			display: block;
+			border-bottom: 1px solid @text-color;
 	}
 }
 .list.item.hover {
@@ -440,9 +452,9 @@ main {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		font-size: 14px;
-		margin: 0 0 3.5em 0;
+	@media @mobile-portrait {
+			font-size: 14px;
+			margin: 0 0 3.5em 0;
 	}
 }
 .main-list.shrunk {
@@ -470,8 +482,8 @@ main {
 	}
 	.sort-button {
 		transform: translateY(-10%);
-		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			transform: translateY(-15%);
+		@media @mobile {
+				transform: translateY(-15%);
 		}
 		& > i {
 			font-size: 1.5em;
@@ -485,8 +497,8 @@ main {
 }
 .result {
 	transform: translateY(-35%);
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		transform: translateY(-45%);
+	@media @mobile {
+			transform: translateY(-45%);
 	}
 }
 
@@ -497,4 +509,8 @@ main {
 .next-page.disabled, .previous-page.disabled {
 	color: transparent;
 	cursor: auto;
+}
+
+.leaflet-draw.hidden {
+	visibility: hidden;
 }
