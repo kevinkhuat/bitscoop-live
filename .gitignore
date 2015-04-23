@@ -1,8 +1,6 @@
 # Compiled source #
 ###################
 *.pyc
-ografy/apps/core/static/core/less/*css
-ografy/static/shared/less/*.css
 
 # Packages #
 ############
@@ -28,7 +26,6 @@ Thumbs.db
 # IDE generated files #
 #######################
 .idea
-.iml
 
 # Build Folders #
 #################
@@ -49,7 +46,3 @@ node_modules
 # Logs #
 ########
 /logs
-
-# Sensitive Files #
-###################
-ografy/settings/signals.py
