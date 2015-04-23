@@ -48,7 +48,10 @@
 					{% endif %}
 
 					{% if request.user.is_authenticated %}
-					<a class="fullscreen item"><i class="icon-enlarge">Fullscreen</i></a>
+					<a class="fullscreen item">
+						<i class="icon-enlarge"></i>
+						Fullscreen
+					</a>
 					<div class="item">
 						<a class="user-button item">{{ request.user.identifier }}</a>
 						<div class="flex column menu main hidden">

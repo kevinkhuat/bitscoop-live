@@ -1,8 +1,6 @@
 # Compiled source #
 ###################
 *.pyc
-ografy/apps/core/static/core/less/*css
-ografy/static/shared/less/*.css
 
 # Packages #
 ############

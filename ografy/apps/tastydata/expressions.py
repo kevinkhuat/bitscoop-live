@@ -8,30 +8,12 @@ from django.db.models.constants import LOOKUP_SEP
 from ografy.apps.tastydata.exceptions import InvalidFilterError
 
 
-# OData Filter Spec
-# http://www.odata.org/documentation/odata-v2-documentation/uri-conventions/#45_Filter_System_Query_Option_filter
-#
-#   FUNCTIONS
-#       String: substringof, endswith, startswith, length, indexof, replace, substring, tolower, toupper, trim, concat
-#       Date: day, hour, minute, month, second, year
-#       Math: round, floor, ceiling
-#
-#   COMPARERS
-#       ne, eq, lt, lte, gt, gte
-#
-#   OPERATORS
-#       mod, add, sub, mul, div
-#
-#   LOGICAL
-#       and, or, not
-ODATA_TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|[:\w-]+|\(|\)|(?:'[^\']*')|\[\[.+\]\])")
-# TODO: Consider implementing OData spec rather than Django ORM filters. Would we have to fork Django ORM?
-ODATA_COMPARERS = {
+TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:'[^\']*'))")
+COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',
     'regex', 'iregex', 'geo_within_polygon'
 }
-ODATA_LOGICAL = {'and', 'or'}
 
 
 class Symbol(object):
@@ -99,7 +81,7 @@ class Prefix(Symbol):
             self.nud = types.MethodType(nud, self)
 
 
-def _get_literal_value(value):
+def _get_literal_value(value, operator):
     if value == 'True' or value == 'true':
         return True
     elif value == 'False' or value == 'false':
@@ -117,11 +99,10 @@ def _get_literal_value(value):
     except ValueError:
         pass
 
-    if isinstance(value, str):
-        try:
-            return json.loads(value)
-        except ValueError:
-            return value
+    if operator == 'geo_within_polygon':
+        return json.loads(value)
+    else:
+        return value
 
     raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
 
@@ -146,7 +127,7 @@ def _or_led(self, lhs, expr, **kwargs):
 
 
 def tokenize(string, expression_class=Q):
-    tokens = ODATA_TOKEN_SPLIT.findall(string)
+    tokens = TOKEN_SPLIT.findall(string)
 
     while len(tokens) > 0:
         token = tokens.pop(0)
@@ -162,10 +143,10 @@ def tokenize(string, expression_class=Q):
             except IndexError:
                 raise InvalidFilterError('Incomplete predicate format at: `{0}`'.format(field))
 
-            if operator not in ODATA_COMPARERS:
+            if operator not in COMPARERS:
                 raise InvalidFilterError('Unexpected filter function: `{0}`'.format(operator))
 
-            literal = _get_literal_value(raw_literal)
+            literal = _get_literal_value(raw_literal, operator)
 
             yield Predicate(field, operator, literal, expression_class=expression_class)
 
