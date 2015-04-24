@@ -142,6 +142,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					else if (type == 'provider') {
 						filterString += '(' + filters().provider().toString(currentFilter) + ')';
 					}
+					else if (type == 'signal') {
+						filterString += '(' + filters().signal().toString(currentFilter) + ')';
+					}
 					else if (type == 'to') {
 						filterString += '(' + filters().to().toString(currentFilter) + ')';
 					}
@@ -402,11 +405,11 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					var signals = data;
 
 					//Render the signal list using Nunjucks and add it to the DOM
-					var newField = nunjucks.render('search/filters/signal/signal_dropdown.html', signals);
+					var newField = nunjucks.render('search/filters/signal/signal_dropdown.html', {
+						signals: signals
+					});
 					$(parent).append(newField);
 				});
-
-
 			}
 
 			//Consruct a filter string from an inputted From

@@ -667,7 +667,7 @@ class UserView(DjangoAPIListView):
             many=True,
             context={
                 'request': request,
-                'format': format
+                'formatrequest': format
             }
         )
 

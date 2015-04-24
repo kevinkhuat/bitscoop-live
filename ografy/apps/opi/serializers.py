@@ -22,8 +22,8 @@ def evaluate(query, QuerySet):
             return []
         else:
             # If there is only one result, send that result to the serializer
-            if len(data) == 1:
-                return data[0]
+            # if len(data) == 1:
+            #     return data[0]
             # otherwise send the list to the serializer
             return data
 
@@ -38,7 +38,8 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'created',
             'updated',
-            'data_blob') # , 'user'
+            'data_blob'
+        ) # , 'user'
         depth = 5
 
 
@@ -64,7 +65,8 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'datetime',
             'location',
             'type',
-            'name') #, 'data'
+            'name'
+        ) #, 'data'
         depth = 5
 
 
@@ -78,7 +80,8 @@ class MessageSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'message_to',
             'message_from',
-            'message_body') # 'event',
+            'message_body'
+        ) # 'event',
         depth = 5
 
 
@@ -92,14 +95,15 @@ class ProviderSerializer(django_serializers.ModelSerializer):
             'backend_name',
             'auth_backend',
             'tags',
-            'permission_template_set')
+            'permissiontemplate_set'
+        )
         depth = 5
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
     # Django References
-    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
-    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
+    # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
+    # provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
 
     class Meta:
         model = Signal
@@ -118,7 +122,8 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
             'access_token',
             'oauth_token',
             'oauth_token_secret',
-            'permission_set')
+            'permission_set'
+        )
         depth = 5
 
 
@@ -133,7 +138,8 @@ class PermissionSerializer(django_serializers.ModelSerializer):
             'enabled',
             'user',
             'permission_template',
-            'signal')
+            'signal'
+        )
         depth = 5
 
 
@@ -145,7 +151,8 @@ class PermissionTemplateSerializer(django_serializers.ModelSerializer):
             'name',
             'url',
             'provider',
-            'enabled_by_default')
+            'enabled_by_default'
+        )
         depth = 5
 
 
@@ -160,7 +167,8 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
             'user',
             'created',
             'updated',
-            'settings_dict')
+            'settings_dict'
+        )
         depth = 5
 
 
@@ -184,5 +192,6 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'is_active',
             'is_verified',
             'signal_set',
-            'permission_set') #, 'settings'
+            'permission_set'
+        ) #, 'settings'
         depth = 5

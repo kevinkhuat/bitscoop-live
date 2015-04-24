@@ -1,5 +1,5 @@
-<select class="provider">
+<select class="signal">
 	{% for signal in signals %}
-	<option value=signal.id>signal.name</option>
+	<option value={{ signal.id }}>{{ signal.name }}</option>
 	{% endfor %}
 </select>
