@@ -104,8 +104,6 @@ def _get_literal_value(value, operator):
     else:
         return value
 
-    raise InvalidFilterError('Invalid literal: `{0}`'.format(value))
-
 
 def _and_led(self, lhs, expr, **kwargs):
     return lhs & expr(self.lbp)
