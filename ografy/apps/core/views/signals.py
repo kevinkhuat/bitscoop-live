@@ -102,7 +102,7 @@ def verify(request, pk):
 
         if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
-                'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
+                'title': 'Ografy - Authorize ' + signal.provider.backend_name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
@@ -120,7 +120,7 @@ def verify(request, pk):
             signal.save()
 
             return render(request, 'core/signals/verify.html', {
-                'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
+                'title': 'Ografy - Verify ' + signal.provider.backend_name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal,
@@ -130,6 +130,7 @@ def verify(request, pk):
         signal = core_api.SignalApi.get(Q(user=request.user.id) & Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
+        signal.name = request.POST['name']
         signal.frequency = request.POST['updateFrequency']
         signal.save()
 

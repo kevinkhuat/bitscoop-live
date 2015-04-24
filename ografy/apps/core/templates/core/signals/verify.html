@@ -60,15 +60,15 @@
 {% block content %}
 	<div class="step-verify">
 		<div class="grouping">
-			<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
+			<div class="bigger">Verify {{ signal.provider.backend_name }} Connection Settings</div>
 			<div>
 				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ signal.name }}</span>
+					<span>Details and stuff about connection settings to {{ signal.provider.backend_name }}</span>
 				</div>
-				<span class="bold">Name your connection to {{ signal.name }}</span>
+				<span class="bold">Name your connection to {{ signal.provider.backend_name }}</span>
 
 				<form>
-					<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
+					<input class="text-input-width" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
 				</form>
 			</div>
 		</div>

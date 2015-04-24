@@ -124,6 +124,7 @@ function verifiedSignal(signal_id) {
 	var data = {};
 	data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
 	data.permissions = [];
+	data.name = $('input[name=signal-name]')[0].value;
 
 	$('input:checkbox').each(function() {
 		data.permissions.push($(this).prop('checked'));
