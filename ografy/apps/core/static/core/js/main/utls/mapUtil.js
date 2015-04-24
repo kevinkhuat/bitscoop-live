@@ -40,45 +40,68 @@ function mapboxManager() {
 			var map = this.map;
 			map.zoomslider = L.control.zoomslider().addTo(map);
 			map.featureGroup = L.featureGroup().addTo(map);
-			map.drawControl = new L.Control.Draw({
+
+			map.markerDrawControl = new L.Control.Draw({
 				edit: {
 					featureGroup: map.featureGroup
-					},
-					draw: {
+				},
+				draw: {
+					polygon: false,
+					polyline: false,
+					rectangle: false,
+					circle: false,
+					marker: true
+				}
+			});
+
+			map.on('draw:created', showMarkerDrawing);
+			map.on('draw:edited', showMarkerDrawingEdited);
+
+			map.polygonDrawControl = new L.Control.Draw({
+				edit: {
+					featureGroup: map.featureGroup
+				},
+				draw: {
 					polygon: true,
 					polyline: false,
 					rectangle: false,
 					circle: false,
 					marker: false
 				}
-			}).addTo(map);
-
-			this.map.on('draw:created', showPolygonArea);
-			this.map.on('draw:edited', showPolygonAreaEdited);
-
-			$('.leaflet-draw').addClass('hidden');
-		}
-
-		function showPolygonAreaEdited(e) {
-			e.layers.eachLayer(function(layer) {
-				showPolygonArea({ layer: layer });
 			});
-		}
-		function showPolygonArea(e) {
-			map.featureGroup.clearLayers();
-			map.featureGroup.addLayer(e.layer);
-			map.polySelect = e.layer._latlngs;
-			e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');
-			e.layer.openPopup();
+
+			map.on('draw:created', showPolygonDrawing);
+			map.on('draw:edited', showPolygonDrawingEdited);
 		}
 	}
 
-	//Change the map's context
-	function changeMapContext() {
+	//These functions are used for drawing polygons and markers
+	function showMarkerDrawingEdited(e) {
+		e.layers.eachLayer(function(layer) {
+			showMarkerDrawingArea({ layer: layer });
+		});
+	}
+	function showMarkerDrawing(e) {
+		var map = e.target;
+		map.featureGroup.clearLayers();
+		map.featureGroup.addLayer(e.layer);
+		map.markerSelect = e.layer._latlng;
+		e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');
+		e.layer.openPopup();
 	}
 
-	//Change the map's focus
-	function changeMapFocus() {
+	function showPolygonDrawingEdited(e) {
+		e.layers.eachLayer(function(layer) {
+			showPolygonDrawingArea({ layer: layer });
+		});
+	}
+	function showPolygonDrawing(e) {
+		var map = e.target;
+		map.featureGroup.clearLayers();
+		map.featureGroup.addLayer(e.layer);
+		map.polySelect = e.layer._latlngs;
+		e.layer.bindPopup((LGeo.area(e.layer) / 1000000).toFixed(2) + ' km<sup>2</sup>');
+		e.layer.openPopup();
 	}
 
 	//Render a detail panel map
@@ -119,11 +142,9 @@ function mapboxManager() {
 
 	return {
 		addData: addData,
-		map: map,
 		geoJSON: geoJSON,
 		initializeMap: initializeMap,
-		changeMapContext: changeMapContext,
-		changeMapFocus: changeMapFocus,
+		map: map,
 		renderDetailMap: renderDetailMap
 	};
 }

@@ -12,7 +12,7 @@ TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:'[
 COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',
-    'regex', 'iregex', 'geo_within_polygon'
+    'regex', 'iregex', 'geo_within_polygon', 'near', 'max_distance'
 }
 
 
@@ -87,7 +87,10 @@ def _get_literal_value(value, operator):
     elif value == 'False' or value == 'false':
         return False
     elif value[0] == '\'' and value[-1] == '\'':
-        return value[1:-1]
+        if operator == 'geo_within_polygon' or operator == 'near':
+            return json.loads(value[1:-1])
+        else:
+            return value[1:-1]
 
     try:
         return int(value)
@@ -99,10 +102,7 @@ def _get_literal_value(value, operator):
     except ValueError:
         pass
 
-    if operator == 'geo_within_polygon':
-        return json.loads(value)
-    else:
-        return value
+    return value
 
 
 def _and_led(self, lhs, expr, **kwargs):
