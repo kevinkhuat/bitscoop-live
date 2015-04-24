@@ -35,8 +35,7 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
             complete=False,
             enabled=False,
             created=datetime.now(),
-            updated=datetime.now()
-            )
+            updated=datetime.now())
         signal.save()
 
         for temp_permission in permissionsTemplates:
@@ -47,7 +46,6 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
                 url=temp_permission.url,
                 enabled=temp_permission.enabled_by_default,
                 permission_template_id=temp_permission.id,
-                signal_id=signal.id
-                )
+                signal_id=signal.id)
             permission.save()
     return association

@@ -47,7 +47,7 @@ class DocumentField(serializers.Field):
     def transform_object(self, obj, depth):
         """
         Models to natives
-        Recursion for (embedded) objects
+        Recursion for (embedded) objects  
         """
         if isinstance(obj, BaseDocument):
             # Document, EmbeddedDocument

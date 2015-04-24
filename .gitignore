@@ -46,7 +46,3 @@ node_modules
 # Logs #
 ########
 /logs
-
-# Sensitive Files #
-###################
-ografy/settings/signals.py

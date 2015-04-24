@@ -1,11 +1,14 @@
 {% extends "rest_framework/base.html" %}
 {% load staticfiles %}
+
 {% block bootstrap_theme %}
-	<link rel="stylesheet" href="{% static 'assets/rest_framework/bootstrap.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'shared/css/rest_framework/bootstrap.css' %}" type="text/css">
 {% endblock %}
+
 {% block title %}
-	Ografy OPI
+Ografy OPI
 {% endblock %}
+
 {% block branding %}
 	<div style="display: inline-block; margin: 5px;">
 		<a id="logo" href="{% url 'core_index' %}" style="display: inline-block;">
