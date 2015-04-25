@@ -23,6 +23,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			//else if (currentElement.value == 'time') {
 			//	filters().time().dropdown(currentElement);
 			//}
+			else if (currentElement.value == 'near') {
+				filters().near().dropdown(currentElement);
+			}
 			else if (currentElement.value == 'provider') {
 				filters().provider().dropdown(currentElement);
 			}
@@ -39,7 +42,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				filters().area().dropdown(currentElement);
 			}
 
-			checkPolygonDisplay();
+			checkDrawDisplay();
 		});
 	}
 
@@ -101,7 +104,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	//Remove the filter that the selected remove button is part of.
 	function removeFilter(currentButton) {
 		$(currentButton).parents('.filter.box').remove();
-		checkPolygonDisplay();
+		checkDrawDisplay();
 	}
 
 	function submitSearch(event) {
@@ -139,6 +142,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					//else if (type == 'time') {
 					//	filterString += '(' + filters().time().toString(currentFilter) + ')';
 					//}
+					else if (type == 'near') {
+						filterString += '(' + filters().near().toString(currentFilter) + ')';
+					}
 					else if (type == 'provider') {
 						filterString += '(' + filters().provider().toString(currentFilter) + ')';
 					}
@@ -193,22 +199,38 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		});
 	}
 
-	function checkPolygonDisplay() {
+	function checkDrawDisplay() {
 		var initialSet = $('.initial');
 		var len = initialSet.length;
-		var showPolygon = false;
+		var showMarkerDraw = false;
+		var showPolygonDraw = false;
+		var map = mapboxViewInst.map;
 
 		for (var i = 0; i < len; i++) {
 			if (initialSet[i].value === 'area') {
-				showPolygon = true;
+				showPolygonDraw = true;
+			}
+			if (initialSet[i].value === 'near') {
+				showMarkerDraw = true;
 			}
 		}
 
-		if (showPolygon) {
-			$('.leaflet-draw').removeClass('hidden');
+		if (showPolygonDraw && (map.polygonDrawControl._map === null || map.polygonDrawControl._map === undefined)) {
+			map.polygonDrawControl.addTo(map);
 		}
 		else {
-			$('.leaflet-draw').addClass('hidden');
+			if (!showPolygonDraw && map.polygonDrawControl._map !== null && map.polygonDrawControl._map !== undefined) {
+				map.polygonDrawControl.removeFrom(map);
+			}
+		}
+
+		if (showMarkerDraw && (map.markerDrawControl._map === null || map.markerDrawControl._map === undefined)) {
+			map.markerDrawControl.addTo(map);
+		}
+		else {
+			if (!showMarkerDraw && map.markerDrawControl._map !== null && map.markerDrawControl._map !== undefined) {
+				map.markerDrawControl.removeFrom(map);
+			}
 		}
 	}
 
@@ -332,12 +354,12 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			function toString(currentFilter) {
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
-					return 'datetime gt \'' + $(currentFilter).find('.date-start')[0].value + 'T' + $(currentFilter).find('.time-start')[0].value + '\'';
+					return 'datetime gt \'' + $(currentFilter).find('.date-start')[0].value + '\'';
 				}
 
 				//Add the text for "date before XXX"
 				function appendBefore(curretFilter) {
-					return 'datetime lt \'' + $(currentFilter).find('.date-end')[0].value + 'T' + $(currentFilter).find('.time-end')[0].value + '\'';
+					return 'datetime lt \'' + $(currentFilter).find('.date-end')[0].value + '\'';
 				}
 
 				var returnString = '';
@@ -364,6 +386,65 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				afterField: afterField,
 				beforeField: beforeField,
 				betweenFields: betweenFields,
+				dropdown: dropdown,
+				toString: toString
+			};
+		}
+
+		function near() {
+			function dropdown(currentElement) {
+				var parent = currentElement.parentElement;
+
+				//Render the near dropdown using Nunjucks and add it to the DOM
+				var newField = nunjucks.render('search/filters/near/near.html');
+				$(parent).append(newField);
+				radiusField(currentElement);
+
+				$(parent).find('.near').change(function() {
+					var currentElement = this;
+
+					//Remove the existing filter elements from this filter
+					//except for the initial dropdown.
+					$(currentElement).siblings().not('.initial').remove();
+
+					//Call the appropriate function to render additional fields based
+					//on which option was selected.
+					if (currentElement.value == 'coordinates') {
+						coordinateField(currentElement);
+					}
+
+					radiusField(currentElement);
+				});
+			}
+
+			//Render the coordinate fields with Nunjucks and add them to the DOM.
+			function coordinateField(currentElement) {
+				var newDropdown = nunjucks.render('search/filters/near/near_coordinate_field.html');
+				$(currentElement.parentElement).append(newDropdown);
+			}
+
+			function radiusField(currentElement) {
+				var newField = nunjucks.render('search/filters/near/near_radius_field.html');
+				$(currentElement.parentElement).append(newField);
+			}
+
+			function toString(currentFilter) {
+				currentValue = $(currentFilter).find('.near')[0].value;
+				var returnString = 'location near \'';
+				if (currentValue === 'selection') {
+					var thisLatLng = mapboxViewInst.map.markerSelect;
+					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']\'';
+				}
+				else {
+					returnString += '[' + [$('.near.longitude')[0].value, $('.near.latitude')[0].value] + ']\'';
+				}
+				//max_distance is in meters, and we're getting the input in miles, so we need to convert
+				returnString += ' and location max_distance ' + ($('.near.radius')[0].value * 1609.34);
+				return returnString;
+			}
+
+			return {
+				coordinateField: coordinateField,
 				dropdown: dropdown,
 				toString: toString
 			};
@@ -401,7 +482,6 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 						'X-CSRFToken': cookie
 					}
 				}).done(function(data, xhr, response) {
-
 					var signals = data;
 
 					//Render the signal list using Nunjucks and add it to the DOM
@@ -455,7 +535,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					}
 				});
 
-				//When the Date dropdown is first created, set it to the first option
+				//When the Time dropdown is first created, set it to the first option
 				//in the dropdown and render the associated fields.
 				var initTimeDropdown = $(parent).find('.time')[0];
 				filters().time().afterField(initTimeDropdown);
@@ -550,6 +630,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			area: area,
 			from: from,
 			date: date,
+			near: near,
 			provider: provider,
 			signal: signal,
 			time: time,
@@ -561,7 +642,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		addDropdown: addDropdown,
 		addFilter: addFilter,
 		bindEvents: bindEvents,
-		checkPolygonDisplay: checkPolygonDisplay,
+		checkDrawDisplay: checkDrawDisplay,
 		createFilterBase: createFilterBase,
 		removeFilter: removeFilter,
 		filters: filters
