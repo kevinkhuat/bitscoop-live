@@ -960,6 +960,9 @@ i.step-icon {
 		display: inline-block;
 		max-width: 8em;
 	}
+	input[type=datetime-local] {
+		max-width: 14em;
+	}
 }
 
 .menu {
@@ -1037,22 +1040,6 @@ i.step-icon {
 	border: 1px solid @foreground-color;
 	.item.hover {
 		background-color: inherit;
-	}
-}
-
-.menu.sort {
-	position: absolute;
-	z-index: 1100;
-	left: inherit;
-	top: -5.5em;
-	overflow-y: hidden;
-	border: 1px solid @foreground-color;
-	i {
-		font-size: 1em;
-	}
-	.item.hover {
-		color: @green;
-		cursor: pointer;
 	}
 }
 

@@ -28,6 +28,8 @@ class Data(mongoengine.Document):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
+    event_id = mongoengine.ObjectIdField()
+
     # To be sourced from signals.js
     data_blob = mongoengine.DictField()
 
@@ -52,8 +54,10 @@ class Event(mongoengine.Document):
     EVENT_TYPE = (
         ('Event', 'Basic Event'),
         ('Message', 'Message Event'),
+        ('Play', 'Media Play')
     )
-    type = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+    subtype = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+    subtype_id = mongoengine.ObjectIdField()
 
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
@@ -68,31 +72,9 @@ class Event(mongoengine.Document):
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
     location = mongoengine.PointField()
 
-    meta = {
-        'indexes': [
-            'user_id',
-            'signal_id',
-            'provider_id',
-            (
-                'provider_id',
-                '+provider_name'
-            ),
-            [
-                (
-                    "location",
-                    "2dsphere"
-                ),
-                (
-                    "datetime",
-                    1
-                )
-            ]
-        ]
-    }
-
 
 class Message(mongoengine.Document):
-    """This data class for all uncategorizable data.
+    """This data class for all types of messages
 
     #. *event* the base class for all discrete events tracked by the Ografy engine
 
@@ -100,6 +82,15 @@ class Message(mongoengine.Document):
     #. *message_from* who the message is from
     #. *message_body* the body of the message
     """
+
+    MESSAGE_TYPE = (
+        ('Email', 'Email'),
+        ('IM', 'Instant message'),
+        ('Text', 'Text Message'),
+    )
+
+    subtype = mongoengine.StringField(required=True, choices=MESSAGE_TYPE, default='Email')
+    subtype_id = mongoengine.ObjectIdField()
 
     # To be managed by the REST API
     user_id = mongoengine.IntField(required=True)
@@ -109,3 +100,22 @@ class Message(mongoengine.Document):
     message_to = mongoengine.SortedListField(mongoengine.StringField())
     message_from = mongoengine.StringField()
     message_body = mongoengine.StringField(required=True)
+
+
+class Play(mongoengine.Document):
+
+    PLAY_TYPE = (
+        ('Song', 'Song Play'),
+        ('Movie', 'Movie Play'),
+        ('TV', 'TV Play'),
+        ('Videogame', 'Videogame Play'),
+        ('Video', 'Video Play')
+    )
+
+    subtype = mongoengine.StringField(required=True, choices=PLAY_TYPE, default='Video')
+    subtype_id = mongoengine.ObjectIdField()
+
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    title = mongoengine.StringField()
+    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)

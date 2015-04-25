@@ -466,7 +466,7 @@ main {
 	border-left: 1px solid @mid-gray;
 }
 
-.order {
+.sort {
 	z-index: 1100;
 	position: absolute;
 	bottom: 0;
@@ -493,6 +493,21 @@ main {
 	.sort-button.hover {
 		color: @green;
 		cursor: pointer;
+	}
+	.menu {
+		position: absolute;
+		z-index: 1100;
+		left: inherit;
+		top: -5.5em;
+		overflow-y: hidden;
+		border: 1px solid @foreground-color;
+		i {
+			font-size: 1em;
+		}
+		.item.hover {
+			color: @green;
+			cursor: pointer;
+		}
 	}
 }
 .result {
