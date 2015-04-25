@@ -62,7 +62,7 @@ def create_fixture_data(temp_data):
 
 def create_fixture_event(temp_event, data_id, event_type='Event'):
     return Event(
-        type=event_type,
+        subtype=event_type,
         created=temp_event['created'],
         updated=temp_event['updated'],
         user_id=temp_event['user_id'],
@@ -112,6 +112,7 @@ def load_fixture(path):
         insert_event = create_fixture_event(temp_event, data_id)
 
         event_id = ObaseAPI.EventApi.post(insert_event)['id']
+        ObaseAPI.DataApi.patch(data_id, {'event_id': event_id})
 
     for message in fixture_data['messages']:
         temp_data = message['data']
@@ -123,11 +124,13 @@ def load_fixture(path):
         insert_event = create_fixture_event(temp_event, data_id, 'Message')
 
         event_id = ObaseAPI.EventApi.post(insert_event)['id']
+        ObaseAPI.DataApi.patch(data_id, {'event_id': event_id})
 
         temp_message = message['message']
         insert_message = create_fixture_message(temp_message, event_id)
 
         message_id = ObaseAPI.MessageApi.post(insert_message)['id']
+        ObaseAPI.EventApi.patch(event_id, {'subtype_id': message_id})
 
 
 class Command(BaseCommand):

@@ -17,12 +17,21 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			var currentElement = this;
 
 			$(currentElement).siblings().remove();
-			if (currentElement.value == 'date') {
+			if (currentElement.value == 'area') {
+				filters().area().dropdown(currentElement);
+			}
+			else if (currentElement.value == 'created') {
+				filters().date().dropdown(currentElement);
+			}
+			else if (currentElement.value == 'datetime') {
 				filters().date().dropdown(currentElement);
 			}
 			//else if (currentElement.value == 'time') {
 			//	filters().time().dropdown(currentElement);
 			//}
+			else if (currentElement.value == 'from') {
+				filters().from().dropdown(currentElement);
+			}
 			else if (currentElement.value == 'near') {
 				filters().near().dropdown(currentElement);
 			}
@@ -35,11 +44,8 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 			else if (currentElement.value == 'to') {
 				filters().to().dropdown(currentElement);
 			}
-			else if (currentElement.value == 'from') {
-				filters().from().dropdown(currentElement);
-			}
-			else if (currentElement.value == 'area') {
-				filters().area().dropdown(currentElement);
+			else if (currentElement.value == 'updated') {
+				filters().date().dropdown(currentElement);
 			}
 
 			checkDrawDisplay();
@@ -121,7 +127,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				//Get a list of the filters that are being used
 				var filtersList = $(thisType).find('.filter.options');
 
-				var order;
+				var sort;
 				//For each filter, construct the appropriate filter string and add it to the
 				//full filter string that will be submitted to the database.
 				for (var i = 0; i < filtersList.length; i++) {
@@ -136,8 +142,17 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					}
 
 					//Construct the filter string based on the filter type
-					if (type == 'date') {
-						filterString += '(' + filters().date().toString(currentFilter) + ')';
+					if (type == 'area') {
+						filterString += '(' + filters().area().toString(currentFilter) + ')';
+					}
+					else if (type == 'created') {
+						filterString += '(' + filters().date().toString(currentFilter, 'created') + ')';
+					}
+					else if (type == 'datetime') {
+						filterString += '(' + filters().date().toString(currentFilter, 'datetime') + ')';
+					}
+					else if (type == 'from') {
+						filterString += '(' + filters().from().toString(currentFilter) + ')';
 					}
 					//else if (type == 'time') {
 					//	filterString += '(' + filters().time().toString(currentFilter) + ')';
@@ -154,11 +169,8 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					else if (type == 'to') {
 						filterString += '(' + filters().to().toString(currentFilter) + ')';
 					}
-					else if (type == 'from') {
-						filterString += '(' + filters().from().toString(currentFilter) + ')';
-					}
-					else if (type == 'area') {
-						filterString += '(' + filters().area().toString(currentFilter) + ')';
+					else if (type == 'updated') {
+						filterString += '(' + filters().date().toString(currentFilter, 'updated') + ')';
 					}
 				}
 
@@ -166,9 +178,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				urlParserInst.setSearchQuery($('.search-bar').val());
 				urlParserInst.setSearchFilters(filterString);
 
-				order = urlParserInst.getSort();
+				sort = urlParserInst.getSort();
 				//Perform a search based on the search terms and filters
-				dataInst.search(thisType.id, filterString, order);
+				dataInst.search(thisType.id, filterString, sort);
 			}
 		}
 
@@ -284,7 +296,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 			//Consruct a filter string from an inputted From
 			function toString(currentFilter) {
-				return 'name contains ' + $(currentFilter).find('.from-text')[0].value;
+				return 'message_from contains ' + $(currentFilter).find('.from-text')[0].value;
 			}
 
 			return {
@@ -351,15 +363,15 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 
 			//Construct a filter string from an inputted Date
-			function toString(currentFilter) {
+			function toString(currentFilter, dateField) {
 				//Add the text for "date after XXX"
 				function appendAfter(currentFilter) {
-					return 'datetime gt \'' + $(currentFilter).find('.date-start')[0].value + '\'';
+					return dateField + ' gt \'' + $(currentFilter).find('.date-start')[0].value + '\'';
 				}
 
 				//Add the text for "date before XXX"
 				function appendBefore(curretFilter) {
-					return 'datetime lt \'' + $(currentFilter).find('.date-end')[0].value + '\'';
+					return dateField + ' lt \'' + $(currentFilter).find('.date-end')[0].value + '\'';
 				}
 
 				var returnString = '';
@@ -617,7 +629,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 			//Consruct a filter string from an inputted To
 			function toString(currentFilter) {
-				return 'name contains ' + $(currentFilter).find('.to-text')[0].value;
+				return 'message_to contains ' + $(currentFilter).find('.to-text')[0].value;
 			}
 
 			return {

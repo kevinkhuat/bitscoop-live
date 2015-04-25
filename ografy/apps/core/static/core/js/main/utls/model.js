@@ -132,22 +132,22 @@ function dataStore(urlParserInst, detailViewInst) {
 
 	function createPageBar() {
 		var currentSort = urlParserInst.getSort();
-		var orderBar = nunjucks.render('search/order.html',
+		var sortBar = nunjucks.render('search/sort.html',
 			{
-				order: {
+				sort: {
 					total_results: resultCount,
-					start_index: resultCurrentStartIndex,
+					start_index: resultCount > 0 ? resultCurrentStartIndex : 0,
 					end_index: resultCurrentEndIndex,
 					mobile: (window.window.devicePixelRatio > 1.5)
 				}
 		});
-		$('.order').html(orderBar);
+		$('.sort').html(sortBar);
 
 		if (currentSort.slice(0, 1) === '+') {
-			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
+			$('.sort .menu').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
-			$('.menu.sort').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
+			$('.sort .menu').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
 		}
 		$('.previous-page').not('.disabled')
 			.mouseenter(function() {
@@ -202,16 +202,16 @@ function dataStore(urlParserInst, detailViewInst) {
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
-				$('.menu.sort').toggleClass('hidden');
+				$('.sort .menu').toggleClass('hidden');
 			});
 
 		$(document.body).click(function(e) {
-			if (!e.target.closest('.order')) {
-				$('.menu.sort').addClass('hidden');
+			if (!e.target.closest('.sort')) {
+				$('.sort .menu').addClass('hidden');
 			}
 		});
 
-		$('.menu.sort .item')
+		$('.sort .menu .item')
 			.mouseenter(function() {
 				$(this).addClass('hover');
 			})
@@ -256,25 +256,25 @@ function dataStore(urlParserInst, detailViewInst) {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
-			if (data.count > 0) {
-				resultCount = data.count;
-				resultPageSize = data.page_size;
-				resultPages = Math.ceil(resultCount / resultPageSize);
-				resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
-				resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
-				results = data.results;
+			resultCount = data.count;
+			resultPageSize = data.page_size;
+			resultPages = Math.ceil(resultCount / resultPageSize);
+			resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
+			resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
+			results = data.results;
+			if (eventType === 'event') {
 				for (var index in results) {
 					results[index].updated = new Date(results[index].updated).toLocaleString();
 					results[index].created = new Date(results[index].created).toLocaleString();
 					results[index].datetime = new Date(results[index].datetime).toLocaleString();
 				}
-				resultData = results;
-				updateData();
-				createPageBar();
-				currentViewInst.updateContent();
 			}
-			else if (data.count === 0) {
+			else if (eventType === 'message') {
 			}
+			resultData = results;
+			updateData();
+			createPageBar();
+			currentViewInst.updateContent();
 		});
 	}
 
