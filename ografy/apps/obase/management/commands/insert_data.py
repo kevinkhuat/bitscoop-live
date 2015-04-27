@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.core.management.base import BaseCommand
 
 from ografy.apps.core import api as core_api
-from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.obase.documents import Data, Event, Message, Play
 from ografy.apps.core.models import User, Signal
 
 
@@ -86,6 +86,14 @@ def create_fixture_message(temp_message, event_id):
     )
 
 
+def create_fixture_play(temp_play, event_id):
+    return Play(
+        title=temp_play['title'],
+        user_id=temp_play['user_id'],
+        event=event_id
+    )
+
+
 def load_fixture(path):
 
     fixture_data_file = open(path, encoding='utf-8').read()
@@ -131,6 +139,24 @@ def load_fixture(path):
 
         message_id = ObaseAPI.MessageApi.post(insert_message)['id']
         ObaseAPI.EventApi.patch(event_id, {'subtype_id': message_id})
+
+    for play in fixture_data['plays']:
+        temp_data = play['data']
+        insert_data = create_fixture_data(temp_data)
+
+        data_id = ObaseAPI.DataApi.post(insert_data)['id']
+
+        temp_event = play['event']
+        insert_event = create_fixture_event(temp_event, data_id, 'Play')
+
+        event_id = ObaseAPI.EventApi.post(insert_event)['id']
+        ObaseAPI.DataApi.patch(data_id, {'event_id': event_id})
+
+        temp_play = play['play']
+        insert_play = create_fixture_play(temp_play, event_id)
+
+        play_id = ObaseAPI.PlayApi.post(insert_play)['id']
+        ObaseAPI.EventApi.patch(event_id, {'subtype_id': play_id})
 
 
 class Command(BaseCommand):
