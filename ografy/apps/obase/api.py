@@ -12,3 +12,7 @@ class EventApi(BaseApi):
 
 class MessageApi(BaseApi):
     model = documents.Message
+
+
+class PlayApi(BaseApi):
+    model = documents.Play

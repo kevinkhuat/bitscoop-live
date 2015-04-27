@@ -114,7 +114,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 				//If the clicked item is now active, get the item's information from the database
 				if (selectedItem.hasClass('active')) {
-					var event = dataInst.getEventSingleData(selectedItem.attr('id'));
+					var event = dataInst.getResultListSingle('event', selectedItem.attr('id'));
 					var previousSiblings = selectedItem.prevAll();
 					var scrollHeight = 0;
 					if ($('.sidebar').hasClass('invisible')) {
@@ -131,7 +131,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 						scrollHeight = previousSiblings.height() * previousSiblings.length;
 						$('.list.content').animate({ scrollTop: scrollHeight }, 100);
 					}
-					detailViewInst.updateContent(event.provider_name, event.datetime, event.location.coordinates);
+					detailViewInst.updateContent(event);
 				}
 				//If the clicked item is now inactive (occurs when you click an active item),
 				//clear the detail panel content and map

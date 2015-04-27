@@ -1,35 +1,6 @@
 {
 	"events": [
-		{
-			"data": {
-				"user_id": 2,
-				"created": "2015-06-14 13:23:44-05:00",
-				"updated": "2015-06-16 03:01:18-05:00",
-				"data_blob": {
-					"d": {
-						"null": null,
-						"thumbnail": "logo_light_240.png",
-						"boolean": true,
-						"array": [1, 2, 3],
-						"string": "Hello World",
-						"object": {"c": "d", "e": "f", "a": "b"},
-						"number": 123
-					}
-				}
-			},
-			"event": {
-				"subtype": "Play",
-				"created": "2015-06-14 13:23:44-05:00",
-				"updated": "2015-06-16 03:01:18-05:00",
-				"user_id": 2,
-				"signal_id": 2,
-				"provider_id": 3,
-				"provider_name": "steam",
-				"name": "Started playing Half-Life 2",
-				"datetime": "2015-06-13 13:10:33-05:00",
-				"location": [-73.9786479, 40.7534117]
-			}
-		},
+
 		{
 			"data": {
 				"user_id": 2,
@@ -59,125 +30,7 @@
 				"location": [-73.9822581, 40.753178]
 			}
 		},
-		{
-			"data": {
-				"user_id": 2,
-				"created": "2015-06-14 13:23:44-05:00",
-				"updated": "2015-06-16 03:01:18-05:00",
-				"data_blob": {
-					"d": {
-						"string": "Hello World",
-						"array": [1, 2, 3],
-						"boolean": true,
-						"number": 123,
-						"null": null,
-						"thumbnail": "logo_light_240.png",
-						"object": {"e": "f", "a": "b", "c": "d"}
-					}
-				}
-			},
-			"event": {
-				"created": "2015-06-14 13:23:44-05:00",
-				"updated": "2015-06-16 03:01:18-05:00",
-				"user_id": 2,
-				"signal_id": 6,
-				"provider_id": 13,
-				"provider_name": "spotify",
-				"name": "Played \"It's All About the Benjamins\"",
-				"datetime": "2015-06-13 17:52:07-05:00",
-				"location": [-73.9819792, 40.7541614]
-			}
-		},
-		{
-			"data": {
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"data_blob": {
-					"d": {
-						"array": [1, 2, 3],
-						"boolean": true,
-						"string": "Hello World",
-						"number": 123,
-						"object": {"e": "f", "a": "b", "c": "d"},
-						"null": null,
-						"thumbnail": "logo_light_240.png"
-					}
-				}
-			},
-			"event": {
-				"subtype": "Play",
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"signal_id": 6,
-				"provider_id": 13,
-				"provider_name":"spotify",
-				"name": "Played \"Under the Sea ft. Snoop Dogg\"",
-				"datetime": "2014-06-30 19:34:21-08:00",
-				"location": [-117.8092611,33.6842287]
-			}
-		},
-		{
-			"data": {
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"data_blob": {
-					"d": {
-						"array": [1, 2, 3],
-						"boolean": true,
-						"string": "Hello World",
-						"number": 123,
-						"object": {"e": "f", "a": "b", "c": "d"},
-						"null": null,
-						"thumbnail": "logo_light_240.png"
-					}
-				}
-			},
-			"event": {
-				"subtype": "Play",
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"signal_id": 6,
-				"provider_id": 13,
-				"provider_name":"spotify",
-				"name": "Played \"The Last Winter\"",
-				"datetime": "2014-06-30 19:36:37-08:00",
-				"location": [-117.8092611,33.6842287]
-			}
-		},
-		{
-			"data": {
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"data_blob": {
-					"d": {
-						"array": [1, 2, 3],
-						"boolean": true,
-						"string": "Hello World",
-						"number": 123,
-						"object": {"e": "f", "a": "b", "c": "d"},
-						"null": null,
-						"thumbnail": "logo_light_240.png"
-					}
-				}
-			},
-			"event": {
-				"subtype": "Play",
-				"created": "2014-07-04 09:06:44-08:00",
-				"updated": "2014-07-12 12:01:12-08:00",
-				"user_id": 2,
-				"signal_id": 6,
-				"provider_id": 13,
-				"provider_name":"spotify",
-				"name": "Played \"Let's do the Twist\"",
-				"datetime": "2014-06-30 19:38:58-08:00",
-				"location": [-117.8092611,33.6842287]
-			}
-		},
+
 		{
 			"data": {
 				"created": "2014-07-04 09:06:44-08:00",
@@ -1985,6 +1838,183 @@
 				"message_to": ["Paul", "Harvey", "Morris", "Cathy", "Kim", "Arnold", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
 				"message_body": "Back home safe and sound."
+			}
+		}
+	],
+	"plays": [
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"data_blob": {
+					"d": {
+						"null": null,
+						"thumbnail": "logo_light_240.png",
+						"boolean": true,
+						"array": [1, 2, 3],
+						"string": "Hello World",
+						"object": {"c": "d", "e": "f", "a": "b"},
+						"number": 123
+					}
+				}
+			},
+			"event": {
+				"subtype": "Play",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 2,
+				"provider_id": 3,
+				"provider_name": "steam",
+				"name": "Started playing Half-Life 2",
+				"datetime": "2015-06-13 13:10:33-05:00",
+				"location": [-73.9786479, 40.7534117]
+			},
+			"play": {
+				"user_id": 2,
+				"subtype": "Videogame",
+				"title": "Half-Life 2"
+			}
+		},
+		{
+			"data": {
+				"user_id": 2,
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"data_blob": {
+					"d": {
+						"string": "Hello World",
+						"array": [1, 2, 3],
+						"boolean": true,
+						"number": 123,
+						"null": null,
+						"thumbnail": "logo_light_240.png",
+						"object": {"e": "f", "a": "b", "c": "d"}
+					}
+				}
+			},
+			"event": {
+				"subtype": "Play",
+				"created": "2015-06-14 13:23:44-05:00",
+				"updated": "2015-06-16 03:01:18-05:00",
+				"user_id": 2,
+				"signal_id": 6,
+				"provider_id": 13,
+				"provider_name": "spotify",
+				"name": "Played \"It's All About the Benjamins\"",
+				"datetime": "2015-06-13 17:52:07-05:00",
+				"location": [-73.9819792, 40.7541614]
+			},
+			"play": {
+				"user_id": 2,
+				"subtype": "Song",
+				"title": "It's All About the Benjamins"
+			}
+		},
+		{
+			"data": {
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null,
+						"thumbnail": "logo_light_240.png"
+					}
+				}
+			},
+			"event": {
+				"subtype": "Play",
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"signal_id": 6,
+				"provider_id": 13,
+				"provider_name":"spotify",
+				"name": "Played \"Under the Sea ft. Snoop Dogg\"",
+				"datetime": "2014-06-30 19:34:21-08:00",
+				"location": [-117.8092611,33.6842287]
+			},
+			"play": {
+				"user_id": 2,
+				"subtype": "Song",
+				"title": "Under the Sea ft. Snoop Dogg"
+			}
+		},
+		{
+			"data": {
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null,
+						"thumbnail": "logo_light_240.png"
+					}
+				}
+			},
+			"event": {
+				"subtype": "Play",
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"signal_id": 6,
+				"provider_id": 13,
+				"provider_name":"spotify",
+				"name": "Played \"The Last Winter\"",
+				"datetime": "2014-06-30 19:36:37-08:00",
+				"location": [-117.8092611,33.6842287]
+			},
+			"play": {
+				"user_id": 2,
+				"subtype": "Song",
+				"title": "The Last Winter"
+			}
+		},
+		{
+			"data": {
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"data_blob": {
+					"d": {
+						"array": [1, 2, 3],
+						"boolean": true,
+						"string": "Hello World",
+						"number": 123,
+						"object": {"e": "f", "a": "b", "c": "d"},
+						"null": null,
+						"thumbnail": "logo_light_240.png"
+					}
+				}
+			},
+			"event": {
+				"subtype": "Play",
+				"created": "2014-07-04 09:06:44-08:00",
+				"updated": "2014-07-12 12:01:12-08:00",
+				"user_id": 2,
+				"signal_id": 6,
+				"provider_id": 13,
+				"provider_name":"spotify",
+				"name": "Played \"Let's do the Twist\"",
+				"datetime": "2014-06-30 19:38:58-08:00",
+				"location": [-117.8092611,33.6842287]
+			},
+			"play": {
+				"user_id": 2,
+				"subtype": "Song",
+				"title": "Let's do the Twist"
 			}
 		}
 	],

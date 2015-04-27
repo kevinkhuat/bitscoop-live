@@ -46,7 +46,7 @@ function detailView(mapboxViewInst) {
 	}
 
 	//Update content
-	function updateContent(eventName, eventDateTime, eventLocation) {
+	function updateContent(event) {
 		var sidebar = $('.sidebar');
 		if (sidebar.hasClass('invisible')) {
 			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
@@ -57,11 +57,11 @@ function detailView(mapboxViewInst) {
 					setHeight();
 				});
 		}
-		var dateTimeArray = eventDateTime.split(',');
-		$('.detail .main-label').html(eventName);
+		var dateTimeArray = event.datetime.split(',');
+		$('.detail .main-label').html(event.provider_name);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
-		$('.detail-location .content').html(String(eventLocation));
+		$('.detail-location .content').html(String(event.location.coordinates));
 		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
 		if (!$('.detail').hasClass('full')) {
 			updateMap(eventName, map, eventLocation);

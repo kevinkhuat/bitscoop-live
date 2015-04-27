@@ -56,7 +56,7 @@ class Event(mongoengine.Document):
         ('Message', 'Message Event'),
         ('Play', 'Media Play')
     )
-    subtype = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+    subtype = mongoengine.StringField(choices=EVENT_TYPE)
     subtype_id = mongoengine.ObjectIdField()
 
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
@@ -89,7 +89,7 @@ class Message(mongoengine.Document):
         ('Text', 'Text Message'),
     )
 
-    subtype = mongoengine.StringField(required=True, choices=MESSAGE_TYPE, default='Email')
+    subtype = mongoengine.StringField(choices=MESSAGE_TYPE)
     subtype_id = mongoengine.ObjectIdField()
 
     # To be managed by the REST API
@@ -112,10 +112,10 @@ class Play(mongoengine.Document):
         ('Video', 'Video Play')
     )
 
-    subtype = mongoengine.StringField(required=True, choices=PLAY_TYPE, default='Video')
+    subtype = mongoengine.StringField(choices=PLAY_TYPE)
     subtype_id = mongoengine.ObjectIdField()
 
-    created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
-    title = mongoengine.StringField()
+    user_id = mongoengine.IntField(required=True)
     event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
+
+    title = mongoengine.StringField()

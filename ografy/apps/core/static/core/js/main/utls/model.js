@@ -1,7 +1,7 @@
 //View pertaining to obtaining and searching for data
 function dataStore(urlParserInst, detailViewInst) {
 	//This is the array of events that is returned from a search
-	var resultData = [];
+	var resultList = [];
 
 	//Number of results from the search
 	var resultCount = 0;
@@ -17,16 +17,19 @@ function dataStore(urlParserInst, detailViewInst) {
 	var resultCurrentStartIndex = 0;
 	var resultCurrentEndIndex = 0;
 
-	//This is a dictionary of the IDs of events that have been obtained in previous searches
+	//This are dictionaries of the IDs of document types that have been obtained in previous searches
+	var dataIndex = {};
 	var eventIndex = {};
+	var messageIndex = {};
+	var playIndex = {};
 
-	//This is the master list of events that have been obtained in previous searches
-	var eventData = [];
+	//This are master lists of document types that have been obtained in previous searches
+	var eventList = [];
 
-	//This is the list of events in the current search that have not been obtained in previous searches
-	var newData = [];
+	//This is the list of results in the current search that have not been obtained in previous searches
+	var newResults = [];
 
-	//This is the collection of HTML elements that are rendered from eventData
+	//This is the collection of HTML elements that are rendered from eventList
 	//Most of them will be set to invisible since only ones from the current search
 	//should be displayed.
 	var eventHTML = '';
@@ -36,20 +39,42 @@ function dataStore(urlParserInst, detailViewInst) {
 	var currentViewInst = '';
 
 	//Data model
-	function getEventData() {
-		return eventData;
+	function getEventList() {
+		return eventList ;
 	}
 
-	function getEventSingleData(id) {
-		for (var i in eventData) {
-			if (eventData[i].id === id) {
-				return eventData[i];
+	function getDataIndex() {
+		return dataIndex;
+	}
+
+	function getEventIndex() {
+		return eventIndex;
+	}
+
+	function getMessageIndex() {
+		return messageIndex;
+	}
+
+	function getPlayIndex() {
+		return playIndex;
+	}
+
+	function getResultListSingle(id) {
+		var tempList = documentType === 'data' ? dataList :
+			documentType === 'event' ? eventList :
+			documentType === 'messsage' ? messageList :
+			documentType == 'play' ? playList :
+			eventList;
+
+		for (var i in tempList) {
+			if (tempList[i].id === id) {
+				return tempList[i];
 			}
 		}
 	}
 
-	function getResultData() {
-		return resultData;
+	function getResultList() {
+		return resultList;
 	}
 
 	function getResultCount() {
@@ -84,38 +109,50 @@ function dataStore(urlParserInst, detailViewInst) {
 		return currentViewInst;
 	}
 
-	function updateData() {
-		newData = [];
-		for (var item in resultData) {
-			var currentId = resultData[item].id;
+	function updateResults(documentType) {
+		newResults = [];
+		for (var item in resultList) {
+			var currentId = resultList[item].id;
+			var tempList;
+			var tempIndex;
 
-			var removed = false;
-			var keys = Object.keys(eventIndex);
-			for (var index in keys) {
-				if (currentId === keys[index]) {
-					removed = true;
-				}
+			if (documentType === 'data') {
+				tempList = dataList;
+				tempIndex = dataIndex;
 			}
-			if (removed === false) {
-				newData.push(resultData[item]);
-				eventIndex[currentId] = true;
-				eventData.push(resultData[item]);
+			else if (documentType === 'event') {
+				tempList = eventList;
+				tempIndex = eventIndex;
+			}
+			else if (documentType === 'message') {
+				tempList = messageList;
+				tempIndex = messageIndex;
+			}
+			else if (documentType === 'play') {
+				tempList = playList;
+				tempIndex = playIndex;
+			}
+
+			if (!(currentId in tempIndex)) {
+				newResults.push(resultList[item]);
+				tempIndex[currentId] = true;
+				tempList.push(resultList[item]);
 			}
 		}
 
 		var listItems = nunjucks.render('list/event_list.html',
 			{
-				eventData: newData
+				eventList: newResults
 			});
 		$('#event-list').append(listItems);
 
 		currentEvents = $('#event-list *');
-		for (var index in eventData) {
+		for (var index in eventList) {
 			var found = false;
-			var thisEvent = eventData[index];
+			var thisEvent = eventList[index];
 			var id = thisEvent.id;
-			for (var item in resultData) {
-				var thisItem = resultData[item];
+			for (var item in resultList) {
+				var thisItem = resultList[item];
 				if (id === thisItem.id) {
 					found = true;
 				}
@@ -244,9 +281,9 @@ function dataStore(urlParserInst, detailViewInst) {
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(eventType, searchString, sortString) {
+	function search(documentType, searchString, sortString) {
 		var cookie = sessionsCookies().getCsrfToken();
-		var url = 'opi/' + eventType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
+		var url = 'opi/' + documentType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -262,37 +299,43 @@ function dataStore(urlParserInst, detailViewInst) {
 			resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
 			resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
 			results = data.results;
-			if (eventType === 'event') {
+			if (documentType === 'event') {
 				for (var index in results) {
 					results[index].updated = new Date(results[index].updated).toLocaleString();
 					results[index].created = new Date(results[index].created).toLocaleString();
 					results[index].datetime = new Date(results[index].datetime).toLocaleString();
 				}
 			}
-			else if (eventType === 'message') {
+			else if (documentType === 'message') {
 			}
-			resultData = results;
-			updateData();
+			resultList = results;
+			updateResults(documentType);
 			createPageBar();
-			currentViewInst.updateContent();
+			if (documentType === 'event') {
+				currentViewInst.updateContent();
+			}
 		});
 	}
 
 	return {
 		createPageBar: createPageBar,
-		getEventData: getEventData,
-		getEventSingleData: getEventSingleData,
+		getDataIndex: getDataIndex,
+		getEventIndex: getEventIndex,
+		getEventList: getEventList,
+		getMessageIndex: getMessageIndex,
+		getPlayIndex: getPlayIndex,
+		getResultListSingle: getResultListSingle,
 		getResultCount: getResultCount,
-		getResultData: getResultData,
+		getResultList: getResultList,
 		getResultCurrentPage: getResultCurrentPage,
-		setResultCurrentPage: setResultCurrentPage,
 		getResultCurrentStartIndex: getResultCurrentStartIndex,
 		getResultCurrentEndIndex: getResultCurrentEndIndex,
 		getResultTotalPages: getResultTotalPages,
 		getCurrentView: getCurrentView,
+		search: search,
 		setCurrentView: setCurrentView,
-		updateData: updateData,
-		search: search
+		setResultCurrentPage: setResultCurrentPage,
+		updateResults: updateResults
 	};
 }
 

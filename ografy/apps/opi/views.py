@@ -418,6 +418,155 @@ class MessageSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
+class PlayView(MongoAPIListView):
+    # TODO: Check user association on any updates & add access permissions
+    ordering = 'id'
+    ordering_fields = ('id', 'title')
+    serializer = opi_serializer.PlaySerializer
+    serializer_class = opi_serializer.PlaySerializer
+
+    def get(self, request):
+        play_query = obase_api.PlayApi.get(
+            request.query_filter &
+            request.auth_filter
+        )
+        paginated_play_list = self.Meta.list(self, play_query)
+        return paginated_play_list
+
+    def post(self, request):
+        # TODO: Better user filter
+        post_play = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
+        post_play.user_id = request.user.id
+        play_query = obase_api.PlayApi.post(
+            data=post_play
+        )
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            play_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
+
+
+class PlaySingleView(MongoAPIView):
+    # TODO: Check user association on any updates & add access permissions
+    serializer = opi_serializer.PlaySerializer
+    serializer_class = opi_serializer.PlaySerializer
+
+    def delete(self, request, pk):
+        obase_api.PlayApi.delete(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get(self, request, pk, format=None):
+        play_query = obase_api.PlayApi.get(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            play_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
+    def patch(self, request, pk, format=None):
+        # TODO: Better user filter
+        patch_play = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
+        patch_play.user_id = request.user.id
+
+        play_query = obase_api.PlayApi.patch(
+            val=pk,
+            data=patch_play
+        )
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            play_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
+    def put(self, request, pk, format=None):
+        # TODO: Better user filter
+        put_data = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
+        put_data.user_id = request.user.id
+
+        play_query = obase_api.PlayApi.put(
+            pk=pk,
+            data=put_data
+        )
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            play_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
+    def event(self, request, pk, **kwargs):
+        # TODO: get pk to make work right
+        event_query = obase_api.EventApi.get(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            event_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
+
+    def data(self, request, pk, **kwargs):
+        # TODO: get pk to make work right
+        data_query = obase_api.DataApi.get(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            data_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
+
+
 class ProviderView(DjangoAPIListView):
     ordering_fields = ('id', 'name', 'backend_name')
     pagination_class = OgrafyItemPagination
