@@ -56,8 +56,7 @@ class Event(mongoengine.Document):
         ('Message', 'Basic Message'),
         ('Play', 'Media Play')
     )
-    subtype = mongoengine.StringField(choices=EVENT_TYPE)
-    subtype_id = mongoengine.ObjectIdField()
+    type = mongoengine.StringField(choices=EVENT_TYPE)
 
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
@@ -69,8 +68,9 @@ class Event(mongoengine.Document):
 
     # To be sourced from signals.js
     datetime = mongoengine.DateTimeField()
-    data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
     location = mongoengine.PointField()
+
+    data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
 
     meta = {
         'indexes': [{
@@ -80,7 +80,7 @@ class Event(mongoengine.Document):
             }]}
 
 
-class Message(mongoengine.Document):
+class Message(Event):
     """This data class for all types of messages
 
     #. *event* the base class for all discrete events tracked by the Ografy engine
@@ -97,11 +97,6 @@ class Message(mongoengine.Document):
     )
 
     subtype = mongoengine.StringField(choices=MESSAGE_TYPE)
-    subtype_id = mongoengine.ObjectIdField()
-
-    # To be managed by the REST API
-    user_id = mongoengine.IntField(required=True)
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
 
     # To be sourced from signals.js
     message_to = mongoengine.SortedListField(mongoengine.StringField())
@@ -110,13 +105,13 @@ class Message(mongoengine.Document):
 
     meta = {
         'indexes': [{
-            'fields': ['$user_id', '$message_to', '$message_from', '$message_body'],
+            'fields': ['$message_to', '$message_from', '$message_body'],
             'default_language': 'english',
-            'weight': {'message_body': 10, 'datetime': 2, 'message_to': 2, 'message_from': 2}
+            'weight': {'message_body': 10, 'message_to': 2, 'message_from': 2}
             }]}
 
 
-class Play(mongoengine.Document):
+class Play(Event):
 
     PLAY_TYPE = (
         ('Song', 'Listen to Song'),
@@ -127,16 +122,12 @@ class Play(mongoengine.Document):
     )
 
     subtype = mongoengine.StringField(choices=PLAY_TYPE)
-    subtype_id = mongoengine.ObjectIdField()
-
-    user_id = mongoengine.IntField(required=True)
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
 
     title = mongoengine.StringField()
     media_url = mongoengine.StringField()
 
     meta = {
         'indexes': [{
-            'fields': ['$user_id', '$title'],
+            'fields': ['$title'],
             'default_language': 'english'
             }]}
