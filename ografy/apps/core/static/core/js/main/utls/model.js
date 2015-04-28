@@ -1,5 +1,8 @@
 //View pertaining to obtaining and searching for data
 function dataStore(urlParserInst) {
+	//This is the CSRF token that is used to authenticate server requests
+	var cookie = sessionsCookies().getCsrfToken();
+
 	//This is the array of events that is returned from a search
 	var resultList = [];
 
@@ -22,6 +25,8 @@ function dataStore(urlParserInst) {
 	var eventIndex = {};
 	var messageIndex = {};
 	var playIndex = {};
+
+	var resultIndex = [];
 
 	//This are master lists of document types that have been obtained in previous searches
 	var eventList = [];
@@ -117,6 +122,7 @@ function dataStore(urlParserInst) {
 			else if (documentType === 'event') {
 				tempList = eventList;
 				tempIndex = eventIndex;
+				resultIndex.push(currentId);
 			}
 			else if (documentType === 'message') {
 				tempList = messageList;
@@ -275,7 +281,6 @@ function dataStore(urlParserInst) {
 
 	//Search for items in the database based on the search parameters and filters
 	function search(documentType, searchString, sortString) {
-		var cookie = sessionsCookies().getCsrfToken();
 		var url = 'opi/' + documentType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
@@ -299,19 +304,34 @@ function dataStore(urlParserInst) {
 					results[index].datetime = new Date(results[index].datetime).toLocaleString();
 				}
 			}
-			else if (documentType === 'message') {
-			}
 			resultList = results;
 			updateResults(documentType);
 			createPageBar();
 			if (documentType === 'event') {
 				currentViewInst.updateContent();
+
+				for (var index in resultList) {
+					var currentIndex = resultList[index].id;
+					var thisData = resultList[index].data.id;
+					var url = 'opi/data/' + thisData;
+					$.ajax({
+						url: url,
+						type: 'GET',
+						dataType: 'json',
+						headers: {
+							'X-CSRFToken': cookie
+						}
+					}).done(function(data, xhr, response) {
+						data.updated = new Date(data.updated).toLocaleString();
+						data.created = new Date(data.created).toLocaleString();
+						eventList[eventIndex[currentIndex]].data_instance = data;
+					});
+				}
 			}
 		});
 	}
 
 	function getSingleDocument(documentType, id, promise) {
-		var cookie = sessionsCookies().getCsrfToken();
 		var url = 'opi/' + documentType + '/' + id;
 		$.ajax({
 			url: url,

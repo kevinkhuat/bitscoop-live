@@ -56,6 +56,7 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'created',
             'updated',
+            'data',
             'user_id',
             'signal_id',
             'provider_id',

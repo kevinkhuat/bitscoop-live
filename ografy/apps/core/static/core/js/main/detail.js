@@ -87,6 +87,10 @@ function detailView(mapboxViewInst, dataInst) {
 				$('.detail-data label').html('Title');
 				$('.detail-data .content').html(eventSubtypeInstance.title);
 			}
+			else {
+				$('.detail-data label').html('');
+				$('.detail-data .content').html('');
+			}
 		});
 
 		if (!$('.detail').hasClass('full')) {
