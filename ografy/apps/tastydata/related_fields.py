@@ -32,10 +32,10 @@ class ReferenceField(DocumentField):
     queryset
     """
     #TODO: FIX BIGTIME!
-    default_error_messages = {
-        'invalid_dbref': _('Unable to convert to internal value.'),
-        'invalid_doc': _('DBRef invalid dereference.'),
-    }
+    # default_error_messages = {
+    #     'invalid_dbref': ('Unable to convert to internal value.'),
+    #     'invalid_doc': ('DBRef invalid dereference.'),
+    # }
 
     type_label = 'ReferenceField'
 

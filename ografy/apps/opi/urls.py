@@ -20,6 +20,11 @@ urlpatterns = patterns('',
    url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event$', views.MessageSingleView.event, name='message-detail'),
    url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event/data$', views.MessageSingleView.data, name='message-detail'),
 
+   url(r'^/play$', views.PlayView.as_view(), name='play-list'),
+   url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/?$', views.PlaySingleView.as_view(), name='play-detail'),
+   url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/event$', views.PlaySingleView.event, name='play-detail'),
+   url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/event/data$', views.PlaySingleView.data, name='play-detail'),
+
    url(r'^/provider$', views.ProviderView.as_view(), name='provider-list'),
    url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', views.ProviderSingleView.as_view(), name='provider-detail'),
 

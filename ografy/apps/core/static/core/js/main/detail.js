@@ -1,5 +1,5 @@
 //Render the detail panel on the right-hand side of the main page
-function detailView(mapboxViewInst) {
+function detailView(mapboxViewInst, dataInst) {
 	//Views
 	//Render the detail panel's content
 	function renderContent(showMap) {
@@ -48,6 +48,11 @@ function detailView(mapboxViewInst) {
 	//Update content
 	function updateContent(event) {
 		var sidebar = $('.sidebar');
+		var dateTimeArray = [];
+		var eventSubtypeInstance;
+		var getSingleDocumentPromise = $.Deferred();
+		var waitForPromise = false;
+
 		if (sidebar.hasClass('invisible')) {
 			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
@@ -57,12 +62,33 @@ function detailView(mapboxViewInst) {
 					setHeight();
 				});
 		}
-		var dateTimeArray = event.datetime.split(',');
+		dateTimeArray = event.datetime.split(',');
 		$('.detail .main-label').html(event.provider_name);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(String(event.location.coordinates));
-		$('.detail-data .content').html('This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.  This is a long string of data to simulate a message of appreciable length.');
+
+		if (event.subtype === 'Message' && !(event.subtype_id in dataInst.getMessageIndex()) ||
+			event.subtype === 'Play' && !(event.subtype_id in dataInst.getPlayIndex())) {
+			waitForPromise = true;
+			dataInst.getSingleDocument(event.subtype.toLowerCase(), event.subtype_id, getSingleDocumentPromise);
+		}
+		if (!waitForPromise) {
+			getSingleDocumentPromise.resolve();
+		}
+
+		$.when(getSingleDocumentPromise).always(function () {
+			eventSubtypeInstance = event.subtypeInstance;
+			if (event.subtype === 'Message') {
+				$('.detail-data label').html('Message Body');
+				$('.detail-data .content').html(eventSubtypeInstance.message_body);
+			}
+			else if (event.subtype === 'Play') {
+				$('.detail-data label').html('Title');
+				$('.detail-data .content').html(eventSubtypeInstance.title);
+			}
+		});
+
 		if (!$('.detail').hasClass('full')) {
 			updateMap(eventName, map, eventLocation);
 		}

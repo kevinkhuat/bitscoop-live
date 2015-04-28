@@ -9,11 +9,11 @@ function baseView() {
 	//Mapbox handler
 	var mapboxViewInst = mapboxManager();
 
-	//View components
-	var detailViewInst = detailView(mapboxViewInst);
-
 	//Data Instance
-	var dataInst = dataStore(urlParserInst, detailViewInst);
+	var dataInst = dataStore(urlParserInst);
+
+	//View components
+	var detailViewInst = detailView(mapboxViewInst, dataInst);
 
 	//Views
 	var listViewInst = listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst);

@@ -7,7 +7,7 @@ from ografy.apps.tastydata import related_fields
 from ografy.apps.tastydata import serializers as tasty_serializers
 
 
-def evaluate(query, QuerySet):
+def evaluate(query, QuerySet, many=True):
     # If the queryset has already been evaluated by the internal API send the result directly to the serializer
     if not isinstance(query, QuerySet):
         return query
@@ -21,10 +21,8 @@ def evaluate(query, QuerySet):
         if data is None:
             return []
         else:
-            # If there is only one result, send that result to the serializer
-            # if len(data) == 1:
-            #     return data[0]
-            # otherwise send the list to the serializer
+            if len(data) is 1 and many is False:
+                return data[0]
             return data
 
 
@@ -64,7 +62,9 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'provider_name',
             'datetime',
             'location',
-            'name'
+            'name',
+            'subtype',
+            'subtype_id'
         ) #, 'data'
         depth = 5
 
@@ -77,6 +77,7 @@ class MessageSerializer(tasty_serializers.DocumentSerializer):
         model = Message
         fields = (
             'id',
+            'event',
             'message_to',
             'message_from',
             'message_body'
@@ -92,6 +93,7 @@ class PlaySerializer(tasty_serializers.DocumentSerializer):
         model = Play
         fields = (
             'id',
+            'event',
             'title'
         ) # 'event',
         depth = 5

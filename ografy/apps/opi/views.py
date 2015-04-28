@@ -76,7 +76,7 @@ class DataSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -100,7 +100,7 @@ class DataSingleView(MongoAPIView):
             val=pk,
             data=patch_data
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -124,7 +124,7 @@ class DataSingleView(MongoAPIView):
             pk=pk,
             data=post_data
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -191,7 +191,7 @@ class EventSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
             context={
@@ -216,7 +216,7 @@ class EventSingleView(MongoAPIView):
             val=pk,
             data=patch_event
         )
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
             context={
@@ -241,7 +241,7 @@ class EventSingleView(MongoAPIView):
             val=pk,
             data=put_event
         )
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
             context={
@@ -258,7 +258,7 @@ class EventSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -324,7 +324,7 @@ class MessageSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
+        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             message_object,
             context={
@@ -349,7 +349,7 @@ class MessageSingleView(MongoAPIView):
             val=pk,
             data=patch_message
         )
-        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
+        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             message_object,
             context={
@@ -374,7 +374,7 @@ class MessageSingleView(MongoAPIView):
             pk=pk,
             data=put_data
         )
-        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
+        message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             message_object,
             context={
@@ -391,7 +391,7 @@ class MessageSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
             context={
@@ -407,7 +407,7 @@ class MessageSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -473,7 +473,7 @@ class PlaySingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             play_object,
             context={
@@ -498,7 +498,7 @@ class PlaySingleView(MongoAPIView):
             val=pk,
             data=patch_play
         )
-        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             play_object,
             context={
@@ -523,7 +523,7 @@ class PlaySingleView(MongoAPIView):
             pk=pk,
             data=put_data
         )
-        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
+        play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             play_object,
             context={
@@ -540,7 +540,7 @@ class PlaySingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
             context={
@@ -556,7 +556,7 @@ class PlaySingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             data_object,
             context={
@@ -590,7 +590,7 @@ class ProviderSingleView(DjangoAPIView):
             request.query_filter &
             DjangoAPIView.Meta.Q(pk=pk)
         )
-        provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet)
+        provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
         return Response(self.serialize(
             provider_object,
             context={
@@ -627,7 +627,7 @@ class SettingsSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet)
+        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             settings_object,
             context={
@@ -652,7 +652,7 @@ class SettingsSingleView(MongoAPIView):
         settings_query = core_api.SettingsApi.post(
             data=post_settings
         )
-        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet)
+        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             settings_object,
             context={
@@ -726,7 +726,7 @@ class SignalSingleView(DjangoAPIView):
             request.auth_filter &
             DjangoAPIView.Meta.Q(pk=pk)
         )
-        signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
+        signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             signal_object,
             context={
@@ -790,7 +790,7 @@ class SignalSingleView(DjangoAPIView):
             request.auth_filter &
             DjangoAPIView.Meta.Q(pk=pk)
         )
-        provider_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
+        provider_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             provider_object,
             context={
@@ -832,7 +832,7 @@ class UserSingleView(DjangoAPIView):
         get_query = core_api.UserApi.get(
             val=pk
         )
-        user_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
+        user_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             user_object,
             context={

@@ -159,6 +159,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
 			var feature = e.layer.feature;
+			var event = dataInst.getResultListSingle(feature.properties.id);
 
 			//Reset all markers back to their original color.
 			resetColors(map);
@@ -169,7 +170,8 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
 
 			//Populate the detail panel content with information from the selected item.
-			detailViewInst.updateContent(feature.properties.title, feature.properties.datetime, String(feature.geometry.coordinates));
+
+			detailViewInst.updateContent(event);
 		});
 	}
 

@@ -1,5 +1,5 @@
 //View pertaining to obtaining and searching for data
-function dataStore(urlParserInst, detailViewInst) {
+function dataStore(urlParserInst) {
 	//This is the array of events that is returned from a search
 	var resultList = [];
 
@@ -60,15 +60,9 @@ function dataStore(urlParserInst, detailViewInst) {
 	}
 
 	function getResultListSingle(id) {
-		var tempList = documentType === 'data' ? dataList :
-			documentType === 'event' ? eventList :
-			documentType === 'messsage' ? messageList :
-			documentType == 'play' ? playList :
-			eventList;
-
-		for (var i in tempList) {
-			if (tempList[i].id === id) {
-				return tempList[i];
+		for (var i in eventList) {
+			if (eventList[i].id === id) {
+				return eventList[i];
 			}
 		}
 	}
@@ -135,7 +129,7 @@ function dataStore(urlParserInst, detailViewInst) {
 
 			if (!(currentId in tempIndex)) {
 				newResults.push(resultList[item]);
-				tempIndex[currentId] = true;
+				tempIndex[currentId] = tempList.length;
 				tempList.push(resultList[item]);
 			}
 		}
@@ -256,7 +250,6 @@ function dataStore(urlParserInst, detailViewInst) {
 				$(this).removeClass('hover');
 			})
 			.click(function() {
-				detailViewInst.hideContent();
 				var searchSort;
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
@@ -317,8 +310,37 @@ function dataStore(urlParserInst, detailViewInst) {
 		});
 	}
 
+	function getSingleDocument(documentType, id, promise) {
+		var cookie = sessionsCookies().getCsrfToken();
+		var url = 'opi/' + documentType + '/' + id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			headers: {
+				'X-CSRFToken': cookie
+			}
+		}).done(function(data, xhr, response) {
+			var newDocument = data;
+			if (documentType === 'data') {
+				dataIndex[newDocument.id] = newDocument.event_id;
+				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+			}
+			else if (documentType === 'message') {
+				messageIndex[newDocument.id] = newDocument.event;
+				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+			}
+			else if (documentType === 'play') {
+				playIndex[newDocument.id] = newDocument.event;
+				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+			}
+			return promise.resolve();
+		});
+	}
+
 	return {
 		createPageBar: createPageBar,
+		getCurrentView: getCurrentView,
 		getDataIndex: getDataIndex,
 		getEventIndex: getEventIndex,
 		getEventList: getEventList,
@@ -331,7 +353,7 @@ function dataStore(urlParserInst, detailViewInst) {
 		getResultCurrentStartIndex: getResultCurrentStartIndex,
 		getResultCurrentEndIndex: getResultCurrentEndIndex,
 		getResultTotalPages: getResultTotalPages,
-		getCurrentView: getCurrentView,
+		getSingleDocument: getSingleDocument,
 		search: search,
 		setCurrentView: setCurrentView,
 		setResultCurrentPage: setResultCurrentPage,

@@ -72,12 +72,12 @@ class Event(mongoengine.Document):
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
     location = mongoengine.PointField()
 
-    meta = {
-        'indexes': [{
-            'fields': ['$user_id', '$signal_id', '$name', '$datetime'],
-            'default_language': 'english',
-            'weight': {'name': 10, 'datetime': 2}
-            }]}
+    # meta = {
+    #     'indexes': [{
+    #         'fields': ['$user_id', '$signal_id', '$name', '$datetime'],
+    #         'default_language': 'english',
+    #         'weight': {'name': 10, 'datetime': 2}
+    #         }]}
 
 
 class Message(mongoengine.Document):
@@ -108,12 +108,12 @@ class Message(mongoengine.Document):
     message_from = mongoengine.StringField()
     message_body = mongoengine.StringField(required=True)
 
-    meta = {
-        'indexes': [{
-            'fields': ['$user_id', '$message_to', '$message_from', '$message_body'],
-            'default_language': 'english',
-            'weight': {'message_body': 10, 'datetime': 2, 'message_to': 2, 'message_from': 2}
-            }]}
+    # meta = {
+    #     'indexes': [{
+    #         'fields': ['$user_id', '$message_to', '$message_from', '$message_body'],
+    #         'default_language': 'english',
+    #         'weight': {'message_body': 10, 'datetime': 2, 'message_to': 2, 'message_from': 2}
+    #         }]}
 
 
 class Play(mongoengine.Document):
@@ -135,8 +135,8 @@ class Play(mongoengine.Document):
     title = mongoengine.StringField()
     media_url = mongoengine.StringField()
 
-    meta = {
-        'indexes': [{
-            'fields': ['$user_id', '$title'],
-            'default_language': 'english'
-            }]}
+    # meta = {
+    #     'indexes': [{
+    #         'fields': ['$user_id', '$title'],
+    #         'default_language': 'english'
+    #         }]}
