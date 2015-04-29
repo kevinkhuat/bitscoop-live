@@ -269,15 +269,14 @@ class EventSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class MessageView(MongoAPIListView):
+class MessageView(EventView):
     # TODO: Check user association on any updates & add access permissions
-    ordering = 'id'
     ordering_fields = ('id', 'message_to', 'message_from', 'message_body')
     serializer = opi_serializer.MessageSerializer
     serializer_class = opi_serializer.MessageSerializer
 
     def get(self, request):
-        message_query = obase_api.MessageApi.get(
+        message_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -293,7 +292,7 @@ class MessageView(MongoAPIListView):
             }
         )
         post_message.user_id = request.user.id
-        message_query = obase_api.MessageApi.post(
+        message_query = obase_api.EventApi.post(
             data=post_message
         )
         message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
@@ -307,20 +306,20 @@ class MessageView(MongoAPIListView):
         return Response(serialized_response)
 
 
-class MessageSingleView(MongoAPIView):
+class MessageSingleView(EventSingleView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.MessageSerializer
     serializer_class = opi_serializer.MessageSerializer
 
     def delete(self, request, pk):
-        obase_api.MessageApi.delete(
+        obase_api.EventApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        message_query = obase_api.MessageApi.get(
+        message_query = obase_api.EventApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -345,7 +344,7 @@ class MessageSingleView(MongoAPIView):
         )
         patch_message.user_id = request.user.id
 
-        message_query = obase_api.MessageApi.patch(
+        message_query = obase_api.EventApi.patch(
             val=pk,
             data=patch_message
         )
@@ -370,7 +369,7 @@ class MessageSingleView(MongoAPIView):
         )
         put_data.user_id = request.user.id
 
-        message_query = obase_api.MessageApi.put(
+        message_query = obase_api.EventApi.put(
             pk=pk,
             data=put_data
         )
@@ -418,15 +417,14 @@ class MessageSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class PlayView(MongoAPIListView):
+class PlayView(EventView):
     # TODO: Check user association on any updates & add access permissions
-    ordering = 'id'
     ordering_fields = ('id', 'title')
     serializer = opi_serializer.PlaySerializer
     serializer_class = opi_serializer.PlaySerializer
 
     def get(self, request):
-        play_query = obase_api.PlayApi.get(
+        play_query = obase_api.EventApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -442,7 +440,7 @@ class PlayView(MongoAPIListView):
             }
         )
         post_play.user_id = request.user.id
-        play_query = obase_api.PlayApi.post(
+        play_query = obase_api.EventApi.post(
             data=post_play
         )
         play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
@@ -456,20 +454,20 @@ class PlayView(MongoAPIListView):
         return Response(serialized_response)
 
 
-class PlaySingleView(MongoAPIView):
+class PlaySingleView(EventSingleView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.PlaySerializer
     serializer_class = opi_serializer.PlaySerializer
 
     def delete(self, request, pk):
-        obase_api.PlayApi.delete(
+        obase_api.EventApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        play_query = obase_api.PlayApi.get(
+        play_query = obase_api.EventApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -494,7 +492,7 @@ class PlaySingleView(MongoAPIView):
         )
         patch_play.user_id = request.user.id
 
-        play_query = obase_api.PlayApi.patch(
+        play_query = obase_api.EventApi.patch(
             val=pk,
             data=patch_play
         )
@@ -519,7 +517,7 @@ class PlaySingleView(MongoAPIView):
         )
         put_data.user_id = request.user.id
 
-        play_query = obase_api.PlayApi.put(
+        play_query = obase_api.EventApi.put(
             pk=pk,
             data=put_data
         )

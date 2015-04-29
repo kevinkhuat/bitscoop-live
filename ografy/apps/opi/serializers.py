@@ -3,6 +3,7 @@ from rest_framework import serializers as django_serializers
 from ografy.apps.core.documents import Settings
 from ografy.apps.core.models import Provider, Signal, User, Permission, PermissionTemplate
 from ografy.apps.obase.documents import Data, Event, Message, Play
+from ografy.apps.opi.util import dictSoftMerge, listSoftMerge, tupleSoftMerge
 from ografy.apps.tastydata import related_fields
 from ografy.apps.tastydata import serializers as tasty_serializers
 
@@ -69,31 +70,28 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
         depth = 5
 
 
-class MessageSerializer(tasty_serializers.DocumentSerializer):
+class MessageSerializer(EventSerializer):
     # Mongo References
     # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
-    class Meta:
-        model = Message
-        fields = (
-            'id',
-            'event',
-            'message_to',
-            'message_from',
-            'message_body'
-        ) # 'event',
-        depth = 5
+    # class Meta:
+    #     model = Message
+    newFields = (
+        'message_to',
+        'message_from',
+        'message_body'
+    ) # 'event',
+    fields = tupleSoftMerge(EventSerializer.Meta.fields, newFields)
+    #     depth = 5
 
 
-class PlaySerializer(tasty_serializers.DocumentSerializer):
+class PlaySerializer(EventSerializer):
     # Mongo References
     # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
     class Meta:
         model = Play
         fields = (
-            'id',
-            'event',
             'title'
         ) # 'event',
         depth = 5
