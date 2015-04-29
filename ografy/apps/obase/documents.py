@@ -1,5 +1,6 @@
 import datetime
 
+from copy import deepcopy
 from django.conf import settings
 import mongoengine
 
@@ -110,13 +111,13 @@ class Message(Event):
     message_from = mongoengine.StringField()
     message_body = mongoengine.StringField(required=True)
 
-    # meta = {
-    #     'allow_inheritance': True,
-    #     'indexes': [{
-    #         'fields': ['$message_to', '$message_from', '$message_body'],
-    #         'default_language': 'english',
-    #         'weight': {'message_body': 10, 'message_to': 2, 'message_from': 2}
-    #         }]}
+    newFields = ['$message_to', '$message_from', '$message_body']
+    newWeights = {'message_body': 10, 'message_to': 2, 'message_from': 2}
+
+    meta = {'indexes': [{'fields': [], 'weight': {}}]}
+    # meta['indexes'] = deepcopy(Event._meta['indexes'])
+    meta['indexes'][0]['fields'] += newFields
+    meta['indexes'][0]['weight'].update(newWeights)
 
 
 class Play(Event):
@@ -134,9 +135,10 @@ class Play(Event):
     title = mongoengine.StringField()
     media_url = mongoengine.StringField()
 
-    # meta = {
-    #     'allow_inheritance': True,
-    #     'indexes': [{
-    #         'fields': ['$title'],
-    #         'default_language': 'english'
-    #         }]}
+    newFields = ['$title']
+    newWeights = {'title': 12}
+
+    meta = {'indexes': [{'fields': [], 'weight': {}}]}
+    # meta['indexes'] = deepcopy(Event._meta['indexes'])
+    meta['indexes'][0]['fields'] += newFields
+    meta['indexes'][0]['weight'].update(newWeights)

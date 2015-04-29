@@ -276,7 +276,7 @@ class MessageView(EventView):
     serializer_class = opi_serializer.MessageSerializer
 
     def get(self, request):
-        message_query = obase_api.EventApi.get(
+        message_query = obase_api.MessageApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -292,7 +292,7 @@ class MessageView(EventView):
             }
         )
         post_message.user_id = request.user.id
-        message_query = obase_api.EventApi.post(
+        message_query = obase_api.MessageApi.post(
             data=post_message
         )
         message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
@@ -312,14 +312,14 @@ class MessageSingleView(EventSingleView):
     serializer_class = opi_serializer.MessageSerializer
 
     def delete(self, request, pk):
-        obase_api.EventApi.delete(
+        obase_api.MessageApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        message_query = obase_api.EventApi.get(
+        message_query = obase_api.MessageApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -344,7 +344,7 @@ class MessageSingleView(EventSingleView):
         )
         patch_message.user_id = request.user.id
 
-        message_query = obase_api.EventApi.patch(
+        message_query = obase_api.MessageApi.patch(
             val=pk,
             data=patch_message
         )
@@ -369,7 +369,7 @@ class MessageSingleView(EventSingleView):
         )
         put_data.user_id = request.user.id
 
-        message_query = obase_api.EventApi.put(
+        message_query = obase_api.MessageApi.put(
             pk=pk,
             data=put_data
         )
@@ -386,7 +386,7 @@ class MessageSingleView(EventSingleView):
 
     def event(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        event_query = obase_api.EventApi.get(
+        event_query = obase_api.MessageApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -424,7 +424,7 @@ class PlayView(EventView):
     serializer_class = opi_serializer.PlaySerializer
 
     def get(self, request):
-        play_query = obase_api.EventApi.get(
+        play_query = obase_api.PlayApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -440,7 +440,7 @@ class PlayView(EventView):
             }
         )
         post_play.user_id = request.user.id
-        play_query = obase_api.EventApi.post(
+        play_query = obase_api.PlayApi.post(
             data=post_play
         )
         play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
@@ -460,14 +460,14 @@ class PlaySingleView(EventSingleView):
     serializer_class = opi_serializer.PlaySerializer
 
     def delete(self, request, pk):
-        obase_api.EventApi.delete(
+        obase_api.PlayApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        play_query = obase_api.EventApi.get(
+        play_query = obase_api.PlayApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -492,7 +492,7 @@ class PlaySingleView(EventSingleView):
         )
         patch_play.user_id = request.user.id
 
-        play_query = obase_api.EventApi.patch(
+        play_query = obase_api.PlayApi.patch(
             val=pk,
             data=patch_play
         )
@@ -517,7 +517,7 @@ class PlaySingleView(EventSingleView):
         )
         put_data.user_id = request.user.id
 
-        play_query = obase_api.EventApi.put(
+        play_query = obase_api.PlayApi.put(
             pk=pk,
             data=put_data
         )
@@ -534,7 +534,7 @@ class PlaySingleView(EventSingleView):
 
     def event(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        event_query = obase_api.EventApi.get(
+        event_query = obase_api.PlayApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
