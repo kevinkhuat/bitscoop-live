@@ -17,8 +17,7 @@ def listSoftMerge(object1, object2):
     for item in object2:
         # If there is a property in object2 not in object1, add it to object1
         if item not in object1[object2]:
-            object1[object2].append(item)
-    object1[object2] = object2
+            object1.append(item)
     return object1
 
 def tupleSoftMerge(object1, object2):
@@ -26,6 +25,5 @@ def tupleSoftMerge(object1, object2):
     for item in object2:
         # If there is a property in object2 not in object1, add it to object1
         if item not in object1:
-            object1 = item + object1
-    object1[object2] = object2
+            object1 = (item,) + object1
     return object1
