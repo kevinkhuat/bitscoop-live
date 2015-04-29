@@ -79,7 +79,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
 		var currentSort = urlParserInst.getSort();
-		var resultData = dataInst.getResultData();
+		var resultData = dataInst.getResultList();
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			resultData: resultData
@@ -114,7 +114,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 				//If the clicked item is now active, get the item's information from the database
 				if (selectedItem.hasClass('active')) {
-					var event = dataInst.getResultListSingle('event', selectedItem.attr('id'));
+					var event = dataInst.getResultListSingle(selectedItem.attr('id'));
 					var previousSiblings = selectedItem.prevAll();
 					var scrollHeight = 0;
 					if ($('.sidebar').hasClass('invisible')) {

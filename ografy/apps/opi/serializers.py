@@ -64,8 +64,7 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'datetime',
             'location',
             'name',
-            'subtype',
-            'subtype_id'
+            '_cls'
         ) #, 'data'
         depth = 5
 

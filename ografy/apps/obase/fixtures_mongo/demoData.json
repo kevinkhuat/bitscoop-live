@@ -137,8 +137,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -147,9 +146,7 @@
 				"provider_name":"facebook",
 				"name": "Message to Sam and Arnold",
 				"datetime": "2015-06-13 13:06:22-05:00",
-				"location": [-73.9770547, 40.7529952]
-			},
-			"message": {
+				"location": [-73.9770547, 40.7529952],
 				"user_id": 2,
 				"message_to": ["Arnold", "Sam"],
 				"message_from": "John",
@@ -173,8 +170,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -183,9 +179,7 @@
 				"provider_name": "twitter",
 				"name": "Message to John",
 				"datetime": "2015-06-13 13:09:51-05:00",
-				"location": [-73.9778781, 40.7531232]
-			},
-			"message": {
+				"location": [-73.9778781, 40.7531232],
 				"user_id": 2,
 				"message_to": ["John"],
 				"message_from": "Arnold",
@@ -209,8 +203,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -219,9 +212,7 @@
 				"provider_name": "facebook",
 				"name": "Facebook Bieber",
 				"datetime": "2015-06-13 13:14:29-05:00",
-				"location": [-73.9807507,40.7536332]
-			},
-			"message": {
+				"location": [-73.9807507,40.7536332],
 				"user_id": 2,
 				"message_to": ["John", "Alan", "Arnold", "Liz R.", "Sarah"],
 				"message_from": "Sam",
@@ -245,8 +236,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -255,9 +245,7 @@
 				"provider_name": "twitter",
 				"name": "Message to Sam and Arnold",
 				"datetime": "2015-06-13 13:16:50-05:00",
-				"location": [-73.9810485, 40.7533406]
-			},
-			"message": {
+				"location": [-73.9810485, 40.7533406],
 				"user_id": 2,
 				"message_to": ["Arnold", "Sam"],
 				"message_from": "John",
@@ -281,7 +269,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -290,9 +278,7 @@
 				"provider_name":"instagram",
 				"name": "Photo",
 				"datetime": "2015-06-13 13:18:11-05:00",
-				"location": [-73.9813998, 40.7528326]
-			},
-			"message": {
+				"location": [-73.9813998, 40.7528326],
 				"user_id": 2,
 				"message_to": ["Arnold", "Sam", "Liz R.", "Alan", "Sasha", "Miguel"],
 				"message_from": "John",
@@ -316,8 +302,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -326,9 +311,7 @@
 				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 13:18:41-05:00",
-				"location": [-73.9814186, 40.7528123]
-			},
-			"message": {
+				"location": [-73.9814186, 40.7528123],
 				"user_id": 2,
 				"message_to": ["John"],
 				"message_from": "Sam",
@@ -352,8 +335,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -362,9 +344,7 @@
 				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 13:18:59-05:00",
-				"location": [-73.9814186, 40.7528123]
-			},
-			"message": {
+				"location": [-73.9814186, 40.7528123],
 				"user_id": 2,
 				"message_to": ["Sam", "Arnold"],
 				"message_from": "John",
@@ -388,8 +368,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -398,9 +377,7 @@
 				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 17:29:53-05:00",
-				"location": [-73.9822581, 40.753178]
-			},
-			"message": {
+				"location": [-73.9822581, 40.753178],
 				"user_id": 2,
 				"message_to": ["Sam"],
 				"message_from": "John",
@@ -424,8 +401,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -434,9 +410,7 @@
 				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 17:32:26-05:00",
-				"location": [-73.9822581, 40.753178]
-			},
-			"message": {
+				"location": [-73.9822581, 40.753178],
 				"user_id": 2,
 				"message_to": ["John"],
 				"message_from": "Sam",
@@ -460,8 +434,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -470,9 +443,7 @@
 				"provider_name": "twitter",
 				"name": "Twitter Message",
 				"datetime": "2015-06-13 17:32:28-05:00",
-				"location": [-73.9822581, 40.753178]
-			},
-			"message": {
+				"location": [-73.9822581, 40.753178],
 				"user_id": 2,
 				"message_to": ["Sam"],
 				"message_from": "John",
@@ -496,7 +467,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -505,9 +476,7 @@
 				"provider_name":"instagram",
 				"name": "Photo",
 				"datetime": "2015-06-13 18:06:30-05:00",
-				"location": [-73.9814588, 40.7539969]
-			},
-			"message": {
+				"location": [-73.9814588, 40.7539969],
 				"user_id": 2,
 				"message_to": ["Sam", "Arnold", "Kim", "Alan", "Liz R.", "Liz L.", "Morris", "Miguel"],
 				"message_from": "John",
@@ -531,8 +500,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -541,9 +509,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-06-30 19:06:30-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["Kim", "Liz L.", "Morris"],
 				"message_from": "John",
@@ -567,8 +533,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -577,9 +542,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-06-30 19:07:11-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Liz L.", "Morris"],
 				"message_from": "Kim",
@@ -603,8 +566,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -613,9 +575,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-06-30 19:07:43-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Morris"],
 				"message_from": "Liz L.",
@@ -639,8 +599,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -649,9 +608,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-06-30 19:07:44-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L."],
 				"message_from": "Morris",
@@ -675,8 +632,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -685,9 +641,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:09:12-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["Alan", "Kim", "Liz L.", "Harvey", "Paul", "Big Mike"],
 				"message_from": "John",
@@ -711,8 +665,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -721,9 +674,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:10:50-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L.", "Harvey", "Paul", "Big Mike"],
 				"message_from": "Alan",
@@ -747,8 +698,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -757,9 +707,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:11:52-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L.", "Alan", "Paul", "Big Mike"],
 				"message_from": "Harvey",
@@ -783,8 +731,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -793,9 +740,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:11:52-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L.", "Harvey", "Paul", "Big Mike"],
 				"message_from": "Alan",
@@ -819,8 +764,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -829,9 +773,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:14:08-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L.", "Harvey", "Paul", "Alan"],
 				"message_from": "Big Mike",
@@ -855,8 +797,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -865,9 +806,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:17:08-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Liz L.", "Big Mike", "Paul", "Alan"],
 				"message_from": "Harvey",
@@ -891,8 +830,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -901,9 +839,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:17:08-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Kim", "Harvey", "Big Mike", "Paul", "Alan"],
 				"message_from": "Liz L.",
@@ -927,8 +863,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -937,9 +872,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:17:44-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Liz L.", "Harvey", "Big Mike", "Paul", "Alan"],
 				"message_from": "Kim",
@@ -963,8 +896,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -973,9 +905,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:20:12-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan"],
 				"message_from": "Paul",
@@ -999,8 +929,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1009,9 +938,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:30:21-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan"],
 				"message_from": "John",
@@ -1035,8 +962,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1045,9 +971,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-06-30 19:30:21-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan"],
 				"message_from": "John",
@@ -1071,8 +995,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1081,9 +1004,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-07-01 00:57:18-08:00",
-				"location": [-117.8142071, 33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071, 33.6881567],
 				"user_id": 2,
 				"message_to": ["John", "Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan"],
 				"message_from": "Nate",
@@ -1107,8 +1028,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1117,9 +1037,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-06-30 19:40:47-08:00",
-				"location": [-117.8092611,33.6842287]
-			},
-			"message": {
+				"location": [-117.8092611,33.6842287],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan"],
 				"message_from": "John",
@@ -1143,8 +1061,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1153,9 +1070,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 11:40:47-08:00",
-				"location": [-117.8142071,33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071,33.6881567],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan", "Nate"],
 				"message_from": "John",
@@ -1179,8 +1094,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1189,9 +1103,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 12:37:22-08:00",
-				"location": [-118.47173450000001,33.9870459]
-			},
-			"message": {
+				"location": [-118.47173450000001,33.9870459],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan", "Nate"],
 				"message_from": "John",
@@ -1215,8 +1127,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1225,9 +1136,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 12:50:22-08:00",
-				"location": [-118.4753555,33.9868591]
-			},
-			"message": {
+				"location": [-118.4753555,33.9868591],
 				"user_id": 2,
 				"message_to": ["Paul", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan", "Nate"],
 				"message_from": "John",
@@ -1251,8 +1160,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1261,9 +1169,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 12:55:16-08:00",
-				"location": [-118.4753555,33.9868591]
-			},
-			"message": {
+				"location": [-118.4753555,33.9868591],
 				"user_id": 2,
 				"message_to": ["John", "Liz L.", "Harvey", "Big Mike", "Kim", "Alan", "Nate"],
 				"message_from": "Paul",
@@ -1287,7 +1193,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1296,9 +1202,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 13:12:01-08:00",
-				"location": [-118.47671810000001,33.9897502]
-			},
-			"message": {
+				"location": [-118.47671810000001,33.9897502],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "John", "Harvey", "Big Mike", "Kim", "Alan", "Nate"],
 				"message_from": "Liz L.",
@@ -1322,7 +1226,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1331,9 +1235,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 13:59:01-08:00",
-				"location": [-118.4806824,33.9951053]
-			},
-			"message": {
+				"location": [-118.4806824,33.9951053],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "John", "Harvey", "Big Mike", "Liz L.", "Alan", "Nate"],
 				"message_from": "Kim",
@@ -1357,7 +1259,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1366,9 +1268,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 15:44:05-08:00",
-				"location": [-118.4864116,34.0009358]
-			},
-			"message": {
+				"location": [-118.4864116,34.0009358],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Big Mike", "Liz L.", "Alan", "Nate"],
 				"message_from": "John",
@@ -1392,7 +1292,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1401,9 +1301,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 15:44:05-08:00",
-				"location": [-118.4869534,34.0009069]
-			},
-			"message": {
+				"location": [-118.4869534,34.0009069],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Big Mike", "Liz L.", "Alan", "John"],
 				"message_from": "Nate",
@@ -1427,7 +1325,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1436,9 +1334,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 17:03:51-08:00",
-				"location": [-118.2863456,34.0157884]
-			},
-			"message": {
+				"location": [-118.2863456,34.0157884],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "John"],
 				"message_from": "Big Mike",
@@ -1462,8 +1358,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1472,9 +1367,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-07-01 19:08:28-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1498,8 +1391,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1508,9 +1400,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 19:32:46-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1534,7 +1424,7 @@
 					}
 				}
 			},
-			"event": {
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1543,9 +1433,7 @@
 				"provider_name":"instagram",
 				"name": "Instagram Photo",
 				"datetime": "2014-07-01 19:34:13-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1569,8 +1457,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1579,9 +1466,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:16:23-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1605,8 +1490,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1615,9 +1499,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:17:40-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "John", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "Arnold",
@@ -1641,8 +1523,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1651,9 +1532,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:18:12-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Arnold", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1677,8 +1556,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1687,9 +1565,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:18:59-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "John", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "Arnold",
@@ -1713,8 +1589,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1723,9 +1598,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:20:00-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "John", "Morris", "Cathy", "Kim", "Harvey", "Nate", "Liz L.", "Alan", "Arnold"],
 				"message_from": "Big Mike",
@@ -1749,8 +1622,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1759,9 +1631,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 21:20:00-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "John", "Morris", "Cathy", "Kim", "Arnold", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "Harvey",
@@ -1785,8 +1655,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1795,9 +1664,7 @@
 				"provider_name":"twitter",
 				"name": "Twitter Message",
 				"datetime": "2014-07-01 23:54:30-08:00",
-				"location": [-118.24061390000001,34.0727553]
-			},
-			"message": {
+				"location": [-118.24061390000001,34.0727553],
 				"user_id": 2,
 				"message_to": ["Paul", "Harvey", "Morris", "Cathy", "Kim", "Arnold", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1821,8 +1688,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Message",
+			"message": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1831,9 +1697,7 @@
 				"provider_name":"facebook",
 				"name": "Facebook Message",
 				"datetime": "2014-07-01 23:54:30-08:00",
-				"location": [-117.8142071,33.6881567]
-			},
-			"message": {
+				"location": [-117.8142071,33.6881567],
 				"user_id": 2,
 				"message_to": ["Paul", "Harvey", "Morris", "Cathy", "Kim", "Arnold", "Nate", "Liz L.", "Alan", "Big Mike"],
 				"message_from": "John",
@@ -1859,8 +1723,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Play",
+			"play": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -1869,11 +1732,9 @@
 				"provider_name": "steam",
 				"name": "Started playing Half-Life 2",
 				"datetime": "2015-06-13 13:10:33-05:00",
-				"location": [-73.9786479, 40.7534117]
-			},
-			"play": {
+				"location": [-73.9786479, 40.7534117],
 				"user_id": 2,
-				"subtype": "Videogame",
+				"play_type": "Video Game",
 				"title": "Half-Life 2"
 			}
 		},
@@ -1894,8 +1755,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Play",
+			"play": {
 				"created": "2015-06-14 13:23:44-05:00",
 				"updated": "2015-06-16 03:01:18-05:00",
 				"user_id": 2,
@@ -1904,11 +1764,9 @@
 				"provider_name": "spotify",
 				"name": "Played \"It's All About the Benjamins\"",
 				"datetime": "2015-06-13 17:52:07-05:00",
-				"location": [-73.9819792, 40.7541614]
-			},
-			"play": {
+				"location": [-73.9819792, 40.7541614],
 				"user_id": 2,
-				"subtype": "Song",
+				"play_type": "Song",
 				"title": "It's All About the Benjamins"
 			}
 		},
@@ -1929,8 +1787,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Play",
+			"play": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1939,11 +1796,9 @@
 				"provider_name":"spotify",
 				"name": "Played \"Under the Sea ft. Snoop Dogg\"",
 				"datetime": "2014-06-30 19:34:21-08:00",
-				"location": [-117.8092611,33.6842287]
-			},
-			"play": {
+				"location": [-117.8092611,33.6842287],
 				"user_id": 2,
-				"subtype": "Song",
+				"play_type": "Song",
 				"title": "Under the Sea ft. Snoop Dogg"
 			}
 		},
@@ -1964,8 +1819,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Play",
+			"play": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -1974,11 +1828,9 @@
 				"provider_name":"spotify",
 				"name": "Played \"The Last Winter\"",
 				"datetime": "2014-06-30 19:36:37-08:00",
-				"location": [-117.8092611,33.6842287]
-			},
-			"play": {
+				"location": [-117.8092611,33.6842287],
 				"user_id": 2,
-				"subtype": "Song",
+				"play_type": "Song",
 				"title": "The Last Winter"
 			}
 		},
@@ -1999,8 +1851,7 @@
 					}
 				}
 			},
-			"event": {
-				"subtype": "Play",
+			"play": {
 				"created": "2014-07-04 09:06:44-08:00",
 				"updated": "2014-07-12 12:01:12-08:00",
 				"user_id": 2,
@@ -2009,11 +1860,9 @@
 				"provider_name":"spotify",
 				"name": "Played \"Let's do the Twist\"",
 				"datetime": "2014-06-30 19:38:58-08:00",
-				"location": [-117.8092611,33.6842287]
-			},
-			"play": {
+				"location": [-117.8092611,33.6842287],
 				"user_id": 2,
-				"subtype": "Song",
+				"play_type": "Song",
 				"title": "Let's do the Twist"
 			}
 		}
