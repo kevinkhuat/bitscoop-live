@@ -51,6 +51,15 @@ function detailView(mapboxViewInst, dataInst) {
 		var dateTimeArray = [];
 		var eventSubtypeInstance;
 
+		if ($('.detail-to-from').length !== 0) {
+			$('.detail-to-from').remove();
+		}
+		if ($('.detail-play-title').length !== 0) {
+			$('.detail-play-title').remove();
+		}
+		if ($('.detail-message-body').length !== 0) {
+			$('.detail-message-body').remove();
+		}
 		if (sidebar.hasClass('invisible')) {
 			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
@@ -67,18 +76,56 @@ function detailView(mapboxViewInst, dataInst) {
 		$('.detail-location .content').html(String(event.location.coordinates));
 
 		if (event['_cls'] === 'Event.Message') {
-			var detail_to_from = nunjucks.render('detail/to-from.html', {
-				'to': event['message_to'],
-				'from': event['message_from']
-			});
-			$('.detail-location').append(detail_to_from);
+			var getSingleDocumentPromise = $.Deferred();
+			var waitForPromise = false;
+			if (!(event['id'] in dataInst.getMessageIndex())) {
+				waitForPromise = true;
+				dataInst.getSingleDocument('message', event['id'], getSingleDocumentPromise);
+			}
 
-			$('.detail-data label').html('Message Body');
-			$('.detail-data .content').html(event.message_body);
+			if (!(waitForPromise)) {
+				getSingleDocumentPromise.resolve();
+			}
+
+			$.when(getSingleDocumentPromise).always(function() {
+				event = dataInst.getResultListSingle(event.id);
+				var detail_to_from = nunjucks.render('detail/to-from.html', {
+					event: {
+						message_to: event.message_to.toString().replace(/,/g, ', '),
+						message_from: event.message_from
+					}
+				});
+				var detail_message_body = nunjucks.render('detail/message-body.html', {
+					event: {
+						message_body: event.message_body
+					}
+				});
+				$('.detail-location').before(detail_to_from);
+				$('.detail-location').after(detail_message_body)
+			});
 		}
 		else if (event['_cls'] === 'Event.Play') {
-			$('.detail-data label').html('Title');
-			$('.detail-data .content').html(event.title);
+			var getSingleDocumentPromise = $.Deferred();
+			var waitForPromise = false;
+			if (!(event['id'] in dataInst.getPlayIndex())) {
+				waitForPromise = true;
+				dataInst.getSingleDocument('play', event['id'], getSingleDocumentPromise);
+			}
+
+			if (!(waitForPromise)) {
+				getSingleDocumentPromise.resolve();
+			}
+
+			$.when(getSingleDocumentPromise).always(function() {
+				event = dataInst.getResultListSingle(event.id);
+				var detail_title = nunjucks.render('detail/title.html', {
+					event: {
+						title: event.title
+					}
+				});
+
+				$('.detail-location').before(detail_title);
+			});
 		}
 		else {
 			$('.detail-data label').html('');

@@ -7,6 +7,11 @@
 	<option value="created">Created</option>
 	<option value="updated">Updated</option>
 {#	<option value="time">Time</option>#}
+	{% if eventType == 'message' %}
 	<option value="to">To</option>
 	<option value="from">From</option>
+	{% endif %}
+	{% if eventType == 'play' %}
+	<option value="title">Title</option>
+	{% endif %}
 </select>

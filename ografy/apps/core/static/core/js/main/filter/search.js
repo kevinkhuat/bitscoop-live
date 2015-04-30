@@ -7,7 +7,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	//Bind an event listener that triggers when the initial dropdown changes.
 	//This listener will call the appropriate render function based on which option was selected.
 	function addDropdown(inputSelection) {
-		var newDropdown = nunjucks.render('search/initial_filter_dropdown.html');
+		var newDropdown = nunjucks.render('search/initial_filter_dropdown.html', {
+			eventType: inputSelection.parent().attr('id')
+		});
 		$(inputSelection).find('.filter.box:last .filter.options').html(newDropdown);
 
 		var initDropdown = $(inputSelection).find('.filter.box:last .initial')[0];
@@ -57,6 +59,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	function addFilter(inputSelection) {
 		createFilterBase(inputSelection);
 		addDropdown(inputSelection);
+		eventType = inputSelection.parents().attr('id');
+		eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+		inputSelection.siblings().find('.item').html(eventType);
 	}
 
 	//Create the base elements of a filter
@@ -109,6 +114,11 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 	//Remove the filter that the selected remove button is part of.
 	function removeFilter(currentButton) {
+		if ($(currentButton).parents('.filters').children().length === 1 && $(currentButton).parents('.filters').siblings().find('.active').length !== 0) {
+			eventType = $(currentButton).parents('.type-grouping').attr('id');
+			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+			$(currentButton).parents('.filters').siblings().find('.item').html('All ' + eventType)
+		}
 		$(currentButton).parents('.filter.box').remove();
 		checkDrawDisplay();
 	}
@@ -200,6 +210,16 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		//Toggle whether to search for the clicked type of information
 		$('.dropdown .item').not('.add-filter').click(function() {
 			$(this).toggleClass('active');
+			if ($(this).hasClass('active') && $(this).closest('.flex').siblings().children().length === 0) {
+				eventType = $(this).parents('.type-groping').attr('id');
+				eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+				$(this).siblings('.item').html('All ' + eventType);
+			}
+			else {
+				eventType = $(this).parents('.type-groping').attr('id');
+				eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+				$(this).siblings('.item').html(eventType);
+			}
 		});
 
 		//Create a filter when the "Add a filter" button is selected.
