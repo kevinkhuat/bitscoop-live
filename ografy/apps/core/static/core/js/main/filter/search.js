@@ -210,16 +210,6 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		//Toggle whether to search for the clicked type of information
 		$('.dropdown .item').not('.add-filter').click(function() {
 			$(this).toggleClass('active');
-			if ($(this).hasClass('active') && $(this).closest('.flex').siblings().children().length === 0) {
-				eventType = $(this).parents('.type-groping').attr('id');
-				eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
-				$(this).siblings('.item').html('All ' + eventType);
-			}
-			else {
-				eventType = $(this).parents('.type-groping').attr('id');
-				eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
-				$(this).siblings('.item').html(eventType);
-			}
 		});
 
 		//Create a filter when the "Add a filter" button is selected.

@@ -111,7 +111,17 @@ $(document).ready(function() {
 
 	$('.selector').click(function() {
 		$(this).toggleClass('active');
-		if ($('.selector').not('.active').length > 0) {
+		if ($(this).hasClass('active') && $(this).closest('.flex').siblings().children().length === 0) {
+			var eventType = $(this).parents('.type-grouping').attr('id');
+			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+			$(this).siblings('.item').html('All ' + eventType);
+		}
+		else {
+			var  eventType = $(this).parents('.type-grouping').attr('id');
+			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+			$(this).siblings('.item').html(eventType);
+		}
+		if ($('#event .selector').not('.active').length === 1 || $('.selector.active').length > 1) {
 			$('.filter-button').addClass('active');
 		}
 		else {
