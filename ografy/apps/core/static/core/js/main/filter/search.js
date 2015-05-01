@@ -7,8 +7,25 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 	//Bind an event listener that triggers when the initial dropdown changes.
 	//This listener will call the appropriate render function based on which option was selected.
 	function addDropdown(inputSelection) {
+		var eventDict = ['provider', 'signal', 'area', 'near', 'datetime', 'created', 'updated'];
+		var messageDict = eventDict.slice(0);
+		messageDict.push('message_to', 'message_from');
+		var playDict = eventDict.slice(0);
+		playDict.push('title');
+		var eventType = inputSelection.parent().attr('id');
+		var selectionDict;
+		if (eventType === 'event') {
+			selectionDict = eventDict;
+		}
+		else if (eventType === 'message') {
+			selectionDict = messageDict;
+		}
+		else if (eventType === 'play') {
+			selectionDict = playDict;
+		}
+
 		var newDropdown = nunjucks.render('search/initial_filter_dropdown.html', {
-			eventType: inputSelection.parent().attr('id')
+			selectionDict: selectionDict
 		});
 		$(inputSelection).find('.filter.box:last .filter.options').html(newDropdown);
 

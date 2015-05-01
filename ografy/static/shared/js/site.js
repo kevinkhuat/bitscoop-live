@@ -111,6 +111,7 @@ $(document).ready(function() {
 
 	$('.selector').click(function() {
 		$(this).toggleClass('active');
+		$(this).siblings('.item').toggleClass('active');
 		if ($(this).hasClass('active') && $(this).closest('.flex').siblings().children().length === 0) {
 			var eventType = $(this).parents('.type-grouping').attr('id');
 			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';

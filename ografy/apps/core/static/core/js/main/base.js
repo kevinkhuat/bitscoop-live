@@ -28,44 +28,51 @@ function baseView() {
 		var sidebar = $('.sidebar');
 
 		$('.list-view-button').click(function() {
+			var tempDeferred = $.Deferred();
 			urlParserInst.setView('list');
 			dataInst.setCurrentView(listViewInst);
 			if (!sidebar.hasClass('invisible')) {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 					function(e) {
-						listViewInst.renderBase(function() {
-							listViewInst.updateContent();
-						});
+						tempDeferred.resolve();
 					});
 			}
 			else {
+				tempDeferred.resolve();
+			}
+
+			$.when(tempDeferred).always(function() {
 				listViewInst.renderBase(function() {
 					listViewInst.updateContent();
 				});
-			}
+			});
+
 		});
 
 		//$('.timeline-view-button').click(function() {
 		//});
 
 		$('.map-view-button').click(function() {
+			tempDeferred = $.Deferred();
 			urlParserInst.setView('map');
 			dataInst.setCurrentView(mapViewInst);
 			if (!sidebar.hasClass('invisible')) {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-				function(e) {
-					mapViewInst.renderBase(function() {
-						mapViewInst.updateContent();
+					function(e) {
+						tempDeferred.resolve();
 					});
-				});
 			}
 			else {
+				tempDeferred.resolve();
+			}
+
+			$.when(tempDeferred).always(function() {
 				mapViewInst.renderBase(function() {
 					mapViewInst.updateContent();
 				});
-			}
+			});
 		});
 	}
 

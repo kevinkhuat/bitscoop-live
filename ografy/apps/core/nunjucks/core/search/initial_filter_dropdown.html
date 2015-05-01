@@ -1,17 +1,5 @@
 <select class="initial">
-	<option value="provider">Provider</option>
-	<option value="signal">Signal</option>
-	<option value="area">Area</option>
-	<option value="near">Near</option>
-	<option value="datetime">Date/Time</option>
-	<option value="created">Created</option>
-	<option value="updated">Updated</option>
-{#	<option value="time">Time</option>#}
-	{% if eventType == 'message' %}
-	<option value="to">To</option>
-	<option value="from">From</option>
-	{% endif %}
-	{% if eventType == 'play' %}
-	<option value="title">Title</option>
-	{% endif %}
+	{% for item in selectionDict %}
+	<option value="{{ item }}">{{ item }}</option>
+	{% endfor %}
 </select>
