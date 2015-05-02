@@ -1,4 +1,4 @@
-<div class="detail grow{% if showMap %} text-half {% else %} full {% endif %}">
+<div class="detail grow text-half">
 	<div id="detail-main-label" class="center main-label">
 		Select an Event
 	</div>
@@ -32,9 +32,15 @@
 </div>
 {% if showMap %}
 <div class="detail map-half grow hidden drawer map">
-	<i class="drawer-toggle map hidden icon-map2"></i>
+	<i class="drawer-toggle detail map hidden icon-map2"></i>
 	<div class="map container flex">
 		<div id='mapbox' class='grow'></div>
 	</div>
 </div>
 {% endif %}
+<div class="detail data-half grow hidden drawer detail-data flex">
+	<i class="drawer-toggle detail data hidden icon-bars2"></i>
+	<div id='detail-data-content' class="center content data-entries grow">
+		Select an Event
+	</div>
+</div>

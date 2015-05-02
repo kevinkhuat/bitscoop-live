@@ -31,11 +31,34 @@ function detailView(mapboxViewInst, dataInst) {
 		hideContent();
 
 		$('.map.drawer-toggle').click(function() {
+			if ($('.data-half').not('.hidden').length > 0) {
+				$('.data.drawer-toggle').toggleClass('hidden');
+				$('.data-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+						setHeight();
+					});
+			}
 			$('.map.drawer-toggle').toggleClass('hidden');
 			$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
 					$('.text-half').toggleClass('hidden');
 					map.invalidateSize();
+					setHeight();
+				});
+		});
+
+		$('.data.drawer-toggle').click(function() {
+			if ($('.map-half').not('.hidden').length > 0) {
+				$('.map.drawer-toggle').toggleClass('hidden');
+				$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+						setHeight();
+					});
+			}
+			$('.data.drawer-toggle').toggleClass('hidden');
+			$('.data-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					$('.text-half').toggleClass('hidden');
 					setHeight();
 				});
 		});
@@ -50,6 +73,8 @@ function detailView(mapboxViewInst, dataInst) {
 		var sidebar = $('.sidebar');
 		var dateTimeArray = [];
 		var eventSubtypeInstance;
+		var data_blob = event.data.data_blob.d;
+		var unpacked_data = '';
 
 		if ($('.detail-to-from').length !== 0) {
 			$('.detail-to-from').remove();
@@ -69,11 +94,39 @@ function detailView(mapboxViewInst, dataInst) {
 					setHeight();
 				});
 		}
+
 		dateTimeArray = event.datetime.split(',');
 		$('.detail .main-label').html(event.provider_name);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(String(event.location.coordinates));
+
+
+		$('.data-entries').html('Event Extra Data');
+		for (key in data_blob) {
+			var value = data_blob[key];
+			var formattedValue = '';
+
+			if (value instanceof Array) {
+				formattedValue = '[' + value + ']'
+			}
+			else if (value instanceof Object) {
+				formattedValue = '{';
+				for (innerKey in value) {
+					formattedValue += innerKey + ': ' + value[innerKey] + ', ';
+				}
+				formattedValue = formattedValue.trim();
+				formattedValue = formattedValue.substring(0, formattedValue.length-1) +  '}';
+			}
+			else {
+				formattedValue = value;
+			}
+			var newEntry = nunjucks.render('detail/data-entry.html', {
+				key: key,
+				value: formattedValue
+			});
+			$('.data-entries').append(newEntry);
+		}
 
 		if (event['_cls'] === 'Event.Message') {
 			var getSingleDocumentPromise = $.Deferred();
@@ -132,18 +185,26 @@ function detailView(mapboxViewInst, dataInst) {
 			$('.detail-data .content').html('');
 		}
 
-		if (!$('.detail').hasClass('full')) {
-			updateMap(event.provider_name, map, event.location.coordinates);
+		if ($('.map-half').length === 1) {
+			updateMap(event, map);
+		}
+
+		if (!(($('.sort')).hasClass('moved'))) {
+			$('.sort').toggleClass('moved');
 		}
 	}
 
 	//Insert default text into the detail content
 	function hideContent() {
 		$('.sidebar').addClass('invisible');
+		if (($('.sort')).hasClass('moved')) {
+			$('.sort').removeClass('moved');
+		}
 	}
 
 	//Update the map with a new event's information
-	function updateMap(eventName, map, coordinates) {
+	function updateMap(event, map) {
+		var coordinates = event.location.coordinates;
 		map.removeLayer(map.featureLayer);
 		//Create a MapBox GeoJSON element with the new information
 		map.featureLayer = L.mapbox.featureLayer({
@@ -157,7 +218,7 @@ function detailView(mapboxViewInst, dataInst) {
 				coordinates: coordinates
 			},
 			properties: {
-				title: eventName,
+				title: event.provider_name,
 				description: 'event',
 				// one can customize markers by adding simplestyle properties
 				// https://www.mapbox.com/guides/an-open-platform/#simplestyle

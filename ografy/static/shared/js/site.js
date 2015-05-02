@@ -151,9 +151,23 @@ function verifiedSignal(signal_id) {
 			'X-CSRFToken': getCookie('csrftoken')
 		}
 	}).done(function(data, xhr, response) {
-		console.log('pants');
 		window.location.pathname = data;
 	}).fail(function(data, xhr, response) {
 		console.log('fail');
+	});
+}
+
+function updateName (user) {
+	var data = {};
+	data.firstName = $('input[name="first_name"]')[0].value;
+	data.lastName = $('input[name="last_name"]')[0].value;
+	$.ajax({
+		url: '/user/' + user.id,
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
 	});
 }
