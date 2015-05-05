@@ -18,6 +18,32 @@ def get_query_string(kwargs={}):
     return '&'.join(params)
 
 
+def parse_query(query_params, expression_class, **kwargs):
+    query_filter = expression_class()
+
+    if 'filter' in query_params:
+        query = query_params['filter']
+        # add filter query
+        if 'filter' in query_params:
+            query = query_params['filter']
+            # add filter query
+            query_filter = query_filter & parse_filter(query, expression_class=expression_class)
+        if 'search' in query_params:
+            search = query_params['search']
+            # add search query
+            query_filter = query_filter & expression_class
+        if 'set' in query_params:
+            set = query_params['set']
+
+            query_filter = query_filter & expression_class().in_bulk(set)
+        if 'exclude' in query_params:
+            exclude = query_params['exclude']
+
+            query_filter = query_filter & expression_class().where('id is NOT exclude')
+
+    return query_filter
+
+
 def parse_filter(string, **kwargs):
     tokens = tokenize(string, **kwargs)
     # We want this as a dictionary so we can pass it around by reference.

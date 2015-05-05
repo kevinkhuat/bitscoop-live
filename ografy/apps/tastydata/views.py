@@ -9,7 +9,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 
 import ografy.apps.opi.serializers as opi_serializer
-from ografy.apps.tastydata import parse_filter
+from ografy.apps.tastydata import parse_query
 from ografy.apps.tastydata.pagination import OgrafyItemPagination
 
 
@@ -73,20 +73,7 @@ class APIView(BaseAPIView):
         # Transform the request query paramter filter into Q objects that can be used
         # by the django or mongoengine orm
         if hasattr(request, 'query_params'):
-            request.query_filter = self.Meta.Q()
-
-            if 'filter' in request.query_params:
-                query = request.query_params['filter']
-                # add filter query
-                request.query_filter = request.query_filter & parse_filter(query, expression_class=self.Meta.Q)
-            if 'search' in request.query_params:
-                query = request.query_params['search']
-                # add search query
-                # TODO: Add full text search hook for all text in DB
-            # else:
-            #     request.query_filter = self.Meta.Q()
-        else:
-            request.query_filter = self.Meta.Q()
+            request.query_filter =  parse_query(query_params=request.query_params, expression_class=self.Meta.Q)
 
         request.auth_filter = self.get_auth_from_request(request)
 
