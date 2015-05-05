@@ -708,6 +708,11 @@
 .icon-minus:before {
 	content: "\ea0b";
 }
+
+.icon-cancel-circle:before {
+	content: "\ea0d";
+}
+
 .icon-play2:before {
     content: "\ea15";
 }

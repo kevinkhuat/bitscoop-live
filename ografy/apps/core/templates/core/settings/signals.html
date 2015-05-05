@@ -4,29 +4,7 @@
 
 {% block static %}
 	{{ block.super }}
-	<style type="text/css">
-		.signal-toggle {
-			padding: 5px 0 5px 0;
-		}
-	</style>
-
 	<script type="application/javascript">
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
-				var cookies = document.cookie.split(';');
-				for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					// Does this cookie string begin with the name we want?
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
-				}
-			}
-			return cookieValue;
-		}
-
 		function disableSignal(signal_id) {
 			{#			FIXME: Make less crap#}
 			$.ajax({
@@ -68,12 +46,15 @@
 					<i class="icon-{{ signal.provider.backend_name }}"></i>
 					<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
 				</div>
-				<div class="toggle checkbox signal-enable-{{ signal.id }}">
-					<input type="checkbox">
-					<label></label>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
+					<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}" onclick="toggleSignal({{ signal.id }})">
+						<span class="onoffswitch-inner" ></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
 				</div>
-				<div onclick="deleteSignal({{ signal.id }})">
-					<i class="remove icon"></i>
+				<div class='delete-signal' onclick="deleteSignal({{ signal.id }})">
+					<i class="icon-cancel-circle"></i>
 					<label></label>
 				</div>
 			</div>
