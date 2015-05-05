@@ -883,6 +883,12 @@ div.table {
 	margin: 0 auto;
 }
 
+.button-red {
+	background-color: @red;
+	color: @white;
+	margin: 0 auto;
+}
+
 .premium-message {
 	background-color: @red;
 	color: @white !important;
@@ -1199,4 +1205,21 @@ i.step-icon {
 }
 .delete-signal.hover {
 	color: @red;
+}
+
+.delete-check {
+	text-align: center;
+	width: 6em;
+	float: right;
+	position: relative;
+	margin: 0 0 0 auto;
+}
+
+.delete-check.hidden {
+	display: none
+}
+
+.delete-confirm, .delete-cancel {
+	cursor: pointer;
+	margin: 0 0.2em;
 }

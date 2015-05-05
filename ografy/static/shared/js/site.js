@@ -130,6 +130,14 @@ $(document).ready(function() {
 			$('.filter-button').removeClass('active');
 		}
 	});
+
+	$('.delete-signal').click(function() {
+		$(this).parent().siblings('.delete-check').toggleClass('hidden');
+	});
+
+	$('.delete-cancel').click(function() {
+		$(this).parents('.delete-check').addClass('hidden');
+	});
 });
 
 function getCookie(name) {
