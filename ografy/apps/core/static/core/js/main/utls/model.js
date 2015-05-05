@@ -3,8 +3,14 @@ function dataStore(urlParserInst) {
 	//This is the CSRF token that is used to authenticate server requests
 	var cookie = sessionsCookies().getCsrfToken();
 
-	//This is the array of events that is returned from a search
-	var resultList = [];
+	var eventCache = {
+		events: {},
+		subtypes: {
+			messages: [],
+			plays: []
+		},
+		resultList: []
+	};
 
 	//Number of results from the search
 	var resultCount = 0;
@@ -20,57 +26,9 @@ function dataStore(urlParserInst) {
 	var resultCurrentStartIndex = 0;
 	var resultCurrentEndIndex = 0;
 
-	//This are dictionaries of the IDs of document types that have been obtained in previous searches
-	var dataIndex = {};
-	var eventIndex = {};
-	var messageIndex = {};
-	var playIndex = {};
-
-	var resultIndex = [];
-
-	//This are master lists of document types that have been obtained in previous searches
-	var eventList = [];
-
-	//This is the list of results in the current search that have not been obtained in previous searches
-	var newResults = [];
-
-	//This is the collection of HTML elements that are rendered from eventList
-	//Most of them will be set to invisible since only ones from the current search
-	//should be displayed.
-	var eventHTML = '';
-
 	var currentSort = '-datetime';
 
 	var currentViewInst = '';
-
-	//Data model
-	function getEventList() {
-		return eventList ;
-	}
-
-	function getDataIndex() {
-		return dataIndex;
-	}
-
-	function getEventIndex() {
-		return eventIndex;
-	}
-
-	function getMessageIndex() {
-		return messageIndex;
-	}
-
-	function getPlayIndex() {
-		return playIndex;
-	}
-
-	function getResultListSingle(id) {
-		for (var i in eventList) {
-			if (eventList[i].id === id) {
-				return eventList[i];
-			}
-		}
-	}
 
 	function getResultList() {
 		return resultList;
@@ -109,61 +67,36 @@ function dataStore(urlParserInst) {
 	}
 
 	function updateResults(documentType) {
-		newResults = [];
-		for (var item in resultList) {
-			var currentId = resultList[item].id;
+		//Check each item to see if it's been fetched already
+		//If not, add it to the cache
+		for (var item in eventCache.resultList) {
+			var currentItem = eventCache.resultList[item];
+			var currentId = currentItem.id;
 			var tempIndex;
 
-			if (documentType === 'data') {
-				tempIndex = dataIndex;
-			}
-			else if (documentType === 'event') {
-				tempIndex = eventIndex;
-				resultIndex.push(currentId);
-			}
-			else if (documentType === 'message') {
-				tempIndex = messageIndex;
-			}
-			else if (documentType === 'play') {
-				tempIndex = playIndex;
-			}
-
-			if (!(currentId in tempIndex)) {
-				newResults.push(resultList[item]);
-				if (!(currentId in eventIndex)) {
-					tempIndex[currentId] = true;
-					eventIndex[currentId] = eventList.length;
-					eventList.push(resultList[item]);
-				}
-				else {
-					eventList[eventIndex[currentId]] = resultList[item];
+			//If the search was for an event, just check if it's in the event cache and add it if it's not
+			if (documentType === 'event') {
+				if (!(currentId in eventCache.events)) {
+					eventCache.events[currentId] = currentItem;
 				}
 			}
-		}
-
-		var listItems = nunjucks.render('list/event_list.html',
-			{
-				eventList: newResults
-			});
-		$('#event-list').append(listItems);
-
-		currentEvents = $('#event-list *');
-		for (var index in eventList) {
-			var found = false;
-			var thisEvent = eventList[index];
-			var id = thisEvent.id;
-			for (var item in resultList) {
-				var thisItem = resultList[item];
-				if (id === thisItem.id) {
-					found = true;
+			//If the search was for a subtype, check if it was fetched as that subtype
+			//If not, then even if it was fetched as an Event, it needs to be overwritten to include the fields not
+			//present on its Event.
+			else {
+				//Check the subtype list to see if it was fetched as that subtype
+				if (documentType === 'message') {
+					tempIndex = eventCache.subtypes.messages;
 				}
-			}
+				else if (documentType === 'play') {
+					tempIndex = eventCache.subtypes.plays;
+				}
 
-			if (found === true) {
-				$('div[event-id=' + id + ']').addClass('active');
-			}
-			else if (found === false) {
-				$('div[event-id=' + id + ']').removeClass('active');
+				//If it wasn't fetched as that subtype, add it to the Event cache, overwriting anything that may be there
+				if (!(currentId in tempIndex)) {
+					tempIndex.push(currentId);
+					eventCache.events[currentId] = currentItem;
+				}
 			}
 		}
 	}
@@ -297,13 +230,12 @@ function dataStore(urlParserInst) {
 			resultPages = Math.ceil(resultCount / resultPageSize);
 			resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
 			resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
-			results = data.results;
-			for (var index in results) {
-				results[index].updated = new Date(results[index].updated).toLocaleString();
-				results[index].created = new Date(results[index].created).toLocaleString();
-				results[index].datetime = new Date(results[index].datetime).toLocaleString();
+			eventCache.resultList = data.results;
+			for (var index in eventCache.resultList) {
+				eventCache.resultList[index].updated = new Date(eventCache.resultList[index].updated).toLocaleString();
+				eventCache.resultList[index].created = new Date(eventCache.resultList[index].created).toLocaleString();
+				eventCache.resultList[index].datetime = new Date(eventCache.resultList[index].datetime).toLocaleString();
 			}
-			resultList = results;
 			updateResults(documentType);
 			createPageBar();
 			currentViewInst.updateContent();
@@ -322,35 +254,25 @@ function dataStore(urlParserInst) {
 		}).done(function(data, xhr, response) {
 			var newDocument = data;
 			var thisId = newDocument.id;
-			var thisIndex = eventIndex[thisId];
-			if (documentType === 'data') {
-				dataIndex[thisId] = true;
-			}
-			else if (documentType === 'message') {
-				messageIndex[thisId] = true;
+			if (documentType === 'message') {
+				eventCache.subtypes.messages.push(thisId);
 			}
 			else if (documentType === 'play') {
-				playIndex[thisId] = true;
+				eventCache.subtypes.plays.push(thisId);
 			}
-			eventList[thisIndex] = newDocument;
-			eventList[thisIndex].created = new Date(eventList[thisIndex].created).toLocaleString();
-			eventList[thisIndex].datetime = new Date(eventList[thisIndex].datetime).toLocaleString();
-			eventList[thisIndex].updated = new Date(eventList[thisIndex].updated).toLocaleString();
+			eventCache.events[thisId] = newDocument;
+			eventCache.events[thisId].created = new Date(eventCache.events[thisId].created).toLocaleString();
+			eventCache.events[thisId].datetime = new Date(eventCache.events[thisId].datetime).toLocaleString();
+			eventCache.events[thisId].updated = new Date(eventCache.events[thisId].updated).toLocaleString();
 			return promise.resolve();
 		});
 	}
 
 	return {
 		createPageBar: createPageBar,
+		eventCache: eventCache,
 		getCurrentView: getCurrentView,
-		getDataIndex: getDataIndex,
-		getEventIndex: getEventIndex,
-		getEventList: getEventList,
-		getMessageIndex: getMessageIndex,
-		getPlayIndex: getPlayIndex,
-		getResultListSingle: getResultListSingle,
 		getResultCount: getResultCount,
-		getResultList: getResultList,
 		getResultCurrentPage: getResultCurrentPage,
 		getResultCurrentStartIndex: getResultCurrentStartIndex,
 		getResultCurrentEndIndex: getResultCurrentEndIndex,

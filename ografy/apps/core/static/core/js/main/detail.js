@@ -131,7 +131,7 @@ function detailView(mapboxViewInst, dataInst) {
 		if (event['_cls'] === 'Event.Message') {
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
-			if (!(event['id'] in dataInst.getMessageIndex())) {
+			if (dataInst.eventCache.subtypes.messages.indexOf(event['id']) < 0) {
 				waitForPromise = true;
 				dataInst.getSingleDocument('message', event['id'], getSingleDocumentPromise);
 			}
@@ -141,7 +141,7 @@ function detailView(mapboxViewInst, dataInst) {
 			}
 
 			$.when(getSingleDocumentPromise).always(function() {
-				event = dataInst.getResultListSingle(event.id);
+				event = dataInst.eventCache.events[event['id']];
 				var detail_to_from = nunjucks.render('detail/to-from.html', {
 					event: {
 						message_to: event.message_to.toString().replace(/,/g, ', '),
@@ -160,7 +160,7 @@ function detailView(mapboxViewInst, dataInst) {
 		else if (event['_cls'] === 'Event.Play') {
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
-			if (!(event['id'] in dataInst.getPlayIndex())) {
+			if (dataInst.eventCache.subtypes.plays.indexOf(event['id']) < 0) {
 				waitForPromise = true;
 				dataInst.getSingleDocument('play', event['id'], getSingleDocumentPromise);
 			}
@@ -170,7 +170,7 @@ function detailView(mapboxViewInst, dataInst) {
 			}
 
 			$.when(getSingleDocumentPromise).always(function() {
-				event = dataInst.getResultListSingle(event.id);
+				event = dataInst.eventCache.events[event['id']];
 				var detail_title = nunjucks.render('detail/title.html', {
 					event: {
 						title: event.title
