@@ -23,9 +23,6 @@ function dataStore(urlParserInst) {
 		count: 0
 	}
 
-	var resultCurrentStartIndex = 0;
-	var resultCurrentEndIndex = 0;
-
 	var currentSort = '-datetime';
 
 	var currentViewInst = '';
@@ -79,8 +76,8 @@ function dataStore(urlParserInst) {
 			{
 				sort: {
 					total_results: resultCache.count,
-					start_index: resultCache.count > 0 ? resultCurrentStartIndex : 0,
-					end_index: resultCurrentEndIndex,
+					start_index: resultCache.count > 0 ? resultCache.page.start : 0,
+					end_index: resultCache.page.end,
 					mobile: (window.window.devicePixelRatio > 1.5)
 				}
 		});
@@ -201,8 +198,8 @@ function dataStore(urlParserInst) {
 			resultCache.count = data.count;
 			resultCache.page.max = data.page_size;
 			resultCache.page.total = Math.ceil(resultCache.count / resultCache.page.max);
-			resultCurrentStartIndex = ((resultCache.page.current - 1) * resultCache.page.max) + 1;
-			resultCurrentEndIndex = (resultCache.page.current * resultCache.page.max > resultCache.count) ? (resultCache.count) : (resultCache.page.current * resultCache.page.max);
+			resultCache.page.start = ((resultCache.page.current - 1) * resultCache.page.max) + 1;
+			resultCache.page.end = (resultCache.page.current * resultCache.page.max > resultCache.count) ? (resultCache.count) : (resultCache.page.current * resultCache.page.max);
 			resultCache.events = {};
 			for (item in results) {
 				var thisItem = results[item];
