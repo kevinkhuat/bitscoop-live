@@ -8,20 +8,20 @@ function dataStore(urlParserInst) {
 		subtypes: {
 			messages: [],
 			plays: []
-		},
-		resultList: []
+		}
 	};
 
-	//Number of results from the search
-	var resultCount = 0;
-
-	//Number of pages from the search
-	var resultPages = 0;
-
-	//Current page of results
-	var resultCurrentPage = 1;
-
-	var resultPageSize = 0;
+	var resultCache = {
+		events: {},
+		page: {
+			current: 1,
+			start: 0,
+			end: 0,
+			max: 0,
+			total: 0
+		},
+		count: 0
+	}
 
 	var resultCurrentStartIndex = 0;
 	var resultCurrentEndIndex = 0;
@@ -29,34 +29,6 @@ function dataStore(urlParserInst) {
 	var currentSort = '-datetime';
 
 	var currentViewInst = '';
-
-	function getResultList() {
-		return resultList;
-	}
-
-	function getResultCount() {
-		return resultCount;
-	}
-
-	function getResultCurrentPage() {
-		return resultCurrentPage;
-	}
-
-	function getResultTotalPages() {
-		return resultPages;
-	}
-
-	function getResultCurrentStartIndex() {
-		return resultCurrentStartIndex;
-	}
-
-	function getResultCurrentEndIndex() {
-		return resultCurrentEndIndex;
-	}
-
-	function setResultCurrentPage(page_num) {
-		resultCurrentPage = page_num;
-	}
 
 	function setCurrentView(inst) {
 		currentViewInst = inst;
@@ -69,8 +41,8 @@ function dataStore(urlParserInst) {
 	function updateResults(documentType) {
 		//Check each item to see if it's been fetched already
 		//If not, add it to the cache
-		for (var item in eventCache.resultList) {
-			var currentItem = eventCache.resultList[item];
+		for (var item in resultCache.events) {
+			var currentItem = resultCache.events[item];
 			var currentId = currentItem.id;
 			var tempIndex;
 
@@ -106,8 +78,8 @@ function dataStore(urlParserInst) {
 		var sortBar = nunjucks.render('search/sort.html',
 			{
 				sort: {
-					total_results: resultCount,
-					start_index: resultCount > 0 ? resultCurrentStartIndex : 0,
+					total_results: resultCache.count,
+					start_index: resultCache.count > 0 ? resultCurrentStartIndex : 0,
 					end_index: resultCurrentEndIndex,
 					mobile: (window.window.devicePixelRatio > 1.5)
 				}
@@ -131,11 +103,11 @@ function dataStore(urlParserInst) {
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
-				setResultCurrentPage(getResultCurrentPage() - 1);
-				if (getResultCurrentPage === 1) {
+				resultCache.page.current = resultCache.page.current - 1;
+				if (resultCache.page.current === 1) {
 					$('.previous-page').addClass('disabled');
 				}
-				if (getResultTotalPages() !== 1) {
+				if (resultCache.page.total !== 1) {
 					$('.next-page').removeClass('disabled');
 				}
 				search('event', urlParserInst.getSearchFilters(), currentSort);
@@ -152,11 +124,11 @@ function dataStore(urlParserInst) {
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
-				setResultCurrentPage(getResultCurrentPage() + 1);
-				if (getResultCurrentPage() === getResultTotalPages()) {
+				resultCache.page.current = resultCache.page.current + 1;
+				if (resultCache.page.current === resultCache.page.total) {
 					$('.next-page').addClass('disabled');
 				}
-				if (getResultTotalPages !== 1) {
+				if (resultCache.page.total !== 1) {
 					$('.previous-page').removeClass('disabled');
 				}
 				search('event', urlParserInst.getSearchFilters(), currentSort);
@@ -194,7 +166,7 @@ function dataStore(urlParserInst) {
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
-				setResultCurrentPage(1);
+				resultCache.page.current = 1;
 				//Change the current header's sort icon
 				//If it's currently sorting by something, sort by the other way
 				if (currentSort[0] === '-') {
@@ -215,7 +187,7 @@ function dataStore(urlParserInst) {
 
 	//Search for items in the database based on the search parameters and filters
 	function search(documentType, searchString, sortString) {
-		var url = 'opi/' + documentType + '?page=' + resultCurrentPage + '&ordering=' + sortString + '&filter=' + searchString;
+		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + sortString + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -225,16 +197,21 @@ function dataStore(urlParserInst) {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
-			resultCount = data.count;
-			resultPageSize = data.page_size;
-			resultPages = Math.ceil(resultCount / resultPageSize);
-			resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
-			resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
-			eventCache.resultList = data.results;
-			for (var index in eventCache.resultList) {
-				eventCache.resultList[index].updated = new Date(eventCache.resultList[index].updated).toLocaleString();
-				eventCache.resultList[index].created = new Date(eventCache.resultList[index].created).toLocaleString();
-				eventCache.resultList[index].datetime = new Date(eventCache.resultList[index].datetime).toLocaleString();
+			var results = data.results;
+			resultCache.count = data.count;
+			resultCache.page.max = data.page_size;
+			resultCache.page.total = Math.ceil(resultCache.count / resultCache.page.max);
+			resultCurrentStartIndex = ((resultCache.page.current - 1) * resultCache.page.max) + 1;
+			resultCurrentEndIndex = (resultCache.page.current * resultCache.page.max > resultCache.count) ? (resultCache.count) : (resultCache.page.current * resultCache.page.max);
+			resultCache.events = {};
+			for (item in results) {
+				var thisItem = results[item];
+				resultCache.events[thisItem.id] = thisItem;
+			}
+			for (var index in resultCache.events) {
+				resultCache.events[index].updated = new Date(resultCache.events[index].updated).toLocaleString();
+				resultCache.events[index].created = new Date(resultCache.events[index].created).toLocaleString();
+				resultCache.events[index].datetime = new Date(resultCache.events[index].datetime).toLocaleString();
 			}
 			updateResults(documentType);
 			createPageBar();
@@ -272,15 +249,10 @@ function dataStore(urlParserInst) {
 		createPageBar: createPageBar,
 		eventCache: eventCache,
 		getCurrentView: getCurrentView,
-		getResultCount: getResultCount,
-		getResultCurrentPage: getResultCurrentPage,
-		getResultCurrentStartIndex: getResultCurrentStartIndex,
-		getResultCurrentEndIndex: getResultCurrentEndIndex,
-		getResultTotalPages: getResultTotalPages,
 		getSingleDocument: getSingleDocument,
+		resultCache: resultCache,
 		search: search,
 		setCurrentView: setCurrentView,
-		setResultCurrentPage: setResultCurrentPage,
 		updateResults: updateResults
 	};
 }

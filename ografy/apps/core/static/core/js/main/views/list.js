@@ -32,7 +32,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 				if (window.window.devicePixelRatio > 1.5) {
 					$(this).removeClass('hover');
 				}
-				dataInst.setResultCurrentPage(1);
+				dataInst.resultCache.page.current = 1;
 				//Remove the sort icons from every other header, as we're only sorting by one field at a time for now
 				$(this).siblings().children().removeClass('icon-triangle-up').removeClass('icon-triangle-down');
 				var childIcon = $(this).children();
@@ -79,7 +79,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
 		var currentSort = urlParserInst.getSort();
-		var resultData = dataInst.eventCache.resultList;
+		var resultData = dataInst.resultCache.events;
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
 			resultData: resultData

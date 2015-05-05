@@ -45,7 +45,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
-		var newData = dataInst.eventCache.resultList;
+		var newData = dataInst.resultCache.events;
 
 		//Adds result data to a geoJSON layer
 		geoJSON = mapboxViewInst.addData(geoJSON, newData);
