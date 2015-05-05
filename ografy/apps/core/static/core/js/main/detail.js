@@ -31,11 +31,34 @@ function detailView(mapboxViewInst, dataInst) {
 		hideContent();
 
 		$('.map.drawer-toggle').click(function() {
+			if ($('.data-half').not('.hidden').length > 0) {
+				$('.data.drawer-toggle').toggleClass('hidden');
+				$('.data-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+						setHeight();
+					});
+			}
 			$('.map.drawer-toggle').toggleClass('hidden');
 			$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
 					$('.text-half').toggleClass('hidden');
 					map.invalidateSize();
+					setHeight();
+				});
+		});
+
+		$('.data.drawer-toggle').click(function() {
+			if ($('.map-half').not('.hidden').length > 0) {
+				$('.map.drawer-toggle').toggleClass('hidden');
+				$('.map-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+						setHeight();
+					});
+			}
+			$('.data.drawer-toggle').toggleClass('hidden');
+			$('.data-half').toggleClass('hidden').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+					$('.text-half').toggleClass('hidden');
 					setHeight();
 				});
 		});
@@ -50,7 +73,18 @@ function detailView(mapboxViewInst, dataInst) {
 		var sidebar = $('.sidebar');
 		var dateTimeArray = [];
 		var eventSubtypeInstance;
+		var data_blob = event.data.data_blob.d;
+		var unpacked_data = '';
 
+		if ($('.detail-to-from').length !== 0) {
+			$('.detail-to-from').remove();
+		}
+		if ($('.detail-play-title').length !== 0) {
+			$('.detail-play-title').remove();
+		}
+		if ($('.detail-message-body').length !== 0) {
+			$('.detail-message-body').remove();
+		}
 		if (sidebar.hasClass('invisible')) {
 			$('.sidebar').removeClass('invisible').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
@@ -60,43 +94,117 @@ function detailView(mapboxViewInst, dataInst) {
 					setHeight();
 				});
 		}
+
 		dateTimeArray = event.datetime.split(',');
 		$('.detail .main-label').html(event.provider_name);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
 		$('.detail-location .content').html(String(event.location.coordinates));
 
-		if (event['_cls'] === 'Event.Message') {
-			var detail_to_from = nunjucks.render('detail/to-from.html', {
-				'to': event['message_to'],
-				'from': event['message_from']
-			});
-			$('.detail-location').append(detail_to_from);
 
-			$('.detail-data label').html('Message Body');
-			$('.detail-data .content').html(event.message_body);
+		$('.data-entries').html('Event Extra Data');
+		for (key in data_blob) {
+			var value = data_blob[key];
+			var formattedValue = '';
+
+			if (value instanceof Array) {
+				formattedValue = '[' + value + ']'
+			}
+			else if (value instanceof Object) {
+				formattedValue = '{';
+				for (innerKey in value) {
+					formattedValue += innerKey + ': ' + value[innerKey] + ', ';
+				}
+				formattedValue = formattedValue.trim();
+				formattedValue = formattedValue.substring(0, formattedValue.length-1) +  '}';
+			}
+			else {
+				formattedValue = value;
+			}
+			var newEntry = nunjucks.render('detail/data-entry.html', {
+				key: key,
+				value: formattedValue
+			});
+			$('.data-entries').append(newEntry);
+		}
+
+		if (event['_cls'] === 'Event.Message') {
+			var getSingleDocumentPromise = $.Deferred();
+			var waitForPromise = false;
+			if (!(event['id'] in dataInst.getMessageIndex())) {
+				waitForPromise = true;
+				dataInst.getSingleDocument('message', event['id'], getSingleDocumentPromise);
+			}
+
+			if (!(waitForPromise)) {
+				getSingleDocumentPromise.resolve();
+			}
+
+			$.when(getSingleDocumentPromise).always(function() {
+				event = dataInst.getResultListSingle(event.id);
+				var detail_to_from = nunjucks.render('detail/to-from.html', {
+					event: {
+						message_to: event.message_to.toString().replace(/,/g, ', '),
+						message_from: event.message_from
+					}
+				});
+				var detail_message_body = nunjucks.render('detail/message-body.html', {
+					event: {
+						message_body: event.message_body
+					}
+				});
+				$('.detail-location').before(detail_to_from);
+				$('.detail-location').after(detail_message_body)
+			});
 		}
 		else if (event['_cls'] === 'Event.Play') {
-			$('.detail-data label').html('Title');
-			$('.detail-data .content').html(event.title);
+			var getSingleDocumentPromise = $.Deferred();
+			var waitForPromise = false;
+			if (!(event['id'] in dataInst.getPlayIndex())) {
+				waitForPromise = true;
+				dataInst.getSingleDocument('play', event['id'], getSingleDocumentPromise);
+			}
+
+			if (!(waitForPromise)) {
+				getSingleDocumentPromise.resolve();
+			}
+
+			$.when(getSingleDocumentPromise).always(function() {
+				event = dataInst.getResultListSingle(event.id);
+				var detail_title = nunjucks.render('detail/title.html', {
+					event: {
+						title: event.title
+					}
+				});
+
+				$('.detail-location').before(detail_title);
+			});
 		}
 		else {
 			$('.detail-data label').html('');
 			$('.detail-data .content').html('');
 		}
 
-		if (!$('.detail').hasClass('full')) {
-			updateMap(event.provider_name, map, event.location.coordinates);
+		if ($('.map-half').length === 1) {
+			updateMap(event, map);
+		}
+
+		if (!(($('.sort')).hasClass('moved'))) {
+			$('.sort').toggleClass('moved');
 		}
 	}
 
 	//Insert default text into the detail content
 	function hideContent() {
 		$('.sidebar').addClass('invisible');
+		if (($('.sort')).hasClass('moved')) {
+			$('.sort').removeClass('moved');
+		}
 	}
 
 	//Update the map with a new event's information
-	function updateMap(eventName, map, coordinates) {
+	function updateMap(event, map) {
+		var coordinates = event.location.coordinates;
 		map.removeLayer(map.featureLayer);
 		//Create a MapBox GeoJSON element with the new information
 		map.featureLayer = L.mapbox.featureLayer({
@@ -110,7 +218,7 @@ function detailView(mapboxViewInst, dataInst) {
 				coordinates: coordinates
 			},
 			properties: {
-				title: eventName,
+				title: event.provider_name,
 				description: 'event',
 				// one can customize markers by adding simplestyle properties
 				// https://www.mapbox.com/guides/an-open-platform/#simplestyle

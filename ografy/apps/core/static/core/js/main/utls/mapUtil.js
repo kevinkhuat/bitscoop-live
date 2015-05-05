@@ -17,7 +17,7 @@ function mapboxManager() {
 		//The instantiation of a map takes the DOM element where the map will be stored
 		//as a parameter, hence why the DOM element must exist before this function is called.
 		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {
-			zoomControl: false,
+			zoomControl: true,
 			//FIXME: This was added as a hack to work around a bug in Leaflet's clusterGroup.
 			//When reloading the map, at the highest zoom level (19), markers would no longer cluster.
 			//This would cause all markers at the same location to stack on top of each other.
@@ -30,15 +30,18 @@ function mapboxManager() {
 				// This option disables loading tiles outside of the world bounds.
 				noWrap: true
 			}
-		}).addControl(L.mapbox.geocoderControl('mapbox.places', {
-			autocomplete: true
-		}));
+		});
 
-		L.control.fullscreen().addTo(this.map);
+		if (enableExtraControls) {
+			L.mapbox.geocoderControl('mapbox.places', {
+				autocomplete: true
+			}).addTo(this.map);
+			L.control.fullscreen().addTo(this.map);
+		}
+
 		var mobileDisplay = ((window.innerWidth < 1080 && window.devicePixelRatio >= 1.5) || (window.devicePixelRatio >= 3));
 		if (!mobileDisplay) {
 			var map = this.map;
-			map.zoomslider = L.control.zoomslider().addTo(map);
 			map.featureGroup = L.featureGroup().addTo(map);
 
 			map.markerDrawControl = new L.Control.Draw({
@@ -112,6 +115,23 @@ function mapboxManager() {
 	function addData(geoJSON, newData) {
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in newData) {
+			var thisEvent = newData[index];
+			var markerSymbol;
+			var markerColor;
+
+			if (thisEvent['_cls'] === 'Event') {
+				markerColor = '#0052CE';
+				markerSymbol = 'star-stroked';
+			}
+			else if (thisEvent['_cls'] === 'Event.Message') {
+				markerColor = '#E6B800';
+				markerSymbol = 'post';
+			}
+			else if (thisEvent['_cls'] === 'Event.Play') {
+				markerColor = '#33CC33';
+				markerSymbol = 'music';
+			}
+
 			geoJSON.features.push({
 				// this feature is in the GeoJSON format: see geojson.org
 				// for the full specification
@@ -120,19 +140,19 @@ function mapboxManager() {
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: newData[index].location.coordinates
+					coordinates: thisEvent.location.coordinates
 				},
 				properties: {
-					title: newData[index].name,
-					description: newData[index].provider_name,
+					title: thisEvent.name,
+					description: thisEvent.provider_name,
 					// one can customize markers by adding simplestyle properties
 					// https://www.mapbox.com/guides/an-open-platform/#simplestyle
 					'marker-size': 'large',
-					'marker-color': '#BE9A6B',
-					'marker-symbol': 'post',
-					datetime: newData[index].datetime,
-					data: newData[index].data,
-					id: newData[index].id
+					'marker-color': markerColor,
+					'marker-symbol': markerSymbol,
+					datetime: thisEvent.datetime,
+					data: thisEvent.data,
+					id: thisEvent.id
 				}
 			});
 		}

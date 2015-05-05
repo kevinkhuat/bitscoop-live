@@ -90,9 +90,6 @@
 	-webkit-box-shadow: 0 0 1px 1px @black-translucent;
 	box-shadow: 0 0 1px 1px @black-translucent;
 	border-radius: 0 0 0.325em 0.325em;
-	-webkit-transition: opacity 0.2s ease;
-	-moz-transition: opacity 0.2s ease;
-	transition: opacity 0.2s ease;
 	z-index: 11;
 }
 select {
@@ -108,9 +105,9 @@ select {
 	}
 }
 .filter.box {
-	width: 95%;
+	width: 96%;
 	position: relative;
-	margin: 0 0 0 5%;
+	margin: 0 0 0 4%;
 }
 .filter.options {
 	float: left;
@@ -135,19 +132,19 @@ main {
 .sidebar {
 	color: @text-color;
 	position: relative;
-	height: 100%;
-	width: 100%;
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	transition: all 0.2s ease;
+	-webkit-transition: width 0.2s ease, height 0.2s ease;
+	-moz-transition: width 0.2s ease, height 0.2s ease;
+	transition: width 0.2s ease, height 0.2s ease;
 	@media (orientation: landscape) {
 		max-width: 400px;
+		width: 100%;
 		-webkit-flex-direction: column;
 		flex-direction: column;
 		border-left: 2px solid;
 	}
 	@media (orientation: portrait) {
 		max-height: 300px;
+		height: 100%;
 		-webkit-flex-direction: row;
 		flex-direction: row;
 		border-top: 2px solid;
@@ -225,6 +222,10 @@ main {
 			min-width: 80px;
 		}
 
+		.detail-to label{
+			border-right: 1px solid @foreground-color;
+		}
+
 		.information {
 			overflow-y: auto;
 			@media (orientation: portrait) {
@@ -235,43 +236,79 @@ main {
 	.detail.text-half {
 		position: relative;
 		background-color: @background-color;
-		@media (orientation: landscape) {
-			height: 50%;
-			width: 100%;
-		}
-		@media (orientation: portrait) {
-			height: 100%;
-			width: 50%
-		}
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%
+		//}
 	}
 	.detail.map-half {
-		position: relative;
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
-		@media (orientation: landscape) {
-			height: 50%;
-			width: 100%;
-		}
-		@media (orientation: portrait) {
-			height: 100%;
-			width: 50%;
-		}
+		flex-grow: 1;
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%;
+		//}
 	}
 	.detail.map-half.hidden {
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
+		flex-grow: 0.0001;
+		//@media (orientation: landscape) {
+		//	height: 0;
+		//	min-height: 0;
+		//}
+		//@media (orientation: portrait) {
+		//	width: 0;
+		//	min-width: 0;
+		//}
+	}
+	.detail.data-half {
+		background-color: @background-color;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+		flex-grow: 1;
 		@media (orientation: landscape) {
-			height: 0;
-			width: 100%;
-			min-height: 0;
+			border-top: 1px @text-color solid;
 		}
 		@media (orientation: portrait) {
-			height: 100%;
-			width: 0;
-			min-width: 0;
+			border-left: 1px @text-color solid;
 		}
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%;
+		//}
+	}
+	.detail.data-half.hidden {
+		background-color: @background-color;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+		flex-grow: 0.0001;
+		border-top: 0;
+		//@media (orientation: landscape) {
+		//	height: 0;
+		//	min-height: 0;
+		//}
+		//@media (orientation: portrait) {
+		//	width: 0;
+		//	min-width: 0;
+		//}
 	}
 	.detail.full {
 		background-color: @detail-background-color;
@@ -286,22 +323,25 @@ main {
 	}
 }
 
+.data-entries {
+	overflow-y: auto;
+}
+
 .sidebar.invisible {
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	transition: all 0.2s ease;
+	-webkit-transition: width 0.2s ease, height 0.2s ease;
+	-moz-transition: width 0.2s ease, height 0.2s ease;
+	transition: width 0.2s ease, height 0.2s ease;
 	@media (orientation: landscape) {
 		width: 0;
-		border-left: 0;
+		border: 0;
 		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 	@media (orientation: portrait) {
 		height: 0;
-		border-top: 0;
+		border: 0;
 		-webkit-flex-direction: row;
 		flex-direction: row;
-		visibility: hidden;
 	}
 }
 
@@ -447,14 +487,12 @@ main {
 	}
 }
 .main-list {
-	margin: 0 0 2.6em 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	@media @mobile-portrait {
 			font-size: 14px;
-			margin: 0 0 3.5em 0;
 	}
 }
 .main-list.shrunk {
@@ -474,6 +512,10 @@ main {
 	background-color: @pale-gray;
 	color: @text-color;
 	padding: 0.2em;
+	box-sizing: border-box;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 	& > * {
 		display: inline-block;
 	}
@@ -510,6 +552,20 @@ main {
 		}
 	}
 }
+.sort.moved {
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+	@media (orientation: landscape) {
+		left: 0.5em;
+		right: auto;
+		transition: all 0.2s ease;
+	}
+	@media (orientation: portrait) {
+		bottom: 300px;
+	}
+}
+
 .result {
 	transform: translateY(-35%);
 	@media @mobile {

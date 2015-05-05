@@ -93,6 +93,7 @@ $(document).ready(function() {
 		.add('.dropdown span')
 		.add('.list.item')
 		.add('.selector')
+		.add('.delete-signal')
 		.mouseenter(function() {
 			$(this).addClass('hover');
 		})
@@ -111,14 +112,49 @@ $(document).ready(function() {
 
 	$('.selector').click(function() {
 		$(this).toggleClass('active');
-		if ($('.selector').not('.active').length > 0) {
+		$(this).siblings('.item').toggleClass('active');
+		if ($(this).hasClass('active') && $(this).closest('.flex').siblings().children().length === 0) {
+			var eventType = $(this).parents('.type-grouping').attr('id');
+			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+			$(this).siblings('.item').html('All ' + eventType);
+		}
+		else {
+			var  eventType = $(this).parents('.type-grouping').attr('id');
+			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
+			$(this).siblings('.item').html(eventType);
+		}
+		if ($('#event .selector').not('.active').length === 1 || $('.selector.active').length > 1) {
 			$('.filter-button').addClass('active');
 		}
 		else {
 			$('.filter-button').removeClass('active');
 		}
 	});
+
+	$('.delete-signal').click(function() {
+		$(this).parent().siblings('.delete-check').toggleClass('hidden');
+	});
+
+	$('.delete-cancel').click(function() {
+		$(this).parents('.delete-check').addClass('hidden');
+	});
 });
+
+function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie != '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
 
 function verifiedSignal(signal_id) {
 	var data = {};
@@ -140,9 +176,115 @@ function verifiedSignal(signal_id) {
 			'X-CSRFToken': getCookie('csrftoken')
 		}
 	}).done(function(data, xhr, response) {
-		console.log('pants');
 		window.location.pathname = data;
 	}).fail(function(data, xhr, response) {
 		console.log('fail');
+	});
+}
+
+function updateName(user_id) {
+	var data = {};
+	data.first_name = $('input[name="first_name"]')[0].value;
+	data.last_name = $('input[name="last_name"]')[0].value;
+	$.ajax({
+		url: '/opi/user/' + user_id,
+		type: 'PATCH',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
+	});
+}
+
+function updateEmail(user_id) {
+	var data = {};
+	data.email = $('input[name="email"]')[0].value;
+	$.ajax({
+		url: '/opi/user/' + user_id,
+		type: 'PATCH',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
+	});
+}
+
+function updatePassword(user_id) {
+	var data = {};
+	data.password = $('input[name="new_password"]')[0].value;
+	$.ajax({
+		url: '/opi/user/' + user_id,
+		type: 'PATCH',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
+	});
+}
+
+function updateHandle(user_id) {
+	var data = {};
+	data.handle = $('input[name="handle"]')[0].value;
+	$.ajax({
+		url: '/opi/user/' + user_id,
+		type: 'PATCH',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
+	});
+}
+
+function toggleSignal(signal_id) {
+	var data = {};
+	data.enabled = !($('#onoffswitch-' + signal_id)[0].checked);
+	$.ajax({
+		url: '/opi/signal/' + signal_id,
+		type: 'PATCH',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
+	});
+}
+
+function deleteSignal(signal_id) {
+	$.ajax({
+		url: '/opi/signal/' + signal_id,
+		type: 'DELETE',
+		dataType: 'json',
+		data: data,
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		}
+	}).done(function(data, xhr, response) {
+		console.log('succeeded');
+	}).fail(function(data, xhr, response) {
+		console.log('failed');
 	});
 }

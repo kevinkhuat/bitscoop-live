@@ -153,11 +153,12 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	function setHeight() {
 		var parentHeight = $('.main-list').height();
 		var headerHeight = $('.list.title').height();
+		var sortHeight = $('.sort').outerHeight();
 		if (window.innerHeight < window.innerWidth) {
-			$('.list.content').height(parentHeight - headerHeight);
+			$('.list.content').height(parentHeight - headerHeight - sortHeight);
 		}
 		else {
-			$('.list.content').height($('.main-list').height());
+			$('.list.content').height($('.main-list').height() - sortHeight);
 		}
 	}
 

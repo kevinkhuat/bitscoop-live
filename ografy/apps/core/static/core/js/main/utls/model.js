@@ -112,31 +112,32 @@ function dataStore(urlParserInst) {
 		newResults = [];
 		for (var item in resultList) {
 			var currentId = resultList[item].id;
-			var tempList;
 			var tempIndex;
 
 			if (documentType === 'data') {
-				tempList = dataList;
 				tempIndex = dataIndex;
 			}
 			else if (documentType === 'event') {
-				tempList = eventList;
 				tempIndex = eventIndex;
 				resultIndex.push(currentId);
 			}
 			else if (documentType === 'message') {
-				tempList = messageList;
 				tempIndex = messageIndex;
 			}
 			else if (documentType === 'play') {
-				tempList = playList;
 				tempIndex = playIndex;
 			}
 
 			if (!(currentId in tempIndex)) {
 				newResults.push(resultList[item]);
-				tempIndex[currentId] = tempList.length;
-				tempList.push(resultList[item]);
+				if (!(currentId in eventIndex)) {
+					tempIndex[currentId] = true;
+					eventIndex[currentId] = eventList.length;
+					eventList.push(resultList[item]);
+				}
+				else {
+					eventList[eventIndex[currentId]] = resultList[item];
+				}
 			}
 		}
 
@@ -297,37 +298,15 @@ function dataStore(urlParserInst) {
 			resultCurrentStartIndex = ((resultCurrentPage - 1) * resultPageSize) + 1;
 			resultCurrentEndIndex = (resultCurrentPage * resultPageSize > resultCount) ? (resultCount) : (resultCurrentPage * resultPageSize);
 			results = data.results;
-			if (documentType === 'event') {
-				for (var index in results) {
-					results[index].updated = new Date(results[index].updated).toLocaleString();
-					results[index].created = new Date(results[index].created).toLocaleString();
-					results[index].datetime = new Date(results[index].datetime).toLocaleString();
-				}
+			for (var index in results) {
+				results[index].updated = new Date(results[index].updated).toLocaleString();
+				results[index].created = new Date(results[index].created).toLocaleString();
+				results[index].datetime = new Date(results[index].datetime).toLocaleString();
 			}
 			resultList = results;
 			updateResults(documentType);
 			createPageBar();
-			if (documentType === 'event') {
-				currentViewInst.updateContent();
-
-				for (var index in resultList) {
-					var currentIndex = resultList[index].id;
-					var thisData = resultList[index].data.id;
-					var url = 'opi/data/' + thisData;
-					$.ajax({
-						url: url,
-						type: 'GET',
-						dataType: 'json',
-						headers: {
-							'X-CSRFToken': cookie
-						}
-					}).done(function(data, xhr, response) {
-						data.updated = new Date(data.updated).toLocaleString();
-						data.created = new Date(data.created).toLocaleString();
-						eventList[eventIndex[currentIndex]].data_instance = data;
-					});
-				}
-			}
+			currentViewInst.updateContent();
 		});
 	}
 
@@ -342,18 +321,21 @@ function dataStore(urlParserInst) {
 			}
 		}).done(function(data, xhr, response) {
 			var newDocument = data;
+			var thisId = newDocument.id;
+			var thisIndex = eventIndex[thisId];
 			if (documentType === 'data') {
-				dataIndex[newDocument.id] = newDocument.event_id;
-				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+				dataIndex[thisId] = true;
 			}
 			else if (documentType === 'message') {
-				messageIndex[newDocument.id] = newDocument.event;
-				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+				messageIndex[thisId] = true;
 			}
 			else if (documentType === 'play') {
-				playIndex[newDocument.id] = newDocument.event;
-				eventList[eventIndex[newDocument.event.id]].subtypeInstance = newDocument;
+				playIndex[thisId] = true;
 			}
+			eventList[thisIndex] = newDocument;
+			eventList[thisIndex].created = new Date(eventList[thisIndex].created).toLocaleString();
+			eventList[thisIndex].datetime = new Date(eventList[thisIndex].datetime).toLocaleString();
+			eventList[thisIndex].updated = new Date(eventList[thisIndex].updated).toLocaleString();
 			return promise.resolve();
 		});
 	}

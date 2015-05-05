@@ -1,14 +1,14 @@
-<div id="detail-to-from" class="detail-to-from">
-	<div class="detail-to">
+<div id="detail-to-from" class="detail-to-from flex">
+	<div class="detail-to grow">
 		<label class="center label">To</label>
 		<div id="detail-to-content" class="center content">
-			{{ message_to }}
+			{{ event.message_to }}
 		</div>
 	</div>
-	<div class="detail-from">
-		<label class="center label">To</label>
+	<div class="detail-from grow">
+		<label class="center label">From</label>
 		<div id="detail-from-content" class="center content">
-			{{ message_from }}
+			{{ event.message_from }}
 		</div>
 	</div>
 </div>

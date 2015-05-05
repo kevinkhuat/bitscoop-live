@@ -740,7 +740,8 @@ class SignalSingleView(DjangoAPIView):
             request.data,
             context={
                 'request': request
-            }
+            },
+            partial=True
         )
         patch_signal.user = request.user
 
@@ -825,6 +826,13 @@ class UserSingleView(DjangoAPIView):
     serializer = opi_serializer.UserSerializer
     serializer_class = opi_serializer.UserSerializer
 
+    def delete(self, request, pk):
+        core_api.UserApi.delete(
+            request.auth_filter &
+            DjangoAPIView.Meta.Q(pk=pk)
+        )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def get(self, request, pk, format=None):
         get_query = core_api.UserApi.get(
             val=pk
@@ -832,6 +840,31 @@ class UserSingleView(DjangoAPIView):
         user_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             user_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
+    def patch(self, request, pk, format=None):
+        # TODO: Better user filter
+        patch_signal = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            },
+            partial=True
+        )
+        patch_signal.user = request.user
+
+        data = core_api.UserApi.patch(
+            val=pk,
+            data=patch_signal
+        )
+        serialized_response = self.serialize(
+            data,
             context={
                 'request': request,
                 'format': format
