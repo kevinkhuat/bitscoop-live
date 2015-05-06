@@ -202,12 +202,12 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				}
 
 				//Set the Query and Filters in the URL parser
-				urlParserInst.setSearchQuery($('.search-bar').val());
-				urlParserInst.setSearchFilters(filterString);
+				//urlParserInst.setSearchQuery($('.search-bar').val());
+				dataInst.state.query.event.searchString = filterString;
 
-				sort = urlParserInst.getSort();
 				//Perform a search based on the search terms and filters
-				dataInst.search(thisType.id, filterString, sort);
+				dataInst.search(thisType.id, filterString);
+				urlParserInst.updateHash();
 			}
 		}
 

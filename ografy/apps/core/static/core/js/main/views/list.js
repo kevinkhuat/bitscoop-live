@@ -52,12 +52,12 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 					searchSort = '+' + $(this)[0].id;
 				}
 
-				urlParserInst.setSort(searchSort);
+				dataInst.state.view.sort = searchSort;
 				urlParserInst.updateHash();
 				//Do a search with the new sort
 				//FIXME: calling the API for every new sorting request is not remotely ideal,
 				//so this needs to be changed at some point
-				dataInst.search('event', urlParserInst.getSearchFilters(), searchSort);
+				dataInst.search('event', dataInst.state.query.event.searchString);
 			});
 		renderContent(map, geoJSON);
 		callback();
@@ -78,7 +78,7 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	//Update the List View content
 	function updateContent() {
 		//Iterate through json and render list items using Nunjucks templates
-		var currentSort = urlParserInst.getSort();
+		var currentSort = dataInst.state.view.sort;
 		var resultData = dataInst.resultCache.events;
 		var listItems = nunjucks.render('list/list_elements.html',
 			{
