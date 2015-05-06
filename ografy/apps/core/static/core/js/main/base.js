@@ -3,14 +3,14 @@
 function baseView() {
 	//Instantiate instances of the views that the main page uses
 
+	//Data Instance
+	var dataInst = dataStore();
+
 	//URL Parser Instance
-	var urlParserInst = urlParser();
+	var urlParserInst = urlParser(dataInst);
 
 	//Mapbox handler
 	var mapboxViewInst = mapboxManager();
-
-	//Data Instance
-	var dataInst = dataStore(urlParserInst);
 
 	//View components
 	var detailViewInst = detailView(mapboxViewInst, dataInst);
@@ -29,8 +29,8 @@ function baseView() {
 
 		$('.list-view-button').click(function() {
 			var tempDeferred = $.Deferred();
-			urlParserInst.setView('list');
-			dataInst.setCurrentView(listViewInst);
+			dataInst.state.view.current = listViewInst;
+			dataInst.state.view.currentName = 'list';
 			if (!sidebar.hasClass('invisible')) {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
@@ -43,11 +43,11 @@ function baseView() {
 			}
 
 			$.when(tempDeferred).always(function() {
+				urlParserInst.updateHash();
 				listViewInst.renderBase(function() {
 					listViewInst.updateContent();
 				});
 			});
-
 		});
 
 		//$('.timeline-view-button').click(function() {
@@ -55,8 +55,8 @@ function baseView() {
 
 		$('.map-view-button').click(function() {
 			tempDeferred = $.Deferred();
-			urlParserInst.setView('map');
-			dataInst.setCurrentView(mapViewInst);
+			dataInst.state.view.current = mapViewInst;
+			dataInst.state.view.currentName = 'map';
 			if (!sidebar.hasClass('invisible')) {
 				detailViewInst.hideContent();
 				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
@@ -69,6 +69,7 @@ function baseView() {
 			}
 
 			$.when(tempDeferred).always(function() {
+				urlParserInst.updateHash();
 				mapViewInst.renderBase(function() {
 					mapViewInst.updateContent();
 				});
@@ -102,7 +103,9 @@ function baseView() {
 		//Get the intial search
 		var searchString = getInitialSearchString();
 
-		var sort = getInitialSort();
+		if (dataInst.state.view.sort.length === 0) {
+			dataInst.state.view.sort = '-datetime';
+		}
 
 		//Set the initial view
 		setInitialView();
@@ -119,10 +122,10 @@ function baseView() {
 			}
 		}).done(function(data, xhr, response) {
 			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
-			dataInst.getCurrentView().renderBase(function() {
+			dataInst.state.view.current.renderBase(function() {
 				console.log(searchString);
-				urlParserInst.setSearchFilters(searchString);
-				dataInst.search('event', searchString, sort);
+				dataInst.state.query.event.searchString = searchString;
+				dataInst.search('event', searchString);
 			});
 		});
 
@@ -135,7 +138,7 @@ function baseView() {
 
 	function getInitialSearchString() {
 		//Get filters from the URL parser
-		var searchString = urlParserInst.getSearchFilters();
+		var searchString = dataInst.state.query.event.searchString;
 
 		//If no search string was provided in the URL, use a default
 		if (searchString.length === 0) {
@@ -148,38 +151,29 @@ function baseView() {
 
 			//This is a temporary default search string, as searching by providers does work
 			searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+			dataInst.state.query.event.searchString = searchString;
 		}
 
 		return searchString;
 	}
 
-	function getInitialSort() {
-		var sort = urlParserInst.getSort();
-
-		if (sort.length === 0) {
-			sort = '-datetime';
-			urlParserInst.setSort(sort);
-		}
-
-		return sort;
-	}
-
 	function setInitialView() {
 		//Get the current view from the URL parser
-		var currentView = urlParserInst.getView();
+		var currentView = dataInst.state.view.currentName;
 
 		//When the page is first loaded, if a view is specified in the URL hash, set the page to that view
 		if (currentView === 'map') {
-			dataInst.setCurrentView(mapViewInst);
+			dataInst.state.view.current = mapViewInst;
 		}
 		else if (currentView === 'list') {
-			dataInst.setCurrentView(listViewInst);
+			dataInst.state.view.current = listViewInst;
 		}
 		//If no view is specified, default to map view and set the URL parser to that view
 		else {
-			urlParserInst.setView('map');
-			dataInst.setCurrentView(mapViewInst);
+			dataInst.state.view.current = mapViewInst;
+			dataInst.state.view.currentName = 'map';
 		}
+		urlParserInst.updateHash();
 	}
 
 	return {

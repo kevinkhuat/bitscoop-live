@@ -56,8 +56,8 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		//Create a new ClusterGroup for drawing lines or directions between markers
 		map.clusterGroup = new L.MarkerClusterGroup();
 
-		var currentFocus = urlParserInst.getFocus().slice();
-		var currentZoom = urlParserInst.getZoom();
+		var currentFocus = dataInst.state.view.map.focus.slice();
+		var currentZoom = dataInst.state.view.map.zoom;
 
 		//Logic for the focus and/or zoom being present in the URL
 		if (currentFocus.length !== 0 || currentZoom !== 0) {
@@ -67,14 +67,13 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 			}
 			//If the focus was entered but not the zoom, center on the focus and set zoom to 12
 			else if (currentFocus.length !== 0) {
-				urlParserInst.setZoom(12);
-				currentZoom = urlParserInst.getZoom();
+				dataInst.state.view.map.zoom = 12;
 				map.setView(currentFocus.reverse(), 12);
 			}
 			//If the zoom was entered but not the focus, get the user's location and center on them.
 			else {
-				urlParserInst.setFocus([parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())]);
-				currentFocus = urlParserInst.getFocus();
+				dataInst.state.view.map.focus = [parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())];
+				currentFocus = dataInst.state.view.map.focus;
 				map.setView(currentFocus.reverse(), currentZoom);
 			}
 		}
@@ -83,10 +82,8 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		else {
 			//Fit the map's view so that all of the items are visible
 			map.fitBounds(map.featureLayer.getBounds());
-			urlParserInst.setZoom(map.getZoom());
-			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
-			currentZoom = urlParserInst.getZoom();
-			currentFocus = urlParserInst.getFocus();
+			dataInst.state.view.map.zoom = map.getZoom();
+			dataInst.state.view.map.focus = [map.getCenter().lng, map.getCenter().lat];
 		}
 
 		//Update the URL hash
@@ -134,15 +131,13 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 		//Update the zoom both locally and in the hash when the user zooms in or out
 		map.on('zoomend', function() {
-			urlParserInst.setZoom(map.getZoom());
-			currentZoom = urlParserInst.getZoom();
+			dataInst.state.view.map.zoom = map.getZoom();
 			urlParserInst.updateHash();
 		});
 
 		//Update the focus both locally and in the hash when the user moves the map
 		map.on('moveend', function() {
-			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
-			currentFocus = urlParserInst.getFocus();
+			dataInst.state.view.map.focus = [map.getCenter().lng, map.getCenter().lat];
 			urlParserInst.updateHash();
 		});
 

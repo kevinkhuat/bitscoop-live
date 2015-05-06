@@ -1,5 +1,5 @@
 //View pertaining to obtaining and searching for data
-function dataStore(urlParserInst) {
+function dataStore() {
 	//This is the CSRF token that is used to authenticate server requests
 	var cookie = sessionsCookies().getCsrfToken();
 
@@ -23,17 +23,36 @@ function dataStore(urlParserInst) {
 		count: 0
 	}
 
-	var currentSort = '-datetime';
+	var state = {
+		view: {
+			current: '',
+			currentName: '',
+			map: {
+				zoom: 0,
+				focus: []
+			},
+			list: {
 
-	var currentViewInst = '';
-
-	function setCurrentView(inst) {
-		currentViewInst = inst;
-	}
-
-	function getCurrentView() {
-		return currentViewInst;
-	}
+			},
+			sort: '-datetime'
+		},
+		selected: {
+		},
+		query: {
+			event: {
+				enabled: true,
+				searchString: ''
+			},
+			message: {
+				enabled: true,
+				searchString: ''
+			},
+			play: {
+				enabled: true,
+				searchString: ''
+			}
+		}
+	};
 
 	function updateResults(documentType) {
 		//Check each item to see if it's been fetched already
@@ -71,7 +90,6 @@ function dataStore(urlParserInst) {
 	}
 
 	function createPageBar() {
-		var currentSort = urlParserInst.getSort();
 		var sortBar = nunjucks.render('search/sort.html',
 			{
 				sort: {
@@ -83,11 +101,11 @@ function dataStore(urlParserInst) {
 		});
 		$('.sort').html(sortBar);
 
-		if (currentSort.slice(0, 1) === '+') {
-			$('.sort .menu').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-up');
+		if (state.view.sort.slice(0, 1) === '+') {
+			$('.sort .menu').find('#' + state.view.sort.slice(1)).find('i').attr('class', 'icon-triangle-up');
 		}
 		else {
-			$('.sort .menu').find('#' + currentSort.slice(1)).find('i').attr('class', 'icon-triangle-down');
+			$('.sort .menu').find('#' + state.view.sort.slice(1)).find('i').attr('class', 'icon-triangle-down');
 		}
 		$('.previous-page').not('.disabled')
 			.mouseenter(function() {
@@ -107,7 +125,7 @@ function dataStore(urlParserInst) {
 				if (resultCache.page.total !== 1) {
 					$('.next-page').removeClass('disabled');
 				}
-				search('event', urlParserInst.getSearchFilters(), currentSort);
+				search('event', state.query.event.searchString);
 			});
 
 		$('.next-page').not('.disabled')
@@ -128,7 +146,7 @@ function dataStore(urlParserInst) {
 				if (resultCache.page.total !== 1) {
 					$('.previous-page').removeClass('disabled');
 				}
-				search('event', urlParserInst.getSearchFilters(), currentSort);
+				search('event', state.query.event.searchString);
 			});
 
 		$('.sort-button')
@@ -166,25 +184,24 @@ function dataStore(urlParserInst) {
 				resultCache.page.current = 1;
 				//Change the current header's sort icon
 				//If it's currently sorting by something, sort by the other way
-				if (currentSort[0] === '-') {
+				if (state.view.sort[0] === '-') {
 					searchSort = '+' + $(this)[0].id;
 				}
-				else if (currentSort[0] === '+') {
+				else if (state.view.sort[0] === '+') {
 					searchSort = '-' + $(this)[0].id;
 				}
 
-				urlParserInst.setSort(searchSort);
-				urlParserInst.updateHash();
+				state.view.sort = searchSort;
 				//Do a search with the new sort
 				//FIXME: calling the API for every new sorting request is not remotely ideal,
 				//so this needs to be changed at some point
-				search('event', urlParserInst.getSearchFilters(), urlParserInst.getSort());
+				search('event', state.query.event.searchString);
 			});
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(documentType, searchString, sortString) {
-		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + sortString + '&filter=' + searchString;
+	function search(documentType, searchString) {
+		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + state.view.sort + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
 			url: url,
@@ -212,7 +229,7 @@ function dataStore(urlParserInst) {
 			}
 			updateResults(documentType);
 			createPageBar();
-			currentViewInst.updateContent();
+			state.view.current.updateContent();
 		});
 	}
 
@@ -245,11 +262,10 @@ function dataStore(urlParserInst) {
 	return {
 		createPageBar: createPageBar,
 		eventCache: eventCache,
-		getCurrentView: getCurrentView,
 		getSingleDocument: getSingleDocument,
 		resultCache: resultCache,
 		search: search,
-		setCurrentView: setCurrentView,
+		state: state,
 		updateResults: updateResults
 	};
 }

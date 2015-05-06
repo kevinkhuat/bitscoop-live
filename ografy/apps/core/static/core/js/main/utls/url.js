@@ -1,4 +1,4 @@
-function urlParser() {
+function urlParser(dataInst) {
 	var urlHash = '';
 
 	//Variables for parsing the map's focus
@@ -56,6 +56,7 @@ function urlParser() {
 			focusRegexResult = '';
 			currentFocus = [];
 		}
+		dataInst.state.view.map.focus = currentFocus;
 
 		//Test if the map zoom pattern returns any results.  If yes, then parse out the relevant data.
 		//If no, then set the zoom to a blank string.
@@ -69,6 +70,7 @@ function urlParser() {
 			zoomRegexResult = '';
 			currentZoom = 0;
 		}
+		dataInst.state.view.map.zoom = currentZoom;
 
 		//Test if the list sort pattern returns any results.  If yes, then parse out the relevant data.
 		//If no, then set the sort to a blank string.
@@ -81,6 +83,7 @@ function urlParser() {
 			sortRegexResult = '';
 			currentSort = '';
 		}
+		dataInst.state.view.sort = currentSort;
 
 		//Test if the current view pattern returns any results.  If yes, then parse out the relevant data.
 		//If no, then set the view to a blank string.
@@ -94,6 +97,7 @@ function urlParser() {
 			viewRegexResult = '';
 			currentView = '';
 		}
+		dataInst.state.view.currentName = currentView;
 
 		//Test if the current filters pattern returns any results.  If yes, then parse out the relevant data.
 		//If no, then set the filters to a blank string.
@@ -107,6 +111,7 @@ function urlParser() {
 			filtersRegexResult = '';
 			currentFilters = '';
 		}
+		dataInst.state.query.event.searchString = currentFilters;
 
 		//Test if the current query pattern returns any results.  If yes, then parse out the relevant data.
 		//If no, then set the query to a blank string.
@@ -122,77 +127,21 @@ function urlParser() {
 		}
 	}
 
-	//Functions to get and set the specified variables
-	function getFocus() {
-		return currentFocus;
-	}
-
-	function getZoom() {
-		return currentZoom;
-	}
-
-	function getSort() {
-		return currentSort;
-	}
-
-	function getView() {
-		return currentView;
-	}
-
-	function getSearchFilters() {
-		return currentFilters;
-	}
-
-	function getSearchQuery() {
-		return currentQuery;
-	}
-
-	function setFocus(input) {
-		currentFocus = input;
-	}
-
-	function setZoom(input) {
-		currentZoom = input;
-	}
-
-	function setSort(input) {
-		currentSort = input;
-	}
-
-	function setView(input) {
-		currentView = input;
-		updateHash();
-	}
-
-	function setSearchFilters(input) {
-		currentFilters = input;
-	}
-
-	function setSearchQuery(input) {
-		currentQuery = input;
-	}
-
 	//Update the URL hash with whatever the current properties are.  E.g. as the user moves the map around, the URL
 	//has its focus coordinates updated as well, or a new search puts that search's filters and query into the URL
 	function updateHash() {
-		encodedFilters = encodeURI(getSearchFilters());
-		var urlString = 'view=' + currentView + '&sort=' + currentSort + '&zoom=' + currentZoom + '&focus=' + currentFocus[0] + ',' + currentFocus[1] + '&filters=' + encodedFilters;
+		encodedFilters = encodeURI(dataInst.state.query.event.searchString);
+		var urlString =
+			'view=' + dataInst.state.view.currentName +
+			'&sort=' + dataInst.state.view.sort +
+			'&zoom=' + dataInst.state.view.map.zoom +
+			'&focus=' + dataInst.state.view.map.focus[0] + ',' + dataInst.state.view.map.focus[1] +
+			'&filters=' + encodedFilters;
+
 		window.location.hash = urlString;
 	}
 
 	return {
-		getFocus: getFocus,
-		getZoom: getZoom,
-		getSort: getSort,
-		getView: getView,
-		getSearchFilters: getSearchFilters,
-		getSearchQuery: getSearchQuery,
-		setFocus: setFocus,
-		setZoom: setZoom,
-		setSort: setSort,
-		setView: setView,
-		setSearchFilters: setSearchFilters,
-		setSearchQuery: setSearchQuery,
 		retrieveHash: retrieveHash,
 		updateHash: updateHash
 	};
