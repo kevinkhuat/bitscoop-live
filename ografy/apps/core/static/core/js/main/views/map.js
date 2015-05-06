@@ -45,7 +45,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
-		var newData = dataInst.getResultList();
+		var newData = dataInst.resultCache.events;
 
 		//Adds result data to a geoJSON layer
 		geoJSON = mapboxViewInst.addData(geoJSON, newData);
@@ -159,7 +159,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
 			var feature = e.layer.feature;
-			var event = dataInst.getResultListSingle(feature.properties.id);
+			var event = dataInst.eventCache.events[feature.properties.id];
 
 			//Reset all markers back to their original color.
 			resetColors(map);

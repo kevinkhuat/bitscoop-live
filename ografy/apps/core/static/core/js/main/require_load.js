@@ -14,7 +14,6 @@ requirejs.config({
 				'main/utls/model',
 				'main/utls/mapUtil',
 				'main/utls/session',
-				'main/utls/sortBar',
 				'main/views/list',
 				'main/filter/search'
 			]
@@ -48,7 +47,6 @@ requirejs([
 		'main/utls/mapUtil',
 		'main/utls/model',
 		'main/utls/session',
-		'main/utls/sortBar',
 		'main/utls/url',
 		'main/detail',
 		'main/views/list',
