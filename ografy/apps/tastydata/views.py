@@ -8,9 +8,56 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 
-import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.tastydata import parse_query
 from ografy.apps.tastydata.pagination import OgrafyItemPagination
+
+
+def parse_extended_query(query_params, queryset):
+
+    if 'clone' in query_params:
+        queryset = queryset.clone()
+
+    elif 'clone_into' in query_params:
+        queryset = queryset.clone_into(query_params['clone_into'])
+
+    else:
+        if 'only' in query_params:
+            # TODO: loop through list to make work for multiple fields
+            queryset = queryset.only(query_params['only'])
+
+        if 'exclude' in query_params:
+            # TODO: loop through list to make work for multiple fields
+            queryset = queryset.exclude(query_params['exclude'])
+
+        if 'distinct' in query_params:
+            # TODO: loop through list to make work for multiple fields
+            queryset = queryset.distinct(query_params['distinct'])
+
+        if 'hint' in query_params:
+            queryset = queryset.distinct(query_params['hint'])
+
+        if 'limit' in query_params:
+            queryset = queryset.limit(query_params['limit'])
+
+        if 'skip' in query_params:
+            queryset = queryset.limit(query_params['skip'])
+
+        if 'max_time_ms' in query_params:
+            queryset = queryset.max_time_ms(query_params['max_time_ms'])
+
+        if 'count' in query_params:
+            queryset = queryset.count()
+
+        elif 'average' in query_params:
+            queryset = queryset.average(query_params['average'])
+
+        elif 'sum' in query_params:
+            queryset = queryset.sum(query_params['sum'])
+
+        elif 'first' in query_params:
+            queryset = queryset.first()
+
+    return queryset
 
 
 class ListMixin(object):
@@ -72,8 +119,7 @@ class APIView(BaseAPIView):
 
         # Transform the request query paramter filter into Q objects that can be used
         # by the django or mongoengine orm
-        if hasattr(request, 'query_params'):
-            request.query_filter =  parse_query(query_params=request.query_params, expression_class=self.Meta.Q)
+        request.query_filter = parse_query(query_params=request.query_params, expression_class=self.Meta.Q)
 
         request.auth_filter = self.get_auth_from_request(request)
 
@@ -97,6 +143,11 @@ class DjangoAPIListView(DjangoAPIView, OPIListView):
 
 class MongoAPIView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+
+        # self.queryset = parse_extended_query(query_params=request.query_params, queryset=APIView.queryset)
 
     class Meta:
         Q = Mongo_Q
