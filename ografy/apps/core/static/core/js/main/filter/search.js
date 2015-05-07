@@ -134,7 +134,7 @@ function searchView(dataInst, urlParserInst) {
 		if ($(currentButton).parents('.filters').children().length === 1 && $(currentButton).parents('.filters').siblings().find('.active').length !== 0) {
 			eventType = $(currentButton).parents('.type-grouping').attr('id');
 			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
-			$(currentButton).parents('.filters').siblings().find('.item').html('All ' + eventType)
+			$(currentButton).parents('.filters').siblings().find('.item').html('All ' + eventType);
 		}
 		$(currentButton).parents('.filter.box').remove();
 		checkDrawDisplay();

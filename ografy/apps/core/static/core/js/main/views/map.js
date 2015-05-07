@@ -159,7 +159,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		var thisMarker;
 		var event;
 
-		for (layer in layers) {
+		for (var layer in layers) {
 			if (layers[layer].feature !== undefined) {
 				if (layers[layer].feature.properties.id === id) {
 					feature = layers[layer].feature;

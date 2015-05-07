@@ -21,7 +21,7 @@ function dataStore() {
 			total: 0
 		},
 		count: 0
-	}
+	};
 
 	var state = {
 		view: {
@@ -97,8 +97,8 @@ function dataStore() {
 	}
 
 	function highlight(eventActive) {
-		for (item in state.view.instances) {
-			for (event in state.selected) {
+		for (var item in state.view.instances) {
+			for (var event in state.selected) {
 				state.view.instances[item].highlight(event, eventActive);
 			}
 		}
@@ -236,7 +236,7 @@ function dataStore() {
 			resultCache.page.start = ((resultCache.page.current - 1) * resultCache.page.max) + 1;
 			resultCache.page.end = (resultCache.page.current * resultCache.page.max > resultCache.count) ? (resultCache.count) : (resultCache.page.current * resultCache.page.max);
 			resultCache.events = {};
-			for (item in results) {
+			for (var item in results) {
 				var thisItem = results[item];
 				resultCache.events[thisItem.id] = thisItem;
 			}
@@ -248,7 +248,7 @@ function dataStore() {
 			updateResults(documentType);
 			createPageBar();
 
-			for (item in state.view.instances) {
+			for (var item in state.view.instances) {
 				if (state.view.instances[item] !== null)
 				{
 					state.view.instances[item].updateContent();
