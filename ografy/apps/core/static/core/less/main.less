@@ -412,8 +412,20 @@ main {
 	color: @white;
 	background-color: @red;
 }
-.data-view {
+.map-view, .list-view {
 	position: relative;
+	-webkit-flex: 1;
+	flex: 1;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}
+.map-view.hidden, .list-view.hidden {
+	-webkit-flex: 0;
+	flex: 0;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 }
 .leaflet-control-mapbox-geocoder-form {
 	input {

@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, mapboxViewInst, urlParserInst) {
+function searchView(dataInst, urlParserInst) {
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its

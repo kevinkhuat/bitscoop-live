@@ -16,64 +16,37 @@ function baseView() {
 	var detailViewInst = detailView(mapboxViewInst, dataInst);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst);
+	var listViewInst = listView(detailViewInst, dataInst, urlParserInst);
 	var mapViewInst = mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst);
 
+	dataInst.state.view.instances.list = listViewInst;
+	dataInst.state.view.instances.map = mapViewInst;
+
 	//Search components
-	var searchViewInst = searchView(dataInst, mapboxViewInst, urlParserInst);
+	var searchViewInst = searchView(dataInst, urlParserInst);
 	searchViewInst.bindEvents();
 
 	//Bind event listeners for switching between the different page views
 	function bindNavigation() {
 		var sidebar = $('.sidebar');
 
-		$('.list-view-button').click(function() {
-			var tempDeferred = $.Deferred();
-			dataInst.state.view.current = listViewInst;
-			dataInst.state.view.currentName = 'list';
-			if (!sidebar.hasClass('invisible')) {
-				detailViewInst.hideContent();
-				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-					function(e) {
-						tempDeferred.resolve();
-					});
+		$('.view-button').click(function() {
+			var viewType = $(this).attr('id').slice(12);
+			if (dataInst.state.view.active[viewType] === true) {
+				if (dataInst.state.view.active.count > 1) {
+					$(this).removeClass('active').removeClass('hover');
+					$('.' + viewType + '-view').addClass('hidden');
+					dataInst.state.view.active[viewType] = false;
+					dataInst.state.view.active.count-=1;
+				}
 			}
 			else {
-				tempDeferred.resolve();
+				$(this).addClass('active').removeClass('hover');
+				$('.' + viewType + '-view').removeClass('hidden');
+				dataInst.state.view.active[viewType] = true;
+				dataInst.state.view.active.count+=1;
 			}
-
-			$.when(tempDeferred).always(function() {
-				urlParserInst.updateHash();
-				listViewInst.renderBase(function() {
-					listViewInst.updateContent();
-				});
-			});
-		});
-
-		//$('.timeline-view-button').click(function() {
-		//});
-
-		$('.map-view-button').click(function() {
-			tempDeferred = $.Deferred();
-			dataInst.state.view.current = mapViewInst;
-			dataInst.state.view.currentName = 'map';
-			if (!sidebar.hasClass('invisible')) {
-				detailViewInst.hideContent();
-				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-					function(e) {
-						tempDeferred.resolve();
-					});
-			}
-			else {
-				tempDeferred.resolve();
-			}
-
-			$.when(tempDeferred).always(function() {
-				urlParserInst.updateHash();
-				mapViewInst.renderBase(function() {
-					mapViewInst.updateContent();
-				});
-			});
+			mapboxViewInst.map.invalidateSize();
 		});
 	}
 
@@ -121,10 +94,13 @@ function baseView() {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
+			var mapPromise = $.Deferred();
+			var listPromise = $.Deferred();
 			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
-			dataInst.state.view.current.renderBase(function() {
-				console.log(searchString);
-				dataInst.state.query.event.searchString = searchString;
+			mapViewInst.renderContent(mapPromise);
+			listViewInst.renderContent(listPromise);
+			detailViewInst.renderContent(false);
+			$.when(mapPromise && listPromise).always(function() {
 				dataInst.search('event', searchString);
 			});
 		});
@@ -159,20 +135,8 @@ function baseView() {
 
 	function setInitialView() {
 		//Get the current view from the URL parser
-		var currentView = dataInst.state.view.currentName;
+		var views = dataInst.state.view.active;
 
-		//When the page is first loaded, if a view is specified in the URL hash, set the page to that view
-		if (currentView === 'map') {
-			dataInst.state.view.current = mapViewInst;
-		}
-		else if (currentView === 'list') {
-			dataInst.state.view.current = listViewInst;
-		}
-		//If no view is specified, default to map view and set the URL parser to that view
-		else {
-			dataInst.state.view.current = mapViewInst;
-			dataInst.state.view.currentName = 'map';
-		}
 		urlParserInst.updateHash();
 	}
 
