@@ -4,20 +4,11 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	var map = 'pants';
 	var geoJSON = 'shorts';
 
-	//Render the base framework of the Map View
-	function renderBase(callback) {
-		//Render the map content
-		renderContent(callback);
-
-		//Render the detail panel content without a map
-		detailViewInst.renderContent(false);
-	}
-
 	//Render the map content
-	function renderContent(callback) {
+	function renderContent(promise) {
 		//Render the container for the map using Nunjucks and insert it into the DOM
 		var map_framework = nunjucks.render('map/map.html');
-		$('.data-view').html(map_framework);
+		$('.map-view').html(map_framework);
 
 		//Create a MapBox map.
 		//This needs to be done after the map container has been inserted into the DOM
@@ -26,7 +17,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		mapboxViewInst.initializeMap(true);
 		map = mapboxViewInst.map;
 		geoJSON = mapboxViewInst.geoJSON;
-		callback();
+		promise.resolve();
 	}
 
 	//Creates a new layer of markers on the map
@@ -54,7 +45,9 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		map.featureLayer = L.mapbox.featureLayer(geoJSON);
 
 		//Create a new ClusterGroup for drawing lines or directions between markers
-		map.clusterGroup = new L.MarkerClusterGroup();
+		map.clusterGroup = new L.MarkerClusterGroup({
+			maxClusterRadius: 10
+		});
 
 		var currentFocus = dataInst.state.view.map.focus.slice();
 		var currentZoom = dataInst.state.view.map.zoom;
@@ -143,7 +136,7 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 		//When the user clicks anywhere, change all markers back to the default color
 		map.on('click', function(e) {
-			resetColors(map);
+			dataInst.highlight(false);
 			//Populate the detail panel content with information from the selected item.
 			detailViewInst.hideContent();
 		});
@@ -153,23 +146,52 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 		//The selected marker will also change color.
 		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
-			var feature = e.layer.feature;
-			var event = dataInst.eventCache.events[feature.properties.id];
-
-			//Reset all markers back to their original color.
-			resetColors(map);
-
-			//Change the color of the selected marker
-			feature.properties['old-color'] = feature.properties['marker-color'];
-			feature.properties['marker-color'] = '#ff8888';
-			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
-
-			//Populate the detail panel content with information from the selected item.
-
-			detailViewInst.updateContent(event);
+			dataInst.state.selected = {};
+			dataInst.state.selected[e.layer.feature.properties.id] = true;
+			dataInst.highlight(true);
 		});
 	}
 
+	function highlight(id, eventActive) {
+		var feature;
+		var layers = map.featureLayer._layers;
+		var thisLayer;
+		var thisMarker;
+		var event;
+
+		for (var layer in layers) {
+			if (layers[layer].feature !== undefined) {
+				if (layers[layer].feature.properties.id === id) {
+					feature = layers[layer].feature;
+					thisLayer = layer;
+				}
+			}
+		}
+
+		event = dataInst.eventCache.events[feature.properties.id];
+		thisMarker = map.featureLayer._layers[thisLayer];
+
+		//Reset all markers back to their original color.
+		resetColors(map);
+
+		if (eventActive) {
+			//Change the color of the selected marker
+			feature.properties['old-color'] = feature.properties['marker-color'];
+			feature.properties['marker-color'] = '#ff8888';
+			thisMarker.setIcon(L.mapbox.marker.icon(feature.properties));
+			thisMarker.__parent.spiderfy();
+			thisMarker.openPopup();
+		}
+		else {
+			thisMarker.__parent.unspiderfy();
+		}
+
+		//Populate the detail panel content with information from the selected item.
+
+		dataInst.state.view.map.focus = feature.geometry.coordinates;
+		map.setView(dataInst.state.view.map.focus.slice().reverse(), dataInst.state.view.map.zoom);
+		detailViewInst.updateContent(event);
+	}
 	//Resets the color of every marker back to default
 	function resetColors(map) {
 		var clusterMarkers = map.clusterGroup.getLayers();
@@ -178,12 +200,13 @@ function mapView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 			thisMarker.feature.properties['marker-color'] = thisMarker.feature.properties['old-color'] || thisMarker.feature.properties['marker-color'];
 			thisMarker.setIcon(L.mapbox.marker.icon(thisMarker.feature.properties));
+			thisMarker.closePopup();
 		}
 	}
 
 
 	return {
-		renderBase: renderBase,
+		highlight: highlight,
 		renderContent: renderContent,
 		updateContent: updateContent
 	};

@@ -1,18 +1,15 @@
 //Render the List View on the main page
-function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
+function listView(detailViewInst, dataInst, urlParserInst) {
 	var contentHeight = 0;
 	//Render the base framework of the List View
-	function renderBase(callback) {
+	function renderContent(promise) {
 		//Render the list title and the container for the list elements using Nunjucks
 		//and insert them into the DOM
 		var list = nunjucks.render('list/list.html');
-		$('.data-view').html(list);
+		$('.list-view').html(list);
 
-		//Create an instance of the Detail panel, get the map and geoJSON properties it created,
-		//then render the List View's content.
-		var thisDetailViewInst = detailViewInst.renderContent(true);
-		var map = mapboxViewInst.map;
-		var geoJSON = mapboxViewInst.geoJSON;
+		//Create an instance of the Detail panel and render the List View's content.
+		var thisDetailViewInst = detailViewInst.renderContent(false);
 
 		//Bind event listeners for the headers
 		//Mouse enter or leave adds and removes the active highlighting
@@ -58,13 +55,9 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 				//FIXME: calling the API for every new sorting request is not remotely ideal,
 				//so this needs to be changed at some point
 				dataInst.search('event', dataInst.state.query.event.searchString);
+				urlParserInst.updateHash();
 			});
-		renderContent(map, geoJSON);
-		callback();
-	}
-
-	function renderContent(map, geoJSON) {
-		map.removeLayer(map.featureLayer);
+		promise.resolve();
 	}
 
 	function restoreHeight() {
@@ -73,6 +66,42 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 
 	function saveHeight(height) {
 		contentHeight = height;
+	}
+
+	function highlight(id, eventActive) {
+		var selectedItem = $('#' + id);
+		if (window.window.devicePixelRatio > 1.5) {
+			selectedItem.removeClass('hover');
+		}
+
+		selectedItem.siblings().removeClass('active');
+		if (eventActive) {
+			selectedItem.addClass('active');
+			var event = dataInst.eventCache.events[selectedItem.attr('id')];
+			var previousSiblings = selectedItem.prevAll();
+			var scrollHeight = 0;
+			for (var index = 0; index < previousSiblings.length; index++) {
+				scrollHeight += $(previousSiblings[index]).height();
+			}
+			if ($('.sidebar').hasClass('invisible')) {
+				$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+						$('.list.content').animate({ scrollTop: scrollHeight }, 100);
+						setHeight();
+						$('.main-list').addClass('shrunk');
+					});
+			}
+			else {
+				$('.list.content').animate({ scrollTop: scrollHeight }, 100);
+			}
+			detailViewInst.updateContent(event);
+		}
+		else {
+			selectedItem.removeClass('active');
+			detailViewInst.hideContent();
+			$('.list.content').height(restoreHeight());
+			$('.main-list').removeClass('shrunk');
+		}
 	}
 
 	//Update the List View content
@@ -105,41 +134,13 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 				//Remove 'active' from items other than the one that was clicked on
 				//Then toggle 'active' on the clicked item
 				var selectedItem = $(this);
-
-				if (window.window.devicePixelRatio > 1.5) {
-					selectedItem.removeClass('hover');
+				if (!(selectedItem.hasClass('active'))) {
+					dataInst.state.selected = {};
+					dataInst.state.selected[selectedItem.attr('id')] = true;
+					dataInst.highlight(true);
 				}
-				selectedItem.siblings().removeClass('active');
-				selectedItem.toggleClass('active');
-
-				//If the clicked item is now active, get the item's information from the database
-				if (selectedItem.hasClass('active')) {
-					var event = dataInst.eventCache.events[selectedItem.attr('id')];
-					var previousSiblings = selectedItem.prevAll();
-					var scrollHeight = 0;
-					if ($('.sidebar').hasClass('invisible')) {
-						$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-							function(e) {
-								scrollHeight = previousSiblings.height() * previousSiblings.length;
-								$('.list.content').animate({ scrollTop: scrollHeight }, 100);
-								map.invalidateSize();
-								setHeight();
-								$('.main-list').addClass('shrunk');
-							});
-					}
-					else {
-						scrollHeight = previousSiblings.height() * previousSiblings.length;
-						$('.list.content').animate({ scrollTop: scrollHeight }, 100);
-					}
-					detailViewInst.updateContent(event);
-				}
-				//If the clicked item is now inactive (occurs when you click an active item),
-				//clear the detail panel content and map
 				else {
-					detailViewInst.hideContent();
-					detailViewInst.clearMap(map);
-					$('.list.content').height(restoreHeight());
-					$('.main-list').removeClass('shrunk');
+					dataInst.highlight(false);
 				}
 			});
 		setHeight();
@@ -167,8 +168,8 @@ function listView(detailViewInst, dataInst, mapboxViewInst, urlParserInst) {
 	});
 
 	return{
+		highlight: highlight,
 		renderContent: renderContent,
-		renderBase: renderBase,
 		updateContent: updateContent
 	};
 }

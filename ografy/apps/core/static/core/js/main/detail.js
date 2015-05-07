@@ -103,20 +103,20 @@ function detailView(mapboxViewInst, dataInst) {
 
 
 		$('.data-entries').html('Event Extra Data');
-		for (key in data_blob) {
+		for (var key in data_blob) {
 			var value = data_blob[key];
 			var formattedValue = '';
 
 			if (value instanceof Array) {
-				formattedValue = '[' + value + ']'
+				formattedValue = '[' + value + ']';
 			}
 			else if (value instanceof Object) {
 				formattedValue = '{';
-				for (innerKey in value) {
+				for (var innerKey in value) {
 					formattedValue += innerKey + ': ' + value[innerKey] + ', ';
 				}
 				formattedValue = formattedValue.trim();
-				formattedValue = formattedValue.substring(0, formattedValue.length-1) +  '}';
+				formattedValue = formattedValue.substring(0, formattedValue.length - 1) +  '}';
 			}
 			else {
 				formattedValue = value;
@@ -128,12 +128,12 @@ function detailView(mapboxViewInst, dataInst) {
 			$('.data-entries').append(newEntry);
 		}
 
-		if (event['_cls'] === 'Event.Message') {
+		if (event._cls === 'Event.Message') {
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
-			if (dataInst.eventCache.subtypes.messages.indexOf(event['id']) < 0) {
+			if (dataInst.eventCache.subtypes.messages.indexOf(event.id) < 0) {
 				waitForPromise = true;
-				dataInst.getSingleDocument('message', event['id'], getSingleDocumentPromise);
+				dataInst.getSingleDocument('message', event.id, getSingleDocumentPromise);
 			}
 
 			if (!(waitForPromise)) {
@@ -141,7 +141,7 @@ function detailView(mapboxViewInst, dataInst) {
 			}
 
 			$.when(getSingleDocumentPromise).always(function() {
-				event = dataInst.eventCache.events[event['id']];
+				event = dataInst.eventCache.events[event.id];
 				var detail_to_from = nunjucks.render('detail/to-from.html', {
 					event: {
 						message_to: event.message_to.toString().replace(/,/g, ', '),
@@ -154,15 +154,15 @@ function detailView(mapboxViewInst, dataInst) {
 					}
 				});
 				$('.detail-location').before(detail_to_from);
-				$('.detail-location').after(detail_message_body)
+				$('.detail-location').after(detail_message_body);
 			});
 		}
-		else if (event['_cls'] === 'Event.Play') {
+		else if (event._cls === 'Event.Play') {
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
-			if (dataInst.eventCache.subtypes.plays.indexOf(event['id']) < 0) {
+			if (dataInst.eventCache.subtypes.plays.indexOf(event.id) < 0) {
 				waitForPromise = true;
-				dataInst.getSingleDocument('play', event['id'], getSingleDocumentPromise);
+				dataInst.getSingleDocument('play', event.id, getSingleDocumentPromise);
 			}
 
 			if (!(waitForPromise)) {
@@ -170,7 +170,7 @@ function detailView(mapboxViewInst, dataInst) {
 			}
 
 			$.when(getSingleDocumentPromise).always(function() {
-				event = dataInst.eventCache.events[event['id']];
+				event = dataInst.eventCache.events[event.id];
 				var detail_title = nunjucks.render('detail/title.html', {
 					event: {
 						title: event.title

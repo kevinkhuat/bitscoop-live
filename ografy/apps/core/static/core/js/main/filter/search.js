@@ -1,5 +1,5 @@
 //Construct search filters to send to the database
-function searchView(dataInst, mapboxViewInst, urlParserInst) {
+function searchView(dataInst, urlParserInst) {
 	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
 	//from a template.
 	//By default the topmost option of the initial dropdown will be selected, so call its
@@ -134,7 +134,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		if ($(currentButton).parents('.filters').children().length === 1 && $(currentButton).parents('.filters').siblings().find('.active').length !== 0) {
 			eventType = $(currentButton).parents('.type-grouping').attr('id');
 			eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1) + 's';
-			$(currentButton).parents('.filters').siblings().find('.item').html('All ' + eventType)
+			$(currentButton).parents('.filters').siblings().find('.item').html('All ' + eventType);
 		}
 		$(currentButton).parents('.filter.box').remove();
 		checkDrawDisplay();

@@ -21,12 +21,19 @@ function dataStore() {
 			total: 0
 		},
 		count: 0
-	}
+	};
 
 	var state = {
 		view: {
-			current: '',
-			currentName: '',
+			active: {
+				map: true,
+				list: true,
+				count: 2
+			},
+			instances: {
+				map: null,
+				list: null
+			},
 			map: {
 				zoom: 0,
 				focus: []
@@ -44,11 +51,11 @@ function dataStore() {
 				searchString: ''
 			},
 			message: {
-				enabled: true,
+				enabled: false,
 				searchString: ''
 			},
 			play: {
-				enabled: true,
+				enabled: false,
 				searchString: ''
 			}
 		}
@@ -86,6 +93,17 @@ function dataStore() {
 					eventCache.events[currentId] = currentItem;
 				}
 			}
+		}
+	}
+
+	function highlight(eventActive) {
+		for (var item in state.view.instances) {
+			for (var event in state.selected) {
+				state.view.instances[item].highlight(event, eventActive);
+			}
+		}
+		if (!(eventActive)) {
+			state.selected = {};
 		}
 	}
 
@@ -200,7 +218,7 @@ function dataStore() {
 	}
 
 	//Search for items in the database based on the search parameters and filters
-	function search(documentType, searchString) {
+	function search(documentType, searchString, promise) {
 		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + state.view.sort + '&filter=' + searchString;
 		console.log(url);
 		$.ajax({
@@ -218,7 +236,7 @@ function dataStore() {
 			resultCache.page.start = ((resultCache.page.current - 1) * resultCache.page.max) + 1;
 			resultCache.page.end = (resultCache.page.current * resultCache.page.max > resultCache.count) ? (resultCache.count) : (resultCache.page.current * resultCache.page.max);
 			resultCache.events = {};
-			for (item in results) {
+			for (var item in results) {
 				var thisItem = results[item];
 				resultCache.events[thisItem.id] = thisItem;
 			}
@@ -229,7 +247,13 @@ function dataStore() {
 			}
 			updateResults(documentType);
 			createPageBar();
-			state.view.current.updateContent();
+
+			for (var item in state.view.instances) {
+				if (state.view.instances[item] !== null)
+				{
+					state.view.instances[item].updateContent();
+				}
+			}
 		});
 	}
 
@@ -263,6 +287,7 @@ function dataStore() {
 		createPageBar: createPageBar,
 		eventCache: eventCache,
 		getSingleDocument: getSingleDocument,
+		highlight: highlight,
 		resultCache: resultCache,
 		search: search,
 		state: state,
