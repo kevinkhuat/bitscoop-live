@@ -16,26 +16,32 @@ function urlParser(dataInst) {
 		urlHash = window.location.hash;
 
 		if (statePattern.test(urlHash)) {
-			stateRegexResult = statePattern.exec(urlHash)[0];
-			currentStateEncoded = stateRegexResult.replace('s=', '').replace('&', '');
+			try {
+				stateRegexResult = statePattern.exec(urlHash)[0];
+				currentStateEncoded = stateRegexResult.replace('s=', '').replace('&', '');
+				dataInst.state = JSON.parse(window.atob(currentStateEncoded));
+			} catch () {
+				consloe.log("Invalid State URL")
+			}
 		}
-		dataInst.state = window.atob(currentStateEncoded);
 
 		if (queryPattern.test(urlHash)) {
 			queryRegexResult = queryPattern.exec(urlHash)[0];
 			currentQuery = queryRegexResult.replace('q=', '').replace('&', '');
+			dataInst.resultCache.query_id = currentQuery;
 		}
-		dataInst.resultCache.query_id = currentQuery;
-
 	}
 
 	//Update the URL hash with whatever the current properties are.  E.g. as the user moves the map around, the URL
 	//has its focus coordinates updated as well, or a new search puts that search's filters and query into the URL
 	function updateHash() {
-		urlHash = 's=' + window.btoa(dataInst.state)+
-			'&q=' + dataInst.resultCache.query_id;
-		
-		window.location.hash = urlHash;
+		try {
+			urlHash = 's=' + window.btoa(JSON.stringify(dataInst.state)) + '&q=' + dataInst.resultCache.query_id;
+
+			window.location.hash = urlHash;
+		} catch () {
+			consloe.log("Invalid State URL")
+		}
 	}
 
 	return {
