@@ -20,7 +20,8 @@ function dataStore() {
 			max: 0,
 			total: 0
 		},
-		count: 0
+		count: 0,
+		query_id: ''
 	};
 
 	var state = {
