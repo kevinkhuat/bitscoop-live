@@ -30,14 +30,12 @@
 		</div>
 	</div>
 </div>
-{% if showMap %}
-<div class="detail map-half grow hidden drawer map">
+<div class="detail map-half flex grow hidden drawer map">
 	<i class="drawer-toggle detail map hidden icon-map2"></i>
-	<div class="map container flex">
-		<div id='mapbox' class='grow'></div>
+	<div class="map container flex grow">
+		<div id='mapbox-detail' class='grow'></div>
 	</div>
 </div>
-{% endif %}
 <div class="detail data-half grow hidden drawer detail-data flex">
 	<i class="drawer-toggle detail data hidden icon-bars2"></i>
 	<div id='detail-data-content' class="center content data-entries grow">
