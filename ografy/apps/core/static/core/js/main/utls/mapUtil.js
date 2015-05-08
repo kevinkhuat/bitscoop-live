@@ -1,22 +1,20 @@
 //View pertaining to the MapBox map
-function mapboxManager() {
+function mapboxManager(dataInst) {
 	var map, geoJSON;
-
-	//The map needs to be created for the functions associated with this view to work
-//	initializeMap();
 
 	//Create the MapBox map
 	//Note that this must be run after the map container has been inserted into the DOM
 	//in order to run right
-	function initializeMap(enableExtraControls) {
+	function initializeMainMap() {
 		this.geoJSON = {
 			type: 'FeatureCollection',
 			features: []
 		};
 
+		this.map = {};
 		//The instantiation of a map takes the DOM element where the map will be stored
 		//as a parameter, hence why the DOM element must exist before this function is called.
-		this.map = L.mapbox.map('mapbox', 'liambroza.hl4bi8d0',  {
+		this.map.main = L.mapbox.map('mapbox-main', 'liambroza.hl4bi8d0',  {
 			zoomControl: true,
 			//FIXME: This was added as a hack to work around a bug in Leaflet's clusterGroup.
 			//When reloading the map, at the highest zoom level (19), markers would no longer cluster.
@@ -32,16 +30,13 @@ function mapboxManager() {
 			}
 		});
 
-		if (enableExtraControls) {
-			L.mapbox.geocoderControl('mapbox.places', {
-				autocomplete: true
-			}).addTo(this.map);
-			L.control.fullscreen().addTo(this.map);
-		}
+		L.mapbox.geocoderControl('mapbox.places', {
+			autocomplete: true
+		}).addTo(this.map.main);
+		L.control.fullscreen().addTo(this.map.main);
 
-		var mobileDisplay = ((window.innerWidth < 1080 && window.devicePixelRatio >= 1.5) || (window.devicePixelRatio >= 3));
-		if (!mobileDisplay) {
-			var map = this.map;
+		if (!(dataInst.isMobile)) {
+			var map = this.map.main;
 			map.featureGroup = L.featureGroup().addTo(map);
 
 			map.markerDrawControl = new L.Control.Draw({
@@ -76,6 +71,31 @@ function mapboxManager() {
 			map.on('draw:created', showPolygonDrawing);
 			map.on('draw:edited', showPolygonDrawingEdited);
 		}
+	}
+
+	function initializeDetailMap() {
+		this.geoJSON = {
+			type: 'FeatureCollection',
+			features: []
+		};
+
+		//The instantiation of a map takes the DOM element where the map will be stored
+		//as a parameter, hence why the DOM element must exist before this function is called.
+		this.map.detail = L.mapbox.map('mapbox-detail', 'liambroza.hl4bi8d0',  {
+			zoomControl: true,
+			//FIXME: This was added as a hack to work around a bug in Leaflet's clusterGroup.
+			//When reloading the map, at the highest zoom level (19), markers would no longer cluster.
+			//This would cause all markers at the same location to stack on top of each other.
+			//My solution was to restrict the zoom level to 18, where the bug does not appear.
+			//Should revisit if and when ClusterGroup is fixed.
+			maxZoom: 18,
+			tileLayer: {
+				// This map option disables world wrapping. by default, it is false.
+				continuousWorld: false,
+				// This option disables loading tiles outside of the world bounds.
+				noWrap: true
+			}
+		});
 	}
 
 	//These functions are used for drawing polygons and markers
@@ -163,7 +183,8 @@ function mapboxManager() {
 	return {
 		addData: addData,
 		geoJSON: geoJSON,
-		initializeMap: initializeMap,
+		initializeDetailMap: initializeDetailMap,
+		initializeMainMap: initializeMainMap,
 		map: map,
 		renderDetailMap: renderDetailMap
 	};

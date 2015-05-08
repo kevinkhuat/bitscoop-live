@@ -3,6 +3,8 @@ function dataStore() {
 	//This is the CSRF token that is used to authenticate server requests
 	var cookie = sessionsCookies().getCsrfToken();
 
+	var isMobile = ((window.innerWidth < 1080 && window.devicePixelRatio >= 1.5) || (window.devicePixelRatio >= 3));
+
 	var eventCache = {
 		events: {},
 		subtypes: {
@@ -34,6 +36,7 @@ function dataStore() {
 				map: null,
 				list: null
 			},
+			detail: null,
 			map: {
 				zoom: 0,
 				focus: []
@@ -97,13 +100,30 @@ function dataStore() {
 	}
 
 	function highlight(eventActive) {
-		for (var item in state.view.instances) {
-			for (var event in state.selected) {
-				state.view.instances[item].highlight(event, eventActive);
+		var events = [];
+		for (var event_id in state.selected) {
+			events.push(eventCache.events[event_id]);
+			for (var item in state.view.instances) {
+				state.view.instances[item].highlight(event_id, eventActive);
 			}
 		}
-		if (!(eventActive)) {
+		for (var event in events) {
+			state.view.detail.updateContent(events[event]);
+		}
+		if (eventActive) {
+			if (state.view.active.count > 1 && isMobile) {
+				var activeViews = $('.view-button.active');
+				for (var i = activeViews.length - 1; i > 0; i--) {
+					var viewName = activeViews[i].id.slice(12);
+					state.view.active[viewName] = false;
+					$(activeViews[i]).removeClass('active');
+					$('.' + viewName + '-view').addClass('hidden');
+				}
+			}
+		}
+		else if (!(eventActive)) {
 			state.selected = {};
+			state.view.detail.hideContent();
 		}
 	}
 
@@ -288,6 +308,7 @@ function dataStore() {
 		eventCache: eventCache,
 		getSingleDocument: getSingleDocument,
 		highlight: highlight,
+		isMobile: isMobile,
 		resultCache: resultCache,
 		search: search,
 		state: state,

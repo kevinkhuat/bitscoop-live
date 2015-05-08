@@ -1,9 +1,7 @@
 //Construct search filters to send to the database
-function searchView(dataInst, urlParserInst) {
-	//Add the intial filter dropdown to a new filter after using Nunjucks to render it
-	//from a template.
-	//By default the topmost option of the initial dropdown will be selected, so call its
-	//render function.
+function searchView(dataInst, mapboxViewInst, urlParserInst) {
+	//Add the intial filter dropdown to a new filter after using Nunjucks to render it from a template.
+	//By default the topmost option of the initial dropdown will be selected, so call its render function.
 	//Bind an event listener that triggers when the initial dropdown changes.
 	//This listener will call the appropriate render function based on which option was selected.
 	function addDropdown(inputSelection) {
@@ -243,7 +241,7 @@ function searchView(dataInst, urlParserInst) {
 		var len = initialSet.length;
 		var showMarkerDraw = false;
 		var showPolygonDraw = false;
-		var map = mapboxViewInst.map;
+		var map = mapboxViewInst.map.main;
 
 		for (var i = 0; i < len; i++) {
 			if (initialSet[i].value === 'area') {
@@ -292,12 +290,12 @@ function searchView(dataInst, urlParserInst) {
 				else if (currentValue === 'without') {
 					var returnString = 'not (location geo_within_polygon \'[';
 				}
-				var loopEnd = mapboxViewInst.map.polySelect.length;
+				var loopEnd = mapboxViewInst.map.main.polySelect.length;
 				for (var i = 0; i < loopEnd; i++) {
-					var thisLatLng = mapboxViewInst.map.polySelect[i];
+					var thisLatLng = mapboxViewInst.map.main.polySelect[i];
 					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + '], ';
 				}
-				var thisLatLng = mapboxViewInst.map.polySelect[0];
+				var thisLatLng = mapboxViewInst.map.main.polySelect[0];
 				returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']]\'';
 				if (currentValue === 'without') {
 					returnString += ')';
@@ -471,7 +469,7 @@ function searchView(dataInst, urlParserInst) {
 				currentValue = $(currentFilter).find('.near')[0].value;
 				var returnString = 'location near \'';
 				if (currentValue === 'selection') {
-					var thisLatLng = mapboxViewInst.map.markerSelect;
+					var thisLatLng = mapboxViewInst.map.main.markerSelect;
 					returnString += '[' + [thisLatLng.lng, thisLatLng.lat] + ']\'';
 				}
 				else {
