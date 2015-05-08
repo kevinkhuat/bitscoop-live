@@ -49,7 +49,6 @@ class DataView(MongoAPIListView):
             data=post_data
         )
         data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
-        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
         serialized_response = self.serialize(
             data_object,
             context={

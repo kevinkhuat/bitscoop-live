@@ -426,4 +426,4 @@ INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one upperca
 # API KEYS #
 ############
 
-OGRAFY_MAPBOX_ACCESS_TOKEN = os.environ['OGRAFY_MAPBOX_ACCESS_TOKEN']
+OGRAFY_MAPBOX_ACCESS_TOKEN = os.environ['ografy.settings.MAPBOX_ACCESS_TOKEN']

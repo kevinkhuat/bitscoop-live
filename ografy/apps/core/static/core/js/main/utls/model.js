@@ -31,7 +31,8 @@ function dataStore() {
 			max: 0,
 			total: 0
 		},
-		count: 0
+		count: 0,
+		query_id: ''
 	};
 
 	//This stores the state for the front-end.

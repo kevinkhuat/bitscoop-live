@@ -1,21 +1,46 @@
 import urllib.parse as urlparse
+from mongoengine import *
 
 from ografy.apps.tastydata.exceptions import InvalidFilterError
 from ografy.apps.tastydata.expressions import tokenize, Symbol
 
 
-CONTROL_PARAMS = {'filter', 'set', 'skip', 'top', 'search'}
+# TODO: Update?
+#  CONTROL_PARAMS = {'filter', 'set', 'skip', 'top', 'search'}
+#
+#
+# def get_query_string(kwargs={}):
+#     params = []
+#
+#     for key, value in kwargs.items():
+#         formatted_key = key if key in CONTROL_PARAMS else urlparse.quote(key)
+#         formatted_value = urlparse.quote(str(value))
+#         params.append('%s=%s' % (formatted_key, formatted_value))
+#
+#     return '&'.join(params)
 
 
-def get_query_string(kwargs={}):
-    params = []
+def parse_query(query_params, expression_class, **kwargs):
+    result_filter = expression_class()
 
-    for key, value in kwargs.items():
-        formatted_key = key if key in CONTROL_PARAMS else urlparse.quote(key)
-        formatted_value = urlparse.quote(str(value))
-        params.append('%s=%s' % (formatted_key, formatted_value))
+    if 'filter' in query_params:
+        query_filter = query_params['filter']
+        # add filter query
+        result_filter = result_filter & parse_filter(query_filter, expression_class=expression_class)
+    if 'search' in query_params:
+        query_search = query_params['search']
+        # add search query
+        result_filter = result_filter & expression_class(search=query_search)
+    if 'set' in query_params:
+        query_set = query_params['set']
+        # grab these id's in bulk
+        result_filter = result_filter & expression_class(in_bulk=query_set)
+    if 'exclude' in query_params:
+        query_exclude = query_params['exclude']
+        # exclude these ids
+        result_filter = result_filter & expression_class(id_nin=query_exclude)
 
-    return '&'.join(params)
+    return result_filter
 
 
 def parse_filter(string, **kwargs):
