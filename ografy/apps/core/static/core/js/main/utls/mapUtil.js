@@ -2,9 +2,9 @@
 function mapboxManager(dataInst) {
 	var map, geoJSON;
 
-	//Create the MapBox map
+	//Create the MapBox map for the map view.
 	//Note that this must be run after the map container has been inserted into the DOM
-	//in order to run right
+	//in order to run right.
 	function initializeMainMap() {
 		this.geoJSON = {
 			type: 'FeatureCollection',
@@ -30,15 +30,20 @@ function mapboxManager(dataInst) {
 			}
 		});
 
+		//Adds the geocoder control to the map.
 		L.mapbox.geocoderControl('mapbox.places', {
 			autocomplete: true
 		}).addTo(this.map.main);
+		//Adds fullscreen control to the map.
 		L.control.fullscreen().addTo(this.map.main);
 
+		//Disable drawing on mobile since it doesn't work.
 		if (!(dataInst.isMobile)) {
 			var map = this.map.main;
 			map.featureGroup = L.featureGroup().addTo(map);
 
+			//There are separate controls for drawing markers (used for Near) and polygons
+			//(used for Within).
 			map.markerDrawControl = new L.Control.Draw({
 				edit: {
 					featureGroup: map.featureGroup
@@ -73,6 +78,9 @@ function mapboxManager(dataInst) {
 		}
 	}
 
+	//Create the MapBox map for the detail sidebar.
+	//Note that this must be run after the map container has been inserted into the DOM
+	//in order to run right.
 	function initializeDetailMap() {
 		this.geoJSON = {
 			type: 'FeatureCollection',
@@ -127,11 +135,6 @@ function mapboxManager(dataInst) {
 		e.layer.openPopup();
 	}
 
-	//Render a detail panel map
-	function renderDetailMap(map) {
-		map.featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
-	}
-
 	function addData(geoJSON, newData) {
 		//Create a MapBox GeoJSON element with the new information
 		for (var index in newData) {
@@ -139,6 +142,7 @@ function mapboxManager(dataInst) {
 			var markerSymbol;
 			var markerColor;
 
+			//Each event type has a different color and symbol to be visually distinct.
 			if (thisEvent._cls === 'Event') {
 				markerColor = '#0052CE';
 				markerSymbol = 'star-stroked';
@@ -185,8 +189,7 @@ function mapboxManager(dataInst) {
 		geoJSON: geoJSON,
 		initializeDetailMap: initializeDetailMap,
 		initializeMainMap: initializeMainMap,
-		map: map,
-		renderDetailMap: renderDetailMap
+		map: map
 	};
 }
 

@@ -25,7 +25,7 @@ function listView(dataInst, urlParserInst) {
 			.click(function() {
 				var searchSort;
 
-				if (window.window.devicePixelRatio > 1.5) {
+				if (dataInst.isMobile) {
 					$(this).removeClass('hover');
 				}
 				dataInst.resultCache.page.current = 1;
@@ -60,16 +60,6 @@ function listView(dataInst, urlParserInst) {
 		promise.resolve();
 	}
 
-	//Restore the saved height of the list content.
-	function restoreHeight() {
-		return contentHeight;
-	}
-
-	//Save the current height of the list content.
-	function saveHeight(height) {
-		contentHeight = height;
-	}
-
 	//Highlight a selected event on the map.
 	function highlight(id, eventActive) {
 		var selectedItem = $('#' + id);
@@ -95,7 +85,7 @@ function listView(dataInst, urlParserInst) {
 			//If the sidebar is going to be popping out, wait until it is finished.
 			if ($('.sidebar').hasClass('invisible')) {
 				$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-					function(e) {
+					function() {
 						//Scroll to the selected event and set the height of the list content to account for
 						//the sidebar potentially taking up vertical space.
 						$('.list.content').animate({ scrollTop: scrollHeight }, 100);
@@ -111,8 +101,11 @@ function listView(dataInst, urlParserInst) {
 		//If the given event has been de-selected, remove the 'active' class and restore the list to its full height.
 		else {
 			selectedItem.removeClass('active');
-			$('.list.content').height(restoreHeight());
-			$('.main-list').removeClass('shrunk');
+			$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function() {
+					setHeight();
+					$('.main-list').removeClass('shrunk');
+				});
 		}
 	}
 
@@ -160,11 +153,6 @@ function listView(dataInst, urlParserInst) {
 					dataInst.highlight(false);
 				}
 			});
-		//If the list view is now active, set and save its full height.
-		if (dataInst.state.view.active.list) {
-			setHeight();
-			saveHeight($('.list.content').height());
-		}
 	}
 
 	//This is used to set the height of the div containing the list content.
@@ -175,13 +163,16 @@ function listView(dataInst, urlParserInst) {
 		var sortHeight = $('.sort').outerHeight();
 		//In landscape view, there will be a header on the list.
 		//The height will be the full height of the list container minus the height of the header and the sort bar.
-		if (window.innerHeight < window.innerWidth) {
-			$('.list.content').height(parentHeight - headerHeight - sortHeight);
+		if (Object.keys(dataInst.state.selected).length === 0) {
+			if (dataInst.state.view.active.count === 1) {
+				$('.list.content').height(parentHeight - headerHeight - sortHeight);
+			}
+			else {
+				$('.list.content').height(parentHeight - headerHeight);
+			}
 		}
-		//In portrait view, the height will be the full height of the list container minus the height of the sort bar.
-		//There is no header in this case.
 		else {
-			$('.list.content').height($('.list-view').height() - sortHeight);
+			$('.list.content').height(parentHeight - headerHeight - sortHeight);
 		}
 	}
 

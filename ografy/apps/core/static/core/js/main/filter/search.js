@@ -199,6 +199,9 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 					}
 				}
 
+				if (filtersList.length === 0) {
+					filterString = '';
+				}
 				//Set the Query and Filters in the URL parser
 				//urlParserInst.setSearchQuery($('.search-bar').val());
 				dataInst.state.query.event.searchString = filterString;
