@@ -7,6 +7,9 @@
 		{% block meta %}
 		<title>{{ title }}</title>
 		<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" />
+		<link rel="manifest" href="{% static 'assets/manifest.json'  %}">
+		<link rel="apple-touch-icon" href="{% static 'assets/logo_240.png' %}">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 		{% endblock %}
 
 		{% block static %}
@@ -22,7 +25,7 @@
 		{% endblock %}
 	</head>
 
-	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
+	<body class="flex{{ body_class }} {% if request.mobile %}mobile{% endif %}">
 		{% block body %}
 		<header class="bg foreground bordered bottom {{ header_class }}">
 			<nav class="flex stretch lockwidth {% if lockwidth_override %}override {% endif %}centered">

@@ -20,8 +20,8 @@ function urlParser(dataInst) {
 				stateRegexResult = statePattern.exec(urlHash)[0];
 				currentStateEncoded = stateRegexResult.replace('s=', '').replace('&', '');
 				dataInst.state = JSON.parse(window.atob(currentStateEncoded));
-			} catch () {
-				consloe.log("Invalid State URL")
+			} catch (exec) {
+				consloe.log("Invalid State URL");
 			}
 		}
 
@@ -39,8 +39,8 @@ function urlParser(dataInst) {
 			urlHash = 's=' + window.btoa(JSON.stringify(dataInst.state)) + '&q=' + dataInst.resultCache.query_id;
 
 			window.location.hash = urlHash;
-		} catch () {
-			consloe.log("Invalid State URL")
+		} catch (exec) {
+			consloe.log("Invalid State URL");
 		}
 	}
 

@@ -297,7 +297,10 @@ function dataStore() {
 
 	//Search for items in the database based on the search parameters and filters
 	function search(documentType, searchString, promise) {
-		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + state.view.sort + '&filter=' + searchString;
+		var url = 'opi/' + documentType + '?page=' + resultCache.page.current + '&ordering=' + state.view.sort;
+		if (searchString.length > 0) {
+			url += '&filter=' + searchString;
+		}
 		console.log(url);
 		$.ajax({
 			url: url,

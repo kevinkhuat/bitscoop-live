@@ -119,6 +119,7 @@ function listView(dataInst, urlParserInst) {
 			resultData: resultData
 		});
 		$('.list.content').html(listItems);
+		setHeight();
 
 		//Place an up or down triangle in the title of the column that is being sorted on.
 		$('.list.title').find('i').attr('class', '');

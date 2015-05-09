@@ -166,8 +166,7 @@ function baseView() {
 			//The below line is the actual default search to be used - anything in the last week
 			//searchString = '(datetime lt \'' + now.toJSON().slice(0, 16) + '\') and (datetime gt \'' + oneWeekAgo.toJSON().slice(0, 16) + '\')';
 
-			//This is the test search string, which brings back all of the test data
-			searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+			searchString = '';
 			console.log(searchString);
 			dataInst.state.query.event.searchString = searchString;
 		}
