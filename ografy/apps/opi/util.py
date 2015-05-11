@@ -27,3 +27,4 @@ def tupleSoftMerge(object1, object2):
         if item not in object1:
             object1 = (item,) + object1
     return object1
+    
