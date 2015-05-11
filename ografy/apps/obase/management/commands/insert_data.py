@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.core.management.base import BaseCommand
 
 from ografy.apps.core import api as core_api
-from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.obase.documents import Data, Event, Message, Play
 from ografy.apps.core.models import User, Signal
 
 
@@ -59,10 +59,8 @@ def create_fixture_data(temp_data):
         data_blob=temp_data['data_blob']
     )
 
-
 def create_fixture_event(temp_event, data_id, event_type='Event'):
     return Event(
-        type=event_type,
         created=temp_event['created'],
         updated=temp_event['updated'],
         user_id=temp_event['user_id'],
@@ -76,13 +74,37 @@ def create_fixture_event(temp_event, data_id, event_type='Event'):
     )
 
 
-def create_fixture_message(temp_message, event_id):
+def create_fixture_message(temp_message, data_id):
     return Message(
+        created=temp_message['created'],
+        updated=temp_message['updated'],
+        user_id=temp_message['user_id'],
+        datetime=temp_message['datetime'],
+        location=temp_message['location'],
+        name=temp_message['name'],
+        provider_id=temp_message['provider_id'],
+        provider_name=temp_message['provider_name'],
+        signal_id=temp_message['signal_id'],
+        data=data_id,
         message_to=temp_message['message_to'],
         message_from=temp_message['message_from'],
-        message_body=temp_message['message_body'],
-        user_id=temp_message['user_id'],
-        event=event_id
+        message_body=temp_message['message_body']
+    )
+
+
+def create_fixture_play(temp_play, data_id):
+    return Play(
+        created=temp_play['created'],
+        updated=temp_play['updated'],
+        user_id=temp_play['user_id'],
+        datetime=temp_play['datetime'],
+        location=temp_play['location'],
+        name=temp_play['name'],
+        provider_id=temp_play['provider_id'],
+        provider_name=temp_play['provider_name'],
+        signal_id=temp_play['signal_id'],
+        data=data_id,
+        title=temp_play['title']
     )
 
 
@@ -112,6 +134,7 @@ def load_fixture(path):
         insert_event = create_fixture_event(temp_event, data_id)
 
         event_id = ObaseAPI.EventApi.post(insert_event)['id']
+        ObaseAPI.DataApi.patch(data_id, {'event_id': event_id})
 
     for message in fixture_data['messages']:
         temp_data = message['data']
@@ -119,15 +142,21 @@ def load_fixture(path):
 
         data_id = ObaseAPI.DataApi.post(insert_data)['id']
 
-        temp_event = message['event']
-        insert_event = create_fixture_event(temp_event, data_id, 'Message')
-
-        event_id = ObaseAPI.EventApi.post(insert_event)['id']
-
         temp_message = message['message']
-        insert_message = create_fixture_message(temp_message, event_id)
+        insert_message = create_fixture_message(temp_message, data_id)
 
         message_id = ObaseAPI.MessageApi.post(insert_message)['id']
+
+    for play in fixture_data['plays']:
+        temp_data = play['data']
+        insert_data = create_fixture_data(temp_data)
+
+        data_id = ObaseAPI.DataApi.post(insert_data)['id']
+
+        temp_play = play['play']
+        insert_play = create_fixture_play(temp_play, data_id)
+
+        play_id = ObaseAPI.PlayApi.post(insert_play)['id']
 
 
 class Command(BaseCommand):

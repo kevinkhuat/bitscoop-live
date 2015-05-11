@@ -15,6 +15,18 @@
 @dark-translucent: rgba(40, 40, 40, .5);
 @black-translucent: rgba(0, 0, 0, .1);
 
+@mobile:
+	~"(max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(-webkit-min-device-pixel-ratio: 3)",
+	~"(min-device-pixel-ratio: 3)";
+
+@mobile-portrait:
+	~"(orientation: portrait) and (max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (-webkit-min-device-pixel-ratio: 3)",
+	~"(orientation: portrait) and (min-device-pixel-ratio: 3)";
+
 @iconpath: '/static/';
 //-------------------------------
 // Theme: Light
@@ -78,9 +90,6 @@
 	-webkit-box-shadow: 0 0 1px 1px @black-translucent;
 	box-shadow: 0 0 1px 1px @black-translucent;
 	border-radius: 0 0 0.325em 0.325em;
-	-webkit-transition: opacity 0.2s ease;
-	-moz-transition: opacity 0.2s ease;
-	transition: opacity 0.2s ease;
 	z-index: 11;
 }
 select {
@@ -96,9 +105,9 @@ select {
 	}
 }
 .filter.box {
-	width: 95%;
+	width: 96%;
 	position: relative;
-	margin: 0 0 0 5%;
+	margin: 0 0 0 4%;
 }
 .filter.options {
 	float: left;
@@ -120,22 +129,30 @@ main {
 	}
 }
 
+.views {
+	@media (orientation: landscape) {
+		flex-direction: row;
+	}
+	@media (orientation: portrait) {
+		flex-direction: column;
+	}
+}
 .sidebar {
 	color: @text-color;
 	position: relative;
-	height: 100%;
-	width: 100%;
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	transition: all 0.2s ease;
+	-webkit-transition: width 0.2s ease, height 0.2s ease;
+	-moz-transition: width 0.2s ease, height 0.2s ease;
+	transition: width 0.2s ease, height 0.2s ease;
 	@media (orientation: landscape) {
 		max-width: 400px;
+		width: 100%;
 		-webkit-flex-direction: column;
 		flex-direction: column;
 		border-left: 2px solid;
 	}
 	@media (orientation: portrait) {
 		max-height: 300px;
+		height: 100%;
 		-webkit-flex-direction: row;
 		flex-direction: row;
 		border-top: 2px solid;
@@ -213,6 +230,10 @@ main {
 			min-width: 80px;
 		}
 
+		.detail-to label{
+			border-right: 1px solid @foreground-color;
+		}
+
 		.information {
 			overflow-y: auto;
 			@media (orientation: portrait) {
@@ -223,43 +244,85 @@ main {
 	.detail.text-half {
 		position: relative;
 		background-color: @background-color;
-		@media (orientation: landscape) {
-			height: 50%;
-			width: 100%;
-		}
-		@media (orientation: portrait) {
-			height: 100%;
-			width: 50%
-		}
-	}
-	.detail.map-half {
-		position: relative;
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
-		@media (orientation: landscape) {
-			height: 50%;
-			width: 100%;
-		}
-		@media (orientation: portrait) {
-			height: 100%;
-			width: 50%;
-		}
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%
+		//}
+	}
+	.detail.map-half {
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+		flex-grow: 1;
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%;
+		//}
 	}
 	.detail.map-half.hidden {
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		transition: all 0.2s ease;
+		flex-grow: 0.0001;
+		//@media (orientation: landscape) {
+		//	height: 0;
+		//	min-height: 0;
+		//}
+		//@media (orientation: portrait) {
+		//	width: 0;
+		//	min-width: 0;
+		//}
+	}
+	.detail.data-half {
+		background-color: @background-color;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+		flex-grow: 1;
 		@media (orientation: landscape) {
-			height: 0;
-			width: 100%;
-			min-height: 0;
+			border-top: 1px @text-color solid;
 		}
 		@media (orientation: portrait) {
-			height: 100%;
-			width: 0;
-			min-width: 0;
+			border-left: 1px @text-color solid;
 		}
+		//@media (orientation: landscape) {
+		//	height: 50%;
+		//	width: 100%;
+		//}
+		//@media (orientation: portrait) {
+		//	height: 100%;
+		//	width: 50%;
+		//}
+	}
+	.detail.data-half.hidden {
+		background-color: @background-color;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+		flex-grow: 0.0001;
+		border-top: 0;
+		@media (orientation: portrait), @mobile {
+			left: 100%;
+		}
+		//@media (orientation: landscape) {
+		//	height: 0;
+		//	min-height: 0;
+		//}
+		//@media (orientation: portrait) {
+		//	width: 0;
+		//	min-width: 0;
+		//}
 	}
 	.detail.full {
 		background-color: @detail-background-color;
@@ -274,22 +337,25 @@ main {
 	}
 }
 
+.data-entries {
+	overflow-y: auto;
+}
+
 .sidebar.invisible {
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	transition: all 0.2s ease;
+	-webkit-transition: width 0.2s ease, height 0.2s ease;
+	-moz-transition: width 0.2s ease, height 0.2s ease;
+	transition: width 0.2s ease, height 0.2s ease;
 	@media (orientation: landscape) {
 		width: 0;
-		border-left: 0;
+		border: 0;
 		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
 	@media (orientation: portrait) {
 		height: 0;
-		border-top: 0;
+		border: 0;
 		-webkit-flex-direction: row;
 		flex-direction: row;
-		visibility: hidden;
 	}
 }
 
@@ -319,8 +385,9 @@ main {
 		background-color: @red;
 		color: @white;
 	}
-	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media (orientation: portrait), @mobile {
 		display: none;
+		height: 0;
 	}
 }
 .list.item {
@@ -334,22 +401,22 @@ main {
 	font-size: 1em;
 	& > * {
 		padding: 0.5em 0.8em;
-		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			display: block;
-			text-align: right;
+		@media (orientation: portrait), @mobile{
+				display: block;
+				text-align: right;
 		}
 	}
 	& > :before {
-		@media(orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			content: attr(data-label);
-			float: left;
-			text-transform: uppercase;
-			font-weight: bold;
+		@media (orientation: portrait), @mobile {
+				content: attr(data-label);
+				float: left;
+				text-transform: uppercase;
+				font-weight: bold;
 		}
 	}
-	@media (orientation: portrait), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		display: block;
-		border-bottom: 1px solid @text-color;
+	@media (orientation: portrait), @mobile{
+			display: block;
+			border-bottom: 1px solid @text-color;
 	}
 }
 .list.item.hover {
@@ -360,8 +427,24 @@ main {
 	color: @white;
 	background-color: @red;
 }
-.data-view {
+.map-view, .list-view {
 	position: relative;
+	-webkit-flex: 1;
+	flex: 1;
+	display: inherit;
+	visibility: visible;
+	-webkit-transition: visibility 0.2s ease;
+	-moz-transition: visibility 0.2s ease;
+	transition: visibility 0.2s ease;
+}
+.map-view.hidden, .list-view.hidden {
+	-webkit-flex: 0;
+	flex: 0;
+	display: none;
+	visibility: hidden;
+	-webkit-transition: visibility 0.2s ease;
+	-moz-transition: visibility 0.2s ease;
+	transition: visibility 0.2s ease;
 }
 .leaflet-control-mapbox-geocoder-form {
 	input {
@@ -435,14 +518,12 @@ main {
 	}
 }
 .main-list {
-	margin: 0 0 2.6em 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		font-size: 14px;
-		margin: 0 0 3.5em 0;
+	@media @mobile-portrait {
+			font-size: 14px;
 	}
 }
 .main-list.shrunk {
@@ -454,7 +535,7 @@ main {
 	border-left: 1px solid @mid-gray;
 }
 
-.order {
+.sort {
 	z-index: 1100;
 	position: absolute;
 	bottom: 0;
@@ -462,6 +543,10 @@ main {
 	background-color: @pale-gray;
 	color: @text-color;
 	padding: 0.2em;
+	box-sizing: border-box;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 	& > * {
 		display: inline-block;
 	}
@@ -470,8 +555,8 @@ main {
 	}
 	.sort-button {
 		transform: translateY(-10%);
-		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			transform: translateY(-15%);
+		@media @mobile {
+				transform: translateY(-15%);
 		}
 		& > i {
 			font-size: 1.5em;
@@ -482,11 +567,40 @@ main {
 		color: @green;
 		cursor: pointer;
 	}
+	.menu {
+		position: absolute;
+		z-index: 1100;
+		left: inherit;
+		top: -5.5em;
+		overflow-y: hidden;
+		border: 1px solid @foreground-color;
+		i {
+			font-size: 1em;
+		}
+		.item.hover {
+			color: @green;
+			cursor: pointer;
+		}
+	}
 }
+.sort.moved {
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+	@media (orientation: landscape) {
+		left: 0.5em;
+		right: auto;
+		transition: all 0.2s ease;
+	}
+	@media (orientation: portrait) {
+		bottom: 300px;
+	}
+}
+
 .result {
 	transform: translateY(-35%);
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-		transform: translateY(-45%);
+	@media @mobile {
+			transform: translateY(-45%);
 	}
 }
 
@@ -497,4 +611,18 @@ main {
 .next-page.disabled, .previous-page.disabled {
 	color: transparent;
 	cursor: auto;
+}
+
+.leaflet-draw.hidden {
+	visibility: hidden;
+}
+
+.date-and, .near.text {
+	padding: 0.1em;
+	display: inline-block;
+	margin: 0.1em 0;
+}
+
+.near-radius, .near-coordinate {
+	margin: auto 0;
 }

@@ -1,80 +1,90 @@
-//Render the base elements of the main page and bind the navigation event listeners
-//Also call for rendering of the default page view
+//Render the base elements of the main page and bind the navigation event listeners.
+//Get search parameters from the URL or insert a default search if none is present.
+//Also call for rendering of the default page view.
 function baseView() {
 	//Instantiate instances of the views that the main page uses
 
-	//Cache Instance
-	var cacheInst = cacheManager();
+	//Data Instance
+	var dataInst = dataStore();
 
 	//URL Parser Instance
-	var urlParserInst = urlParser();
+	var urlParserInst = urlParser(dataInst);
 
 	//Mapbox handler
-	var mapboxViewInst = mapboxManager();
+	var mapboxViewInst = mapboxManager(dataInst);
 
-	//Cookie/Session Handler
-	var sessionInst = sessionsCookies();
-
-	//View components
-	var detailViewInst = detailView(mapboxViewInst);
-
-	//Data Instance
-	var dataInst = dataStore(urlParserInst, detailViewInst);
+	//Detail sidebar
+	var detailViewInst = detailView(mapboxViewInst, dataInst);
 
 	//Views
-	var listViewInst = listView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst);
-	var mapViewInst = mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst,  sessionInst, urlParserInst);
+	var listViewInst = listView(dataInst, urlParserInst);
+	var mapViewInst = mapView(dataInst, mapboxViewInst, urlParserInst);
 
 	//Search components
-	var searchViewInst = searchView(dataInst, cacheInst, mapboxViewInst, mapViewInst, listViewInst, urlParserInst);
+	var searchViewInst = searchView(dataInst, mapboxViewInst, urlParserInst);
 	searchViewInst.bindEvents();
 
-	//Bind event listeners for switching between the different page views
+	//The data model needs references to the views and the detail sidebar, so save references to them.
+	dataInst.state.view.instances.list = listViewInst;
+	dataInst.state.view.instances.map = mapViewInst;
+	dataInst.state.view.detail = detailViewInst;
+
+	//Bind event listeners for switching between the different page views.
 	function bindNavigation() {
 		var sidebar = $('.sidebar');
 
-		$('.list-view-button').click(function() {
-			urlParserInst.setView('list');
-			dataInst.setCurrentView(listViewInst);
-			if (!sidebar.hasClass('invisible')) {
-				detailViewInst.hideContent();
-				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-					function(e) {
-						listViewInst.renderBase(function() {
-							listViewInst.updateContent();
+		$('.view-button').click(function() {
+			//Each view has an ID with the form 'view-model-<type>'
+			//This gets the type from the ID.
+			var viewType = $(this).attr('id').slice(12);
+
+			//If the clicked view is active, then it needs to be deactivated and hidden
+			//unless it's the only one active, in which case do nothing.
+			//There must be at least one view active at all times .
+			if (dataInst.state.view.active[viewType] === true) {
+				//If more than one view is active, hide the current one.
+				if (dataInst.state.view.active.count > 1) {
+					$(this).removeClass('active').removeClass('hover');
+					$('.' + viewType + '-view').addClass('hidden');
+					dataInst.state.view.active[viewType] = false;
+					dataInst.state.view.active.count-=1;
+				}
+				//Don't do anything if the clicked view is the only one active.
+			}
+			//If the clicked view is not active, then activate it.
+			else {
+				$(this).addClass('active').removeClass('hover');
+				$('.' + viewType + '-view').removeClass('hidden');
+				dataInst.state.view.active[viewType] = true;
+				dataInst.state.view.active.count+=1;
+				//If this is a mobile device, then hide the detail sidebar.
+				//Mobile view can't have more than two views, including the sidebar, open
+				//at the same time or else things get too crowded.
+				if (dataInst.isMobile) {
+					detailViewInst.hideContent();
+				}
+			}
+			//This makes sure that the list view's height is properly restored after switching views.
+			if (dataInst.state.view.active.list && dataInst.isMobile) {
+				if ($('.sidebar').hasClass('invisible')) {
+					$('.sidebar').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+						function(e) {
+							listViewInst.setHeight();
 						});
-					});
+				}
+				else {
+					listViewInst.setHeight();
+				}
 			}
-			else {
-				listViewInst.renderBase(function() {
-					listViewInst.updateContent();
-				});
-			}
-		});
-
-		//$('.timeline-view-button').click(function() {
-		//});
-
-		$('.map-view-button').click(function() {
-			urlParserInst.setView('map');
-			dataInst.setCurrentView(mapViewInst);
-			if (!sidebar.hasClass('invisible')) {
-				detailViewInst.hideContent();
-				sidebar.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-				function(e) {
-					mapViewInst.renderBase(function() {
-						mapViewInst.updateContent();
-					});
-				});
-			}
-			else {
-				mapViewInst.renderBase(function() {
-					mapViewInst.updateContent();
-				});
-			}
+			//Re-render the map tiles after everything is done.
+			//If this isn't done, the map often tries to render tiles in the middle of expanding
+			//or contracting its size and ends up with missing tiles.
+			mapboxViewInst.map.main.invalidateSize();
 		});
 	}
 
+	//Create an event listener on the filter menu button to hide and show the filter menu.
+	//Also create an event listener that hides the filter menu if the user clicks anywhere outside the menu.
 	function bindFilterCommands() {
 		$('.filter-button').click(function() {
 			$('.menu.filter').toggleClass('hidden');
@@ -101,7 +111,10 @@ function baseView() {
 		//Get the intial search
 		var searchString = getInitialSearchString();
 
-		var sort = getInitialSort();
+		//If there isn't an initial sort for the search, set it to datetime starting from the most recent events.
+		if (dataInst.state.view.sort.length === 0) {
+			dataInst.state.view.sort = '-datetime';
+		}
 
 		//Set the initial view
 		setInitialView();
@@ -117,15 +130,19 @@ function baseView() {
 				'X-CSRFToken': cookie
 			}
 		}).done(function(data, xhr, response) {
+			//These promises ensure that the search isn't started until all the views have been rendered
+			//and are thus ready to be fed data.
+			var mapPromise = $.Deferred();
+			var listPromise = $.Deferred();
 			L.mapbox.accessToken = data.OGRAFY_MAPBOX_ACCESS_TOKEN;
-			dataInst.getCurrentView().renderBase(function() {
-				console.log(searchString);
-				urlParserInst.setSearchFilters(searchString);
-				dataInst.search('event', searchString, sort);
+			mapViewInst.renderContent(mapPromise);
+			listViewInst.renderContent(listPromise);
+			detailViewInst.renderContent();
+			//Wait for the view promises to be resolved, at which point the views have been instantiated.
+			$.when(mapPromise && listPromise).always(function() {
+				dataInst.search('event', searchString);
 			});
 		});
-
-		//Render the default page view
 
 		//Bind event listeners for switching between different page views
 		bindNavigation();
@@ -134,51 +151,34 @@ function baseView() {
 
 	function getInitialSearchString() {
 		//Get filters from the URL parser
-		var searchString = urlParserInst.getSearchFilters();
+		var searchString = dataInst.state.query.event.searchString;
 
 		//If no search string was provided in the URL, use a default
 		if (searchString.length === 0) {
 			//The default search, if none is provided in the URL, is to get everything from the past week
+			var now = new Date();
 			var oneWeekAgo = new Date();
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
 			//This will be the default search string if none is provided, but as of now that functionality isn't working on the backend.
 //		    searchString = '(datetime gt ' + oneWeekAgo.toJSON() + ')';
 
-			//This is a temporary default search string, as searching by providers does work
-			searchString = '(provider_name contains twitter) or (provider_name contains facebook) or (provider_name contains github) or (provider_name contains instagram) or (provider_name contains steam) or (provider_name contains spotify)';
+			//The below line is the actual default search to be used - anything in the last week
+			//searchString = '(datetime lt \'' + now.toJSON().slice(0, 16) + '\') and (datetime gt \'' + oneWeekAgo.toJSON().slice(0, 16) + '\')';
+
+			searchString = '';
+			console.log(searchString);
+			dataInst.state.query.event.searchString = searchString;
 		}
 
 		return searchString;
 	}
 
-	function getInitialSort() {
-		var sort = urlParserInst.getSort();
-
-		if (sort.length === 0) {
-			sort = '-datetime';
-			urlParserInst.setSort(sort);
-		}
-
-		return sort;
-	}
-
 	function setInitialView() {
-		//Get the current view from the URL parser
-		var currentView = urlParserInst.getView();
+		//Get the current view from the data model
+		var views = dataInst.state.view.active;
 
-		//When the page is first loaded, if a view is specified in the URL hash, set the page to that view
-		if (currentView === 'map') {
-			dataInst.setCurrentView(mapViewInst);
-		}
-		else if (currentView === 'list') {
-			dataInst.setCurrentView(listViewInst);
-		}
-		//If no view is specified, default to map view and set the URL parser to that view
-		else {
-			urlParserInst.setView('map');
-			dataInst.setCurrentView(mapViewInst);
-		}
+		urlParserInst.updateHash();
 	}
 
 	return {

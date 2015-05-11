@@ -47,7 +47,7 @@ class DocumentField(serializers.Field):
     def transform_object(self, obj, depth):
         """
         Models to natives
-        Recursion for (embedded) objects
+        Recursion for (embedded) objects  
         """
         if isinstance(obj, BaseDocument):
             # Document, EmbeddedDocument
@@ -98,6 +98,7 @@ class EmbeddedDocumentField(DocumentField):
         except KeyError:
             raise ValueError("EmbeddedDocumentField requires 'document_type' kwarg")
 
+        self.depth = kwargs.pop('depth')
         super(EmbeddedDocumentField, self).__init__(*args, **kwargs)
 
     def to_representation(self, value):

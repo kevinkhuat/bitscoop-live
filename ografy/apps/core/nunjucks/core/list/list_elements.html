@@ -1,13 +1,13 @@
-{% for item in resultData %}
-<div class="flex list item" id="{{ item.id }}">
+{% for index, event in resultData %}
+<div class="flex list item" id="{{ event.id }}">
 	<div data-label="Provider" class="grow list provider_name">
-		{{ item.provider_name }}
+		{{ event.provider_name }}
 	</div>
 	<div data-label="Date/Time" class="grow list datetime">
-		{{ item.datetime }}
+		{{ event.datetime }}
 	</div>
 	<div data-label= "Name" class="grow list name">
-		{{ item.name }}
+		{{ event.name }}
 	</div>
 </div>
 {% endfor %}

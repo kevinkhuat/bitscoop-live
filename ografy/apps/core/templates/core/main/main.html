@@ -53,8 +53,8 @@
 						<div class="selector active">
 							<i class="icon-notification"></i>
 						</div>
-						<div class="grow item">
-							Events
+						<div class="grow item active">
+							All Events
 						</div>
 						<div class="add-filter">
 							<i class="icon-plus"></i>
@@ -65,7 +65,7 @@
 				</div>
 				<div id='message' class="type-grouping">
 					<div class="flex">
-						<div class="selector active">
+						<div class="selector">
 							<i class="icon-comment2"></i>
 						</div>
 						<div class="grow item">
@@ -78,13 +78,13 @@
 					<div class="filters">
 					</div>
 				</div>
-				<div id='transaction' class="type-grouping">
+				<div id='play' class="type-grouping">
 					<div class="flex">
-						<div class="selector active">
-							<i class="icon-credit-card"></i>
+						<div class="selector">
+							<i class="icon-play2"></i>
 						</div>
 						<div class="grow item">
-							Transactions
+							Plays
 						</div>
 						<div class="add-filter">
 							<i class="icon-plus"></i>
@@ -97,8 +97,8 @@
 		</div>
 
 		<div class="flex center links">
-			<a class="list-view-button item"><i class="icon-list-unordered"></i></a>
-			<a class="map-view-button item"><i class="icon-map22"></i></a>
+			<a id="view-button-list" class="view-button view-button-list item active"><i class="icon-list-unordered"></i></a>
+			<a id="view-button-map" class="view-button view-button-map item active"><i class="icon-map22"></i></a>
 			<a class="spacer"></a>
 			<a class="fullscreen item"><i class="icon-enlarge"></i></a>
 			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>

@@ -39,8 +39,6 @@ class LoginView(View):
 
             if not form.cleaned_data['remember_me']:
                 request.session.set_expiry(0)
-            else:
-                request.session.set_expiry(settings.SESSION_COOKIE_AGE)
 
             return redirect_by_name('core_index')
 

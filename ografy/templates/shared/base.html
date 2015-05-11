@@ -6,7 +6,10 @@
 
 		{% block meta %}
 		<title>{{ title }}</title>
-		<link rel="shortcut icon" href="{% static 'assets/favicon.png' %}" />
+		<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}" />
+		<link rel="manifest" href="{% static 'assets/manifest.json'  %}">
+		<link rel="apple-touch-icon" href="{% static 'assets/logo_240.png' %}">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 		{% endblock %}
 
 		{% block static %}
@@ -22,13 +25,13 @@
 		{% endblock %}
 	</head>
 
-	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
+	<body class="flex{{ body_class }} {% if request.mobile %}mobile{% endif %}">
 		{% block body %}
 		<header class="bg foreground bordered bottom {{ header_class }}">
 			<nav class="flex stretch lockwidth {% if lockwidth_override %}override {% endif %}centered">
 				<div class="flex center wrap grow">
 					{% block branding %}
-					<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/logo_240.png' %}" alt="Ografy" /></a>
+					<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/img/logo_240.png' %}" alt="Ografy" /></a>
 					{% endblock %}
 
 					{% block navlinks %}
@@ -48,7 +51,10 @@
 					{% endif %}
 
 					{% if request.user.is_authenticated %}
-					<a class="fullscreen item"><i class="icon-enlarge">Fullscreen</i></a>
+					<a class="fullscreen item">
+						<i class="icon-enlarge"></i>
+						Fullscreen
+					</a>
 					<div class="item">
 						<a class="user-button item">{{ request.user.identifier }}</a>
 						<div class="flex column menu main hidden">

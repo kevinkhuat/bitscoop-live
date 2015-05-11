@@ -24,6 +24,30 @@
 @color-1: @green;
 @color-2: @blue;
 
+@not-mobile:
+	~"not all and (max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"not all and (max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"not all and (-webkit-min-device-pixel-ratio: 3)",
+	~"not all and (min-device-pixel-ratio: 3)";
+
+@mobile:
+	~"(max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(-webkit-min-device-pixel-ratio: 3)",
+	~"(min-device-pixel-ratio: 3)";
+
+@mobile-portrait:
+	~"(orientation: portrait) and (max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(orientation: portrait) and (-webkit-min-device-pixel-ratio: 3)",
+	~"(orientation: portrait) and (min-device-pixel-ratio: 3)";
+
+@mobile-landscape:
+	~"(orientation: landscape) and (max-device-width: 1080px) and (-webkit-min-device-pixel-ratio: 1.5)",
+	~"(orientation: landscape) and (max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)",
+	~"(orientation: landscape) and (-webkit-min-device-pixel-ratio: 3)",
+	~"(orientation: landscape) and (min-device-pixel-ratio: 3)";
+
 * {
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -39,10 +63,10 @@ html {
 	font-weight: 400;
 	background-color: @background-color;
 	height: 100%;
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		font: 18px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 	}
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		@media (orientation: landscape) {
 			font: 20px 'Source Sans Pro', Helvetica, Arial, sans-serif;
 		}
@@ -65,7 +89,7 @@ html {
 }
 
 .flex.center.view {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		@media (orientation: landscape) {
 			min-width: 15%;
 		}
@@ -76,7 +100,7 @@ html {
 }
 
 .app-header {
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile-portrait {
 		-webkit-flex-direction: column-reverse;
 		flex-direction: column-reverse;
 	}
@@ -87,7 +111,7 @@ html {
 }
 
 .viewsearch {
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile-portrait {
 		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
@@ -99,6 +123,7 @@ body {
 	display: flex;
 	-webkit-flex-direction: column;
 	flex-direction: column;
+	height: 100%;
 	min-height: 100%;
 }
 
@@ -131,12 +156,13 @@ h3 {
 
 a {
 	text-decoration: none;
-	color: @orange;
+	color: @color-2;
 }
 
 ::before {
 	position: relative;
 	top: 2px;
+	margin: 0 0.1em 0 0;
 }
 
 input {
@@ -168,6 +194,7 @@ main {
 	padding: 25px 0;
 	height: 100%;
 	width: 100%;
+	overflow-y: auto;
 }
 
 header {
@@ -180,10 +207,13 @@ header {
 		a {
 			text-decoration: none !important;
 			color: @text-color;
+			cursor: pointer;
+		}
+		a.active {
+			color: @blue;
 		}
 		a.hover {
 			color: @green;
-			cursor: pointer;
 		}
 		i.hover {
 			color: @green;
@@ -241,19 +271,19 @@ footer {
 }
 
 .lockwidth {
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		width: 85%;
 	}
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		width: 90%;
 	}
 	max-width: 1200px;
 	.menu.main {
 		overflow-y: hidden;
-		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+		@media @not-mobile {
 			right: inherit;
 		}
-		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		@media @mobile {
 			right: -0.5em;
 		}
 	}
@@ -274,10 +304,10 @@ footer {
 }
 
 .padded.thin {
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		padding: 2rem 1rem;
 	}
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		padding: 2rem 0;
 	}
 }
@@ -455,10 +485,10 @@ body.full {
 		max-width: none;
 		min-width: 0;
 		.menu.main {
-			@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+			@media @not-mobile {
 				right: inherit;
 			}
-			@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+			@media @mobile {
 				right: 0.5em;
 			}
 		}
@@ -626,25 +656,24 @@ div.table {
 #left {
 	overflow-y: auto;
 	overflow-x: hidden;
+	max-width: 20%;
+
+	@media @mobile-landscape {
+		max-width: 35%;
+	}
+
 	@media (orientation: portrait) {
 		max-width: 100%;
 		margin: 0 0 1.5em 0;
 	}
-	@media (orientation: landscape) {
-		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
-			max-width: 20%;
-		}
-		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-			@media (orientation: landscape) {
-				max-width: 35%;
-			}
-		}
-	}
+
+
+
 	.step {
-		@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+		@media @not-mobile {
 			padding: 1em;
 		}
-		@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+		@media @mobile {
 			padding: 0.5em;
 		}
 	}
@@ -652,11 +681,11 @@ div.table {
 
 #left:not("hidden") {
 	max-width: 300px;
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		margin: 0 2em 0 0;
 	}
 
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		@media (orientation: landscape) {
 			margin: 0 1em 0 0;
 		}
@@ -667,18 +696,18 @@ div.table {
 }
 
 .drawer {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		position: absolute;
 		left: 0;
 		width: 10em;
-		-webkit-transition: left 0.2s ease;
-		-moz-transition: left 0.2s ease;
-		transition: left 0.2s ease;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
 	}
 }
 
 .drawer.container {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		position: absolute;
 		left: 0;
 		z-index: 10;
@@ -687,7 +716,7 @@ div.table {
 }
 
 .drawer.hidden {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		position: absolute;
 		left: -100%;
 		-webkit-transition: left 0.2s ease;
@@ -697,7 +726,17 @@ div.table {
 }
 
 .drawer.map.hidden {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
+		position: relative;
+		left: inherit;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+	}
+}
+
+.drawer.data.hidden {
+	@media @mobile {
 		position: relative;
 		left: inherit;
 		-webkit-transition: all 0.2s ease;
@@ -707,7 +746,7 @@ div.table {
 }
 
 .drawer-toggle {
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		-ms-box-sizing: border-box;
@@ -730,14 +769,14 @@ div.table {
 		transition: left 0.2s ease;
 		color: @text-color;
 	}
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		width: 0;
 		height: 0;
 		visibility: hidden;
 	}
 }
 
-.drawer-toggle.map {
+.drawer-toggle.detail {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -755,17 +794,28 @@ div.table {
 	cursor: pointer;
 	display: inline-block;
 	position: absolute;
-	-webkit-transition: top 0.2s ease;
-	-moz-transition: top 0.2s ease;
-	transition: top 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 	visibility: visible;
 	@media (orientation: landscape) {
-		left: inherit;
+		left: 2em;
 		bottom: 100%;
 	}
 	@media (orientation: portrait) {
 		right: 100%;
-		top: inherit;
+		top: 2em;
+		left: initial;
+	}
+}
+.drawer-toggle.detail.data {
+	@media (orientation: landscape) {
+		left: 0;
+		bottom: 100%;
+	}
+	@media (orientation: portrait) {
+		right: 100%;
+		top: 0;
 		left: initial;
 	}
 }
@@ -773,8 +823,8 @@ div.table {
 .drawer-toggle::before {
 		top: 0;
 	}
+
 .drawer-toggle.hidden {
-	left: inherit;
 	-webkit-transition: left 0.2s ease;
 	-moz-transition: left 0.2s ease;
 	transition: left 0.2s ease;
@@ -782,11 +832,25 @@ div.table {
 
 .drawer-toggle.map.hidden {
 	@media (orientation: landscape) {
-		left: 0;
-		bottom: 45px;
+		left: 2em;
+		//bottom: 45px;
 	}
 	@media (orientation: portrait) {
 		right: 0;
+		top: 2em;
+	}
+	color: @text-color;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}
+
+.drawer-toggle.data.hidden {
+	@media (orientation: landscape) {
+		left: 0;
+		//bottom: 45px;
+	}
+	@media (orientation: portrait) {
 		top: 0;
 	}
 	color: @text-color;
@@ -819,6 +883,12 @@ div.table {
 
 .button-green {
 	background-color: @green;
+	color: @white;
+	margin: 0 auto;
+}
+
+.button-red {
+	background-color: @red;
 	color: @white;
 	margin: 0 auto;
 }
@@ -934,13 +1004,17 @@ i.step-icon {
 	input {
 		padding: 0.1em;
 		display: inline-block;
+		max-width: 8em;
+	}
+	input[type=datetime-local] {
+		max-width: 14em;
 	}
 }
 
 .menu {
 	position: absolute;
 	width: 100%;
-	@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile-landscape {
 		width: 125%;
 	}
 	top: 2.5em;
@@ -948,7 +1022,7 @@ i.step-icon {
 	z-index: 1100;
 	overflow-y: auto;
 	max-height: 20em;
-	@media (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile-landscape {
 		max-height: 10em;
 	}
 	-webkit-transition: height 0.2s ease;
@@ -961,6 +1035,9 @@ i.step-icon {
 		padding: 0.25em;
 		text-align: left;
 		margin: 0;
+	}
+	.item.active {
+		font-weight: bold;
 	}
 	.selector {
 		padding: 0.4em 0.8em 0 1em;
@@ -1015,27 +1092,11 @@ i.step-icon {
 	}
 }
 
-.menu.sort {
-	position: absolute;
-	z-index: 1100;
-	left: inherit;
-	top: -5.5em;
-	overflow-y: hidden;
-	border: 1px solid @foreground-color;
-	i {
-		font-size: 1em;
-	}
-	.item.hover {
-		color: @green;
-		cursor: pointer;
-	}
-}
-
 .signup {
-	@media (-webkit-max-device-pixel-ratio: 1.5), (max-device-pixel-ratio: 1.5) {
+	@media @not-mobile {
 		width: 30%;
 	}
-	@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile {
 		@media (orientation: portrait) {
 			width: 100%;
 		}
@@ -1046,10 +1107,138 @@ i.step-icon {
 }
 
 .user-button {
-	@media (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+	@media @mobile-portrait {
 		padding: 0 1em 0 0;
 	}
 }
 .fields .title {
 	margin: 0 0 1em 0;
+}
+
+.onoffswitch {
+	position: relative;
+	width: 4em;
+	height: 32px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+	display: none;
+}
+
+.onoffswitch-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 2px solid @mid-gray;
+	border-radius: 1em;
+}
+
+.onoffswitch-inner {
+	display: block;
+	width: 200%;
+	margin: 0 0 0 -100%;
+	-moz-transition:margin 0.3s ease-in 0s;
+	-webkit-transition: margin 0.3s ease-in 0s;
+	-o-transition: margin 0.3s ease-in 0s;
+	transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+	display: block;
+	float: left;
+	width: 50%;
+	height: 2em;
+	padding: 0;
+	line-height: 2em;
+	font-size: 14px;
+	color: @white;
+	font-family: Trebuchet, Arial, sans-serif;
+	font-weight: bold;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+	content: "ON";
+	padding-left: 10px;
+	background-color: @green;
+	color: @white;
+	margin: auto;
+	top: 0;
+}
+
+.onoffswitch-inner:after {
+	content: "OFF";
+	padding-right: 10px;
+	background-color: @red;
+	color: @white;
+	text-align: right;
+}
+
+.onoffswitch-switch {
+	display: block;
+	width: 1em;
+	margin: 0.333em;
+	background: @white;
+	border: 2px solid @mid-gray;
+	border-radius: 1em;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 2.333em;
+	-moz-transition: all 0.3s ease-in 0s;
+	-webkit-transition: all 0.3s ease-in 0s;
+	-o-transition: all 0.3s ease-in 0s;
+	transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+	margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+	right: 0px;
+}
+
+.delete-signal {
+	cursor: pointer;
+	margin: auto 0 auto 1em;
+}
+
+.delete-signal.hover {
+	color: @red;
+}
+
+.delete-check {
+	height: 100%;
+	background-color: @blue;
+	color: @white;
+	text-align: center;
+	width: 8em;
+	float: right;
+	position: relative;
+	margin: 1em auto;
+	border: 10px @blue solid;
+	-webkit-transition: height 0.2s ease;
+	-moz-transition: height 0.2s ease;
+	transition: height 0.2s ease;
+}
+
+.delete-check.hidden {
+	height: 0;
+	border: 0;
+	visibility: hidden;
+	margin: 0 auto;
+	-webkit-transition: height 0.2s ease;
+	-moz-transition: height 0.2s ease;
+	transition: height 0.2s ease;
+}
+
+.delete-confirm, .delete-cancel {
+	padding: 0.75em;
+	cursor: pointer;
 }

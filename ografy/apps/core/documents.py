@@ -28,3 +28,9 @@ class Settings(mongoengine.Document):
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
     settings_dict = mongoengine.DictField()
+
+    meta = {
+        'indexes': [{
+            'fields': ['$user_id'],
+            'default_language': 'english',
+            }]}

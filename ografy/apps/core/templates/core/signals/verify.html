@@ -2,24 +2,7 @@
 {% load staticfiles %}
 
 {% block static %}
-	{{ block.super }}
-	<script type="application/javascript">
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
-				var cookies = document.cookie.split(';');
-				for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					// Does this cookie string begin with the name we want?
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
-				}
-			}
-			return cookieValue;
-		}
-	</script>
+{{ block.super }}
 {% endblock %}
 
 {% block left %}
@@ -60,41 +43,27 @@
 {% block content %}
 	<div class="step-verify">
 		<div class="grouping">
-			<div class="bigger">Verify {{ signal.name }} Connection Settings</div>
+			<div class="bigger">Verify {{ signal.provider.backend_name }} Connection Settings</div>
 			<div>
 				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ signal.name }}</span>
+					<span>Details and stuff about connection settings to {{ signal.provider.backend_name }}</span>
 				</div>
-				<span class="bold">Name your connection to {{ signal.name }}</span>
+				<span class="bold">Name your connection to {{ signal.provider.backend_name }}</span>
 
 				<form>
-					<input class="text-input-width" type="text" name="email" value="Service - dummy@dummy.dummy"/>
+					<input class="text-input-width" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
 				</form>
 			</div>
 		</div>
 		<div class="grouping">
 			<div class="bigger">{{ signal.name }} Connection Permissions</div>
 			<div>
-				<div name="permission-email" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Email</div>
+				{% for permission in permissions %}
+				<div name="{{ permission.name }}" class="permission-toggle">
+					<input type="checkbox" {% if permission.enabled %}checked="checked"{% endif %}>
+					<div>{{ permission.name }}</div>
 				</div>
-				<div name="permission-contacts" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Contacts</div>
-				</div>
-				<div name="permission-friends" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Friends</div>
-				</div>
-				<div name="permission-info" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Personal Info</div>
-				</div>
-				<div name="permission-activity" class="permission-toggle">
-					<input type="checkbox" checked="checked">
-					<div>Activity</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="grouping">
@@ -107,31 +76,31 @@
 
 					<div class="field">
 						<div>
-							<input updateFrequency=0 type="radio" name="update-frequency">
+							<input updateFrequency=0 type="radio" name="update-frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %}>
 							<label class="premium-message">Premium On Demand</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input updateFrequency=1 type="radio" name="update-frequency" checked="checked">
+							<input updateFrequency=1 type="radio" name="update-frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
 							<label>Daily</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input updateFrequency=2 type="radio" name="update-frequency">
+							<input updateFrequency=2 type="radio" name="update-frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
 							<label>Weekly</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input updateFrequency=3 type="radio" name="update-frequency">
+							<input updateFrequency=3 type="radio" name="update-frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
 							<label>Manual</label>
 						</div>
 					</div>
 					<div class="field">
 						<div>
-							<input updateFrequency=4 type="radio" name="update-frequency">
+							<input updateFrequency=4 type="radio" name="update-frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
 							<label>Once</label>
 						</div>
 					</div>

@@ -1,63 +1,52 @@
-//Render the Map View on the main page
-function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionInst, urlParserInst) {
+//Render the Map View on the main page.
+function mapView(dataInst, mapboxViewInst, urlParserInst) {
 	var mapInst;
 	var map = 'pants';
 	var geoJSON = 'shorts';
 
-	//Render the base framework of the Map View
-	function renderBase(callback) {
-		//Render the map content
-		renderContent(callback);
-
-		//Render the detail panel content without a map
-		detailViewInst.renderContent(false);
-	}
-
-	//Render the map content
-	function renderContent(callback) {
+	//Render the map content.
+	function renderContent(promise) {
 		//Render the container for the map using Nunjucks and insert it into the DOM
 		var map_framework = nunjucks.render('map/map.html');
-		$('.data-view').html(map_framework);
+		$('.map-view').html(map_framework);
 
 		//Create a MapBox map.
 		//This needs to be done after the map container has been inserted into the DOM
 		//since MapBox needs a parent element specified when instantiating a map.
-
-		mapboxViewInst.initializeMap(true);
-		map = mapboxViewInst.map;
+		mapboxViewInst.initializeMainMap();
+		map = mapboxViewInst.map.main;
 		geoJSON = mapboxViewInst.geoJSON;
-		callback();
+		//Resolve the input promise to indicate that the map view has finished rendering.
+		promise.resolve();
 	}
 
-	//Creates a new layer of markers on the map
+	//Create a new layer of markers on the map.
 	function updateContent() {
 		var line = [];
+		var newData = dataInst.resultCache.events;
+		var currentFocus = dataInst.state.view.map.focus.slice();
+		var currentZoom = dataInst.state.view.map.zoom;
+
 		if (map.hasLayer(map.clusterGroup)) {
 			map.removeLayer(map.clusterGroup);
 			map.removeLayer(map.polyline);
 			map.removeControl(map.layerControl);
 		}
-		//map.featureLayer.eachLayer(function(marker) {
-		//	map.clusterGroup.removeLayer(marker);
-		//});
 
+		//Remove all markers from the map
 		map.removeLayer(map.featureLayer);
-		//map.removeLayer(map.clusterGroup);
 		geoJSON.features = [];
 
-		var newData = dataInst.getResultData();
-
-		//Adds result data to a geoJSON layer
+		//Add the result data to a geoJSON layer
 		geoJSON = mapboxViewInst.addData(geoJSON, newData);
 
-		//Add the new element to the map
+		//Add the new geoJSON layer to the map
 		map.featureLayer = L.mapbox.featureLayer(geoJSON);
 
 		//Create a new ClusterGroup for drawing lines or directions between markers
-		map.clusterGroup = new L.MarkerClusterGroup();
-
-		var currentFocus = urlParserInst.getFocus().slice();
-		var currentZoom = urlParserInst.getZoom();
+		map.clusterGroup = new L.MarkerClusterGroup({
+			maxClusterRadius: 20
+		});
 
 		//Logic for the focus and/or zoom being present in the URL
 		if (currentFocus.length !== 0 || currentZoom !== 0) {
@@ -67,14 +56,13 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 			}
 			//If the focus was entered but not the zoom, center on the focus and set zoom to 12
 			else if (currentFocus.length !== 0) {
-				urlParserInst.setZoom(12);
-				currentZoom = urlParserInst.getZoom();
+				dataInst.state.view.map.zoom = 12;
 				map.setView(currentFocus.reverse(), 12);
 			}
 			//If the zoom was entered but not the focus, get the user's location and center on them.
 			else {
-				urlParserInst.setFocus([parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())]);
-				currentFocus = urlParserInst.getFocus();
+				dataInst.state.view.map.focus = [parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())];
+				currentFocus = dataInst.state.view.map.focus;
 				map.setView(currentFocus.reverse(), currentZoom);
 			}
 		}
@@ -82,11 +70,11 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 		//in the result data using fitBounds
 		else {
 			//Fit the map's view so that all of the items are visible
-			map.fitBounds(map.featureLayer.getBounds());
-			urlParserInst.setZoom(map.getZoom());
-			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
-			currentZoom = urlParserInst.getZoom();
-			currentFocus = urlParserInst.getFocus();
+			if (map.featureLayer.getGeoJSON().features.length > 0) {
+				map.fitBounds(map.featureLayer.getBounds());
+				dataInst.state.view.map.zoom = map.getZoom();
+				dataInst.state.view.map.focus = [map.getCenter().lng, map.getCenter().lat];
+			}
 		}
 
 		//Update the URL hash
@@ -132,44 +120,78 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 //		directions.query();
 //		map.directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
 
-		//Update the zoom both locally and in the hash when the user zooms in or out
+		//Update the zoom both in the data model and in the hash when the user zooms in or out.
 		map.on('zoomend', function() {
-			urlParserInst.setZoom(map.getZoom());
-			currentZoom = urlParserInst.getZoom();
+			dataInst.state.view.map.zoom = map.getZoom();
 			urlParserInst.updateHash();
 		});
 
-		//Update the focus both locally and in the hash when the user moves the map
+		//Update the focus both in the data model and in the hash when the user moves the map.
 		map.on('moveend', function() {
-			urlParserInst.setFocus([map.getCenter().lng, map.getCenter().lat]);
-			currentFocus = urlParserInst.getFocus();
+			dataInst.state.view.map.focus = [map.getCenter().lng, map.getCenter().lat];
 			urlParserInst.updateHash();
 		});
 
-		//When the user clicks anywhere, change all markers back to the default color
+		//When the user clicks anywhere, change all markers back to the default color.
 		map.on('click', function(e) {
-			resetColors(map);
-			//Populate the detail panel content with information from the selected item.
-			detailViewInst.hideContent();
+			dataInst.highlight(false);
 		});
 
 		//Bind an event listener that triggers when an item on the map is selected.
-		//This listener will populate the detail content with the selected item's information.
-		//The selected marker will also change color.
+		//This will clear the data model's selected field, add the clicked event to the selected field,
+		//and call the data model's highlight function.
+		//Note that this doesn't directly call this module's highlight function, as the data model's highlight
+		//function calls each view's highlight function.
 		map.clusterGroup.on('click', function(e) {
 			//Save which item was selected
-			var feature = e.layer.feature;
+			dataInst.state.selected = {};
+			dataInst.state.selected[e.layer.feature.properties.id] = true;
+			dataInst.highlight(true);
+		});
+	}
 
-			//Reset all markers back to their original color.
-			resetColors(map);
+	//Highlight a selected event on the map.
+	function highlight(id, eventActive) {
+		var feature;
+		var layers = map.featureLayer._layers;
+		var thisLayer;
+		var thisMarker;
+		var event;
 
+		//Find the layer, feature, and marker associated with the selected event.
+		for (var layer in layers) {
+			if (layers[layer].feature !== undefined) {
+				if (layers[layer].feature.properties.id === id) {
+					feature = layers[layer].feature;
+					thisLayer = layer;
+					thisMarker = map.featureLayer._layers[thisLayer];
+				}
+			}
+		}
+
+		//Reset all markers back to their original color.
+		resetColors(map);
+
+		//If the given event is active, highlight it.
+		if (eventActive) {
 			//Change the color of the selected marker
 			feature.properties['old-color'] = feature.properties['marker-color'];
 			feature.properties['marker-color'] = '#ff8888';
-			e.layer.setIcon(L.mapbox.marker.icon(feature.properties));
+			thisMarker.setIcon(L.mapbox.marker.icon(feature.properties));
+			//Open the popup.  Note that if the marker is in a cluster, this won't show up.
+			//An attempt was made to spiderfy the selected cluster before opening the popup,
+			//but that caused more problems than it solved since markers that weren't normally spiderfied
+			//were being spiderfied anyway.
+			thisMarker.openPopup();
+		}
 
-			//Populate the detail panel content with information from the selected item.
-			detailViewInst.updateContent(feature.properties.title, feature.properties.datetime, String(feature.geometry.coordinates));
+		//Set the focus to the event's coordinates and then center the map over the event and zoom in.
+		dataInst.state.view.map.focus = feature.geometry.coordinates;
+		map.setView(dataInst.state.view.map.focus.slice().reverse(), dataInst.state.view.map.zoom, {
+			pan: {
+				animate: true,
+				duration: 0.25
+			}
 		});
 	}
 
@@ -181,12 +203,12 @@ function mapView(detailViewInst, dataInst, cacheInst, mapboxViewInst, sessionIns
 
 			thisMarker.feature.properties['marker-color'] = thisMarker.feature.properties['old-color'] || thisMarker.feature.properties['marker-color'];
 			thisMarker.setIcon(L.mapbox.marker.icon(thisMarker.feature.properties));
+			thisMarker.closePopup();
 		}
 	}
 
-
 	return {
-		renderBase: renderBase,
+		highlight: highlight,
 		renderContent: renderContent,
 		updateContent: updateContent
 	};

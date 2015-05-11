@@ -1,10 +1,13 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import render, HttpResponseRedirect, Http404
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, Http404
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core import api as core_api
+
 
 @login_required
 def authorize(request):
@@ -12,7 +15,7 @@ def authorize(request):
     # # Look up signals from API for current user where signal
     # # is not verified or complete.
     unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
-    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) | Q(complete=False) | Q(connected=False) | Q(enabled=False)))
+    unverified_signals = list(core_api.SignalApi.get(val=Q(user=request.user.id) & (Q(complete=False) | Q(connected=False))))
 
     signal_count = len(unverified_signals)
 
@@ -94,29 +97,48 @@ def providers(request):
 @login_required
 def verify(request, pk):
     if request.method == 'GET':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
-        signal.connected = True
-        signal.save()
+        signal = core_api.SignalApi.get(Q(user=request.user.id) & Q(id=pk)).get()
+        permissions = signal.permission_set.all()
 
         if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
-                'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
+                'title': 'Ografy - Authorize ' + signal.provider.backend_name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
             })
         else:
+            if not signal.complete:
+                extra_data = UserSocialAuth.objects.filter(user=request.user, uid=signal.psa_backend_uid)[0].extra_data
+                if signal.provider.auth_type == 1:
+                    access_token = extra_data['access_token']
+                    signal.oauth_token = access_token['oauth_token']
+                    signal.oauth_token_secret = access_token['oauth_token_secret']
+                elif signal.provider.auth_type == 0:
+                    signal.access_token = extra_data['access_token']
+                else:
+                    pass
+                signal.save()
+
             return render(request, 'core/signals/verify.html', {
-                'title': 'Ografy - Verify ' + signal.name + ' Connection',  # Change to signal
+                'title': 'Ografy - Verify ' + signal.provider.backend_name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
-                'signal': signal
+                'signal': signal,
+                'permissions': permissions
             })
     elif request.method == 'POST':
-        signal = core_api.SignalApi.get(Q(user=request.user.id) | Q(id=pk)).get()
+        signal = core_api.SignalApi.get(Q(user=request.user.id) & Q(id=pk)).get()
         signal.complete = True
         signal.enabled = True
-        signal.frequency = request.POST['updateFrequency'];
+        signal.name = request.POST['name']
+        signal.frequency = request.POST['updateFrequency']
         signal.save()
 
-        return HttpResponseRedirect(reverse('core_index'))
+        requestPermissions = json.loads(request.POST['permissions'])
+        permissions = signal.permission_set.all()
+        for count in range(0, len(permissions)):
+            permissions[count].enabled = requestPermissions[count]
+            permissions[count].save()
+
+        return HttpResponse(json.dumps(reverse('core_settings_signals')))

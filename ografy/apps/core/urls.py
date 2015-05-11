@@ -39,6 +39,4 @@ urlpatterns = patterns('',
 
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
-
-    url(r'^search/event$', search_views.SearchView.as_view(), name='search_event'),
 )

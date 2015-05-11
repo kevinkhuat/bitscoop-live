@@ -13,7 +13,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/static/lib/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -27,7 +28,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js'
+					'ografy/**/*.js',
+					'!ografy/static/lib/**/*.js'
 				]
 			}
 		},
@@ -80,14 +82,12 @@ module.exports = function(grunt) {
 				]
 			},
 			less: {
-				files: [
-					'ografy/apps/core/static/core/less/main.less',
-					'ografy/apps/core/static/core/less/main-dark.less',
-					'ografy/apps/core/static/core/less/main-light.less',
-					'ografy/static/shared/less/site.less',
-					'ografy/static/shared/less/site-dark.less',
-					'ografy/static/shared/less/site-light.less'
-				],
+				files: {
+					'build/static/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
+					'build/static/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
+					'build/static/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
+					'build/static/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
+				},
 				tasks: [
 					'less'
 				]
