@@ -219,7 +219,7 @@ function updateEmail(user_id) {
 	});
 }
 
-// TODO: Fix, not working with hashing. 
+// TODO: Fix, not working with hashing.
 function updatePassword(user_id) {
 	var data = {};
 	data.password = $('input[name="new_password"]')[0].value;

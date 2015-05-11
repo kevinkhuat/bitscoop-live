@@ -9,7 +9,7 @@ function urlParser(dataInst) {
 	//Variables for parsing the query
 	var queryPattern = /q=\S*?(&|$)/;
 	var queryRegexResult = '';
-	var currentQuery= '';
+	var currentQuery = '';
 
 	function retrieveHash() {
 		//Get the hash from the URL
@@ -20,8 +20,9 @@ function urlParser(dataInst) {
 				stateRegexResult = statePattern.exec(urlHash)[0];
 				currentStateEncoded = stateRegexResult.replace('s=', '').replace('&', '');
 				dataInst.state = JSON.parse(window.atob(currentStateEncoded));
-			} catch (exec) {
-				consloe.log("Invalid State URL");
+			}
+			catch(exec) {
+				consloe.log('Invalid State URL');
 			}
 		}
 
@@ -39,8 +40,9 @@ function urlParser(dataInst) {
 			urlHash = 's=' + window.btoa(JSON.stringify(dataInst.state)) + '&q=' + dataInst.resultCache.query_id;
 
 			window.location.hash = urlHash;
-		} catch (exec) {
-			consloe.log("Invalid State URL");
+		}
+		catch(exec) {
+			consloe.log('Invalid State URL');
 		}
 	}
 
