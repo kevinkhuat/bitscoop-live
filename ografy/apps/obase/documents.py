@@ -35,7 +35,7 @@ class Data(mongoengine.Document):
     data_blob = mongoengine.DictField()
 
 
-class Event(mongoengine.Document):
+class EventBase(mongoengine.Document):
     """the base class for all discrete events tracked by the Ografy engine.
 
     #. *created* the date created
@@ -72,23 +72,21 @@ class Event(mongoengine.Document):
     data = mongoengine.ReferenceField(Data, reverse_delete_rule=mongoengine.CASCADE)
     location = mongoengine.PointField()
 
-    # meta = {
-    #     'indexes': [{
-    #         'fields': ['$user_id', '$signal_id', '$name', '$datetime'],
-    #         'default_language': 'english',
-    #         'weight': {'name': 10, 'datetime': 2}
-    #         }]}
-
     meta = {
+        'abstract': True,
         'allow_inheritance': True,
         'indexes': [{
             'fields': ['$user_id', '$signal_id', '$name', '$datetime'],
             'default_language': 'english',
             'weight': {'name': 10, 'datetime': 2}
-            }]}
+            }
+        ]}
+
+class Event(EventBase):
+    pass
 
 
-class Message(Event):
+class Message(EventBase):
     """This data class for all types of messages
 
     #. *event* the base class for all discrete events tracked by the Ografy engine
@@ -111,16 +109,14 @@ class Message(Event):
     message_from = mongoengine.StringField()
     message_body = mongoengine.StringField(required=True)
 
-    newFields = ['$message_to', '$message_from', '$message_body']
-    newWeights = {'message_body': 10, 'message_to': 2, 'message_from': 2}
-
-    meta = {'indexes': [{'fields': [], 'weight': {}}]}
-    # meta['indexes'] = deepcopy(Event._meta['indexes'])
-    meta['indexes'][0]['fields'] += newFields
-    meta['indexes'][0]['weight'].update(newWeights)
+    meta = {
+        'indexes': [{
+                'fields': ['$message_to', '$message_from', '$message_body'],
+                'weight': {'message_body': 10, 'message_to': 2, 'message_from': 2}
+            }]}
 
 
-class Play(Event):
+class Play(EventBase):
 
     PLAY_TYPE = (
         ('Song', 'Listen to Song'),
@@ -135,10 +131,8 @@ class Play(Event):
     title = mongoengine.StringField()
     media_url = mongoengine.StringField()
 
-    newFields = ['$title']
-    newWeights = {'title': 12}
-
-    meta = {'indexes': [{'fields': [], 'weight': {}}]}
-    # meta['indexes'] = deepcopy(Event._meta['indexes'])
-    meta['indexes'][0]['fields'] += newFields
-    meta['indexes'][0]['weight'].update(newWeights)
+    meta = {
+        'indexes': [{
+                'fields': ['$title'],
+                'weight': {'title': 12}
+            }]}
