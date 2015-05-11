@@ -76,7 +76,7 @@ class EventBase(mongoengine.Document):
         'abstract': True,
         'allow_inheritance': True,
         'indexes': [{
-            'fields': ['$user_id', '$signal_id', '$name', '$datetime'],
+            'fields': ['$user_id', '$signal_id', '$name', '$datetime', ("$location","2dsphere")],
             'default_language': 'english',
             'weight': {'name': 10, 'datetime': 2}
             }
