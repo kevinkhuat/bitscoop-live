@@ -63,9 +63,9 @@ class PersonalView(View):
             return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
-            'title': self.title,
-            'lockwidth_override': True,
-            'form': form
+                'title': self.title,
+                'lockwidth_override': True,
+                'form': form
             })
 
 
@@ -79,8 +79,9 @@ class SecurityView(View):
 
     def get(self, request):
         return render(request, self.template_name, {
-        'title': self.title,
-        'lockwidth_override': True,
+            'user': request.user,
+            'title': self.title,
+            'lockwidth_override': True,
         })
 
     def post(self, request):
@@ -127,8 +128,8 @@ class SignalView(View):
 class UserView(View):
     def my_profile(request):
         return render(request, 'core/user/my_profile.html', {
-        'title': 'Ografy - {0}'.format(request.user.identifier),
-        'user': request.user
+            'title': 'Ografy - {0}'.format(request.user.identifier),
+            'user': request.user
         })
 
     def profile(request, handle):

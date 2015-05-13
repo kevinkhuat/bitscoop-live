@@ -4,29 +4,7 @@
 
 {% block static %}
 	{{ block.super }}
-	<style type="text/css">
-		.signal-toggle {
-			padding: 5px 0 5px 0;
-		}
-	</style>
-
 	<script type="application/javascript">
-		function getCookie(name) {
-			var cookieValue = null;
-			if (document.cookie && document.cookie != '') {
-				var cookies = document.cookie.split(';');
-				for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					// Does this cookie string begin with the name we want?
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
-				}
-			}
-			return cookieValue;
-		}
-
 		function disableSignal(signal_id) {
 			{#			FIXME: Make less crap#}
 			$.ajax({
@@ -63,18 +41,29 @@
 	<div class="grouping">
 		<div class="bigger">Your connections</div>
 		{% for signal in signals %}
-			<div class="flex row signal-toggle signal-{{ signal.id }}">
-				<div class="grow">
-					<i class="icon-{{ signal.provider.backend_name }}"></i>
-					<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
+			<div class="flex column signal-toggle signal-{{ signal.id }}">
+				<div class="flex grow">
+					<div class="grow">
+						<i class="icon-{{ signal.provider.backend_name }}"></i>
+						<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
+					</div>
+					<div class="onoffswitch">
+						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
+						<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}" onclick="toggleSignal({{ signal.id }})">
+							<span class="onoffswitch-inner" ></span>
+							<span class="onoffswitch-switch"></span>
+						</label>
+					</div>
+					<div class='delete-signal'>
+						<i class="icon-cancel-circle"></i>
+					</div>
 				</div>
-				<div class="toggle checkbox signal-enable-{{ signal.id }}">
-					<input type="checkbox">
-					<label></label>
-				</div>
-				<div onclick="deleteSignal({{ signal.id }})">
-					<i class="remove icon"></i>
-					<label></label>
+				<div class="delete-check hidden">
+					Delete?
+					<div class="flex row">
+						<input class="bold button-green delete-confirm" type="button" value="Yes" onclick="deleteSignal({{ signal.id }})">
+						<input class="bold button-red delete-cancel" type="button" value="No">
+					</div>
 				</div>
 			</div>
 		{% endfor %}

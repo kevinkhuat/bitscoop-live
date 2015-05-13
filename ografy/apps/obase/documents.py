@@ -1,5 +1,6 @@
 import datetime
 
+from copy import deepcopy
 from django.conf import settings
 import mongoengine
 
@@ -28,11 +29,13 @@ class Data(mongoengine.Document):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
 
+    event_id = mongoengine.ObjectIdField()
+
     # To be sourced from signals.js
     data_blob = mongoengine.DictField()
 
 
-class Event(mongoengine.Document):
+class EventBase(mongoengine.Document):
     """the base class for all discrete events tracked by the Ografy engine.
 
     #. *created* the date created
@@ -51,9 +54,10 @@ class Event(mongoengine.Document):
 
     EVENT_TYPE = (
         ('Event', 'Basic Event'),
-        ('Message', 'Message Event'),
+        ('Message', 'Basic Message'),
+        ('Play', 'Media Play')
     )
-    type = mongoengine.StringField(required=True, choices=EVENT_TYPE, default='Event')
+    event_type = mongoengine.StringField(choices=EVENT_TYPE)
 
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
@@ -69,30 +73,21 @@ class Event(mongoengine.Document):
     location = mongoengine.PointField()
 
     meta = {
-        'indexes': [
-            'user_id',
-            'signal_id',
-            'provider_id',
-            (
-                'provider_id',
-                '+provider_name'
-            ),
-            [
-                (
-                    "location",
-                    "2dsphere"
-                ),
-                (
-                    "datetime",
-                    1
-                )
-            ]
-        ]
-    }
+        'abstract': True,
+        'allow_inheritance': True,
+        'indexes': [{
+            'fields': ['$user_id', '$signal_id', '$name', '$datetime', ("$location","2dsphere")],
+            'default_language': 'english',
+            'weight': {'name': 10, 'datetime': 2}
+            }
+        ]}
+
+class Event(EventBase):
+    pass
 
 
-class Message(mongoengine.Document):
-    """This data class for all uncategorizable data.
+class Message(EventBase):
+    """This data class for all types of messages
 
     #. *event* the base class for all discrete events tracked by the Ografy engine
 
@@ -101,11 +96,43 @@ class Message(mongoengine.Document):
     #. *message_body* the body of the message
     """
 
-    # To be managed by the REST API
-    user_id = mongoengine.IntField(required=True)
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE)
+    MESSAGE_TYPE = (
+        ('Email', 'Email'),
+        ('IM', 'Instant message'),
+        ('Text', 'Text Message'),
+    )
+
+    message_type = mongoengine.StringField(choices=MESSAGE_TYPE)
 
     # To be sourced from signals.js
     message_to = mongoengine.SortedListField(mongoengine.StringField())
     message_from = mongoengine.StringField()
     message_body = mongoengine.StringField(required=True)
+
+    meta = {
+        'indexes': [{
+                'fields': ['$message_to', '$message_from', '$message_body'],
+                'weight': {'message_body': 10, 'message_to': 2, 'message_from': 2}
+            }]}
+
+
+class Play(EventBase):
+
+    PLAY_TYPE = (
+        ('Song', 'Listen to Song'),
+        ('Movie', 'Watch Movie'),
+        ('TV', 'Watch TV'),
+        ('Video Game', 'Play Video Game'),
+        ('Video', 'Watch Video')
+    )
+
+    play_type = mongoengine.StringField(choices=PLAY_TYPE)
+
+    title = mongoengine.StringField()
+    media_url = mongoengine.StringField()
+
+    meta = {
+        'indexes': [{
+                'fields': ['$title'],
+                'weight': {'title': 12}
+            }]}

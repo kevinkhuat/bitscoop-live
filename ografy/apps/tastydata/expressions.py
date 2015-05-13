@@ -8,26 +8,11 @@ from django.db.models.constants import LOOKUP_SEP
 from ografy.apps.tastydata.exceptions import InvalidFilterError
 
 
-#   FUNCTIONS
-#       String: substringof, endswith, startswith, length, indexof, replace, substring, tolower, toupper, trim, concat
-#       Date: day, hour, minute, month, second, year
-#       Math: round, floor, ceiling
-#
-#   COMPARERS
-#       ne, eq, lt, lte, gt, gte
-#
-#   OPERATORS
-#       mod, add, sub, mul, div
-#
-#   LOGICAL
-#       and, or, not
-
-TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|[:\w-]+|\(|\)|(?:'[^\']*')|\[\[.+\]\])")
-
+TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:'[^\']*'))")
 COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',
-    'regex', 'iregex', 'geo_within_polygon'
+    'regex', 'iregex', 'geo_within_polygon', 'near', 'max_distance'
 }
 
 
@@ -96,13 +81,16 @@ class Prefix(Symbol):
             self.nud = types.MethodType(nud, self)
 
 
-def _get_literal_value(value):
+def _get_literal_value(value, operator):
     if value == 'True' or value == 'true':
         return True
     elif value == 'False' or value == 'false':
         return False
     elif value[0] == '\'' and value[-1] == '\'':
-        return value[1:-1]
+        if operator == 'geo_within_polygon' or operator == 'near':
+            return json.loads(value[1:-1])
+        else:
+            return value[1:-1]
 
     try:
         return int(value)
@@ -114,10 +102,7 @@ def _get_literal_value(value):
     except ValueError:
         pass
 
-    try:
-        return json.loads(value)
-    except ValueError:
-        return value
+    return value
 
 
 def _and_led(self, lhs, expr, **kwargs):
@@ -159,7 +144,7 @@ def tokenize(string, expression_class=Q):
             if operator not in COMPARERS:
                 raise InvalidFilterError('Unexpected filter function: `{0}`'.format(operator))
 
-            literal = _get_literal_value(raw_literal)
+            literal = _get_literal_value(raw_literal, operator)
 
             yield Predicate(field, operator, literal, expression_class=expression_class)
 

@@ -29,7 +29,7 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
         signal = Signal(
             user=user,
             provider=provider,
-            name=backend.name,
+            name="My " + backend.name,
             psa_backend_uid=social.uid,
             connected=True,
             complete=False,

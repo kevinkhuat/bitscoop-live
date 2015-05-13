@@ -2,12 +2,13 @@ from rest_framework import serializers as django_serializers
 
 from ografy.apps.core.documents import Settings
 from ografy.apps.core.models import Provider, Signal, User, Permission, PermissionTemplate
-from ografy.apps.obase.documents import Data, Event, Message
+from ografy.apps.obase.documents import Data, Event, Message, Play
+from ografy.apps.opi.util import dictSoftMerge, listSoftMerge
 from ografy.apps.tastydata import related_fields
 from ografy.apps.tastydata import serializers as tasty_serializers
 
 
-def evaluate(query, QuerySet):
+def evaluate(query, QuerySet, many=True):
     # If the queryset has already been evaluated by the internal API send the result directly to the serializer
     if not isinstance(query, QuerySet):
         return query
@@ -21,10 +22,8 @@ def evaluate(query, QuerySet):
         if data is None:
             return []
         else:
-            # If there is only one result, send that result to the serializer
-            if len(data) == 1:
+            if len(data) is 1 and many is False:
                 return data[0]
-            # otherwise send the list to the serializer
             return data
 
 
@@ -38,7 +37,8 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'created',
             'updated',
-            'data_blob') # , 'user'
+            'data_blob'
+        ) # , 'user'
         depth = 5
 
 
@@ -57,28 +57,44 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'created',
             'updated',
+            'data',
             'user_id',
             'signal_id',
             'provider_id',
             'provider_name',
             'datetime',
             'location',
-            'type',
-            'name') #, 'data'
+            'name',
+            '_cls'
+        ) #, 'data'
         depth = 5
 
 
-class MessageSerializer(tasty_serializers.DocumentSerializer):
+class MessageSerializer(EventSerializer):
     # Mongo References
     # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
     class Meta:
         model = Message
-        fields = (
-            'id',
+        newFields = (
             'message_to',
             'message_from',
-            'message_body') # 'event',
+            'message_body'
+        ) # 'event',
+        fields = EventSerializer.Meta.fields + newFields
+        depth = 5
+
+
+class PlaySerializer(EventSerializer):
+    # Mongo References
+    # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
+
+    class Meta:
+        model = Play
+        newFields = (
+            'title',
+        ) # 'event',
+        fields = EventSerializer.Meta.fields + newFields
         depth = 5
 
 
@@ -92,14 +108,15 @@ class ProviderSerializer(django_serializers.ModelSerializer):
             'backend_name',
             'auth_backend',
             'tags',
-            'permission_template_set')
+            'permissiontemplate_set'
+        )
         depth = 5
 
 
 class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
     # Django References
-    user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
-    provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
+    # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
+    # provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
 
     class Meta:
         model = Signal
@@ -118,7 +135,8 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
             'access_token',
             'oauth_token',
             'oauth_token_secret',
-            'permission_set')
+            'permission_set'
+        )
         depth = 5
 
 
@@ -133,7 +151,8 @@ class PermissionSerializer(django_serializers.ModelSerializer):
             'enabled',
             'user',
             'permission_template',
-            'signal')
+            'signal'
+        )
         depth = 5
 
 
@@ -145,7 +164,8 @@ class PermissionTemplateSerializer(django_serializers.ModelSerializer):
             'name',
             'url',
             'provider',
-            'enabled_by_default')
+            'enabled_by_default'
+        )
         depth = 5
 
 
@@ -160,7 +180,8 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
             'user',
             'created',
             'updated',
-            'settings_dict')
+            'settings_dict'
+        )
         depth = 5
 
 
@@ -184,5 +205,6 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'is_active',
             'is_verified',
             'signal_set',
-            'permission_set') #, 'settings'
+            'permission_set'
+        ) #, 'settings'
         depth = 5
