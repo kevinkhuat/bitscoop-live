@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import include, patterns, url
 
 import ografy.errors as errors
@@ -18,3 +19,8 @@ urlpatterns = patterns('',
     # Just be sure to put it last so it doesn't cut off the other included apps.
     url(r'^', include('ografy.apps.core.urls')),
 )
+
+
+if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()

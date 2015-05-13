@@ -1,18 +1,14 @@
-import os
 import re
 import ssl
 
 from django.core.validators import RegexValidator
 
+from ografy import ROOT_PATH, SOURCE_PATH, get_environ_setting, get_path
 from ografy.settings.signals import *
 
 
 # Organized according to:
 #     https://docs.djangoproject.com/en/1.7/ref/settings/#core-settings-topical-index
-
-
-SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
-ROOT_PATH = os.path.abspath(os.path.join(SETTINGS_PATH, '..'))
 
 
 #########
@@ -250,8 +246,8 @@ LOGGING = {
 
 # ABSOLUTE_URL_OVERRIDES = {}
 FIXTURE_DIRS = (
-   os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'core', 'fixtures')),
-   os.path.abspath(os.path.join(ROOT_PATH, 'ografy', 'apps', 'xauth', 'fixtures')),
+    get_path(SOURCE_PATH, 'apps', 'core', 'fixtures'),
+    get_path(SOURCE_PATH, 'apps', 'xauth', 'fixtures'),
 )
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -307,7 +303,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 # TEMPLATE_DEBUG = False
 TEMPLATE_DIRS = (
-    os.path.abspath(os.path.join(ROOT_PATH, 'templates')),
+    get_path(SOURCE_PATH, 'templates'),
 )
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -381,10 +377,10 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # STATIC #  https://docs.djangoproject.com/en/1.7/ref/settings/#static-files
 ##########
 
-STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'build', 'static'))
+STATIC_ROOT = get_path(ROOT_PATH, 'build', 'static')
 STATIC_URL = 'https://static.ografy.io/'
 STATICFILES_DIRS = (
-    os.path.abspath(os.path.join(ROOT_PATH, 'static')),
+    get_path(SOURCE_PATH, 'static'),
 )
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # STATICFILES_FINDERS = (
@@ -426,4 +422,4 @@ INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one upperca
 # API KEYS #
 ############
 
-OGRAFY_MAPBOX_ACCESS_TOKEN = os.environ['ografy.settings.MAPBOX_ACCESS_TOKEN']
+OGRAFY_MAPBOX_ACCESS_TOKEN = get_environ_setting('ografy_MAPBOX_ACCESS_TOKEN')
