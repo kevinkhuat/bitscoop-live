@@ -159,18 +159,23 @@ function getCookie(name) {
 function verifiedSignal(signal_id) {
 	var data = {};
 	data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
-	data.permissions = [];
+	data.authorizedEndpointsEnabledList = {};
 	data.name = $('input[name=signal-name]')[0].value;
 
 	$('input:checkbox').each(function() {
-		data.permissions.push($(this).prop('checked'));
+		var parent = $(this).parent();
+		var def_id = parent.attr('data-endpoint-definition-id');
+		var auth_id = parent.attr('data-authorized-endpoint-id');
+		data.authorizedEndpointsEnabledList[def_id] = {};
+		data.authorizedEndpointsEnabledList[def_id][auth_id] = $(this).prop('checked')
 	});
 
-	data.permissions = JSON.stringify(data.permissions);
+	data.authorizedEndpointsEnabledList = JSON.stringify(data.authorizedEndpointsEnabledList);
 	$.ajax({
 		url: '/verify/' + signal_id,
 		type: 'POST',
-		dataType: 'json',
+		'content-type': 'application/json',
+		dataType: 'text',
 		data: data,
 		headers: {
 			'X-CSRFToken': getCookie('csrftoken')

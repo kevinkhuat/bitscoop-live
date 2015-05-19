@@ -47,6 +47,7 @@ Thumbs.db
 #############
 # Databases #
 #############
+/databases
 *.db
 
 

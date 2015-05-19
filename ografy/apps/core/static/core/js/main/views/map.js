@@ -61,7 +61,7 @@ function mapView(dataInst, mapboxViewInst, urlParserInst) {
 			}
 			//If the zoom was entered but not the focus, get the user's location and center on them.
 			else {
-				dataInst.state.view.map.focus = [parseFloat(geoplugin_longitude()), parseFloat(geoplugin_latitude())];
+				console.log('Need to replace GeoPlugin with somthing secure for getting current coordinates');
 				currentFocus = dataInst.state.view.map.focus;
 				map.setView(currentFocus.reverse(), currentZoom);
 			}

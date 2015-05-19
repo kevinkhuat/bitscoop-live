@@ -1,11 +1,12 @@
 import requests
+import social.backends as social_backends
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from social.apps.django_app.utils import psa
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 
-from ografy.apps.core.models import Signal, Provider
+from ografy.apps.core.documents import Signal, Provider
 
 # TODO: Fix comments
 
@@ -74,19 +75,25 @@ def call(request):
         signal = Signal.objects.get(id=signal_id)
         api_call_url = request.REQUEST.get('api_call_url', '')
         backend_module = eval('social_backends.' + signal.provider.backend_name)
-        social_auth = signal.get_social_auth()
 
         if hasattr(backend_module, 'BaseOAuth2'):
             response = requests.get(
-                api_call_url, params={'access_token': social_auth.extra_data['access_token']}
+                api_call_url, params={
+                    'access_token': signal.access_token
+                }
             )
         elif hasattr(backend_module, 'BaseOAuth1'):
             response = requests.get(
-                api_call_url, params={'access_token': social_auth.extra_data['access_token']}
+                api_call_url, params={
+                    'access_token': signal.access_token
+                }
             )
         else:
             response = requests.get(
-                api_call_url
+                api_call_url, params={
+                    'key': signal.access_token,
+                    'steamid': signal.extra_data['backend_id']
+                }
             )
         # response.content.user_id = request.user.id
         # response.content.username = request.user.email
@@ -152,7 +159,7 @@ def signature(request):
         signal = Signal.objects.get(id=signal_id)
         signed = {
             'api_call_url': api_call_url,
-            'access_token': signal.get_user_social_auth().extra_data['access_token']
+            'access_token': signal.access_token
         }
 
         return JsonResponse(signed)

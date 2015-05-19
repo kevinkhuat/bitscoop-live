@@ -4,7 +4,6 @@ from rest_framework.response import Response
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
-from ografy.apps.obase import api as obase_api
 from ografy.apps.tastydata.pagination import OgrafyItemPagination
 from ografy.apps.tastydata.views import DjangoAPIView, DjangoAPIListView, MongoAPIView, MongoAPIListView
 
@@ -29,7 +28,7 @@ class DataView(MongoAPIListView):
     serializer_class = opi_serializer.DataSerializer
 
     def get(self, request):
-        data_query = obase_api.DataApi.get(
+        data_query = core_api.DataApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -44,8 +43,8 @@ class DataView(MongoAPIListView):
                 'request': request
             }
         )
-        post_data.user_id = request.user.id
-        data_query = obase_api.DataApi.post(
+        post_data['user_id'] = request.user.id
+        data_query = core_api.DataApi.post(
             data=post_data
         )
         data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
@@ -64,14 +63,14 @@ class DataSingleView(MongoAPIView):
     serializer_class = opi_serializer.DataSerializer
 
     def delete(self, request, pk):
-        obase_api.DataApi.delete(
+        core_api.DataApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        data_query = obase_api.DataApi.get(
+        data_query = core_api.DataApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -95,7 +94,7 @@ class DataSingleView(MongoAPIView):
             }
         )
         patch_data.user_id = request.user.id
-        data_query = obase_api.DataApi.patch(
+        data_query = core_api.DataApi.patch(
             val=pk,
             data=patch_data
         )
@@ -119,7 +118,7 @@ class DataSingleView(MongoAPIView):
             }
         )
         post_data.user_id = request.user.id
-        data_query = obase_api.DataApi.put(
+        data_query = core_api.DataApi.put(
             pk=pk,
             data=post_data
         )
@@ -141,7 +140,7 @@ class EventView(MongoAPIListView):
     serializer_class = opi_serializer.EventSerializer
 
     def get(self, request):
-        get_query = obase_api.EventApi.get(
+        get_query = core_api.EventApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -158,7 +157,7 @@ class EventView(MongoAPIListView):
         )
         post_event.user_id = request.user.id
 
-        event_query = obase_api.EventApi.post(
+        event_query = core_api.EventApi.post(
             data=post_event
         )
         event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
@@ -179,14 +178,14 @@ class EventSingleView(MongoAPIView):
     serializer_class = opi_serializer.EventSerializer
 
     def delete(self, request, pk):
-        obase_api.EventApi.delete(
+        core_api.EventApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        event_query = obase_api.EventApi.get(
+        event_query = core_api.EventApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -211,7 +210,7 @@ class EventSingleView(MongoAPIView):
         )
         patch_event.user_id = request.user.id
 
-        event_query = obase_api.EventApi.patch(
+        event_query = core_api.EventApi.patch(
             val=pk,
             data=patch_event
         )
@@ -236,7 +235,7 @@ class EventSingleView(MongoAPIView):
         )
         put_event.user_id = request.user.id
 
-        event_query = obase_api.EventApi.patch(
+        event_query = core_api.EventApi.patch(
             val=pk,
             data=put_event
         )
@@ -253,7 +252,7 @@ class EventSingleView(MongoAPIView):
 
     def data(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        data_query = obase_api.DataApi.get(
+        data_query = core_api.DataApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -275,7 +274,7 @@ class MessageView(EventView):
     serializer_class = opi_serializer.MessageSerializer
 
     def get(self, request):
-        message_query = obase_api.MessageApi.get(
+        message_query = core_api.MessageApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -291,7 +290,7 @@ class MessageView(EventView):
             }
         )
         post_message.user_id = request.user.id
-        message_query = obase_api.MessageApi.post(
+        message_query = core_api.MessageApi.post(
             data=post_message
         )
         message_object = opi_serializer.evaluate(message_query, self.Meta.QuerySet)
@@ -311,14 +310,14 @@ class MessageSingleView(EventSingleView):
     serializer_class = opi_serializer.MessageSerializer
 
     def delete(self, request, pk):
-        obase_api.MessageApi.delete(
+        core_api.MessageApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        message_query = obase_api.MessageApi.get(
+        message_query = core_api.MessageApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -343,7 +342,7 @@ class MessageSingleView(EventSingleView):
         )
         patch_message.user_id = request.user.id
 
-        message_query = obase_api.MessageApi.patch(
+        message_query = core_api.MessageApi.patch(
             val=pk,
             data=patch_message
         )
@@ -368,7 +367,7 @@ class MessageSingleView(EventSingleView):
         )
         put_data.user_id = request.user.id
 
-        message_query = obase_api.MessageApi.put(
+        message_query = core_api.MessageApi.put(
             pk=pk,
             data=put_data
         )
@@ -385,7 +384,7 @@ class MessageSingleView(EventSingleView):
 
     def event(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        event_query = obase_api.MessageApi.get(
+        event_query = core_api.MessageApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -401,7 +400,7 @@ class MessageSingleView(EventSingleView):
 
     def data(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        data_query = obase_api.DataApi.get(
+        data_query = core_api.DataApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -423,7 +422,7 @@ class PlayView(EventView):
     serializer_class = opi_serializer.PlaySerializer
 
     def get(self, request):
-        play_query = obase_api.PlayApi.get(
+        play_query = core_api.PlayApi.get(
             request.query_filter &
             request.auth_filter
         )
@@ -439,7 +438,7 @@ class PlayView(EventView):
             }
         )
         post_play.user_id = request.user.id
-        play_query = obase_api.PlayApi.post(
+        play_query = core_api.PlayApi.post(
             data=post_play
         )
         play_object = opi_serializer.evaluate(play_query, self.Meta.QuerySet)
@@ -459,14 +458,14 @@ class PlaySingleView(EventSingleView):
     serializer_class = opi_serializer.PlaySerializer
 
     def delete(self, request, pk):
-        obase_api.PlayApi.delete(
+        core_api.PlayApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        play_query = obase_api.PlayApi.get(
+        play_query = core_api.PlayApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -491,7 +490,7 @@ class PlaySingleView(EventSingleView):
         )
         patch_play.user_id = request.user.id
 
-        play_query = obase_api.PlayApi.patch(
+        play_query = core_api.PlayApi.patch(
             val=pk,
             data=patch_play
         )
@@ -516,7 +515,7 @@ class PlaySingleView(EventSingleView):
         )
         put_data.user_id = request.user.id
 
-        play_query = obase_api.PlayApi.put(
+        play_query = core_api.PlayApi.put(
             pk=pk,
             data=put_data
         )
@@ -533,7 +532,7 @@ class PlaySingleView(EventSingleView):
 
     def event(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        event_query = obase_api.PlayApi.get(
+        event_query = core_api.PlayApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -549,7 +548,7 @@ class PlaySingleView(EventSingleView):
 
     def data(self, request, pk, **kwargs):
         # TODO: get pk to make work right
-        data_query = obase_api.DataApi.get(
+        data_query = core_api.DataApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -564,7 +563,7 @@ class PlaySingleView(EventSingleView):
         return Response(serialized_response)
 
 
-class ProviderView(DjangoAPIListView):
+class ProviderView(MongoAPIListView):
     ordering_fields = ('id', 'name', 'backend_name')
     pagination_class = OgrafyItemPagination
     serializer = opi_serializer.ProviderSerializer
@@ -578,14 +577,48 @@ class ProviderView(DjangoAPIListView):
         return paginated_data_list
 
 
-class ProviderSingleView(DjangoAPIView):
+class ProviderSingleView(MongoAPIView):
     serializer = opi_serializer.ProviderSerializer
     serializer_class = opi_serializer.ProviderSerializer
 
     def get(self, request, pk, format=None):
         provider_query = core_api.ProviderApi.get(
             request.query_filter &
-            DjangoAPIView.Meta.Q(pk=pk)
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
+        return Response(self.serialize(
+            provider_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        ))
+
+
+class AuthorizedEndpointView(MongoAPIListView):
+    ordering_fields = ('provider', 'name')
+    pagination_class = OgrafyItemPagination
+    serializer = opi_serializer.AuthorizedEndpointSerializer
+    serializer_class = opi_serializer.AuthorizedEndpointSerializer
+
+    def get(self, request, format=None):
+        provider_query = core_api.AuthorizedEndpointApi.get(
+            request.query_filter &
+            request.auth_filter
+        )
+        paginated_data_list = self.Meta.list(self, provider_query)
+        return paginated_data_list
+
+
+class AuthorizedEndpointSingleView(MongoAPIView):
+    serializer = opi_serializer.AuthorizedEndpointSerializer
+    serializer_class = opi_serializer.AuthorizedEndpointSerializer
+
+    def get(self, request, pk, format=None):
+        provider_query = core_api.AuthorizedEndpointApi.get(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
         return Response(self.serialize(
@@ -661,7 +694,7 @@ class SettingsSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class SignalView(DjangoAPIListView):
+class SignalView(MongoAPIListView):
     ordering_fields = ('id', 'user', 'provider', 'created')
     serializer = opi_serializer.SignalSerializer
     serializer_class = opi_serializer.SignalSerializer
@@ -706,7 +739,7 @@ class SignalView(DjangoAPIListView):
         return Response(serialized_response)
 
 
-class SignalSingleView(DjangoAPIView):
+class SignalSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.SignalSerializer
     serializer_class = opi_serializer.SignalSerializer
@@ -714,7 +747,7 @@ class SignalSingleView(DjangoAPIView):
     def delete(self, request, pk):
         core_api.SignalApi.delete(
             request.auth_filter &
-            DjangoAPIView.Meta.Q(pk=pk)
+            MongoAPIView.Meta.Q(pk=pk)
         )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -786,7 +819,7 @@ class SignalSingleView(DjangoAPIView):
     def provider(self, request, pk, **kwargs):
         get_query = core_api.ProviderApi.get(
             request.auth_filter &
-            DjangoAPIView.Meta.Q(pk=pk)
+            MongoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(

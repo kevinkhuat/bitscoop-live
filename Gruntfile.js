@@ -82,12 +82,14 @@ module.exports = function(grunt) {
 				]
 			},
 			less: {
-				files: {
-					'artifacts/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
-					'artifacts/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
-					'artifacts/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
-					'artifacts/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
-				},
+				files: [
+					'ografy/apps/core/static/core/less/main-dark.less',
+					'ografy/apps/core/static/core/less/main-light.less',
+					'ografy/apps/core/static/core/less/main.less',
+					'ografy/static/shared/less/site-dark.less',
+					'ografy/static/shared/less/site-light.less',
+					'ografy/static/shared/less/site.less'
+				],
 				tasks: [
 					'less'
 				]

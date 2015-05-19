@@ -1,10 +1,15 @@
+import os
+
 from datetime import datetime
 from django.shortcuts import redirect
 
 from social.pipeline.partial import partial
 from social.pipeline.social_auth import associate_user
 
-from ografy.apps.core.models import Provider, Signal, Permission
+from mongoengine import Q
+
+from ografy.apps.core.api import ProviderApi, SignalApi
+from ografy.apps.core.documents import Signal
 
 
 @partial
@@ -24,10 +29,9 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
     if association:
         user = association['user']
         social = association['social']
-        provider = Provider.objects.get(backend_name=backend.name)
-        permissionsTemplates = provider.permissiontemplate_set.all()
+        provider = ProviderApi.get(Q(backend_name=backend.name))[0]
         signal = Signal(
-            user=user,
+            user_id=user.id,
             provider=provider,
             name="My " + backend.name,
             psa_backend_uid=social.uid,
@@ -35,17 +39,14 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
             complete=False,
             enabled=False,
             created=datetime.now(),
-            updated=datetime.now())
-        signal.save()
+            updated=datetime.now(),
+            last_run=datetime.now(),
+            extra_data={
+                'backend_id': uid
+            }
+        )
+        if backend.setting('API_KEY') != None:
+            signal.access_token = backend.setting('API_KEY')
+        SignalApi.post(signal)
 
-        for temp_permission in permissionsTemplates:
-            permission = Permission(
-                user=user,
-                provider=temp_permission.provider,
-                name=temp_permission.name,
-                url=temp_permission.url,
-                enabled=temp_permission.enabled_by_default,
-                permission_template_id=temp_permission.id,
-                signal_id=signal.id)
-            permission.save()
     return association

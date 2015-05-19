@@ -1,0 +1,105 @@
+[
+{
+  "fields": {
+    "server_url": "https://open.login.yahooapis.com/openid/op/auth",
+    "salt": "M3mZzrurU6MR5W3EumMyxk7oT8o4TrCy.Q--",
+    "timestamp": 1414094365
+  },
+  "model": "default.nonce",
+  "pk": 1
+},
+{
+  "fields": {
+    "server_url": "https://open.login.yahooapis.com/openid/op/auth",
+    "handle": "cMqiP05fW.EjJewC0Pl8SNyvFPFx_aXjmmSthAKdpaFMSFoLNLGX6Y63L4whIm6rDMtaXaBMVUs.H.3DBuRnQnuuomgGjuI3lo7JzHvZxzHZPqgDnDuZgVcIcYs1zvUeoO795g--",
+    "secret": "ESes4mwgnY1P/SDdDzsUZmBkglE=\n",
+    "issued": 1414094363,
+    "lifetime": 14400,
+    "assoc_type": "HMAC-SHA1"
+  },
+  "model": "default.association",
+  "pk": 1
+},
+{
+  "fields": {
+    "groups": [],
+    "password": "pbkdf2_sha256$12000$BGNGhjghHvfb$D/rKBeZT/bC/GvDbR62rIOyTihNpBpgxlfvDVV128YA=",
+    "first_name": "Kyle",
+    "email": "barankyle30@gmail.com",
+    "is_staff": false,
+    "_upper_email": "BARANKYLE30@GMAIL.COM",
+    "is_verified": false,
+    "last_login": "2014-10-23T18:13:14.682Z",
+    "is_active": true,
+    "_upper_handle": "KBARAN",
+    "is_superuser": false,
+    "date_joined": "2014-10-23T18:13:14.293Z",
+    "password_date": "2014-10-23T18:13:14.292Z",
+    "handle": "kbaran",
+    "user_permissions": [],
+    "last_name": "Baran"
+  },
+  "model": "xauth.user",
+  "pk": 1
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"id\": \"1574877199406710\", \"access_token\": \"CAAENhLtd0xIBADfieuaKeOh1Ngi4E3e3NfZB46sp51oZA83HtGZA5zvD6rhPTCjRCqiTZAppw2mcg71w8ipS6ZCjDr7qzvYcPFlbraqR5D9e3ZCjvayYcylunWjrpKYZAGxffaxW5niTAl3InRS5GwZC8HCgKswEnWUaEE4zoSZBYgsJLXuW499AZBhqPFyANoXlZBLojJXdk1q67G6gFkZC3tGA\", \"expires\": \"5183880\"}",
+    "provider": "facebook",
+    "uid": "1574877199406710"
+  },
+  "model": "default.usersocialauth",
+  "pk": 1
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{}",
+    "provider": "yahoo",
+    "uid": "https://me.yahoo.com/a/kFJGIJ4Y1uOoKgoJ72cuONkYFoWJqw--#91aae"
+  },
+  "model": "default.usersocialauth",
+  "pk": 2
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"id\": 2840684163, \"access_token\": {\"user_id\": \"2840684163\", \"oauth_token\": \"2840684163-s1g1ESQuOzlnoWuXjIvl6fgEiUvqcYuwjrIGZxf\", \"screen_name\": \"kbaran7\", \"oauth_token_secret\": \"I3oxSTvEaQ09DcLaHwZ2vUcyyT5EUyMX6ckB0xJdrbHoY\"}}",
+    "provider": "twitter",
+    "uid": "2840684163"
+  },
+  "model": "default.usersocialauth",
+  "pk": 3
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"access_token\": {\"oauth_token\": \"1/7UykvTKaB_qhDrWRe21cnyKpviz2Y8ShlGzD0meIAtAMEudVrK5jSpoR30zcRFq6\", \"oauth_token_secret\": \"L41hAi-_jM_jUKjqmm6dKFta\"}}",
+    "provider": "google-oauth",
+    "uid": "barankyle30@gmail.com"
+  },
+  "model": "default.usersocialauth",
+  "pk": 4
+},
+{
+  "fields": {
+    "user": [
+      "barankyle30@gmail.com"
+    ],
+    "extra_data": "{\"player\": {\"avatarfull\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg\", \"communityvisibilitystate\": 3, \"steamid\": \"76561198113101106\", \"personastateflags\": 0, \"personastate\": 0, \"primaryclanid\": \"103582791429521408\", \"avatar\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg\", \"timecreated\": 1383361489, \"avatarmedium\": \"http://media.steampowered.com/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg\", \"profileurl\": \"http://steamcommunity.com/profiles/76561198113101106/\", \"personaname\": \"barankyle\", \"lastlogoff\": 1394744200}}",
+    "provider": "steam",
+    "uid": "76561198113101106"
+  },
+  "model": "default.usersocialauth",
+  "pk": 5
+}
+]

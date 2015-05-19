@@ -27,7 +27,7 @@ class ReferenceField(DocumentField):
     view_name
     depth
     lookup_field
-    lookup_url_kwarg
+    lookup_url_kwself.__class__.serializer(inst, **kwargs).dataarg
     format
     queryset
     """

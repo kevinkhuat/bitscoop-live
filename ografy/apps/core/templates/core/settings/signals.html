@@ -49,7 +49,7 @@
 					</div>
 					<div class="onoffswitch">
 						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
-						<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}" onclick="toggleSignal({{ signal.id }})">
+						<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}" onclick="toggleSignal('{{ signal.id }}')">
 							<span class="onoffswitch-inner" ></span>
 							<span class="onoffswitch-switch"></span>
 						</label>
@@ -61,7 +61,7 @@
 				<div class="delete-check hidden">
 					Delete?
 					<div class="flex row">
-						<input class="bold button-green delete-confirm" type="button" value="Yes" onclick="deleteSignal({{ signal.id }})">
+						<input class="bold button-green delete-confirm" type="button" value="Yes" onclick="deleteSignal('{{ signal.id }}')">
 						<input class="bold button-red delete-cancel" type="button" value="No">
 					</div>
 				</div>

@@ -362,6 +362,7 @@ function dataStore() {
 		}).done(function(data, xhr, response) {
 			var newDocument = data;
 			var thisId = newDocument.id;
+			var eventId = newDocument.event.id;
 			//If the event type is something other than Event, save the fact that it was
 			//retrieved from the higher-level API and has the type-specific fields.
 			if (documentType === 'message') {
@@ -371,10 +372,15 @@ function dataStore() {
 				eventCache.subtypes.plays.push(thisId);
 			}
 			//Save the event to the cache and convert the datetimes to a more user-readable format.
-			eventCache.events[thisId] = newDocument;
-			eventCache.events[thisId].created = new Date(eventCache.events[thisId].created).toLocaleString();
-			eventCache.events[thisId].datetime = new Date(eventCache.events[thisId].datetime).toLocaleString();
-			eventCache.events[thisId].updated = new Date(eventCache.events[thisId].updated).toLocaleString();
+			//FIXME: Populate extra Message/Play/etc. data better, i.e. don't just stick it on Event like we do here
+			for (var index in newDocument) {
+				if (index !== 'id') {
+					eventCache.events[eventId][index] = newDocument[index];
+				}
+			}
+			eventCache.events[eventId].created = new Date(eventCache.events[eventId].created).toLocaleString();
+			eventCache.events[eventId].datetime = new Date(eventCache.events[eventId].datetime).toLocaleString();
+			eventCache.events[eventId].updated = new Date(eventCache.events[eventId].updated).toLocaleString();
 			//Resolve the input promise to indicate the function has completed.
 			return promise.resolve();
 		});

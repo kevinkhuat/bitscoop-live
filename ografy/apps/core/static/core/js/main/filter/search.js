@@ -144,9 +144,12 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 		var typeList = $('.type-grouping');
 
-		for (var k = 0; k < typeList.length; k++) {
-			var thisType = typeList[k];
-			if ($(thisType).find('.selector.active').length > 0) {
+		//FIXME: Get this working so that multiple object types can be searched for simultaneously
+		//for (var k = 0; k < typeList.length; k++) {
+		//	var thisType = typeList[k];
+		//	if ($(thisType).find('.selector.active').length > 0) {
+			if ($('#event').find('.selector.active').length > 0) {
+				var thisType = typeList[0];
 				var filterString = '';
 
 				//Get a list of the filters that are being used
@@ -210,7 +213,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 				dataInst.search(thisType.id, filterString);
 				urlParserInst.updateHash();
 			}
-		}
+		//}
 
 		return false;
 	}

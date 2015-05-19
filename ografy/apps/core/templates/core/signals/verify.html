@@ -21,7 +21,6 @@
 			<div class="content">
 				<div class="title-align">
 					<i class="step-icon icon-uniF75F"></i>
-
 					<div class="title">Authorize Access</div>
 				</div>
 				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
@@ -31,7 +30,6 @@
 			<div class="content">
 				<div class="title-align">
 					<i class="step-icon icon-check"></i>
-
 					<div class="title">Verify Settings</div>
 				</div>
 				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
@@ -49,19 +47,28 @@
 					<span>Details and stuff about connection settings to {{ signal.provider.backend_name }}</span>
 				</div>
 				<span class="bold">Name your connection to {{ signal.provider.backend_name }}</span>
-
 				<form>
 					<input class="text-input-width" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
 				</form>
 			</div>
 		</div>
 		<div class="grouping">
-			<div class="bigger">{{ signal.name }} Connection Permissions</div>
+			<div class="bigger">{{ signal.name }} Authorized Endpoints</div>
 			<div>
-				{% for permission in permissions %}
-				<div name="{{ permission.name }}" class="permission-toggle">
-					<input type="checkbox" {% if permission.enabled %}checked="checked"{% endif %}>
-					<div>{{ permission.name }}</div>
+				{% for endpoint_definition, authorized_endpoint in endpoint_list.items %}
+				<div name="{{ endpoint_definition.name }}" data-endpoint-definition-id="{{ endpoint_definition.id }}" data-authorized-endpoint-id="{% if not authorized_endpoint == None %}{{ authorized_endpoint.id }}{% else %}None{% endif %}" class="endpoint-definition-toggle">
+					<input type="checkbox"
+						{% if initial_verification %}
+							{% if endpoint_definition.enabled_by_default %}
+							checked="checked"
+							{% endif %}
+						{% else %}
+							{% if not authorized_endpoint == None and authorized_endpoint.enabled %}
+							checked="checked"
+							{% endif %}
+						{% endif %}
+					>
+					<div>{{ endpoint_definition.name }}</div>
 				</div>
 				{% endfor %}
 			</div>
@@ -73,7 +80,6 @@
 					<div class="title">
 						Select the frequency you would like this service to update
 					</div>
-
 					<div class="field">
 						<div>
 							<input updateFrequency=0 type="radio" name="update-frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %}>
@@ -108,7 +114,7 @@
 			</div>
 		</div>
 		<div>
-			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal({{ signal.id }})"/>
+			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal('{{ signal.id }}')"/>
 		</div>
 	</div>
 {% endblock %}

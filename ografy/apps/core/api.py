@@ -2,9 +2,32 @@ import ografy.apps.core.documents as documents
 import ografy.apps.core.models as models
 from ografy.apps.tastydata.api import BaseApi
 
+class AuthorizedEndpointApi(BaseApi):
+    model = documents.AuthorizedEndpoint
+
+
+class DataApi(BaseApi):
+    model = documents.Data
+
+
+class EndpointDefinitionApi(BaseApi):
+    model = documents.EndpointDefinition
+
+
+class EventApi(BaseApi):
+    model = documents.Event
+
+
+class MessageApi(BaseApi):
+    model = documents.Message
+
+
+class PlayApi(BaseApi):
+    model = documents.Play
+
 
 class ProviderApi(BaseApi):
-    model = models.Provider
+    model = documents.Provider
 
 
 class SettingsApi(BaseApi):
@@ -12,7 +35,7 @@ class SettingsApi(BaseApi):
 
 
 class SignalApi(BaseApi):
-    model = models.Signal
+    model = documents.Signal
 
 
 class UserApi(BaseApi):

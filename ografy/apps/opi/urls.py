@@ -20,6 +20,9 @@ urlpatterns = patterns('',
    url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event$', views.MessageSingleView.event, name='message-detail'),
    url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event/data$', views.MessageSingleView.data, name='message-detail'),
 
+   url(r'^/authorized_endpoints$', views.AuthorizedEndpointView.as_view(), name='auth-endpoint-list'),
+   url(r'^/authorized_endpoints/(?P<pk>[a-zA-Z0-9]+)/?$', views.AuthorizedEndpointSingleView.as_view(), name='auth-endpoint-detail'),
+
    url(r'^/play$', views.PlayView.as_view(), name='play-list'),
    url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/?$', views.PlaySingleView.as_view(), name='play-detail'),
    url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/event$', views.PlaySingleView.event, name='play-detail'),

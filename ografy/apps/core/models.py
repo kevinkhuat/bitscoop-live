@@ -8,75 +8,6 @@ from ografy.util.decorators import autoconnect
 from ografy.util.fields import NullCharField
 
 
-class Provider(models.Model):
-    """
-    Entity representing a Provider.
-
-    Attributes:
-        id: A unique database descriptor set in the fixture.
-        name: The name of the linked service.
-        backend_name: The name of the linked service according to PSA backend library.
-    """
-    AUTH_TYPES = (
-        (0, 'OAUTH 2'),
-        (1, 'OAUTH 1'),
-        (2, 'OPENID')
-    )
-
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=150)
-
-    backend_name = models.CharField(max_length=250)
-    auth_backend = models.CharField(max_length=250)
-    auth_type = models.PositiveSmallIntegerField(default=1, choices=AUTH_TYPES)
-
-    description = models.CharField(max_length=2500)
-    tags = models.CharField(max_length=1000)
-
-    def __str__(self):
-        return '{0} {1}'.format(self.id, self.backend_name)
-
-
-class Signal(models.Model):
-    """
-    Entity representing an integrated Signal.
-
-    Attributes:
-        id: A unique database descriptor obtained when saving a Signal.
-        user: A foreign key relationship to the User entity who owns the Signal.
-        name: The name of the linked service.
-    """
-    FREQUENCY = (
-        (0, 'Premium On Demand'),
-        (1, 'Daily'),
-        (2, 'Weekly'),
-        (3, 'Manual'),
-        (4, 'Once'),
-    )
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    provider = models.ForeignKey(Provider)
-    name = models.CharField(max_length=100)
-    psa_backend_uid = models.CharField(max_length=100)
-
-    complete = models.BooleanField(default=False)
-    connected = models.BooleanField(default=False)
-    enabled = models.BooleanField(default=False)
-
-    frequency = models.PositiveSmallIntegerField(default=1, choices=FREQUENCY)
-
-    created = models.DateTimeField(blank=False)
-    updated = models.DateTimeField(blank=False)
-
-    access_token = models.CharField(max_length=1000)
-    oauth_token = models.CharField(max_length=1000)
-    oauth_token_secret = models.CharField(max_length=1000)
-
-    def __str__(self):
-        return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider, self.user.handle)
-
-
 @autoconnect
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -151,25 +82,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             self._upper_handle = self.handle.upper()
         else:
             self._upper_handle = self.handle
-
-
-class PermissionTemplate(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, blank=False)
-    url = models.CharField(max_length=4096, blank=False)
-    provider = models.ForeignKey(Provider)
-    enabled_by_default = models.BooleanField(default=True)
-
-
-class Permission(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, blank=False)
-    url = models.CharField(max_length=4096, blank=False)
-
-    provider = models.ForeignKey(Provider)
-    enabled = models.BooleanField(default=True)
-
-    user = models.ForeignKey(User)
-    signal = models.ForeignKey(Signal)
-
-    permission_template = models.ForeignKey(PermissionTemplate)

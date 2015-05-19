@@ -1,0 +1,333 @@
+{
+  "providers": [
+    {
+      "name": "Facebook",
+      "client_callable": true,
+      "base_route": "https://graph.facebook.com",
+      "backend_name": "facebook",
+      "auth_backend": "social.backends.facebook.FacebookOAuth2",
+      "description": "Online social networking service",
+      "tags": "social",
+      "auth_type": 0
+    },
+    {
+      "name": "Twitter",
+      "client_callable": true,
+      "base_route": "https://api.twitter.com/1.1",
+      "backend_name": "twitter",
+      "auth_backend": "social.backends.twitter.TwitterOAuth",
+      "description": "Online social networking service",
+      "tags": "social",
+      "auth_type": 1
+    },
+    {
+      "name": "Steam",
+      "client_callable": true,
+      "base_route": "https://api.steampowered.com",
+      "backend_name": "steam",
+      "auth_backend": "social.backends.steam.SteamOpenId",
+      "description": "Internet-based digital distribution, multiplayer, and social networking platform",
+      "tags": "gaming media social",
+      "auth_type": 2
+    },
+    {
+      "name": "Amazon",
+      "base_route": "",
+      "client_callable": false,
+      "backend_name": "amazon",
+      "auth_backend": "social.backends.amazon.AmazonOAuth2",
+      "description": "Electronic commerce company",
+      "tags": "development productivity",
+      "auth_type": 0
+    },
+    {
+      "name": "Dropbox",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "dropbox",
+      "auth_backend": "social.backends.dropbox.DropboxOAuth2",
+      "description": "File hosting service",
+      "tags": "collaboration productivity",
+      "auth_type": 0
+    },
+    {
+      "name": "FitBit",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "fitbit",
+      "auth_backend": "social.backends.fitbit.FitbitOAuth",
+      "description": "Activity trackers and wireless-enabled wearable devices",
+      "tags": "fitness health",
+      "auth_type": 1
+    },
+    {
+      "name": "FourSquare",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "foursquare",
+      "auth_backend": "social.backends.foursquare.FoursquareOAuth2",
+      "description": "Local search and discovery service",
+      "tags": "social",
+      "auth_type": 0
+    },
+    {
+      "name": "GitHub",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "github",
+      "auth_backend": "social.backends.github.GithubOAuth2",
+      "description": "Web-based Git repository hosting service",
+      "tags": "collaboration development productivity",
+      "auth_type": 0
+    },
+    {
+      "name": "Google",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "google",
+      "auth_backend": "social.backends.google.GoogleOAuth2",
+      "description": "Internet-related services and products",
+      "tags": "collaboration media productivity social",
+      "auth_type": 0
+    },
+    {
+      "name": "Instagram",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "instagram",
+      "auth_backend": "social.backends.instagram.InstagramOAuth2",
+      "description": "Mobile photo-sharing, video-sharing and social networking service",
+      "tags": "media social",
+      "auth_type": 0
+    },
+    {
+      "name": "LinkedIn",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "linkedin",
+      "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
+      "description": "Business-oriented social networking service",
+      "tags": "productivity social",
+      "auth_type": 0
+    },
+    {
+      "name": "reddit",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "reddit",
+      "auth_backend": "social.backends.reddit.RedditOAuth2",
+      "description": "Entertainment, social networking service and news website",
+      "tags": "media social",
+      "auth_type": 0
+    },
+    {
+      "name": "Spotify",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "spotify",
+      "auth_backend": "social.backends.spotify.SpotifyOAuth2",
+      "description": "Music streaming service",
+      "tags": "media music",
+      "auth_type": 0
+    },
+    {
+      "name": "Stack Overflow",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "stackoverflow",
+      "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2",
+      "description": "Open Q&A network",
+      "tags": "collaboration development productivity social",
+      "auth_type": 0
+    },
+    {
+      "name": "Tumblr",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "tumblr",
+      "auth_backend": "social.backends.tumblr.TumblrOAuth",
+      "description": "Microblogging platform and social networking website",
+      "tags": "social",
+      "auth_type": 1
+    },
+    {
+      "name": "Vimeo",
+      "base_route": "",
+      "client_callable": true,
+      "backend_name": "vimeo",
+      "auth_backend": "social.backends.vimeo.VimeoOAuth1",
+      "description": "Video-sharing website",
+      "tags": "media video",
+      "auth_type": 1
+    }
+  ],
+  "endpointDefinitions": [
+    {
+      "facebook": [
+        {
+          "name": "Friends",
+          "route_end": "friends",
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Likes",
+          "route_end": "likes",
+          "provider": 1,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Posts",
+          "route_end": "posts",
+          "provider": 1,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Messages",
+          "route_end": "outbox",
+          "provider": 1,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        }
+      ],
+      "twitter": [
+        {
+          "name": "Twitter Tweets",
+          "route_end": "search/tweets",
+          "provider": 2,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Twitter Direct Messages",
+          "route_end": "direct_message",
+          "provider": 2,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Twitter Followers",
+          "route_end": "followers",
+          "provider": 2,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        },
+        {
+          "name": "Twitter Following",
+          "route_end": "following",
+          "provider": 2,
+          "enabled_by_default": true,
+          "parameter_description": {},
+          "mapping": {}
+        }
+      ],
+      "steam": [
+        {
+          "name": "Games Played",
+          "route_end": "IPlayerService/GetOwnedGames/v0001/",
+          "provider": 3,
+          "enabled_by_default": true,
+          "parameter_description": {
+            "steamid": {
+              "value": "steamid=[$1]",
+              "description": "Steam ID",
+              "default": "extra_data['steamId']",
+              "format": "Integer"
+            },
+            "format": {
+              "value": "format=[$1]",
+              "description": "API data output format",
+              "default": "json",
+              "format": "String"
+            },
+            "since": {
+              "value": "since=[$1]",
+              "description": "Date after which to retrieve events",
+              "default": "datetime.oneWeekAgo",
+              "format": "datetime"
+            }
+          },
+          "mapping": {
+            "type": "Play",
+            "list": {
+              "location": "response.games"
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": null,
+                "location": null
+              },
+              "play": {
+                "play_type": "Video_Game",
+                "title": {
+                  "location": "name",
+                  "transforms": false
+                },
+                "media_url": {
+                  "location": "appId",
+                  "transform": {
+                    "type": "reformat",
+                    "value": "http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=[$1]&appid=[$2]"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Friends",
+          "route_end": "ISteamUser/GetFriendList/v0001/",
+          "provider": 3,
+          "enabled_by_default": true,
+          "parameter_description": {
+            "steamid": {
+              "value": "steamid=[$1]",
+              "description": "Steam ID",
+              "default": "extra_data['steamId']",
+              "format": "Integer"
+            },
+            "format": {
+              "value": "format=[$1]",
+              "description": "API data output format",
+              "default": "json",
+              "format": "String"
+            },
+            "relationship": {
+              "value": "relationship=[$1]",
+              "description": "API data output format",
+              "default": "friend",
+              "format": "String"
+            },
+            "since": {
+              "value": "since=[$1]",
+              "description": "Date after which to retrieve events",
+              "default": "datetime.oneWeekAgo",
+              "format": "datetime"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": {
+              "location": "friendslist.friends"
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": null,
+                "location": null
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

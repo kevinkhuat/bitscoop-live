@@ -245,9 +245,8 @@ LOGGING = {
 ##########
 
 # ABSOLUTE_URL_OVERRIDES = {}
-FIXTURE_DIRS = (
-    get_path(SOURCE_PATH, 'apps', 'core', 'fixtures'),
-    get_path(SOURCE_PATH, 'apps', 'xauth', 'fixtures'),
+EXTRA_FIXTURES = (
+   get_path(ROOT_PATH, 'fixtures')
 )
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -260,7 +259,6 @@ INSTALLED_APPS = (
 
     'ografy.apps.core',
     #'ografy.apps.helpr',
-    'ografy.apps.obase',
     'ografy.apps.opi',
     'ografy.apps.xauth',
 )

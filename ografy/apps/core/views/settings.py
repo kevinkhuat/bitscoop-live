@@ -1,18 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from mongoengine import Q
 
 from ografy.apps.core.forms import UpdatePersonalForm, UpdatePasswordForm
+from ografy.apps.core.api import SignalApi
 from ografy.util.collections import update
 from ografy.util.response import redirect_by_name
-
-from ografy.apps.core import api as core_api
 
 
 class PersonalView(View):
@@ -115,7 +114,7 @@ class SignalView(View):
         return super(SignalView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
-        signals = list(core_api.SignalApi.get(Q(user=request.user.id) | Q(complete=True)))
+        signals = list(SignalApi.get(Q(user_id=request.user.id) | Q(complete=True)))
         verify_url = reverse('core_verify_base')
 
         return render(request, self.template_name, {

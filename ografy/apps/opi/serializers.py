@@ -1,10 +1,7 @@
 from rest_framework import serializers as django_serializers
 
-from ografy.apps.core.documents import Settings
-from ografy.apps.core.models import Provider, Signal, User, Permission, PermissionTemplate
-from ografy.apps.obase.documents import Data, Event, Message, Play
-from ografy.apps.opi.util import dictSoftMerge, listSoftMerge
-from ografy.apps.tastydata import related_fields
+from ografy.apps.core.documents import Settings, EndpointDefinition, AuthorizedEndpoint, Provider, Signal, Data, Event, Message, Play
+from ografy.apps.core.models import User
 from ografy.apps.tastydata import serializers as tasty_serializers
 
 
@@ -55,6 +52,8 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
         model = Event
         fields = (
             'id',
+            'event_type',
+            'subtype_id',
             'created',
             'updated',
             'data',
@@ -64,41 +63,46 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'provider_name',
             'datetime',
             'location',
-            'name',
-            '_cls'
+            'name'
         ) #, 'data'
         depth = 5
 
 
-class MessageSerializer(EventSerializer):
+class MessageSerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
     # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
     class Meta:
         model = Message
-        newFields = (
+        fields = (
+            'id',
+            'user_id',
+            'event',
+            'message_type',
             'message_to',
             'message_from',
             'message_body'
         ) # 'event',
-        fields = EventSerializer.Meta.fields + newFields
         depth = 5
 
 
-class PlaySerializer(EventSerializer):
+class PlaySerializer(tasty_serializers.DocumentSerializer):
     # Mongo References
     # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
 
     class Meta:
         model = Play
-        newFields = (
+        fields = (
+            'id',
+            'user_id',
+            'event',
+            'play_type',
             'title',
         ) # 'event',
-        fields = EventSerializer.Meta.fields + newFields
         depth = 5
 
 
-class ProviderSerializer(django_serializers.ModelSerializer):
+class ProviderSerializer(tasty_serializers.DocumentSerializer):
 
     class Meta:
         model = Provider
@@ -106,14 +110,17 @@ class ProviderSerializer(django_serializers.ModelSerializer):
             'id',
             'name',
             'backend_name',
+            'base_route',
             'auth_backend',
+            'auth_type',
+            'client_callable',
             'tags',
-            'permissiontemplate_set'
+            'description'
         )
         depth = 5
 
 
-class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
+class SignalSerializer(tasty_serializers.DocumentSerializer):
     # Django References
     # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
     # provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
@@ -122,7 +129,7 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
         model = Signal
         fields = (
             'id',
-            'user',
+            'user_id',
             'provider',
             'name',
             'psa_backend_uid',
@@ -135,34 +142,35 @@ class SignalSerializer(django_serializers.HyperlinkedModelSerializer):
             'access_token',
             'oauth_token',
             'oauth_token_secret',
-            'permission_set'
+            'last_run',
+            'extra_data'
         )
         depth = 5
 
 
-class PermissionSerializer(django_serializers.ModelSerializer):
+class AuthorizedEndpointSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = PermissionTemplate
+        model = AuthorizedEndpoint
         fields = (
             'id',
             'name',
-            'url',
+            'route',
             'provider',
             'enabled',
-            'user',
-            'permission_template',
+            'user_id',
+            'endpoint_definition',
             'signal'
         )
         depth = 5
 
 
-class PermissionTemplateSerializer(django_serializers.ModelSerializer):
+class EndpointDefinitionSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = PermissionTemplate
+        model = EndpointDefinition
         fields = (
             'id',
             'name',
-            'url',
+            'route_end',
             'provider',
             'enabled_by_default'
         )
@@ -203,8 +211,6 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'last_name',
             'date_joined',
             'is_active',
-            'is_verified',
-            'signal_set',
-            'permission_set'
+            'is_verified'
         ) #, 'settings'
         depth = 5
