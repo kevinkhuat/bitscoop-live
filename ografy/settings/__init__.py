@@ -381,6 +381,7 @@ STATIC_ROOT = get_path(ROOT_PATH, 'build', 'static')
 STATIC_URL = 'https://static.ografy.io/'
 STATICFILES_DIRS = (
     get_path(SOURCE_PATH, 'static'),
+    get_path(ROOT_PATH, 'artifacts'),
 )
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # STATICFILES_FINDERS = (

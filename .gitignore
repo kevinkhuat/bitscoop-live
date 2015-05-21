@@ -1,7 +1,11 @@
+###################
 # Compiled source #
 ###################
 *.pyc
+__pycache__
 
+
+############
 # Packages #
 ############
 *.7z
@@ -13,6 +17,8 @@
 *.tar
 *.zip
 
+
+######################
 # OS generated files #
 ######################
 .DS_Store
@@ -23,26 +29,41 @@
 ehthumbs.db
 Thumbs.db
 
-# IDE generated files #
-#######################
-.idea
 
+##################
+# IntelliJ Files #
+##################
+.idea
+*.iml
+
+
+#################
 # Build Folders #
 #################
+/artifacts
 /build
 
+
+#############
 # Databases #
 #############
 *.db
 
+
+##########
 # NodeJS #
 ##########
 node_modules
 
+
+###########
 # Vagrant #
 ###########
 .vagrant
 
+
+########
 # Logs #
 ########
 /logs
+

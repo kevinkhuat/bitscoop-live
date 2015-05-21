@@ -52,10 +52,10 @@ module.exports = function(grunt) {
 		less: {
 			development: {
 				files: {
-					'build/static/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
-					'build/static/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
-					'build/static/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
-					'build/static/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
+					'artifacts/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
+					'artifacts/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
+					'artifacts/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
+					'artifacts/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
 				}
 			}
 		},
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 			precompile: {
 				baseDir: 'ografy/apps/core/nunjucks/core/**/',
 				src: 'ografy/apps/core/nunjucks/core/**/*',
-				dest: 'build/static/shared/js/templates.js',
+				dest: 'artifacts/shared/js/templates.js',
 				options: {
 					//env: require('./nunjucks-environment'),
 					name: function(filename) {
@@ -83,10 +83,10 @@ module.exports = function(grunt) {
 			},
 			less: {
 				files: {
-					'build/static/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
-					'build/static/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
-					'build/static/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
-					'build/static/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
+					'artifacts/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
+					'artifacts/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
+					'artifacts/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
+					'artifacts/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
 				},
 				tasks: [
 					'less'

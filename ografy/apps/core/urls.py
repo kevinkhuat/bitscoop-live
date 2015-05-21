@@ -5,7 +5,6 @@ import ografy.apps.core.views.main as main_views
 import ografy.apps.core.views.settings as settings_views
 import ografy.apps.core.views.signals as signals_views
 import ografy.apps.core.views.user as user_views
-import ografy.apps.core.views.search as search_views
 
 
 urlpatterns = patterns('',
