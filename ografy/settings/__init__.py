@@ -17,17 +17,17 @@ from ografy.settings.signals import *
 
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': 'mem-0.ografy.internal:6379:0',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://mem-0.ografy.internal:6379/0',
         'OPTIONS': {
-            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
     },
     'session': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': 'mem-0.ografy.internal:6379:1',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://mem-0.ografy.internal:6379/1',
         'OPTIONS': {
-            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
     }
 }
