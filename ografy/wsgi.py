@@ -3,9 +3,7 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-
-wd = os.path.dirname(__file__)
-lib_path = os.path.join(wd, 'lib')
-sys.path.append(os.path.abspath(lib_path))
+wd = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.abspath(os.path.join(wd, 'lib')))
 
 application = get_wsgi_application()
