@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def view400(request):
-    template = 'core/400.html'
+    template = 'error/400.html'
     context = {
         'title': 'Ografy - 400 (Bad Request)'
     }
@@ -12,7 +12,7 @@ def view400(request):
 
 
 def view403(request):
-    template = 'core/403.html'
+    template = 'error/403.html'
     context = {
         'title': 'Ografy - 403 (Forbidden)'
     }
@@ -21,7 +21,7 @@ def view403(request):
 
 
 def view404(request):
-    template = 'core/404.html'
+    template = 'error/404.html'
     context = {
         'title': 'Ografy - 404 (Page Not Found)'
     }
@@ -30,7 +30,7 @@ def view404(request):
 
 
 def view500(request):
-    template = 'core/500.html'
+    template = 'error/500.html'
     context = {
         'title': 'Ografy - 500 (Server Runtime Error)'
     }
