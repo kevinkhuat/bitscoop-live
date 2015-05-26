@@ -150,7 +150,7 @@ From the root directory run:
 
 ```
 flake8
-isort **/*.py --diff
+isort -rc . --diff
 grunt lint
 ```
 
@@ -159,7 +159,7 @@ any style errors you'll need to fix them manually. If isort finds any style
 errors, you can run:
 
 ```
-isort **/*.py
+isort -rc .
 ```
 
 To apply the diff displayed earlier. Running the diff command first is not a

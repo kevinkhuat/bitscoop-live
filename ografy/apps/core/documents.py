@@ -1,16 +1,16 @@
 import datetime
 
-from django.conf import settings
 import mongoengine
+from django.conf import settings
 
 
 mongoengine.connect(
     settings.MONGODB['NAME'],
     host=settings.MONGODB['HOST'],
     port=settings.MONGODB['PORT']
-    #ssl_certfile=settings.MONGODB['SSL_CERT_FILE'],
-    #ssl_cert_reqs=settings.MONGODB['SSL_CERT_REQS'],
-    #ssl_ca_certs=settings.MONGODB['SSL_CA_CERTS']
+    # ssl_certfile=settings.MONGODB['SSL_CERT_FILE'],
+    # ssl_cert_reqs=settings.MONGODB['SSL_CERT_REQS'],
+    # ssl_ca_certs=settings.MONGODB['SSL_CA_CERTS']
 )
 
 
@@ -30,10 +30,13 @@ class Settings(mongoengine.Document):
     settings_dict = mongoengine.DictField()
 
     meta = {
-        'indexes': [{
-            'fields': ['$user_id'],
-            'default_language': 'english',
-            }]}
+        'indexes': [
+            {
+                'fields': ['$user_id'],
+                'default_language': 'english',
+            }
+        ]
+    }
 
 
 class Provider(mongoengine.Document):
@@ -237,7 +240,7 @@ class Event(mongoengine.Document):
     meta = {
         'indexes': [
             {
-                'fields': ['$user_id', '$signal_id', '$name', '$datetime', ("$location","2dsphere")],
+                'fields': ['$user_id', '$signal_id', '$name', '$datetime', ('$location', '2dsphere')],
                 'default_language': 'english',
                 'weight': {'name': 10, 'datetime': 2}
             }

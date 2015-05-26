@@ -9,9 +9,8 @@ handler403 = errors.view404
 handler404 = errors.view404
 handler500 = errors.view500
 
-urlpatterns = patterns('',
+urlpatterns = patterns('',  # noqa
     url(r'^auth', include('ografy.apps.xauth.urls')),
-    #url(r'^help', include('ografy.apps.helpr.urls')),
     url(r'^opi', include('ografy.apps.opi.urls')),
 
     # Core is the primary app, and we don't want the urls prefixed with "/core".

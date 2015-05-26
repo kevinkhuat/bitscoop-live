@@ -1,10 +1,10 @@
-import os
 import json
+import os
 
 from django.core.management.base import BaseCommand
 
 from ografy.apps.core import api as CoreAPI
-from ografy.apps.core.documents import EndpointDefinition, Provider, Signal
+from ografy.apps.core.documents import EndpointDefinition, Provider
 from ografy.settings import MONGO_FIXTURE_DIRS
 
 
@@ -48,7 +48,7 @@ def load_fixture(path):
         if provider['backend_name'] in provider_definitions:
             for endpoint in provider_definitions[provider['backend_name']]:
                 insert_endpoint_definition = create_fixture_endpoint(endpoint, provider_id)
-                endpoint_id = CoreAPI.EndpointDefinitionApi.post(insert_endpoint_definition)['id']
+                endpoint_id = CoreAPI.EndpointDefinitionApi.post(insert_endpoint_definition)['id']  # noqa
 
 
 class Command(BaseCommand):

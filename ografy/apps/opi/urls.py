@@ -1,9 +1,9 @@
-from django.conf.urls import patterns, url
-from django.conf.urls import include
+from django.conf.urls import include, patterns, url
 
 import ografy.apps.opi.views as views
 
-urlpatterns = patterns('',
+
+urlpatterns = patterns('',  # noqa
    # Login and logout views for the browsable API
    url(r'^$', views.APIEndpoints.as_view()),
    url(r'^/api-auth/', include('rest_framework.urls', namespace='rest_framework')),

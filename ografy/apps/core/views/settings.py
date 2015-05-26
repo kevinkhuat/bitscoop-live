@@ -8,8 +8,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
 
-from ografy.apps.core.forms import UpdatePersonalForm, UpdatePasswordForm
 from ografy.apps.core.api import SignalApi
+from ografy.apps.core.forms import UpdatePasswordForm, UpdatePersonalForm
 from ografy.util.collections import update
 from ografy.util.response import redirect_by_name
 
@@ -25,7 +25,8 @@ class PersonalView(View):
     def get(self, request):
         user = request.user
         form = UpdatePersonalForm({
-            'email': user.email, # 'handle': user.handle,
+            'email': user.email,
+            # 'handle': user.handle,
             'first_name': user.first_name,
             'last_name': user.last_name
         })
@@ -99,9 +100,9 @@ class SecurityView(View):
             return redirect_by_name('core_settings_personal')
         else:
             return render(request, self.template_name, {
-            'title': self.title,
-            'lockwidth_override': True,
-            'form': form
+                'title': self.title,
+                'lockwidth_override': True,
+                'form': form
             })
 
 
@@ -123,6 +124,7 @@ class SignalView(View):
             'lockwidth_override': True,
             'verify_url': verify_url
         })
+
 
 class UserView(View):
     def my_profile(request):
@@ -150,16 +152,16 @@ class UserView(View):
                 'user': user
             })
 
-
     def signals(request, pk):
         return render(request, 'core/user/signals.html', {
             # 'title': 'Ografy - {0}'.format(request.user.identifier),
             # 'user': request.user
         })
 
+
 @login_required
 def base(request):
     return render(request, 'core/settings/personal.html', {
-    'title': 'Ografy - Base',
-    'lockwidth_override': True
+        'title': 'Ografy - Base',
+        'lockwidth_override': True
     })

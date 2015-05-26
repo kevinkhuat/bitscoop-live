@@ -1,6 +1,8 @@
 from rest_framework import serializers as django_serializers
 
-from ografy.apps.core.documents import Settings, EndpointDefinition, AuthorizedEndpoint, Provider, Signal, Data, Event, Message, Play
+from ografy.apps.core.documents import (
+    AuthorizedEndpoint, Data, EndpointDefinition, Event, Message, Play, Provider, Settings, Signal
+)
 from ografy.apps.core.models import User
 from ografy.apps.tastydata import serializers as tasty_serializers
 
@@ -35,7 +37,8 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
             'created',
             'updated',
             'data_blob'
-        ) # , 'user'
+            # 'user'
+        )
         depth = 5
 
 
@@ -64,7 +67,8 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
             'datetime',
             'location',
             'name'
-        ) #, 'data'
+            # 'data'
+        )
         depth = 5
 
 
@@ -82,7 +86,8 @@ class MessageSerializer(tasty_serializers.DocumentSerializer):
             'message_to',
             'message_from',
             'message_body'
-        ) # 'event',
+            # 'event'
+        )
         depth = 5
 
 
@@ -98,7 +103,8 @@ class PlaySerializer(tasty_serializers.DocumentSerializer):
             'event',
             'play_type',
             'title',
-        ) # 'event',
+            # 'event'
+        )
         depth = 5
 
 
@@ -208,5 +214,6 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'date_joined',
             'is_active',
             'is_verified'
-        ) #, 'settings'
+            # 'settings'
+        )
         depth = 5

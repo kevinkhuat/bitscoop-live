@@ -15,4 +15,4 @@ sys.path.append(app_path)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ografy.settings.production')
 
-from ografy.wsgi import application
+from ografy.wsgi import application  # noqa, isort:skip

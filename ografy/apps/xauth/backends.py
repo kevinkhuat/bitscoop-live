@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
+
 class IdentifierBackend(ModelBackend):
     def authenticate(self, identifier=None, password=None, **kwargs):
         User = get_user_model()

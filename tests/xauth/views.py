@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
+from django.shortcuts import redirect
 from social.backends.google import GooglePlusAuth
 from social.backends.utils import load_backends
-from django.core.exceptions import PermissionDenied, SuspiciousOperation
 
 from ografy.tests.xauth.decorators import render_to
 

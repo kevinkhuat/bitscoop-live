@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-
 from social.pipeline.partial import partial
 
 

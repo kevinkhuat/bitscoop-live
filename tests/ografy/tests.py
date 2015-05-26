@@ -1,11 +1,10 @@
 import json
-
 from ast import literal_eval
-from django.core.urlresolvers import reverse, resolve
-from django.http import HttpResponse, HttpResponseRedirect
-from django.test import SimpleTestCase
-from django.test import TransactionTestCase
 from urllib.parse import urlparse
+
+from django.core.urlresolvers import resolve, reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.test import SimpleTestCase, TransactionTestCase
 
 from ografy.apps.core.forms import SignUpForm
 

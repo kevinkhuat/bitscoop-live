@@ -1,10 +1,11 @@
 import json
-
 from ast import literal_eval
-from django.core.urlresolvers import reverse, resolve
-from django.test import TransactionTestCase
-from ografy.apps.core.forms import SignUpForm
 from urllib.parse import urlparse
+
+from django.core.urlresolvers import resolve, reverse
+from django.test import TransactionTestCase
+
+from ografy.apps.core.forms import SignUpForm
 
 
 # python ../manage.py dumpdata -e contenttypes -e auth.Permission --natural >

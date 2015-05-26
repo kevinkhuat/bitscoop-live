@@ -1,12 +1,9 @@
-import os
-
 from datetime import datetime
-from django.shortcuts import redirect
 
+from django.shortcuts import redirect
+from mongoengine import Q
 from social.pipeline.partial import partial
 from social.pipeline.social_auth import associate_user
-
-from mongoengine import Q
 
 from ografy.apps.core.api import ProviderApi, SignalApi
 from ografy.apps.core.documents import Signal
@@ -18,6 +15,7 @@ def require_email(strategy, details, user=None, is_new=False, *args, **kwargs):
         return
     elif is_new and not details.get('email'):
         email = strategy.request_data().get('email')
+
         if email:
             details['email'] = email
         else:
@@ -26,6 +24,7 @@ def require_email(strategy, details, user=None, is_new=False, *args, **kwargs):
 
 def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwargs):
     association = associate_user(backend=backend, uid=uid, user=user, social=social, **kwargs)
+
     if association:
         user = association['user']
         social = association['social']
@@ -42,8 +41,10 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
             updated=datetime.now(),
             last_run=None
         )
-        if backend.setting('API_KEY') != None:
+
+        if backend.setting('API_KEY') is not None:
             signal.access_token = backend.setting('API_KEY')
+
         SignalApi.post(signal)
 
     return association

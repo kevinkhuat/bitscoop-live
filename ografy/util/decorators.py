@@ -1,7 +1,6 @@
 from functools import wraps
 
-from django.db.models.signals import pre_save
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 
 
 def autoconnect(cls):

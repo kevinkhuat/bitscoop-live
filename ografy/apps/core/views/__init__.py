@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout as auth_logout
 from django.shortcuts import render
 from django.views.generic import View
@@ -107,8 +106,8 @@ def index(request):
 # TODO: Remove, for testing
 def signal_scheduler(request):
     if request.user.is_authenticated():
-        template='core/main/scheduler.html'
-        context= {
+        template = 'core/main/scheduler.html'
+        context = {
             'title': 'Ografy - Signal Scheduler test page',
             'user_id': request.user.id
         }
@@ -139,4 +138,3 @@ def start(request):
     return render(request, 'core/start.html', {
         'title': 'Ografy - Get Started'
     })
-

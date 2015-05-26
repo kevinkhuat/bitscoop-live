@@ -1,19 +1,17 @@
 import json
-import requests
-import social
-import social.backends as social_backends
 
+import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render, HttpResponse
-from social.apps.django_app.default.models import UserSocialAuth
+from django.shortcuts import HttpResponse, render
+from django.utils.module_loading import import_module
 from social.backends.utils import get_backend
-from social.utils import module_member
-from social.utils import setting_name
+from social.utils import module_member, setting_name
 
 from ografy.apps.core.documents import Signal
 from ografy.settings import OGRAFY_MAPBOX_ACCESS_TOKEN
+
 
 @login_required()
 def main(request):
@@ -22,6 +20,7 @@ def main(request):
     return render(request, template, {
         'user': request.user
     })
+
 
 @login_required()
 def mapbox_token(request):
@@ -39,6 +38,7 @@ Storage = module_member(STORAGE)
 STRATEGY = getattr(settings, setting_name('STRATEGY'), 'social.strategies.django_strategy.DjangoStrategy')
 Strategy = module_member(STRATEGY)
 
+
 # FIXME: Huge security flaw, we do not verify any calls made on the server in any way!
 @login_required()
 def external_api_call(request):
@@ -52,8 +52,7 @@ def external_api_call(request):
         parameters = json.loads(request.REQUEST.get('parameters', ''))
 
         # Get the Backend
-        # TODO: Remove, super ugly, but PSA does it the same damn way!
-        backend_module = eval('social_backends.' + signal.provider.name.lower())
+        backend_module = import_module('social.backends.{0}'.format(signal.provider.name.lower()))
 
         # Create a mock backend instance in order to use call signing libs in PSA
         redirect_uri = '/'
@@ -62,7 +61,6 @@ def external_api_call(request):
 
         # Case: OAuth 2 - 3 legged
         if hasattr(backend_module, 'BaseOAuth2'):
-
             # Find the access token location from the endpoint definition, currently assumes it's on the signals explicitly populated property
             token_location = parameters['access_token'].split('.')
 
@@ -152,4 +150,3 @@ def proxy(request):
 
     except requests.RequestException:
         return HttpResponseBadRequest()
-

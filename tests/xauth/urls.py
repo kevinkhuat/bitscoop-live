@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import include, patterns, url
 
 import ografy.tests.xauth.views as views
 

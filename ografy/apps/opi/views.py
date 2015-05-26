@@ -1,11 +1,11 @@
 from rest_framework import status
-from rest_framework.reverse import reverse
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.apps.core import api as core_api
 from ografy.apps.tastydata.pagination import OgrafyItemPagination
-from ografy.apps.tastydata.views import DjangoAPIView, DjangoAPIListView, MongoAPIView, MongoAPIListView
+from ografy.apps.tastydata.views import DjangoAPIListView, DjangoAPIView, MongoAPIListView, MongoAPIView
 
 
 class APIEndpoints(DjangoAPIView):

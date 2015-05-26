@@ -3,12 +3,13 @@ import os
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from mongoengine import Q
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core.api import AuthorizedEndpointApi, EndpointDefinitionApi, ProviderApi, SignalApi
 from ografy.apps.core.documents import AuthorizedEndpoint
+
 
 @login_required
 def authorize(request):
@@ -62,11 +63,13 @@ def connect(request, pk):
         'postback_url': reverse('core_authorize')
     })
 
+
 @login_required
 def connect_name(request, name):
     provider = ProviderApi.get(Q(backend_name=name)).get()
 
     return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
+
 
 @login_required
 def providers(request):
@@ -93,6 +96,7 @@ def providers(request):
         'providers': providers,
         'connect_url': connect_url
     })
+
 
 @login_required
 def verify(request, pk):
@@ -149,8 +153,8 @@ def verify(request, pk):
         signal.name = request.POST['name']
         signal.frequency = int(request.POST['updateFrequency'])
         extra_data = user_social_auth_instance.extra_data
-        #OAuth1 returns tokens on extra_data.  Signal.extra_data is serialized and sent to the user, and we don't
-        #want those tokens available on the client, so delete them from signal.extra_data
+        # OAuth1 returns tokens on extra_data.  Signal.extra_data is serialized and sent to the user, and we don't
+        # want those tokens available on the client, so delete them from signal.extra_data
         if 'access_token' in extra_data:
             if 'oauth_token' in extra_data['access_token']:
                 extra_data['access_token'].pop('oauth_token')
@@ -193,7 +197,7 @@ def verify(request, pk):
                 })
             else:
                 # If the Authorized Endpoint does not exist and the user wants that endpoint to be used, create an Authorized Endpoint.
-                if this_endpoint_dict[this_authorized_endpoint_id] == True:
+                if this_endpoint_dict[this_authorized_endpoint_id]:
                     this_endpoint = EndpointDefinitionApi.get(Q(id=index)).get()
                     route = ''
                     if this_endpoint.provider.backend_name == 'facebook':

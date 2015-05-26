@@ -1,18 +1,10 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import ImproperlyConfigured
-from django.core.urlresolvers import get_script_prefix, resolve, NoReverseMatch, Resolver404
-
-# from django.utils.translation import ugettext_lazy as _
-from urllib import parse as urlparse
-
-from rest_framework.reverse import reverse
-from rest_framework.relations import HyperlinkedRelatedField
-
-#TODO: FIX BIGTIME for reference field!
+# TODO: FIX BIGTIME for reference field!
 from bson.errors import InvalidId
-from mongoengine import dereference
 from django.core.exceptions import ValidationError
+from mongoengine import dereference
 from mongoengine.document import Document
+from rest_framework.relations import HyperlinkedRelatedField
+from rest_framework.reverse import reverse
 
 from ografy.apps.tastydata.fields import DocumentField
 
@@ -31,7 +23,7 @@ class ReferenceField(DocumentField):
     format
     queryset
     """
-    #TODO: FIX BIGTIME!
+    # TODO: FIX BIGTIME!
     # default_error_messages = {
     #     'invalid_dbref': ('Unable to convert to internal value.'),
     #     'invalid_doc': ('DBRef invalid dereference.'),

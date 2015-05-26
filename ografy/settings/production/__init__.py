@@ -1,4 +1,4 @@
-from ografy.settings import *
+from ografy.settings import *  # noqa
 
 
 #############

@@ -1,7 +1,7 @@
-from collections import namedtuple
 import inspect
-import mongoengine
+from collections import namedtuple
 
+import mongoengine
 from django.core.exceptions import ImproperlyConfigured
 from django.utils import six
 from mongoengine.base.common import get_document

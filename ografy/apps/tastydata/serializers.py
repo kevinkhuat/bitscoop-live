@@ -1,20 +1,20 @@
-from __future__ import unicode_literals
-
-from collections import OrderedDict
 import copy
+from collections import OrderedDict
 
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.forms import widgets
-from django.core.exceptions import ImproperlyConfigured
-from mongoengine.errors import ValidationError as me_ValidationError
 from mongoengine import fields as me_fields
-from rest_framework import serializers
-from rest_framework import fields as drf_fields
+from mongoengine.errors import ValidationError as me_ValidationError
+from rest_framework import fields as drf_fields, serializers
 from rest_framework.fields import empty
 
+from ografy.apps.tastydata.fields import (
+    BaseGeoField, BinaryField, DocumentField, DynamicField, EmbeddedDocumentField, ListField, ObjectIdField,
+    SortedListField
+)
+from ografy.apps.tastydata.related_fields import DjangoField, MongoField, ReferenceField
 from ografy.apps.tastydata.utils import get_field_info
-from ografy.apps.tastydata.fields import ListField, EmbeddedDocumentField, DynamicField, SortedListField, ObjectIdField, DocumentField, BinaryField, BaseGeoField
-from ografy.apps.tastydata.related_fields import ReferenceField, DjangoField, MongoField
 
 
 def raise_errors_on_nested_writes(method_name, serializer, validated_data):
@@ -43,7 +43,7 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
     # class UserSerializer(ModelSerializer):
     # ...
     #     profile = ProfileSerializer()
-    assert not any(
+    assert not any(  # noqa
              '.' in field.source and (key in validated_data)
              and isinstance(validated_data[key], (list, dict))
              for key, field in serializer.fields.items()
@@ -66,8 +66,11 @@ def raise_errors_on_nested_writes(method_name, serializer, validated_data):
         'The `.{method_name}()` method does not support writable dotted-source '
         'fields by default.\nWrite an explicit `.{method_name}()` method for '
         'serializer `{module}.{class_name}`, or set `read_only=True` on '
-        'dotted-source serializer fields.'.format(method_name=method_name,
-            module=serializer.__class__.__module__, class_name=serializer.__class__.__name__)
+        'dotted-source serializer fields.'.format(
+            method_name=method_name,
+            module=serializer.__class__.__module__,
+            class_name=serializer.__class__.__name__
+        )
     )
 
 
@@ -187,7 +190,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = getattr(self.Meta, 'model')
         fields = getattr(self.Meta, 'fields', None)
         exclude = getattr(self.Meta, 'exclude', None)
-        depth = getattr(self.Meta, 'depth', 0)
+        # FIXME: This variable `depth` is unused. This should be removed if it's not going to be used in the future.
+        depth = getattr(self.Meta, 'depth', 0)  # noqa
         extra_kwargs = self.get_extra_kwargs()
 
         if fields and not isinstance(fields, (list, tuple)):

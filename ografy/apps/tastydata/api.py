@@ -29,7 +29,7 @@ class BaseApi(object):
         try:
             inst = cls.model.objects.get(pk=val)
             for key, value in data.items():
-               setattr(inst, key, value)
+                setattr(inst, key, value)
             inst.save()
         except (TypeError, AssertionError):
             cls.model.objects.filter(val).update(**data)

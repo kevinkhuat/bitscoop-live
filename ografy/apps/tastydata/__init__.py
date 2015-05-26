@@ -1,6 +1,3 @@
-import urllib.parse as urlparse
-from mongoengine import *
-
 from ografy.apps.tastydata.exceptions import InvalidFilterError
 from ografy.apps.tastydata.expressions import tokenize, Symbol
 

@@ -1,7 +1,7 @@
 from functools import wraps
 
-from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 
 def render_to(tpl):

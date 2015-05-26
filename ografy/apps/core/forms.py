@@ -34,7 +34,9 @@ class UpdatePersonalForm(Form):
     difference in stock Django.
     """
     email = forms.EmailField(max_length=256)
-    handle = forms.CharField(max_length=20, required=False,
+    handle = forms.CharField(
+        max_length=20,
+        required=False,
         validators=[
             RegexValidator(re.compile(r'^(?=[a-zA-Z0-9_\.]{3,20}$)(?=.*[a-zA-Z])'), _('3-20 letters, numbers, underscores, or periods. Must contain least one letter.'), 'invalid'),
             RegexValidator(re.compile(r'^((?![o0]+[g9]+r+[a4]+(f|ph)+y+).)*$', re.I), _('Username cannot contain Ografy.'), 'invalid'),

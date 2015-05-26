@@ -7,7 +7,7 @@ import ografy.apps.core.views.signals as signals_views
 import ografy.apps.core.views.user as user_views
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns('',  # noqa
     url(r'^$', views.index, name='core_index'),
     # TODO: Remove once the signal scheduler is integrated into the main site js
     url(r'^scheduler$', views.signal_scheduler, name='scheduler'),

@@ -1,8 +1,7 @@
 from django.utils.encoding import smart_str
-
-from rest_framework import serializers
 from mongoengine.base.document import BaseDocument
 from mongoengine.fields import ObjectId
+from rest_framework import serializers
 
 
 class DocumentField(serializers.Field):
@@ -33,7 +32,7 @@ class DocumentField(serializers.Field):
             else:
                 continue
 
-            val = self.transform_object(obj, depth-1)
+            val = self.transform_object(obj, depth - 1)
 
             if val is not None:
                 data[field] = val
@@ -41,8 +40,7 @@ class DocumentField(serializers.Field):
         return data
 
     def transform_dict(self, obj, depth):
-        return dict([(key, self.transform_object(val, depth-1))
-                     for key, val in obj.items()])
+        return dict([(key, self.transform_object(val, depth - 1)) for key, val in obj.items()])
 
     def transform_object(self, obj, depth):
         """

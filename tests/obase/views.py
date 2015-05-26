@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from ografy.apps.obase.api import EventApi
 
 

@@ -2,6 +2,7 @@ import ografy.apps.core.documents as documents
 import ografy.apps.core.models as models
 from ografy.apps.tastydata.api import BaseApi
 
+
 class AuthorizedEndpointApi(BaseApi):
     model = documents.AuthorizedEndpoint
 
