@@ -1,35 +1,15 @@
 import os
 import json
-import datetime
-
-import ografy.apps.core.api as CoreAPI
 
 from django.core.management.base import BaseCommand
 
+from ografy.apps.core import api as CoreAPI
 from ografy.apps.core.documents import EndpointDefinition, Provider, Signal
-from ografy.apps.core.models import User
-from ografy.settings import EXTRA_FIXTURES
+from ografy.settings import MONGO_FIXTURE_DIRS
 
 
-MONGO_DIR = os.path.join(EXTRA_FIXTURES, 'mongo')
-
+MONGO_DIR = MONGO_FIXTURE_DIRS[0]
 DEMO_FILE_NAME = 'main_fixtures.json'
-
-
-def create_demo_user():
-    return User(
-        id=2,
-        email='demouser@demo.com',
-        handle='DemoUser',
-        first_name='Demo',
-        last_name='User',
-        date_joined=datetime.datetime(2015, 2, 25, 16, 14, 15),
-        is_staff=False,
-        is_active=True,
-        is_verified=True,
-        password_date=datetime.datetime(2015, 2, 25, 16, 14, 15),
-        last_login=datetime.datetime(2015, 2, 25, 16, 14, 15)
-    )
 
 
 def create_fixture_signal(signal_dict, user, provider):
@@ -53,9 +33,10 @@ def create_fixture_endpoint(temp_endpoint, provider_id):
         route_end=temp_endpoint['route_end'],
         provider=provider_id,
         parameter_description=temp_endpoint['parameter_description'],
-        mapping = temp_endpoint['mapping'],
-        enabled_by_default = temp_endpoint['enabled_by_default']
+        mapping=temp_endpoint['mapping'],
+        enabled_by_default=temp_endpoint['enabled_by_default']
     )
+
 
 def create_fixture_provider(provider):
     return Provider(
@@ -69,14 +50,10 @@ def create_fixture_provider(provider):
         tags=provider['tags']
     )
 
+
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
-
-    fixture_user = create_demo_user()
-
-    fixture_user.set_password('DemoUser')
-    fixture_user.save()
 
     # for signal_dict in fixture_data['signals']:
     #     user = core_api.UserApi.get(Q(id=signal_dict['user'])).get()
@@ -97,6 +74,5 @@ def load_fixture(path):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-
-        file_path = os.path.abspath(MONGO_DIR + '/' + DEMO_FILE_NAME)
+        file_path = os.path.abspath(os.path.join(MONGO_DIR, DEMO_FILE_NAME))
         load_fixture(file_path)

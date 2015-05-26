@@ -27,14 +27,5 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
 
-    def by_oid(self, oid):
-        try:
-            id = int(oid)
-            expr = Q(pk=id)
-        except ValueError:
-            expr = Q(handle__iexact=oid)
-
-        return self.filter(expr)
-
     def by_identifier(self, identifier):
         return self.filter(Q(email__iexact=identifier) | Q(handle__iexact=identifier))

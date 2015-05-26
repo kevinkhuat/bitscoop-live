@@ -1,0 +1,22 @@
+[
+  {
+    "fields": {
+      "handle": "DemoUser",
+      "password": "pbkdf2_sha256$20000$G7MkOQqsTOjH$NBWkpUDMve0NAii/BAt9BCRjNdVHPuXf0JdQMVGNrCg=",
+      "date_joined": "2014-03-01T03:19:30.842Z",
+      "is_staff": false,
+      "email": "demo.user@example.com",
+      "last_name": "User",
+      "_upper_email": "DEMO.USER@EXAMPLE.COM",
+      "is_active": true,
+      "user_permissions": [],
+      "_upper_handle": "DEMOUSER",
+      "last_login": null,
+      "groups": [],
+      "first_name": "Demo",
+      "is_superuser": false
+    },
+    "model": "core.user",
+    "pk": 1
+  }
+]

@@ -245,8 +245,11 @@ LOGGING = {
 ##########
 
 # ABSOLUTE_URL_OVERRIDES = {}
-EXTRA_FIXTURES = (
-   get_path(ROOT_PATH, 'fixtures')
+FIXTURE_DIRS = (
+    get_path(ROOT_PATH, 'fixtures'),
+)
+MONGO_FIXTURE_DIRS = (  # UNOFFICIAL SETTING
+    get_path(ROOT_PATH, 'fixtures', 'mongo'),
 )
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -258,7 +261,6 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'ografy.apps.core',
-    #'ografy.apps.helpr',
     'ografy.apps.opi',
     'ografy.apps.xauth',
 )
@@ -416,6 +418,7 @@ HANDLE_VALIDATORS = [
 
 PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
+
 
 ############
 # API KEYS #

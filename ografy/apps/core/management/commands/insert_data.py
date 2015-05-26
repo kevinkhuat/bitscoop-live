@@ -1,17 +1,15 @@
 import os
 import json
 
-import ografy.apps.core.api as CoreAPI
-
 from django.core.management.base import BaseCommand
 
+from ografy.apps.core import api as CoreAPI
 from ografy.apps.core.documents import Data, Event, Message, Play
-from ografy.settings import EXTRA_FIXTURES
+from ografy.settings import MONGO_FIXTURE_DIRS
 
 
-MONGO_DIR = os.path.join(EXTRA_FIXTURES, 'mongo')
-
-DEMO_FILE_NAME = 'demoData.json'
+MONGO_DIR = MONGO_FIXTURE_DIRS[0]
+DEMO_FILE_NAME = 'demo_data.json'
 
 
 def create_fixture_data(temp_data):
@@ -21,6 +19,7 @@ def create_fixture_data(temp_data):
         user_id=temp_data['user_id'],
         data_blob=temp_data['data_blob']
     )
+
 
 def create_fixture_event(temp_event, data):
     return Event(
@@ -60,7 +59,6 @@ def create_fixture_play(temp_play, event):
 
 
 def load_fixture(path):
-
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
 
@@ -113,10 +111,7 @@ def load_fixture(path):
         CoreAPI.EventApi.patch(event_id, {'subtype_id': play_id})
 
 
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
-
-        file_path = os.path.abspath(MONGO_DIR + '/' + DEMO_FILE_NAME)
+        file_path = os.path.abspath(os.path.join(MONGO_DIR, DEMO_FILE_NAME))
         load_fixture(file_path)

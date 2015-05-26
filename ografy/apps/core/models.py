@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.utils.http import urlquote
 
 from ografy.apps.core.managers import UserManager
 from ografy.util.decorators import autoconnect
@@ -20,57 +19,57 @@ class User(AbstractBaseUser, PermissionsMixin):
         handle: Entity-specified username.
         first_name: Entity-specified given name.
         last_name: Entity-specified inherited name.
-        last_login: The date of last login.
-        password_date: The date of the last password change.
-        is_verified: Flag indicating whether or not the account has been verified.
+        date_joined: The date the user joined.
+        last_login: (Inherited) The date of last login.
+        is_staff: Flag indicating whether or not the account as access to the built-in Django admin app.
         is_active: Flag indicating whether or not the account is active.
     """
     id = models.AutoField(primary_key=True)
+    # password = models.CharField(max_length=128)  # Inherited from AbstractBaseUser.
     email = models.EmailField(max_length=256, unique=True, db_index=True)
     handle = NullCharField(max_length=20, blank=True, null=True, unique=True, db_index=True, validators=settings.HANDLE_VALIDATORS)
 
-    password_date = models.DateTimeField(auto_now_add=True)
-
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
+
     date_joined = models.DateTimeField(auto_now_add=True)
+    # last_login = models.DateTimeField(blank=True, null=True)  # Inherited from AbstractBaseUser.
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_verified = models.BooleanField(default=False)
+    # is_superuser = models.BooleanField(default=False)  # Inherited from PermissionsMixin
+
+    # groups = models.ManyToManyField(Group, blank=True)  # Inherited from PermissionsMixin
+    # user_permissions = models.ManyToManyField(Permission, blank=True)  # Inherited from PermissionsMixin
 
     # Non DBMS-specific case-insensitive unique.
+    # These fields are set with a pre-save signal, are intrinsically related to actual model fields,
+    # and should not be directly modified.
     _upper_email = models.EmailField(max_length=256, blank=True, null=True, unique=True, db_index=True)
     _upper_handle = NullCharField(max_length=20, blank=True, null=True, unique=True, db_index=True)
 
     USERNAME_FIELD = 'email'
     objects = UserManager()
 
-    # TODO: Complete for user page.
-    def get_absolute_url(self):
-        return "/users/%s/" % urlquote(self.email)
-
-    @property
-    def is_valid(self):
-        return self.is_active and self.is_verified
-
-    @property
-    def oid(self):
-        return self.handle or self.pk
-
     @property
     def identifier(self):
         return self.handle or self.email
 
-    def get_full_name(self):
+    @property
+    def full_name(self):
         return '{0} {1}'.format(self.first_name, self.last_name).strip()
 
-    def get_short_name(self):
+    @property
+    def short_name(self):
         return self.handle or self.first_name
 
-    # TODO: Wire up to email server for email verification and password reset.
-    def email_user(self, subject, message, from_email=None):
-        pass
+    # Requisite implementation of inherited abstract method.
+    def get_full_name(self):
+        return self.full_name
+
+    # Requisite implementation of inherited abstract method.
+    def get_short_name(self):
+        return self.short_name
 
     def member_of(self, group_name):
         return self.groups.filter(name__iexact=group_name).exists()
@@ -78,7 +77,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def pre_save(self):
         self._upper_email = self.email.upper()
 
-        if self.handle is not None:
+        if self.handle:
             self._upper_handle = self.handle.upper()
-        else:
-            self._upper_handle = self.handle

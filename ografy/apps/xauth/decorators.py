@@ -37,7 +37,7 @@ def key_login(view_fn, persist=False, track=True, exception=PermissionDenied):
         token = request.REQUEST.get('token')
 
         user = authenticate(token=token)
-        if user is None or not user.is_valid:
+        if user is None or not user.is_active:
             raise exception
 
         login(request, user, persist=persist, track=track)
