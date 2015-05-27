@@ -8,7 +8,7 @@ from mongoengine import Q
 from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.apps.core.api import AuthorizedEndpointApi, EndpointDefinitionApi, ProviderApi, SignalApi
-from ografy.apps.core.documents import AuthorizedEndpoint, EndpointDefinition
+from ografy.apps.core.documents import AuthorizedEndpoint
 
 @login_required
 def authorize(request):
@@ -24,7 +24,7 @@ def authorize(request):
     if signal_count == 0 or signal_count > 1:
         for signal in unverified_signals:
             for backend in unassociated_backends:
-                if backend.uid == signal.psa_backend_uid:
+                if backend.id == signal.usa_id:
                     unassociated_backends.remove(backend)
 
         # TODO: Change to bulk delete
@@ -32,7 +32,7 @@ def authorize(request):
             SignalApi.delete(val=signal.id)
 
         for backend in unassociated_backends:
-            UserSocialAuth.objects.get(uid=backend.uid).delete()
+            UserSocialAuth.objects.get(id=backend.id).delete()
 
         return HttpResponseRedirect(reverse('core_providers'))
 
@@ -113,7 +113,7 @@ def verify(request, pk):
 
         if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
-                'title': 'Ografy - Authorize ' + signal.provider.backend_name + ' Connection',  # Change to signal
+                'title': 'Ografy - Authorize ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal
@@ -121,21 +121,19 @@ def verify(request, pk):
         else:
             if not signal.complete:
                 initial_verification = True
-                extra_data = UserSocialAuth.objects.filter(user_id=request.user.id, uid=signal.psa_backend_uid)[0].extra_data
+                extra_data = UserSocialAuth.objects.filter(user_id=request.user.id, id=signal.usa_id)[0].extra_data
                 if signal.provider.auth_type == 1:
                     access_token = extra_data['access_token']
                     signal.oauth_token = access_token['oauth_token']
                     signal.oauth_token_secret = access_token['oauth_token_secret']
                 elif signal.provider.auth_type == 0:
                     signal.access_token = extra_data['access_token']
-                else:
-                    pass
                 signal.save()
 
             for endpoint in endpoint_list:
                 pass
             return render(request, 'core/signals/verify.html', {
-                'title': 'Ografy - Verify ' + signal.provider.backend_name + ' Connection',  # Change to signal
+                'title': 'Ografy - Verify ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal,
@@ -147,30 +145,65 @@ def verify(request, pk):
         if (not signal.complete):
             signal.complete = True
             signal.enabled = True
+        user_social_auth_instance = list(UserSocialAuth.objects.filter(id=signal.usa_id))[0]
         signal.name = request.POST['name']
         signal.frequency = int(request.POST['updateFrequency'])
+        extra_data = user_social_auth_instance.extra_data
+        #OAuth1 returns tokens on extra_data.  Signal.extra_data is serialized and sent to the user, and we don't
+        #want those tokens available on the client, so delete them from signal.extra_data
+        if 'access_token' in extra_data:
+            if 'oauth_token' in extra_data['access_token']:
+                extra_data['access_token'].pop('oauth_token')
+                extra_data['access_token'].pop('oauth_token_secret')
+            else:
+                extra_data.pop('access_token')
+        signal.extra_data = extra_data
         signal.save()
 
-        # FIXME: Right now the order of Authorized Endpoint enabled statuses on the Verification page is assumed
-        # to be the same as the order that Authorized Endpoints are stored on the server, and it's also
-        # assumed that the data will post to the server in the same order.
-        # This will almost certainly not be the case, and some sort of input validation needs to be implemented.
-        authorizedEndpointsEnabledList = json.loads(request.POST['authorizedEndpointsEnabledList'])
-        # # For now, i is the index of both the input enabled list and the endpoints returned from the DB.
-        # # This loops through each endpoint and sets its enabled field based on what was sent from the client.
-        for index in authorizedEndpointsEnabledList:
-            this_endpoint_dict = authorizedEndpointsEnabledList[index]
+        # This handles updating the Authorized Endpoints enabled status and the creation of Authorized Endpoints.
+        # The client passes a dictionary of Endpoint Definitions and their associated Authorized Endpoints to the server.
+        # The dictionary keys are the IDs of the Endpoint Definitions associated with this signal.
+        # The dictionary values are either 'None' if an Authorized Endpoint has not been created for that endpoint
+        # definition yet, or a dictionary if there is an Authorized Endpoint.
+        # The sub-dictionary's key is the ID of the Authorized Endpoint, and the value is a boolean representing
+        # whether or not the Authorized Endpoint is enabled.
+        # Example:
+        # {
+        #   38920743: None,
+        #   32957207: {
+        #       38828502: False
+        #   }
+        # }
+        # Endpoint definition 38920743 has no Authorized Endpoint associated with it.
+        # Endpoint definition 32957207 has Authorized Endpoint 38828502 associated with it.
+        # Authorized Endpoint 38828502 should be disabled.
+        #
+
+        # Get the endpoint dictionary from the request
+        endpointsDict = json.loads(request.POST['endpointsDict'])
+        for index in endpointsDict:
+            # Get the Authorized Endpoint dictionary for this Endpoint Definition (or None if there is no Authorized Endpoint).
+            this_endpoint_dict = endpointsDict[index]
+            # Get the Authorized Endpoint ID (or None if it doesn't exist)
             this_authorized_endpoint_id = list(this_endpoint_dict.keys())[0]
+            # If the Authorized Endpoint exists, update its enabled status based on what was passed to the server
             if not this_authorized_endpoint_id == 'None':
                 AuthorizedEndpointApi.patch(this_authorized_endpoint_id, {
                     "enabled": this_endpoint_dict[this_authorized_endpoint_id]
                 })
             else:
+                # If the Authorized Endpoint does not exist and the user wants that endpoint to be used, create an Authorized Endpoint.
                 if this_endpoint_dict[this_authorized_endpoint_id] == True:
                     this_endpoint = EndpointDefinitionApi.get(Q(id=index)).get()
+                    route = ''
+                    if this_endpoint.provider.backend_name == 'facebook':
+                        route = os.path.join(os.path.join(this_endpoint.provider.base_route, signal.usa_id, this_endpoint.route_end))
+                    else:
+                        route = os.path.join(this_endpoint.provider.base_route, this_endpoint.route_end)
+
                     new_authorized_endpoint = AuthorizedEndpoint(
                         name=this_endpoint.name,
-                        route=os.path.join(this_endpoint.provider.base_route, this_endpoint.route_end),
+                        route=route,
                         provider=this_endpoint.provider,
                         user_id=request.user.id,
                         signal=signal,
@@ -179,5 +212,4 @@ def verify(request, pk):
                     )
                     AuthorizedEndpointApi.post(new_authorized_endpoint)
 
-        # FIXME: Remove json.dumps and make sure to set the dataType to NOT json on the ajax request
         return HttpResponse(reverse('core_settings_signals'))

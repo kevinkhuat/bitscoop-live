@@ -42,9 +42,9 @@
     },
     {
       "name": "Dropbox",
-      "base_route": "",
+      "base_route": "https://api.dropbox.com",
       "client_callable": true,
-      "backend_name": "dropbox",
+      "backend_name": "dropbox-oauth2",
       "auth_backend": "social.backends.dropbox.DropboxOAuth2",
       "description": "File hosting service",
       "tags": "collaboration productivity",
@@ -52,7 +52,7 @@
     },
     {
       "name": "FitBit",
-      "base_route": "",
+      "base_route": "https://api.fitbit.com",
       "client_callable": true,
       "backend_name": "fitbit",
       "auth_backend": "social.backends.fitbit.FitbitOAuth",
@@ -82,9 +82,9 @@
     },
     {
       "name": "Google",
-      "base_route": "",
+      "base_route": "https://www.googleapis.com",
       "client_callable": true,
-      "backend_name": "google",
+      "backend_name": "google-oauth2",
       "auth_backend": "social.backends.google.GoogleOAuth2",
       "description": "Internet-related services and products",
       "tags": "collaboration media productivity social",
@@ -92,7 +92,7 @@
     },
     {
       "name": "Instagram",
-      "base_route": "",
+      "base_route": "https://api.instagram.com",
       "client_callable": true,
       "backend_name": "instagram",
       "auth_backend": "social.backends.instagram.InstagramOAuth2",
@@ -104,7 +104,7 @@
       "name": "LinkedIn",
       "base_route": "",
       "client_callable": true,
-      "backend_name": "linkedin",
+      "backend_name": "linkedin-oauth2",
       "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
       "description": "Business-oriented social networking service",
       "tags": "productivity social",
@@ -122,7 +122,7 @@
     },
     {
       "name": "Spotify",
-      "base_route": "",
+      "base_route": "https://api.spotify.com",
       "client_callable": true,
       "backend_name": "spotify",
       "auth_backend": "social.backends.spotify.SpotifyOAuth2",
@@ -165,74 +165,289 @@
     {
       "facebook": [
         {
-          "name": "Friends",
+          "name": "Facebook Friends",
           "route_end": "friends",
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": ""
+          }
         },
         {
-          "name": "Likes",
+          "name": "Facebook Likes",
           "route_end": "likes",
           "provider": 1,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": ""
+          }
         },
         {
-          "name": "Posts",
-          "route_end": "posts",
+          "name": "Facebook Posts",
+          "route_end": "statuses",
           "provider": 1,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          }
         },
         {
-          "name": "Messages",
+          "name": "Facebook Inbox",
+          "route_end": "inbox",
+          "provider": 1,
+          "enabled_by_default": true,
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          }
+        },
+        {
+          "name": "Facebook Outbox",
           "route_end": "outbox",
           "provider": 1,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          }
         }
       ],
       "twitter": [
         {
           "name": "Twitter Tweets",
-          "route_end": "search/tweets",
+          "route_end": "statuses/user_timeline.json",
           "provider": 2,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "count": {
+              "value": "count=[$1]",
+              "description": "Pagination count",
+              "default": "15",
+              "format": "Integer"
+            },
+            "oauth_token": {
+              "value": "oauth_token=[$1]",
+              "description": "OAuth1 public key",
+              "default": "signal.oauth_token",
+              "format": "String"
+            },
+            "oauth_token_secret": {
+              "value": "oauth_token_secret=[$1]",
+              "description": "OAuth1 private key",
+              "default": "signal.oauth_token_secret",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          },
+          "field_mapping": {
+            "event": {
+              "datetime": "created_at",
+              "location": "coordinates"
+            },
+            "message": {
+              "message_type": "IM",
+              "message_from": {
+                "field_location": "user.screen_name",
+                "transform": false
+              },
+              "message_body": {
+                "field_location": "text",
+                "transform": false
+              },
+              "message_to": ["Followers"]
+            }
+          }
         },
         {
           "name": "Twitter Direct Messages",
           "route_end": "direct_message",
           "provider": 2,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "count": {
+              "value": "count=[$1]",
+              "description": "Pagination count",
+              "default": "15",
+              "format": "Integer"
+            },
+            "oauth_token": {
+              "value": "oauth_token=[$1]",
+              "description": "OAuth1 public key",
+              "default": "signal.oauth_token",
+              "format": "String"
+            },
+            "oauth_token_secret": {
+              "value": "oauth_token_secret=[$1]",
+              "description": "OAuth1 private key",
+              "default": "signal.oauth_token_secret",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          },
+          "field_mapping": {
+            "event": {
+              "datetime": "created_at",
+              "location": "coordinates",
+              "provider_name": "twitter"
+            },
+            "message": {
+              "message_type": "IM",
+              "message_from": "name",
+              "message_body": "text"
+            }
+          }
         },
         {
           "name": "Twitter Followers",
           "route_end": "followers",
           "provider": 2,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "user_id": {
+              "value": "user_id=[$1]",
+              "description": "User ID",
+              "default": "user_id",
+              "format": "String"
+            },
+            "count": {
+              "value": "count=[$1]",
+              "description": "Pagination count",
+              "default": "15",
+              "format": "Integer"
+            },
+            "oauth_token": {
+              "value": "oauth_token=[$1]",
+              "description": "OAuth1 public key",
+              "default": "signal.oauth_token",
+              "format": "String"
+            },
+            "oauth_token_secret": {
+              "value": "oauth_token_secret=[$1]",
+              "description": "OAuth1 private key",
+              "default": "signal.oauth_token_secret",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          },
+          "field_mapping": {
+            "event": {
+              "datetime": "created_at",
+              "location": "coordinates",
+              "provider_name": "twitter"
+            },
+            "message": {
+              "message_type": "IM",
+              "message_from": "name",
+              "message_body": "text"
+            }
+          }
         },
         {
           "name": "Twitter Following",
           "route_end": "following",
           "provider": 2,
           "enabled_by_default": true,
-          "parameter_description": {},
-          "mapping": {}
+          "parameter_description": {
+            "count": {
+              "value": "count=[$1]",
+              "description": "Pagination count",
+              "default": "15",
+              "format": "Integer"
+            },
+            "oauth_token": {
+              "value": "oauth_token=[$1]",
+              "description": "OAuth1 public key",
+              "default": "signal.oauth_token",
+              "format": "String"
+            },
+            "oauth_token_secret": {
+              "value": "oauth_token_secret=[$1]",
+              "description": "OAuth1 private key",
+              "default": "signal.oauth_token_secret",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Message",
+            "list": true,
+            "property_location": ""
+          },
+          "field_mapping": {
+            "event": {
+              "datetime": "created_at",
+              "location": "coordinates",
+              "provider_name": "twitter"
+            },
+            "message": {
+              "message_type": "IM",
+              "message_from": "name",
+              "message_body": "text"
+            }
+          }
         }
       ],
       "steam": [
         {
-          "name": "Games Played",
+          "name": "Steam Game Played",
           "route_end": "IPlayerService/GetOwnedGames/v0001/",
           "provider": 3,
           "enabled_by_default": true,
@@ -240,7 +455,7 @@
             "steamid": {
               "value": "steamid=[$1]",
               "description": "Steam ID",
-              "default": "extra_data['steamId']",
+              "default": "extra_data.player.steamid",
               "format": "Integer"
             },
             "format": {
@@ -249,34 +464,31 @@
               "default": "json",
               "format": "String"
             },
-            "since": {
-              "value": "since=[$1]",
-              "description": "Date after which to retrieve events",
-              "default": "datetime.oneWeekAgo",
-              "format": "datetime"
+            "key": {
+              "value": "key=[$1]",
+              "description": "OpenID access key",
+              "default": "signal.access_token",
+              "format": "String"
             }
           },
           "mapping": {
             "type": "Play",
-            "list": {
-              "location": "response.games"
-            },
+            "list": true,
+            "property_location": "response.games",
             "field_mapping": {
-              "event": {
+              "Event": {
                 "datetime": null,
-                "location": null
+                "location": null,
+                "name": "name"
               },
-              "play": {
-                "play_type": "Video_Game",
-                "title": {
-                  "location": "name",
-                  "transforms": false
-                },
+              "Play": {
+                "play_type": "Video Game",
+                "title": "Steam Game",
                 "media_url": {
-                  "location": "appId",
+                  "field_location": "appid",
                   "transform": {
                     "type": "reformat",
-                    "value": "http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=[$1]&appid=[$2]"
+                    "value": "http://store.steampowered.com/app/[$1]"
                   }
                 }
               }
@@ -284,7 +496,7 @@
           }
         },
         {
-          "name": "Friends",
+          "name": "Steam Friends",
           "route_end": "ISteamUser/GetFriendList/v0001/",
           "provider": 3,
           "enabled_by_default": true,
@@ -292,7 +504,7 @@
             "steamid": {
               "value": "steamid=[$1]",
               "description": "Steam ID",
-              "default": "extra_data['steamId']",
+              "default": "extra_data.player.steamid",
               "format": "Integer"
             },
             "format": {
@@ -307,24 +519,125 @@
               "default": "friend",
               "format": "String"
             },
-            "since": {
-              "value": "since=[$1]",
-              "description": "Date after which to retrieve events",
-              "default": "datetime.oneWeekAgo",
-              "format": "datetime"
+            "key": {
+              "value": "key=[$1]",
+              "description": "OpenID access key",
+              "default": "signal.access_token",
+              "format": "String"
             }
           },
           "mapping": {
             "type": "Event",
-            "list": {
-              "location": "friendslist.friends"
-            },
+            "list": true,
+            "property_location": "friendslist.friends",
             "field_mapping": {
-              "event": {
-                "datetime": null,
-                "location": null
-              }
             }
+          }
+        }
+      ],
+      "google-oauth2": [
+        {
+          "name": "Gmail inbox",
+          "route_end": "gmail/v1/users/me/messages",
+          "enabled_by_default": true,
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 secret key",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": "messages"
+          }
+        }
+      ],
+      "fitbit": [
+        {
+          "name": "Fitbit activities",
+          "route_end": "1/activities.json",
+          "enabled_by_default": true,
+          "parameter_description": {
+            "oauth_token": {
+              "value": "oauth_token=[$1]",
+              "description": "OAuth1 public key",
+              "default": "signal.oauth_token",
+              "format": "String"
+            },
+            "oauth_token_secret": {
+              "value": "oauth_token_secret=[$1]",
+              "description": "OAuth1 private key",
+              "default": "signal.oauth_token_secret",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": ""
+          }
+        }
+      ],
+      "spotify": [
+        {
+          "name": "Spotify saved tracks",
+          "route_end": "/v1/me/tracks",
+          "enabled_by_default": true,
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 token",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": ""
+          }
+        }
+      ],
+      "dropbox-oauth2": [
+        {
+          "name": "Dropbox files",
+          "route_end": "1/metadata/auto/",
+          "enabled_by_default": true,
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 token",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": "contents"
+          }
+        }
+      ],
+      "instagram": [
+        {
+          "name": "Instagram feed",
+          "route_end": "/v1/users/self/feed",
+          "enabled_by_default": true,
+          "parameter_description": {
+            "access_token": {
+              "value": "access_token=[$1]",
+              "description": "OAuth2 token",
+              "default": "signal.access_token",
+              "format": "String"
+            }
+          },
+          "mapping": {
+            "type": "Event",
+            "list": true,
+            "property_location": "data"
           }
         }
       ]

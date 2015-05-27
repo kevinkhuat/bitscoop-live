@@ -35,6 +35,7 @@ class Settings(mongoengine.Document):
             'default_language': 'english',
             }]}
 
+
 class Provider(mongoengine.Document):
     """
     The class representing a third-party service's API
@@ -81,7 +82,7 @@ class Signal(mongoengine.Document):
         user_id: A foreign key relationship to the User entity who owns the Signal.
         provider: A reference to the Provider from which this Signal was created.
         name: The name of the linked service.
-        psa_backend_uid: The PSA's unique identifier for this account
+        usa_id: The User Social Auth's unique identifier for this account
         complete: Indicates that the connection to the account has been verified by the user
         connected: Indicates that the connection to the account has been authorized (not necessarily verified by the user)
         enabled: Indicates that the Signal will fetch updates when requested
@@ -106,18 +107,19 @@ class Signal(mongoengine.Document):
     user_id = mongoengine.IntField()
     provider = mongoengine.ReferenceField(Provider)
     name = mongoengine.StringField()
-    psa_backend_uid = mongoengine.StringField()
+    usa_id = mongoengine.IntField()
 
     complete = mongoengine.BooleanField(default=False)
     connected = mongoengine.BooleanField(default=False)
     enabled = mongoengine.BooleanField(default=False)
 
     frequency = mongoengine.IntField(default=1, choices=FREQUENCY)
-    last_run = mongoengine.DateTimeField(required=True)
+    last_run = mongoengine.DateTimeField()
 
     created = mongoengine.DateTimeField(required=True)
     updated = mongoengine.DateTimeField(required=True)
 
+    # TODO: Encrypt tokens or remove from Signal
     access_token = mongoengine.StringField()
     oauth_token = mongoengine.StringField()
     oauth_token_secret = mongoengine.StringField()
@@ -172,15 +174,6 @@ class AuthorizedEndpoint(mongoengine.Document):
     endpoint_definition = mongoengine.ReferenceField(EndpointDefinition)
     enabled = mongoengine.BooleanField(default=True)
 
-mongoengine.connect(
-    settings.MONGODB['NAME'],
-    host=settings.MONGODB['HOST'],
-    port=settings.MONGODB['PORT']
-    #ssl_certfile=settings.MONGODB['SSL_CERT_FILE'],
-    #ssl_cert_reqs=settings.MONGODB['SSL_CERT_REQS'],
-    #ssl_ca_certs=settings.MONGODB['SSL_CA_CERTS']
-)
-
 
 class Data(mongoengine.Document):
     """The data class for all uncategorizable data.
@@ -234,7 +227,7 @@ class Event(mongoengine.Document):
     signal_id = mongoengine.IntField(required=True)
     provider_id = mongoengine.IntField(required=True)
     provider_name = mongoengine.StringField(required=True)
-    name = mongoengine.StringField(required=True)
+    name = mongoengine.StringField()
 
     # To be sourced from signals.js
     datetime = mongoengine.DateTimeField()

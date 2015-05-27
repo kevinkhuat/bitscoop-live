@@ -336,8 +336,6 @@ ROOT_URLCONF = 'ografy.urls'
 # FIXME: Temporarily moved AUTHENTICATION_BACKENDS setting to ografy.settings.signals. Look for a cleaner way to separate application authentication and signal association.
 # AUTHENTICATION_BACKENDS = (
 #     'django.contrib.auth.backends.ModelBackend',
-#     'ografy.apps.xauth.backends.IdentifierBackend',
-#     'ografy.apps.xauth.backends.DummyTokenBackend',
 # )
 AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = ''

@@ -9,8 +9,11 @@ import ografy.apps.core.views.user as user_views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='core_index'),
+    # TODO: Remove once the signal scheduler is integrated into the main site js
+    url(r'^scheduler$', views.signal_scheduler, name='scheduler'),
+    url(r'^external_api$', main_views.external_api_call, name='external_api'),
 
-    #TODO: Make this general to any key we need to get, not hard-coded to Mapbox's token
+    # TODO: Make this general to any key we need to get, not hard-coded to Mapbox's token
     url(r'^app/keys/mapbox?$', main_views.mapbox_token, name='mapbox_token'),
 
     url(r'^settings/?$', settings_views.base, name='core_settings_personal'),

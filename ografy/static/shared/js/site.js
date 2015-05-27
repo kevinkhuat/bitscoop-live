@@ -1,4 +1,4 @@
-//FIXME: This was an attempt at dynamically resizing the information boxes on the front page ("Bring your services together", etc.)
+//TODO: This was an attempt at dynamically resizing the information boxes on the front page ("Bring your services together", etc.)
 //so that each pair of boxes has the same height.
 //It wasn't working as intended, but I didn't want to delete it entirely in case I come back to it.
 
@@ -26,6 +26,22 @@
 //		}
 //	}
 //}
+function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
+
 $(document).ready(function() {
 	$('.user-button').click(function() {
 		$('.menu.main').toggleClass('hidden');
@@ -140,37 +156,21 @@ $(document).ready(function() {
 	});
 });
 
-function getCookie(name) {
-	var cookieValue = null;
-	if (document.cookie && document.cookie !== '') {
-		var cookies = document.cookie.split(';');
-		for (var i = 0; i < cookies.length; i++) {
-			var cookie = jQuery.trim(cookies[i]);
-			// Does this cookie string begin with the name we want?
-			if (cookie.substring(0, name.length + 1) == (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
-
 function verifiedSignal(signal_id) {
 	var data = {};
 	data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
-	data.authorizedEndpointsEnabledList = {};
+	data.endpointsDict = {};
 	data.name = $('input[name=signal-name]')[0].value;
 
 	$('input:checkbox').each(function() {
 		var parent = $(this).parent();
 		var def_id = parent.attr('data-endpoint-definition-id');
 		var auth_id = parent.attr('data-authorized-endpoint-id');
-		data.authorizedEndpointsEnabledList[def_id] = {};
-		data.authorizedEndpointsEnabledList[def_id][auth_id] = $(this).prop('checked')
+		data.endpointsDict[def_id] = {};
+		data.endpointsDict[def_id][auth_id] = $(this).prop('checked')
 	});
 
-	data.authorizedEndpointsEnabledList = JSON.stringify(data.authorizedEndpointsEnabledList);
+	data.endpointsDict = JSON.stringify(data.endpointsDict);
 	$.ajax({
 		url: '/verify/' + signal_id,
 		type: 'POST',

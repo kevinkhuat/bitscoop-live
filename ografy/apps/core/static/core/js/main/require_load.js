@@ -11,32 +11,32 @@ requirejs.config({
 				'main/detail',
 				'main/views/list',
 				'main/views/map',
-				'main/utls/model',
-				'main/utls/mapUtil',
-				'main/utls/session',
+				'main/utils/model',
+				'main/utils/mapUtil',
+				'main/utils/session',
 				'main/views/list',
 				'main/filter/search'
 			]
 		},
 		'main/detail': {
 			deps: [
-				'main/utls/mapUtil',
-				'main/utls/model',
-				'main/utls/session'
+				'main/utils/mapUtil',
+				'main/utils/model',
+				'main/utils/session'
 			]
 		},
 		'main/list': {
 			deps: [
-				'main/utls/mapUtil',
-				'main/utls/model',
-				'main/utls/session'
+				'main/utils/mapUtil',
+				'main/utils/model',
+				'main/utils/session'
 			]
 		},
 		'main/map': {
 			deps: [
-				'main/utls/mapUtil',
-				'main/utls/model',
-				'main/utls/session'
+				'main/utils/mapUtil',
+				'main/utils/model',
+				'main/utils/session'
 			]
 		}
 	}
@@ -44,10 +44,10 @@ requirejs.config({
 
 // Start the main app logic.
 requirejs([
-		'main/utls/mapUtil',
-		'main/utls/model',
-		'main/utls/session',
-		'main/utls/url',
+		'main/utils/mapUtil',
+		'main/utils/model',
+		'main/utils/session',
+		'main/utils/url',
 		'main/detail',
 		'main/views/list',
 		'main/views/map',

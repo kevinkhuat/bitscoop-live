@@ -12,9 +12,9 @@
 				<div class="title-align">
 					<i class="block icon-link step-icon"></i>
 
-					<div class="title">Connect to {{ provider.name }}</div>
+					<div class="title">Connect to {{ signal.provider.name }}</div>
 				</div>
-				<div class="description">Connect your {{ provider.name }} account to your Ografy account</div>
+				<div class="description">Connect your {{ signal.provider.name }} account to your Ografy account</div>
 			</div>
 		</div>
 		<div class="step">
@@ -23,7 +23,7 @@
 					<i class="step-icon icon-uniF75F"></i>
 					<div class="title">Authorize Access</div>
 				</div>
-				<div class="description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+				<div class="description">Authorize your {{ signal.provider.name }} account's connection to Ografy</div>
 			</div>
 		</div>
 		<div class="active step">
@@ -41,12 +41,12 @@
 {% block content %}
 	<div class="step-verify">
 		<div class="grouping">
-			<div class="bigger">Verify {{ signal.provider.backend_name }} Connection Settings</div>
+			<div class="bigger">Verify {{ signal.provider.name }} Connection Settings</div>
 			<div>
 				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ signal.provider.backend_name }}</span>
+					<span>Details and stuff about connection settings to {{ signal.provider.name }}</span>
 				</div>
-				<span class="bold">Name your connection to {{ signal.provider.backend_name }}</span>
+				<span class="bold">Name your connection to {{ signal.provider.name }}</span>
 				<form>
 					<input class="text-input-width" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
 				</form>

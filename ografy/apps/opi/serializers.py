@@ -132,16 +132,12 @@ class SignalSerializer(tasty_serializers.DocumentSerializer):
             'user_id',
             'provider',
             'name',
-            'psa_backend_uid',
             'complete',
             'connected',
             'enabled',
             'frequency',
             'created',
             'updated',
-            'access_token',
-            'oauth_token',
-            'oauth_token_secret',
             'last_run',
             'extra_data'
         )
@@ -155,9 +151,9 @@ class AuthorizedEndpointSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'name',
             'route',
-            'provider',
             'enabled',
             'user_id',
+            'provider',
             'endpoint_definition',
             'signal'
         )

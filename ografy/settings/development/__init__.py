@@ -1,4 +1,3 @@
-from ografy import ROOT_PATH, SOURCE_PATH, get_path
 from ografy.settings import *
 
 

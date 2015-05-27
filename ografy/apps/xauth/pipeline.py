@@ -33,17 +33,14 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
         signal = Signal(
             user_id=user.id,
             provider=provider,
-            name="My " + backend.name,
-            psa_backend_uid=social.uid,
+            name="My " + provider.name + " Account",
+            usa_id=social.id,
             connected=True,
             complete=False,
             enabled=False,
             created=datetime.now(),
             updated=datetime.now(),
-            last_run=datetime.now(),
-            extra_data={
-                'backend_id': uid
-            }
+            last_run=None
         )
         if backend.setting('API_KEY') != None:
             signal.access_token = backend.setting('API_KEY')

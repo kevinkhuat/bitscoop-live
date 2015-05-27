@@ -147,6 +147,7 @@ class EventView(MongoAPIListView):
         paginated_event_list = self.Meta.list(self, get_query)
         return paginated_event_list
 
+    # TODO: Add logic for for populating signal and prover from just signal id
     def post(self, request, format=None):
         # TODO: Better user filter
         post_event = self.deserialize(
@@ -200,6 +201,7 @@ class EventSingleView(MongoAPIView):
 
         return Response(serialized_response)
 
+    # TODO: Add logic for for populating signal and prover from just signal id
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
         patch_event = self.deserialize(
@@ -225,6 +227,7 @@ class EventSingleView(MongoAPIView):
 
         return Response(serialized_response)
 
+    # TODO: Add logic for for populating signal and prover from just signal id
     def put(self, request, pk, format=None):
         # TODO: Better user filter
         put_event = self.deserialize(
@@ -754,7 +757,7 @@ class SignalSingleView(MongoAPIView):
     def get(self, request, pk, format=None):
         get_query = core_api.SignalApi.get(
             request.auth_filter &
-            DjangoAPIView.Meta.Q(pk=pk)
+            MongoAPIView.Meta.Q(pk=pk)
         )
         signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(

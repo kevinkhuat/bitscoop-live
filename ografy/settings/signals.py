@@ -9,6 +9,8 @@ PSA_ENV = 'ografy_'
 
 # TODO: move back to main and remove social backends
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ografy.apps.xauth.backends.IdentifierBackend',
     'social.backends.amazon.AmazonOAuth2',
     # 'social.backends.angel.AngelOAuth2',
     # 'social.backends.aol.AOLOpenId',
@@ -84,9 +86,6 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.moves.MovesOAuth2',
     # 'social.backends.email.EmailAuth',
     # 'social.backends.username.UsernameAuth',
-    'django.contrib.auth.backends.ModelBackend',
-    'ografy.apps.xauth.backends.IdentifierBackend',
-    'ografy.apps.xauth.backends.DummyTokenBackend',
 )
 
 # Python Social Auth Configuration
@@ -152,7 +151,7 @@ SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_D
 # App redirect URL:             https://apps.facebook.com/YOUR_APP_NAMESPACE
 SOCIAL_AUTH_FACEBOOK_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'read_friendlists']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['user_status', 'email', 'read_friendlists', 'user_likes', 'read_mailbox']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}
 
 # Faceook Auth
@@ -211,9 +210,14 @@ SOCIAL_AUTH_GITHUB_SCOPE = []
 #                                     include_granted_scopes=true
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://mail.google.com',
+    'https://www.googleapis.com/auth/gmail.readonly',
+    'https://www.googleapis.com/auth/plus.login'
 ]
 
 # Instagram
@@ -259,8 +263,8 @@ SOCIAL_AUTH_REDDIT_AUTH_EXTRA_ARGUMENTS = {'duration': 'permanent'}
 # Signal API Management URL:    http://python-social-xauth.readthedocs.org/en/latest/backends/spotify.html#
 # Authorize URL:                GET https://accounts.spotify.com/authorize
 # Redirect URIs:                https://ografy.io/xauth
-SOCIAL_AUTH_SPOTIFY_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_OAUTH2_KEY')
-SOCIAL_AUTH_SPOTIFY_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_OAUTH2_SECRET')
+SOCIAL_AUTH_SPOTIFY_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_KEY')
+SOCIAL_AUTH_SPOTIFY_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_SECRET')
 
 # StackOverflow
 

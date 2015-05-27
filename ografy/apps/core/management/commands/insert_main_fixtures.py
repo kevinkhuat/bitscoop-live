@@ -12,21 +12,6 @@ MONGO_DIR = MONGO_FIXTURE_DIRS[0]
 DEMO_FILE_NAME = 'main_fixtures.json'
 
 
-def create_fixture_signal(signal_dict, user, provider):
-    return Signal(
-        user=user,
-        provider=provider,
-        name=signal_dict['name'],
-        psa_backend_uid=signal_dict['psa_backend_uid'],
-        complete=signal_dict['complete'],
-        connected=signal_dict['connected'],
-        enabled=signal_dict['enabled'],
-        frequency=signal_dict['frequency'],
-        created=signal_dict['created'],
-        updated=signal_dict['updated']
-    )
-
-
 def create_fixture_endpoint(temp_endpoint, provider_id):
     return EndpointDefinition(
         name=temp_endpoint['name'],
@@ -54,12 +39,6 @@ def create_fixture_provider(provider):
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
-
-    # for signal_dict in fixture_data['signals']:
-    #     user = core_api.UserApi.get(Q(id=signal_dict['user'])).get()
-    #     provider = core_api.ProviderApi.get(Q(id=signal_dict['provider'])).get()
-    #     signal = create_fixture_signal(signal_dict, user, provider)
-    #     signal.save()
 
     for provider in fixture_data['providers']:
         insert_provider = create_fixture_provider(provider)
