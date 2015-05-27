@@ -6,8 +6,6 @@ import sys
 from django.core.management import execute_from_command_line
 # from django.core.management.base import CommandParser
 
-# Boot Local Server
-# gunicorn ografy.wsgi --env DJANGO_SETTINGS_MODULE=ografy.settings.development --certfile pki/server.pem --reload
 
 if __name__ == '__main__':
     cwd = os.getcwd()
