@@ -6,7 +6,7 @@ from social.backends.google import GooglePlusAuth
 from social.backends.utils import load_backends
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
 
-from ografy.tests.test_xauth.decorators import render_to
+from ografy.tests.xauth.decorators import render_to
 
 
 def logout(request):
