@@ -204,9 +204,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'ografy.util.middleware.SetMobileFlag',  # Set Mobile request yes/no flag for all requests.
-    'ografy.util.middleware.SetXhrFlag',  # Set XMLHttpRequest yes/no flag for all requests.
-    'ografy.util.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
+    'ografy.contrib.pytoolbox.django.middleware.MobileMiddleware',  # Set Mobile request yes/no flag for all requests.
+    'ografy.contrib.pytoolbox.django.middleware.XhrMiddleware',  # Set XMLHttpRequest yes/no flag for all requests.
+    'ografy.contrib.pytoolbox.django.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
 )
 # SECURE_PROXY_SSL_HEADER = None
 # SIGNING_BACKEND = 'django.core.signing.TimestampSigner'
@@ -257,12 +257,12 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
 
-    'social.apps.django_app.default',
     'rest_framework',
+    'social.apps.django_app.default',
 
-    'ografy.apps.core',
+    'ografy.core',
+    'ografy.contrib.multiauth',
     'ografy.apps.opi',
-    'ografy.apps.xauth',
 )
 
 
@@ -394,7 +394,7 @@ STATICFILES_DIRS = (
 ##################
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PAGINATION_CLASS': 'ografy.apps.core.pagination.TwentyItemPageView',
+    # 'DEFAULT_PAGINATION_CLASS': 'ografy.core.pagination.TwentyItemPageView',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     # 'PAGINATE_BY': 2
 }
@@ -408,14 +408,8 @@ HANDLE_VALIDATORS = [
     RegexValidator(re.compile(r'^(?=[a-zA-Z0-9_\.]{3,20}$)(?=.*[a-zA-Z])'), '3-20 letters, numbers, underscores, or periods. Must contain least one letter.', 'invalid'),
     RegexValidator(re.compile(r'^((?![o0]+[g9]+r+[a4]+(f|ph)+y+).)*$', re.I), 'Username cannot contain Ografy.', 'invalid'),
 ]
-
-
-#########
-# XAUTH #
-#########
-
-PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
+PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 
 
 ############

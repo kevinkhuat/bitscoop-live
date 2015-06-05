@@ -1,25 +1,22 @@
 from django.conf import settings
 from django.conf.urls import include, patterns, url
 
-import ografy.errors as errors
 
-
-handler400 = errors.view400
-handler403 = errors.view404
-handler404 = errors.view404
-handler500 = errors.view500
-
-urlpatterns = patterns('',  # noqa
-    url(r'^auth', include('ografy.apps.xauth.urls')),
+urlpatterns = patterns('',
+    url(r'^auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^opi', include('ografy.apps.opi.urls')),
 
-    # Core is the primary app, and we don't want the urls prefixed with "/core".
-    # So this pattern will always match and forward to "core."
-    # Just be sure to put it last so it doesn't cut off the other included apps.
-    url(r'^', include('ografy.apps.core.urls')),
+
+    url(r'^', include('ografy.core.urls')),
 )
 
 
+handler400 = 'ografy.core.views.errors.view400'
+handler403 = 'ografy.core.views.errors.view403'
+handler404 = 'ografy.core.views.errors.view404'
+handler500 = 'ografy.core.views.errors.view500'
+
+
 if settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns  # isort: ignore
     urlpatterns += staticfiles_urlpatterns()

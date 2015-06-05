@@ -1,10 +1,10 @@
 from rest_framework import serializers as django_serializers
 
-from ografy.apps.core.documents import (
+from ografy.contrib.tastydata import serializers as tasty_serializers
+from ografy.core.documents import (
     AuthorizedEndpoint, Data, EndpointDefinition, Event, Message, Play, Provider, Settings, Signal
 )
-from ografy.apps.core.models import User
-from ografy.apps.tastydata import serializers as tasty_serializers
+from ografy.core.models import User
 
 
 def evaluate(query, QuerySet, many=True):

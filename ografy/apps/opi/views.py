@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 import ografy.apps.opi.serializers as opi_serializer
-from ografy.apps.core import api as core_api
-from ografy.apps.tastydata.pagination import OgrafyItemPagination
-from ografy.apps.tastydata.views import DjangoAPIListView, DjangoAPIView, MongoAPIListView, MongoAPIView
+from ografy.contrib.tastydata.pagination import OgrafyItemPagination
+from ografy.contrib.tastydata.views import DjangoAPIListView, DjangoAPIView, MongoAPIListView, MongoAPIView
+from ografy.core import api as core_api
 
 
 class APIEndpoints(DjangoAPIView):

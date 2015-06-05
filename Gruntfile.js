@@ -52,8 +52,8 @@ module.exports = function(grunt) {
 		less: {
 			development: {
 				files: {
-					'artifacts/core/css/main-dark.css': 'ografy/apps/core/static/core/less/main-dark.less',
-					'artifacts/core/css/main-light.css': 'ografy/apps/core/static/core/less/main-light.less',
+					'artifacts/core/css/main-dark.css': 'ografy/core/static/core/less/main-dark.less',
+					'artifacts/core/css/main-light.css': 'ografy/core/static/core/less/main-light.less',
 					'artifacts/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
 					'artifacts/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
 				}
@@ -62,13 +62,13 @@ module.exports = function(grunt) {
 
 		nunjucks: {
 			precompile: {
-				baseDir: 'ografy/apps/core/nunjucks/core/**/',
-				src: 'ografy/apps/core/nunjucks/core/**/*',
+				baseDir: 'ografy/core/nunjucks/core/**/',
+				src: 'ografy/core/nunjucks/core/**/*',
 				dest: 'artifacts/shared/js/templates.js',
 				options: {
 					//env: require('./nunjucks-environment'),
 					name: function(filename) {
-						return filename.replace('ografy/apps/core/nunjucks/core/', '');
+						return filename.replace('ografy/core/nunjucks/core/', '');
 					}
 				}
 			}
@@ -76,16 +76,16 @@ module.exports = function(grunt) {
 
 		watch: {
 			nunjucks: {
-				files: 'ografy/apps/core/nunjucks/**/*',
+				files: 'ografy/core/nunjucks/**/*',
 				tasks: [
 					'nunjucks'
 				]
 			},
 			less: {
 				files: [
-					'ografy/apps/core/static/core/less/main-dark.less',
-					'ografy/apps/core/static/core/less/main-light.less',
-					'ografy/apps/core/static/core/less/main.less',
+					'ografy/core/static/core/less/main-dark.less',
+					'ografy/core/static/core/less/main-light.less',
+					'ografy/core/static/core/less/main.less',
 					'ografy/static/shared/less/site-dark.less',
 					'ografy/static/shared/less/site-light.less',
 					'ografy/static/shared/less/site.less'

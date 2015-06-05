@@ -37,6 +37,13 @@ MONGODB = {
 }
 
 
+########
+# HTTP #
+########
+
+ALLOWED_HOSTS = ['.ografy.io', 'localhost']
+
+
 #############
 # DEBUGGING #
 #############
