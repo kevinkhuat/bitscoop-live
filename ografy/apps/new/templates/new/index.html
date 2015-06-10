@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en-US">{% load staticfiles %}
+		<meta charset="utf-8">
+		<title>{{ title }}</title>
+
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.19/require.min.js"></script>
+
+		<script type="text/javascript" src="{% static 'shared/js/paths.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/templates.js' %}"></script>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/cartano/cartano.js' %}"></script>
+
+		{% include 'new/components/mapbox-styles.html' %}
+
+		<script type="text/javascript" src="{% static 'new/new.js' %}"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'new/new.css' %}" />
+	</head>
+	<body class="flex column">
+		<header>
+			{% include 'new/components/header.html' %}
+		</header>
+
+		<main class="flex grow">
+			<div id="panel" class="autohide">
+				<div id="panel-search">
+					<form id="search-form" action="/search" method="POST">
+						<div class="input-group" data-content="&#xf02e;">
+							<input class="icon" type="text" name="search" placeholder="find yourself" style="width: 100%" />
+							<span id="filter-toggle" class="no-select icon-triangle-up" style="padding: 12px 12px 12px 4px;"></span>
+							<!-- Probably should hide this if NOT on mobile. Safest to do in javascript, rather than media query CSS. -->
+							<input class="button" type="submit" value="Search" />
+						</div>
+					</form>
+				</div>
+
+				<div id="panel-filter" class="autohide">
+					<div id="filters">
+						<div class="filter">
+							<!--
+								While it'd be nice to style these as a pseudo element ::after, you can't handle events on pseudo-elements.
+								So if we want to handle click events on the little "x" (hint: we do), then we don't have much of an option here.
+								Aside from that it seems to work nicely having two anchor elements, one to edit the filter and one to delete it.
+							-->
+							<div>My filter name</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>who</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>where</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>who</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>where</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>who</div>
+							<div class="close">x</div>
+						</div>
+
+						<div class="filter">
+							<div>where</div>
+							<div class="close">x</div>
+						</div>
+					</div>
+
+					<div>
+						Editing the current filter
+						Dropdowns etc can go in here.
+					</div>
+				</div>
+
+				<div id="panel-list">
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+					<p>Test A</p>
+				</div>
+
+				<div id="panel-detail">
+					<p>Event Details</p>
+					<p>More details</p>
+					<p>More details</p>
+				</div>
+			</div>
+
+			<div id="background" class="flex grow autoblur"></div>
+		</main>
+	</body>
+</html>

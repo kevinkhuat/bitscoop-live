@@ -1,10 +1,19 @@
+var path = require('path');
+
 var MockBrowser = require('mock-browser').mocks.MockBrowser;
+
+
 global.window = MockBrowser.createWindow();
 
 
 module.exports = function(grunt) {
 	grunt.initConfig({
 		package: grunt.file.readJSON('package.json'),
+
+		clean: {
+			artifacts: 'artifacts',
+			build: 'build'
+		},
 
 		jscs: {
 			all: {
@@ -51,58 +60,100 @@ module.exports = function(grunt) {
 
 		less: {
 			development: {
-				files: {
-					'artifacts/core/css/main-dark.css': 'ografy/core/static/core/less/main-dark.less',
-					'artifacts/core/css/main-light.css': 'ografy/core/static/core/less/main-light.less',
-					'artifacts/shared/css/site-dark.css': 'ografy/static/shared/less/site-dark.less',
-					'artifacts/shared/css/site-light.css': 'ografy/static/shared/less/site-light.less'
-				}
+				expand: true,
+				src: 'ografy/**/*.less',
+				dest: 'artifacts',
+				ext: '.css',
+				rename: (function() {
+					var delimiter, names;
+
+					delimiter = 'static' + path.sep;
+					names = {};
+
+					return function(dest, less) {
+						var i, components, filename, src;
+
+						src = less.replace(/\.css$/, '.less');
+
+						if (~(i = less.indexOf(delimiter))) {
+							filename = path.join(dest, less.slice(i + delimiter.length));
+						}
+						else {
+							filename = path.join(dest, less);
+						}
+
+						filename = filename.split(path.sep).map(function(d, i) {
+							return (d === 'less') ? 'css' : d;
+						}).join(path.sep);
+
+						if (names.hasOwnProperty(filename)) {
+							grunt.log.warn('Name collison on less file "' + filename + '":\n\tOld: ' + names[filename] + '\n\tNew: ' + src);
+						}
+
+						names[filename] = src;
+
+						return filename;
+					};
+				})()
 			}
 		},
 
 		nunjucks: {
 			precompile: {
-				baseDir: 'ografy/core/nunjucks/core/**/',
-				src: 'ografy/core/nunjucks/core/**/*',
+				src: [
+					'ografy/nunjucks/**/*.html',
+					'ografy/core/nunjucks/**/*.html',
+					'ografy/{apps,contrib,lib}/*/nunjucks/**/*.html'
+				],
 				dest: 'artifacts/shared/js/templates.js',
 				options: {
-					//env: require('./nunjucks-environment'),
-					name: function(filename) {
-						return filename.replace('ografy/core/nunjucks/core/', '');
-					}
+					name: (function() {
+						var delimiter, names;
+
+						delimiter = 'nunjucks' + path.sep;
+						names = {};
+
+						return function(filename) {
+							var i, template;
+
+							if (~(i = filename.indexOf(delimiter))) {
+								template = filename.slice(i + delimiter.length);
+							}
+
+							template = template.replace(new RegExp(path.sep, 'g'), '/');
+
+							if (names.hasOwnProperty(template)) {
+								grunt.log.warn('Name collison on nunjucks template "' + template + '":\n\tOld: ' + names[template] + '\n\tNew: ' + filename);
+							}
+
+							names[template] = filename;
+
+							return template;
+						};
+					})()
 				}
 			}
 		},
 
 		watch: {
 			nunjucks: {
-				files: 'ografy/core/nunjucks/**/*',
-				tasks: [
-					'nunjucks'
-				]
+				files: '<%= nunjucks.precompile.src %>',
+				tasks: 'nunjucks'
 			},
 			less: {
-				files: [
-					'ografy/core/static/core/less/main-dark.less',
-					'ografy/core/static/core/less/main-light.less',
-					'ografy/core/static/core/less/main.less',
-					'ografy/static/shared/less/site-dark.less',
-					'ografy/static/shared/less/site-light.less',
-					'ografy/static/shared/less/site.less',
-					'ografy/static/shared/less/buttons.less',
-					'ografy/static/shared/less/content-view.less',
-					'ografy/static/shared/less/drawer.less',
-					'ografy/static/shared/less/filter-grid.less'
-				],
-				tasks: [
-					'less'
-				]
+				files: '<%= less.development.src %>',
+				tasks: 'less'
 			}
 		}
 	});
 
 	// Load grunt tasks from NPM packages
 	require('load-grunt-tasks')(grunt);
+
+	grunt.registerTask('build', [
+		'less',
+		'nunjucks'
+	]);
 
 	grunt.registerTask('lint', [
 		'jsonlint:jshint',

@@ -1,0 +1,213 @@
+* {
+	box-sizing: border-box;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 400;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	padding: 0; margin: 0;
+	overflow: hidden;
+}
+
+header {
+	background-color: #3D4351;
+	color: #BEBDBD;
+	padding: 5px 10px;
+}
+
+main {
+	position: relative;
+}
+
+
+header > nav > a {
+	padding: 0 5px;
+	text-decoration: none;
+	color: #73B6E6;
+}
+
+header > nav > a:hover,
+header > nav > a:active,
+header > nav > a.active {
+	color: #A0CE4E;
+}
+
+
+#panel {
+	position: absolute;
+	top: 0; left: 0; z-index: 1;
+
+	width: 20%; height: 100%;
+	min-width: 342px;
+
+	padding: 10px;
+
+	display: flex;
+	flex-direction: column;
+}
+
+#panel > * {
+	box-sizing: content-box;
+
+	max-height: 33%;
+	overflow: auto;
+
+	background-color: #FFF;
+	border: 1px solid rgba(0,0,0,0.4);
+	border-radius: 3px;
+
+	margin-top: 10px;
+}
+
+#panel > :first-child {
+	margin-top: 0;
+}
+
+#filter-toggle {
+	cursor: pointer;
+}
+
+#panel-search.hidden {
+	overflow: hidden;
+	max-width: 40px;
+}
+
+.flex {
+	display: -webkit-flex;
+	display: flex;
+}
+
+.flex.column {
+	-webkit-flex-direction: column;
+	flex-direction: column;
+}
+
+.flex.align-center {
+	align-items: center;
+}
+
+.flex > .grow {
+	-webkit-flex: 1;
+	flex: 1;
+	position: relative;
+}
+
+
+.input-group {
+	display: flex;
+}
+
+.input-group::before {
+	font-family: 'icomoon';
+
+	display: inline-flex;
+	align-items: center;
+	content: attr(data-content);
+	padding: 0.35em 0.15em 0.35em 0.75em;
+
+	cursor: pointer;
+}
+
+input {
+	font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
+	font-weight: 300;
+	font-size: 18px;
+	outline: none;
+	border: none;
+
+	padding: 8px;
+}
+
+input[type="button"],
+input[type="submit"] {
+	cursor: pointer;
+}
+
+
+#filters {
+	border-bottom: 1px solid #DDD;
+}
+
+#filters > :first-child {
+	margin-left: 4px;
+}
+
+.filter {
+	display: inline-block;
+
+	margin: 3px 4px 3px 0;
+
+	background-color: #E8E8E8;
+	color: rgba(0, 0, 0, 0.6);
+	box-shadow: rgba(34, 36, 38, 0.14902) 0px 0px 0px 1px inset;
+
+	border-radius: 3px;
+
+	cursor: pointer;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.filter.active {
+	background-color: #D8D8D8;
+}
+
+.filter:hover,
+.filter:active {
+	background-color: #DADADA;
+}
+
+.filter > * {
+	padding: 5px 10px 5px 0;
+
+	display: inline-block;
+	cursor: pointer;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.filter > *:hover,
+.filter > *:active {
+	color: black;
+}
+
+#filters > div > :first-child {
+	padding-left: 10px;
+}
+
+
+.search-button {
+	width: 2em;
+	height: 2em;
+	display: inline-block;
+	cursor: pointer;
+	background-image: url('/static/assets/img/ografy_search.png');
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	background-size: contain;
+	margin: auto 0.5em;
+}
+
+
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

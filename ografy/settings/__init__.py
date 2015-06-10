@@ -266,6 +266,8 @@ INSTALLED_APPS = (
     'ografy.core',
     'ografy.contrib.multiauth',
     'ografy.apps.opi',
+
+    'ografy.apps.new',
 )
 
 

@@ -6,6 +6,7 @@ urlpatterns = patterns('',
     url(r'^auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^opi', include('ografy.apps.opi.urls')),
 
+    url(r'^test', include('ografy.apps.new.urls')),
 
     url(r'^', include('ografy.core.urls')),
 )
