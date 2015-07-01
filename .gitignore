@@ -68,3 +68,8 @@ node_modules
 ########
 /logs
 
+
+############
+# Symlinks #
+############
+/ografy/static/lib/jutsu/jutsu*.js
