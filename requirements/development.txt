@@ -1,3 +1,5 @@
 flake8
+flake8-print
 gunicorn
 isort
+pep8-naming
