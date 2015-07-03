@@ -103,22 +103,6 @@ def index(request):
     return render(request, template, context)
 
 
-# TODO: Remove, for testing
-def signal_scheduler(request):
-    if request.user.is_authenticated():
-        template = 'core/main/scheduler.html'
-        context = {
-            'title': 'Ografy - Signal Scheduler test page',
-            'user_id': request.user.id
-        }
-    else:
-        template = 'core/index.html'
-        context = {
-            'title': 'Ografy'
-        }
-    return render(request, template, context)
-
-
 def contact(request):
     return render(request, 'core/contact.html', {
         'title': 'Ografy - Contact'

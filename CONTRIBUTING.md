@@ -50,101 +50,22 @@ git fetch upstream -p
 ```
 
 
-## Environment Setup
-First you'll need to make sure you've locally installed:
-
-* Python 3.x.x (preferably 3.4.x+) with `pip` and `virtualenv`
-* MongoDB
-* NodeJS
-
-Since the installation process differs by platform, the details are outside the
-scope of this document. Check the official documentation for how to install and
-set up these packages.
-
-Create a virtual environment outide the Ografy repository folder, activate it,
- and install the project requirements with:
-
-```
-pip install -r requirements/manual.txt
-pip install -r requirements/development.txt
-```
-
-Install the NodeJS requirements with:
-
-```
-npm install
-```
-
-Edit your host file to point the following DNS names to localhost (127.0.0.1):
-
-* `mem-0.ografy.internal`
-* `nrdb-0.ografy.internal`
-
-
-### Initialize MongoDB
-From the main project directory run:
-
-```
-mkdir -p databases/mongo
-mongod -f config/mongod.conf
-```
-
-Open a new terminal window and connect to the MongoDB service. The run the
-following commands:
-
-```
-use ografy_db
-db.dummy.insert({'test':'data'})
-db.getCollection('dummy').drop()
-exit
-```
-
-This will create the `ografy_db` database, write a collection to persist the
-database to disk, remove the dummy collection, and exit out of the MongoDB
-shell. You should now have a file `databases/mongo/ografy_db.0` if the commands
-succeeded (and you ran the commands from the correct folder).
-
-
-### Initialize Data
-You'll want to insert the initial data into the development sqlite and MongoDB databases. With your virtual environment
-active (and with the appropriately dependencies installed), run:
-
-```
-export DJANGO_SETTINGS_MODULE="ografy.settings.development"
-source config/signals.sh
-python manage.py migrate
-python manage.py insert_main_fixtures
-python manage.py insert_data
-```
-
-Note that sourcing on API keys found in `config/signals.sh` may fail if the file is not version controlled in the future
-with fake keys. You'll need to acquire these keys from an Ografy developer or supply your own.
-
-
-## Running a Development Server
-You can run a local development server to test changes to the web application. First make sure you compile the
-appropriate static files.
-
-```
-grunt less
-grunt nunjucks
-```
-
-Then you can start a gunicorn local server from the main project directory with:
-
-```
-gunicorn ografy.wsgi --env DJANGO_SETTINGS_MODULE=ografy.settings.development --certfile pki/server.pem --reload
-```
-
-
 ## Before Submitting a Pull Request
-Before you submit a pull request it is recommended that you run the requisite
+Before you submit a pull request it is required that you run the requisite
 linters.
 
 * **flake8** &ndash; Used to enforce the Ografy coding style.
 * **isort** &ndash; Used to ensure Python imports are properly sorted.
 * **grunt** &ndash; Used to enforce the Ografy coding style for supporting
   static files.
+
+Activate the ografy virtual environment (or a new virtual environment
+specifically for testing) and install the development dependencies:
+
+```
+pip install -r requirements/development.txt
+npm install
+```
 
 From the root directory run:
 

@@ -63,6 +63,12 @@ MONGODB = {
     'SSL_CERT_REQS': ssl.CERT_REQUIRED,
     'SSL_CA_CERTS': 'PLACEHOLDER',
 }
+ELASTICSEARCH = {
+    'HOST': 'search-0.ografy.internal',
+    'PORT': 9200,
+    'USE_SSL': False,
+    'SSL_CA_CERTS': 'PLACEHOLDER'
+}
 # DATABASE_ROUTERS = []
 # DEFAULT_INDEX_TABLESPACE = ''
 # DEFAULT_TABLESPACE = ''
@@ -360,7 +366,7 @@ PASSWORD_HASHERS = (
 SESSION_CACHE_ALIAS = 'session'
 # SESSION_COOKIE_NAME = 'sessionid'
 # SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
-# SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_DOMAIN = '.ografy.io'
 SESSION_COOKIE_SECURE = True
 # SESSION_COOKIE_PATH = '/'
 # SESSION_COOKIE_HTTPONLY = True
@@ -396,6 +402,8 @@ STATICFILES_DIRS = (
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'ografy.core.pagination.TwentyItemPageView',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DATETIME_FORMAT': 'iso-8601',
+    'DATETIME_INPUT_FORMATS': ['iso-8601']
     # 'PAGINATE_BY': 2
 }
 

@@ -35,9 +35,10 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
         fields = (
             'id',
             'created',
+            'data_blob',
+            'event',
             'updated',
-            'data_blob'
-            # 'user'
+            'user_id',
         )
         depth = 5
 
@@ -48,26 +49,24 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
 
     # Django References
     # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
-    # signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal_id', queryset=Signal.objects.all())
+    # signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal', queryset=Signal.objects.all())
     # provider = related_fields.DjangoField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
 
     class Meta:
         model = Event
         fields = (
             'id',
-            'event_type',
-            'subtype_id',
+            'authorized_endpoint',
             'created',
-            'updated',
-            'data',
-            'user_id',
-            'signal_id',
-            'provider_id',
-            'provider_name',
             'datetime',
+            'event_type',
             'location',
-            'name'
-            # 'data'
+            'name',
+            'provider',
+            'provider_name',
+            'signal',
+            'updated',
+            'user_id',
         )
         depth = 5
 
@@ -80,13 +79,12 @@ class MessageSerializer(tasty_serializers.DocumentSerializer):
         model = Message
         fields = (
             'id',
-            'user_id',
             'event',
-            'message_type',
-            'message_to',
+            'message_body',
             'message_from',
-            'message_body'
-            # 'event'
+            'message_to',
+            'message_type',
+            'user_id',
         )
         depth = 5
 
@@ -99,11 +97,11 @@ class PlaySerializer(tasty_serializers.DocumentSerializer):
         model = Play
         fields = (
             'id',
-            'user_id',
             'event',
+            'media_url',
             'play_type',
             'title',
-            # 'event'
+            'user_id',
         )
         depth = 5
 
@@ -114,38 +112,39 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
         model = Provider
         fields = (
             'id',
-            'name',
-            'backend_name',
-            'base_route',
             'auth_backend',
             'auth_type',
+            'backend_name',
+            'base_route',
             'client_callable',
+            'description',
+            'name',
             'tags',
-            'description'
         )
         depth = 5
 
 
 class SignalSerializer(tasty_serializers.DocumentSerializer):
     # Django References
-    # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user')
+    # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user_id')
     # provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
 
     class Meta:
         model = Signal
         fields = (
             'id',
-            'user_id',
-            'provider',
-            'name',
             'complete',
             'connected',
-            'enabled',
-            'frequency',
             'created',
-            'updated',
+            'enabled',
+            'extra_data',
+            'frequency',
             'last_run',
-            'extra_data'
+            'name',
+            'provider',
+            'updated',
+            'usa_id',
+            'user_id',
         )
         depth = 5
 
@@ -155,13 +154,13 @@ class AuthorizedEndpointSerializer(tasty_serializers.DocumentSerializer):
         model = AuthorizedEndpoint
         fields = (
             'id',
-            'name',
-            'route',
             'enabled',
-            'user_id',
-            'provider',
             'endpoint_definition',
-            'signal'
+            'name',
+            'provider',
+            'route',
+            'signal',
+            'user_id',
         )
         depth = 5
 
@@ -171,10 +170,12 @@ class EndpointDefinitionSerializer(tasty_serializers.DocumentSerializer):
         model = EndpointDefinition
         fields = (
             'id',
+            'enabled_by_default',
+            'mapping',
             'name',
-            'route_end',
+            'parameter_description',
             'provider',
-            'enabled_by_default'
+            'path',
         )
         depth = 5
 
@@ -187,7 +188,7 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
         model = Settings
         fields = (
             'id',
-            'user',
+            'user_id',
             'created',
             'updated',
             'settings_dict'
@@ -212,8 +213,7 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'first_name',
             'last_name',
             'date_joined',
-            'is_active',
-            'is_verified'
+            'is_active'
             # 'settings'
         )
         depth = 5

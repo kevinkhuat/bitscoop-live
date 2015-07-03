@@ -134,7 +134,7 @@ function detailView(mapboxViewInst, dataInst) {
 		}
 
 		//If the event is a Message, render Message-specific fields in the sidebar.
-		if (event.event_type === 'Message') {
+		if (event.event_type === 'message') {
 			//These variables are used to wait for a Message to be retrieved from the database before continuing on.
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
@@ -144,7 +144,7 @@ function detailView(mapboxViewInst, dataInst) {
 			//If it hasn't been retrieved as a Message, then retrieve it using the Message API.
 			if (dataInst.eventCache.subtypes.messages.indexOf(event.id) < 0) {
 				waitForPromise = true;
-				dataInst.getSingleDocument('message', event.subtype_id, getSingleDocumentPromise);
+				dataInst.getSingleDocument('message', event.subtype, getSingleDocumentPromise);
 			}
 
 			//waitForPromise is only set to true if the Message needs to be retrieved through the Message API.
@@ -173,7 +173,7 @@ function detailView(mapboxViewInst, dataInst) {
 			});
 		}
 		//If the event is a Play, render Play-specific fields in the sidebar.
-		else if (event.event_type === 'Play') {
+		else if (event.event_type === 'play') {
 			//These variables are used to wait for a Message to be retrieved from the database before continuing on.
 			var getSingleDocumentPromise = $.Deferred();
 			var waitForPromise = false;
@@ -183,7 +183,7 @@ function detailView(mapboxViewInst, dataInst) {
 			//If it hasn't been retrieved as a Play, then retrieve it using the Play API.
 			if (dataInst.eventCache.subtypes.plays.indexOf(event.id) < 0) {
 				waitForPromise = true;
-				dataInst.getSingleDocument('play', event.subtype_id, getSingleDocumentPromise);
+				dataInst.getSingleDocument('play', event.subtype, getSingleDocumentPromise);
 			}
 
 			//waitForPromise is only set to true if the Play needs to be retrieved through the Play API.

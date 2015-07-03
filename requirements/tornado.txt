@@ -1,0 +1,9 @@
+django
+django-redis
+motorengine
+psycopg2
+python-dateutil
+python-social-auth
+requests
+tornado
+tornadoes

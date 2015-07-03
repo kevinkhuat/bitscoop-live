@@ -143,15 +143,15 @@ function mapboxManager(dataInst) {
 			var markerColor;
 
 			//Each event type has a different color and symbol to be visually distinct.
-			if (thisEvent.event_type === 'Event') {
+			if (thisEvent.event_type === 'event') {
 				markerColor = '#0052CE';
 				markerSymbol = 'star-stroked';
 			}
-			else if (thisEvent.event_type === 'Message') {
+			else if (thisEvent.event_type === 'message') {
 				markerColor = '#E6B800';
 				markerSymbol = 'post';
 			}
-			else if (thisEvent.event_type === 'Play') {
+			else if (thisEvent.event_type === 'play') {
 				markerColor = '#33CC33';
 				markerSymbol = 'music';
 			}

@@ -2,6 +2,8 @@ from mongoengine.django.shortcuts import get_document_or_404
 from mongoengine.queryset.base import BaseQuerySet
 from rest_framework import generics as drf_generics, mixins
 
+from ografy.contrib.tastydata.views import MongoAPIView
+
 
 class GenericAPIView(drf_generics.GenericAPIView):
     """

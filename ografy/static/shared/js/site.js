@@ -167,7 +167,7 @@ function verifiedSignal(signal_id) {
 		var def_id = parent.attr('data-endpoint-definition-id');
 		var auth_id = parent.attr('data-authorized-endpoint-id');
 		data.endpointsDict[def_id] = {};
-		data.endpointsDict[def_id][auth_id] = $(this).prop('checked')
+		data.endpointsDict[def_id][auth_id] = $(this).prop('checked');
 	});
 
 	data.endpointsDict = JSON.stringify(data.endpointsDict);

@@ -115,7 +115,7 @@ class SignalView(View):
         return super(SignalView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
-        signals = list(SignalApi.get(Q(user_id=request.user.id) | Q(complete=True)))
+        signals = list(SignalApi.get(Q(user_id=request.user.id) & Q(complete=True)))
         verify_url = reverse('core_verify_base')
 
         return render(request, self.template_name, {

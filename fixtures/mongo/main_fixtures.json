@@ -3,162 +3,178 @@
     {
       "name": "Facebook",
       "client_callable": true,
-      "base_route": "https://graph.facebook.com",
+      "domain": "graph.facebook.com",
       "backend_name": "facebook",
       "auth_backend": "social.backends.facebook.FacebookOAuth2",
       "description": "Online social networking service",
       "tags": "social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Twitter",
       "client_callable": true,
-      "base_route": "https://api.twitter.com/1.1",
+      "domain": "api.twitter.com/1.1",
       "backend_name": "twitter",
       "auth_backend": "social.backends.twitter.TwitterOAuth",
       "description": "Online social networking service",
       "tags": "social",
-      "auth_type": 1
+      "auth_type": 1,
+      "scheme": "https"
     },
     {
       "name": "Steam",
       "client_callable": true,
-      "base_route": "https://api.steampowered.com",
+      "domain": "api.steampowered.com",
       "backend_name": "steam",
       "auth_backend": "social.backends.steam.SteamOpenId",
       "description": "Internet-based digital distribution, multiplayer, and social networking platform",
       "tags": "gaming media social",
-      "auth_type": 2
+      "auth_type": 2,
+      "scheme": "https"
     },
     {
       "name": "Amazon",
-      "base_route": "",
+      "domain": "",
       "client_callable": false,
       "backend_name": "amazon",
       "auth_backend": "social.backends.amazon.AmazonOAuth2",
       "description": "Electronic commerce company",
       "tags": "development productivity",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Dropbox",
-      "base_route": "https://api.dropbox.com",
+      "domain": "api.dropbox.com",
       "client_callable": true,
       "backend_name": "dropbox-oauth2",
       "auth_backend": "social.backends.dropbox.DropboxOAuth2",
       "description": "File hosting service",
       "tags": "collaboration productivity",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "FitBit",
-      "base_route": "https://api.fitbit.com",
+      "domain": "api.fitbit.com",
       "client_callable": true,
       "backend_name": "fitbit",
       "auth_backend": "social.backends.fitbit.FitbitOAuth",
       "description": "Activity trackers and wireless-enabled wearable devices",
       "tags": "fitness health",
-      "auth_type": 1
+      "auth_type": 1,
+      "scheme": "https"
     },
     {
       "name": "FourSquare",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "foursquare",
       "auth_backend": "social.backends.foursquare.FoursquareOAuth2",
       "description": "Local search and discovery service",
       "tags": "social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "GitHub",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "github",
       "auth_backend": "social.backends.github.GithubOAuth2",
       "description": "Web-based Git repository hosting service",
       "tags": "collaboration development productivity",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Google",
-      "base_route": "https://www.googleapis.com",
+      "domain": "www.googleapis.com",
       "client_callable": true,
       "backend_name": "google-oauth2",
       "auth_backend": "social.backends.google.GoogleOAuth2",
       "description": "Internet-related services and products",
       "tags": "collaboration media productivity social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Instagram",
-      "base_route": "https://api.instagram.com",
+      "domain": "api.instagram.com",
       "client_callable": true,
       "backend_name": "instagram",
       "auth_backend": "social.backends.instagram.InstagramOAuth2",
       "description": "Mobile photo-sharing, video-sharing and social networking service",
       "tags": "media social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "LinkedIn",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "linkedin-oauth2",
       "auth_backend": "social.backends.linkedin.LinkedinOAuth2",
       "description": "Business-oriented social networking service",
       "tags": "productivity social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "reddit",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "reddit",
       "auth_backend": "social.backends.reddit.RedditOAuth2",
       "description": "Entertainment, social networking service and news website",
       "tags": "media social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Spotify",
-      "base_route": "https://api.spotify.com",
+      "domain": "api.spotify.com",
       "client_callable": true,
       "backend_name": "spotify",
       "auth_backend": "social.backends.spotify.SpotifyOAuth2",
       "description": "Music streaming service",
       "tags": "media music",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Stack Overflow",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "stackoverflow",
       "auth_backend": "social.backends.stackoverflow.StackoverflowOAuth2",
       "description": "Open Q&A network",
       "tags": "collaboration development productivity social",
-      "auth_type": 0
+      "auth_type": 0,
+      "scheme": "https"
     },
     {
       "name": "Tumblr",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "tumblr",
       "auth_backend": "social.backends.tumblr.TumblrOAuth",
       "description": "Microblogging platform and social networking website",
       "tags": "social",
-      "auth_type": 1
+      "auth_type": 1,
+      "scheme": "https"
     },
     {
       "name": "Vimeo",
-      "base_route": "",
+      "domain": "",
       "client_callable": true,
       "backend_name": "vimeo",
       "auth_backend": "social.backends.vimeo.VimeoOAuth1",
       "description": "Video-sharing website",
       "tags": "media video",
-      "auth_type": 1
+      "auth_type": 1,
+      "scheme": "https"
     }
   ],
   "endpointDefinitions": [
@@ -166,7 +182,7 @@
       "facebook": [
         {
           "name": "Facebook Friends",
-          "route_end": "friends",
+          "path": "friends",
           "enabled_by_default": true,
           "parameter_description": {
             "access_token": {
@@ -177,14 +193,16 @@
             }
           },
           "mapping": {
-            "type": "Event",
+            "event_type": "event",
             "list": true,
-            "property_location": ""
+            "property_location": "",
+            "field_mapping": {
+            }
           }
         },
         {
           "name": "Facebook Likes",
-          "route_end": "likes",
+          "path": "likes",
           "provider": 1,
           "enabled_by_default": true,
           "parameter_description": {
@@ -196,14 +214,16 @@
             }
           },
           "mapping": {
-            "type": "Event",
+            "event_type": "event",
             "list": true,
-            "property_location": ""
+            "property_location": "",
+            "field_mapping": {
+            }
           }
         },
         {
           "name": "Facebook Posts",
-          "route_end": "statuses",
+          "path": "statuses",
           "provider": 1,
           "enabled_by_default": true,
           "parameter_description": {
@@ -215,14 +235,16 @@
             }
           },
           "mapping": {
-            "type": "Message",
+            "event_type": "message",
             "list": true,
-            "property_location": ""
+            "property_location": "",
+            "field_mapping": {
+            }
           }
         },
         {
           "name": "Facebook Inbox",
-          "route_end": "inbox",
+          "path": "inbox",
           "provider": 1,
           "enabled_by_default": true,
           "parameter_description": {
@@ -234,14 +256,16 @@
             }
           },
           "mapping": {
-            "type": "Message",
+            "event_type": "message",
             "list": true,
-            "property_location": ""
+            "property_location": "",
+            "field_mapping": {
+            }
           }
         },
         {
           "name": "Facebook Outbox",
-          "route_end": "outbox",
+          "path": "outbox",
           "provider": 1,
           "enabled_by_default": true,
           "parameter_description": {
@@ -253,32 +277,48 @@
             }
           },
           "mapping": {
-            "type": "Message",
+            "event_type": "message",
             "list": true,
-            "property_location": ""
+            "property_location": "",
+            "field_mapping": {
+            }
           }
         }
       ],
       "twitter": [
         {
           "name": "Twitter Tweets",
-          "route_end": "statuses/user_timeline.json",
-          "provider": 2,
+          "path": "statuses/user_timeline.json",
           "enabled_by_default": true,
           "parameter_description": {
             "count": {
+              "field_location": "15",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "count=[$1]",
-              "description": "Pagination count",
+              "description": "Pagination counts",
               "default": "15",
               "format": "Integer"
             },
             "oauth_token": {
+              "field_location": "oauth_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token=[$1]",
               "description": "OAuth1 public key",
               "default": "signal.oauth_token",
               "format": "String"
             },
             "oauth_token_secret": {
+              "field_location": "oauth_token_secret",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token_secret=[$1]",
               "description": "OAuth1 private key",
               "default": "signal.oauth_token_secret",
@@ -286,48 +326,110 @@
             }
           },
           "mapping": {
-            "type": "Message",
-            "list": true,
-            "property_location": ""
-          },
-          "field_mapping": {
-            "event": {
-              "datetime": "created_at",
-              "location": "coordinates"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
             },
-            "message": {
-              "message_type": "IM",
-              "message_from": {
-                "field_location": "user.screen_name",
-                "transform": false
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": {
+                  "field_location": "created_at",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "location": {
+                  "field_location": "coordinates",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
               },
-              "message_body": {
-                "field_location": "text",
-                "transform": false
-              },
-              "message_to": ["Followers"]
+              "message": {
+                "message_type": {
+                  "field_location": "message",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                },
+                "message_from": {
+                  "field_location": "user.screen_name",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "message_body": {
+                  "field_location": "text",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "message_to": {
+                  "field_location": ["Followers"],
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                }
+              }
             }
           }
         },
         {
-          "name": "Twitter Direct Messages",
-          "route_end": "direct_message",
-          "provider": 2,
+          "name": "Twitter Direct messages",
+          "path": "direct_message",
           "enabled_by_default": true,
           "parameter_description": {
             "count": {
+              "field_location": "15",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "count=[$1]",
               "description": "Pagination count",
               "default": "15",
               "format": "Integer"
             },
             "oauth_token": {
+              "field_location": "oauth_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token=[$1]",
               "description": "OAuth1 public key",
               "default": "signal.oauth_token",
               "format": "String"
             },
             "oauth_token_secret": {
+              "field_location": "oauth_token_secret",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token_secret=[$1]",
               "description": "OAuth1 private key",
               "default": "signal.oauth_token_secret",
@@ -335,48 +437,121 @@
             }
           },
           "mapping": {
-            "type": "Message",
-            "list": true,
-            "property_location": ""
-          },
-          "field_mapping": {
-            "event": {
-              "datetime": "created_at",
-              "location": "coordinates",
-              "provider_name": "twitter"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
             },
-            "message": {
-              "message_type": "IM",
-              "message_from": "name",
-              "message_body": "text"
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": {
+                  "field_location": "created_at",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "location": {
+                  "field_location": "coordinates",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "provider_name": {
+                  "field_location": "twitter",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                }
+              },
+              "message": {
+                "message_type": {
+                  "field_location": "message",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                },
+                "message_from": {
+                  "field_location": "name",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "message_body": {
+                  "field_location": "text",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
+              }
             }
           }
         },
         {
           "name": "Twitter Followers",
-          "route_end": "followers",
-          "provider": 2,
+          "path": "followers",
           "enabled_by_default": true,
           "parameter_description": {
             "user_id": {
+              "field_location": "extra_data.id",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "value": "user_id=[$1]",
               "description": "User ID",
               "default": "user_id",
               "format": "String"
             },
             "count": {
+              "field_location": "15",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "count=[$1]",
               "description": "Pagination count",
               "default": "15",
               "format": "Integer"
             },
             "oauth_token": {
+              "field_location": "oauth_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token=[$1]",
               "description": "OAuth1 public key",
               "default": "signal.oauth_token",
               "format": "String"
             },
             "oauth_token_secret": {
+              "field_location": "oauth_token_secret",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token_secret=[$1]",
               "description": "OAuth1 private key",
               "default": "signal.oauth_token_secret",
@@ -384,42 +559,110 @@
             }
           },
           "mapping": {
-            "type": "Message",
-            "list": true,
-            "property_location": ""
-          },
-          "field_mapping": {
-            "event": {
-              "datetime": "created_at",
-              "location": "coordinates",
-              "provider_name": "twitter"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
             },
-            "message": {
-              "message_type": "IM",
-              "message_from": "name",
-              "message_body": "text"
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": {
+                  "field_location": "created_at",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "location": {
+                  "field_location": "coordinates",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "provider_name": {
+                  "field_location": "twitter",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                }
+              },
+              "message": {
+                "message_type": {
+                  "field_location": "message",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                },
+                "message_from": {
+                  "field_location": "name",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "message_body": {
+                  "field_location": "text",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
+              }
             }
           }
         },
         {
           "name": "Twitter Following",
-          "route_end": "following",
-          "provider": 2,
+          "path": "following",
           "enabled_by_default": true,
           "parameter_description": {
             "count": {
+              "field_location": "15",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "count=[$1]",
               "description": "Pagination count",
               "default": "15",
               "format": "Integer"
             },
             "oauth_token": {
+              "field_location": "oauth_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token=[$1]",
               "description": "OAuth1 public key",
               "default": "signal.oauth_token",
               "format": "String"
             },
             "oauth_token_secret": {
+              "field_location": "oauth_token_secret",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "oauth_token_secret=[$1]",
               "description": "OAuth1 private key",
               "default": "signal.oauth_token_secret",
@@ -427,44 +670,112 @@
             }
           },
           "mapping": {
-            "type": "Message",
-            "list": true,
-            "property_location": ""
-          },
-          "field_mapping": {
-            "event": {
-              "datetime": "created_at",
-              "location": "coordinates",
-              "provider_name": "twitter"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
             },
-            "message": {
-              "message_type": "IM",
-              "message_from": "name",
-              "message_body": "text"
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
+            "field_mapping": {
+              "event": {
+                "datetime": {
+                  "field_location": "created_at",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "location": {
+                  "field_location": "coordinates",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "provider_name": {
+                  "field_location": "twitter",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                }
+              },
+              "message": {
+                "message_type": {
+                  "field_location": "message",
+                  "transform": {
+                    "value": null,
+                    "type": "literal"
+                  }
+                },
+                "message_from": {
+                  "field_location": "name",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "message_body": {
+                  "field_location": "text",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
+              }
             }
           }
         }
       ],
       "steam": [
         {
-          "name": "Steam Game Played",
-          "route_end": "IPlayerService/GetOwnedGames/v0001/",
-          "provider": 3,
+          "name": "Steam Game played",
+          "path": "IplayerService/GetOwnedGames/v0001/",
           "enabled_by_default": true,
           "parameter_description": {
             "steamid": {
+              "field_location": "extra_data.player.steamid",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "value": "steamid=[$1]",
               "description": "Steam ID",
-              "default": "extra_data.player.steamid",
+              "default": "signal.extra_data.player.steamid",
               "format": "Integer"
             },
             "format": {
+              "field_location": "json",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "format=[$1]",
               "description": "API data output format",
               "default": "json",
               "format": "String"
             },
             "key": {
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "key=[$1]",
               "description": "OpenID access key",
               "default": "signal.access_token",
@@ -472,17 +783,42 @@
             }
           },
           "mapping": {
-            "type": "Play",
-            "list": true,
-            "property_location": "response.games",
+            "event_type": {
+              "field_mapping": "play",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "response.games",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
             "field_mapping": {
-              "Event": {
-                "datetime": null,
-                "location": null,
-                "name": "name"
+              "event": {
+                "name": {
+                  "type": "client",
+                  "value": "name"
+                }
               },
-              "Play": {
-                "play_type": "Video Game",
+              "play": {
+                "play_type": {
+                  "field_location": "play",
+                  "transform": {
+                    "type": "literal",
+                    "value": null
+                  }
+                },
                 "title": "Steam Game",
                 "media_url": {
                   "field_location": "appid",
@@ -497,29 +833,48 @@
         },
         {
           "name": "Steam Friends",
-          "route_end": "ISteamUser/GetFriendList/v0001/",
-          "provider": 3,
+          "path": "ISteamUser/GetFriendList/v0001/",
           "enabled_by_default": true,
           "parameter_description": {
             "steamid": {
+              "field_location": "extra_data.player.steamid",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "value": "steamid=[$1]",
               "description": "Steam ID",
               "default": "extra_data.player.steamid",
               "format": "Integer"
             },
             "format": {
+              "field_location": "json",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "format=[$1]",
               "description": "API data output format",
               "default": "json",
               "format": "String"
             },
             "relationship": {
+              "field_location": "friend",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              },
               "value": "relationship=[$1]",
               "description": "API data output format",
               "default": "friend",
               "format": "String"
             },
             "key": {
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "server_evaluate"
+              },
               "value": "key=[$1]",
               "description": "OpenID access key",
               "default": "signal.access_token",
@@ -527,10 +882,29 @@
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": "friendslist.friends",
+            "event_type": {
+              "field_mapping": "event",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "friendslist.friends",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            },
             "field_mapping": {
+
             }
           }
         }
@@ -538,106 +912,220 @@
       "google-oauth2": [
         {
           "name": "Gmail inbox",
-          "route_end": "gmail/v1/users/me/messages",
+          "path": "gmail/v1/users/me/messages",
           "enabled_by_default": true,
           "parameter_description": {
             "access_token": {
-              "value": "access_token=[$1]",
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth2 secret key",
               "default": "signal.access_token",
               "format": "String"
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": "messages"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "messages",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            }
           }
         }
       ],
       "fitbit": [
         {
           "name": "Fitbit activities",
-          "route_end": "1/activities.json",
+          "path": "1/activities.json",
           "enabled_by_default": true,
           "parameter_description": {
             "oauth_token": {
-              "value": "oauth_token=[$1]",
+              "field_location": "oauth_token",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth1 public key",
               "default": "signal.oauth_token",
               "format": "String"
             },
             "oauth_token_secret": {
-              "value": "oauth_token_secret=[$1]",
+              "field_location": "oauth_token_secret",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth1 private key",
               "default": "signal.oauth_token_secret",
               "format": "String"
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": ""
+            "event_type": {
+              "field_mapping": "event",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            }
           }
         }
       ],
       "spotify": [
         {
           "name": "Spotify saved tracks",
-          "route_end": "/v1/me/tracks",
+          "path": "/v1/me/tracks",
           "enabled_by_default": true,
           "parameter_description": {
             "access_token": {
-              "value": "access_token=[$1]",
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth2 token",
               "default": "signal.access_token",
               "format": "String"
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": ""
+            "event_type": {
+              "field_mapping": "play",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            }
           }
         }
       ],
       "dropbox-oauth2": [
         {
           "name": "Dropbox files",
-          "route_end": "1/metadata/auto/",
+          "path": "1/metadata/auto/",
           "enabled_by_default": true,
           "parameter_description": {
             "access_token": {
-              "value": "access_token=[$1]",
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth2 token",
               "default": "signal.access_token",
               "format": "String"
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": "contents"
+            "event_type": {
+              "field_mapping": "event",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "contents",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            }
           }
         }
       ],
       "instagram": [
         {
           "name": "Instagram feed",
-          "route_end": "/v1/users/self/feed",
+          "path": "/v1/users/self/feed",
           "enabled_by_default": true,
           "parameter_description": {
             "access_token": {
-              "value": "access_token=[$1]",
+              "field_location": "access_token",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              },
               "description": "OAuth2 token",
               "default": "signal.access_token",
               "format": "String"
             }
           },
           "mapping": {
-            "type": "Event",
-            "list": true,
-            "property_location": "data"
+            "event_type": {
+              "field_mapping": "message",
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "list": {
+              "field_mapping": true,
+              "transform": {
+                "value": null,
+                "type": "literal"
+              }
+            },
+            "property_location": {
+              "field_mapping": "data",
+              "transform": {
+                "value": null,
+                "type": "client_evaluate"
+              }
+            }
           }
         }
       ]

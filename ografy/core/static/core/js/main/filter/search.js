@@ -537,7 +537,7 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 
 			//Consruct a filter string from an inputted From
 			function toString(currentFilter) {
-				return 'signal_id exact ' + $(currentFilter).find('.signal')[0].value;
+				return 'signal exact ' + $(currentFilter).find('.signal')[0].value;
 			}
 
 			return {

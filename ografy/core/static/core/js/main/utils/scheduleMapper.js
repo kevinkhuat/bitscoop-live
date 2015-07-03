@@ -1,6 +1,6 @@
 //Module scheduleMapper
 //This module contains functions for updating the endpoint of signals that are past their update frequency or that have never been pulled at all.
-define (function (require, exports, module) {
+define (function(require, exports, module) {
 	//TODO: Remove! Source from utils!
 	function getCookie(name) {
 		var cookieValue = null;
@@ -30,10 +30,10 @@ define (function (require, exports, module) {
 		var signals;
 		var signalsToRun = [];
 
-		$.when(getSignals(signals)).then(function(signals, endpoints) {
+		$.when(getSignals(signals)).done(function(signals, endpoints) {
 			signalsToRun = checkAllSignalsLastRun(signals);
 			if (signalsToRun.length > 0) {
-				$.when(getEndpoints(signalsToRun, endpoints)).then(function(endpoints) {
+				$.when(getEndpoints(signalsToRun, endpoints)).done(function(endpoints) {
 					callEndpointsAndClean(endpoints.results, signalsToRun);
 				});
 				_.forEach(signalsToRun, function(signal) {
@@ -86,6 +86,8 @@ define (function (require, exports, module) {
 			}
 		}).done(function(data, xhr, response) {
 			signals = data;
+		}).fail(function(data, xhr, response) {
+			console.log('Failed initial signal GET');
 		});
 	}
 
@@ -169,6 +171,24 @@ define (function (require, exports, module) {
 		});
 	}
 
+	function parseSubMapping(dataDict, dataMap) {
+		var field_location = _.get(dataMap, 'field_location');
+		var transform = _.get(dataMap, 'transform');
+		var transform_type = _.get(transform, 'type');
+
+		if (transform_type === 'client_evaluate') {
+			return _.get(dataDict, field_location);
+		}
+		else if (transform_type === 'reformat') {
+			var transform_value = _.get(transform, 'value');
+			return transform_value.replace('[$1]', _.get(dataDict, transform_value));
+		}
+		else {
+			return field_location;
+		}
+	}
+
+
 	/**
 	 * Iterates through all of the Authorized Endpoints for the given signal and calls callOneEndpoint on each one
 	 *
@@ -177,7 +197,7 @@ define (function (require, exports, module) {
 	 */
 	function callEndpointsAndClean(endpoints, signals) {
 		_.forEach(endpoints, function(endpoint) {
-			var endpointSignal = _.where(signals, { 'id': endpoint.signal.id })[0];
+			var endpointSignal = _.where(signals, { id: endpoint.signal.id })[0];
 			callOneEndpoint(endpoint, endpointSignal);
 		});
 	}
@@ -190,36 +210,27 @@ define (function (require, exports, module) {
 	 * @returns {Object} The raw data returned from the endpoint
 	 */
 	function callOneEndpoint(endpoint, signal) {
-		var url = 'external_api';
+		var url = 'https://p.ografy.io/call';
 		var call_parameters = {};
 		var parameter_list = _.get(endpoint, 'endpoint_definition.parameter_description');
 		var mapping = _.get(endpoint, 'endpoint_definition.mapping');
-		var defaultLocation, default_split_array;
 
 		// Add parameters from endpoint definition to URL
 		_.forEach(parameter_list, function(value, parameter) {
-			// FIXME: Better way than split and look for 'extra_data' or signal.last run? Rename 'default' to something less ambiguous
-			defaultLocation = _.get(value, 'default');
-			default_split_array = defaultLocation.split('.');
-			//Can we populate from signal extra data?
-			if (default_split_array[0] === 'extra_data') {
-				call_parameters[parameter] = _.get(signal, defaultLocation);
-			}
-			else if (default_split_array[0] === 'signal' && default_split_array[1] === 'last_run'){
-				//FIXME: Properly check when last run and use to modify call params. AKA SINCE param. Do better than this
-				call_parameters[parameter] = _.get(signal, 'last_run');
-			//Let the server do it (tokens) or leave default value
-			} else {
-				call_parameters[parameter] = defaultLocation;
-			}
+			call_parameters[parameter] = parseSubMapping(signal, value);
 		});
 
 		var callData = {
-			signal_id: _.get(signal, 'id'),
-			api_call_url: endpoint.route,
+			authorized_endpoint_id: endpoint.id,
 			parameters: JSON.stringify(call_parameters)
 		};
 
+		// Call the endpoint using its ID and parameters
+		// Note the 'xhrFields' option; withCredentials:true allows for ajax to send cookies, particularly
+		// the sessionid, as part of a cross-domain call.
+		// The server must return the header 'Access-Control-Allow-Credentials' set to true for this to work.
+		// Additionally, the header 'Access-Control-Allow-Origin' must be sent by the server and must be something
+		// other than the wildcard '*' for this to work.
 		$.ajax({
 			url: url,
 			type: 'GET',
@@ -227,11 +238,14 @@ define (function (require, exports, module) {
 			dataType: 'text',
 			headers: {
 				'X-CSRFToken': csrftoken
+			},
+			xhrFields: {
+				withCredentials: true
 			}
-		}).done(function (data, xhr, response) {
+		}).done(function(data, xhr, response) {
 			var responseData = JSON.parse(data);
-			mapModels(mapping, responseData, signal);
-		}).fail(function (data, xhr, response) {
+			mapModels(mapping, responseData, signal, endpoint);
+		}).fail(function(data, xhr, response) {
 			console.log('Signal call failure');
 		});
 	}
@@ -243,27 +257,28 @@ define (function (require, exports, module) {
 	 * @param {Object} responseData The data returned from the endpoint API
 	 * @param {Object} signal
 	 */
-	function mapModels(mapping, responseData, signal) {
+	function mapModels(mapping, responseData, signal, endpoint) {
 		var propertyLocation = _.get(mapping, 'property_location');
 		//If it's a list
-		if (_.get(mapping, 'list')){
+		if (_.get(mapping, 'list.field_mapping')) {
 			var responseObjects;
 
 			//If the property_location field is a blank string, then the list is what the endpoint returned
-			if (propertyLocation.length === 0) {
+			if (propertyLocation.field_mapping.length === 0) {
 				responseObjects = responseData;
 			}
 			//Otherwise, the list of returned data is nested inside the object that the endpoint returned
 			else {
-				responseObjects = _.get(responseData, propertyLocation);
+				responseObjects = _.get(responseData, propertyLocation.field_mapping);
 			}
 
 			_.forEach(responseObjects, function(responseObject) {
-				mapSingleModel(mapping, responseObject, signal);
+				mapSingleModel(mapping, responseObject, signal, endpoint);
 			});
 			//If single object
-		} else {
-			mapSingleModel(mapping, _.get(responseData, propertyLocation), signal);
+		}
+		else {
+			mapSingleModel(mapping, _.get(responseData, propertyLocation.field_mapping), signal, endpoint);
 		}
 	}
 
@@ -275,120 +290,119 @@ define (function (require, exports, module) {
 	 * @param {Object} signal
 	 */
 	//TODO: Abstract posting into a callback passed into mapping a single model or after the mapping function returns the result
-	function mapSingleModel(mapping, itemData, signal){
+	function mapSingleModel(mapping, itemData, signal, endpoint) {
 		var fieldMapping = _.get(mapping, 'field_mapping');
 
-		function parseLocation(itemData, mapping, mappingLocation){
-			if ( _.get(mapping, mappingLocation) === null){
+		$.when(mapEvent(fieldMapping, signal, itemData)).done(function(event) {
+			$.when(mapData(itemData, event, signal)).done(function(data) {
+				if (Object.keys(fieldMapping).length > 1) {
+					mapSubtype(fieldMapping, data.event, signal, itemData);
+				}
+			});
+		});
+		function parseLocation(itemData, mapping, mappingLocation) {
+			if (_.get(mapping, mappingLocation) === undefined || null) {
 				//FIXME: Use location estimation API
 				return _.get(itemData, _.get(mapping, mappingLocation));
-			} else {
+			}
+			else {
 				return _.get(itemData, _.get(mapping, mappingLocation));
 			}
 		}
 
-		function parseSubMapping(itemData, fieldValue) {
-			//Look for a fieldValue to map from data if it is an Object and not an Array
-			if (typeof (fieldValue) === 'object' && !Array.isArray(fieldValue)) {
-				var field_location = _.get(fieldValue, 'field_location');
-				var transform = _.get(fieldValue, 'transform');
+		function mapData(itemData, event, signal) {
+			//Map Data Object
+			//FIXME: Update Data Object with Event ID. Change Schema?
+			var dateNow = new Date();
+			dateNow = dateNow.toJSON();
+			var dataObject = {
+				created: dateNow,
+				data_blob: itemData,
+				event: event.id,
+				updated: dateNow,
+				user_id: signal.user_id
+			};
 
-				//Check if fieldValue needs to be changed
-				if (typeof (transform) === 'object') {
-					//Reformat itemData
-					if (_.get(transform, 'type') === 'reformat') {
-						var transform_value = _.get(transform, 'value');
-						return transform_value.replace('[$1]', _.get(itemData, field_location));
-
-						//TODO: Handle other transform types than reformat
-					} else {
-						return _.get(itemData, field_location);
-					}
-					//Return mapping
-				} else {
-					return _.get(itemData, field_location);
+			return $.ajax({
+				url: 'opi/data',
+				type: 'POST',
+				data: JSON.stringify(dataObject),
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				headers: {
+					'X-CSRFToken': csrftoken
 				}
-				//Just put fieldValue from mapping object
-			} else {
-				return fieldValue;
-			}
+			}).done(function(data, xhr, response) {
+				console.log('Data Object mapped and posted successfully');
+			});
 		}
 
-		//Map Data Object
-		//FIXME: Update Data Object with Event ID. Change Schema?
-		var dataObject = {
-			data_blob: itemData,
-			created: new Date(),
-			updated: new Date()
-		};
-		$.ajax({
-			url: 'opi/data',
-			type: 'POST',
-			data: JSON.stringify(dataObject),
-			dataType: 'json',
-			contentType: 'application/json; charset=utf-8',
-			headers: {
-				'X-CSRFToken': csrftoken
-			}
-		}).done(function(data, xhr, response) {
-			console.log('Data Object mapped and posted successfully');
-		});
-
 		//TODO: Make entire parent function more programmatic, better debug success/fail messages with ids?
-		//Map all objects (events) other than "data" according to the field mapping
-		_.mapKeys(fieldMapping, function(dataTypeMapping, dataType){
-			if(dataType.toLowerCase() === 'event'){
-				//Map Event Object
-				// FIXME: Update Event Object with subtype_id and data. Change Schema?
-				var eventObject = {
-					event_type: parseSubMapping(itemData, _.get(dataTypeMapping, 'type')),
-					created: new Date(),
-					updated: new Date(),
-					user_id: signal.user_id,
-					signal_id: signal.id,
-					provider_id: signal.provider.id,
-					provider_name: signal.provider.name,
-					name: parseSubMapping(itemData, _.get(dataTypeMapping, 'name')),
-					datetime: parseSubMapping(itemData, _.get(dataTypeMapping, 'date')),
-					location: parseLocation(itemData, mapping, 'location')
-				};
-				$.ajax({
-					url: 'opi/event',
-					type: 'POST',
-					data: JSON.stringify(eventObject),
-					dataType: 'json',
-					contentType: 'application/json; charset=utf-8',
-					headers: {
-						'X-CSRFToken': csrftoken
-					}
-				}).done(function(data, xhr, response) {
-					console.log('Event Object mapped and posted successfully');
-				});
-			} else {
-				//For event subtype mapping such as Message or Play
-				//TODO: Update subtype object with parent event ID & get user ID from a better place
-				var subEventObject = {
-					user_id: signal.user_id
-				};
+		function mapEvent(fieldMapping, signal, itemData) {
+			var dataTypeMapping = _.get(fieldMapping, 'event');
+			var dateNow = new Date();
+			dateNow = dateNow.toJSON();
 
-				_.forEach(dataTypeMapping, function(fieldValue, fieldKey) {
-					subEventObject[fieldKey] = parseSubMapping(itemData, fieldValue);
-				});
-
-				$.ajax({
-					url: 'opi/' + dataType.toLowerCase(),
-					type: 'POST',
-					data: JSON.stringify(subEventObject),
-					dataType: 'json',
-					contentType: 'application/json; charset=utf-8',
-					headers: {
-						'X-CSRFToken': csrftoken
-					}
-				}).done(function(data, xhr, response) {
-					console.log('Event subtype ' + dataType + ' mapped and posted successfully');
-				});
+			var datetime = _.get(dataTypeMapping, 'datetime');
+			if (datetime !== undefined) {
+				datetime = new Date(parseSubMapping(itemData, datetime)).toJSON();
 			}
-		});
+
+			var eventObject = {
+				authorized_endpoint: endpoint.id,
+				created: dateNow,
+				datetime: datetime,
+				event_type: _.get(mapping, 'event_type.field_mapping'),
+				location: parseLocation(itemData, mapping, 'location'),
+				name: parseSubMapping(itemData, _.get(dataTypeMapping, 'name')),
+				provider: signal.provider.id,
+				provider_name: signal.provider.name,
+				signal: signal.id,
+				updated: dateNow,
+				user_id: signal.user_id
+			};
+
+			return $.ajax({
+				url: 'opi/event',
+				type: 'POST',
+				data: JSON.stringify(eventObject),
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				headers: {
+					'X-CSRFToken': csrftoken
+				}
+			}).done(function(data, xhr, response) {
+				console.log('Event Object mapped and posted successfully');
+			}).fail(function(data, xhr, response) {
+				console.log('Event Object mapping failed');
+			});
+		}
+
+		function mapSubtype(fieldMapping, event, signal, itemData) {
+			var subEventObject = {
+				event: event.id,
+				user_id: signal.user_id
+			};
+			var dataType = event.event_type;
+			var dataTypeMapping = _.get(fieldMapping, dataType);
+
+			_.forEach(dataTypeMapping, function(fieldValue, fieldKey) {
+				subEventObject[fieldKey] = parseSubMapping(itemData, fieldValue);
+			});
+
+			return $.ajax({
+				url: 'opi/' + dataType,
+				type: 'POST',
+				data: JSON.stringify(subEventObject),
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				headers: {
+					'X-CSRFToken': csrftoken
+				}
+			}).done(function(data, xhr, response) {
+				console.log('Event subtype ' + dataType + ' mapped and posted successfully');
+			});
+		}
 	}
 
 	module.exports = {

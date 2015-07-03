@@ -1,5 +1,5 @@
 import json
-import os
+import urllib
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -59,7 +59,7 @@ def connect(request, pk):
         'content_class': 'left',
         'provider': provider,
         'flex_override': True,
-        'user_id': request.user.id,
+        'user': request.user.id,
         'postback_url': reverse('core_authorize')
     })
 
@@ -125,7 +125,7 @@ def verify(request, pk):
         else:
             if not signal.complete:
                 initial_verification = True
-                extra_data = UserSocialAuth.objects.filter(user_id=request.user.id, id=signal.usa_id)[0].extra_data
+                extra_data = UserSocialAuth.objects.filter(user=request.user.id, id=signal.usa_id)[0].extra_data
                 if signal.provider.auth_type == 1:
                     access_token = extra_data['access_token']
                     signal.oauth_token = access_token['oauth_token']
@@ -199,11 +199,17 @@ def verify(request, pk):
                 # If the Authorized Endpoint does not exist and the user wants that endpoint to be used, create an Authorized Endpoint.
                 if this_endpoint_dict[this_authorized_endpoint_id]:
                     this_endpoint = EndpointDefinitionApi.get(Q(id=index)).get()
-                    route = ''
+                    url_parts = [''] * 6
+                    url_parts[0] = this_endpoint.provider.scheme
+                    url_parts[1] = this_endpoint.provider.domain
+                    url_parts[2] = this_endpoint.path
+
                     if this_endpoint.provider.backend_name == 'facebook':
-                        route = os.path.join(os.path.join(this_endpoint.provider.base_route, signal.usa_id, this_endpoint.route_end))
-                    else:
-                        route = os.path.join(this_endpoint.provider.base_route, this_endpoint.route_end)
+                        url_parts[3] = signal.usa_id
+                        # This was the old way of joining, leaving in for reference until this is locked
+                        # route = os.path.join(os.path.join(this_endpoint.provider.base_route, signal.usa_id, this_endpoint.path))
+
+                    route = urllib.parse.urlunparse(url_parts)
 
                     new_authorized_endpoint = AuthorizedEndpoint(
                         name=this_endpoint.name,

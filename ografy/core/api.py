@@ -10,6 +10,20 @@ class AuthorizedEndpointApi(BaseApi):
 class DataApi(BaseApi):
     model = documents.Data
 
+    def delete(cls, val, override=False):
+        # FIXME: Make not implemented exception
+        if override:
+            try:
+                cls.model.objects.get(pk=val).delete()
+            except (TypeError, AssertionError):
+                cls.model.objects.filter(val).delete()
+            except cls.model.DoesNotExist:
+                return False
+
+            return True
+        else:
+            return False
+
 
 class EndpointDefinitionApi(BaseApi):
     model = documents.EndpointDefinition
@@ -22,9 +36,35 @@ class EventApi(BaseApi):
 class MessageApi(BaseApi):
     model = documents.Message
 
+    def delete(cls, val, override=False):
+        if override:
+            try:
+                cls.model.objects.get(pk=val).delete()
+            except (TypeError, AssertionError):
+                cls.model.objects.filter(val).delete()
+            except cls.model.DoesNotExist:
+                return False
+
+            return True
+        else:
+            return False
+
 
 class PlayApi(BaseApi):
     model = documents.Play
+
+    def delete(cls, val, override=False):
+        if override:
+            try:
+                cls.model.objects.get(pk=val).delete()
+            except (TypeError, AssertionError):
+                cls.model.objects.filter(val).delete()
+            except cls.model.DoesNotExist:
+                return False
+
+            return True
+        else:
+            return False
 
 
 class ProviderApi(BaseApi):

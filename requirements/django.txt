@@ -1,6 +1,9 @@
+blinker
 django
 djangorestframework
 django-redis
+elasticsearch
+gunicorn
 mongoengine
 psycopg2
 python-dateutil

@@ -13,20 +13,15 @@ urlpatterns = patterns('',
 
    url(r'^/event$', views.EventView.as_view(), name='event-list'),
    url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/?$', views.EventSingleView.as_view(), name='event-detail'),
-   url(r'^/event/(?P<pk>[a-zA-Z0-9]+)/data$', views.EventSingleView.data, name='event-detail'),
 
    url(r'^/message$', views.MessageView.as_view(), name='message-list'),
    url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/?$', views.MessageSingleView.as_view(), name='message-detail'),
-   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event$', views.MessageSingleView.event, name='message-detail'),
-   url(r'^/message/(?P<pk>[a-zA-Z0-9]+)/event/data$', views.MessageSingleView.data, name='message-detail'),
 
    url(r'^/authorized_endpoints$', views.AuthorizedEndpointView.as_view(), name='auth-endpoint-list'),
    url(r'^/authorized_endpoints/(?P<pk>[a-zA-Z0-9]+)/?$', views.AuthorizedEndpointSingleView.as_view(), name='auth-endpoint-detail'),
 
    url(r'^/play$', views.PlayView.as_view(), name='play-list'),
    url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/?$', views.PlaySingleView.as_view(), name='play-detail'),
-   url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/event$', views.PlaySingleView.event, name='play-detail'),
-   url(r'^/play/(?P<pk>[a-zA-Z0-9]+)/event/data$', views.PlaySingleView.data, name='play-detail'),
 
    url(r'^/provider$', views.ProviderView.as_view(), name='provider-list'),
    url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', views.ProviderSingleView.as_view(), name='provider-detail'),
@@ -40,4 +35,6 @@ urlpatterns = patterns('',
 
    url(r'^/user$', views.UserView.as_view(), name='user-list'),
    url(r'^/user/(?P<pk>[a-zA-Z0-9]+)', views.UserSingleView.as_view(), name='user-detail'),
+
+   url(r'^/search/(?P<querystring>\S+)', views.SearchView.as_view(), name='event-search'),
 )
