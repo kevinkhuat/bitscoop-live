@@ -15,76 +15,73 @@
 		{% block static %}
         {# TODO: Dependancy problems with libraries need to be fixed with require #}
 		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-		<script type="text/javascript" src="{% static 'lib/isotope/isotope.pkgd.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/require/require.js' %}"></script>
+		<script type="text/javascript" src="{% static 'core/js/main/utils/cookies.js' %}"></script>
 
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
 
 		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+
 		<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}" />
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				require(['site'], function(site) {
+					site.bindMainAppUtilities();
+				})
+			});
+		</script>
 		{% endblock %}
 	</head>
 
-	<body class="flex{{ body_class }} {% if request.mobile %}mobile{% endif %}">
+	<body class="flex {{ body_class }} {% if request.mobile %}mobile{% endif %}">
 		{% block body %}
 		<header class="bg foreground bordered bottom {{ header_class }}">
 			<nav class="flex stretch lockwidth {% if lockwidth_override %}override {% endif %}centered">
-				<div class="flex center wrap grow">
+				<div class="flex wrap grow">
 					{% block branding %}
 					<a id="logo" class="item" href="{% url 'core_index' %}"><img src="{% static 'assets/img/logo_240.png' %}" alt="Ografy" /></a>
 					{% endblock %}
 
-					{% block navlinks %}
+					<div class="flex navlinks">
 					{% if providers == undefined %}
-					<a class="item" href="{% url 'core_providers' %}">
-						<i class="icon-plus"></i>
-						Providers
-					</a>
-					{% endif %}
-					{% endblock %}
+						<a class="item link" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+						{% endif %}
 
-					{% if not request.user.is_authenticated %}
-					<a class="item" href="http://blog.ografy.io" target="_blank">
-						<i class="icon-file-text"></i>
-						Blog
-					</a>
-					{% endif %}
+						{% if not request.user.is_authenticated %}
+						<a class="item" href="http://blog.ografy.io" target="_blank"><i class="icon-file-text"></i></a>
+						{% endif %}
 
-					{% if request.user.is_authenticated %}
-					<a class="fullscreen item">
-						<i class="icon-enlarge"></i>
-						Fullscreen
-					</a>
-					<div class="item">
-						<a class="user-button item">{{ request.user.identifier }}</a>
-						<div class="flex column menu main hidden">
-							<a class="item" href="{% url 'core_user_my_profile' %}">
-								<i class="icon-home3"></i>
-								User Home
-							</a>
-							<a class="item" href="{% url 'core_settings_personal' %}">
-								<i class="icon-cog" ></i>
-								Settings
-							</a>
-							<a class="item" href="{% url 'core_logout' %}">
-								<i class="icon-sign-out"></i>
-								Logout
-							</a>
+						{% if request.user.is_authenticated %}
+						<div class="item link">
+							<a class="user-button item">{{ request.user.identifier }}</a>
+							<div class="flex column menu main hidden">
+								<a class="item" href="{% url 'core_settings_account' %}">
+									<i class="icon-cog" ></i>
+									Settings
+								</a>
+								<a class="item" href="{% url 'core_logout' %}">
+									<i class="icon-sign-out"></i>
+									Logout
+								</a>
+							</div>
 						</div>
+						{% else %}
+						<a class="item link" href="{% url 'core_signup' %}">
+							<i class="icon-clippy"></i>
+							Sign Up
+						</a>
+						<a class="item link" href="{% url 'core_login' %}">
+							<i class="icon-sign-in"></i>
+							Log In
+						</a>
+						{% endif %}
 					</div>
-					{% else %}
-					<a class="item" href="{% url 'core_signup' %}">
-						<i class="icon-clippy"></i>
-						Sign Up
-					</a>
-					<a class="item" href="{% url 'core_login' %}">
-						<i class="icon-sign-in"></i>
-						Log In
-					</a>
-					{% endif %}
 				</div>
 			</nav>
+			{% block sub-header %}
+			{% endblock %}
 		</header>
 
 		<main class="{% if providers_override %}flex {% endif %}grow {{ main_class }}">
@@ -97,12 +94,6 @@
 			{% endblock %}
 		</main>
 
-		<footer class="bg foreground bordered top {{ footer_class }}">
-			<div class="lockwidth {% if lockwidth_override %}override {% endif %}centered center">
-				&copy 2014 Ografy, LLC.<br/>
-				<a href="{% url 'core_contact' %}">Contact Us</a>
-			</div>
-		</footer>
 		{% endblock %}
 	</body>
 </html>

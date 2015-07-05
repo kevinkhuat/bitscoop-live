@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.forms import Form, ModelForm
 from django.utils.translation import ugettext_lazy as _
 
+from ografy.core.documents import Location, Signal
 from ografy.core.fields import PasswordField
 from ografy.core.models import User
 
@@ -25,7 +26,20 @@ class SignUpForm(ModelForm):
         fields = ['email', 'handle', 'first_name', 'last_name']
 
 
-class UpdatePersonalForm(Form):
+class UpdateLocationForm(Form):
+    LOCATION_ESTIMATION_METHOD = Location.LOCATION_ESTIMATION_METHOD
+
+    allow_location_collection = forms.BooleanField(required=False)
+    location_estimation_method = forms.ChoiceField(choices=LOCATION_ESTIMATION_METHOD, required=False)
+
+
+class UpdateSignalForm(Form):
+    FREQUENCY = Signal.FREQUENCY
+
+    frequency = forms.ChoiceField(choices=FREQUENCY, required=False)
+
+
+class UpdateAccountForm(Form):
     """
     We don't want this to be a model form because we can't cut out the "unique" filters selectively.
     We need more control over the validation of `email` and `handle` so that a user can submit their own
@@ -33,7 +47,7 @@ class UpdatePersonalForm(Form):
     errors on submit is the request user, then the unique error is unwarranted... but there's no way to tell the
     difference in stock Django.
     """
-    email = forms.EmailField(max_length=256)
+    email = forms.EmailField(max_length=256, required=False)
     handle = forms.CharField(
         max_length=20,
         required=False,

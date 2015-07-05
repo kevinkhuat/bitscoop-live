@@ -12,9 +12,11 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
 
 	<script type="text/javascript" src="{% static 'lib/require/require.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/main/utils/cookies.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/main/utils/scheduleMapper.js' %}"></script>
 
 	<script type="text/javascript">
-		require(['static/core/js/main/utils/scheduleMapper', 'static/core/js/main/utils/cookies'], function(scheduleMapper, cookies) {
+		require(['scheduleMapper', 'cookies'], function(scheduleMapper, cookies) {
 			var csrfToken = cookies.getCsrfToken();
 			scheduleMapper.schedule(10000000, {{ user.id }}, '{{ user.location_estimation_method }}', csrfToken);
 		});

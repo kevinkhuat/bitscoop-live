@@ -155,7 +155,7 @@ def transform_to_elasticsearch_event(event_id, subtype=None, event_include_field
     for index in event:
         if index in event_include_fields:
             # If the field is a reference, get the string of the ID that the reference points to
-            # e.g. authorized endpoint is a reference, and you would just store that authorized endpoint's ID
+            # e.g. Permission is a reference, and you would just store that Permission's ID
             if hasattr(event[index], 'id'):
                 return_dict[index] = str(event[index]['id'])
             # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
@@ -163,9 +163,11 @@ def transform_to_elasticsearch_event(event_id, subtype=None, event_include_field
             # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
             elif index == 'location' and type(event[index]) is EmbeddedLocation:
                 return_dict[index] = {}
+
                 if 'coordinates' in event[index]['geolocation'].keys():
                     for key in event[index]:
                         return_dict[index][key] = event[index][key]
+
                     return_dict[index]['geolocation'] = event[index]['geolocation']['coordinates']
             # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
             elif index == 'id':
@@ -186,13 +188,15 @@ def transform_to_elasticsearch_event(event_id, subtype=None, event_include_field
         subtype_class = Message if subtype == 'message' else Play
         # Get the subtype object from Mongo
         subtype_inst = subtype_class.objects.get(Q(event=event_id))
+
         # Map all of the subtype's fields that are in the associated IncludeFields list
         for index in subtype_inst:
             if index in subtype_include_fields:
                 # If the field is a reference, get the string of the ID that the reference points to
-                # e.g. authorized endpoint is a reference, and you would just store that authorized endpoint's ID
+                # e.g. Permission is a reference, and you would just store that Permission's ID
                 if hasattr(subtype_inst[index], 'id'):
                     return_dict[index] = str(subtype_inst[index]['id'])
+
                 # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
                 # 'Type': 'Point' and 'coordinates': [lon, lat]
                 # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
@@ -216,7 +220,6 @@ def transform_to_elasticsearch_location(location_id):
     """A function that gets all of the information needed to index an event in Elasticsearch and formats it appropriately
     #. *location_id* the id of the base location
     """
-
     return_dict = {}
 
     # Get the base Location from Mongo
@@ -225,7 +228,7 @@ def transform_to_elasticsearch_location(location_id):
     # Map all of the Location's fields
     for index in location:
         # If the field is a reference, get the string of the ID that the reference points to
-        # e.g. authorized endpoint is a reference, and you would just store that authorized endpoint's ID
+        # e.g. Permission is a reference, and you would just store that Permission's ID
         if hasattr(location[index], 'id'):
             return_dict[index] = str(location[index]['id'])
         # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
@@ -233,9 +236,11 @@ def transform_to_elasticsearch_location(location_id):
         # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
         elif index == 'geolocation':
             return_dict[index] = {}
+
             if 'coordinates' in location[index].keys():
                 for key in location[index]:
                     return_dict[index][key] = location[index][key]
+
                 return_dict[index] = location[index]['coordinates']
         # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
         elif index == 'id':
@@ -257,7 +262,6 @@ class Settings(mongoengine.Document):
     #. *updated* the date updated
     #. *data_blob* a blog of user settings data
     """
-
     LOCATION_ESTIMATION_METHOD = (
         ('Last', 'Last known location'),
         ('Next', 'Next known location'),
@@ -268,7 +272,7 @@ class Settings(mongoengine.Document):
     # To be managed by the REST API
     allow_location_collection = mongoengine.BooleanField(default=True)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    last_reestimate_all_locations = mongoengine.DateTimeField(default=datetime.datetime.now)
+    last_estimate_all_locations = mongoengine.DateTimeField(default=datetime.datetime.now)
     location_estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD, default='Between')
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
@@ -327,7 +331,6 @@ class Provider(mongoengine.Document):
         description: A short description of the service's functionality
         tags: A list of categories that describe the service, used on the Connect page to sort them by general functionality
     """
-
     AUTH_TYPES = (
         (0, 'OAUTH 2'),
         (1, 'OAUTH 1'),
@@ -343,6 +346,7 @@ class Provider(mongoengine.Document):
     name = mongoengine.StringField()
     scheme = mongoengine.StringField()
     tags = mongoengine.StringField()
+    url_name = mongoengine.StringField()
 
     meta = {
         'indexes': [{
@@ -377,7 +381,6 @@ class Signal(mongoengine.Document):
         oauth_secret_token: OAuth1 private token
         extra_data: Provider-specific data, e.g. account's user_id (not to be confused with the Signal's user_id) and account's handle
     """
-
     FREQUENCY = (
         (0, 'Premium On Demand'),
         (1, 'Daily'),
@@ -414,25 +417,27 @@ class Signal(mongoengine.Document):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
 
 
-class EndpointDefinition(mongoengine.Document):
+class Endpoint(mongoengine.Document):
     """
     The class representing an endpoint from a provider, e.g. Facebook Friends list
 
     Attributes:
     id: A unique database descriptor obtained when saving an Endpoint Definition.
-    name: The name of the endpoint
+    name: The name of the endpoint, e.g. 'Facebook Posts'
+    name_short: The name of the endpoint, minus the provider name, e.g. 'Posts'
     path: The portions of a provider's API specific to this endpoint, e.g. ISteamUser/GetFriendList/v0001/ for Steam's Friends list
     provider: A reference to the provider that this Endpoint is associated with
-    enabled_by_default: Whether any Authorized Endpoint constructed from this Endpoint Definition should be enabled by default
+    enabled_by_default: Whether any Permission constructed from this Endpoint Definition should be enabled by default
     parameter_description: A dictionary of the parameters that can be used on this endpoint and how they are constructed
     mapping: How the data returned from the endpoint maps to Ografy's data schema
     """
-
+    description = mongoengine.StringField(required=True)
     enabled_by_default = mongoengine.BooleanField(default=True)
     mapping = mongoengine.DictField()
     name = mongoengine.StringField(required=True)
     parameter_description = mongoengine.DictField()
     provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    provider_name = mongoengine.StringField(required=True)
     path = mongoengine.StringField(required=True)
 
     meta = {
@@ -443,23 +448,23 @@ class EndpointDefinition(mongoengine.Document):
     }
 
 
-class AuthorizedEndpoint(mongoengine.Document):
+class Permission(mongoengine.Document):
     """
-    The class representing a user's endpoint for a specific Signal, e.g. the endpoint to get user A's Facebook Friends list
+    The class representing a user's permissions for a specific Signal's endpoint, e.g. the permission to get user A's Facebook Friends list
 
     Attributes:
-    id: A unique database descriptor obtained when saving an Authorized Endpoint.
-    name: The name of the Authorized Endpoint
-    route: The full URL for getting the user's data from this Authorized Endpoint
-    provider: A reference to the provider that this Authorized Endpoint is associated with
+    id: A unique database descriptor obtained when saving an Permission.
+    name: The name of the Permission
+    route: The full URL for getting the user's data from this Permission
+    provider: A reference to the provider that this Permission is associated with
     user_id: The Ografy ID for this user
-    signal: A reference to the Signal that this Authorized Endpoint is related to
-    endpoint_definition: A reference to the base endpoint definition for this Authorized Endpoint
+    signal: A reference to the Signal that this Permission is related to
+    endpoint: A reference to the base endpoint definition for this Permission
     enabled: Whether or not this endpoint will be checked for new data on future runs
     """
 
     enabled = mongoengine.BooleanField(default=True)
-    endpoint_definition = mongoengine.ReferenceField(EndpointDefinition, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    endpoint = mongoengine.ReferenceField(Endpoint, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     name = mongoengine.StringField(required=True)
     provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     route = mongoengine.StringField(required=True)
@@ -468,7 +473,7 @@ class AuthorizedEndpoint(mongoengine.Document):
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$endpoint_definition', '$signal', '$user_id'],
+            'fields': ['$id', '$endpoint', '$signal', '$user_id'],
             'default_language': 'english'
         }]
     }
@@ -498,7 +503,7 @@ class Event(mongoengine.Document):
         ('play', 'Media Play')
     )
 
-    authorized_endpoint = mongoengine.ReferenceField(AuthorizedEndpoint, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    permission = mongoengine.ReferenceField(Permission, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     event_type = mongoengine.StringField(choices=EVENT_TYPE)
     location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
@@ -515,7 +520,7 @@ class Event(mongoengine.Document):
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$authorized_endpoint', '$signal', '$user_id'],
+            'fields': ['$id', '$permission', '$signal', '$user_id'],
             'default_language': 'english'
         }]
     }
@@ -571,7 +576,6 @@ class Event(mongoengine.Document):
 
     @classmethod
     def post_delete(cls, sender, document, **kwargs):
-
         es.delete(
             index='core',
             id=document.id,

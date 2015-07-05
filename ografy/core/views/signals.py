@@ -7,8 +7,8 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from mongoengine import Q
 from social.apps.django_app.default.models import UserSocialAuth
 
-from ografy.core.api import AuthorizedEndpointApi, EndpointDefinitionApi, ProviderApi, SignalApi
-from ografy.core.documents import AuthorizedEndpoint
+from ografy.core.api import EndpointApi, PermissionApi, ProviderApi, SignalApi
+from ografy.core.documents import Permission
 
 
 @login_required
@@ -51,8 +51,9 @@ def authorize(request):
 
 
 @login_required
-def connect(request, pk):
-    provider = ProviderApi.get(Q(id=pk)).get()
+def connect(request, name):
+    expression = Q(url_name=name)
+    provider = ProviderApi.get(expression).get()
 
     return render(request, 'core/signals/connect.html', {
         'title': 'Ografy - Connect to ' + provider.name,
@@ -60,15 +61,9 @@ def connect(request, pk):
         'provider': provider,
         'flex_override': True,
         'user': request.user.id,
+        'current': 'connect',
         'postback_url': reverse('core_authorize')
     })
-
-
-@login_required
-def connect_name(request, name):
-    provider = ProviderApi.get(Q(backend_name=name)).get()
-
-    return HttpResponseRedirect(reverse('core_connect', kwargs={'pk': provider.id}))
 
 
 @login_required
@@ -76,13 +71,13 @@ def providers(request):
     providers = list(ProviderApi.get())
     signal_by_user = Q(user_id=request.user.id)
     signals = SignalApi.get(val=signal_by_user)
-    connect_url = reverse('core_providers')
 
     # FIXME: Make the count happen in the DB
     for provider in providers:
         for signal in signals:
-            if provider.id == signal.provider.id:
+            if provider.id == signal.provider.id and signal.complete:
                 provider.associated_signal = True
+
                 if hasattr(provider, 'assoc_count'):
                     provider.assoc_count += 1
                 else:
@@ -91,10 +86,7 @@ def providers(request):
     return render(request, 'core/signals/providers.html', {
         'title': 'Ografy - Providers',
         'body_class': 'full',
-        'left_class': 'bordered right',
-        'providers_override': True,
-        'providers': providers,
-        'connect_url': connect_url
+        'providers': providers
     })
 
 
@@ -102,57 +94,66 @@ def providers(request):
 def verify(request, pk):
     if request.method == 'GET':
         signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=pk)).get()
-        endpoint_definitions = EndpointDefinitionApi.get(Q(provider=signal.provider.id))
-        authorized_endpoints = AuthorizedEndpointApi.get(Q(signal=signal.id))
+        endpoints = EndpointApi.get(Q(provider=signal.provider.id))
+        permissions = PermissionApi.get(Q(signal=signal.id))
         initial_verification = False
         endpoint_list = {}
-        for endpoint_definition in endpoint_definitions:
+
+        for endpoint in endpoints:
             matched_auth_endpoint = False
-            for authorized_endpoint in authorized_endpoints:
-                if authorized_endpoint.endpoint_definition.id == endpoint_definition.id:
+
+            for permission in permissions:
+                if permission.endpoint.id == endpoint.id:
                     matched_auth_endpoint = True
-                    endpoint_list[endpoint_definition] = authorized_endpoint
+                    endpoint_list[endpoint] = permission
+
             if not matched_auth_endpoint:
-                endpoint_list[endpoint_definition] = None
+                endpoint_list[endpoint] = None
 
         if signal.connected is False:
             return render(request, 'core/signals/authorize.html', {
                 'title': 'Ografy - Authorize ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
+                'current': 'verify',
                 'signal': signal
             })
         else:
             if not signal.complete:
                 initial_verification = True
                 extra_data = UserSocialAuth.objects.filter(user=request.user.id, id=signal.usa_id)[0].extra_data
+
                 if signal.provider.auth_type == 1:
                     access_token = extra_data['access_token']
                     signal.oauth_token = access_token['oauth_token']
                     signal.oauth_token_secret = access_token['oauth_token_secret']
                 elif signal.provider.auth_type == 0:
                     signal.access_token = extra_data['access_token']
+
                 signal.save()
 
-            for endpoint in endpoint_list:
-                pass
             return render(request, 'core/signals/verify.html', {
                 'title': 'Ografy - Verify ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
                 'signal': signal,
+                'provider': signal.provider,
                 'initial_verification': initial_verification,
+                'current': 'verify',
                 'endpoint_list': endpoint_list
             })
     elif request.method == 'POST':
         signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=pk)).get()
+
         if (not signal.complete):
             signal.complete = True
             signal.enabled = True
-        user_social_auth_instance = list(UserSocialAuth.objects.filter(id=signal.usa_id))[0]
+
+        user_social_auth_instance = UserSocialAuth.objects.filter(id=signal.usa_id).get()
         signal.name = request.POST['name']
         signal.frequency = int(request.POST['updateFrequency'])
         extra_data = user_social_auth_instance.extra_data
+
         # OAuth1 returns tokens on extra_data.  Signal.extra_data is serialized and sent to the user, and we don't
         # want those tokens available on the client, so delete them from signal.extra_data
         if 'access_token' in extra_data:
@@ -161,16 +162,17 @@ def verify(request, pk):
                 extra_data['access_token'].pop('oauth_token_secret')
             else:
                 extra_data.pop('access_token')
+
         signal.extra_data = extra_data
         signal.save()
 
-        # This handles updating the Authorized Endpoints enabled status and the creation of Authorized Endpoints.
-        # The client passes a dictionary of Endpoint Definitions and their associated Authorized Endpoints to the server.
+        # This handles updating the Permissions enabled status and the creation of Permissions.
+        # The client passes a dictionary of Endpoint Definitions and their associated Permissions to the server.
         # The dictionary keys are the IDs of the Endpoint Definitions associated with this signal.
-        # The dictionary values are either 'None' if an Authorized Endpoint has not been created for that endpoint
-        # definition yet, or a dictionary if there is an Authorized Endpoint.
-        # The sub-dictionary's key is the ID of the Authorized Endpoint, and the value is a boolean representing
-        # whether or not the Authorized Endpoint is enabled.
+        # The dictionary values are either 'None' if an Permission has not been created for that endpoint
+        # definition yet, or a dictionary if there is an Permission.
+        # The sub-dictionary's key is the ID of the Permission, and the value is a boolean representing
+        # whether or not the Permission is enabled.
         # Example:
         # {
         #   38920743: None,
@@ -178,27 +180,28 @@ def verify(request, pk):
         #       38828502: False
         #   }
         # }
-        # Endpoint definition 38920743 has no Authorized Endpoint associated with it.
-        # Endpoint definition 32957207 has Authorized Endpoint 38828502 associated with it.
-        # Authorized Endpoint 38828502 should be disabled.
+        # Endpoint definition 38920743 has no Permission associated with it.
+        # Endpoint definition 32957207 has Permission 38828502 associated with it.
+        # Permission 38828502 should be disabled.
         #
 
         # Get the endpoint dictionary from the request
         endpoints_dict = json.loads(request.POST['endpointsDict'])
         for index in endpoints_dict:
-            # Get the Authorized Endpoint dictionary for this Endpoint Definition (or None if there is no Authorized Endpoint).
+            # Get the Permission dictionary for this Endpoint Definition (or None if there is no Permission).
             this_endpoint_dict = endpoints_dict[index]
-            # Get the Authorized Endpoint ID (or None if it doesn't exist)
-            this_authorized_endpoint_id = list(this_endpoint_dict.keys())[0]
-            # If the Authorized Endpoint exists, update its enabled status based on what was passed to the server
-            if not this_authorized_endpoint_id == 'None':
-                AuthorizedEndpointApi.patch(this_authorized_endpoint_id, {
-                    'enabled': this_endpoint_dict[this_authorized_endpoint_id]
+            # Get the Permission ID (or None if it doesn't exist)
+            this_permission_id = list(this_endpoint_dict.keys())[0]
+
+            # If the Permission exists, update its enabled status based on what was passed to the server
+            if not this_permission_id == 'None':
+                PermissionApi.patch(this_permission_id, {
+                    'enabled': this_endpoint_dict[this_permission_id]
                 })
             else:
-                # If the Authorized Endpoint does not exist and the user wants that endpoint to be used, create an Authorized Endpoint.
-                if this_endpoint_dict[this_authorized_endpoint_id]:
-                    this_endpoint = EndpointDefinitionApi.get(Q(id=index)).get()
+                # If the Permission does not exist and the user wants that endpoint to be used, create an Permission.
+                if this_endpoint_dict[this_permission_id]:
+                    this_endpoint = EndpointApi.get(Q(id=index)).get()
                     url_parts = [''] * 6
                     url_parts[0] = this_endpoint.provider.scheme
                     url_parts[1] = this_endpoint.provider.domain
@@ -211,15 +214,15 @@ def verify(request, pk):
 
                     route = urllib.parse.urlunparse(url_parts)
 
-                    new_authorized_endpoint = AuthorizedEndpoint(
+                    new_permission = Permission(
                         name=this_endpoint.name,
                         route=route,
                         provider=this_endpoint.provider,
                         user_id=request.user.id,
                         signal=signal,
-                        endpoint_definition=this_endpoint,
+                        endpoint=this_endpoint,
                         enabled=True
                     )
-                    AuthorizedEndpointApi.post(new_authorized_endpoint)
+                    PermissionApi.post(new_permission)
 
-        return HttpResponse(reverse('core_settings_signals'))
+        return HttpResponse(reverse('core_providers'))

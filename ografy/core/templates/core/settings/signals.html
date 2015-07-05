@@ -4,52 +4,36 @@
 
 {% block static %}
 	{{ block.super }}
-	<script type="application/javascript">
-		function disableSignal(signal_id) {
-			{#			FIXME: Make less crap#}
-			$.ajax({
-				url: '/opi/signal/' + signal_id,
-				type: 'PATCH',
-				dataType: 'json',
-				data: {},
-				headers: {
-					"X-CSRFToken": getCookie('csrftoken')
-				}
-			}).done(function() {
-				$('.ui.checkbox.signal-enable-' + signal_id).checkbox();
-			});
-		}
-
-		function deleteSignal(signal_id) {
-			{#			FIXME: Make less crap#}
-			$.ajax({
-				url: '/opi/signal/' + signal_id,
-				type: 'DELETE',
-				dataType: 'json',
-				data: {},
-				headers: {
-					"X-CSRFToken": getCookie('csrftoken')
-				}
-			}).done(function() {
-				$('signal-' + signal_id).remove();
-			});
-		}
-	</script>
+<script type="text/javascript">
+	require(['site'], function(site) {
+		$(document).ready(function() {
+			site.bindSignalSettings();
+			site.bindToggleSignal('.onoffswitch-label');
+		});
+	});
+</script>
 {% endblock %}
 
 {% block content %}
-	<div class="grouping">
-		<div class="bigger">Your connections</div>
-		{% for signal in signals %}
-			<div class="flex column signal-toggle signal-{{ signal.id }}">
-				<div class="flex grow">
-					<div class="grow">
-						<i class="icon-{{ signal.provider.backend_name }}"></i>
-						<a href="{{ verify_url }}/{{ signal.id }}">{{ signal.name }}</a>
-					</div>
+<div class="content-list">
+	<div class="content-item">
+		<h1>Your connections</h1>
+		<h4>These are all of your accounts that you have authorized Ografy to access.  The on/off toggle sets whether or not new data should be pulled from that signal.</h4>
+	</div>
+	{% for signal in signals %}
+	<form action="/opi/signal/{{ signal.id }}">
+		<div class="content-item drawer-container" data-signal-id="{{ signal.id }}">
+			<div class="flex grow content-drawer-trigger">
+				<div class="grow">
+					<i class="signal-icon icon-{{ signal.provider.backend_name }}"></i>
+					<div class="signal-name">{{ signal.name }}</div>
+				</div>
+			</div>
+			<div class="content-drawer">
+				<div class="flex onoff-container">
 					<div class="onoffswitch">
 						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
-						<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}" onclick="toggleSignal('{{ signal.id }}')">
+						<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}">
 							<span class="onoffswitch-inner" ></span>
 							<span class="onoffswitch-switch"></span>
 						</label>
@@ -59,13 +43,96 @@
 					</div>
 				</div>
 				<div class="delete-check hidden">
-					Delete?
+					Delete signal?  This cannot be reversed.
 					<div class="flex row">
-						<input class="bold button-green delete-confirm" type="button" value="Yes" onclick="deleteSignal('{{ signal.id }}')">
-						<input class="bold button-red delete-cancel" type="button" value="No">
+						<input class="delete-confirm btn btn-primary" type="button" value="Yes">
+						<input class="delete-cancel btn btn-danger" type="button" value="No" style="margin-left: auto;">
+					</div>
+				</div>
+				<div class="signal-settings-block">
+					<div class="content-header">
+						<h1 class="bold">Name your connection to {{ signal.provider.name }}</h1>
+					</div>
+					<input class="autoformEnabled" name="name" type="text" value='{{ signal.name }}'/>
+					<div class="flex content-header margin-top">
+						<h1>Permissions</h1>
+						<div class="tooltip-container">
+							<div class="icon-help tooltip-trigger"></div>
+							<div class="tooltip">
+								<div class="tooltip-text">Choose which types of data Ografy will get from your {{ signal.provider.name }} account.  Even if you authorized Ografy to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.  If you de-select a type from which Ografy has already collected data, the data already collected will continue to show up in your search resdivts, but new data of that type will not be collected.</div>
+								<div class="icon-cancel-circle tooltip-close"></div>
+							</div>
+						</div>
+					</div>
+					<div class="permission-container">
+						{% for endpoint, permission in signal.endpoint_list.items %}
+						<div name="{{ endpoint.provider_name }}" data-signal-id="{{ signal.id }}" data-endpoint-id="{{ endpoint.id }}" data-permission-id="{% if not permission == None %}{{ permission.id }}{% else %}None{% endif %}" class="endpoint-checkbox">
+							<label class="permission-min-width">
+								<input type="checkbox"
+									{% if not permission == None and permission.enabled %}
+										checked="checked"
+									{% endif %}
+								>
+								<span>{{ endpoint.name }}</span>
+							</label>
+							<div class="tooltip-container near">
+								<div class="icon-help tooltip-trigger"></div>
+								<div class="tooltip">
+									<div class="tooltip-text">{{ endpoint.description }}</div>
+									<div class="icon-cancel-circle tooltip-close"></div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="signal-settings-block">
+					<div class="flex content-header margin-top">
+						<h1>Update Frequency</h1>
+						<div class="tooltip-container">
+							<div class="icon-help tooltip-trigger"></div>
+							<div class="tooltip">
+								<div class="tooltip-text">How often Ografy will automatically search for new data from this provider</div>
+								<div class="icon-cancel-circle tooltip-close"></div>
+							</div>
+						</div>
+					</div>
+					<div class="grouped fields" id="frequency">
+						<!--<div class="field">-->
+							<!--<label class="display-inline-block">-->
+								<!--<input class="autoformEnabled" updateFrequency=0 value=0 type="radio" name="frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %} disabled>-->
+								<!--<span class="premium-message">Premium On Demand</span>-->
+							<!--</label>-->
+						<!--</div>-->
+						<div class="field">
+							<label class="display-inline-block">
+								<input class="autoformEnabled" updateFrequency=1 value=1 type="radio" name="frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
+								<span>Daily</span>
+							</label>
+						</div>
+						<div class="field">
+							<label class="display-inline-block">
+								<input class="autoformEnabled" updateFrequency=2 value=2 type="radio" name="frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
+								<span>Weekly</span>
+							</label>
+						</div>
+						<div class="field">
+							<label class="display-inline-block">
+								<input class="autoformEnabled" updateFrequency=3 value=3 type="radio" name="frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
+								<span>Manual</span>
+							</label>
+						</div>
+						<div class="field">
+							<label class="display-inline-block">
+								<input class="autoformEnabled" updateFrequency=4 value=4 type="radio" name="frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
+								<span>Once</span>
+							</label>
+						</div>
 					</div>
 				</div>
 			</div>
-		{% endfor %}
-	</div>
+		</div>
+	</form>
+	{% endfor %}
+</div>
 {% endblock %}

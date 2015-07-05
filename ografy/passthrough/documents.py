@@ -91,7 +91,7 @@ class Signal(motorengine.Document):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
 
 
-class EndpointDefinition(motorengine.Document):
+class Endpoint(motorengine.Document):
     """
     The class representing an endpoint from a provider, e.g. Facebook Friends list
 
@@ -100,11 +100,11 @@ class EndpointDefinition(motorengine.Document):
     name: The name of the endpoint
     path: The portions of a provider's API specific to this endpoint, e.g. ISteamUser/GetFriendList/v0001/ for Steam's Friends list
     provider: A reference to the provider that this Endpoint is associated with
-    enabled_by_default: Whether any Authorized Endpoint constructed from this Endpoint Definition should be enabled by default
+    enabled_by_default: Whether any Permission constructed from this Endpoint Definition should be enabled by default
     parameter_description: A dictionary of the parameters that can be used on this endpoint and how they are constructed
     mapping: How the data returned from the endpoint maps to Ografy's data schema
     """
-    __collection__ = 'endpoint_definition'
+    __collection__ = 'endpoint'
 
     enabled_by_default = motorengine.BooleanField(default=True)
     mapping = motorengine.JsonField()
@@ -114,24 +114,24 @@ class EndpointDefinition(motorengine.Document):
     path = motorengine.StringField(required=True)
 
 
-class AuthorizedEndpoint(motorengine.Document):
+class Permission(motorengine.Document):
     """
     The class representing a user's endpoint for a specific Signal, e.g. the endpoint to get user A's Facebook Friends list
 
     Attributes:
-    _id: A unique database descriptor obtained when saving an Authorized Endpoint.
-    name: The name of the Authorized Endpoint
-    route: The full URL for getting the user's data from this Authorized Endpoint
-    provider: A reference to the provider that this Authorized Endpoint is associated with
+    _id: A unique database descriptor obtained when saving an Permission.
+    name: The name of the Permission
+    route: The full URL for getting the user's data from this Permission
+    provider: A reference to the provider that this Permission is associated with
     user_id: The Ografy ID for this user
-    signal: A reference to the Signal that this Authorized Endpoint is related to
-    endpoint_definition: A reference to the base endpoint definition for this Authorized Endpoint
+    signal: A reference to the Signal that this Permission is related to
+    endpoint: A reference to the base endpoint definition for this Permission
     enabled: Whether or not this endpoint will be checked for new data on future runs
     """
-    __collection__ = 'authorized_endpoint'
+    __collection__ = 'permission'
 
     enabled = motorengine.BooleanField(default=True)
-    endpoint_definition = motorengine.ReferenceField(EndpointDefinition)
+    endpoint = motorengine.ReferenceField(Endpoint)
     name = motorengine.StringField(required=True)
     provider = motorengine.ReferenceField(Provider)
     route = motorengine.StringField(required=True)

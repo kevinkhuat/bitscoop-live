@@ -102,7 +102,7 @@ GEO_FILTERS = {
 MAPPED_FIELDS = {
     'event': [
         'id',
-        'authorized_endpoint',
+        'permission',
         'created',
         'datetime',
         'event_type',
@@ -130,7 +130,7 @@ MAPPED_FIELDS = {
 MAPPED_SEARCH_FIELDS = {
     'event': {
         'id',
-        'authorized_endpoint',
+        'permission',
         'created',
         'datetime',
         'event_type',

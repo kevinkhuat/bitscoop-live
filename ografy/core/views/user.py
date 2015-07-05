@@ -9,6 +9,7 @@ def my_profile(request):
     return render(request, 'core/user/my_profile.html', {
         'title': 'Ografy - {0}'.format(request.user.identifier),
         'lockwidth_override': True,
+        'selected': 'user',
         'user': request.user
     })
 

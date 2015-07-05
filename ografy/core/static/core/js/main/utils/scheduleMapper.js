@@ -1,6 +1,6 @@
 //Module scheduleMapper
 //This module contains functions for updating the endpoint of signals that are past their update frequency or that have never been pulled at all.
-define (function(require, exports, module) {
+define ('scheduleMapper', function(require, exports, module) {
 	var csrftoken;
 	var estimation_method;
 	/**
@@ -126,7 +126,7 @@ define (function(require, exports, module) {
 	}
 
 	/**
-	 * Gets all of the Authorized Endpoints for the given list of signals
+	 * Gets all of the Permissions for the given list of signals
 	 *
 	 * @param {Object} signals A list of the signals that need to be updated
 	 * @param {Object} endpoints A list of the endpoints that will be filled by the results of the API call
@@ -147,7 +147,7 @@ define (function(require, exports, module) {
 			filterString += '(signal exact ' + _.get(signal, 'id') + ')';
 		});
 		return $.ajax({
-			url: 'opi/authorized_endpoints?filter=' + filterString,
+			url: 'opi/permissions?filter=' + filterString,
 			type: 'GET',
 			dataType: 'json',
 			headers: {
@@ -177,10 +177,10 @@ define (function(require, exports, module) {
 
 
 	/**
-	 * Iterates through all of the Authorized Endpoints for the given signal and calls callOneEndpoint on each one
+	 * Iterates through all of the Permissions for the given signal and calls callOneEndpoint on each one
 	 *
-	 * @param {Object} endpoints A list of all of the Authorized Endpoints for the given signal.
-	 * @param {Array} signals A list of all of the Authorized Endpoints for the given signal.
+	 * @param {Object} endpoints A list of all of the Permissions for the given signal.
+	 * @param {Array} signals A list of all of the Permissions for the given signal.
 	 */
 	function callEndpointsAndClean(endpoints, signals) {
 		_.forEach(endpoints, function(endpoint) {
@@ -190,17 +190,17 @@ define (function(require, exports, module) {
 	}
 
 	/**
-	 * Call the endpoint as defined in the given Authorized Endpoint
+	 * Call the endpoint as defined in the given Permission
 	 *
-	 * @param {Object} endpoint One of the Authorized Endpoints for the given signal
+	 * @param {Object} endpoint One of the Permissions for the given signal
 	 * @param {Object} signal
 	 * @returns {Object} The raw data returned from the endpoint
 	 */
 	function callOneEndpoint(endpoint, signal) {
 		var url = 'https://p.ografy.io/call';
 		var call_parameters = {};
-		var parameter_list = _.get(endpoint, 'endpoint_definition.parameter_description');
-		var mapping = _.get(endpoint, 'endpoint_definition.mapping');
+		var parameter_list = _.get(endpoint, 'endpoint.parameter_description');
+		var mapping = _.get(endpoint, 'endpoint.mapping');
 
 		// Add parameters from endpoint definition to URL
 		_.forEach(parameter_list, function(value, parameter) {
@@ -208,7 +208,7 @@ define (function(require, exports, module) {
 		});
 
 		var callData = {
-			authorized_endpoint_id: endpoint.id,
+			permission_id: endpoint.id,
 			parameters: JSON.stringify(call_parameters)
 		};
 
@@ -385,7 +385,7 @@ define (function(require, exports, module) {
 			}
 
 			eventObject = {
-				authorized_endpoint: endpoint.id,
+				permission: endpoint.id,
 				created: dateNow,
 				datetime: datetime,
 				event_type: _.get(mapping, 'event_type.field_mapping'),

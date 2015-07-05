@@ -346,6 +346,8 @@ function dataStore() {
 					state.view.instances[item].updateContent();
 				}
 			}
+		}).fail(function(data, xhr, response) {
+			console.log(data);
 		});
 	}
 

@@ -3,80 +3,63 @@
 
 {% block static %}
 	{{ block.super }}
+<script type="text/javascript" src="{% static 'core/js/main/utils/location.js' %}"></script>
 <script type="application/javascript">
 	var csrftoken;
-	require(["{% static 'core/js/main/utils/location.js' %}", "{% static 'core/js/main/utils/cookies.js' %}"], function(location, cookies) {
+	require(["location", "cookies"], function(location, cookies) {
 		csrftoken = cookies.getCsrfToken();
-		$('.reestimate').not('disabled').click(function() {
-			location.reestimate({{ user.id }});
+		$('.estimate').not('disabled').click(function() {
+			location.estimate({{ user.id }});
 		});
 	});
-
-	//This is a temporary function and should be replace by autoform in jutsu when that function has been pulled in.
-	function saveSettings() {
-		var data = {
-			allow_location_collection: $("[name='allow-location-tracking']").prop('checked'),
-			location_estimation_method: $("[name='location_estimation_method']:checked").attr('estimationmethod')
-		};
-
-		request = $.ajax({
-			url: '/opi/settings/{{ settings.id }}',
-			type: 'PATCH',
-			dataType: 'json',
-			data: data,
-			headers: {
-				'X-CSRFToken': csrftoken
-			}
-		}).done(function(data, xhr, response) {
-			console.log('Settings patch successful');
-		});
-	}
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="grouping">
-	<div class="bigger">Location Settings</div>
-	<div class="form">
-		<div class="endpoint-definition-toggle">
-			<input type="checkbox" name="allow-location-tracking" {% if settings.allow_location_collection %} checked="checked" {% endif %}>
-			<div>Allow Location Collection</div>
+<div class="content-list">
+	<form action="/settings/location">
+		<div class="content-item">
+			<div class="flex content-header">
+				<h1>Allow location collection</h1>
+				<div class="tooltip-container">
+					<div class="icon-help tooltip-trigger"></div>
+					<div class="tooltip">
+						<div class="tooltip-text">Enabling this allows Ografy to get your location every 10 minutes when it is active and record it in our database.  This allows us to better estimate your events that do not have location information as we will have many more confirmed locations from which to estimate.</div>
+						<div class="icon-cancel-circle tooltip-close"></div>
+					</div>
+				</div>
+			</div>
+			<label><input class="autoformEnabled" type="checkbox" name="allow_location_collection" value=true {% if settings.allow_location_collection %} checked="checked" {% endif %}><span>Allow Location Collection</span></label>
 		</div>
-		<div action="/opi/settings">
-			<div class="bold">
-				Estimation Method:
-			</div>
-			<div class="field">
-				<div>
-					<input estimationMethod="Between" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Between' %}checked="checked"{% endif %}>
-					<label>Interpolate between previous and next points in time</label>
-				</div>
-			</div>
-			<div class="field">
-				<div>
-					<input estimationMethod="Closest" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Closest' %}checked="checked"{% endif %}>
-					<label>Use closest point in time</label>
-				</div>
-			</div>
-			<div class="field">
-				<div>
-					<input estimationMethod="Next" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Next' %}checked="checked"{% endif %}>
-					<label>Use next point in time</label>
-				</div>
-			</div>
-			<div class="field">
-				<div>
-					<input estimationMethod="Last" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Last' %}checked="checked"{% endif %}>
-					<label>Use previous point in time</label>
+		<div class="content-item" action="/settings/location">
+		<div class="flex content-header">
+			<h1>Estimation Method</h1>
+			<div class="tooltip-container">
+				<div class="icon-help tooltip-trigger"></div>
+				<div class="tooltip">
+					<div class="tooltip-text">Determines how to estimate the locations of events that are lacking coordinates.</div>
+					<div class="icon-cancel-circle tooltip-close"></div>
 				</div>
 			</div>
 		</div>
-		<div>
-			<input class="bold button-green verified-complete-button" type="button" value="Save Location Settings" onclick="saveSettings('{{ user.id }}')"/>
+		<label><input class="autoformEnabled" estimationMethod="Between" type="radio" name="location_estimation_method" value="Between" {% if settings.location_estimation_method == 'Between' %}checked="checked"{% endif %}><span>Interpolate between previous and next points in time</span></label>
+		<label><input class="autoformEnabled" estimationMethod="Closest" type="radio" name="location_estimation_method" value="Closest" {% if settings.location_estimation_method == 'Closest' %}checked="checked"{% endif %}><span>Use closest point in time</span></label>
+		<label><input class="autoformEnabled" estimationMethod="Next" type="radio" name="location_estimation_method" value="Next" {% if settings.location_estimation_method == 'Next' %}checked="checked"{% endif %}><span>Use next point in time</span></label>
+		<label><input class="autoformEnabled" estimationMethod="Last" type="radio" name="location_estimation_method" value="Last" {% if settings.location_estimation_method == 'Last' %}checked="checked"{% endif %}><span>Use previous point in time</span></label>
 		</div>
-		<div class="bold">Re-estimate Locations:
-			<input type="button" {% if new_reestimate_allowed %} value="Re-estimate" class="bold button-green reestimate" {% else %} value="Re-estimation available at {{ next_reestimate_date }}" disabled {% endif %}>
+	</form>
+	<div class="content-item">
+		<div class="flex content-header">
+			<h1>Re-estimate locations</h1>
+			<div class="tooltip-container">
+				<div class="icon-help tooltip-trigger"></div>
+				<div class="tooltip">
+					<div class="tooltip-text">Much of your data that Ografy collects does not have information on where it occurred.  When we collect it, we estimate the locations using the method you have chosen above.  Re-estimating the locations may produce more accurate results if new location data has been added to your account.  This is disabled for five days following each re-estimation since it is computationally expensive.</div>
+					<div class="icon-cancel-circle tooltip-close"></div>
+				</div>
+			</div>
 		</div>
+		<input type="button" {% if new_estimate_allowed %} class="btn btn-primary estimate" value="Re-estimate" {% else %} class="btn estimate" value="Re-estimation available at {{ next_estimate_date }}" disabled{% endif %}>
 	</div>
 </div>
 {% endblock %}

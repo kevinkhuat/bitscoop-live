@@ -1,27 +1,32 @@
 {% extends 'shared/dispatcher.html' %}
-
 {% load staticfiles %}
-{% block static %}
 
+{% block static %}
 {{ block.super }}
+<script type="text/javascript" src="{% static 'shared/js/tooltip.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/main/utils/cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'shared/js/jutsu.js' %}"></script>
+<script type="text/javascript">
+	require(['jutsu', 'cookies', 'tooltip', 'site'], function(jutsu, cookies, tooltip, site) {
+		var csrftoken = cookies.getCsrfToken();
+		require(['autoform'], function() {
+			$('body').autoform('.autoformEnabled', {'X-CSRFToken': csrftoken});
+		});
+
+		tooltip.bindTooltip('.tooltip-trigger', '.tooltip-close');
+		site.scrollToContent();
+	});
+</script>
 {% endblock %}
 
 {% block left %}
-<div class="flex drawer container">
-	<div class="left drawer hidden">
-		<div class="grouping">
-			<div>Account Settings</div>
-			<div class="flex column no-pad">
-				<ul class="links">
-					<li><a href="{% url 'core_user_my_profile' %}" class="link">User Account</a></li>
-					<li><a href="{% url 'core_settings_location' %}" class="link">Location Settings</a></li>
-					<li><a href="{% url 'core_settings_personal' %}" class="link">Personal info</a></li>
-					<li><a href="{% url 'core_settings_security' %}" class="link">Security</a></li>
-					<li><a href="{% url 'core_settings_signals' %}" class="link">Signals</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<i class="drawer-toggle hidden icon-paragraph-justify"></i>
+<div class="navigation-selection">
+	<div><a class="navigation-option {% if selected == 'account' %}navigation-selected{% endif %}" href="{% url 'core_settings_account' %}">Account</a></div>
+	<div><a class="navigation-option {% if selected == 'location' %}navigation-selected{% endif %}" href="{% url 'core_settings_location' %}">Location Settings</a></div>
+	<div><a class="navigation-option {% if selected == 'security' %}navigation-selected{% endif %}" href="{% url 'core_settings_security' %}">Security</a></div>
+	<div><a class="navigation-option {% if selected == 'signal' %}navigation-selected{% endif %}" href="{% url 'core_settings_signals' %}">Signals</a></div>
 </div>
+{% endblock %}
+
+{% block content %}
 {% endblock %}

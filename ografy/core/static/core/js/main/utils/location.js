@@ -1,4 +1,4 @@
-define (function(require, exports, module) {
+define ('location', function(require, exports, module) {
 	//Used by navigator.geolocation's functions - see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
 	var options = {
 		enableHighAccuracy: true,
@@ -200,9 +200,9 @@ define (function(require, exports, module) {
 		}
 	}
 
-	function reestimate() {
+	function estimate() {
 		$.ajax({
-			url: '../opi/reestimate',
+			url: '/opi/estimate',
 			type: 'GET',
 			dataType: 'html',
 			contentType: 'application/json; charset=utf-8',
@@ -222,6 +222,6 @@ define (function(require, exports, module) {
 
 	module.exports = {
 		trackPosition: trackPosition,
-		reestimate: reestimate
+		estimate: estimate
 	};
 });

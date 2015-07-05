@@ -1,4 +1,4 @@
-define (function(require, exports, module) {
+define ('cookies', function(require, exports, module) {
 	var csrfToken = '';
 
 	function getCookie(name) {

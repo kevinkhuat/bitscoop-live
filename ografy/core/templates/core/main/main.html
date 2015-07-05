@@ -27,18 +27,27 @@
 
 	<script type="text/javascript" src="{% static 'lib/nunjucks/nunjucks.js' %}"></script>
 	<script type="text/javascript" src="{% static 'lib/require/require.js' %}" data-main="{% static 'core/js/main/require_load.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/main/utils/cookies.js' %}"></script>
 	<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}"/>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'core/css/main-light.css' %}"/>
 	<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}"/>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			require(['site'], function(site) {
+				site.bindMainAppUtilities();
+			})
+		});
+	</script>
 	{% endblock %}
 
 </head>
 <body class="flex full">
 <header class="bg foreground bottom">
 	<nav class="flex stretch app-header">
-		<div class="flex center grow search">
+		<div class="flex grow search">
 			<form id="search-form" class="flex grow">
 				<input class="search-bar grow" type="text" placeholder="Search your data"/>
 			</form>
@@ -95,20 +104,16 @@
 			</div>
 		</div>
 
-		<div class="flex center links">
-			<a id="view-button-list" class="view-button view-button-list item active"><i class="icon-list-unordered"></i></a>
-			<a id="view-button-map" class="view-button view-button-map item active"><i class="icon-map22"></i></a>
+		<div class="flex navlinks">
+			<a id="view-button-list" class="view-button view-button-list item link active"><i class="icon-list-unordered"></i></a>
+			<a id="view-button-map" class="view-button view-button-map item link active"><i class="icon-map22"></i></a>
 			<a class="spacer"></a>
-			<a class="fullscreen item"><i class="icon-enlarge"></i></a>
-			<a class="add-provider item" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
+			<a class="fullscreen item link"><i class="icon-enlarge"></i></a>
+			<a class="add-provider item link" href="{% url 'core_providers' %}"><i class="icon-plus"></i></a>
 			<div>
 				<a class="user-button item">{{ request.user.identifier }}</a>
 					<div class="flex column menu main hidden">
-						<a class="item" href="{% url 'core_user_my_profile' %}">
-							<i class="icon-home3"></i>
-							User Home
-						</a>
-						<a class="item" href="{% url 'core_settings_personal' %}">
+						<a class="item" href="{% url 'core_settings_account' %}">
 							<i class="icon-cog" ></i>
 							Settings
 						</a>

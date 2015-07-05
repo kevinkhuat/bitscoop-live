@@ -1,120 +1,113 @@
-{% extends 'core/settings/base.html' %}
+{% extends 'core/signals/base.html' %}
 {% load staticfiles %}
 
 {% block static %}
 {{ block.super }}
-{% endblock %}
-
-{% block left %}
-	<div class="flex column steps">
-		<div class="step">
-			<div class="content">
-				<div class="title-align">
-					<i class="block icon-link step-icon"></i>
-
-					<div class="title">Connect to {{ signal.provider.name }}</div>
-				</div>
-				<div class="description">Connect your {{ signal.provider.name }} account to your Ografy account</div>
-			</div>
-		</div>
-		<div class="step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-uniF75F"></i>
-					<div class="title">Authorize Access</div>
-				</div>
-				<div class="description">Authorize your {{ signal.provider.name }} account's connection to Ografy</div>
-			</div>
-		</div>
-		<div class="active step">
-			<div class="content">
-				<div class="title-align">
-					<i class="step-icon icon-check"></i>
-					<div class="title">Verify Settings</div>
-				</div>
-				<div class="description">Ensure that your connection settings to {{ provider.name }} are correct</div>
-			</div>
-		</div>
-	</div>
+<script type="text/javascript">
+	require(['site'], function(site) {
+		$(document).ready(function() {
+			site.bindVerifiedSignal('.verify-button');
+		});
+	});
+</script>
 {% endblock %}
 
 {% block content %}
-	<div class="step-verify">
-		<div class="grouping">
-			<div class="bigger">Verify {{ signal.provider.name }} Connection Settings</div>
-			<div>
-				<div class="grouping-content">
-					<span>Details and stuff about connection settings to {{ signal.provider.name }}</span>
+<div class="content-list" data-signal-id="{{ signal.id }}">
+	<div class="content-item">
+		<h1>{{ update_or_verify }} {{ signal.provider.name }} Connection Settings</h1>
+	</div>
+	<div class="content-item">
+		<h1 class="bold">Name your connection to {{ signal.provider.name }}</h1>
+		<form>
+			<input class="text-input-width-medium" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
+		</form>
+	</div>
+	<div class="content-item">
+		<div class="flex content-header">
+			<h1>Permissions</h1>
+			<div class="tooltip-container">
+				<div class="icon-help tooltip-trigger"></div>
+				<div class="tooltip">
+					<div class="tooltip-text">Choose which types of data Ografy will get from your {{ signal.provider.name }} account.  Even if you authorized Ografy to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.  If you de-select a type from which Ografy has already collected data, the data already collected will continue to show up in your search results, but new data of that type will not be collected.</div>
+					<div class="icon-cancel-circle tooltip-close"></div>
 				</div>
-				<span class="bold">Name your connection to {{ signal.provider.name }}</span>
-				<form>
-					<input class="text-input-width" name="signal-name" type="text" name="email" value='{{ signal.name }}'/>
-				</form>
 			</div>
 		</div>
-		<div class="grouping">
-			<div class="bigger">{{ signal.name }} Authorized Endpoints</div>
-			<div>
-				{% for endpoint_definition, authorized_endpoint in endpoint_list.items %}
-				<div name="{{ endpoint_definition.name }}" data-endpoint-definition-id="{{ endpoint_definition.id }}" data-authorized-endpoint-id="{% if not authorized_endpoint == None %}{{ authorized_endpoint.id }}{% else %}None{% endif %}" class="endpoint-definition-toggle">
-					<input type="checkbox"
-						{% if initial_verification %}
-							{% if endpoint_definition.enabled_by_default %}
-							checked="checked"
-							{% endif %}
-						{% else %}
-							{% if not authorized_endpoint == None and authorized_endpoint.enabled %}
-							checked="checked"
-							{% endif %}
+		<div class="permission-container">
+		{% for endpoint, permission in endpoint_list.items %}
+		<div name="{{ endpoint.provider_name }}" data-endpoint-id="{{ endpoint.id }}" data-permission-id="{% if not permission == None %}{{ permission.id }}{% else %}None{% endif %}" class="endpoint-checkbox">
+			<label class="permission-min-width">
+				<input type="checkbox"
+					{% if initial_verification %}
+						{% if endpoint.enabled_by_default %}
+						checked="checked"
 						{% endif %}
-					>
-					<div>{{ endpoint_definition.name }}</div>
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-		<div class="grouping">
-			<div class="bigger">Frequency of {{ signal.name }} Data Updates</div>
-			<div class="form">
-				<div class="grouped fields" id="frequency">
-					<div class="title">
-						Select the frequency you would like this service to update
-					</div>
-					<div class="field">
-						<div>
-							<input updateFrequency=0 type="radio" name="update-frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %}>
-							<label class="premium-message">Premium On Demand</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input updateFrequency=1 type="radio" name="update-frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
-							<label>Daily</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input updateFrequency=2 type="radio" name="update-frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
-							<label>Weekly</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input updateFrequency=3 type="radio" name="update-frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
-							<label>Manual</label>
-						</div>
-					</div>
-					<div class="field">
-						<div>
-							<input updateFrequency=4 type="radio" name="update-frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
-							<label>Once</label>
-						</div>
-					</div>
+					{% else %}
+						{% if not permission == None and permission.enabled %}
+						checked="checked"
+						{% endif %}
+					{% endif %}
+				>
+				<span>{{ endpoint.name }}</span>
+			</label>
+			<div class="tooltip-container near">
+				<div class="icon-help tooltip-trigger"></div>
+				<div class="tooltip">
+					<div class="tooltip-text">{{ endpoint.description }}</div>
+					<div class="icon-cancel-circle tooltip-close"></div>
 				</div>
 			</div>
 		</div>
-		<div>
-			<input class="bold button-green verified-complete-button" type="button" value="Complete Connection to {{ signal.name }}" onclick="verifiedSignal('{{ signal.id }}')"/>
+		{% endfor %}
 		</div>
 	</div>
+	<div class="content-item form">
+		<div class="flex content-header">
+			<h1>Update Frequency</h1>
+			<div class="tooltip-container">
+				<div class="icon-help tooltip-trigger"></div>
+				<div class="tooltip">
+					<div class="tooltip-text">How often Ografy will automatically search for new data from this provider</div>
+					<div class="icon-cancel-circle tooltip-close"></div>
+				</div>
+			</div>
+		</div>
+		<div class="grouped fields" id="frequency">
+			<!--<div class="field">-->
+				<!--<label>-->
+					<!--<input updateFrequency=0 type="radio" name="update-frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %} disabled>-->
+					<!--<span class="premium-message">Premium On Demand</span>-->
+				<!--</label>-->
+			<!--</div>-->
+			<div class="field">
+				<label>
+					<input updateFrequency=1 type="radio" name="update-frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
+					<span>Daily</span>
+				</label>
+			</div>
+			<div class="field">
+				<label>
+					<input updateFrequency=2 type="radio" name="update-frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
+					<span>Weekly</span>
+				</label>
+			</div>
+			<div class="field">
+				<label>
+					<input updateFrequency=3 type="radio" name="update-frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
+					<span>Manual</span>
+				</label>
+			</div>
+			<div class="field">
+				<label>
+					<input updateFrequency=4 type="radio" name="update-frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
+					<span>Once</span>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div>
+		<input class="btn btn-primary verify-button" type="button" value="{% if initial_verification %}Complete Connection to {{ signal.name }}{% else %}Save settings for {{ signal.name }}{% endif %}"/>
+	</div>
+</div>
 {% endblock %}

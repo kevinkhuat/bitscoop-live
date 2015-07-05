@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from ografy.core.urls import main, settings, signals, user
+from ografy.core.urls import main, settings, signals
 
 import ografy.core.views as views
 
@@ -17,4 +17,4 @@ urlpatterns = patterns('',
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
     url(r'^location_test$', views.location, name='location_test'),
-) + settings.urlpatterns + user.urlpatterns + signals.urlpatterns + main.urlpatterns
+) + settings.urlpatterns + signals.urlpatterns + main.urlpatterns

@@ -3,11 +3,12 @@ import datetime
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from social.apps.django_app.default.models import UserSocialAuth
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.contrib.locationtoolbox import estimation
 from ografy.contrib.tastydata.pagination import OgrafyItemPagination
-from ografy.contrib.tastydata.views import DjangoAPIListView, DjangoAPIView, MongoAPIListView, MongoAPIView
+from ografy.contrib.tastydata.views import DjangoAPIView, MongoAPIListView, MongoAPIView
 from ografy.core import api as core_api
 from ografy.core.documents import Settings
 
@@ -37,6 +38,7 @@ class DataView(MongoAPIListView):
             request.auth_filter
         )
         paginated_data_list = self.Meta.list(self, data_query)
+
         return paginated_data_list
 
     def post(self, request):
@@ -71,6 +73,7 @@ class DataSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
@@ -149,6 +152,7 @@ class EventView(MongoAPIListView):
             request.auth_filter
         )
         paginated_event_list = self.Meta.list(self, get_query)
+
         return paginated_event_list
 
     # TODO: Add logic for for populating signal and prover from just signal id
@@ -191,6 +195,7 @@ class EventSingleView(MongoAPIView):
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
@@ -273,6 +278,7 @@ class LocationView(MongoAPIListView):
             request.auth_filter
         )
         paginated_event_list = self.Meta.list(self, get_query)
+
         return paginated_event_list
 
     # TODO: Add logic for for populating signal and prover from just signal id
@@ -313,6 +319,7 @@ class MessageView(MongoAPIListView):
             request.auth_filter
         )
         paginated_message_list = self.Meta.list(self, message_query)
+
         return paginated_message_list
 
     def post(self, request):
@@ -422,6 +429,7 @@ class PlayView(MongoAPIListView):
             request.auth_filter
         )
         paginated_play_list = self.Meta.list(self, play_query)
+
         return paginated_play_list
 
     def post(self, request):
@@ -530,6 +538,7 @@ class ProviderView(MongoAPIListView):
             request.query_filter
         )
         paginated_data_list = self.Meta.list(self, provider_query)
+
         return paginated_data_list
 
 
@@ -543,6 +552,7 @@ class ProviderSingleView(MongoAPIView):
             MongoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
+
         return Response(self.serialize(
             provider_object,
             context={
@@ -552,31 +562,33 @@ class ProviderSingleView(MongoAPIView):
         ))
 
 
-class AuthorizedEndpointView(MongoAPIListView):
+class PermissionView(MongoAPIListView):
     ordering_fields = ('provider', 'name')
     pagination_class = OgrafyItemPagination
-    serializer = opi_serializer.AuthorizedEndpointSerializer
-    serializer_class = opi_serializer.AuthorizedEndpointSerializer
+    serializer = opi_serializer.PermissionSerializer
+    serializer_class = opi_serializer.PermissionSerializer
 
     def get(self, request, format=None):
-        provider_query = core_api.AuthorizedEndpointApi.get(
+        provider_query = core_api.PermissionApi.get(
             request.query_filter &
             request.auth_filter
         )
         paginated_data_list = self.Meta.list(self, provider_query)
+
         return paginated_data_list
 
 
-class AuthorizedEndpointSingleView(MongoAPIView):
-    serializer = opi_serializer.AuthorizedEndpointSerializer
-    serializer_class = opi_serializer.AuthorizedEndpointSerializer
+class PermissionSingleView(MongoAPIView):
+    serializer = opi_serializer.PermissionSerializer
+    serializer_class = opi_serializer.PermissionSerializer
 
     def get(self, request, pk, format=None):
-        provider_query = core_api.AuthorizedEndpointApi.get(
+        provider_query = core_api.PermissionApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
         provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
+
         return Response(self.serialize(
             provider_object,
             context={
@@ -584,96 +596,6 @@ class AuthorizedEndpointSingleView(MongoAPIView):
                 'format': format
             }
         ))
-
-
-class SettingsView(MongoAPIListView):
-    # TODO: Restrict to admins or remove?
-    ordering = 'id'
-    ordering_fields = ('id', 'user_id', 'created', 'updated')
-    pagination_class = OgrafyItemPagination
-    serializer = opi_serializer.SettingsSerializer
-    serializer_class = opi_serializer.SettingsSerializer
-
-    def get(self, request, format=None):
-        settings_query = core_api.SettingsApi.get(
-            request.query_filter &
-            request.auth_filter
-        )
-        paginated_data_list = self.Meta.list(self, settings_query)
-        return paginated_data_list
-
-
-class SettingsSingleView(MongoAPIView):
-    # TODO: Check user association on any updates & add access permissions
-    serializer = opi_serializer.SettingsSerializer
-    serializer_class = opi_serializer.SettingsSerializer
-
-    def get(self, request, pk, format=None):
-        settings_query = core_api.SettingsApi.get(
-            request.auth_filter &
-            MongoAPIView.Meta.Q(pk=pk)
-        )
-        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
-        serialized_response = self.serialize(
-            settings_object,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
-
-        return Response(serialized_response)
-
-    # TODO: Replace with patch
-    def post(self, request, format=None):
-        # TODO: Better user filter
-        post_settings = self.deserialize(
-            request.data,
-            context={
-                'request': request
-            }
-        )
-        post_settings.user_id = request.user
-
-        settings_query = core_api.SettingsApi.post(
-            data=post_settings
-        )
-        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
-        serialized_response = self.serialize(
-            settings_object,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
-
-        return Response(serialized_response)
-
-    def patch(self, request, pk, format=None):
-        # TODO: Better user filter
-        patch_settings = self.deserialize(
-            request.data,
-            context={
-                'request': request
-            },
-            partial=True
-        )
-        patch_settings.user_id = request.user
-
-        settings_query = core_api.SettingsApi.patch(
-            val=pk,
-            data=patch_settings
-        )
-        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
-        serialized_response = self.serialize(
-            settings_object,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
-
-        return Response(serialized_response)
 
 
 class SignalView(MongoAPIListView):
@@ -727,10 +649,21 @@ class SignalSingleView(MongoAPIView):
     serializer_class = opi_serializer.SignalSerializer
 
     def delete(self, request, pk):
+        get_query = core_api.SignalApi.get(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
+
+        usa_id = signal_object['usa_id']
+        user_social_auth_object = UserSocialAuth.objects.get(user=request.user.id, id=usa_id)
+        user_social_auth_object.delete()
+
         core_api.SignalApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
@@ -814,88 +747,15 @@ class SignalSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class UserView(DjangoAPIListView):
-    ordering_fields = ('id', 'email', 'handle', 'date_joined')
-    serializer = opi_serializer.UserSerializer
-    serializer_class = opi_serializer.UserSerializer
-
-    def get(self, request, format=None):
-        get_query = core_api.UserApi.get(
-            request.query_filter
-        )
-        user_list = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
-        serialized_response = self.serialize(
-            user_list,
-            many=True,
-            context={
-                'request': request,
-                'formatrequest': format
-            }
-        )
-
-        return Response(serialized_response)
-
-
-class UserSingleView(DjangoAPIView):
-    # TODO: Restrict to admins or remove?
-    serializer = opi_serializer.UserSerializer
-    serializer_class = opi_serializer.UserSerializer
-
-    def delete(self, request, pk):
-        core_api.UserApi.delete(
-            request.auth_filter &
-            DjangoAPIView.Meta.Q(pk=pk)
-        )
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    def get(self, request, pk, format=None):
-        get_query = core_api.UserApi.get(
-            val=pk
-        )
-        user_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
-        serialized_response = self.serialize(
-            user_object,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
-
-        return Response(serialized_response)
-
-    def patch(self, request, pk, format=None):
-        # TODO: Better user filter
-        patch_signal = self.deserialize(
-            request.data,
-            context={
-                'request': request
-            },
-            partial=True
-        )
-        patch_signal.user_id = request.user
-
-        data = core_api.UserApi.patch(
-            val=pk,
-            data=patch_signal
-        )
-        serialized_response = self.serialize(
-            data,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
-
-        return Response(serialized_response)
-
-
-class ReestimateView(DjangoAPIView):
+class EstimateLocationView(MongoAPIView):
     def get(self, request, format=None):
         settings = Settings.objects.get(user_id=request.user.id)
-        next_reestimate_date = settings.last_reestimate_all_locations + datetime.timedelta(days=5)
-        new_reestimate_allowed = datetime.datetime.now() > next_reestimate_date
+        next_estimate_date = settings.last_estimate_all_locations + datetime.timedelta(days=5)
+        new_estimate_allowed = datetime.datetime.now() > next_estimate_date
 
-        if (new_reestimate_allowed):
+        if (new_estimate_allowed):
             estimation.reeestimate_all(request.user.id)
 
-        return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response('Re-estimation not allowed yet.', status=status.HTTP_400_BAD_REQUEST)

@@ -2,26 +2,14 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="grouping">
-	<div class="bigger">Password</div>
-	<div>
-		<div class="bold">New password:</div>
-		<input type="password" name="new_password" />
+<div class="content-list">
+	<div class="content-item">
+		<h1>Password</h1>
+		<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" /></label>
 		<div>{{ form.new_password.errors }}</div>
-		<div class="bold">Repeated:</div>
-		<input type="password" name="new_password_repeated" />
+		<label><div class="text-input-width-medium">Repeated</div><input type="password" name="new_password_repeated" /></label>
 		<div>{{ form.new_password.errors }}</div>
-		<input class="bold button-green password-update" type="button" value="Update Password" onclick="updatePassword({{ user.id }})"/>
-	</div>
-</div>
-
-<div class="grouping">
-	<div class="bigger">Handle</div>
-	<div>
-		<div class="bold">Handle:</div>
-		<div><input type="text" name="handle" value="{{ user.handle|default_if_none:'' }}" /></div>
-		<div>{{ form.handle.errors }}</div>
-		<input class="bold button-green handle-update" type="button" value="Update Handle" onclick="updateHandle({{ user.id }})"/>
+		<label><input class="btn btn-primary" type="button" value="Update Password" onclick="updatePassword('{{ user.id }}')"/></label>
 	</div>
 </div>
 {% endblock %}

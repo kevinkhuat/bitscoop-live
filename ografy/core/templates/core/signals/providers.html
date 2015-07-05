@@ -3,43 +3,50 @@
 
 {% block static %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'core/js/providers.js' %}"></script>
+<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.mixitup/2.1.8/jquery.mixitup.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		require(['site'], function(site) {
+			$(document).ready(function() {
+				site.bindProviderUtilities();
+			});
+		});
+	});
+</script>
 {% endblock %}
 
-
-{% block left %}
-<ul class="links" id="filters">
-	<li><span data-filter=".collaboration">Collaboration</span></li>
-	<li><span data-filter=".development">Development</span></li>
-	<li><span data-filter=".fitness">Fitness</span></li>
-	<li><span data-filter=".gaming">Gaming</span></li>
-	<li><span data-filter=".health">Health</span></li>
-	<li><span data-filter=".media">Media</span></li>
-	<li><span data-filter=".music">Music</span></li>
-	<li><span data-filter=".productivity">Productivity</span></li>
-	<li><span data-filter=".social">Social</span></li>
-	<li><span data-filter=".video">Video</span></li>
-</ul>
+{% block sub-header %}
+<div class="grid-filters">
+	<div class="grid-filter-placeholder"><div class="placeholder-text">All</div></div>
+	<div class="filter" data-filter="all"><div class="filter-text">All</div></div>
+</div>
 {% endblock %}
 
 {% block content %}
-<div id="isotope-container">
-	{% for provider in providers %}
-		<a href="{{ connect_url }}/{{ provider.id }}" class="signal-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" name="provider-{{ provider.backend_name }}">
-
+<div class="overflow-y-hidden">
+	<div class="modal">
+		<div class="modal-dialog">
+			<div class="modal-header">
+				<div class="btn-close">×</div>
+			</div>
+			<div class="modal-body">
+				<p>For now, Ografy only supports connecting one account per provider.</p>
+			</div>
+		</div>
+	</div>
+	<div class="grid container" id="provider-grid">
+		{% for provider in providers %}
+		<div class="mix provider-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" data-link="{% url 'core_connect' name=provider.url_name %}" name="provider-{{ provider.backend_name }}">
 			<div class="provider-name">
 				<i class="icon-{{ provider.backend_name }}"></i>
-				{{ provider.name }}
-			</div>
-			<div class="provider-description">
-				{{ provider.description }}
+				<div>{{ provider.name }}</div>
 			</div>
 			{% if provider.associated_signal %}
-				<div class="provider-count">
-					{{ provider.assoc_count }}
-				</div>
+			<div class="provider-count">Connected</div>
 			{% endif %}
-		</a>
-	{% endfor %}
+		</div>
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}

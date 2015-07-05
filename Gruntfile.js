@@ -88,7 +88,11 @@ module.exports = function(grunt) {
 					'ografy/core/static/core/less/main.less',
 					'ografy/static/shared/less/site-dark.less',
 					'ografy/static/shared/less/site-light.less',
-					'ografy/static/shared/less/site.less'
+					'ografy/static/shared/less/site.less',
+					'ografy/static/shared/less/buttons.less',
+					'ografy/static/shared/less/content-view.less',
+					'ografy/static/shared/less/drawer.less',
+					'ografy/static/shared/less/filter-grid.less'
 				],
 				tasks: [
 					'less'

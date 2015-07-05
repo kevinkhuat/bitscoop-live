@@ -6,7 +6,7 @@ from motorengine import Q
 from tornado import gen
 
 from ografy.passthrough.auth import user_authenticated
-from ografy.passthrough.documents import AuthorizedEndpoint
+from ografy.passthrough.documents import Permission
 from ografy.passthrough.proxy import psa_adapters
 
 
@@ -20,7 +20,7 @@ class ExternalAPICall(tornado.web.RequestHandler):
     @gen.coroutine
     def get(self):
         """
-        This handles the process of getting the full Authorized Endpoint from the ID that's passed in as an argument on the request,
+        This handles the process of getting the full Permission from the ID that's passed in as an argument on the request,
         getting the route and signal from the endpoint, getting the PSA backend definitions, adding any OAuth or OpenID tokens/keys
         that couldn't be sent from the client, then calling the route in question and returning the results to the client.
 
@@ -28,19 +28,19 @@ class ExternalAPICall(tornado.web.RequestHandler):
         :return:
         """
         # Need to cast the ObjectID as such since MotorEngine doesn't handle the raw string well
-        authorized_endpoint_id = ObjectId(self.get_argument('authorized_endpoint_id'))
+        permission_id = ObjectId(self.get_argument('permission_id'))
         # Query based on the ID and user ID for extra security
-        authorized_endpoint_query = Q({'_id': authorized_endpoint_id}) & Q(user_id=self.request.user.id)
-        # Get the Authorized Endpoint; as the result is a list, pluck the 0th element from the result
-        authorized_endpoint_list = yield AuthorizedEndpoint.objects.filter(authorized_endpoint_query).find_all()
-        authorized_endpoint = authorized_endpoint_list[0]
+        permission_query = Q({'_id': permission_id}) & Q(user_id=self.request.user.id)
+        # Get the Permission; as the result is a list, pluck the 0th element from the result
+        permission_list = yield Permission.objects.filter(permission_query).find_all()
+        permission = permission_list[0]
 
         # Get the route from the endpoint
-        route = authorized_endpoint.route
-        # Need to explicitly load the Authorized Endpoint's reference to its associated field
-        yield authorized_endpoint.load_references(fields=['signal'])
+        route = permission.route
+        # Need to explicitly load the Permission's reference to its associated field
+        yield permission.load_references(fields=['signal'])
         # Get the signal from the endpoint, and load the reference to its provider
-        signal = authorized_endpoint.signal
+        signal = permission.signal
         yield signal.load_references(fields=['provider'])
 
         # 'Fun' PSA code for getting the backend associated with the signal
@@ -87,11 +87,11 @@ class Proxy(tornado.web.RequestHandler):
         """
         try:
             # Get API URL
-            authorized_endpoint_id = ObjectId(self.get_argument('authorized_endpoint_id'))
-            authorized_endpoint_query = Q({'_id': authorized_endpoint_id}) & Q(user_id=self.request.user.id)
-            authorized_endpoint_list = yield AuthorizedEndpoint.objects.filter(authorized_endpoint_query).find_all()
-            authorized_endpoint = authorized_endpoint_list[0]
-            route = authorized_endpoint.route
+            permission_id = ObjectId(self.get_argument('permission_id'))
+            permission_query = Q({'_id': permission_id}) & Q(user_id=self.request.user.id)
+            permission_list = yield Permission.objects.filter(permission_query).find_all()
+            permission = permission_list[0]
+            route = permission.route
 
             parameters = json.loads(self.get_argument('parameters'))
 
@@ -120,13 +120,13 @@ class Signature(tornado.web.RequestHandler):
         try:
             # TODO: Need to properly sign an OAuth1 call
             # TODO: requests handled this step synchronously with requests.OAuth1lib
-            authorized_endpoint_id = ObjectId(self.get_argument('authorized_endpoint_id'))
-            authorized_endpoint_query = Q({'_id': authorized_endpoint_id}) & Q(user_id=self.request.user.id)
-            authorized_endpoint_list = yield AuthorizedEndpoint.objects.filter(authorized_endpoint_query).find_all()
-            authorized_endpoint = authorized_endpoint_list[0]
+            permission_id = ObjectId(self.get_argument('permission_id'))
+            permission_query = Q({'_id': permission_id}) & Q(user_id=self.request.user.id)
+            permission_list = yield Permission.objects.filter(permission_query).find_all()
+            permission = permission_list[0]
 
-            yield authorized_endpoint.load_references(fields=['signal'])
-            signal = authorized_endpoint.signal
+            yield permission.load_references(fields=['signal'])
+            signal = permission.signal
             yield signal.load_references(fields=['provider'])
 
             parameters = {'pauth'}

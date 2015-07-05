@@ -9,7 +9,8 @@
       "description": "Online social networking service",
       "tags": "social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "facebook"
     },
     {
       "name": "Twitter",
@@ -20,7 +21,8 @@
       "description": "Online social networking service",
       "tags": "social",
       "auth_type": 1,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "twitter"
     },
     {
       "name": "Steam",
@@ -31,7 +33,8 @@
       "description": "Internet-based digital distribution, multiplayer, and social networking platform",
       "tags": "gaming media social",
       "auth_type": 2,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "steam"
     },
     {
       "name": "Amazon",
@@ -42,7 +45,8 @@
       "description": "Electronic commerce company",
       "tags": "development productivity",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "amazon"
     },
     {
       "name": "Dropbox",
@@ -53,7 +57,8 @@
       "description": "File hosting service",
       "tags": "collaboration productivity",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "dropbox"
     },
     {
       "name": "FitBit",
@@ -64,7 +69,8 @@
       "description": "Activity trackers and wireless-enabled wearable devices",
       "tags": "fitness health",
       "auth_type": 1,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "fitbit"
     },
     {
       "name": "FourSquare",
@@ -75,7 +81,8 @@
       "description": "Local search and discovery service",
       "tags": "social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "foursquare"
     },
     {
       "name": "GitHub",
@@ -86,7 +93,8 @@
       "description": "Web-based Git repository hosting service",
       "tags": "collaboration development productivity",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "github"
     },
     {
       "name": "Google",
@@ -97,7 +105,8 @@
       "description": "Internet-related services and products",
       "tags": "collaboration media productivity social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "google"
     },
     {
       "name": "Instagram",
@@ -108,7 +117,8 @@
       "description": "Mobile photo-sharing, video-sharing and social networking service",
       "tags": "media social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "instagram"
     },
     {
       "name": "LinkedIn",
@@ -119,7 +129,8 @@
       "description": "Business-oriented social networking service",
       "tags": "productivity social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "linkedin"
     },
     {
       "name": "reddit",
@@ -130,7 +141,8 @@
       "description": "Entertainment, social networking service and news website",
       "tags": "media social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "reddit"
     },
     {
       "name": "Spotify",
@@ -141,7 +153,8 @@
       "description": "Music streaming service",
       "tags": "media music",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "spotify"
     },
     {
       "name": "Stack Overflow",
@@ -152,7 +165,8 @@
       "description": "Open Q&A network",
       "tags": "collaboration development productivity social",
       "auth_type": 0,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "stackoverflow"
     },
     {
       "name": "Tumblr",
@@ -163,7 +177,8 @@
       "description": "Microblogging platform and social networking website",
       "tags": "social",
       "auth_type": 1,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "tumblr"
     },
     {
       "name": "Vimeo",
@@ -174,14 +189,17 @@
       "description": "Video-sharing website",
       "tags": "media video",
       "auth_type": 1,
-      "scheme": "https"
+      "scheme": "https",
+      "url_name": "vimeo"
     }
   ],
-  "endpointDefinitions": [
+  "endpoints": [
     {
       "facebook": [
         {
-          "name": "Facebook Friends",
+          "provider_name": "Facebook",
+          "name": "Friends",
+          "description": "Public information about all your Facebook friends",
           "path": "friends",
           "enabled_by_default": true,
           "parameter_description": {
@@ -201,7 +219,9 @@
           }
         },
         {
-          "name": "Facebook Likes",
+          "provider_name": "Facebook",
+          "description": "Posts that you have Liked",
+          "name": "Likes",
           "path": "likes",
           "provider": 1,
           "enabled_by_default": true,
@@ -222,7 +242,9 @@
           }
         },
         {
-          "name": "Facebook Posts",
+          "provider_name": "Facebook",
+          "description": "Posts that you have made",
+          "name": "Posts",
           "path": "statuses",
           "provider": 1,
           "enabled_by_default": true,
@@ -243,7 +265,9 @@
           }
         },
         {
-          "name": "Facebook Inbox",
+          "provider_name": "Facebook",
+          "description": "Messages sent to your Facebook account",
+          "name": "Inbox",
           "path": "inbox",
           "provider": 1,
           "enabled_by_default": true,
@@ -264,7 +288,9 @@
           }
         },
         {
-          "name": "Facebook Outbox",
+          "provider_name": "Facebook",
+          "description": "Messages you have sent from your Facebook account",
+          "name": "Outbox",
           "path": "outbox",
           "provider": 1,
           "enabled_by_default": true,
@@ -287,7 +313,9 @@
       ],
       "twitter": [
         {
-          "name": "Twitter Tweets",
+          "provider_name": "Twitter",
+          "description": "All tweets in your timeline",
+          "name": "Tweets",
           "path": "statuses/user_timeline.json",
           "enabled_by_default": true,
           "parameter_description": {
@@ -442,7 +470,9 @@
           }
         },
         {
-          "name": "Twitter Direct messages",
+          "provider_name": "Twitter",
+          "name": "Direct Messages",
+          "description": "Direct Messages you have sent and received",
           "path": "direct_message",
           "enabled_by_default": true,
           "parameter_description": {
@@ -535,7 +565,7 @@
                   }
                 },
                 "message_from": {
-                  "field_location": "name",
+                  "field_location": "provider_name",
                   "transform": {
                     "value": null,
                     "type": "client_evaluate"
@@ -597,7 +627,9 @@
           }
         },
         {
-          "name": "Twitter Followers",
+          "provider_name": "Twitter",
+          "name": "Followers",
+          "description": "Your Twitter followers",
           "path": "followers",
           "enabled_by_default": true,
           "parameter_description": {
@@ -701,7 +733,7 @@
                   }
                 },
                 "message_from": {
-                  "field_location": "name",
+                  "field_location": "provider_name",
                   "transform": {
                     "value": null,
                     "type": "client_evaluate"
@@ -763,7 +795,9 @@
           }
         },
         {
-          "name": "Twitter Following",
+          "provider_name": "Twitter",
+          "name": "Following",
+          "description": "Twitter accounts you are following",
           "path": "following",
           "enabled_by_default": true,
           "parameter_description": {
@@ -856,7 +890,7 @@
                   }
                 },
                 "message_from": {
-                  "field_location": "name",
+                  "field_location": "provider_name",
                   "transform": {
                     "value": null,
                     "type": "client_evaluate"
@@ -920,7 +954,9 @@
       ],
       "steam": [
         {
-          "name": "Steam Game played",
+          "provider_name": "Steam",
+          "name": "Game Played",
+          "description": "Steam games that you have played",
           "path": "IplayerService/GetOwnedGames/v0001/",
           "enabled_by_default": true,
           "parameter_description": {
@@ -982,9 +1018,9 @@
             },
             "field_mapping": {
               "event": {
-                "name": {
+                "provider_name": {
                   "type": "client",
-                  "value": "name"
+                  "value": "provider_name"
                 }
               },
               "play": {
@@ -1052,7 +1088,9 @@
           }
         },
         {
-          "name": "Steam Friends",
+          "provider_name": "Steam",
+          "name": "Friends",
+          "description": "Your Steam friends",
           "path": "ISteamUser/GetFriendList/v0001/",
           "enabled_by_default": true,
           "parameter_description": {
@@ -1174,7 +1212,9 @@
       ],
       "google-oauth2": [
         {
-          "name": "Gmail inbox",
+          "provider_name": "Gmail",
+          "name": "Inbox",
+          "description": "Email sent to you",
           "path": "gmail/v1/users/me/messages",
           "enabled_by_default": true,
           "parameter_description": {
@@ -1216,7 +1256,9 @@
       ],
       "fitbit": [
         {
-          "name": "Fitbit activities",
+          "provider_name": "Fitbit",
+          "name": "Activities",
+          "description": "The activities that FitBit can track",
           "path": "1/activities.json",
           "enabled_by_default": true,
           "parameter_description": {
@@ -1268,7 +1310,9 @@
       ],
       "spotify": [
         {
-          "name": "Spotify saved tracks",
+          "provider_name": "Spotify",
+          "name": "Saved Tracks",
+          "description": "Tracks you have saved on Spotify",
           "path": "/v1/me/tracks",
           "enabled_by_default": true,
           "parameter_description": {
@@ -1310,7 +1354,9 @@
       ],
       "dropbox-oauth2": [
         {
-          "name": "Dropbox files",
+          "provider_name": "Dropbox",
+          "name": "Files",
+          "description": "Your Dropbox files",
           "path": "1/metadata/auto/",
           "enabled_by_default": true,
           "parameter_description": {
@@ -1352,7 +1398,9 @@
       ],
       "instagram": [
         {
-          "name": "Instagram feed",
+          "provider_name": "Instagram",
+          "name": "Feed",
+          "description": "Your public Instagram feed",
           "path": "/v1/users/self/feed",
           "enabled_by_default": true,
           "parameter_description": {

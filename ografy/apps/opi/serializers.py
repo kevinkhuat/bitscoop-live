@@ -1,9 +1,7 @@
 from rest_framework import serializers as django_serializers
 
 from ografy.contrib.tastydata import serializers as tasty_serializers
-from ografy.core.documents import (
-    AuthorizedEndpoint, Data, EndpointDefinition, Event, Location, Message, Play, Provider, Settings, Signal
-)
+from ografy.core.documents import Data, Endpoint, Event, Location, Message, Permission, Play, Provider, Settings, Signal
 from ografy.core.models import User
 
 
@@ -17,6 +15,7 @@ def evaluate(query, queryset_class, many=True):
             data = list(query)
         except Exception:
             return []
+
         # If the result of the query is none, send an empty set to the serializer
         if data is None:
             return []
@@ -86,7 +85,7 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
         model = Event
         fields = (
             'id',
-            'authorized_endpoint',
+            'permission',
             'created',
             'datetime',
             'event_type',
@@ -178,13 +177,13 @@ class SignalSerializer(tasty_serializers.DocumentSerializer):
         depth = 5
 
 
-class AuthorizedEndpointSerializer(tasty_serializers.DocumentSerializer):
+class PermissionSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = AuthorizedEndpoint
+        model = Permission
         fields = (
             'id',
             'enabled',
-            'endpoint_definition',
+            'endpoint',
             'name',
             'provider',
             'route',
@@ -194,9 +193,9 @@ class AuthorizedEndpointSerializer(tasty_serializers.DocumentSerializer):
         depth = 5
 
 
-class EndpointDefinitionSerializer(tasty_serializers.DocumentSerializer):
+class EndpointSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = EndpointDefinition
+        model = Endpoint
         fields = (
             'id',
             'enabled_by_default',
@@ -219,7 +218,7 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
             'id',
             'allow_location_collection',
             'created',
-            'last_reestimate_all_locations',
+            'last_estimate_all_locations',
             'location_estimation_method',
             'updated',
             'user_id',

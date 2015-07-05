@@ -5,7 +5,7 @@ import os
 from django.core.management.base import BaseCommand
 
 from ografy.core import api as core_api
-from ografy.core.documents import EndpointDefinition, Provider, Settings
+from ografy.core.documents import Endpoint, Provider, Settings
 from ografy.settings import MONGO_FIXTURE_DIRS
 
 
@@ -14,12 +14,14 @@ DEMO_FILE_NAME = 'main_fixtures.json'
 
 
 def create_fixture_endpoint(temp_endpoint, provider_id):
-    return EndpointDefinition(
+    return Endpoint(
+        description=temp_endpoint['description'],
         enabled_by_default=temp_endpoint['enabled_by_default'],
         mapping=temp_endpoint['mapping'],
         name=temp_endpoint['name'],
         parameter_description=temp_endpoint['parameter_description'],
         provider=provider_id,
+        provider_name=temp_endpoint['provider_name'],
         path=temp_endpoint['path'],
     )
 
@@ -34,7 +36,8 @@ def create_fixture_provider(provider):
         domain=provider['domain'],
         name=provider['name'],
         scheme=provider['scheme'],
-        tags=provider['tags']
+        tags=provider['tags'],
+        url_name=provider['url_name']
     )
 
 
@@ -42,7 +45,7 @@ def create_fixture_settings():
     return Settings(
         allow_location_collection=True,
         created=datetime.datetime.now,
-        last_reestimate_all_locations=datetime.datetime.now,
+        last_estimate_all_locations=datetime.datetime.now,
         location_estimation_method='Last',
         updated=datetime.datetime.now,
         user_id=1
@@ -56,12 +59,12 @@ def load_fixture(path):
     for provider in fixture_data['providers']:
         insert_provider = create_fixture_provider(provider)
         provider = core_api.ProviderApi.post(insert_provider)
-        provider_definitions = fixture_data['endpointDefinitions'][0]
+        provider_definitions = fixture_data['endpoints'][0]
 
         if provider['backend_name'] in provider_definitions:
             for endpoint in provider_definitions[provider['backend_name']]:
-                insert_endpoint_definition = create_fixture_endpoint(endpoint, provider)
-                endpoint = core_api.EndpointDefinitionApi.post(insert_endpoint_definition)
+                insert_endpoint = create_fixture_endpoint(endpoint, provider)
+                endpoint = core_api.EndpointApi.post(insert_endpoint)
 
     insert_settings = create_fixture_settings()
 

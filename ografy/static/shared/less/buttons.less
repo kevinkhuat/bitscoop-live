@@ -1,0 +1,393 @@
+.btn {
+	position: relative;
+	display: inline-block;
+	padding: 6px 12px;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+	color: @deep-gray;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-color: @pale-gray;
+	background-image: linear-gradient(@white, @pale-gray);
+	border: 1px solid @btn-border;
+	border-radius: 3px;
+	user-select: none;
+	-webkit-appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	i {
+		font-style: normal;
+		font-weight: 500;
+		opacity: 0.6;
+	}
+
+	.octicon {
+		vertical-align: text-top;
+	}
+
+	// Darken for just a tad more contrast against the button background
+	.counter {
+		text-shadow: none;
+		background-color: @pale-gray;
+	}
+
+	&:focus {
+		text-decoration: none;
+		border-color: @btn-focus;
+		outline: none;
+		box-shadow: 0 0 5px rgba(81, 167, 232, 0.5);
+	}
+
+	&:focus:hover,
+	&.selected:focus {
+		border-color: @btn-focus;
+	}
+
+	&:hover,
+	&:active,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		text-decoration: none;
+		background-color: @light-gray;
+		background-image: linear-gradient(@pale-gray, @light-gray);
+		border-color: @light-gray;
+	}
+
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-active {
+		background-color: @light-gray;
+		background-image: none;
+		border-color: @medium-gray;
+		box-shadow: inset 0 2px 4px @black-translucent;
+	}
+
+	& > .selected:hover {
+		background-color: darken(@light-gray, 5%);
+	}
+
+	&:disabled,
+	&.disabled {
+		&,
+		& > :hover {
+			color: @mid-translucent;
+			cursor: default;
+			background-color: @light-translucent;
+			background-image: none;
+			border-color: @medium-translucent;
+			box-shadow: none;
+		}
+	}
+}
+
+// Green primary button
+.btn-primary {
+	color: @white;
+	text-shadow: 0 -1px 0 @black-translucent;
+	background-color: @green;
+	background-image: linear-gradient(@green-gradient, @green);
+	border-color: darken(@green, 2%);
+
+	.counter {
+		color: @green;
+		background-color: @white;
+	}
+
+	&:hover {
+		color: @white;
+		background-color: darken(@green, 5%);
+		background-image: linear-gradient(darken(@green-gradient, 5%), darken(@green, 5%));
+		border-color: @green-border;
+	}
+
+	&:active,
+	&.selected {
+		text-shadow: 0 1px 0 @black-translucent;
+		background-color: darken(@green, 5%);
+		background-image: none;
+		border-color: darken(@green-border, 5%);
+	}
+
+	&.selected:hover {
+		background-color: darken(@green, 10%);
+	}
+}
+
+// Red danger button
+.btn-danger {
+	color: @red;
+
+	&:hover {
+		color: @white;
+		background-color: @red;
+		background-image: linear-gradient(@red-gradient, @red);
+		border-color: @red-border;
+	}
+
+	&:active,
+	&.selected {
+		color: @red;
+		background-color: @red;
+		background-image: none;
+		border-color: darken(@red-border, 15%);
+	}
+
+	&.selected:hover {
+		background-color: darken(@red, 5%);
+	}
+
+	&:hover,
+	&:active,
+	&.selected {
+		.counter {
+			color: @red;
+			background-color: @white;
+		}
+	}
+}
+
+// Outline button
+//
+// For when we need a linky-action that's not too heavy in busier
+// areas like conversation timelines.
+.btn-outline {
+	color: @blue;
+	background-color: @white; // Reset default gradient backgrounds and colors
+	background-image: none;
+	border: 1px solid @light-gray;
+
+	.counter {
+		background-color: @pale-gray;
+	}
+
+	&:hover,
+	&:active,
+	&.selected,
+	&.zeroclipboard-is-hover,
+	&.zeroclipboard-is-active {
+		color: @white;
+		background-color: @blue;
+		background-image: none;
+		border-color: @blue;
+
+		.counter {
+			color: @blue;
+			background-color: @white;
+		}
+	}
+
+	&.selected:hover {
+		background-color: darken(@blue, 5%);
+	}
+}
+
+// Social button count
+.btn-with-count {
+	float: left;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+
+// Minibutton overrides
+//
+// Tweak `line-height` to make them smaller.
+.btn-sm {
+	padding: 2px 10px;
+}
+
+// Full-width button
+//
+// These buttons expand to the full width of their parent container
+.btn-block {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+
+// Button group
+//
+// A button group is a series of buttons laid out next to each other, all part
+// of one visual button, but separated by rules to be separate.
+.btn-group {
+	display: inline-block;
+	vertical-align: middle;
+
+	.btn {
+		position: relative;
+		float: left;
+
+		&:not(:first-child):not(:last-child) {
+			border-radius: 0;
+		}
+
+		&:first-child {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+
+		&:last-child {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		// Bring any button into forefront for proper borders given negative margin below
+		&:hover,
+		&:active,
+		&.selected {
+			z-index: 2;
+		}
+
+		&:focus {
+			z-index: 3;
+		}
+
+		// Tuck buttons into one another to prevent double border
+		+ .btn {
+			margin-left: -1px;
+		}
+	}
+
+	.btn + .button_to,
+	.button_to + .btn,
+	.button_to + .button_to {
+		margin-left: -1px;
+	}
+
+	.button_to {
+		float: left;
+
+		.btn {
+			border-radius: 0;
+		}
+
+		&:first-child {
+			.btn {
+				border-top-left-radius: 3px;
+				border-bottom-left-radius: 3px;
+			}
+		}
+
+		&:last-child {
+			.btn {
+				border-top-right-radius: 3px;
+				border-bottom-right-radius: 3px;
+			}
+		}
+	}
+}
+
+// Proper spacing for multiple button groups (a la, gollum editor)
+.btn-group + .btn-group,
+.btn-group + .btn {
+	margin-left: 5px;
+}
+
+
+// Radio buttons
+//
+// Buttons backed by radio or checkbox control. Requires the use of `.hidden`
+// on the `input` to properly hide it.
+.btn-link {
+	display: inline-block;
+	padding: 0;
+	font-size: inherit;
+	color: @blue;
+	white-space: nowrap;
+	cursor: pointer;
+	background-color: transparent;
+	border: 0;
+	user-select: none;
+	-webkit-appearance: none; // Corrects inability to style clickable `input` types in iOS.
+
+	&:hover,
+	&:focus {
+		text-decoration: underline;
+	}
+
+	&:focus {
+		outline: none; // Prevents the blue ring when clicked.
+	}
+}
+
+.btn-close {
+	cursor: pointer;
+	text-align: right;
+}
+
+.button-green {
+	background-color: @green;
+	color: @white;
+	margin: 0 auto;
+}
+
+.button-red {
+	background-color: @red;
+	color: @white;
+	margin: 0 auto;
+}
+
+.link-button {
+	font: 1em 'Source Sans Pro', Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	padding: 0.4em;
+	border-radius: 0.1em;
+	border: 1px solid @medium-gray;
+	outline: none;
+	margin: 0.4em 0;
+	display: inline-block;
+	width: 100%;
+	max-width: 20em;
+	text-align: center;
+}
+
+.link-button:link {
+	text-decoration: none;
+}
+
+.verified-complete-button {
+	cursor: pointer;
+}
+
+.provider-button {
+	display: inline-block;
+	background-color: @pale-gray;
+	border: 2px solid @pale-gray;
+	color: @text-color;
+	height: 12em;
+	box-shadow: 0 0 5px @dark-translucent;
+	padding: 0.8em;
+	text-align: center;
+	cursor: pointer;
+	transition: width .5s ease;
+	text-decoration: none !important;
+	width: 100%;
+	& > i {
+		position: relative;
+		top: 3px;
+		left: -5px;
+	}
+}
+
+.provider-button.provider-associated {
+	background-color: @green;
+	border-color: @green;
+	.provider-name {
+		color: @white;
+	}
+}
+.provider-button.provider-associated:hover {
+	border: 2px solid @blue;
+}
+
+.provider-button:hover {
+	@media @not-mobile {
+		border: 2px solid @green;
+	}
+}
+
+.provider-count {
+	font-weight: bold;
+}

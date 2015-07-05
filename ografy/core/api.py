@@ -3,8 +3,8 @@ import ografy.core.models as models
 from ografy.contrib.tastydata.api import BaseApi
 
 
-class AuthorizedEndpointApi(BaseApi):
-    model = documents.AuthorizedEndpoint
+class PermissionApi(BaseApi):
+    model = documents.Permission
 
 
 class DataApi(BaseApi):
@@ -18,8 +18,8 @@ class DataApi(BaseApi):
         )
 
 
-class EndpointDefinitionApi(BaseApi):
-    model = documents.EndpointDefinition
+class EndpointApi(BaseApi):
+    model = documents.Endpoint
 
 
 class EventApi(BaseApi):

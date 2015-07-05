@@ -98,7 +98,6 @@ def get_next_query(user_id, datetime):
 
 
 def distance_on_unit_sphere(lat1, long1, lat2, long2):
-
     # Convert latitude and longitude to
     # spherical coordinates in radians.
     degrees_to_radians = math.pi / 180.0
@@ -197,7 +196,6 @@ def estimate_location_last(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there isn't a hit, then the query was for a date before the oldest one for this user
     # In that case, search for the Location at the earliest available date and use that instead
     else:
@@ -224,7 +222,6 @@ def estimate_location_last(user_id, datetime, index, doc_type):
                 reverse_geolocation='',
                 reverse_geo_format='address'
             )
-
         # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
         # At a later date, once there are some Locations associated with the user, the estimated location
         # will be updated with a more accurate result.
@@ -376,7 +373,6 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
 
         if abs(parser.parse(datetime) - date1) < abs(parser.parse(datetime) - date2):
             coordinates = geolocation1['geolocation']
-
         else:
             coordinates = geolocation2['geolocation']
 
@@ -391,7 +387,6 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there isn't a result before, use the one after
     elif len(hits1) == 0:
         coordinates = hits2[0]['_source']['geolocation']
@@ -406,7 +401,6 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there isn't a result after, use the one before
     elif len(hits2) == 0:
         coordinates = hits1[0]['_source']['geolocation']
@@ -421,7 +415,6 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
     # will be updated with a more accurate result.
@@ -484,6 +477,7 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         hits1 = search_result['responses'][0]['hits']['hits']
         if len(hits1) == 0:
             hits1 = None
+
     if 'hits' in search_result['responses'][1]:
         hits2 = search_result['responses'][1]['hits']['hits']
         if len(hits2) == 0:
@@ -550,7 +544,6 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there isn't a result before, use the one after
     elif hits1 is None and hits2 is not None:
         coordinates = hits2[0]['_source']['geolocation']
@@ -565,7 +558,6 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there isn't a result after, use the one before
     elif hits2 is None and hits1 is not None:
         coordinates = hits1[0]['_source']['geolocation']
@@ -580,7 +572,6 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             reverse_geolocation='',
             reverse_geo_format='address'
         )
-
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
     # will be updated with a more accurate result.
@@ -663,6 +654,6 @@ def reeestimate_all(user_id):
     SettingsApi.patch(
         val=user_settings.id,
         data={
-            'last_reestimate_all_locations': py_datetime.datetime.now()
+            'last_estimate_all_locations': py_datetime.datetime.now()
         }
     )

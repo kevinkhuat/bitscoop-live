@@ -97,7 +97,8 @@ def index(request):
     else:
         template = 'core/index.html'
         context = {
-            'title': 'Ografy'
+            'title': 'Ografy',
+            'homepage': True
         }
 
     return render(request, template, context)
