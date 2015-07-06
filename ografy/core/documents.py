@@ -6,10 +6,9 @@ from elasticsearch import Elasticsearch
 from mongoengine import Q, signals
 
 from ografy import settings
-from ografy.contrib.estoolbox import EVENT_MAPPING, MAPPED_FIELDS
+from ografy.contrib.estoolbox import MAPPED_FIELDS
 
 
-# Implement SSL/CA CERTS
 es = Elasticsearch([{
     'host': settings.ELASTICSEARCH['HOST'],
     'port': settings.ELASTICSEARCH['PORT']
@@ -27,22 +26,124 @@ mongoengine.connect(
 
 class ElasticsearchConfig(AppConfig):
     name = 'ografy.core'
-    verbose_name = "ElasticSearch Config"
+    verbose_name = "Elasticsearch Config"
 
-    def ready(self):
-        es.indices.put_mapping(
-            index='core',
-            doc_type='event',
-            body=EVENT_MAPPING
-        )
+    es.indices.put_mapping(
+        index="core",
+        doc_type="location",
+        body={
+            "properties": {
+                "datetime": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                },
+                "geo_format": {
+                    "type": "string"
+                },
+                "geolocation": {
+                    "type": "geo_point"
+                },
+                "reverse_geolocation": {
+                    "type": "string"
+                },
+                "reverse_geo_format": {
+                    "type": "string"
+                },
+                "resolution": {
+                    "type": "float"
+                },
+                "source": {
+                    "type": "string"
+                }
+            }
+        }
+    )
+    es.indices.put_mapping(
+        index="core",
+        doc_type="event",
+        body={
+            "properties": {
+                "created": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                },
+                "datetime": {
+                    "type": "date",
+                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                },
+                "event_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "estimated": {
+                            "type": "boolean"
+                        },
+                        "estimation_method": {
+                            "type": "string"
+                        },
+                        "geo_format": {
+                            "type": "string"
+                        },
+                        "geolocation": {
+                            "type": "geo_point"
+                        },
+                        "reverse_geolocation": {
+                            "type": "string"
+                        },
+                        "reverse_geo_format": {
+                            "type": "string"
+                        },
+                        "resolution": {
+                            "type": "float"
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "provider_name": {
+                    "type": "string"
+                },
+                "signal": {
+                    "type": "string"
+                },
+                "subtype": {
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "type": "object"
+                        },
+                        "play": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "updated": {
+                    "type": "string",
+                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                },
+                "user_id": {
+                    "type": "long"
+                }
+            }
+        }
+    )
 
 
-def transform_to_ES_Event(event_id, subtype=None, event_include_fields=None, subtype_include_fields=None):
+def transform_to_elasticsearch_event(event_id, subtype=None, event_include_fields=[], subtype_include_fields=[]):
     """A function that gets all of the information needed to index an event in Elasticsearch and formats it appropriately
     #. *event_id* the id of the base event
     #. *subtype* the event subtype, if there is one
-    #. *eventIncludeFields* a list of the Event-specific fields that should be mapped for Elasticsearch
-    #. *subtypeIncludeFields* a list of the subtype-specific fields that should be mapped for Elasticsearch
+    #. *event_include_fields* a list of the Event-specific fields that should be mapped for Elasticsearch
+    #. *subtype_include_fields* a list of the subtype-specific fields that should be mapped for Elasticsearch
     """
 
     return_dict = {}
@@ -50,7 +151,7 @@ def transform_to_ES_Event(event_id, subtype=None, event_include_fields=None, sub
     # Get the base Event from Mongo
     event = Event.objects.get(pk=event_id)
 
-    # Map all of the Event's fields that are in eventIncludeFields
+    # Map all of the Event's fields that are in event_include_fields
     for index in event:
         if index in event_include_fields:
             # If the field is a reference, get the string of the ID that the reference points to
@@ -60,13 +161,16 @@ def transform_to_ES_Event(event_id, subtype=None, event_include_fields=None, sub
             # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
             # 'Type': 'Point' and 'coordinates': [lon, lat]
             # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
-            elif index == 'location' and type(event[index]) is dict:
-                if 'coordinates' in event[index].keys():
-                    return_dict['location'] = event[index]['coordinates']
+            elif index == 'location' and type(event[index]) is EmbeddedLocation:
+                return_dict[index] = {}
+                if 'coordinates' in event[index]['geolocation'].keys():
+                    for key in event[index]:
+                        return_dict[index][key] = event[index][key]
+                    return_dict[index]['geolocation'] = event[index]['geolocation']['coordinates']
             # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
             elif index == 'id':
                 return_dict[index] = str(event[index])
-            # Convert datetimes to ECMA 262 notation, which is YYYY-mm-ddTHH:MM:SS.sssZ
+            # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
             elif type(event[index]) is datetime.datetime:
                 return_dict[index] = event[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
             # In all other cases, return whatever value is stored in Mongo exactly as it is
@@ -98,12 +202,50 @@ def transform_to_ES_Event(event_id, subtype=None, event_include_fields=None, sub
                 # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
                 elif index == 'id':
                     return_dict['subtype'][subtype][index] = str(subtype_inst[index])
-                # Convert datetimes to ECMA 262 notation, which is YYYY-mm-ddTHH:MM:SS.sssZ
+                # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
                 elif type(subtype_inst[index]) is datetime.datetime:
                     return_dict['subtype'][subtype][index] = subtype_inst[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
                 # In all other cases, return whatever value is stored in Mongo exactly as it is
                 else:
                     return_dict['subtype'][subtype][index] = subtype_inst[index]
+
+    return return_dict
+
+
+def transform_to_elasticsearch_location(location_id):
+    """A function that gets all of the information needed to index an event in Elasticsearch and formats it appropriately
+    #. *location_id* the id of the base location
+    """
+
+    return_dict = {}
+
+    # Get the base Location from Mongo
+    location = Location.objects.get(pk=location_id)
+
+    # Map all of the Location's fields
+    for index in location:
+        # If the field is a reference, get the string of the ID that the reference points to
+        # e.g. authorized endpoint is a reference, and you would just store that authorized endpoint's ID
+        if hasattr(location[index], 'id'):
+            return_dict[index] = str(location[index]['id'])
+        # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
+        # 'Type': 'Point' and 'coordinates': [lon, lat]
+        # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
+        elif index == 'geolocation':
+            return_dict[index] = {}
+            if 'coordinates' in location[index].keys():
+                for key in location[index]:
+                    return_dict[index][key] = location[index][key]
+                return_dict[index] = location[index]['coordinates']
+        # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
+        elif index == 'id':
+            return_dict[index] = str(location[index])
+        # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
+        elif type(location[index]) is datetime.datetime:
+            return_dict[index] = location[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        # In all other cases, return whatevloer value is stored in Mongo exactly as it is
+        else:
+            return_dict[index] = location[index]
 
     return return_dict
 
@@ -116,19 +258,58 @@ class Settings(mongoengine.Document):
     #. *data_blob* a blog of user settings data
     """
 
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
     # To be managed by the REST API
+    allow_location_collection = mongoengine.BooleanField(default=True)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    settings_dict = mongoengine.DictField()
+    last_reestimate_all_locations = mongoengine.DateTimeField(default=datetime.datetime.now)
+    location_estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD, default='Between')
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$user_id'],
-                'default_language': 'english',
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$user_id'],
+            'default_language': 'english',
+        }]
+    }
+
+
+class EmbeddedLocation(mongoengine.EmbeddedDocument):
+    GEO_FORMAT = (
+        ('lat_lng', 'Latitude and longitude'),
+        ('geohash', 'Geohash'),
+    )
+
+    REVERSE_GEO_FORMAT = (
+        ('address', 'Postal address'),
+        ('city', 'City'),
+        ('state', 'State'),
+        ('country', 'Country'),
+        ('location_name', 'Location name'),
+        ('ip_address', 'IP Address'),
+    )
+
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
+    estimated = mongoengine.BooleanField()
+    estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD)
+    geo_format = mongoengine.StringField(choices=GEO_FORMAT)
+    geolocation = mongoengine.PointField()
+    reverse_geolocation = mongoengine.StringField()
+    reverse_geo_format = mongoengine.StringField(choices=REVERSE_GEO_FORMAT)
+    resolution = mongoengine.FloatField()
 
 
 class Provider(mongoengine.Document):
@@ -164,12 +345,11 @@ class Provider(mongoengine.Document):
     tags = mongoengine.StringField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id'],
+            'default_language': 'english'
+        }]
+    }
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)
@@ -195,7 +375,7 @@ class Signal(mongoengine.Document):
         access_token: Stores OAuth2 or OpenID access token
         oauth_token: OAuth1 public token
         oauth_secret_token: OAuth1 private token
-        extra_data: Provider-specific data, e.g. account's user (not to be confused with the Signal's user) and account's handle
+        extra_data: Provider-specific data, e.g. account's user_id (not to be confused with the Signal's user_id) and account's handle
     """
 
     FREQUENCY = (
@@ -224,12 +404,11 @@ class Signal(mongoengine.Document):
     user_id = mongoengine.IntField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$provider', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$provider', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
@@ -257,12 +436,11 @@ class EndpointDefinition(mongoengine.Document):
     path = mongoengine.StringField(required=True)
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$provider'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$provider'],
+            'default_language': 'english'
+        }]
+    }
 
 
 class AuthorizedEndpoint(mongoengine.Document):
@@ -289,12 +467,11 @@ class AuthorizedEndpoint(mongoengine.Document):
     user_id = mongoengine.IntField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$endpoint_definition', '$signal', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$endpoint_definition', '$signal', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
 
 class Event(mongoengine.Document):
@@ -316,6 +493,7 @@ class Event(mongoengine.Document):
 
     EVENT_TYPE = (
         ('event', 'Basic Event'),
+        ('location', 'Location'),
         ('message', 'Basic Message'),
         ('play', 'Media Play')
     )
@@ -323,7 +501,7 @@ class Event(mongoengine.Document):
     authorized_endpoint = mongoengine.ReferenceField(AuthorizedEndpoint, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     event_type = mongoengine.StringField(choices=EVENT_TYPE)
-    location = mongoengine.PointField()
+    location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
     name = mongoengine.StringField()
     provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     provider_name = mongoengine.StringField(required=True)
@@ -336,12 +514,11 @@ class Event(mongoengine.Document):
     datetime = mongoengine.DateTimeField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$authorized_endpoint', '$signal', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$authorized_endpoint', '$signal', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
@@ -355,10 +532,10 @@ class Event(mongoengine.Document):
         subtype = document.event_type
 
         # If the event has been indexed, then we're doing a put or patch
-        # In that case, we need to call transform_to_ES_Event with the subtype so that
+        # In that case, we need to call transform_to_elasticsearch_event with the subtype so that
         # it will to a put/patch of the fully hydrated ES Event, including the subtype fields
         if event_indexed:
-            body = transform_to_ES_Event(
+            body = transform_to_elasticsearch_event(
                 event_id=document.id,
                 subtype=subtype,
                 event_include_fields=MAPPED_FIELDS['event'],
@@ -372,11 +549,11 @@ class Event(mongoengine.Document):
                 body=body
             )
         # If the event has not been indexed, then we're doing a post,
-        # but only if the event doesn't have a subtype (i.e. subtype is 'event'
+        # but only if the event doesn't have a subtype (i.e. subtype is 'event')
         else:
             if subtype == 'event':
                 # For posting generic events, do not include a subtype, as there is none
-                body = transform_to_ES_Event(
+                body = transform_to_elasticsearch_event(
                     event_id=document.id,
                     subtype=None,
                     event_include_fields=MAPPED_FIELDS['event'],
@@ -393,7 +570,7 @@ class Event(mongoengine.Document):
         # on the API call for the subtype
 
     @classmethod
-    def post_delete(self, sender, document, **kwargs):
+    def post_delete(cls, sender, document, **kwargs):
 
         es.delete(
             index="core",
@@ -403,6 +580,54 @@ class Event(mongoengine.Document):
 
 signals.post_save.connect(Event.post_save, sender=Event)
 signals.post_delete.connect(Event.post_delete, sender=Event)
+
+
+class Location(mongoengine.Document):
+    GEO_FORMAT = (
+        ('lat_lng', 'Latitude and longitude'),
+        ('geohash', 'Geohash'),
+    )
+
+    REVERSE_GEO_FORMAT = (
+        ('address', 'Postal address'),
+        ('city', 'City'),
+        ('state', 'State'),
+        ('country', 'Country'),
+        ('location_name', 'Location name'),
+        ('ip_address', 'IP Address'),
+    )
+
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
+    datetime = mongoengine.DateTimeField()
+    geo_format = mongoengine.StringField(required=True, choices=GEO_FORMAT)
+    geolocation = mongoengine.PointField(required=True)
+    reverse_geolocation = mongoengine.StringField()
+    reverse_geo_format = mongoengine.StringField(choices=REVERSE_GEO_FORMAT)
+    resolution = mongoengine.FloatField()
+    source = mongoengine.StringField()
+    user_id = mongoengine.IntField()
+
+    @classmethod
+    def post_save(cls, sender, document, **kwargs):
+        body = transform_to_elasticsearch_location(
+            location_id=document.id
+        )
+
+        # Post the location to ES
+        es.index(
+            index="core",
+            id=document.id,
+            doc_type="location",
+            body=body
+        )
+
+signals.post_save.connect(Location.post_save, sender=Location)
 
 
 class Data(mongoengine.Document):
@@ -421,12 +646,11 @@ class Data(mongoengine.Document):
     user_id = mongoengine.IntField(required=True)
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$event', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$event', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
 
 class Message(mongoengine.Document):
@@ -454,18 +678,17 @@ class Message(mongoengine.Document):
     user_id = mongoengine.IntField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$event', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$event', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
         # Whether we're posting, patching, or putting, we need the fully hydrated mapping of the base
         # event and the subtype
-        body = transform_to_ES_Event(
+        body = transform_to_elasticsearch_event(
             event_id=document.event.id,
             subtype="message",
             event_include_fields=MAPPED_FIELDS['event'],
@@ -501,18 +724,17 @@ class Play(mongoengine.Document):
     user_id = mongoengine.IntField()
 
     meta = {
-        'indexes':
-            [{
-                'fields': ['$id', '$event', '$user_id'],
-                'default_language': 'english'
-            }]
-        }
+        'indexes': [{
+            'fields': ['$id', '$event', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
         # Whether we're posting, patching, or putting, we need the fully hydrated mapping of the base
         # event and the subtype
-        body = transform_to_ES_Event(
+        body = transform_to_elasticsearch_event(
             event_id=document.event.id,
             subtype="play",
             event_include_fields=MAPPED_FIELDS["event"],

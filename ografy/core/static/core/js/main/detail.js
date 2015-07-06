@@ -98,7 +98,7 @@ function detailView(mapboxViewInst, dataInst) {
 		$('.detail .main-label').html(event.provider_name);
 		$('.detail-date .content').html(dateTimeArray[0].trim());
 		$('.detail-time .content').html(dateTimeArray[1].trim());
-		$('.detail-location .content').html(String(event.location.coordinates));
+		$('.detail-location .content').html(String(event.location.geolocation.coordinates));
 
 
 		//Populate the data drawer.
@@ -229,7 +229,7 @@ function detailView(mapboxViewInst, dataInst) {
 
 	//Update the detail map with a new event's information
 	function updateMap(event, map) {
-		var coordinates = event.location.coordinates;
+		var coordinates = event.location.geolocation.coordinates;
 		var markerColor, markerSymbol;
 
 		map.removeLayer(map.featureLayer);

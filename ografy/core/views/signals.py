@@ -184,10 +184,10 @@ def verify(request, pk):
         #
 
         # Get the endpoint dictionary from the request
-        endpointsDict = json.loads(request.POST['endpointsDict'])
-        for index in endpointsDict:
+        endpoints_dict = json.loads(request.POST['endpointsDict'])
+        for index in endpoints_dict:
             # Get the Authorized Endpoint dictionary for this Endpoint Definition (or None if there is no Authorized Endpoint).
-            this_endpoint_dict = endpointsDict[index]
+            this_endpoint_dict = endpoints_dict[index]
             # Get the Authorized Endpoint ID (or None if it doesn't exist)
             this_authorized_endpoint_id = list(this_endpoint_dict.keys())[0]
             # If the Authorized Endpoint exists, update its enabled status based on what was passed to the server

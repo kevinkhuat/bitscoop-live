@@ -38,11 +38,11 @@ if __name__ == '__main__':
         for importer, modname, ispkg in iterator:
             settings_modules.append(modname)
 
-        print('Environment variable DJANGO_SETTINGS_MODULE not found.\n')
-        print('Choose an available Django settings set or enter your own:\n')
+        print('Environment variable DJANGO_SETTINGS_MODULE not found.\n')  # noqa
+        print('Choose an available Django settings set or enter your own:\n')  # noqa
 
         for n in range(len(settings_modules)):
-            print('\t{0}. {1}'.format(n + 1, settings_modules[n]))
+            print('\t{0}. {1}'.format(n + 1, settings_modules[n]))  # noqa
 
         choice_text = '\nDjango settings [{0}]: '.format(settings.__name__)
 

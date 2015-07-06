@@ -33,10 +33,18 @@
         "provider_name": "GitHub",
         "name": "Commit #379 to project NumberCruncher",
         "datetime": "2015-06-13T22:22:11.000Z",
-        "location": [
-          -73.9822581,
-          40.753178
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9822581,
+             40.753178
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       }
     },
     {
@@ -72,10 +80,18 @@
         "provider_name": "GitHub",
         "name": "Commit #12 to project Phoenix",
         "datetime": "2014-07-31T04:21:22.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       }
     },
     {
@@ -111,10 +127,18 @@
         "provider_name": "GitHub",
         "name": "Commit #91 to project Clutter Buster",
         "datetime": "2014-07-01T05:44:18.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       }
     },
     {
@@ -150,10 +174,18 @@
         "provider_name": "GitHub",
         "name": "Commit #2 to project EveryWear",
         "datetime": "2014-07-01T07:16:09.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       }
     }
   ],
@@ -191,10 +223,18 @@
         "provider_name": "Facebook",
         "name": "Message to Sam and Arnold",
         "datetime": "2015-06-13T18:06:22.000Z",
-        "location": [
-          -73.9770547,
-          40.7529952
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9770547,
+             40.7529952
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -240,10 +280,18 @@
         "provider_name": "Twitter",
         "name": "Message to John",
         "datetime": "2015-06-13T18:09:51.000Z",
-        "location": [
-          -73.9778781,
-          40.7531232
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9778781,
+             40.7531232
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -288,10 +336,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Bieber",
         "datetime": "2015-06-13T18:14:29.000Z",
-        "location": [
-          -73.9807507,
-          40.7536332
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9807507,
+             40.7536332
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -340,10 +396,18 @@
         "provider_name": "Twitter",
         "name": "Message to Sam and Arnold",
         "datetime": "2015-06-13T18:16:50.000Z",
-        "location": [
-          -73.9810485,
-          40.7533406
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9810485,
+             40.7533406
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -389,10 +453,18 @@
         "provider_name": "Instagram",
         "name": "Photo",
         "datetime": "2015-06-13T18:18:11.000Z",
-        "location": [
-          -73.9813998,
-          40.7528326
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9813998,
+             40.7528326
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -442,10 +514,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2015-06-13T18:18:41.000Z",
-        "location": [
-          -73.9814186,
-          40.7528123
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9814186,
+             40.7528123
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -490,10 +570,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2015-06-13T18:18:59.000Z",
-        "location": [
-          -73.9814186,
-          40.7528123
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9814186,
+             40.7528123
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -539,10 +627,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2015-06-13T22:29:53.000Z",
-        "location": [
-          -73.9822581,
-          40.753178
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9822581,
+             40.753178
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -587,10 +683,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2015-06-13T22:32:26.000Z",
-        "location": [
-          -73.9822581,
-          40.753178
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9822581,
+             40.753178
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -635,10 +739,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2015-06-13T22:32:28.000Z",
-        "location": [
-          -73.9822581,
-          40.753178
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9822581,
+             40.753178
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -683,10 +795,18 @@
         "provider_name": "Instagram",
         "name": "Photo",
         "datetime": "2015-06-13T23:06:30.000Z",
-        "location": [
-          -73.9814588,
-          40.7539969
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9814588,
+             40.7539969
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -738,10 +858,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T03:06:30.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -788,10 +916,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T03:07:11.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -838,10 +974,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T03:07:43.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -888,10 +1032,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T03:07:44.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -938,10 +1090,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:09:12.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -991,10 +1151,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:10:50.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1044,10 +1212,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:11:52.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1097,10 +1273,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:11:52.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1150,10 +1334,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:14:08.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1203,10 +1395,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:17:08.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1256,10 +1456,19 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:17:08.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         },
+        "datetime": "2014-07-01T03:17:08.000Z"
       },
       "message": {
         "message_type": "message",
@@ -1309,10 +1518,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:17:44.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1362,10 +1579,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:20:12.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1415,10 +1640,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:30:21.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1468,10 +1701,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T03:30:21.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1521,10 +1762,19 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-01T08:57:18.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         },
+        "datetime": "2014-07-01T08:57:18.000Z"
       },
       "message": {
         "message_type": "message",
@@ -1575,10 +1825,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T03:40:47.000Z",
-        "location": [
-          -117.8092611,
-          33.6842287
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8092611,
+             33.6842287
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1628,10 +1886,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T19:40:47.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1682,10 +1948,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T20:37:22.000Z",
-        "location": [
-          -118.47173450000001,
-          33.9870459
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.47173450000001,
+             33.9870459
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1736,10 +2010,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T20:50:22.000Z",
-        "location": [
-          -118.4753555,
-          33.9868591
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.4753555,
+             33.9868591
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1790,10 +2072,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-01T20:55:16.000Z",
-        "location": [
-          -118.4753555,
-          33.9868591
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.4753555,
+             33.9868591
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1844,10 +2134,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-01T21:12:01.000Z",
-        "location": [
-          -118.47671810000001,
-          33.9897502
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.47671810000001,
+             33.9897502
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1901,10 +2199,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-01T21:59:01.000Z",
-        "location": [
-          -118.4806824,
-          33.9951053
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.4806824,
+             33.9951053
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -1958,10 +2264,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-01T23:44:05.000Z",
-        "location": [
-          -118.4864116,
-          34.0009358
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.4864116,
+             34.0009358
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2015,10 +2329,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-01T23:44:05.000Z",
-        "location": [
-          -118.4869534,
-          34.0009069
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.4869534,
+             34.0009069
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2072,10 +2394,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-02T01:03:51.000Z",
-        "location": [
-          -118.2863456,
-          34.0157884
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.2863456,
+             34.0157884
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2129,10 +2459,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-02T03:08:28.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2186,10 +2524,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T03:32:46.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2243,10 +2589,18 @@
         "provider_name": "Instagram",
         "name": "Instagram Photo",
         "datetime": "2014-07-02T03:34:13.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2300,10 +2654,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:16:23.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2357,10 +2719,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:17:40.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2414,10 +2784,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:18:12.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2471,10 +2849,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:18:59.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2528,10 +2914,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:20:00.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2585,10 +2979,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T05:20:00.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2642,10 +3044,18 @@
         "provider_name": "Twitter",
         "name": "Twitter Message",
         "datetime": "2014-07-02T07:54:30.000Z",
-        "location": [
-          -118.24061390000001,
-          34.0727553
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -118.24061390000001,
+             34.0727553
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2699,10 +3109,18 @@
         "provider_name": "Facebook",
         "name": "Facebook Message",
         "datetime": "2014-07-02T07:54:30.000Z",
-        "location": [
-          -117.8142071,
-          33.6881567
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8142071,
+             33.6881567
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "message": {
         "message_type": "message",
@@ -2758,10 +3176,18 @@
         "provider_name": "Steam",
         "name": "Started playing Half-Life 2",
         "datetime": "2015-06-13T18:10:33.000Z",
-        "location": [
-          -73.9786479,
-          40.7534117
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9786479,
+             40.7534117
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "play": {
         "user_id": 1,
@@ -2802,10 +3228,18 @@
         "provider_name": "Spotify",
         "name": "Played \"It's All About the Benjamins\"",
         "datetime": "2015-06-13T22:52:07.000Z",
-        "location": [
-          -73.9819792,
-          40.7541614
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -73.9819792,
+             40.7541614
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "play": {
         "user_id": 1,
@@ -2846,10 +3280,18 @@
         "provider_name": "Spotify",
         "name": "Played \"Under the Sea ft. Snoop Dogg\"",
         "datetime": "2014-07-01T03:34:21.000Z",
-        "location": [
-          -117.8092611,
-          33.6842287
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8092611,
+             33.6842287
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "play": {
         "user_id": 1,
@@ -2890,10 +3332,18 @@
         "provider_name": "Spotify",
         "name": "Played \"The Last Winter\"",
         "datetime": "2014-07-01T03:36:37.000Z",
-        "location": [
-          -117.8092611,
-          33.6842287
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8092611,
+             33.6842287
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "play": {
         "user_id": 1,
@@ -2934,10 +3384,18 @@
         "provider_name": "Spotify",
         "name": "Played \"Let's do the Twist\"",
         "datetime": "2014-07-01T03:38:58.000Z",
-        "location": [
-          -117.8092611,
-          33.6842287
-        ]
+        "location": {
+           "estimated": false,
+           "estimation_method": "Last",
+           "geo_format": "lat_lng",
+           "geolocation": [
+             -117.8092611,
+             33.6842287
+           ],
+           "reverse_geolocation": "",
+           "reverse_geo_format": "address",
+           "resolution": "3.1"
+         }
       },
       "play": {
         "user_id": 1,

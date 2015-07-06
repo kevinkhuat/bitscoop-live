@@ -1,10 +1,11 @@
+import datetime
 import json
 import os
 
 from django.core.management.base import BaseCommand
 
-from ografy.core import api as CoreAPI
-from ografy.core.documents import EndpointDefinition, Provider
+from ografy.core import api as core_api
+from ografy.core.documents import EndpointDefinition, Provider, Settings
 from ografy.settings import MONGO_FIXTURE_DIRS
 
 
@@ -37,19 +38,34 @@ def create_fixture_provider(provider):
     )
 
 
+def create_fixture_settings():
+    return Settings(
+        allow_location_collection=True,
+        created=datetime.datetime.now,
+        last_reestimate_all_locations=datetime.datetime.now,
+        location_estimation_method='Last',
+        updated=datetime.datetime.now,
+        user_id=1
+    )
+
+
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
 
     for provider in fixture_data['providers']:
         insert_provider = create_fixture_provider(provider)
-        provider = CoreAPI.ProviderApi.post(insert_provider)
+        provider = core_api.ProviderApi.post(insert_provider)
         provider_definitions = fixture_data['endpointDefinitions'][0]
 
         if provider['backend_name'] in provider_definitions:
             for endpoint in provider_definitions[provider['backend_name']]:
                 insert_endpoint_definition = create_fixture_endpoint(endpoint, provider)
-                endpoint = CoreAPI.EndpointDefinitionApi.post(insert_endpoint_definition)
+                endpoint = core_api.EndpointDefinitionApi.post(insert_endpoint_definition)
+
+    insert_settings = create_fixture_settings()
+
+    core_api.SettingsApi.post(insert_settings)
 
 
 class Command(BaseCommand):

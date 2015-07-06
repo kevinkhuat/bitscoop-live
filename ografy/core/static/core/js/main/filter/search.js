@@ -148,71 +148,71 @@ function searchView(dataInst, mapboxViewInst, urlParserInst) {
 		//for (var k = 0; k < typeList.length; k++) {
 		//	var thisType = typeList[k];
 		//	if ($(thisType).find('.selector.active').length > 0) {
-			if ($('#event').find('.selector.active').length > 0) {
-				var thisType = typeList[0];
-				var filterString = '';
+		if ($('#event').find('.selector.active').length > 0) {
+			var thisType = typeList[0];
+			var filterString = '';
 
-				//Get a list of the filters that are being used
-				var filtersList = $(thisType).find('.filter.options');
+			//Get a list of the filters that are being used
+			var filtersList = $(thisType).find('.filter.options');
 
-				var sort;
-				//For each filter, construct the appropriate filter string and add it to the
-				//full filter string that will be submitted to the database.
-				for (var i = 0; i < filtersList.length; i++) {
-					var currentFilter = filtersList[i];
+			var sort;
+			//For each filter, construct the appropriate filter string and add it to the
+			//full filter string that will be submitted to the database.
+			for (var i = 0; i < filtersList.length; i++) {
+				var currentFilter = filtersList[i];
 
-					//Determine what type of filter this is
-					var type = $(currentFilter).children('.initial')[0].value;
+				//Determine what type of filter this is
+				var type = $(currentFilter).children('.initial')[0].value;
 
-					//If this isn't the first filter, append an AND to the top-level filter string.
-					if (i !== 0) {
-						filterString += ' or ';
-					}
-
-					//Construct the filter string based on the filter type
-					if (type == 'area') {
-						filterString += '(' + filters().area().toString(currentFilter) + ')';
-					}
-					else if (type == 'created') {
-						filterString += '(' + filters().date().toString(currentFilter, 'created') + ')';
-					}
-					else if (type == 'datetime') {
-						filterString += '(' + filters().date().toString(currentFilter, 'datetime') + ')';
-					}
-					else if (type == 'from') {
-						filterString += '(' + filters().from().toString(currentFilter) + ')';
-					}
-					//else if (type == 'time') {
-					//	filterString += '(' + filters().time().toString(currentFilter) + ')';
-					//}
-					else if (type == 'near') {
-						filterString += '(' + filters().near().toString(currentFilter) + ')';
-					}
-					else if (type == 'provider') {
-						filterString += '(' + filters().provider().toString(currentFilter) + ')';
-					}
-					else if (type == 'signal') {
-						filterString += '(' + filters().signal().toString(currentFilter) + ')';
-					}
-					else if (type == 'to') {
-						filterString += '(' + filters().to().toString(currentFilter) + ')';
-					}
-					else if (type == 'updated') {
-						filterString += '(' + filters().date().toString(currentFilter, 'updated') + ')';
-					}
+				//If this isn't the first filter, append an AND to the top-level filter string.
+				if (i !== 0) {
+					filterString += ' or ';
 				}
 
-				if (filtersList.length === 0) {
-					filterString = '';
+				//Construct the filter string based on the filter type
+				if (type == 'area') {
+					filterString += '(' + filters().area().toString(currentFilter) + ')';
 				}
-				//Set the Query and Filters in the URL parser
-				//urlParserInst.setSearchQuery($('.search-bar').val());
-				dataInst.state.query.event.searchString = filterString;
-
-				//Perform a search based on the search terms and filters
-				dataInst.search(thisType.id, filterString);
-				urlParserInst.updateHash();
+				else if (type == 'created') {
+					filterString += '(' + filters().date().toString(currentFilter, 'created') + ')';
+				}
+				else if (type == 'datetime') {
+					filterString += '(' + filters().date().toString(currentFilter, 'datetime') + ')';
+				}
+				else if (type == 'from') {
+					filterString += '(' + filters().from().toString(currentFilter) + ')';
+				}
+				//else if (type == 'time') {
+				//	filterString += '(' + filters().time().toString(currentFilter) + ')';
+				//}
+				else if (type == 'near') {
+					filterString += '(' + filters().near().toString(currentFilter) + ')';
+				}
+				else if (type == 'provider') {
+					filterString += '(' + filters().provider().toString(currentFilter) + ')';
+				}
+				else if (type == 'signal') {
+					filterString += '(' + filters().signal().toString(currentFilter) + ')';
+				}
+				else if (type == 'to') {
+					filterString += '(' + filters().to().toString(currentFilter) + ')';
+				}
+				else if (type == 'updated') {
+					filterString += '(' + filters().date().toString(currentFilter, 'updated') + ')';
+				}
 			}
+
+			if (filtersList.length === 0) {
+				filterString = '';
+			}
+			//Set the Query and Filters in the URL parser
+			//urlParserInst.setSearchQuery($('.search-bar').val());
+			dataInst.state.query.event.searchString = filterString;
+
+			//Perform a search based on the search terms and filters
+			dataInst.search(thisType.id, filterString);
+			urlParserInst.updateHash();
+		}
 		//}
 
 		return false;

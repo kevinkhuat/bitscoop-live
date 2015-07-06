@@ -31,13 +31,13 @@ def is_logged_in_user(user):
     """
     Check if user is not authenticated and not anonymous and has an ID
     """
-    if hasattr(user, 'is_anonymous'):
-        if user.is_anonymous():
-            return False
-
-    if hasattr(user, 'is_authenticated'):
-        if not user.is_authenticated():
-            return False
+    # if hasattr(user, 'is_anonymous'):
+    #     if user.is_anonymous():
+    #         return False
+    #
+    # if hasattr(user, 'is_authenticated'):
+    #     if not user.is_authenticated():
+    #         return False
 
     if hasattr(user, 'id'):
         if user.id is not None:
@@ -60,6 +60,7 @@ def user_authenticated(fn=None):
             self.request.user = current_user
             fn(self)
         else:
-            return False
+            # TODO: Raise a 403 error and make sure 403's are handled
+            raise Exception('User not logged in')
 
     return wrapper

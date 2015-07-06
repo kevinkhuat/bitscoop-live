@@ -2,7 +2,7 @@ from rest_framework import serializers as django_serializers
 
 from ografy.contrib.tastydata import serializers as tasty_serializers
 from ografy.core.documents import (
-    AuthorizedEndpoint, Data, EndpointDefinition, Event, Message, Play, Provider, Settings, Signal
+    AuthorizedEndpoint, Data, EndpointDefinition, Event, Location, Message, Play, Provider, Settings, Signal
 )
 from ografy.core.models import User
 
@@ -24,6 +24,36 @@ def evaluate(query, QuerySet, many=True):
             if len(data) is 1 and many is False:
                 return data[0]
             return data
+
+
+class EmbeddedLocationSerializer(tasty_serializers.EmbeddedDocumentSerializer):
+    class Meta:
+        model = Location
+        fields = (
+            'estimated',
+            'estimation_method',
+            'geo_format',
+            'geolocation',
+            'reverse_geolocation',
+            'reverse_geo_format',
+            'resolution'
+        )
+        depth = 5
+
+
+class LocationSerializer(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Location
+        fields = (
+            'datetime',
+            'geo_format',
+            'geolocation',
+            'reverse_geolocation',
+            'reverse_geo_format',
+            'resolution',
+            'source',
+        )
+        depth = 5
 
 
 class DataSerializer(tasty_serializers.DocumentSerializer):
@@ -188,10 +218,12 @@ class SettingsSerializer(tasty_serializers.DocumentSerializer):
         model = Settings
         fields = (
             'id',
-            'user_id',
+            'allow_location_collection',
             'created',
+            'last_reestimate_all_locations',
+            'location_estimation_method',
             'updated',
-            'settings_dict'
+            'user_id',
         )
         depth = 5
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en-US">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+	<title>Ografy App</title>
+
+	{% load staticfiles %}
+	{% block static %}
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.9.3/lodash.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.js"></script>
+
+	<script type="text/javascript" src="{% static 'lib/require/require.js' %}"></script>
+
+	<script type="text/javascript">
+		require(['static/core/js/main/utils/location', 'static/core/js/main/utils/cookies'], function(location, cookies) {
+			var user_id = {{ user_id }};
+			var tDelta = 10;
+			var maxAccurateAge = 10;
+			var maxAccurateDistance = .01;
+			var csrfToken = cookies.getCsrfToken();
+			var accuracyToleranceMultiplier = 10;
+
+			location.trackPosition(user_id, tDelta, maxAccurateAge, maxAccurateDistance, accuracyToleranceMultiplier, csrfToken);
+//			location.reestimate(user_id);
+		});
+	</script>
+	{% endblock %}
+
+</head>
+<body>
+</body>
+</html>

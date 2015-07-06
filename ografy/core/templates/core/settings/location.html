@@ -1,0 +1,82 @@
+{% extends 'core/settings/base.html' %}
+{% load staticfiles %}
+
+{% block static %}
+	{{ block.super }}
+<script type="application/javascript">
+	var csrftoken;
+	require(["{% static 'core/js/main/utils/location.js' %}", "{% static 'core/js/main/utils/cookies.js' %}"], function(location, cookies) {
+		csrftoken = cookies.getCsrfToken();
+		$('.reestimate').not('disabled').click(function() {
+			location.reestimate({{ user.id }});
+		});
+	});
+
+	//This is a temporary function and should be replace by autoform in jutsu when that function has been pulled in.
+	function saveSettings() {
+		var data = {
+			allow_location_collection: $("[name='allow-location-tracking']").prop('checked'),
+			location_estimation_method: $("[name='location_estimation_method']:checked").attr('estimationmethod')
+		};
+
+		request = $.ajax({
+			url: '/opi/settings/{{ settings.id }}',
+			type: 'PATCH',
+			dataType: 'json',
+			data: data,
+			headers: {
+				'X-CSRFToken': csrftoken
+			}
+		}).done(function(data, xhr, response) {
+			console.log('Settings patch successful');
+		});
+	}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="grouping">
+	<div class="bigger">Location Settings</div>
+	<div class="form">
+		<div class="endpoint-definition-toggle">
+			<input type="checkbox" name="allow-location-tracking" {% if settings.allow_location_collection %} checked="checked" {% endif %}>
+			<div>Allow Location Collection</div>
+		</div>
+		<div action="/opi/settings">
+			<div class="bold">
+				Estimation Method:
+			</div>
+			<div class="field">
+				<div>
+					<input estimationMethod="Between" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Between' %}checked="checked"{% endif %}>
+					<label>Interpolate between previous and next points in time</label>
+				</div>
+			</div>
+			<div class="field">
+				<div>
+					<input estimationMethod="Closest" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Closest' %}checked="checked"{% endif %}>
+					<label>Use closest point in time</label>
+				</div>
+			</div>
+			<div class="field">
+				<div>
+					<input estimationMethod="Next" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Next' %}checked="checked"{% endif %}>
+					<label>Use next point in time</label>
+				</div>
+			</div>
+			<div class="field">
+				<div>
+					<input estimationMethod="Last" type="radio" name="location_estimation_method" {% if settings.location_estimation_method == 'Last' %}checked="checked"{% endif %}>
+					<label>Use previous point in time</label>
+				</div>
+			</div>
+		</div>
+		<div>
+			<input class="bold button-green verified-complete-button" type="button" value="Save Location Settings" onclick="saveSettings('{{ user.id }}')"/>
+		</div>
+		<div class="bold">Re-estimate Locations:
+			<input type="button" {% if new_reestimate_allowed %} value="Re-estimate" class="bold button-green reestimate" {% else %} value="Re-estimation available at {{ next_reestimate_date }}" disabled {% endif %}>
+		</div>
+	</div>
+</div>
+{% endblock %}

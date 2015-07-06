@@ -164,7 +164,7 @@ function mapboxManager(dataInst) {
 					type: 'Point',
 					// coordinates here are in longitude, latitude order because
 					// x, y is the standard for GeoJSON and many formats
-					coordinates: thisEvent.location.coordinates
+					coordinates: thisEvent.location.geolocation.coordinates
 				},
 				properties: {
 					title: thisEvent.name,

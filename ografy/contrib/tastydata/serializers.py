@@ -191,7 +191,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = getattr(self.Meta, 'fields', None)
         exclude = getattr(self.Meta, 'exclude', None)
         # FIXME: This variable `depth` is unused. This should be removed if it's not going to be used in the future.
-        depth = getattr(self.Meta, 'depth', 0)  # noqa
+        depth = getattr(self.Meta, 'depth', 0)
         extra_kwargs = self.get_extra_kwargs()
 
         if fields and not isinstance(fields, (list, tuple)):

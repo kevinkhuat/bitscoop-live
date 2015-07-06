@@ -10,7 +10,7 @@ from ografy.passthrough.routes import patterns
 
 # This module starts a Tornado server on a certain port.
 # By default this is port 8001, but you can pass any port in as a parameter when calling the script.
-# e.g. `python tornado.py 8005` to start Tornado on port 8005
+# e.g. `python run_tornado.py 8005` to start Tornado on port 8005
 
 
 if __name__ == '__main__':

@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -11,7 +13,64 @@ from mongoengine import Q
 from ografy.contrib.pytoolbox.collections import update
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
 from ografy.core.api import SignalApi
+from ografy.core.documents import Settings
 from ografy.core.forms import UpdatePasswordForm, UpdatePersonalForm
+
+
+class LocationView(View):
+    template_name = 'core/settings/location.html'
+    title = 'Ografy - Update Location Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LocationView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        user = request.user
+        settings = Settings.objects.get(user_id=user.id)
+
+        next_reestimate_date = settings.last_reestimate_all_locations + datetime.timedelta(days=5)
+        new_reestimate_allowed = datetime.datetime.now() > next_reestimate_date
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'lockwidth_override': True,
+            'next_reestimate_date': next_reestimate_date,
+            'new_reestimate_allowed': new_reestimate_allowed,
+            'settings': settings,
+            'user': user
+        })
+
+    def post(self, request):
+        User = get_user_model()
+
+        user = request.user
+        form = UpdatePersonalForm(request.POST)
+        form.full_clean()
+
+        email = form.cleaned_data.get('email')
+        if email is not None:
+            email_count = User.objects.filter(email__iexact=email).exclude(id=user.id).count()
+            if email_count > 0:
+                form.add_error('email', 'Email is in use.')
+
+        handle = form.cleaned_data.get('handle')
+        if handle is not None:
+            handle_count = User.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
+            if handle_count > 0:
+                form.add_error('handle', 'Handle is in use.')
+
+        if form.is_valid():
+            update(user, form.cleaned_data)
+            user.save()
+
+            return redirect_by_name('core_settings_location')
+        else:
+            return render(request, self.template_name, {
+                'title': self.title,
+                'lockwidth_override': True,
+                'form': form
+            })
 
 
 class PersonalView(View):

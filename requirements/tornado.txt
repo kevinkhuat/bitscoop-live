@@ -1,7 +1,13 @@
+blinker
 django
 django-redis
-motorengine
+djangorestframework
+elasticsearch
+mongoengine
+motor==0.3
+motorengine==0.8.11
 psycopg2
+pymongo==2.7.1
 python-dateutil
 python-social-auth
 requests

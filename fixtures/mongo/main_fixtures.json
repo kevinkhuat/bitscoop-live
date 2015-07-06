@@ -393,6 +393,50 @@
                     "type": "literal"
                   }
                 }
+              },
+              "location": {
+                "datetime": {
+                  "field_location": "datetime",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
               }
             }
           }
@@ -499,6 +543,50 @@
                 },
                 "message_body": {
                   "field_location": "text",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
+              },
+              "location": {
+                "datetime": {
+                  "field_location": "datetime",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
                   "transform": {
                     "value": null,
                     "type": "client_evaluate"
@@ -626,6 +714,50 @@
                     "type": "client_evaluate"
                   }
                 }
+              },
+              "location": {
+                "datetime": {
+                  "field_location": "datetime",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
               }
             }
           }
@@ -737,6 +869,50 @@
                     "type": "client_evaluate"
                   }
                 }
+              },
+              "location": {
+                "datetime": {
+                  "field_location": "datetime",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
               }
             }
           }
@@ -827,6 +1003,50 @@
                     "value": "http://store.steampowered.com/app/[$1]"
                   }
                 }
+              },
+              "location": {
+                "datetime": {
+                  "field_location": "created_at",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
               }
             }
           }
@@ -904,7 +1124,50 @@
               }
             },
             "field_mapping": {
-
+              "location": {
+                "datetime": {
+                  "field_location": "datetime",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geo_format": {
+                  "field_location": "geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "geolocation": {
+                  "field_location": "geoloation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geolocation": {
+                  "field_location": "reverse_geolocation",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "reverse_geo_format": {
+                  "field_location": "reverse_geo_format",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                },
+                "resolution": {
+                  "field_location": "resolution",
+                  "transform": {
+                    "value": null,
+                    "type": "client_evaluate"
+                  }
+                }
+              }
             }
           }
         }

@@ -1,12 +1,15 @@
-from django.views.generic import View
+import datetime
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 import ografy.apps.opi.serializers as opi_serializer
+from ografy.contrib.locationtoolbox import estimation
 from ografy.contrib.tastydata.pagination import OgrafyItemPagination
 from ografy.contrib.tastydata.views import DjangoAPIListView, DjangoAPIView, MongoAPIListView, MongoAPIView
 from ografy.core import api as core_api
+from ografy.core.documents import Settings
 
 
 class APIEndpoints(DjangoAPIView):
@@ -21,11 +24,6 @@ class APIEndpoints(DjangoAPIView):
             'signal': reverse('signal-list', request=request, format=format),
             'user_id': reverse('user-list', request=request, format=format),
         })
-
-
-class SearchView(View):
-    def get(self, request):
-        return []
 
 
 class DataView(MongoAPIListView):
@@ -67,6 +65,13 @@ class DataView(MongoAPIListView):
 class DataSingleView(MongoAPIView):
     serializer = opi_serializer.DataSerializer
     serializer_class = opi_serializer.DataSerializer
+
+    def delete(self, request, pk):
+        core_api.DataApi.delete(
+            request.auth_filter &
+            MongoAPIView.Meta.Q(pk=pk)
+        )
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
         data_query = core_api.DataApi.get(
@@ -157,9 +162,13 @@ class EventView(MongoAPIListView):
         )
         post_event.user_id = request.user.id
 
+        if post_event['location']['geolocation'] is None:
+            post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
+
         event_query = core_api.EventApi.post(
             data=post_event
         )
+
         event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
         serialized_response = self.serialize(
             event_object,
@@ -244,6 +253,45 @@ class EventSingleView(MongoAPIView):
         event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
             event_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
+
+class LocationView(MongoAPIListView):
+    ordering_fields = ('browser')
+    serializer = opi_serializer.LocationSerializer
+    serializer_class = opi_serializer.LocationSerializer
+
+    def get(self, request):
+        get_query = core_api.LocationApi.get(
+            request.query_filter &
+            request.auth_filter
+        )
+        paginated_event_list = self.Meta.list(self, get_query)
+        return paginated_event_list
+
+    # TODO: Add logic for for populating signal and prover from just signal id
+    def post(self, request, format=None):
+        # TODO: Better user filter
+        post_location = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            }
+        )
+        post_location['user_id'] = request.user.id
+
+        event_query = core_api.LocationApi.post(
+            data=post_location
+        )
+        ping_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            ping_object,
             context={
                 'request': request,
                 'format': format
@@ -601,6 +649,32 @@ class SettingsSingleView(MongoAPIView):
 
         return Response(serialized_response)
 
+    def patch(self, request, pk, format=None):
+        # TODO: Better user filter
+        patch_settings = self.deserialize(
+            request.data,
+            context={
+                'request': request
+            },
+            partial=True
+        )
+        patch_settings.user_id = request.user
+
+        settings_query = core_api.SettingsApi.patch(
+            val=pk,
+            data=patch_settings
+        )
+        settings_object = opi_serializer.evaluate(settings_query, self.Meta.QuerySet, many=False)
+        serialized_response = self.serialize(
+            settings_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
+
 
 class SignalView(MongoAPIListView):
     ordering_fields = ('id', 'user_id', 'provider', 'created')
@@ -813,3 +887,15 @@ class UserSingleView(DjangoAPIView):
         )
 
         return Response(serialized_response)
+
+
+class ReestimateView(DjangoAPIView):
+    def get(self, request, format=None):
+        settings = Settings.objects.get(user_id=request.user.id)
+        next_reestimate_date = settings.last_reestimate_all_locations + datetime.timedelta(days=5)
+        new_reestimate_allowed = datetime.datetime.now() > next_reestimate_date
+
+        if (new_reestimate_allowed):
+            estimation.reeestimate_all(request.user.id)
+
+        return Response(status=status.HTTP_200_OK)

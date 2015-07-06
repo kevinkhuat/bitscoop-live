@@ -10,19 +10,12 @@ class AuthorizedEndpointApi(BaseApi):
 class DataApi(BaseApi):
     model = documents.Data
 
-    def delete(cls, val, override=False):
-        # FIXME: Make not implemented exception
-        if override:
-            try:
-                cls.model.objects.get(pk=val).delete()
-            except (TypeError, AssertionError):
-                cls.model.objects.filter(val).delete()
-            except cls.model.DoesNotExist:
-                return False
-
-            return True
-        else:
-            return False
+    @classmethod
+    def delete(cls, val):
+        raise NotImplementedError(
+            'Cannot delete documents that reference Event; '
+            'delete the associated Event in order to delete reference documents'
+        )
 
 
 class EndpointDefinitionApi(BaseApi):
@@ -33,38 +26,30 @@ class EventApi(BaseApi):
     model = documents.Event
 
 
+class LocationApi(BaseApi):
+    model = documents.Location
+
+
 class MessageApi(BaseApi):
     model = documents.Message
 
-    def delete(cls, val, override=False):
-        if override:
-            try:
-                cls.model.objects.get(pk=val).delete()
-            except (TypeError, AssertionError):
-                cls.model.objects.filter(val).delete()
-            except cls.model.DoesNotExist:
-                return False
-
-            return True
-        else:
-            return False
+    @classmethod
+    def delete(cls, val):
+        raise NotImplementedError(
+            'Cannot delete documents that reference Event; '
+            'delete the associated Event in order to delete reference documents'
+        )
 
 
 class PlayApi(BaseApi):
     model = documents.Play
 
-    def delete(cls, val, override=False):
-        if override:
-            try:
-                cls.model.objects.get(pk=val).delete()
-            except (TypeError, AssertionError):
-                cls.model.objects.filter(val).delete()
-            except cls.model.DoesNotExist:
-                return False
-
-            return True
-        else:
-            return False
+    @classmethod
+    def delete(cls, val):
+        raise NotImplementedError(
+            'Cannot delete documents that reference Event; '
+            'delete the associated Event in order to delete reference documents'
+        )
 
 
 class ProviderApi(BaseApi):

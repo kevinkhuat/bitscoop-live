@@ -1,25 +1,8 @@
 //Module scheduleMapper
 //This module contains functions for updating the endpoint of signals that are past their update frequency or that have never been pulled at all.
 define (function(require, exports, module) {
-	//TODO: Remove! Source from utils!
-	function getCookie(name) {
-		var cookieValue = null;
-		if (document.cookie && document.cookie !== '') {
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++) {
-				var cookie = jQuery.trim(cookies[i]);
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) == (name + '=')) {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	}
-
-	var csrftoken = getCookie('csrftoken');
-
+	var csrftoken;
+	var estimation_method;
 	/**
 	 * Starts the process of getting the user's signals and calling the endpoints if their information is out-of-date
 	 *
@@ -61,9 +44,13 @@ define (function(require, exports, module) {
 	 *
 	 * @param {Integer} time_ms  How often, in ms, this module should check
 	 * @param {Integer} user_id  The ID of the current user
+	 * @param {String} user_estimation_method The current user's method for estimating locations
+	 * @param {String} csrfToken The user's csrf token
 	 */
 	//Schedules
-	function schedule(time_ms, user_id) {
+	function schedule(time_ms, user_id, user_estimation_method, csrfToken) {
+		csrftoken = csrfToken;
+		estimation_method = user_estimation_method;
 		run(user_id);
 		setInterval(function() {
 			run(user_id);
@@ -288,27 +275,37 @@ define (function(require, exports, module) {
 	 * @param {Object} mapping The mapping of how the data retrieved from this endpoint matches to Ografy's Data schema
 	 * @param {Object} itemData The data returned from the endpoint API
 	 * @param {Object} signal
+	 * @param {Object} endpoint
 	 */
 	//TODO: Abstract posting into a callback passed into mapping a single model or after the mapping function returns the result
 	function mapSingleModel(mapping, itemData, signal, endpoint) {
 		var fieldMapping = _.get(mapping, 'field_mapping');
+		var locationEstimated;
+		var dataTypeMapping = _.get(fieldMapping, 'event');
+		var dateNow = new Date();
+		var datetime = _.get(dataTypeMapping, 'datetime');
 
-		$.when(mapEvent(fieldMapping, signal, itemData)).done(function(event) {
+		dateNow = dateNow.toJSON();
+		//If a datetime is present, convert it to JSON format.
+		if (datetime !== undefined) {
+			datetime = new Date(parseSubMapping(itemData, datetime)).toJSON();
+		}
+		//If a datetime is not present, use the current time and convert it to JSON format.
+		else {
+			datetime = new Date().toJSON();
+		}
+
+		$.when(mapEvent(signal, itemData, datetime, fieldMapping)).done(function(event) {
+			if (!(locationEstimated)) {
+				mapLocation(fieldMapping, event);
+			}
 			$.when(mapData(itemData, event, signal)).done(function(data) {
 				if (Object.keys(fieldMapping).length > 1) {
 					mapSubtype(fieldMapping, data.event, signal, itemData);
 				}
 			});
 		});
-		function parseLocation(itemData, mapping, mappingLocation) {
-			if (_.get(mapping, mappingLocation) === undefined || null) {
-				//FIXME: Use location estimation API
-				return _.get(itemData, _.get(mapping, mappingLocation));
-			}
-			else {
-				return _.get(itemData, _.get(mapping, mappingLocation));
-			}
-		}
+
 
 		function mapData(itemData, event, signal) {
 			//Map Data Object
@@ -337,23 +334,62 @@ define (function(require, exports, module) {
 			});
 		}
 
-		//TODO: Make entire parent function more programmatic, better debug success/fail messages with ids?
-		function mapEvent(fieldMapping, signal, itemData) {
-			var dataTypeMapping = _.get(fieldMapping, 'event');
-			var dateNow = new Date();
-			dateNow = dateNow.toJSON();
+		function mapLocation(fieldMapping, event) {
+			var locationObject = {
+				source: event.id.toString()
+			};
 
-			var datetime = _.get(dataTypeMapping, 'datetime');
-			if (datetime !== undefined) {
-				datetime = new Date(parseSubMapping(itemData, datetime)).toJSON();
+			var locationMapping = _.get(fieldMapping, 'location');
+
+			_.forEach(locationMapping, function(fieldValue, fieldKey) {
+				locationObject[fieldKey] = parseSubMapping(event, fieldValue);
+			});
+
+			locationObject.datetime = new Date(locationObject.datetime).toJSON();
+
+			$.ajax({
+				url: 'opi/location',
+				type: 'POST',
+				data: JSON.stringify(locationObject),
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				headers: {
+					'X-CSRFToken': csrftoken
+				}
+			}).done(function(data, xhr, response) {
+				console.log('Location mapped and posted successfully');
+			});
+		}
+
+		//TODO: Make entire parent function more programmatic, better debug success/fail messages with ids?
+		function mapEvent(signal, itemData, datetime, mappingLocation) {
+			var eventObject, tempCoordinates, tempLocation;
+
+			tempCoordinates = _.get(itemData, _.get(mapping, mappingLocation));
+
+			if (tempCoordinates !== undefined && tempCoordinates !== null) {
+				tempLocation = {
+					estimated: true,
+					estimation_method: 'Between',
+					geo_format: 'lat_lng',
+					geolocation: {
+						type: 'Point',
+						coordinates: tempCoordinates
+					}
+				};
+				locationEstimated = false;
+			}
+			else {
+				locationEstimated = true;
+				tempLocation = {};
 			}
 
-			var eventObject = {
+			eventObject = {
 				authorized_endpoint: endpoint.id,
 				created: dateNow,
 				datetime: datetime,
 				event_type: _.get(mapping, 'event_type.field_mapping'),
-				location: parseLocation(itemData, mapping, 'location'),
+				location: tempLocation,
 				name: parseSubMapping(itemData, _.get(dataTypeMapping, 'name')),
 				provider: signal.provider.id,
 				provider_name: signal.provider.name,

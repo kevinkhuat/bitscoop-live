@@ -5,8 +5,8 @@ import os
 from django.core.management.base import BaseCommand
 from mongoengine import Q
 
-from ografy.core import api as CoreAPI
-from ografy.core.documents import Data, Event, Message, Play, Signal
+from ografy.core import api as core_api
+from ografy.core.documents import Data, Event, Location, Message, Play, Signal
 from ografy.settings import MONGO_FIXTURE_DIRS
 
 
@@ -51,6 +51,19 @@ def create_fixture_event(temp_event, provider, signal):
     )
 
 
+def create_fixture_location(event):
+    return Location(
+        datetime=event.datetime,
+        geo_format=event['location']['geo_format'],
+        geolocation=event['location']['geolocation'],
+        reverse_geolocation=event['location']['reverse_geolocation'],
+        reverse_geo_format=event['location']['reverse_geo_format'],
+        resolution=event['location']['resolution'],
+        source=str(event['id']),
+        user_id=event.user_id
+    )
+
+
 def create_fixture_message(temp_message, event):
     return Message(
         event=event,
@@ -78,56 +91,65 @@ def load_fixture(path):
 
     # A fake signal, created so that the test events' signal reference is to an actual object in the DB
     insert_signal = create_fixture_signal()
-    temp_signal = CoreAPI.SignalApi.post(insert_signal)
+    temp_signal = core_api.SignalApi.post(insert_signal)
 
     for event in fixture_data['events']:
         temp_event = event['event']
-        provider = CoreAPI.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
+        provider = core_api.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
         signal = temp_signal
         insert_event = create_fixture_event(temp_event, provider, signal)
 
-        insert_event = CoreAPI.EventApi.post(insert_event)
+        insert_event = core_api.EventApi.post(insert_event)
+
+        insert_location = create_fixture_location(insert_event)
+        core_api.LocationApi.post(insert_location)
 
         temp_data = event['data']
         insert_data = create_fixture_data(temp_data, insert_event)
 
-        data = CoreAPI.DataApi.post(insert_data)  # noqa
+        core_api.DataApi.post(insert_data)
 
     for message in fixture_data['messages']:
         temp_event = message['event']
-        provider = CoreAPI.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
+        provider = core_api.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
         signal = temp_signal
         insert_event = create_fixture_event(temp_event, provider, signal)
 
-        insert_event = CoreAPI.EventApi.post(insert_event)
+        insert_event = core_api.EventApi.post(insert_event)
+
+        insert_location = create_fixture_location(insert_event)
+        core_api.LocationApi.post(insert_location)
 
         temp_data = message['data']
         insert_data = create_fixture_data(temp_data, insert_event)
 
-        data = CoreAPI.DataApi.post(insert_data)  # noqa
+        core_api.DataApi.post(insert_data)
 
         temp_message = message['message']
         insert_message = create_fixture_message(temp_message, insert_event)
 
-        message = CoreAPI.MessageApi.post(insert_message)  # noqa
+        core_api.MessageApi.post(insert_message)
 
     for play in fixture_data['plays']:
         temp_event = play['event']
-        provider = CoreAPI.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
+        provider = core_api.ProviderApi.get(Q(name=temp_event['provider_name'])).get()
         signal = temp_signal
         insert_event = create_fixture_event(temp_event, provider, signal)
 
-        insert_event = CoreAPI.EventApi.post(insert_event)
+        insert_event = core_api.EventApi.post(insert_event)
+
+        insert_location = create_fixture_location(insert_event)
+        core_api.LocationApi.post(insert_location)
 
         temp_data = play['data']
         insert_data = create_fixture_data(temp_data, insert_event)
 
-        data = CoreAPI.DataApi.post(insert_data)  # noqa
+        core_api.DataApi.post(insert_data)
 
         temp_play = play['play']
         insert_play = create_fixture_play(temp_play, insert_event)
 
-        play = CoreAPI.PlayApi.post(insert_play)  # noqa
+        core_api.PlayApi.post(insert_play)
 
 
 class Command(BaseCommand):
