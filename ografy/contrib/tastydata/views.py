@@ -63,14 +63,15 @@ class ListMixin(object):
     List a QuerySet.
     """
     def list(self, request, *args, **kwargs):
-        QuerySet = self.filter_queryset(request)
+        qs = self.filter_queryset(request)
 
-        page = self.paginate_queryset(QuerySet)
+        page = self.paginate_queryset(qs)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(QuerySet, many=True)
+        serializer = self.get_serializer(qs, many=True)
+
         return Response(serializer.data)
 
 

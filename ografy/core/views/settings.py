@@ -3,7 +3,6 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -42,7 +41,7 @@ class LocationView(View):
         })
 
     def post(self, request):
-        User = get_user_model()
+        user_model = get_user_model()
 
         user = request.user
         form = UpdatePersonalForm(request.POST)
@@ -50,13 +49,13 @@ class LocationView(View):
 
         email = form.cleaned_data.get('email')
         if email is not None:
-            email_count = User.objects.filter(email__iexact=email).exclude(id=user.id).count()
+            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
             if email_count > 0:
                 form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
         if handle is not None:
-            handle_count = User.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
+            handle_count = user_model.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
             if handle_count > 0:
                 form.add_error('handle', 'Handle is in use.')
 
@@ -97,7 +96,7 @@ class PersonalView(View):
         })
 
     def post(self, request):
-        User = get_user_model()
+        user_model = get_user_model()
 
         user = request.user
         form = UpdatePersonalForm(request.POST)
@@ -105,13 +104,13 @@ class PersonalView(View):
 
         email = form.cleaned_data.get('email')
         if email is not None:
-            email_count = User.objects.filter(email__iexact=email).exclude(id=user.id).count()
+            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
             if email_count > 0:
                 form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
         if handle is not None:
-            handle_count = User.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
+            handle_count = user_model.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
             if handle_count > 0:
                 form.add_error('handle', 'Handle is in use.')
 
@@ -182,39 +181,6 @@ class SignalView(View):
             'signals': signals,
             'lockwidth_override': True,
             'verify_url': verify_url
-        })
-
-
-class UserView(View):
-    def my_profile(request):
-        return render(request, 'core/user/my_profile.html', {
-            'title': 'Ografy - {0}'.format(request.user.identifier),
-            'user': request.user
-        })
-
-    def profile(request, handle):
-        User = get_user_model()
-
-        user = User.objects.filter(handle__iexact=handle).first()
-
-        if user is None:
-            raise Http404
-
-            template = 'core/user/profile.html'
-            # if user == request.user:
-            #     template = 'user/my_profile.html'
-            # else:
-            #     template = 'user/profile.html'
-
-            return render(request, template, {
-                'title': 'Ografy - {0}'.format(user.handle),
-                'user': user
-            })
-
-    def signals(request, pk):
-        return render(request, 'core/user/signals.html', {
-            # 'title': 'Ografy - {0}'.format(request.user.identifier),
-            # 'user': request.user
         })
 
 

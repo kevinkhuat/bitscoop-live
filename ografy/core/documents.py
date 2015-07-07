@@ -26,112 +26,112 @@ mongoengine.connect(
 
 class ElasticsearchConfig(AppConfig):
     name = 'ografy.core'
-    verbose_name = "Elasticsearch Config"
+    verbose_name = 'Elasticsearch Config'
 
     es.indices.put_mapping(
-        index="core",
-        doc_type="location",
+        index='core',
+        doc_type='location',
         body={
-            "properties": {
-                "datetime": {
-                    "type": "date",
-                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+            'properties': {
+                'datetime': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
-                "geo_format": {
-                    "type": "string"
+                'geo_format': {
+                    'type': 'string'
                 },
-                "geolocation": {
-                    "type": "geo_point"
+                'geolocation': {
+                    'type': 'geo_point'
                 },
-                "reverse_geolocation": {
-                    "type": "string"
+                'reverse_geolocation': {
+                    'type': 'string'
                 },
-                "reverse_geo_format": {
-                    "type": "string"
+                'reverse_geo_format': {
+                    'type': 'string'
                 },
-                "resolution": {
-                    "type": "float"
+                'resolution': {
+                    'type': 'float'
                 },
-                "source": {
-                    "type": "string"
+                'source': {
+                    'type': 'string'
                 }
             }
         }
     )
     es.indices.put_mapping(
-        index="core",
-        doc_type="event",
+        index='core',
+        doc_type='event',
         body={
-            "properties": {
-                "created": {
-                    "type": "date",
-                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+            'properties': {
+                'created': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
-                "datetime": {
-                    "type": "date",
-                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                'datetime': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
-                "event_type": {
-                    "type": "string"
+                'event_type': {
+                    'type': 'string'
                 },
-                "id": {
-                    "type": "string"
+                'id': {
+                    'type': 'string'
                 },
-                "location": {
-                    "type": "object",
-                    "properties": {
-                        "estimated": {
-                            "type": "boolean"
+                'location': {
+                    'type': 'object',
+                    'properties': {
+                        'estimated': {
+                            'type': 'boolean'
                         },
-                        "estimation_method": {
-                            "type": "string"
+                        'estimation_method': {
+                            'type': 'string'
                         },
-                        "geo_format": {
-                            "type": "string"
+                        'geo_format': {
+                            'type': 'string'
                         },
-                        "geolocation": {
-                            "type": "geo_point"
+                        'geolocation': {
+                            'type': 'geo_point'
                         },
-                        "reverse_geolocation": {
-                            "type": "string"
+                        'reverse_geolocation': {
+                            'type': 'string'
                         },
-                        "reverse_geo_format": {
-                            "type": "string"
+                        'reverse_geo_format': {
+                            'type': 'string'
                         },
-                        "resolution": {
-                            "type": "float"
+                        'resolution': {
+                            'type': 'float'
                         }
                     }
                 },
-                "name": {
-                    "type": "string"
+                'name': {
+                    'type': 'string'
                 },
-                "provider": {
-                    "type": "string"
+                'provider': {
+                    'type': 'string'
                 },
-                "provider_name": {
-                    "type": "string"
+                'provider_name': {
+                    'type': 'string'
                 },
-                "signal": {
-                    "type": "string"
+                'signal': {
+                    'type': 'string'
                 },
-                "subtype": {
-                    "type": "object",
-                    "properties": {
-                        "message": {
-                            "type": "object"
+                'subtype': {
+                    'type': 'object',
+                    'properties': {
+                        'message': {
+                            'type': 'object'
                         },
-                        "play": {
-                            "type": "object"
+                        'play': {
+                            'type': 'object'
                         }
                     }
                 },
-                "updated": {
-                    "type": "string",
-                    "format": "yyyy-MM-dd\'T\'HH:mm:ss.SSSZ"
+                'updated': {
+                    'type': 'string',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
-                "user_id": {
-                    "type": "long"
+                'user_id': {
+                    'type': 'long'
                 }
             }
         }
@@ -573,9 +573,9 @@ class Event(mongoengine.Document):
     def post_delete(cls, sender, document, **kwargs):
 
         es.delete(
-            index="core",
+            index='core',
             id=document.id,
-            doc_type="event"
+            doc_type='event'
         )
 
 signals.post_save.connect(Event.post_save, sender=Event)
@@ -621,9 +621,9 @@ class Location(mongoengine.Document):
 
         # Post the location to ES
         es.index(
-            index="core",
+            index='core',
             id=document.id,
-            doc_type="location",
+            doc_type='location',
             body=body
         )
 
@@ -690,16 +690,16 @@ class Message(mongoengine.Document):
         # event and the subtype
         body = transform_to_elasticsearch_event(
             event_id=document.event.id,
-            subtype="message",
+            subtype='message',
             event_include_fields=MAPPED_FIELDS['event'],
             subtype_include_fields=MAPPED_FIELDS['message']
         )
 
         # Post, patch, or put the fully hydrated event to ES
         es.index(
-            index="core",
+            index='core',
             id=document.event.id,
-            doc_type="event",
+            doc_type='event',
             body=body
         )
 
@@ -736,16 +736,16 @@ class Play(mongoengine.Document):
         # event and the subtype
         body = transform_to_elasticsearch_event(
             event_id=document.event.id,
-            subtype="play",
-            event_include_fields=MAPPED_FIELDS["event"],
-            subtype_include_fields=MAPPED_FIELDS["play"]
+            subtype='play',
+            event_include_fields=MAPPED_FIELDS['event'],
+            subtype_include_fields=MAPPED_FIELDS['play']
         )
 
         # Post, patch, or put the fully hydrated event to ES
         es.index(
-            index="core",
+            index='core',
             id=document.event.id,
-            doc_type="event",
+            doc_type='event',
             body=body
         )
 

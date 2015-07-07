@@ -7,9 +7,9 @@ from ografy.core.documents import (
 from ografy.core.models import User
 
 
-def evaluate(query, QuerySet, many=True):
+def evaluate(query, queryset_class, many=True):
     # If the queryset has already been evaluated by the internal API send the result directly to the serializer
-    if not isinstance(query, QuerySet):
+    if not isinstance(query, queryset_class):
         return query
     else:
         # evaluating badly formed queries just result in an empty response
@@ -137,7 +137,6 @@ class PlaySerializer(tasty_serializers.DocumentSerializer):
 
 
 class ProviderSerializer(tasty_serializers.DocumentSerializer):
-
     class Meta:
         model = Provider
         fields = (

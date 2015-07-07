@@ -14,9 +14,9 @@ def my_profile(request):
 
 
 def profile(request, handle):
-    User = get_user_model()
+    user_model = get_user_model()
 
-    user = User.objects.filter(handle__iexact=handle).first()
+    user = user_model.objects.filter(handle__iexact=handle).first()
 
     if user is None:
         raise Http404

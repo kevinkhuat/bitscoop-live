@@ -52,7 +52,7 @@ class SignupView(View):
         })
 
     def post(self, request):
-        User = get_user_model()
+        user_model = get_user_model()
 
         user = None
         form = SignUpForm(request.POST)
@@ -60,18 +60,18 @@ class SignupView(View):
 
         email = form.cleaned_data.get('email')
         if email is not None:
-            email_count = User.objects.by_identifier(email).count()
+            email_count = user_model.objects.by_identifier(email).count()
             if email_count > 0:
                 form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
         if handle is not None:
-            handle_count = User.objects.by_identifier(handle).count()
+            handle_count = user_model.objects.by_identifier(handle).count()
             if handle_count > 0:
                 form.add_error('handle', 'Handle is in use.')
 
         if form.is_valid():
-            user = User(**form.cleaned_data)
+            user = user_model(**form.cleaned_data)
             user.set_password(form.cleaned_data['password'])
             user.save()
             user = authenticate(identifier=user.email, password=form.cleaned_data.get('password'))

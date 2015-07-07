@@ -34,12 +34,12 @@ def _resolve_model(obj):
         app_name, model_name = obj.split('.')
         resolved_model = get_document(model_name)
         if resolved_model is None:
-            msg = "Mongoengine did not return a model for {0}.{1}"
+            msg = 'Mongoengine did not return a model for {0}.{1}'
             raise ImproperlyConfigured(msg.format(app_name, model_name))
         return resolved_model
     elif inspect.isclass(obj) and issubclass(obj, mongoengine.BaseDocument):
         return obj
-    raise ValueError("{0} is not a MongoDB Document".format(obj))
+    raise ValueError('{0} is not a MongoDB Document'.format(obj))
 
 
 def get_field_info(model):

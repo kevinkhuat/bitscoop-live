@@ -27,9 +27,9 @@ class Command(BaseCommand):
             limited = True
 
         if options.get('user') is not None:
-            UserModel = get_user_model()
+            user_model = get_user_model()
             filter_expr &= Q(**{
-                'user__{0}__iexact'.format(UserModel.USERNAME_FIELD): options.get('user')
+                'user__{0}__iexact'.format(user_model.USERNAME_FIELD): options.get('user')
             })
             limited = True
 

@@ -202,7 +202,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             raise TypeError('The `exclude` option must be a list or tuple. Got %s.' %
                             type(exclude).__name__)
 
-        assert not (fields and exclude), "Cannot set both 'fields' and 'exclude'."
+        assert not (fields and exclude), 'Cannot set both `fields` and `exclude`.'
 
         # # Retrieve metadata about fields & relationships on the model class.
         info = get_field_info(model)
@@ -377,9 +377,10 @@ class DocumentSerializer(serializers.ModelSerializer):
             embedded_doc_intance = embedded_field.create(embedded_field.validated_data)
             validated_data[embedded_field.field_name] = embedded_doc_intance
 
-        ModelClass = self.Meta.model
+        cls = self.Meta.model
+
         try:
-            instance = ModelClass(**validated_data)
+            instance = cls(**validated_data)
             instance.save()
         except TypeError as exc:
             msg = (
@@ -389,7 +390,7 @@ class DocumentSerializer(serializers.ModelSerializer):
                 '`%s.objects.create()`. You may need to make the field '
                 'read-only, or override the %s.create() method to handle '
                 'this correctly.\nOriginal exception text was: %s.' % (
-                    ModelClass.__name__, ModelClass.__name__, type(self).__name__, exc
+                    cls.__name__, cls.__name__, type(self).__name__, exc
                 )
             )
             raise TypeError(msg)
@@ -401,7 +402,7 @@ class DocumentSerializer(serializers.ModelSerializer):
                 '%s and %s.\nIf that is not the case, please open a ticket '
                 'regarding this issue on https://github.com/umutbozkurt/django-rest-framework-mongoengine/issues'
                 '\nOriginal exception was: %s' % (
-                    ModelClass.__name__, ModelClass.__name__, type(self).__name__, exc
+                    cls.__name__, cls.__name__, type(self).__name__, exc
                 )
             )
             raise me_ValidationError(msg)

@@ -193,7 +193,7 @@ def verify(request, pk):
             # If the Authorized Endpoint exists, update its enabled status based on what was passed to the server
             if not this_authorized_endpoint_id == 'None':
                 AuthorizedEndpointApi.patch(this_authorized_endpoint_id, {
-                    "enabled": this_endpoint_dict[this_authorized_endpoint_id]
+                    'enabled': this_endpoint_dict[this_authorized_endpoint_id]
                 })
             else:
                 # If the Authorized Endpoint does not exist and the user wants that endpoint to be used, create an Authorized Endpoint.

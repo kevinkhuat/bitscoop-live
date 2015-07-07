@@ -29,7 +29,7 @@ class Provider(motorengine.Document):
         description: A short description of the service's functionality
         tags: A list of categories that describe the service, used on the Connect page to sort them by general functionality
     """
-    __collection__ = "provider"
+    __collection__ = 'provider'
 
     auth_backend = motorengine.StringField()
     auth_type = motorengine.IntField()
@@ -67,7 +67,7 @@ class Signal(motorengine.Document):
         oauth_secret_token: OAuth1 private token
         extra_data: Provider-specific data, e.g. account's user (not to be confused with the Signal's user) and account's handle
     """
-    __collection__ = "signal"
+    __collection__ = 'signal'
 
     # TODO: Encrypt tokens or remove from Signal
     access_token = motorengine.StringField()
@@ -104,7 +104,7 @@ class EndpointDefinition(motorengine.Document):
     parameter_description: A dictionary of the parameters that can be used on this endpoint and how they are constructed
     mapping: How the data returned from the endpoint maps to Ografy's data schema
     """
-    __collection__ = "endpoint_definition"
+    __collection__ = 'endpoint_definition'
 
     enabled_by_default = motorengine.BooleanField(default=True)
     mapping = motorengine.JsonField()
@@ -128,7 +128,7 @@ class AuthorizedEndpoint(motorengine.Document):
     endpoint_definition: A reference to the base endpoint definition for this Authorized Endpoint
     enabled: Whether or not this endpoint will be checked for new data on future runs
     """
-    __collection__ = "authorized_endpoint"
+    __collection__ = 'authorized_endpoint'
 
     enabled = motorengine.BooleanField(default=True)
     endpoint_definition = motorengine.ReferenceField(EndpointDefinition)

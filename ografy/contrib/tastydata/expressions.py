@@ -8,7 +8,7 @@ from django.db.models.constants import LOOKUP_SEP
 from ografy.contrib.tastydata.exceptions import InvalidFilterError
 
 
-TOKEN_SPLIT = re.compile("((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:'[^\']*'))")
+TOKEN_SPLIT = re.compile(r'((?:[0-9]+\.[0-9]*)|(?:[0-9]*\.[0-9]+)|\w+|\(|\)|(?:\'[^\']*\'))')
 COMPARERS = {
     'contains', 'icontains', 'startswith', 'istartswith', 'endswith', 'iendswith',
     'exact', 'iexact', 'gt', 'gte', 'lt', 'lte', 'isnull',

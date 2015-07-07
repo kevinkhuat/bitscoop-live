@@ -17,7 +17,7 @@ class DocumentField(serializers.Field):
         try:
             self.model_field = kwargs.pop('model_field')
         except KeyError:
-            raise ValueError("%s requires 'model_field' kwarg" % self.type_label)
+            raise ValueError('%s requires `model_field` kwarg' % self.type_label)
 
         super(DocumentField, self).__init__(*args, **kwargs)
 
@@ -94,7 +94,7 @@ class EmbeddedDocumentField(DocumentField):
         try:
             self.document_type = kwargs.pop('document_type')
         except KeyError:
-            raise ValueError("EmbeddedDocumentField requires 'document_type' kwarg")
+            raise ValueError('EmbeddedDocumentField requires `document_type` kwarg')
 
         self.depth = kwargs.pop('depth')
         super(EmbeddedDocumentField, self).__init__(*args, **kwargs)

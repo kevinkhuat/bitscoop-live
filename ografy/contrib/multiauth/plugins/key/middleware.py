@@ -31,11 +31,11 @@ class TokenBackend(RemoteUserBackend):
             user_id = cache.get(cache_key)
 
             if user_id:
-                UserModel = get_user_model()
+                user_model = get_user_model()
 
                 try:
-                    user = UserModel.objects.get(pk=user_id)
-                except UserModel.DoesNotExist:
+                    user = user_model.objects.get(pk=user_id)
+                except user_model.DoesNotExist:
                     pass
 
         if not user:

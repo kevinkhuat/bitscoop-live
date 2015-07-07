@@ -27,8 +27,8 @@ def _search_callback(self, response):
 
 def _search(self, dsl_query):
     # TODO: Make this flexible
-    index = "core"
-    object_type = "event"
+    index = 'core'
+    object_type = 'event'
 
     es_connection.search(
         callback=_search_callback,

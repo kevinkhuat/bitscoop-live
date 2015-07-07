@@ -41,13 +41,13 @@ class Command(BaseCommand):
         else:
             username = getpass.getuser()
 
-        UserModel = get_user_model()
+        user_model = get_user_model()
 
         try:
-            user = UserModel._default_manager.get(**{
-                UserModel.USERNAME_FIELD: username
+            user = user_model._default_manager.get(**{
+                user_model.USERNAME_FIELD: username
             })
-        except UserModel.DoesNotExist:
+        except user_model.DoesNotExist:
             raise CommandError('User "{0}" does not exist.'.format(username))
 
         time_data = {}

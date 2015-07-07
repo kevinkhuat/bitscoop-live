@@ -23,25 +23,25 @@ es_connection = elasticsearch.Elasticsearch([
 
 def get_previous_query(user_id, datetime):
     return {
-        "size": "1",
-        "from": 0,
-        "query": {
-            "filtered": {
-                "filter": {
-                    "and": [
+        'size': '1',
+        'from': 0,
+        'query': {
+            'filtered': {
+                'filter': {
+                    'and': [
                         {
-                            "bool": {
-                                "must": {
-                                    "term": {
-                                        "user_id": user_id
+                            'bool': {
+                                'must': {
+                                    'term': {
+                                        'user_id': user_id
                                     }
                                 }
                             }
                         },
                         {
-                            "range": {
-                                "datetime": {
-                                    "lte": datetime
+                            'range': {
+                                'datetime': {
+                                    'lte': datetime
                                 }
                             }
                         }
@@ -49,10 +49,10 @@ def get_previous_query(user_id, datetime):
                 }
             }
         },
-        "sort": [
+        'sort': [
             {
-                "datetime": {
-                    "order": "desc"
+                'datetime': {
+                    'order': 'desc'
                 }
             }
         ]
@@ -61,25 +61,25 @@ def get_previous_query(user_id, datetime):
 
 def get_next_query(user_id, datetime):
     return {
-        "size": "1",
-        "from": 0,
-        "query": {
-            "filtered": {
-                "filter": {
-                    "and": [
+        'size': '1',
+        'from': 0,
+        'query': {
+            'filtered': {
+                'filter': {
+                    'and': [
                         {
-                            "bool": {
-                                "must": {
-                                    "term": {
-                                        "user_id": user_id
+                            'bool': {
+                                'must': {
+                                    'term': {
+                                        'user_id': user_id
                                     }
                                 }
                             }
                         },
                         {
-                            "range": {
-                                "datetime": {
-                                    "gte": datetime
+                            'range': {
+                                'datetime': {
+                                    'gte': datetime
                                 }
                             }
                         }
@@ -87,10 +87,10 @@ def get_next_query(user_id, datetime):
                 }
             }
         },
-        "sort": [
+        'sort': [
             {
-                "datetime": {
-                    "order": "asc"
+                'datetime': {
+                    'order': 'asc'
                 }
             }
         ]
@@ -142,8 +142,8 @@ def estimate(user_id, datetime):
     location_estimation_method = user_settings.location_estimation_method
 
     # TODO: Make this flexible
-    index = "core"
-    doc_type = "location"
+    index = 'core'
+    doc_type = 'location'
 
     # Convert the datetime to the format in which it's stored in the DB
     datetime = datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
@@ -189,13 +189,13 @@ def estimate_location_last(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a hit, then the query was for a date before the oldest one for this user
@@ -216,13 +216,13 @@ def estimate_location_last(user_id, datetime, index, doc_type):
             geolocation = EmbeddedLocation(
                 estimated=True,
                 estimation_method='Last',
-                geo_format="lat_lng",
+                geo_format='lat_lng',
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
                 },
-                reverse_geolocation="",
-                reverse_geo_format="address"
+                reverse_geolocation='',
+                reverse_geo_format='address'
             )
 
         # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
@@ -234,13 +234,13 @@ def estimate_location_last(user_id, datetime, index, doc_type):
             geolocation = EmbeddedLocation(
                 estimated=True,
                 estimation_method='Last',
-                geo_format="lat_lng",
+                geo_format='lat_lng',
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
                 },
-                reverse_geolocation="",
-                reverse_geo_format="address"
+                reverse_geolocation='',
+                reverse_geo_format='address'
             )
 
     return geolocation
@@ -275,13 +275,13 @@ def estimate_location_next(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a hit, then the query was for a date after the most recent one for this user
@@ -302,13 +302,13 @@ def estimate_location_next(user_id, datetime, index, doc_type):
             geolocation = EmbeddedLocation(
                 estimated=True,
                 estimation_method='Last',
-                geo_format="lat_lng",
+                geo_format='lat_lng',
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
                 },
-                reverse_geolocation="",
-                reverse_geo_format="address"
+                reverse_geolocation='',
+                reverse_geo_format='address'
             )
 
         # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
@@ -320,13 +320,13 @@ def estimate_location_next(user_id, datetime, index, doc_type):
             geolocation = EmbeddedLocation(
                 estimated=True,
                 estimation_method='Last',
-                geo_format="lat_lng",
+                geo_format='lat_lng',
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
                 },
-                reverse_geolocation="",
-                reverse_geo_format="address"
+                reverse_geolocation='',
+                reverse_geo_format='address'
             )
 
     return geolocation
@@ -383,13 +383,13 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a result before, use the one after
@@ -398,13 +398,13 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a result after, use the one before
@@ -413,13 +413,13 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
@@ -431,13 +431,13 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     return geolocation
@@ -542,13 +542,13 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a result before, use the one after
@@ -557,13 +557,13 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there isn't a result after, use the one before
@@ -572,13 +572,13 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
@@ -590,13 +590,13 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         geolocation = EmbeddedLocation(
             estimated=True,
             estimation_method='Last',
-            geo_format="lat_lng",
+            geo_format='lat_lng',
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
             },
-            reverse_geolocation="",
-            reverse_geo_format="address"
+            reverse_geolocation='',
+            reverse_geo_format='address'
         )
 
     return geolocation
@@ -615,14 +615,17 @@ def reeestimate_all(user_id):
     """
 
     # Get all of the events whose locations are estimated
-    events_with_estimated_locations = Event.objects(__raw__={'user_id': user_id, 'location.estimated': True})
+    events_with_estimated_locations = Event.objects(__raw__={
+        'user_id': user_id,
+        'location.estimated': True
+    })
 
     # Get the user's settings, and from that get their location estimation method
     user_settings = Settings.objects.get(Q(user_id=user_id))
     location_estimation_method = user_settings.location_estimation_method
 
-    index = "core"
-    doc_type = "location"
+    index = 'core'
+    doc_type = 'location'
 
     # Iterate through the set of events
     for event in events_with_estimated_locations:
@@ -652,10 +655,14 @@ def reeestimate_all(user_id):
             # Patch the event in the DB.
             EventApi.patch(
                 val=event.id,
-                data={'location': new_location}
+                data={
+                    'location': new_location
+                }
             )
 
     SettingsApi.patch(
         val=user_settings.id,
-        data={'last_reestimate_all_locations': py_datetime.datetime.now()}
+        data={
+            'last_reestimate_all_locations': py_datetime.datetime.now()
+        }
     )
