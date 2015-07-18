@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import include, patterns, url
 
 from ografy.core.urls import main, settings, signals
+from ografy.core.urls.help import documentation
 
 import ografy.core.views as views
 
@@ -17,4 +18,9 @@ urlpatterns = patterns('',
     url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
     url(r'^start/?$', views.start, name='core_start'),
     url(r'^location_test$', views.location, name='location_test'),
-) + settings.urlpatterns + signals.urlpatterns + main.urlpatterns
+
+    url(r'^settings/', include(settings.urlpatterns)),
+    url(r'', include(signals.urlpatterns)),
+    url(r'^app/', include(main.urlpatterns)),
+    url(r'^help/documentation/', include(documentation.urlpatterns)),
+)

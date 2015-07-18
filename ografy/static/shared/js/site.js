@@ -294,6 +294,19 @@ define ('site', ['cookies'], function(cookies) {
 		});
 	}
 
+	function bindHelpUtilities() {
+		$('.help-categories')
+			.on('click', '.grid-help-placeholder', function() {
+				$('.help-type').toggleClass('is-visible');
+				$('.help-categories').toggleClass('open');
+			})
+			.on('click', '.help-type', function() {
+				var dataFilter, $placeholder, $this = $(this);
+				$placeholder = $('.grid-help-placeholder');
+				dataFilter = $this.data('help-type');
+			});
+	}
+
 	function scrollToContent() {
 		if (window.matchMedia(window.matchMedia('(max-width: 1000px)').matches)) {
 			$('main').animate({ scrollTop: $('#content').position().top });
@@ -301,6 +314,7 @@ define ('site', ['cookies'], function(cookies) {
 	}
 
 	return {
+		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
 		bindProviderUtilities: bindProviderUtilities,
 		bindSignalSettings: bindSignalSettings,

@@ -1,0 +1,29 @@
+{% extends 'shared/dispatcher.html' %}
+
+{% load staticfiles %}
+{% block static %}
+
+{{ block.super }}
+<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		require(['site'], function(site) {
+			site.bindHelpUtilities();
+			site.scrollToContent();
+		})
+	});
+</script>
+{% endblock %}
+
+{% block sub-header %}
+<div class="help-categories">
+	<div class="grid-help-placeholder"><div class="placeholder-text">Documentation</div></div>
+	<div class="help-type {% if help_type == 'documentation' %}active{% endif %}"><a class="help-type-text" href="/help/documentation/account">Documentation</a></div>
+	<div class="help-type {% if help_type == 'faq' %}active{% endif %}"><a class="help-type-text" href="/help/faq/base">FAQ</a></div>
+	<div class="help-type {% if help_type == 'tutorial' %}active{% endif %}"><a class="help-type-text" href="/help/tutorial/base">Tutorial</a></div>
+	<div class="help-type {% if help_type == 'contact' %}active{% endif %}"><a class="help-type-text" href="/help/contact/base">Contact Us</a></div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

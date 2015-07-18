@@ -1,0 +1,93 @@
+{% extends 'shared/help/documentation/base.html' %}
+
+{% load staticfiles %}
+{% block static %}
+
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="help-container">
+	<h1>
+		Update Settings
+	</h1>
+	<h3>
+		Account
+	</h3>
+	<h4>
+		Account Fields
+	</h4>
+	<p>
+		The Account page is where you can update your name, Username/Handle, and email address.  These fields update automatically without having to press any buttons.
+	</p>
+	<h3>
+		Security
+	</h3>
+	<h4>
+		Change Password
+	</h4>
+	<p>
+		Enter a new password in both text fields and click the button to change your password.
+	</p>
+	<h3>
+		Location Settings
+	</h3>
+	<h4>
+		Location Estimation
+	</h4>
+	<p>
+		If allowed, Ografy can collect your location at a set interval.  This location information is used to better estimate Events from your accounts that do not have coordinates.  By default this is turned off.  To turn it on, click the checkbox labeled "Collect Location Information."
+	</p>
+	<h4>
+		Estimation Method
+	</h4>
+	<p>
+		You can choose how Ografy will estimate the coordinates of Events that are lacking that information.  Click on one of the options to select it.
+	</p>
+	<h4>
+		Re-Estimate Locations
+	</h4>
+	<p>
+		Click the button to have Ografy re-estimate the locations of your Events that do not have coordinates of their own.  This will use the Estimation Method selected above.  You are limited to running this at least 5 days after the most recent estimation.
+	</p>
+	<h3>
+		Signals
+	</h3>
+	<h4>
+		Overview
+	</h4>
+	<p>
+		Click the box for each signal to show its settings.
+	</p>
+	<h4>
+		Turn Signal On or Off
+	</h4>
+	<p>
+		The on/off toggle allows you to activate or deactivate a signal.  When a signal is deactivated, no new data will be collected from it, but any data that was collected will still be accessible.
+	</p>
+	<h4>
+		Delete Signal
+	</h4>
+	<p>
+		Press the X to display a confirmation.  Select Yes on the confirmation to delete that signal and all data collected from it.
+	</p>
+	<h4>
+		Signal Name
+	</h4>
+	<p>
+		Enter a new name in the text field to change the name of that signal.
+	</p>
+	<h4>
+		Permissions
+	</h4>
+	<p>
+		Uncheck the box next to a permission to prevent Ografy from collecting information of that type from that signal.  Any data of that type already collected will not be deleted.
+	</p>
+	<h4>
+		Update Frequency
+	</h4>
+	<p>
+		This controls how often Ografy will check your signals for new data.
+	</p>
+</div>
+{% endblock %}

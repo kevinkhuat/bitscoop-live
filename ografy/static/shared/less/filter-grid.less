@@ -20,7 +20,7 @@
 	margin-top: 10px;
 }
 
-.grid-filters {
+.grid-filters, .help-categories {
 	position: relative;
 	top: 5px;
 	left: 0;
@@ -42,7 +42,7 @@
 	}
 }
 
-.grid-filters::after {
+.grid-filters::after, .help-categories::after {
 	display: none;
 
 	@media @maxwidth768, @mobile {
@@ -66,7 +66,7 @@
 		pointer-events: none;
 	}
 }
-.grid-filters.open::after {
+.grid-filters.open::after, .help-categories.open::after {
 	top: 15px;
 	-webkit-transform: rotate(180deg);
 	-moz-transform: rotate(180deg);
@@ -75,7 +75,7 @@
 	transform: rotate(180deg);
 }
 
-.filter {
+.filter, .help-type {
 	display: inline-block;
 	width: initial;
 	color: @blue;
@@ -87,7 +87,7 @@
 		background: @white;
 	}
 
-	.filter-text {
+	.filter-text, .help-type-text {
 		padding: 0.5em;
 		display: inline-block;
 		height: 50px;
@@ -102,18 +102,18 @@
 	}
 }
 
-.filter.active {
+.filter.active, .help-type.active {
 	* {
 		@media not all and @maxwidth1080, not all and @mobile {
 			border-bottom: 10px solid @blue;
 		}
 		@media @maxwidth1080, @mobile {
-			font-size: 1em;
+			font-size: 0.9em;
 		}
 	}
 }
 
-.filter.is-visible {
+.filter.is-visible, .help-type.is-visible {
 	@media @maxwidth768, @mobile {
 		display: inline-block;
 		background: @white;
@@ -121,17 +121,17 @@
 	}
 }
 
-.filter.active.is-visible {
+.filter.active.is-visible, .help-type.active.is-visible {
 	@media @maxwidth1080, @mobile {
 		background-color: @pale-gray;
 	}
 }
 
-.filter:hover {
+.filter:hover, .help-type:hover {
 	color: @green;
 }
 
-.grid-filter-placeholder {
+.grid-filter-placeholder, .grid-help-placeholder {
 	display: none;
 	cursor: pointer;
 	@media @maxwidth768, @mobile {

@@ -1,0 +1,22 @@
+{% extends 'shared/help/base.html' %}
+
+{% load staticfiles %}
+{% block static %}
+
+{{ block.super }}
+{% endblock %}
+
+
+{% block left %}
+<div class="navigation-selection">
+	<div><a class="navigation-option {% if selected == 'account' %}navigation-selected{% endif %}" href="{% url 'help_account_creation' %}">Account Creation</a></div>
+	<div><a class="navigation-option {% if selected == 'association' %}navigation-selected{% endif %}" href="{% url 'help_signal_association' %}">Signal Association</a></div>
+	<div><a class="navigation-option {% if selected == 'main' %}navigation-selected{% endif %}" href="{% url 'help_main_app' %}">Main App</a></div>
+	<div><a class="navigation-option {% if selected == 'settings' %}navigation-selected{% endif %}" href="{% url 'help_settings' %}">Settings</a></div>
+	<div><a class="navigation-option {% if selected == 'pinhomepage' %}navigation-selected{% endif %}" href="{% url 'help_pin_to_homepage' %}">Pin to Homepage</a></div>
+	<div><a class="navigation-option {% if selected == 'password' %}navigation-selected{% endif %}" href="{% url 'help_password' %}">Password</a></div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
