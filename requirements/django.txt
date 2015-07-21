@@ -3,6 +3,7 @@ django
 djangorestframework
 django-redis
 elasticsearch
+geopy
 gunicorn
 mongoengine
 psycopg2
