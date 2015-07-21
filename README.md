@@ -71,6 +71,19 @@ You can then boot the ElasticSearch server with:
 elasticsearch -Des.config=config/elasticsearch/elasticsearch.yml
 ```
 
+Before you run the application you'll need to create the appropriate indices in
+the database. With the ElasticSearch server running:
+
+```
+curl -XPUT http://search-0.ografy.internal:9200/core
+```
+
+This HTTP PUT request should return something along the lines of:
+
+```json
+{"acknowledged":true}
+```
+
 
 ## Initialize MongoDB
 From the main project directory run:
@@ -175,5 +188,5 @@ You must also start the main application after activating the Django virtual
 environment from the main project directory with:
 
 ```
-gunicorn wsgi --env DJANGO_SETTINGS_MODULE=ografy.settings.development --certfile pki/server.pem --reload
+gunicorn wsgi --env DJANGO_SETTINGS_MODULE=ografy.settings.development --reload
 ```
