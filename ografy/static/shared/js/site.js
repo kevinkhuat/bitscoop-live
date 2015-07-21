@@ -311,7 +311,16 @@ define ('site', ['cookies'], function(cookies) {
 		}
 	}
 
+	function bindFAQUtilities() {
+		$('body').on('click', '.content-drawer-trigger', function() {
+			var $this = $(this);
+			$this.siblings('.content-drawer').slideToggle(200).end();
+			$this.toggleClass('drawer-open');
+		});
+	}
+
 	return {
+		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
 		bindProviderUtilities: bindProviderUtilities,
