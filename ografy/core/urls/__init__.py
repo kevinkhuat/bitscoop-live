@@ -1,7 +1,7 @@
 from django.conf.urls import include, patterns, url
 
 from ografy.core.urls import main, settings, signals
-from ografy.core.urls.help import documentation
+from ografy.core.urls.help import contact, documentation
 
 import ografy.core.views as views
 
@@ -23,4 +23,5 @@ urlpatterns = patterns('',
     url(r'', include(signals.urlpatterns)),
     url(r'^app/', include(main.urlpatterns)),
     url(r'^help/documentation/', include(documentation.urlpatterns)),
+    url(r'^help/', include(contact.urlpatterns)),
 )
