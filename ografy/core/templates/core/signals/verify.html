@@ -15,7 +15,7 @@
 {% block content %}
 <div class="content-list" data-signal-id="{{ signal.id }}">
 	<div class="content-item">
-		<h1>{{ update_or_verify }} {{ signal.provider.name }} Connection Settings</h1>
+		<h1>Verify {{ signal.provider.name }} Connection Settings</h1>
 	</div>
 	<div class="content-item">
 		<h1 class="bold">Name your connection to {{ signal.provider.name }}</h1>
@@ -35,26 +35,16 @@
 			</div>
 		</div>
 		<div class="permission-container">
-		{% for endpoint, permission in endpoint_list.items %}
-		<div name="{{ endpoint.provider_name }}" data-endpoint-id="{{ endpoint.id }}" data-permission-id="{% if not permission == None %}{{ permission.id }}{% else %}None{% endif %}" class="endpoint-checkbox">
+		{% for event_source_name, event_source in event_source_dict.items %}
+		<div name="{{ signal.provider_name }}" data-event-source-name="{{ event_source.name }}" class="event-source-checkbox">
 			<label class="permission-min-width">
-				<input type="checkbox"
-					{% if initial_verification %}
-						{% if endpoint.enabled_by_default %}
-						checked="checked"
-						{% endif %}
-					{% else %}
-						{% if not permission == None and permission.enabled %}
-						checked="checked"
-						{% endif %}
-					{% endif %}
-				>
-				<span>{{ endpoint.name }}</span>
+				<input type="checkbox" {% if event_source.enabled_by_default %} checked="checked" {% endif %}>
+				<span>{{ event_source.display_name }}</span>
 			</label>
 			<div class="tooltip-container near">
 				<div class="icon-help tooltip-trigger"></div>
 				<div class="tooltip">
-					<div class="tooltip-text">{{ endpoint.description }}</div>
+					<div class="tooltip-text">{{ event_source.description }}</div>
 					<div class="icon-cancel-circle tooltip-close"></div>
 				</div>
 			</div>
@@ -107,7 +97,7 @@
 		</div>
 	</div>
 	<div>
-		<input class="btn btn-primary verify-button" type="button" value="{% if initial_verification %}Complete Connection to {{ signal.name }}{% else %}Save settings for {{ signal.name }}{% endif %}"/>
+		<input class="btn btn-primary verify-button" type="button" value="Complete Connection to {{ signal.name }}"/>
 	</div>
 </div>
 {% endblock %}

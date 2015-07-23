@@ -1,6 +1,39 @@
 import motorengine
+from motorengine.utils import serialize
 
 from ografy import settings
+
+
+class DictField(motorengine.BaseField):
+    """
+    Field responsible for storing json objects.
+
+    Usage:
+
+    .. testcode:: modeling_fields
+
+        name = JsonField(required=True)
+
+    Available arguments (apart from those in `BaseField`): `None`
+
+    .. note ::
+
+        If ujson is available, MotorEngine will try to use it.
+        Otherwise it will fallback to the json serializer that comes with python.
+    """
+
+    def validate(self, value):
+        try:
+            serialize(value)
+            return True
+        except:
+            return False
+
+    def to_son(self, value):
+        return value
+
+    def from_son(self, value):
+        return value
 
 
 # Connect to the Mongo server using MotorEngine
@@ -37,6 +70,7 @@ class Provider(motorengine.Document):
     base_route = motorengine.StringField()
     client_callable = motorengine.BooleanField(default=True)
     description = motorengine.StringField()
+    endpoint_wait_time = motorengine.IntField
     name = motorengine.StringField()
     tags = motorengine.StringField()
 
@@ -45,7 +79,6 @@ class Provider(motorengine.Document):
 
 
 class Signal(motorengine.Document):
-
     """
     The class representing an account of a Provider
 
@@ -70,18 +103,22 @@ class Signal(motorengine.Document):
     __collection__ = 'signal'
 
     # TODO: Encrypt tokens or remove from Signal
+
     access_token = motorengine.StringField()
     complete = motorengine.BooleanField(default=False)
     connected = motorengine.BooleanField(default=False)
     created = motorengine.DateTimeField(required=True)
     enabled = motorengine.BooleanField(default=False)
-    # extra_data = motorengine.JsonField()
+    endpoint_data = DictField()
     frequency = motorengine.IntField()
     last_run = motorengine.DateTimeField()
     name = motorengine.StringField()
     oauth_token = motorengine.StringField()
     oauth_token_secret = motorengine.StringField()
+    permissions = DictField()
     provider = motorengine.ReferenceField(Provider)
+    refresh_token = motorengine.StringField()
+    signal_data = DictField()
     updated = motorengine.DateTimeField(required=True)
     usa_id = motorengine.IntField()
     user_id = motorengine.IntField()
@@ -89,51 +126,3 @@ class Signal(motorengine.Document):
     @property
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
-
-
-class Endpoint(motorengine.Document):
-    """
-    The class representing an endpoint from a provider, e.g. Facebook Friends list
-
-    Attributes:
-    _id: A unique database descriptor obtained when saving an Endpoint Definition.
-    name: The name of the endpoint
-    path: The portions of a provider's API specific to this endpoint, e.g. ISteamUser/GetFriendList/v0001/ for Steam's Friends list
-    provider: A reference to the provider that this Endpoint is associated with
-    enabled_by_default: Whether any Permission constructed from this Endpoint Definition should be enabled by default
-    parameter_description: A dictionary of the parameters that can be used on this endpoint and how they are constructed
-    mapping: How the data returned from the endpoint maps to Ografy's data schema
-    """
-    __collection__ = 'endpoint'
-
-    enabled_by_default = motorengine.BooleanField(default=True)
-    mapping = motorengine.JsonField()
-    name = motorengine.StringField(required=True)
-    parameter_description = motorengine.JsonField()
-    provider = motorengine.ReferenceField(Provider)
-    path = motorengine.StringField(required=True)
-
-
-class Permission(motorengine.Document):
-    """
-    The class representing a user's endpoint for a specific Signal, e.g. the endpoint to get user A's Facebook Friends list
-
-    Attributes:
-    _id: A unique database descriptor obtained when saving an Permission.
-    name: The name of the Permission
-    route: The full URL for getting the user's data from this Permission
-    provider: A reference to the provider that this Permission is associated with
-    user_id: The Ografy ID for this user
-    signal: A reference to the Signal that this Permission is related to
-    endpoint: A reference to the base endpoint definition for this Permission
-    enabled: Whether or not this endpoint will be checked for new data on future runs
-    """
-    __collection__ = 'permission'
-
-    enabled = motorengine.BooleanField(default=True)
-    endpoint = motorengine.ReferenceField(Endpoint)
-    name = motorengine.StringField(required=True)
-    provider = motorengine.ReferenceField(Provider)
-    route = motorengine.StringField(required=True)
-    signal = motorengine.ReferenceField(Signal)
-    user_id = motorengine.IntField()

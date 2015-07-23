@@ -73,7 +73,7 @@ function detailView(mapboxViewInst, dataInst) {
 	function updateContent(event) {
 		var sidebar = $('.sidebar');
 		var dateTimeArray = [];
-		var data_blob = event.data.data_blob.d;
+		var data_dict = event.data_dict;
 
 		//Remove any fields that aren't always present.
 		if ($('.detail-to-from').length !== 0) {
@@ -103,8 +103,8 @@ function detailView(mapboxViewInst, dataInst) {
 
 		//Populate the data drawer.
 		$('.data-entries').html('Event Extra Data');
-		for (var key in data_blob) {
-			var value = data_blob[key];
+		for (var key in data_dict) {
+			var value = data_dict[key];
 			var formattedValue = '';
 
 			//If a data entry is an array, format it to look like an array in string form.

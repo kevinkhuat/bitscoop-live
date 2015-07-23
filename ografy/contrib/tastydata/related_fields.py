@@ -32,7 +32,6 @@ class ReferenceField(DocumentField):
     type_label = 'ReferenceField'
 
     def __init__(self, *args, **kwargs):
-        self.depth = kwargs.pop('depth')
         super(ReferenceField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):

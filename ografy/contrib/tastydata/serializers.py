@@ -141,9 +141,11 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.ReferenceField: ReferenceField,
         me_fields.ListField: ListField,
         me_fields.EmbeddedDocumentField: EmbeddedDocumentField,
+        me_fields.EmbeddedDocumentListField: ListField,
         me_fields.SortedListField: SortedListField,
         me_fields.DynamicField: DynamicField,
         me_fields.DictField: DocumentField,
+        me_fields.MapField: DocumentField,
         me_fields.BinaryField: BinaryField,
         me_fields.GeoPointField: BaseGeoField,
         me_fields.PointField: BaseGeoField,
@@ -321,8 +323,6 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         if type(model_field) in self._drfme_field_mapping:
             kwargs['model_field'] = model_field
-
-        if type(model_field) in (me_fields.ReferenceField, me_fields.ListField, me_fields.SortedListField, DjangoField, MongoField):
             kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if type(model_field) is me_fields.ObjectIdField:
@@ -332,7 +332,6 @@ class DocumentSerializer(serializers.ModelSerializer):
 
         if type(model_field) is me_fields.EmbeddedDocumentField:
             kwargs['document_type'] = model_field.document_type
-            kwargs['depth'] = getattr(self.Meta, 'depth', self.MAX_RECURSION_DEPTH)
 
         if model_field.default:
             kwargs['required'] = False

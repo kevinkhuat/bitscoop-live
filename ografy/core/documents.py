@@ -1,12 +1,12 @@
 import datetime
 
+import bson
 import mongoengine
 from django.apps import AppConfig
 from elasticsearch import Elasticsearch
-from mongoengine import Q, signals
+from mongoengine import signals
 
 from ografy import settings
-from ografy.contrib.estoolbox import MAPPED_FIELDS
 
 
 es = Elasticsearch([{
@@ -30,30 +30,93 @@ class ElasticsearchConfig(AppConfig):
 
     es.indices.put_mapping(
         index='core',
-        doc_type='location',
+        doc_type='contact',
         body={
             'properties': {
-                'datetime': {
+                'api_id': {
+                    'type': 'string'
+                },
+                'created': {
                     'type': 'date',
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
-                'geo_format': {
+                'data_dict': {
+                    'type': 'object',
+                    'properties': {
+                        'id': {
+                            'type': 'string'
+                        }
+                    }
+                },
+                'handle': {
                     'type': 'string'
                 },
-                'geolocation': {
-                    'type': 'geo_point'
-                },
-                'reverse_geolocation': {
+                'name': {
                     'type': 'string'
                 },
-                'reverse_geo_format': {
+                'ografy_unique_id': {
                     'type': 'string'
                 },
-                'resolution': {
-                    'type': 'float'
-                },
-                'source': {
+                'signal': {
                     'type': 'string'
+                },
+                'updated': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                },
+                'user_id': {
+                    'type': 'long'
+                }
+            }
+        }
+    )
+    es.indices.put_mapping(
+        index='core',
+        doc_type='content',
+        body={
+            'properties': {
+                'content_type': {
+                    'type': 'string'
+                },
+                'created': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                },
+                'data_dict': {
+                    'type': 'object',
+                    'properties': {
+                        'id': {
+                            'type': 'string'
+                        }
+                    }
+                },
+                'file_extension': {
+                    'type': 'string'
+                },
+                'ografy_unique_id': {
+                    'type': 'string'
+                },
+                'owner': {
+                    'type': 'string'
+                },
+                'signal': {
+                    'type': 'string'
+                },
+                'text': {
+                    'type': 'string'
+                },
+                'title': {
+                    'type': 'string'
+                },
+                'updated': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                },
+                'url': {
+                    'type': 'string'
+                },
+                'user_id': {
+                    'type': 'long'
                 }
             }
         }
@@ -63,9 +126,77 @@ class ElasticsearchConfig(AppConfig):
         doc_type='event',
         body={
             'properties': {
+                'contact_interaction_type': {
+                    'type': 'string'
+                },
+                'contacts_list': {
+                    'properties': {
+                        'api_id': {
+                            'type': 'string'
+                        },
+                        'contact': {
+                            'type': 'string'
+                        },
+                        'created': {
+                            'type': 'date',
+                            'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                        },
+                        'handle': {
+                            'type': 'string'
+                        },
+                        'name': {
+                            'type': 'string'
+                        },
+                        'updated': {
+                            'type': 'date',
+                            'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                        }
+                    }
+                },
+                'content_list': {
+                    'properties': {
+                        'content': {
+                            'type': 'string'
+                        },
+                        'content_type': {
+                            'type': 'string'
+                        },
+                        'created': {
+                            'type': 'date',
+                            'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                        },
+                        'file_extension': {
+                            'type': 'string'
+                        },
+                        'owner': {
+                            'type': 'string'
+                        },
+                        'text': {
+                            'type': 'string'
+                        },
+                        'title': {
+                            'type': 'string'
+                        },
+                        'updated': {
+                            'type': 'date',
+                            'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                        },
+                        'url': {
+                            'type': 'string'
+                        }
+                    }
+                },
                 'created': {
                     'type': 'date',
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                },
+                'data_dict': {
+                    'type': 'object',
+                    'properties': {
+                        'id': {
+                            'type': 'string'
+                        }
+                    }
                 },
                 'datetime': {
                     'type': 'date',
@@ -92,10 +223,7 @@ class ElasticsearchConfig(AppConfig):
                         'geolocation': {
                             'type': 'geo_point'
                         },
-                        'reverse_geolocation': {
-                            'type': 'string'
-                        },
-                        'reverse_geo_format': {
+                        'location': {
                             'type': 'string'
                         },
                         'resolution': {
@@ -103,7 +231,7 @@ class ElasticsearchConfig(AppConfig):
                         }
                     }
                 },
-                'name': {
+                'ografy_unique_id': {
                     'type': 'string'
                 },
                 'provider': {
@@ -115,17 +243,6 @@ class ElasticsearchConfig(AppConfig):
                 'signal': {
                     'type': 'string'
                 },
-                'subtype': {
-                    'type': 'object',
-                    'properties': {
-                        'message': {
-                            'type': 'object'
-                        },
-                        'play': {
-                            'type': 'object'
-                        }
-                    }
-                },
                 'updated': {
                     'type': 'string',
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
@@ -136,127 +253,99 @@ class ElasticsearchConfig(AppConfig):
             }
         }
     )
+    es.indices.put_mapping(
+        index='core',
+        doc_type='location',
+        body={
+            'properties': {
+                'data_dict': {
+                    'type': 'object',
+                    'properties': {
+                        'id': {
+                            'type': 'string'
+                        }
+                    }
+                },
+                'datetime': {
+                    'type': 'date',
+                    'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
+                },
+                'geo_format': {
+                    'type': 'string'
+                },
+                'geolocation': {
+                    'type': 'geo_point'
+                },
+                'resolution': {
+                    'type': 'float'
+                },
+                'signal': {
+                    'type': 'string'
+                },
+                'source': {
+                    'type': 'string'
+                }
+            }
+        }
+    )
 
 
-def transform_to_elasticsearch_event(event_id, subtype=None, event_include_fields=[], subtype_include_fields=[]):
-    """A function that gets all of the information needed to index an event in Elasticsearch and formats it appropriately
+def elasticsearch_transform(document):
+    """
+    A function that gets all of the information needed to index a document in Elasticsearch and formats it appropriately
     #. *event_id* the id of the base event
     #. *subtype* the event subtype, if there is one
-    #. *event_include_fields* a list of the Event-specific fields that should be mapped for Elasticsearch
     #. *subtype_include_fields* a list of the subtype-specific fields that should be mapped for Elasticsearch
     """
 
     return_dict = {}
 
-    # Get the base Event from Mongo
-    event = Event.objects.get(pk=event_id)
+    if isinstance(document, mongoengine.Document):
+        transform_dict = document.to_mongo().to_dict()
+    else:
+        transform_dict = document
 
-    # Map all of the Event's fields that are in event_include_fields
-    for index in event:
-        if index in event_include_fields:
-            # If the field is a reference, get the string of the ID that the reference points to
-            # e.g. Permission is a reference, and you would just store that Permission's ID
-            if hasattr(event[index], 'id'):
-                return_dict[index] = str(event[index]['id'])
-            # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
-            # 'Type': 'Point' and 'coordinates': [lon, lat]
-            # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
-            elif index == 'location' and type(event[index]) is EmbeddedLocation:
-                return_dict[index] = {}
-
-                if 'coordinates' in event[index]['geolocation'].keys():
-                    for key in event[index]:
-                        return_dict[index][key] = event[index][key]
-
-                    return_dict[index]['geolocation'] = event[index]['geolocation']['coordinates']
-            # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
-            elif index == 'id':
-                return_dict[index] = str(event[index])
-            # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
-            elif type(event[index]) is datetime.datetime:
-                return_dict[index] = event[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-            # In all other cases, return whatever value is stored in Mongo exactly as it is
-            else:
-                return_dict[index] = event[index]
-
-    # If a subtype is specified, then its fields need to be mapped as well
-    if subtype is not None:
-        return_dict['subtype'] = {
-            subtype: {}
-        }
-        # Get the subtype class based that corresponds to the input subtype
-        subtype_class = Message if subtype == 'message' else Play
-        # Get the subtype object from Mongo
-        subtype_inst = subtype_class.objects.get(Q(event=event_id))
-
-        # Map all of the subtype's fields that are in the associated IncludeFields list
-        for index in subtype_inst:
-            if index in subtype_include_fields:
-                # If the field is a reference, get the string of the ID that the reference points to
-                # e.g. Permission is a reference, and you would just store that Permission's ID
-                if hasattr(subtype_inst[index], 'id'):
-                    return_dict[index] = str(subtype_inst[index]['id'])
-
-                # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
-                # 'Type': 'Point' and 'coordinates': [lon, lat]
-                # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
-                if index == 'location' and type(subtype_inst[index]) is dict:
-                    if 'coordinates' in subtype_inst[index].keys():
-                        return_dict['subtype'][subtype]['location'] = subtype_inst[index]['coordinates']
-                # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
-                elif index == 'id':
-                    return_dict['subtype'][subtype][index] = str(subtype_inst[index])
-                # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
-                elif type(subtype_inst[index]) is datetime.datetime:
-                    return_dict['subtype'][subtype][index] = subtype_inst[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-                # In all other cases, return whatever value is stored in Mongo exactly as it is
-                else:
-                    return_dict['subtype'][subtype][index] = subtype_inst[index]
-
-    return return_dict
-
-
-def transform_to_elasticsearch_location(location_id):
-    """A function that gets all of the information needed to index an event in Elasticsearch and formats it appropriately
-    #. *location_id* the id of the base location
-    """
-    return_dict = {}
-
-    # Get the base Location from Mongo
-    location = Location.objects.get(pk=location_id)
-
-    # Map all of the Location's fields
-    for index in location:
+    # Map all of the Event's fields
+    for key, value in transform_dict.items():
         # If the field is a reference, get the string of the ID that the reference points to
         # e.g. Permission is a reference, and you would just store that Permission's ID
-        if hasattr(location[index], 'id'):
-            return_dict[index] = str(location[index]['id'])
+        if type(value) is mongoengine.Document:
+            return_dict[key] = str(value.id)
+        # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
+        elif type(value) is bson.objectid.ObjectId:
+            return_dict[key] = str(value)
+        # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
+        elif type(value) is datetime.datetime:
+            return_dict[key] = value.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
         # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
         # 'Type': 'Point' and 'coordinates': [lon, lat]
         # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
-        elif index == 'geolocation':
-            return_dict[index] = {}
-
-            if 'coordinates' in location[index].keys():
-                for key in location[index]:
-                    return_dict[index][key] = location[index][key]
-
-                return_dict[index] = location[index]['coordinates']
-        # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
-        elif index == 'id':
-            return_dict[index] = str(location[index])
-        # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
-        elif type(location[index]) is datetime.datetime:
-            return_dict[index] = location[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-        # In all other cases, return whatevloer value is stored in Mongo exactly as it is
+        elif key is 'geolocation' or type(value) is 'PointField':
+            if value['type'] is 'Point':
+                return_dict['geolocation'] = value['coordinates']
+        elif type(value) is list:
+            return_dict[key] = []
+            for list_item in value:
+                return_dict[key].append(elasticsearch_transform(list_item))
+        elif key is 'location':
+            return_dict[key] = elasticsearch_transform(value)
+        elif type(value) is str:
+            # Reformat dates if they are obtained in string format
+            try:
+                temp_time = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                return_dict[key] = temp_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+            except ValueError:
+                return_dict[key] = value
+        # In all other cases, return whatever value is stored in Mongo exactly as it is
         else:
-            return_dict[index] = location[index]
+            return_dict[key] = value
 
     return return_dict
 
 
 class Settings(mongoengine.Document):
-    """The data class for user settings data.
+    """
+    The data class for user settings data.
 
     #. *created* the date created
     #. *updated* the date updated
@@ -279,41 +368,55 @@ class Settings(mongoengine.Document):
 
     meta = {
         'indexes': [{
+            'name': 'settings_index',
             'fields': ['$id', '$user_id'],
             'default_language': 'english',
         }]
     }
 
 
-class EmbeddedLocation(mongoengine.EmbeddedDocument):
-    GEO_FORMAT = (
-        ('lat_lng', 'Latitude and longitude'),
-        ('geohash', 'Geohash'),
-    )
+# Provider and Signal Association documents
 
-    REVERSE_GEO_FORMAT = (
-        ('address', 'Postal address'),
-        ('city', 'City'),
-        ('state', 'State'),
-        ('country', 'Country'),
-        ('location_name', 'Location name'),
-        ('ip_address', 'IP Address'),
-    )
+class Endpoint(mongoengine.EmbeddedDocument):
+    """
+    The class representing a Provider's endpoint, e.g. Steam games played
 
-    LOCATION_ESTIMATION_METHOD = (
-        ('Last', 'Last known location'),
-        ('Next', 'Next known location'),
-        ('Closest', 'Closest location'),
-        ('Between', 'Interpolate between last and next'),
-    )
+    Attributes:
+    id: A unique database descriptor obtained when saving an Endpoint.
+    parameter_descriptions: A dictionary of the parameters that can be used on this endpoint and how they are constructed
+    route: The full URL for getting the user's data from this Permission
+    """
 
-    estimated = mongoengine.BooleanField()
-    estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD)
-    geo_format = mongoengine.StringField(choices=GEO_FORMAT)
-    geolocation = mongoengine.PointField()
-    reverse_geolocation = mongoengine.StringField()
-    reverse_geo_format = mongoengine.StringField(choices=REVERSE_GEO_FORMAT)
-    resolution = mongoengine.FloatField()
+    additional_path_fields = mongoengine.ListField()
+    call_method = mongoengine.StringField()
+    name = mongoengine.StringField()
+    parameter_descriptions = mongoengine.DictField()
+    route = mongoengine.StringField(required=True)
+
+
+class EventSource(mongoengine.EmbeddedDocument):
+    """
+    The class representing a data source from a provider, e.g. Steam achievements
+    Each EventSource pulls data from one or more Endpoints
+    For example, Steam achievements are obtained on a per-game basis, so to get all of your achievements
+    you first need to get the list of games played, then use that to get each game's achievements individually
+
+    Attributes:
+    id: A unique database descriptor obtained when saving an Endpoint.
+    description: A description of what the data this provides
+    enabled_by_default: Whether any Permission constructed from this EventSource should be enabled by default
+    endpoints: A list of Endpoints that this EventSource uses to get its information
+    mapping: How the data returned from the endpoint maps to Ografy's data schema
+    name: The name of the endpoint, e.g. 'Facebook Posts'
+    """
+
+    description = mongoengine.StringField(required=True)
+    display_name = mongoengine.StringField(required=True)
+    enabled_by_default = mongoengine.BooleanField(default=True)
+    endpoints = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Endpoint))
+    initial_mapping = mongoengine.StringField()
+    mappings = mongoengine.DictField()
+    name = mongoengine.StringField(required=True)
 
 
 class Provider(mongoengine.Document):
@@ -343,13 +446,17 @@ class Provider(mongoengine.Document):
     client_callable = mongoengine.BooleanField(default=True)
     description = mongoengine.StringField()
     domain = mongoengine.StringField()
+    endpoint_wait_time = mongoengine.IntField()
+    event_sources = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=EventSource))
     name = mongoengine.StringField()
+    provider_number = mongoengine.ObjectIdField(primary_key=True)
     scheme = mongoengine.StringField()
     tags = mongoengine.StringField()
     url_name = mongoengine.StringField()
 
     meta = {
         'indexes': [{
+            'name': 'provider_index',
             'fields': ['$id'],
             'default_language': 'english'
         }]
@@ -357,6 +464,19 @@ class Provider(mongoengine.Document):
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)
+
+
+class Permission(mongoengine.EmbeddedDocument):
+    """
+    The class representing a user's permissions for a specific Signal's EventSource, e.g. the permission to get user A's Facebook Friends list
+
+    Attributes:
+    event_source: A reference to the base EventSource for this Permission
+    enabled: Whether or not this endpoint will be checked for new data on future runs
+    """
+
+    event_source = mongoengine.EmbeddedDocumentField(document_type=EventSource)
+    enabled = mongoengine.BooleanField(default=True)
 
 
 class Signal(mongoengine.Document):
@@ -379,7 +499,7 @@ class Signal(mongoengine.Document):
         access_token: Stores OAuth2 or OpenID access token
         oauth_token: OAuth1 public token
         oauth_secret_token: OAuth1 private token
-        extra_data: Provider-specific data, e.g. account's user_id (not to be confused with the Signal's user_id) and account's handle
+        signal_data: Provider-specific data, e.g. account's user_id (not to be confused with the Signal's user_id) and account's handle
     """
     FREQUENCY = (
         (0, 'Premium On Demand'),
@@ -393,22 +513,26 @@ class Signal(mongoengine.Document):
     access_token = mongoengine.StringField()
     complete = mongoengine.BooleanField(default=False)
     connected = mongoengine.BooleanField(default=False)
-    created = mongoengine.DateTimeField(required=True)
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
     enabled = mongoengine.BooleanField(default=False)
-    extra_data = mongoengine.DictField()
+    endpoint_data = mongoengine.DictField()
     frequency = mongoengine.IntField(default=1, choices=FREQUENCY)
     last_run = mongoengine.DateTimeField()
     name = mongoengine.StringField()
     oauth_token = mongoengine.StringField()
     oauth_token_secret = mongoengine.StringField()
-    provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    updated = mongoengine.DateTimeField(required=True)
+    permissions = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Permission))
+    provider = mongoengine.ReferenceField(Provider, dbref=False)
+    refresh_token = mongoengine.StringField()
+    signal_data = mongoengine.DictField()
+    updated = mongoengine.DateTimeField()
     usa_id = mongoengine.IntField()
     user_id = mongoengine.IntField()
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$provider', '$user_id'],
+            'name': 'signal_index',
+            'fields': ['$id', '$complete', '$connected', '$enabled', '$provider', '$user_id'],
             'default_language': 'english'
         }]
     }
@@ -417,173 +541,127 @@ class Signal(mongoengine.Document):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
 
 
-class Endpoint(mongoengine.Document):
-    """
-    The class representing an endpoint from a provider, e.g. Facebook Friends list
+# Shared documents
 
-    Attributes:
-    id: A unique database descriptor obtained when saving an Endpoint Definition.
-    name: The name of the endpoint, e.g. 'Facebook Posts'
-    name_short: The name of the endpoint, minus the provider name, e.g. 'Posts'
-    path: The portions of a provider's API specific to this endpoint, e.g. ISteamUser/GetFriendList/v0001/ for Steam's Friends list
-    provider: A reference to the provider that this Endpoint is associated with
-    enabled_by_default: Whether any Permission constructed from this Endpoint Definition should be enabled by default
-    parameter_description: A dictionary of the parameters that can be used on this endpoint and how they are constructed
-    mapping: How the data returned from the endpoint maps to Ografy's data schema
-    """
-    description = mongoengine.StringField(required=True)
-    enabled_by_default = mongoengine.BooleanField(default=True)
-    mapping = mongoengine.DictField()
-    name = mongoengine.StringField(required=True)
-    parameter_description = mongoengine.DictField()
-    provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    provider_name = mongoengine.StringField(required=True)
-    path = mongoengine.StringField(required=True)
-
-    meta = {
-        'indexes': [{
-            'fields': ['$id', '$provider'],
-            'default_language': 'english'
-        }]
-    }
-
-
-class Permission(mongoengine.Document):
-    """
-    The class representing a user's permissions for a specific Signal's endpoint, e.g. the permission to get user A's Facebook Friends list
-
-    Attributes:
-    id: A unique database descriptor obtained when saving an Permission.
-    name: The name of the Permission
-    route: The full URL for getting the user's data from this Permission
-    provider: A reference to the provider that this Permission is associated with
-    user_id: The Ografy ID for this user
-    signal: A reference to the Signal that this Permission is related to
-    endpoint: A reference to the base endpoint definition for this Permission
-    enabled: Whether or not this endpoint will be checked for new data on future runs
-    """
-
-    enabled = mongoengine.BooleanField(default=True)
-    endpoint = mongoengine.ReferenceField(Endpoint, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    name = mongoengine.StringField(required=True)
-    provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    route = mongoengine.StringField(required=True)
+class Contact(mongoengine.Document):
+    api_id = mongoengine.StringField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    data_dict = mongoengine.DictField()
+    handle = mongoengine.StringField()
+    name = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField()
     signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField()
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$endpoint', '$signal', '$user_id'],
-            'default_language': 'english'
+            'name': 'contact_index',
+            'fields': ['$id', '$ografy_unique_id', '$user_id'],
+            'default_language': 'english',
         }]
     }
 
+    def elasticsearch_transform(self):
+        """
+        A function that gets all of the information needed to index a contact in Elasticsearch and formats it appropriately
+        #. *contact* The contact to be transformed
+        """
 
-class Event(mongoengine.Document):
-    """the base class for all discrete events tracked by the Ografy engine.
+        return_dict = {}
 
-    #. *created* the date created
-    #. *updated* the date updated
-    #. *user_id* the id of the Django user who the event is associated with
-    #. *signal* the id of the PSA Signal who the data provider is associated with
-    #. *provider* the id of the Provider who the PSA Signal is associated with
-    #. *provider_name* the name of the Provider who the PSA Signal is associated with
+        # Map all of the Contact's fields
+        for index in self:
+            # If the field is a reference, get the string of the ID that the reference points to
+            # e.g. Permission is a reference, and you would just store that Permission's ID
+            if hasattr(self[index], 'id'):
+                return_dict[index] = str(self[index]['id'])
+            # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
+            # 'Type': 'Point' and 'coordinates': [lon, lat]
+            # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
+            elif index == 'geolocation':
+                return_dict[index] = {}
+                if 'coordinates' in self[index].keys():
+                    for key in self[index]:
+                        return_dict[index][key] = self[index][key]
+                    return_dict[index] = self[index]['coordinates']
+            # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
+            elif index == 'id':
+                return_dict[index] = str(self[index])
+            # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
+            elif type(self[index]) is datetime.datetime:
+                return_dict[index] = self[index].strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+            # In all other cases, return whatever value is stored in Mongo exactly as it is
+            else:
+                return_dict[index] = self[index]
 
-    #. *datetime* the date and time of the event
-    #. *data* a class with a list of uncategorizable data fields
-    #. *location* the location of the event
+        return return_dict
 
-    #. *database* the id that Mongo uses to reference the event
-    """
+    @classmethod
+    def post_save(cls, sender, document, **kwargs):
+        body = elasticsearch_transform(
+            document=document
+        )
 
-    EVENT_TYPE = (
-        ('event', 'Basic Event'),
-        ('location', 'Location'),
-        ('message', 'Basic Message'),
-        ('play', 'Media Play')
+        # Post the contact to ES
+        es.index(
+            index='core',
+            id=document.id,
+            doc_type='contact',
+            body=body
+        )
+
+signals.post_save.connect(Contact.post_save, sender=Contact)
+
+
+class Content(mongoengine.Document):
+    CONTENT_TYPE = (
+        ('photo', 'Photograph'),
+        ('video', 'Video'),
+        ('game', 'Videogame'),
+        ('audio', 'Music, podcast, etc.'),
+        ('text', 'Plain text'),
+        ('code', 'Computer code'),
+        ('file', 'A computer file'),
+        ('web_page', 'A web page')
     )
 
-    permission = mongoengine.ReferenceField(Permission, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    content_type = mongoengine.StringField(choices=CONTENT_TYPE)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    event_type = mongoengine.StringField(choices=EVENT_TYPE)
-    location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
-    name = mongoengine.StringField()
-    provider = mongoengine.ReferenceField(Provider, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    provider_name = mongoengine.StringField(required=True)
+    data_dict = mongoengine.DictField()
+    file_extension = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField()
+    owner = mongoengine.StringField()
     signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    text = mongoengine.StringField()
+    title = mongoengine.StringField()
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
-    user_id = mongoengine.IntField(required=True)
-
-    # Had to move this below updated because the 'created' and 'updated' defaults
-    # were incorrectly trying to reference this instead of the builtin package datetime
-    datetime = mongoengine.DateTimeField()
+    url = mongoengine.StringField()
+    user_id = mongoengine.IntField()
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$permission', '$signal', '$user_id'],
-            'default_language': 'english'
+            'name': 'content_index',
+            'fields': ['$id', '$ografy_unique_id', '$user_id'],
+            'default_language': 'english',
         }]
     }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
-        # Check if the event has already been indexed in Elasticsearch
-        event_indexed = es.exists(
-            index='core',
-            id=document.id,
-            doc_type='event',
+        body = elasticsearch_transform(
+            document=document
         )
 
-        subtype = document.event_type
-
-        # If the event has been indexed, then we're doing a put or patch
-        # In that case, we need to call transform_to_elasticsearch_event with the subtype so that
-        # it will to a put/patch of the fully hydrated ES Event, including the subtype fields
-        if event_indexed:
-            body = transform_to_elasticsearch_event(
-                event_id=document.id,
-                subtype=subtype,
-                event_include_fields=MAPPED_FIELDS['event'],
-                subtype_include_fields=MAPPED_FIELDS[subtype]
-            )
-
-            es.index(
-                index='core',
-                id=document.id,
-                doc_type='event',
-                body=body
-            )
-        # If the event has not been indexed, then we're doing a post,
-        # but only if the event doesn't have a subtype (i.e. subtype is 'event')
-        else:
-            if subtype == 'event':
-                # For posting generic events, do not include a subtype, as there is none
-                body = transform_to_elasticsearch_event(
-                    event_id=document.id,
-                    subtype=None,
-                    event_include_fields=MAPPED_FIELDS['event'],
-                    subtype_include_fields=[]
-                )
-
-                es.index(
-                    index='core',
-                    id=document.id,
-                    doc_type='event',
-                    body=body
-                )
-        # If we're posting an event that has a subtype, that posting to ES will be handled
-        # on the API call for the subtype
-
-    @classmethod
-    def post_delete(cls, sender, document, **kwargs):
-        es.delete(
+        # Post the location to ES
+        es.index(
             index='core',
             id=document.id,
-            doc_type='event'
+            doc_type='content',
+            body=body
         )
 
-signals.post_save.connect(Event.post_save, sender=Event)
-signals.post_delete.connect(Event.post_delete, sender=Event)
+signals.post_save.connect(Content.post_save, sender=Content)
 
 
 class Location(mongoengine.Document):
@@ -592,35 +670,26 @@ class Location(mongoengine.Document):
         ('geohash', 'Geohash'),
     )
 
-    REVERSE_GEO_FORMAT = (
-        ('address', 'Postal address'),
-        ('city', 'City'),
-        ('state', 'State'),
-        ('country', 'Country'),
-        ('location_name', 'Location name'),
-        ('ip_address', 'IP Address'),
-    )
-
-    LOCATION_ESTIMATION_METHOD = (
-        ('Last', 'Last known location'),
-        ('Next', 'Next known location'),
-        ('Closest', 'Closest location'),
-        ('Between', 'Interpolate between last and next'),
-    )
-
-    datetime = mongoengine.DateTimeField()
+    data_dict = mongoengine.DictField()
+    datetime = mongoengine.DateTimeField(default=datetime.datetime.now)
     geo_format = mongoengine.StringField(required=True, choices=GEO_FORMAT)
     geolocation = mongoengine.PointField(required=True)
-    reverse_geolocation = mongoengine.StringField()
-    reverse_geo_format = mongoengine.StringField(choices=REVERSE_GEO_FORMAT)
     resolution = mongoengine.FloatField()
-    source = mongoengine.StringField()
+    signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     user_id = mongoengine.IntField()
+
+    meta = {
+        'indexes': [{
+            'name': 'location_index',
+            'fields': ['$id', '$geolocation', '$geo_format', '$user_id'],
+            'default_language': 'english',
+        }]
+    }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
-        body = transform_to_elasticsearch_location(
-            location_id=document.id
+        body = elasticsearch_transform(
+            document=document
         )
 
         # Post the location to ES
@@ -634,123 +703,151 @@ class Location(mongoengine.Document):
 signals.post_save.connect(Location.post_save, sender=Location)
 
 
-class Data(mongoengine.Document):
-    """The data class for all uncategorizable data.
+# Event documents
 
+class EmbeddedContact(mongoengine.EmbeddedDocument):
+    api_id = mongoengine.StringField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    contact = mongoengine.ReferenceField(Contact, dbref=False)
+    handle = mongoengine.StringField()
+    name = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+
+
+class EmbeddedContent(mongoengine.EmbeddedDocument):
+    CONTENT_TYPE = (
+        ('photo', 'Photograph'),
+        ('video', 'Video'),
+        ('game', 'Videogame'),
+        ('audio', 'Music, podcast, etc.'),
+        ('text', 'Plain text'),
+        ('code', 'Computer code'),
+        ('file', 'A computer file')
+    )
+
+    content = mongoengine.ReferenceField(Content, dbref=False)
+    content_type = mongoengine.StringField(choices=CONTENT_TYPE)
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    file_extension = mongoengine.StringField()
+    owner = mongoengine.StringField()
+    text = mongoengine.StringField()
+    title = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    url = mongoengine.StringField()
+
+
+class EmbeddedLocation(mongoengine.EmbeddedDocument):
+    GEO_FORMAT = (
+        ('lat_lng', 'Latitude and longitude'),
+        ('geohash', 'Geohash'),
+    )
+
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
+    estimated = mongoengine.BooleanField()
+    estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD)
+    geo_format = mongoengine.StringField(choices=GEO_FORMAT)
+    geolocation = mongoengine.PointField()
+    location = mongoengine.ReferenceField(Location, dbref=False)
+    resolution = mongoengine.FloatField()
+
+
+class Event(mongoengine.Document):
+    """
+    The base class for all discrete events tracked by the Ografy engine.
+
+    #  *contact_interaction_type* How the user relates to those in the Contacts List
+    #  *contacts_list* A list of Contacts associated with the event
+    #  *content_list* A list of content objects associated with the event
     #. *created* the date created
+    #  *data_dict* The dictionary of raw data used to construct the event, plus extra data that may be used in the future
+    #  *event_type* The type of event
+    #. *location* The location of the event
+    #  *ografy_unique_id* An ID constructed out of the user_id, signal_id, and elements unique to the event
+    #. *provider* The Provider related to the event
+    #. *provider_name* The name of the Provider
+    #. *signal* The id of the Signal related to the event
     #. *updated* the date updated
-    #. *data_blob* the list of uncategorizable data fields
+    #. *user_id* the id of the Django user who the event is associated with
+
+    #. *datetime* the date and time of the event
     """
 
-    # To be managed by the REST API
+    EVENT_TYPE = (
+        ('event', 'Basic Event'),
+        ('message', 'Basic Message'),
+        ('play', 'Media Play'),
+        ('edit', 'File Edit'),
+        ('comment', 'Commentary on something'),
+        ('view', 'Viewing something'),
+        ('create', 'Create something'),
+        ('call', 'Phone call'),
+        ('visit', 'Visited somewhere'),
+        ('travel', 'Traveled somwhere'),
+        ('eat', 'Eat something'),
+        ('transaction', 'Purchase or sell something'),
+        ('sleep', 'Sleep'),
+        ('exercise', 'Exercise')
+    )
+
+    PEOPLE_INTERACTION_TYPE = (
+        ('to', 'Sent to others'),
+        ('from', 'Sent to you'),
+        ('with', 'Done with others')
+    )
+
+    contact_interaction_type = mongoengine.StringField(choices=PEOPLE_INTERACTION_TYPE)
+    contacts_list = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedContact))
+    content_list = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedContent))
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    data_blob = mongoengine.DictField()
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
+    data_dict = mongoengine.DictField()
+    event_type = mongoengine.StringField(choices=EVENT_TYPE)
+    location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
+    ografy_unique_id = mongoengine.StringField()
+    provider = mongoengine.ReferenceField(Provider, dbref=False)
+    provider_name = mongoengine.StringField(required=True)
+    signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField(required=True)
 
-    meta = {
-        'indexes': [{
-            'fields': ['$id', '$event', '$user_id'],
-            'default_language': 'english'
-        }]
-    }
-
-
-class Message(mongoengine.Document):
-    """This data class for all types of messages
-
-    #. *event* the base class for all discrete events tracked by the Ografy engine
-
-    #. *message_to* who the message is to
-    #. *message_from* who the message is from
-    #. *message_body* the body of the message
-    """
-
-    MESSAGE_TYPE = (
-        ('message', 'Basic Message'),
-        ('email', 'Email'),
-        ('im', 'Instant message'),
-        ('text', 'Text Message'),
-    )
-
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    message_body = mongoengine.StringField(required=True)
-    message_from = mongoengine.StringField()
-    message_to = mongoengine.SortedListField(mongoengine.StringField())
-    message_type = mongoengine.StringField(choices=MESSAGE_TYPE)
-    user_id = mongoengine.IntField()
+    # Had to move this below updated because the 'created' and 'updated' defaults
+    # were incorrectly trying to reference this instead of the builtin package datetime
+    datetime = mongoengine.DateTimeField(default=datetime.datetime.now)
 
     meta = {
         'indexes': [{
-            'fields': ['$id', '$event', '$user_id'],
+            'name': 'event_index',
+            'fields': ['$id', '$ografy_unique_id', '$signal', '$user_id'],
             'default_language': 'english'
         }]
     }
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
-        # Whether we're posting, patching, or putting, we need the fully hydrated mapping of the base
-        # event and the subtype
-        body = transform_to_elasticsearch_event(
-            event_id=document.event.id,
-            subtype='message',
-            event_include_fields=MAPPED_FIELDS['event'],
-            subtype_include_fields=MAPPED_FIELDS['message']
+        body = elasticsearch_transform(
+            document=document
         )
 
-        # Post, patch, or put the fully hydrated event to ES
         es.index(
             index='core',
-            id=document.event.id,
+            id=document.id,
             doc_type='event',
             body=body
         )
-
-signals.post_save.connect(Message.post_save, sender=Message)
-
-
-class Play(mongoengine.Document):
-
-    PLAY_TYPE = (
-        ('play', 'Basic Play'),
-        ('song', 'Listen to Song'),
-        ('movie', 'Watch Movie'),
-        ('tv', 'Watch TV'),
-        ('videogame', 'Play Video Game'),
-        ('video', 'Watch Video')
-    )
-
-    event = mongoengine.ReferenceField(Event, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
-    media_url = mongoengine.StringField()
-    play_type = mongoengine.StringField(choices=PLAY_TYPE)
-    title = mongoengine.StringField()
-    user_id = mongoengine.IntField()
-
-    meta = {
-        'indexes': [{
-            'fields': ['$id', '$event', '$user_id'],
-            'default_language': 'english'
-        }]
-    }
 
     @classmethod
-    def post_save(cls, sender, document, **kwargs):
-        # Whether we're posting, patching, or putting, we need the fully hydrated mapping of the base
-        # event and the subtype
-        body = transform_to_elasticsearch_event(
-            event_id=document.event.id,
-            subtype='play',
-            event_include_fields=MAPPED_FIELDS['event'],
-            subtype_include_fields=MAPPED_FIELDS['play']
-        )
-
-        # Post, patch, or put the fully hydrated event to ES
-        es.index(
+    def post_delete(cls, sender, document, **kwargs):
+        es.delete(
             index='core',
-            id=document.event.id,
-            doc_type='event',
-            body=body
+            id=document.id,
+            doc_type='event'
         )
 
-signals.post_save.connect(Play.post_save, sender=Play)
+
+signals.post_save.connect(Event.post_save, sender=Event)
+signals.post_delete.connect(Event.post_delete, sender=Event)

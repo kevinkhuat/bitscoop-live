@@ -193,7 +193,7 @@ SOCIAL_AUTH_FOURSQUARE_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURS
 #                                     :accept => :json
 SOCIAL_AUTH_GITHUB_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_SCOPE = []
+SOCIAL_AUTH_GITHUB_SCOPE = ['repo:status']
 
 # Google
 
@@ -211,14 +211,20 @@ SOCIAL_AUTH_GITHUB_SCOPE = []
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
-SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = False
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/userinfo.profile',
     'https://mail.google.com',
     'https://www.googleapis.com/auth/gmail.readonly',
-    'https://www.googleapis.com/auth/plus.login'
+    'https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/youtube.readonly',
+    'https://www.googleapis.com/auth/calendar.readonly'
 ]
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'approval_prompt': 'force'
+}
 
 # Instagram
 

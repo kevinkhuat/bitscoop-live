@@ -109,15 +109,15 @@ define ('site', ['cookies'], function(cookies) {
 		$('.signal-settings-block').on('change', 'input[type=checkbox]', function() {
 			var $this = $(this);
 			var enabled = this.checked;
-			var $parent = $this.parents('.endpoint-checkbox');
-			var endpoint_id = $parent.attr('data-endpoint-id');
-			var permission_id = $parent.attr('data-permission-id');
+			var $parent = $this.parents('.event-source-checkbox');
+			var event_source_name = $parent.attr('data-event-source-name');
+			var permission_name = $parent.attr('data-permission-name');
 			var signal_id = $parent.attr('data-signal-id');
 
 			var data = {
 				enabled: enabled,
-				endpoint_id: endpoint_id,
-				permission_id: permission_id,
+				event_source_name: event_source_name,
+				permission_name: permission_name,
 				signal_id: signal_id
 			};
 			$.ajax({
@@ -129,10 +129,10 @@ define ('site', ['cookies'], function(cookies) {
 					'X-CSRFToken': cookies.getCsrfToken()
 				}
 			}).done(function(data, xhr, response) {
-				var permission_id = data;
-				$parent.attr('data-permission-id', permission_id);
+				var permission_name = data;
+				$parent.attr('data-permission-name', permission_name);
 			}).fail(function(data, xhr, response) {
-				console.log('Endpoint patch failed');
+				console.log('EventSource patch failed');
 			});
 		});
 
@@ -178,18 +178,16 @@ define ('site', ['cookies'], function(cookies) {
 			var data = {};
 			var signalId = $(this).parents('.content-list').data('signal-id');
 			data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
-			data.endpointsDict = {};
+			data.permissions = [];
 			data.name = $('input[name=signal-name]')[0].value;
 
-			$('input:checkbox').each(function() {
-				var parent = $(this).parents('.endpoint-checkbox');
-				var def_id = parent.attr('data-endpoint-id');
-				var auth_id = parent.attr('data-permission-id');
-				data.endpointsDict[def_id] = {};
-				data.endpointsDict[def_id][auth_id] = $(this).prop('checked');
+			$('input:checkbox:checked').each(function() {
+				var parent = $(this).parents('.event-source-checkbox');
+				var eventSourceName = parent.attr('data-event-source-name');
+				data.permissions.push(eventSourceName);
 			});
 
-			data.endpointsDict = JSON.stringify(data.endpointsDict);
+			data.permissions = JSON.stringify(data.permissions);
 			$.ajax({
 				url: '/verify/' + signalId,
 				type: 'POST',

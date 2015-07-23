@@ -1,0 +1,304 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000003",
+    "name": "Steam",
+    "client_callable": true,
+    "domain": "api.steampowered.com",
+    "endpoint_wait_time": 0,
+    "backend_name": "steam",
+    "auth_backend": "social.backends.steam.SteamOpenId",
+    "description": "Internet-based digital distribution, multiplayer, and social networking platform",
+    "tags": "gaming media social",
+    "auth_type": 2,
+    "scheme": "https",
+    "url_name": "steam"
+  },
+  "event_sources": [
+    {
+      "display_name": "Games Played",
+      "name": "games_played",
+      "description": "Steam games that you have played",
+      "enabled_by_default": true,
+      "endpoints": [
+        "games_owned"
+      ],
+      "initial_mapping": "games_owned",
+      "mappings": {
+        "games_owned": {
+          "returned_data_location": "response.games",
+          "event_type": "play",
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.appid"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.name"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.playtime_forever"
+                }
+              ],
+              "mapped_fields": {
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "twitter"
+                }
+              }
+            },
+            "content": {
+              "games_played": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "steam"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.appid"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "game"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  },
+                  "url": {
+                    "hydration_location": "responseObject.appid",
+                    "hydration_method": "reformat",
+                    "value": "http://store.steampowered.com/app/[$1]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "display_name": "Achievements",
+      "name": "achievements",
+      "description": "Achievements in Steam games you have played",
+      "enabled_by_default": true,
+      "endpoints": [
+        "achievements",
+        "games_owned",
+        "game_schema"
+      ],
+      "initial_mapping": "games_owned",
+      "mappings": {
+        "games_owned": {
+          "returned_data_location": "response.games",
+          "submapping": {
+            "endpoint": "achievements",
+            "parameter_sources": {
+              "appid": {
+                "hydration_method": "translate",
+                "value": "responseObject.appid"
+              }
+            }
+          }
+        },
+        "achievements": {
+          "returned_data_location": "playerstats.achievements",
+          "event_type": "play",
+          "conditions": {
+            "property_equals": {
+              "property": "achieved",
+              "value": 1
+            }
+          },
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "parent_endpoint",
+                  "value": "parentResponseObject.appid"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.name"
+                }
+              ],
+              "mapped_fields": {
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "steam"
+                }
+              }
+            },
+            "content": {
+              "achievements": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "steam"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "game"
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "game_schema",
+                      "parameter_sources": {
+                        "appid": {
+                          "hydration_method": "translate",
+                          "value": "parentResponseObject.appid"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "game.availableGameStats.achievements",
+                          {
+                            "type": "list",
+                            "hydration_method": "find",
+                            "selector_location": "name",
+                            "selector_type": "translate",
+                            "selector": "responseObject.name"
+                          },
+                          "displayName"
+                        ]
+                      ]
+                    }
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "game_schema",
+                      "parameter_sources": {
+                        "appid": {
+                          "hydration_method": "translate",
+                          "value": "parentResponseObject.appid"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "game.availableGameStats.achievements",
+                          {
+                            "type": "list",
+                            "hydration_method": "find",
+                            "selector_location": "name",
+                            "selector_type": "translate",
+                            "selector": "responseObject.name"
+                          },
+                          "icon"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "call_method": "GET",
+      "name": "games_owned",
+      "path": "IPlayerService/GetOwnedGames/v0001/",
+      "parameter_descriptions": {
+        "steamid": {
+          "description": "Steam ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.player.steamid"
+        },
+        "format": {
+          "description": "API data output format",
+          "hydration_method": "literal",
+          "value": "json"
+        },
+        "include_played_free_games": {
+          "description": "Include free games that the user has played; by default they are not",
+          "hydration_method": "literal",
+          "value": "1"
+        },
+        "include_appinfo": {
+          "description": "Include the game's name and picture in the response; by default just the appid is returned",
+          "hydration_method": "literal",
+          "value": "1"
+        },
+        "key": {
+          "description": "OpenID access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "achievements",
+      "path": "ISteamUserStats/GetUserStatsForGame/v0002/",
+      "parameter_descriptions": {
+        "steamid": {
+          "description": "Steam ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.player.steamid"
+        },
+        "format": {
+          "description": "API data output format",
+          "hydration_method": "literal",
+          "value": "json"
+        },
+        "appid": {
+          "description": "The game's Steam ID",
+          "hydration_method": "parent_endpoint",
+          "value": "responseObject.appid"
+        },
+        "key": {
+          "description": "OpenID access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "game_schema",
+      "path": "ISteamUserStats/GetSchemaForGame/v0002/",
+      "parameter_descriptions": {
+        "format": {
+          "description": "API data output format",
+          "hydration_method": "literal",
+          "value": "json"
+        },
+        "appid": {
+          "description": "The game's Steam ID",
+          "hydration_method": "translate",
+          "value": "parentResponseObject.appid"
+        },
+        "key": {
+          "description": "OpenID access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    }
+  ]
+}

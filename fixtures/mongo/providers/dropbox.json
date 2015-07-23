@@ -1,0 +1,136 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000005",
+    "name": "Dropbox",
+    "client_callable": true,
+    "domain": "api.dropbox.com/1",
+    "backend_name": "dropbox-oauth2",
+    "endpoint_wait_time": 0,
+    "auth_backend": "social.backends.dropbox.DropboxOAuth2",
+    "description": "Cloud storage solution",
+    "tags": "media productivity",
+    "auth_type": 0,
+    "scheme": "https",
+    "url_name": "dropbox"
+  },
+  "event_sources": [
+    {
+      "description": "Edits made to your Dropbox files",
+      "display_name": "Edits",
+      "name": "dropbox_edits",
+      "enabled_by_default": true,
+      "endpoints": [
+        "dropbox_delta"
+      ],
+      "initial_mapping": "dropbox_delta",
+      "mappings": {
+        "dropbox_delta": {
+          "returned_data_location": "entries",
+          "event_type": "edit",
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.1.path"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.1.modified"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "value": "with"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.1.modified"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "dropbox"
+                }
+              }
+            },
+            "content": {
+              "files": {
+                "conditions": [
+                  {
+                    "notEquals": {
+                      "field": "responseObject.1.bytes",
+                      "value": 0
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "dropbox"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.1.path"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "file"
+                  },
+                  "file_extension": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.1.mime_type"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.1.path"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "next_cursor_location": "cursor",
+          "start_cursor_parameter": "cursor",
+          "cursor_value": "cursor",
+          "check_if_more": "has_more"
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "call_method": "POST",
+      "name": "dropbox_delta",
+      "path": "delta",
+      "parameter_descriptions": {
+        "include_media_info": {
+          "description": "Include additional information about photos and videos",
+          "hydration_method": "literal",
+          "value": true
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "cursor": {
+          "description": "ID of the latest change found in the previous search",
+          "hydration_method": "translate",
+          "save_to_signal": {
+            "location": "cursor"
+          },
+          "value": "signal.endpoint_data.dropbox_delta.dropbox_delta.cursor"
+        }
+      }
+    }
+  ]
+}

@@ -65,20 +65,20 @@
 						</div>
 					</div>
 					<div class="permission-container">
-						{% for endpoint, permission in signal.endpoint_list.items %}
-						<div name="{{ endpoint.provider_name }}" data-signal-id="{{ signal.id }}" data-endpoint-id="{{ endpoint.id }}" data-permission-id="{% if not permission == None %}{{ permission.id }}{% else %}None{% endif %}" class="endpoint-checkbox">
+						{% for event_source_pairing in signal.event_source_list %}
+						<div name="{{ signal.provider_name }}" data-signal-id="{{ signal.id }}" data-event-source-name="{{ event_source_pairing.event_source.name }}" data-permission-name="{% if not event_source_pairing.permission.event_source.name == None %}{{ event_source_pairing.permission.event_source.name }}{% else %}None{% endif %}" class="event-source-checkbox">
 							<label class="permission-min-width">
 								<input type="checkbox"
-									{% if not permission == None and permission.enabled %}
+									{% if not event_source_pairing.permission == None and event_source_pairing.permission.enabled %}
 										checked="checked"
 									{% endif %}
 								>
-								<span>{{ endpoint.name }}</span>
+								<span>{{ event_source_pairing.event_source.display_name }}</span>
 							</label>
 							<div class="tooltip-container near">
 								<div class="icon-help tooltip-trigger"></div>
 								<div class="tooltip">
-									<div class="tooltip-text">{{ endpoint.description }}</div>
+									<div class="tooltip-text">{{ event_source_pairing.event_source.description }}</div>
 									<div class="icon-cancel-circle tooltip-close"></div>
 								</div>
 							</div>

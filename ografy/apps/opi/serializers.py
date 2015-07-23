@@ -1,7 +1,7 @@
 from rest_framework import serializers as django_serializers
 
 from ografy.contrib.tastydata import serializers as tasty_serializers
-from ografy.core.documents import Data, Endpoint, Event, Location, Message, Permission, Play, Provider, Settings, Signal
+from ografy.core.documents import Contact, Content, Endpoint, Event, Location, Permission, Provider, Settings, Signal
 from ografy.core.models import User
 
 
@@ -33,8 +33,7 @@ class EmbeddedLocationSerializer(tasty_serializers.EmbeddedDocumentSerializer):
             'estimation_method',
             'geo_format',
             'geolocation',
-            'reverse_geolocation',
-            'reverse_geo_format',
+            'location',
             'resolution'
         )
         depth = 5
@@ -44,30 +43,14 @@ class LocationSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Location
         fields = (
+            'id',
+            'data_dict',
             'datetime',
             'geo_format',
             'geolocation',
-            'reverse_geolocation',
-            'reverse_geo_format',
             'resolution',
-            'source',
-        )
-        depth = 5
-
-
-class DataSerializer(tasty_serializers.DocumentSerializer):
-    # Django References
-    # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
-
-    class Meta:
-        model = Data
-        fields = (
-            'id',
-            'created',
-            'data_blob',
-            'event',
-            'updated',
-            'user_id',
+            'signal',
+            'user_id'
         )
         depth = 5
 
@@ -85,52 +68,86 @@ class EventSerializer(tasty_serializers.DocumentSerializer):
         model = Event
         fields = (
             'id',
-            'permission',
+            'contact_interaction_type',
+            'contacts_list',
+            'content_list',
             'created',
+            'data_dict',
             'datetime',
             'event_type',
             'location',
-            'name',
+            'ografy_unique_id',
             'provider',
             'provider_name',
             'signal',
             'updated',
             'user_id',
         )
+        depth = 8
+
+
+class ContactSerializer(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Contact
+        fields = (
+            'id',
+            'api_id',
+            'data_dict',
+            'handle',
+            'name',
+            'ografy_unique_id',
+            'signal',
+            'user_id'
+        )
         depth = 5
 
 
-class MessageSerializer(tasty_serializers.DocumentSerializer):
-    # Mongo References
-    # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
-
+class EmbeddedContactSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = Message
+        model = Contact
+        fields = (
+            'api_id',
+            'contact',
+            'handle',
+            'name'
+        )
+        depth = 5
+
+
+class ContentSerializer(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Content
         fields = (
             'id',
-            'event',
-            'message_body',
-            'message_from',
-            'message_to',
-            'message_type',
+            'content_type',
+            'created',
+            'data_dict',
+            'file_extension',
+            'ografy_unique_id',
+            'owner',
+            'signal',
+            'text',
+            'title',
+            'updated',
+            'url',
             'user_id',
         )
         depth = 5
 
 
-class PlaySerializer(tasty_serializers.DocumentSerializer):
-    # Mongo References
-    # event = related_fields.ReferenceField(lookup_field='event', queryset=Event.objects.all(), view_name='event-detail')
-
+class EmbeddedContentSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
-        model = Play
+        model = Contact
         fields = (
-            'id',
-            'event',
-            'media_url',
-            'play_type',
+            'content',
+            'content_type',
+            'created',
+            'file_extension',
+            'owner',
+            'text',
             'title',
-            'user_id',
+            'updated',
+            'url',
         )
         depth = 5
 
@@ -146,6 +163,7 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
             'base_route',
             'client_callable',
             'description',
+            'endpoint_wait_time',
             'name',
             'tags',
         )
@@ -165,30 +183,27 @@ class SignalSerializer(tasty_serializers.DocumentSerializer):
             'connected',
             'created',
             'enabled',
-            'extra_data',
+            'endpoint_data',
             'frequency',
             'last_run',
             'name',
+            'permissions',
             'provider',
+            'refresh_token',
+            'signal_data',
             'updated',
             'usa_id',
             'user_id',
         )
-        depth = 5
+        depth = 15
 
 
 class PermissionSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Permission
         fields = (
-            'id',
+            'event_source',
             'enabled',
-            'endpoint',
-            'name',
-            'provider',
-            'route',
-            'signal',
-            'user_id',
         )
         depth = 5
 
@@ -197,13 +212,25 @@ class EndpointSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Endpoint
         fields = (
-            'id',
-            'enabled_by_default',
-            'mapping',
+            'additional_path_fields',
+            'call_method',
             'name',
-            'parameter_description',
-            'provider',
-            'path',
+            'parameter_descriptions',
+            'route',
+        )
+        depth = 5
+
+
+class EventSource(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Endpoint
+        fields = (
+            'description',
+            'display_name',
+            'enabled_by_default',
+            'endpoints',
+            'mappings',
+            'name'
         )
         depth = 5
 

@@ -14,6 +14,7 @@ class DocumentField(serializers.Field):
     type_label = 'DocumentField'
 
     def __init__(self, *args, **kwargs):
+        self.depth = kwargs.pop('depth')
         try:
             self.model_field = kwargs.pop('model_field')
         except KeyError:
@@ -68,7 +69,7 @@ class DocumentField(serializers.Field):
         return self.model_field.to_python(data)
 
     def to_representation(self, value):
-        return self.transform_object(value, 1)
+        return self.transform_object(value, self.depth)
 
 
 class ListField(DocumentField):
@@ -76,7 +77,6 @@ class ListField(DocumentField):
     type_label = 'ListField'
 
     def __init__(self, *args, **kwargs):
-        self.depth = kwargs.pop('depth')
         super(ListField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):
@@ -96,7 +96,6 @@ class EmbeddedDocumentField(DocumentField):
         except KeyError:
             raise ValueError('EmbeddedDocumentField requires `document_type` kwarg')
 
-        self.depth = kwargs.pop('depth')
         super(EmbeddedDocumentField, self).__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -162,7 +161,6 @@ class SortedListField(DocumentField):
     type_label = 'SortedListField'
 
     def __init__(self, *args, **kwargs):
-        self.depth = kwargs.pop('depth')
         super(SortedListField, self).__init__(*args, **kwargs)
 
     def to_internal_value(self, data):

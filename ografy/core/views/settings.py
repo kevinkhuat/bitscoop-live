@@ -1,7 +1,6 @@
 import copy
 import datetime
 import json
-import urllib
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -14,7 +13,7 @@ from mongoengine import Q
 
 from ografy.contrib.pytoolbox.collections import update
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
-from ografy.core.api import EndpointApi, PermissionApi, SignalApi
+from ografy.core.api import SignalApi
 from ografy.core.documents import Permission, Settings
 from ografy.core.forms import UpdateAccountForm, UpdateLocationForm, UpdatePasswordForm
 
@@ -52,6 +51,7 @@ class AccountView(View):
         form.full_clean()
 
         email = form.cleaned_data.get('email')
+
         if email is not None:
             email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
 
@@ -59,6 +59,7 @@ class AccountView(View):
                 form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
+
         if handle is not None:
             handle_count = user_model.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
 
@@ -89,6 +90,7 @@ class AccountView(View):
 
         if email is not None:
             email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
+
             if email_count > 0:
                 form.add_error('email', 'Email is in use.')
 
@@ -96,6 +98,7 @@ class AccountView(View):
 
         if handle is not None:
             handle_count = user_model.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
+
             if handle_count > 0:
                 form.add_error('handle', 'Handle is in use.')
 
@@ -218,20 +221,27 @@ class SignalView(View):
         signals = list(SignalApi.get(Q(user_id=request.user.id) & Q(complete=True)))
 
         for signal in signals:
-            signal.endpoint_list = {}
-            endpoints = EndpointApi.get(Q(provider=signal.provider.id))
-            permissions = PermissionApi.get(Q(signal=signal.id))
+            provider = signal.provider
+            signal.event_source_list = []
+            permissions = signal.permissions
+            event_sources = provider.event_sources
 
-            for endpoint in endpoints:
-                matched_auth_endpoint = False
+            for event_source_name in event_sources:
+                matched_event_source = False
 
-                for permission in permissions:
-                    if permission.endpoint.id == endpoint.id:
-                        matched_auth_endpoint = True
-                        signal.endpoint_list[endpoint] = permission
+                for permission_name in permissions:
+                    if permission_name == event_source_name:
+                        matched_event_source = True
+                        signal.event_source_list.append({
+                            'event_source': event_sources[event_source_name],
+                            'permission': permissions[permission_name]
+                        })
 
-                if not matched_auth_endpoint:
-                    signal.endpoint_list[endpoint] = None
+                if not matched_event_source:
+                    signal.event_source_list.append({
+                        'event_source': event_sources[event_source_name],
+                        'permission': None
+                    })
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -244,46 +254,64 @@ class SignalView(View):
         signal_id = request.POST['signal_id']
         signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=signal_id)).get()
         enabled = json.loads(request.POST['enabled'])
-        this_endpoint_id = request.POST['endpoint_id']
+
+        # This handles updating the Permissions enabled status and the creation of Permissions.
+        # The client passes a dictionary of event_sources and their associated Permissions to the server.
+        # The dictionary keys are the IDs of the event_sources associated with this signal.
+        # The dictionary values are either 'None' if an Permission has not been created for that event_source
+        # definition yet, or a dictionary if there is an Permission.
+        # The sub-dictionary's key is the ID of the Permission, and the value is a boolean representing
+        # whether or not the Permission is enabled.
+        # Example:
+        # {
+        #   38920743: None,
+        #   32957207: {
+        #       38828502: False
+        #   }
+        # }
+        # event_source 38920743 has no Permission associated with it.
+        # event_source 32957207 has Permission 38828502 associated with it.
+        # Permission 38828502 should be disabled.
+        #
+
+        this_event_source_name = request.POST['event_source_name']
         # Get the Permission ID (or None if it doesn't exist)
-        this_permission_id = request.POST['permission_id']
+        this_permission_name = request.POST['permission_name']
+
         # If the Permission exists, update its enabled status based on what was passed to the server
+        if not this_permission_name == 'None':
+            signal['permissions'][this_permission_name]['enabled'] = enabled
 
-        if not this_permission_id == 'None':
-            return_permission = PermissionApi.patch(this_permission_id, {
-                "enabled": enabled
-            })
+            SignalApi.put(signal_id, signal)
+            return_permission_name = this_permission_name
         else:
-            this_endpoint = EndpointApi.get(Q(id=this_endpoint_id)).get()
-            url_parts = [''] * 6
-
-            url_parts[0] = this_endpoint.provider.scheme
-            url_parts[1] = this_endpoint.provider.domain
-            url_parts[2] = this_endpoint.path
-
-            if this_endpoint.provider.backend_name == 'facebook':
-                url_parts[3] = signal.usa_id
-                # This was the old way of joining, leaving in for reference until this is locked
-                # route = os.path.join(os.path.join(this_endpoint.provider.base_route, signal.usa_id, this_endpoint.path))
-
-            route = urllib.parse.urlunparse(url_parts)
+            provider = signal.provider
+            this_event_source = provider['event_sources'][this_event_source_name]
 
             new_permission = Permission(
-                name=this_endpoint.name,
-                route=route,
-                provider=this_endpoint.provider,
-                user_id=request.user.id,
-                signal=signal,
-                endpoint=this_endpoint,
-                enabled=True
+                enabled=True,
+                event_source=this_event_source
             )
-            return_permission = PermissionApi.post(new_permission)
 
-        return HttpResponse(str(return_permission.id), content_type='application/json')
+            signal.permissions[this_event_source_name] = new_permission
+            signal.endpoint_data[this_event_source_name] = {}
 
-    def delete(self, request):
-        signal_id = request.POST['signal_id']
-        signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=signal_id)).get()
+            for endpoint in this_event_source['endpoints']:
+                signal.endpoint_data[this_event_source_name][endpoint] = {}
+
+                for parameter in this_event_source['endpoints'][endpoint]['parameter_descriptions']:
+                    this_parameter = this_event_source['endpoints'][endpoint]['parameter_descriptions'][parameter]
+
+                    if 'default' in this_parameter.keys():
+                        if this_parameter['default'] == 'date_now':
+                            signal.endpoint_data[this_event_source_name][endpoint][parameter] = datetime.date.today().isoformat().replace('-', '/')
+                        else:
+                            signal.endpoint_data[this_event_source_name][endpoint][parameter] = parameter['default']
+
+            SignalApi.put(signal.id, signal)
+            return_permission_name = new_permission.event_source.name
+
+        return HttpResponse(return_permission_name, content_type='application/json')
 
 
 @login_required

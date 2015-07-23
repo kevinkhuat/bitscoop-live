@@ -1,0 +1,626 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000001",
+    "name": "Google",
+    "domain": "www.googleapis.com",
+    "client_callable": true,
+    "backend_name": "google-oauth2",
+    "endpoint_wait_time": 0,
+    "auth_backend": "social.backends.google.GoogleOAuth2",
+    "description": "Internet-related services and products",
+    "tags": "collaboration media productivity social",
+    "auth_type": 0,
+    "scheme": "https",
+    "url_name": "google"
+  },
+  "event_sources": [
+    {
+      "description": "Youtube videos you have watched",
+      "display_name": "Youtube videos",
+      "name": "youtube_videos",
+      "enabled_by_default": true,
+      "endpoints": [
+        "youtube_playlist",
+        "youtube_channels"
+      ],
+      "initial_mapping": "youtube_playlist",
+      "mappings": {
+        "youtube_playlist": {
+          "returned_data_location": "items",
+          "event_type": "play",
+          "conditions": {
+          },
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "youtube"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.snippet.publishedAt"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "google"
+                }
+              }
+            },
+            "content": {
+              "youtube_play": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "youtube"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "video"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.snippet.title"
+                  },
+                  "url": {
+                    "hydration_method": "reformat",
+                    "hydration_location": "responseObject.snippet.resourceId.videoId",
+                    "value": "https://www.youtube.com/watch?v=[$1]"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "pageToken",
+          "page_token_location": "nextPageToken"
+        }
+      }
+    },
+    {
+      "name": "gmail_inbox",
+      "display_name": "Gmail Inbox",
+      "description": "Email sent to you",
+      "path": "gmail/v1/users/me/messages",
+      "enabled_by_default": true,
+      "endpoints": [
+        "gmail_inbox",
+        "gmail_message"
+      ],
+      "initial_mapping": "gmail_inbox",
+      "parameter_descriptions": {
+        "access_token": {
+          "field_location": "access_token",
+          "transform": {
+            "value": null,
+            "type": "translate"
+          },
+          "description": "OAuth2 secret key",
+          "format": "String"
+        }
+      },
+      "mappings": {
+        "gmail_inbox": {
+          "returned_data_location": "messages",
+          "event_type": "message",
+          "conditions": {
+          },
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "gmail"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "with"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "endpoint",
+                  "value": {
+                    "endpoint": "gmail_message",
+                    "parameter_sources": {
+                      "id": {
+                        "hydration_method": "translate",
+                        "value": "responseObject.id"
+                      }
+                    },
+                    "value_location": [
+                      [
+                        "payload.headers",
+                        {
+                          "type": "list",
+                          "hydration_method": "find",
+                          "selector_location": "name",
+                          "selector_type": "literal",
+                          "selector": "Date"
+                        },
+                        "value"
+                      ]
+                    ]
+                  }
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "google"
+                }
+              }
+            },
+            "content": {
+              "email": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "gmail"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "endpoint",
+                    "encoded": true,
+                    "value": {
+                      "endpoint": "gmail_message",
+                      "parameter_sources": {
+                        "id": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.id"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "payload.parts",
+                          {
+                            "type": "list",
+                            "hydration_method": "find",
+                            "selector_location": "partId",
+                            "selector_type": "literal",
+                            "selector": 0
+                          },
+                          "body.data"
+                        ],
+                        [
+                          "payload.body.data"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "message_from": {
+                "call_endpoint": {
+                  "hydration_method": "endpoint",
+                  "value": {
+                    "endpoint": "gmail_message",
+                    "parameter_sources": {
+                      "id": {
+                        "hydration_method": "translate",
+                        "value": "responseObject.id"
+                      }
+                    },
+                    "value_location": [
+                      [
+                        "payload.headers",
+                        {
+                          "type": "list",
+                          "hydration_method": "find",
+                          "selector_location": "name",
+                          "selector_type": "literal",
+                          "selector": "From"
+                        }
+                      ]
+                    ]
+                  }
+                },
+                "hydrate_list_location": "childObject",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "gmail"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "value"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "value"
+                  }
+                }
+              },
+              "message_to": {
+                "call_endpoint": {
+                  "hydration_method": "endpoint",
+                  "value": {
+                    "endpoint": "gmail_message",
+                    "parameter_sources": {
+                      "id": {
+                        "hydration_method": "translate",
+                        "value": "responseObject.id"
+                      }
+                    },
+                    "value_location": [
+                      [
+                        "payload.headers",
+                        {
+                          "type": "list",
+                          "hydration_method": "find",
+                          "selector_location": "name",
+                          "selector_type": "literal",
+                          "selector": "To"
+                        }
+                      ]
+                    ]
+                  }
+                },
+                "hydrate_list_location": "childObject",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "gmail"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "value"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "pageToken",
+          "page_token_location": "nextPageToken"
+        }
+      }
+    },
+    {
+      "description": "Google Drive file changes",
+      "display_name": "Google Drive file changes",
+      "name": "drive_changes",
+      "enabled_by_default": true,
+      "endpoints": [
+        "drive_changes"
+      ],
+      "initial_mapping": "drive_changes",
+      "mappings": {
+        "drive_changes": {
+          "returned_data_location": "items",
+          "event_type": "edit",
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "google_drive"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.modificationDate"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "with"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": [
+                    "responseObject.file.modifiedByMeDate",
+                    "responseObject.file.lastViewedByMeDate",
+                    "responseObject.file.modifiedDate"
+                  ]
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "google"
+                }
+              }
+            },
+            "content": {
+              "file": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "google_drive"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.file.title"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "file"
+                  },
+                  "file_extension": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.file.mimeType"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.file.title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.file.defaultOpenWithLink"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "owners": {
+                "hydrate_list_location": "responseObject.file.owners",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "google_drive"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "displayName"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "displayName"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "emailAddress"
+                  }
+                }
+              },
+              "owners": {
+                "hydrate_list_location": "responseObject.file.lastModifyingUser",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "google_drive"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "displayName"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "displayName"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "emailAddress"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "pageToken",
+          "page_token_location": "nextPageToken"
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "call_method": "GET",
+      "name": "youtube_channels",
+      "path": "youtube/v3/channels",
+      "parameter_descriptions": {
+        "part": {
+          "description": "Channel resources",
+          "hydration_method": "literal",
+          "value": "contentDetails"
+        },
+        "mine": {
+          "description": "Only get data for the authenticated user",
+          "hydration_method": "literal",
+          "value": true
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "youtube_playlist",
+      "path": "youtube/v3/playlistItems",
+      "parameter_descriptions": {
+        "part": {
+          "description": "Channel resources",
+          "hydration_method": "literal",
+          "value": "snippet"
+        },
+        "playlistId": {
+          "description": "ID of the user's Watch History playlist",
+          "hydration_method": "endpoint",
+          "value": {
+            "endpoint": "youtube_channels",
+            "parameter_sources": {
+              "access_token": {
+                "hydration_method": "server",
+                "value": "access_token"
+              }
+            },
+            "value_location": [
+              [
+                "items[0].contentDetails.relatedPlaylists.watchHistory"
+              ]
+            ]
+          }
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "maxResults": {
+          "description": "Maximum number of results to be returned at once",
+          "hydration_method": "literal",
+          "value": 50
+        },
+        "fields": {
+          "description": "Restrict which fields are returned by the endpoint",
+          "hydration_method": "literal",
+          "value": "items(id,snippet),nextPageToken"
+        },
+        "pageToken": {
+          "description": "Token for the next page in the results",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.youtube_videos.youtube_playlist.pageToken"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "gmail_inbox",
+      "path": "gmail/v1/users/me/messages",
+      "parameter_descriptions": {
+        "pageToken": {
+          "description": "Token for the next page in the results",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "q": {
+          "description": "QueryString",
+          "hydration_method": "reformat",
+          "hydration_location": "signal.endpoint_data.gmail_inbox.gmail_inbox.q",
+          "save_to_signal": {
+            "location": "date_now"
+          },
+          "value": "after:[$1]",
+          "default": "date_now"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "gmail_message",
+      "path": "gmail/v1/users/me/messages/[$1]",
+      "additional_path_fields": [
+        {
+          "description": "ID of the message",
+          "parameter": "id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of the message",
+          "hydration_method": "translate",
+          "value": "responseObject.id"
+        },
+        "pageToken": {
+          "description": "Token for the next page in the results",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "drive_changes",
+      "path": "drive/v2/changes",
+      "parameter_descriptions": {
+        "includeDeleted": {
+          "description": "Whether to include file deletions",
+          "hydration_method": "literal",
+          "value": false
+        },
+        "maxResults": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 1000
+        },
+        "pageToken": {
+          "description": "Token for the next page in the results",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.drive_changes.drive_changes.pageToken"
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "startChangeId": {
+          "description": "ID of the latest change found in the previous search",
+          "hydration_method": "translate",
+          "save_to_signal": {
+            "location": "largestChangeId"
+          },
+          "value": "signal.endpoint_data.drive_changes.drive_changes.startChangeId"
+        }
+      }
+    }
+  ]
+}

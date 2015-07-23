@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from django.forms import Form, ModelForm
 from django.utils.translation import ugettext_lazy as _
 
-from ografy.core.documents import Location, Signal
+from ografy.core.documents import EmbeddedLocation, Signal
 from ografy.core.fields import PasswordField
 from ografy.core.models import User
 
@@ -27,7 +27,7 @@ class SignUpForm(ModelForm):
 
 
 class UpdateLocationForm(Form):
-    LOCATION_ESTIMATION_METHOD = Location.LOCATION_ESTIMATION_METHOD
+    LOCATION_ESTIMATION_METHOD = EmbeddedLocation.LOCATION_ESTIMATION_METHOD
 
     allow_location_collection = forms.BooleanField(required=False)
     location_estimation_method = forms.ChoiceField(choices=LOCATION_ESTIMATION_METHOD, required=False)

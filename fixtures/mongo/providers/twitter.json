@@ -1,0 +1,518 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000004",
+    "name": "Twitter",
+    "endpoint_wait_time": 0,
+    "client_callable": true,
+    "domain": "api.twitter.com/1.1",
+    "backend_name": "twitter",
+    "auth_backend": "social.backends.twitter.TwitterOAuth",
+    "description": "Online social networking service",
+    "tags": "social",
+    "auth_type": 1,
+    "scheme": "https",
+    "url_name": "twitter"
+  },
+  "event_sources": [
+    {
+      "description": "All tweets in your timeline",
+      "display_name": "Tweets",
+      "name": "tweets",
+      "enabled_by_default": true,
+      "endpoints": [
+        "user_timeline"
+      ],
+      "initial_mapping": "user_timeline",
+      "mappings": {
+        "user_timeline": {
+          "returned_data_location": "",
+          "event_type": "message",
+          "conditions": {
+          },
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id_str"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "value": "to"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.created_at"
+                },
+                "location": {
+                  "hydration_method": "translate",
+                  "type": "list",
+                  "value": "responseObject.coordinates"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "twitter"
+                }
+              }
+            },
+            "content": {
+              "tweets": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.text"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "message_to": {
+                "hydrate_list_location": "responseObject",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "in_reply_to_user_id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "in_reply_to_user_id_str"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "in_reply_to_screen_name"
+                  }
+                }
+              }
+            },
+            "location": {
+              "datetime": {
+                "type": "translate",
+                "type": "string",
+                "value": "responseObject.datetime"
+              },
+              "geo_format": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "lat_lng"
+              },
+              "geolocation": {
+                "hydration_method": "translate",
+                "type": "list",
+                "value": "responseObject.coordinates"
+              },
+              "resolution": {
+                "hydration_method": "translate",
+                "type": "string",
+                "value": "responseObject.geo.accuracy"
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": false,
+          "start_cursor_parameter": "since_id",
+          "end_cursor_parameter": "max_id",
+          "cursor_value": "id_str"
+        }
+      }
+    },
+    {
+      "provider_name": "Twitter",
+      "description": "Direct Messages you have sent",
+      "enabled_by_default": true,
+      "display_name": "Direct Messages Sent",
+      "name": "direct_messages_sent",
+      "endpoints": [
+        "direct_messages_sent"
+      ],
+      "initial_mapping": "direct_messages_sent",
+      "mappings": {
+        "direct_messages_sent": {
+          "event_type": "message",
+          "returned_data_location": "",
+          "conditions": {
+          },
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id_str"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "value": "to"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.created_at"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "twitter"
+                }
+              }
+            },
+            "content": {
+              "messages": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.text"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "message_to": {
+                "hydrate_list_location": "responseObject.recipient",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "name"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "id_str"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "screen_name"
+                  }
+                }
+              }
+            },
+            "location": {
+              "datetime": {
+                "type": "translate",
+                "type": "string",
+                "value": "responseObject.datetime"
+              },
+              "geo_format": {
+                "hydration_method": "translate",
+                "type": "string",
+                "value": "responseObject.geo_format"
+              },
+              "geolocation": {
+                "hydration_method": "translate",
+                "type": "list",
+                "value": "responseObject.coordinates"
+              },
+              "resolution": {
+                "hydration_method": "translate",
+                "type": "string",
+                "value": "resolution"
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": false,
+          "start_cursor_parameter": "since_id",
+          "end_cursor_parameter": "max_id",
+          "cursor_value": "id_str"
+        }
+      }
+    },
+    {
+      "provider_name": "Twitter",
+      "description": "Direct Messages you have recieved",
+      "display_name": "Direct Messages Received",
+      "name": "direct_messages_received",
+      "endpoints": [
+        "direct_messages_received"
+      ],
+      "initial_mapping": "direct_messages_received",
+      "enabled_by_default": true,
+      "mappings": {
+        "direct_messages_received": {
+          "event_type": "message",
+          "returned_data_location": "",
+          "conditions": {
+          },
+          "unique_identifiers": [
+            {
+              "hydration_method": "translate",
+              "value": "responseObject.id_str"
+            }
+          ],
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id_str"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "from"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.created_at"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "twitter"
+                }
+              }
+            },
+            "content": {
+              "messages": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.text"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "message_from": {
+                "hydrate_list_location": "responseObject.sender",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "twitter"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "id_str"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "name"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "id_str"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "screen_name"
+                  }
+                }
+              }
+            },
+            "location": {
+              "datetime": {
+                "type": "translate",
+                "type": "string",
+                "value": "responseObject.datetime"
+              },
+              "geo_format": {
+                "hydration_method": "translate",
+                "type": "string",
+                "value": "responseObject.geo_format"
+              },
+              "geolocation": {
+                "hydration_method": "translate",
+                "type": "list",
+                "value": "responseObject.coordinates"
+              },
+              "resolution": {
+                "hydration_method": "translate",
+                "type": "string",
+                "value": "resolution"
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": false,
+          "start_cursor_parameter": "since_id",
+          "end_cursor_parameter": "max_id",
+          "cursor_value": "id_str"
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "call_method": "GET",
+      "name": "user_timeline",
+      "path": "statuses/user_timeline.json",
+      "parameter_descriptions": {
+        "count": {
+          "hydration_method": "literal",
+          "value": "200",
+          "description": "Pagination counts"
+        },
+        "oauth_token": {
+          "hydration_method": "server",
+          "value": "oauth_token",
+          "description": "OAuth1 public key"
+        },
+        "oauth_token_secret": {
+          "hydration_method": "server",
+          "value": "oauth_token_secret",
+          "description": "OAuth1 private key"
+        },
+        "since_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.tweets.user_timeline.since_id",
+          "description": "Most recent tweet"
+        },
+        "max_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.tweets.user_timeline.max_id",
+          "description": "Highest ID of next page call"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "direct_messages_sent",
+      "path": "direct_messages/sent.json",
+      "parameter_descriptions": {
+        "count": {
+          "hydration_method": "literal",
+          "value": "200",
+          "description": "Pagination counts"
+        },
+        "oauth_token": {
+          "hydration_method": "server",
+          "value": "oauth_token",
+          "description": "OAuth1 public key"
+        },
+        "oauth_token_secret": {
+          "hydration_method": "server",
+          "value": "oauth_token_secret",
+          "description": "OAuth1 private key"
+        },
+        "since_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.direct_messages_sent.direct_messages_sent.since_id",
+          "description": "Most recent tweet"
+        },
+        "max_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.direct_messages_sent.direct_messages_sent.max_id",
+          "description": "Highest ID of next page call"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "direct_messages_received",
+      "path": "direct_messages.json",
+      "parameter_descriptions": {
+        "count": {
+          "description": "Pagination counts",
+          "hydration_method": "literal",
+          "value": "200"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        },
+        "since_id": {
+          "description": "Most recent tweet",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.direct_messages_received.direct_messages_received.since_id"
+        },
+        "max_id": {
+          "description": "Highest ID of next page call",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.direct_messages_received.direct_messages_received.max_id"
+        }
+      }
+    }
+  ]
+}

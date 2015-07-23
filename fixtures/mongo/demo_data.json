@@ -1,30 +1,6 @@
 {
   "events": [
     {
-      "data": {
-        "user_id": 1,
-        "created": "2015-06-14T23:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "data_blob": {
-          "d": {
-            "null": null,
-            "thumbnail": "logo_light_240.png",
-            "string": "Hello World",
-            "number": 123,
-            "boolean": true,
-            "object": {
-              "a": "b",
-              "c": "d",
-              "e": "f"
-            },
-            "array": [
-              1,
-              2,
-              3
-            ]
-          }
-        }
-      },
       "event": {
         "event_type": "event",
         "created": "2015-06-14T23:23:44.000Z",
@@ -44,34 +20,29 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
+            "null": null,
+            "thumbnail": "logo_light_240.png",
+            "string": "Hello World",
+            "number": 123,
+            "boolean": true,
+            "object": {
+              "a": "b",
+              "c": "d",
+              "e": "f"
+            },
             "array": [
               1,
               2,
               3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
+            ]
           }
         }
-      },
+      }
+    },
+    {
       "event": {
         "event_type": "event",
         "created": "2014-07-04T17:06:44.000Z",
@@ -91,15 +62,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -118,7 +82,9 @@
             "thumbnail": "logo_light_240.png"
           }
         }
-      },
+      }
+    },
+    {
       "event": {
         "event_type": "event",
         "created": "2014-07-04T17:06:44.000Z",
@@ -138,15 +104,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -165,7 +124,9 @@
             "thumbnail": "logo_light_240.png"
           }
         }
-      },
+      }
+    },
+    {
       "event": {
         "event_type": "event",
         "created": "2014-07-04T17:06:44.000Z",
@@ -185,17 +146,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      }
-    }
-  ],
-  "messages": [
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -214,7 +166,11 @@
             "thumbnail": "logo_light_240.png"
           }
         }
-      },
+      }
+    }
+  ],
+  "messages": [
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -234,7 +190,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -248,30 +223,6 @@
       }
     },
     {
-      "data": {
-        "user_id": 1,
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "data_blob": {
-          "d": {
-            "string": "Hello World",
-            "null": null,
-            "thumbnail": "logo_light_240.png",
-            "object": {
-              "c": "d",
-              "a": "b",
-              "e": "f"
-            },
-            "number": 123,
-            "boolean": true,
-            "array": [
-              1,
-              2,
-              3
-            ]
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -291,7 +242,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "string": "Hello World",
+            "null": null,
+            "thumbnail": "logo_light_240.png",
+            "object": {
+              "c": "d",
+              "a": "b",
+              "e": "f"
+            },
+            "number": 123,
+            "boolean": true,
+            "array": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -304,30 +274,6 @@
       }
     },
     {
-      "data": {
-        "user_id": 1,
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "data_blob": {
-          "d": {
-            "number": 123,
-            "object": {
-              "a": "b",
-              "e": "f",
-              "c": "d"
-            },
-            "string": "Hello World",
-            "boolean": true,
-            "null": null,
-            "thumbnail": "logo_light_240.png",
-            "array": [
-              1,
-              2,
-              3
-            ]
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -347,7 +293,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "number": 123,
+            "object": {
+              "a": "b",
+              "e": "f",
+              "c": "d"
+            },
+            "string": "Hello World",
+            "boolean": true,
+            "null": null,
+            "thumbnail": "logo_light_240.png",
+            "array": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -364,30 +329,6 @@
       }
     },
     {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -407,25 +348,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Arnold",
-          "Sam"
-        ],
-        "message_from": "John",
-        "message_body": "Wow, the library is huge!"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -445,6 +369,18 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Arnold",
+          "Sam"
+        ],
+        "message_from": "John",
+        "message_body": "Wow, the library is huge!"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -464,29 +400,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Arnold",
-          "Sam",
-          "Liz R.",
-          "Alan",
-          "Sasha",
-          "Miguel"
-        ],
-        "message_from": "John",
-        "message_body": "Outside the New York Public Library"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -506,6 +421,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Arnold",
+          "Sam",
+          "Liz R.",
+          "Alan",
+          "Sasha",
+          "Miguel"
+        ],
+        "message_from": "John",
+        "message_body": "Outside the New York Public Library"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -525,24 +456,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John"
-        ],
-        "message_from": "Sam",
-        "message_body": "I'm going to be in your area this evening, want to meet for dinner?"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -562,6 +477,17 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John"
+        ],
+        "message_from": "Sam",
+        "message_body": "I'm going to be in your area this evening, want to meet for dinner?"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -581,25 +507,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Sam",
-          "Arnold"
-        ],
-        "message_from": "John",
-        "message_body": "Sure, we shouldn't be too late"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -619,6 +528,18 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Sam",
+          "Arnold"
+        ],
+        "message_from": "John",
+        "message_body": "Sure, we shouldn't be too late"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -638,24 +559,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Sam"
-        ],
-        "message_from": "John",
-        "message_body": "Want to eat at the Chipotle across the street?"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-16T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -675,6 +580,17 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Sam"
+        ],
+        "message_from": "John",
+        "message_body": "Want to eat at the Chipotle across the street?"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -694,24 +610,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John"
-        ],
-        "message_from": "Sam",
-        "message_body": "Sure, I've been craving a big ol' burrito"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-14T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -731,6 +631,17 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John"
+        ],
+        "message_from": "Sam",
+        "message_body": "Sure, I've been craving a big ol' burrito"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -750,24 +661,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Sam"
-        ],
-        "message_from": "John",
-        "message_body": "We'll meet you there at 6"
-      }
-    },
-    {
-      "data": {
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-14T08:01:18.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -787,6 +682,17 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Sam"
+        ],
+        "message_from": "John",
+        "message_body": "We'll meet you there at 6"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2015-06-14T18:23:44.000Z",
@@ -806,7 +712,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -826,30 +751,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -869,26 +770,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Kim",
-          "Liz L.",
-          "Morris"
-        ],
-        "message_from": "John",
-        "message_body": "Got my tickets for the Dodgers game tomorrow. Would any of you want to meet up tomorrow afternoon?"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -908,6 +791,19 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Kim",
+          "Liz L.",
+          "Morris"
+        ],
+        "message_from": "John",
+        "message_body": "Got my tickets for the Dodgers game tomorrow. Would any of you want to meet up tomorrow afternoon?"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -927,26 +823,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Liz L.",
-          "Morris"
-        ],
-        "message_from": "Kim",
-        "message_body": "Y"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -966,6 +844,19 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Liz L.",
+          "Morris"
+        ],
+        "message_from": "Kim",
+        "message_body": "Y"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -985,26 +876,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Kim",
-          "Morris"
-        ],
-        "message_from": "Liz L.",
-        "message_body": "Definitely, where were you thinking of going?"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1024,6 +897,19 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Kim",
+          "Morris"
+        ],
+        "message_from": "Liz L.",
+        "message_body": "Definitely, where were you thinking of going?"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1043,26 +929,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Kim",
-          "Liz L."
-        ],
-        "message_from": "Morris",
-        "message_body": "Afraid I can't, Megan and I are in Pittsburgh."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1082,6 +950,19 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Kim",
+          "Liz L."
+        ],
+        "message_from": "Morris",
+        "message_body": "Afraid I can't, Megan and I are in Pittsburgh."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1101,29 +982,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Alan",
-          "Kim",
-          "Liz L.",
-          "Harvey",
-          "Paul",
-          "Big Mike"
-        ],
-        "message_from": "John",
-        "message_body": "Kim, Lizl, and I are going to be hanging out in LA tomorrow afternoon. Haven't picked a place yet, so suggest something."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1143,6 +1003,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Alan",
+          "Kim",
+          "Liz L.",
+          "Harvey",
+          "Paul",
+          "Big Mike"
+        ],
+        "message_from": "John",
+        "message_body": "Kim, Lizl, and I are going to be hanging out in LA tomorrow afternoon. Haven't picked a place yet, so suggest something."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1162,7 +1038,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -1180,30 +1075,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1223,7 +1094,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -1241,30 +1131,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1284,29 +1150,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Kim",
-          "Liz L.",
-          "Harvey",
-          "Paul",
-          "Big Mike"
-        ],
-        "message_from": "Alan",
-        "message_body": "I haven't been to Venice Beach in a while."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1326,6 +1171,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Kim",
+          "Liz L.",
+          "Harvey",
+          "Paul",
+          "Big Mike"
+        ],
+        "message_from": "Alan",
+        "message_body": "I haven't been to Venice Beach in a while."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1345,7 +1206,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -1363,30 +1243,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1406,7 +1262,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -1424,30 +1299,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1467,30 +1318,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         },
-        "datetime": "2014-07-01T03:17:08.000Z"
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Kim",
-          "Harvey",
-          "Big Mike",
-          "Paul",
-          "Alan"
-        ],
-        "message_from": "Liz L.",
-        "message_body": "I'm in."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1510,6 +1339,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Kim",
+          "Harvey",
+          "Big Mike",
+          "Paul",
+          "Alan"
+        ],
+        "message_from": "Liz L.",
+        "message_body": "I'm in."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1529,29 +1374,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Paul",
-          "Alan"
-        ],
-        "message_from": "Kim",
-        "message_body": "Def"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1571,6 +1395,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Paul",
+          "Alan"
+        ],
+        "message_from": "Kim",
+        "message_body": "Def"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1590,7 +1430,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -1608,30 +1467,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1651,29 +1486,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan"
-        ],
-        "message_from": "John",
-        "message_body": "Great, let's meet at the skate park.  I know none of us skates, but it's easy to find."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1693,6 +1507,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan"
+        ],
+        "message_from": "John",
+        "message_body": "Great, let's meet at the skate park.  I know none of us skates, but it's easy to find."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1712,29 +1542,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan"
-        ],
-        "message_from": "John",
-        "message_body": "Great, let's meet at the skate park.  I know none of us skates, but it's easy to find."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1754,6 +1563,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan"
+        ],
+        "message_from": "John",
+        "message_body": "Great, let's meet at the skate park.  I know none of us skates, but it's easy to find."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1773,31 +1598,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         },
-        "datetime": "2014-07-01T08:57:18.000Z"
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan"
-        ],
-        "message_from": "Nate",
-        "message_body": "I want in too."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1817,6 +1619,23 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan"
+        ],
+        "message_from": "Nate",
+        "message_body": "I want in too."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1836,29 +1655,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan"
-        ],
-        "message_from": "John",
-        "message_body": "I loooove California Fish Grill.  Good fish, good prices, and you get a lot of food."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1878,6 +1676,22 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan"
+        ],
+        "message_from": "John",
+        "message_body": "I loooove California Fish Grill.  Good fish, good prices, and you get a lot of food."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1897,30 +1711,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan",
-          "Nate"
-        ],
-        "message_from": "John",
-        "message_body": "Leaving my place now.  Should be there in 45 minutes or so"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -1940,6 +1732,23 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan",
+          "Nate"
+        ],
+        "message_from": "John",
+        "message_body": "Leaving my place now.  Should be there in 45 minutes or so"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -1959,30 +1768,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan",
-          "Nate"
-        ],
-        "message_from": "John",
-        "message_body": "Finally found a parking spot.  Be there in a few"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -2002,6 +1789,23 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan",
+          "Nate"
+        ],
+        "message_from": "John",
+        "message_body": "Finally found a parking spot.  Be there in a few"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2021,30 +1825,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "Paul",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan",
-          "Nate"
-        ],
-        "message_from": "John",
-        "message_body": "Paul, you making it today?"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -2064,6 +1846,23 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "Paul",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan",
+          "Nate"
+        ],
+        "message_from": "John",
+        "message_body": "Paul, you making it today?"
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2083,30 +1882,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "message": {
-        "message_type": "message",
-        "user_id": 1,
-        "message_to": [
-          "John",
-          "Liz L.",
-          "Harvey",
-          "Big Mike",
-          "Kim",
-          "Alan",
-          "Nate"
-        ],
-        "message_from": "Paul",
-        "message_body": "Ugh, just woke up with a terrible cold.  Can't do it."
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -2126,6 +1903,23 @@
           }
         }
       },
+      "message": {
+        "message_type": "message",
+        "user_id": 1,
+        "message_to": [
+          "John",
+          "Liz L.",
+          "Harvey",
+          "Big Mike",
+          "Kim",
+          "Alan",
+          "Nate"
+        ],
+        "message_from": "Paul",
+        "message_body": "Ugh, just woke up with a terrible cold.  Can't do it."
+      }
+    },
+    {
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2145,7 +1939,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2167,30 +1980,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2210,7 +1999,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2232,30 +2040,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2275,7 +2059,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2297,30 +2100,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2340,7 +2119,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2362,30 +2160,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2405,7 +2179,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2427,30 +2220,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2470,7 +2239,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2492,30 +2280,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2535,7 +2299,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2557,30 +2340,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2600,7 +2359,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2622,30 +2400,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2665,7 +2419,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2687,30 +2460,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2730,7 +2479,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2752,30 +2520,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2795,7 +2539,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2817,30 +2580,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2860,7 +2599,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2882,30 +2640,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2925,7 +2659,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -2947,30 +2700,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -2990,7 +2719,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -3012,30 +2760,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -3055,7 +2779,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -3077,30 +2820,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "message",
         "created": "2014-07-04T17:06:44.000Z",
@@ -3120,7 +2839,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "message": {
         "message_type": "message",
@@ -3144,30 +2882,6 @@
   ],
   "plays": [
     {
-      "data": {
-        "user_id": 1,
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-14T08:01:18.000Z",
-        "data_blob": {
-          "d": {
-            "null": null,
-            "thumbnail": "logo_light_240.png",
-            "boolean": true,
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "string": "Hello World",
-            "object": {
-              "c": "d",
-              "e": "f",
-              "a": "b"
-            },
-            "number": 123
-          }
-        }
-      },
       "event": {
         "event_type": "play",
         "created": "2015-06-14T18:23:44.000Z",
@@ -3187,7 +2901,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "null": null,
+            "thumbnail": "logo_light_240.png",
+            "boolean": true,
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "string": "Hello World",
+            "object": {
+              "c": "d",
+              "e": "f",
+              "a": "b"
+            },
+            "number": 123
+          }
+        }
       },
       "play": {
         "user_id": 1,
@@ -3196,30 +2929,6 @@
       }
     },
     {
-      "data": {
-        "user_id": 1,
-        "created": "2015-06-14T18:23:44.000Z",
-        "updated": "2015-06-14T08:01:18.000Z",
-        "data_blob": {
-          "d": {
-            "string": "Hello World",
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "number": 123,
-            "null": null,
-            "thumbnail": "logo_light_240.png",
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            }
-          }
-        }
-      },
       "event": {
         "event_type": "play",
         "created": "2015-06-14T18:23:44.000Z",
@@ -3239,7 +2948,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "string": "Hello World",
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "number": 123,
+            "null": null,
+            "thumbnail": "logo_light_240.png",
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            }
+          }
+        }
       },
       "play": {
         "user_id": 1,
@@ -3248,30 +2976,6 @@
       }
     },
     {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
-          "d": {
-            "array": [
-              1,
-              2,
-              3
-            ],
-            "boolean": true,
-            "string": "Hello World",
-            "number": 123,
-            "object": {
-              "e": "f",
-              "a": "b",
-              "c": "d"
-            },
-            "null": null,
-            "thumbnail": "logo_light_240.png"
-          }
-        }
-      },
       "event": {
         "event_type": "play",
         "created": "2014-07-04T17:06:44.000Z",
@@ -3291,20 +2995,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "play": {
-        "user_id": 1,
-        "play_type": "play",
-        "title": "Under the Sea ft. Snoop Dogg"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -3324,6 +3016,13 @@
           }
         }
       },
+      "play": {
+        "user_id": 1,
+        "play_type": "play",
+        "title": "Under the Sea ft. Snoop Dogg"
+      }
+    },
+    {
       "event": {
         "event_type": "play",
         "created": "2014-07-04T17:06:44.000Z",
@@ -3343,20 +3042,8 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
-      },
-      "play": {
-        "user_id": 1,
-        "play_type": "play",
-        "title": "The Last Winter"
-      }
-    },
-    {
-      "data": {
-        "created": "2014-07-04T17:06:44.000Z",
-        "updated": "2014-07-12T20:01:12.000Z",
-        "user_id": 1,
-        "data_blob": {
+        },
+        "data_dict": {
           "d": {
             "array": [
               1,
@@ -3376,6 +3063,13 @@
           }
         }
       },
+      "play": {
+        "user_id": 1,
+        "play_type": "play",
+        "title": "The Last Winter"
+      }
+    },
+    {
       "event": {
         "event_type": "play",
         "created": "2014-07-04T17:06:44.000Z",
@@ -3395,7 +3089,26 @@
            "reverse_geolocation": "",
            "reverse_geo_format": "address",
            "resolution": "3.1"
-         }
+        },
+        "data_dict": {
+          "d": {
+            "array": [
+              1,
+              2,
+              3
+            ],
+            "boolean": true,
+            "string": "Hello World",
+            "number": 123,
+            "object": {
+              "e": "f",
+              "a": "b",
+              "c": "d"
+            },
+            "null": null,
+            "thumbnail": "logo_light_240.png"
+          }
+        }
       },
       "play": {
         "user_id": 1,

@@ -99,34 +99,6 @@ GEO_FILTERS = {
     },
 }
 
-MAPPED_FIELDS = {
-    'event': [
-        'id',
-        'permission',
-        'created',
-        'datetime',
-        'event_type',
-        'location',
-        'name',
-        'provider',
-        'provider_name',
-        'signal',
-        'updated',
-        'user_id'
-    ],
-    'message': [
-        'message_body',
-        'message_from',
-        'message_to',
-        'message_type'
-    ],
-    'play': [
-        'media_url',
-        'play_type',
-        'title'
-    ]
-}
-
 MAPPED_SEARCH_FIELDS = {
     'event': {
         'id',
@@ -139,17 +111,6 @@ MAPPED_SEARCH_FIELDS = {
         'provider_name',
         'signal',
         'updated'
-    },
-    'message': {
-        'message_body',
-        'message_from',
-        'message_to',
-        'message_type'
-    },
-    'play': {
-        'media_url',
-        'play_type',
-        'title'
     }
 }
 

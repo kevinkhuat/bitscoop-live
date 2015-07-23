@@ -254,9 +254,6 @@ LOGGING = {
 FIXTURE_DIRS = (
     get_path(ROOT_PATH, 'fixtures'),
 )
-MONGO_FIXTURE_DIRS = (  # UNOFFICIAL SETTING
-    get_path(ROOT_PATH, 'fixtures', 'mongo'),
-)
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

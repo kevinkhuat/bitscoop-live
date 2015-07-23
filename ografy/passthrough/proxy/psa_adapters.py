@@ -21,6 +21,13 @@ STRATEGY = getattr(settings, setting_name('STRATEGY'), 'social.strategies.django
 Strategy = module_member(STRATEGY)
 
 
+def refresh_signal_token(loaded_backend, signal):
+    refresh_response = loaded_backend.refresh_token(signal.refresh_token)
+    signal.access_token = refresh_response['access_token']
+    signal.save()
+    return signal
+
+
 def get_psa_backend(signal):
     """
     Return the PSA backend associated with a given signal
@@ -72,7 +79,7 @@ def add_psa_params(parameters, signal):
 
 
 @gen.coroutine
-def psa_get_json(self, url, parameters, loaded_backend, method='GET', *args, **kwargs):
+def psa_get_json(self, url, parameters, signal, loaded_backend, method='GET', *args, **kwargs):
     """
     This appends the parameters to the URL call and then calls the URL asynchronously.
     When the result comes back, it is written back to the client.
@@ -80,7 +87,7 @@ def psa_get_json(self, url, parameters, loaded_backend, method='GET', *args, **k
     :param url: The URL to call
     :param parameters: The parameters to append to the call
     :param loaded_backend: The backend associated with call
-    :param method: The method to use in teh call
+    :param method: The method to use to make the call
     :param args:
     :param kwargs:
     :return:
@@ -108,11 +115,46 @@ def psa_get_json(self, url, parameters, loaded_backend, method='GET', *args, **k
             response = session.request(method, url, *args, **kwargs)
             self.write(response)
         else:
+            if method == 'POST':
+                kwargs['method'] = method
+                kwargs['body'] = ''
+
             request = tornado.httpclient.HTTPRequest(url, **kwargs)
             client = tornado.httpclient.AsyncHTTPClient()
-            response = yield client.fetch(request)
-            self.write(response.body)
-        self.finish()
 
+            try:
+                response = yield client.fetch(request)
+            except tornado.httpclient.HTTPError as err:
+                if err.response.code == 401:
+                    signal = refresh_signal_token(loaded_backend, signal)
+
+                    parameters['access_token'] = signal.access_token
+
+                    url_parts = list(urllib.parse.urlparse(url))
+                    query = dict(urllib.parse.parse_qsl(url_parts[4]))
+                    query.update(parameters)
+
+                    url_parts[4] = urllib.parse.urlencode(query)
+                    url = urllib.parse.urlunparse(url_parts)
+
+                    request = tornado.httpclient.HTTPRequest(url, **kwargs)
+                    client = tornado.httpclient.AsyncHTTPClient()
+                    response = yield client.fetch(request)
+
+                    if response.code == 401:
+                        self.send_error('Failure after token refresh')
+                        self.finish()
+
+                elif err.response.code == 429:
+                    self.send_error('Too many requests')
+                    self.finish()
+
+                else:
+                    self.send_error('Unknown call failure')
+                    self.finish()
+
+            self.write(response.body)
+
+        self.finish()
     except ConnectionError as err:
         raise AuthFailed(loaded_backend, str(err))

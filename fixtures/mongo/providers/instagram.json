@@ -1,0 +1,510 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000002",
+    "name": "Instagram",
+    "domain": "api.instagram.com",
+    "client_callable": true,
+    "backend_name": "instagram",
+    "endpoint_wait_time": 0,
+    "auth_backend": "social.backends.instagram.InstagramOAuth2",
+    "description": "Mobile photo-sharing, video-sharing and social networking service",
+    "tags": "media social",
+    "auth_type": 0,
+    "scheme": "https",
+    "url_name": "instagram"
+  },
+  "event_sources": [
+    {
+      "display_name": "Instagram Posts",
+      "name": "instagram_posts",
+      "description": "Content you have posted on Instagram",
+      "enabled_by_default": true,
+      "endpoints": [
+        "instagram_feed"
+      ],
+      "initial_mapping": "instagram_feed",
+      "mappings": {
+        "instagram_feed": {
+          "returned_data_location": "data",
+          "event_type": "create",
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "instagram"
+                },
+                {
+                  "hydration_method": "literal",
+                  "value": "posted"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "with"
+              },
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "format": "unix_time",
+                  "value": "responseObject.created_time"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "instagram"
+                }
+              }
+            },
+            "content": {
+              "photos": {
+                "restrict_field": {
+                  "field": "responseObject.type",
+                  "value": "image"
+                },
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "posted"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "photo"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.images.standard_resolution.url"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  }
+                }
+              },
+              "videos": {
+                "restrict_field": {
+                  "field": "responseObject.type",
+                  "value": "video"
+                },
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "posted"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "video"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.videos.standard_resolution.url"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "likes": {
+                "hydrate_list_location": "responseObject.likes.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "full_name"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "username"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                }
+              },
+              "comments": {
+                "hydrate_list_location": "responseObject.comments.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "from.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "from.full_name"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "from.username"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "value": "from.id"
+                  }
+                }
+              }
+            },
+            "location": {
+              "geolocation": {
+                "hydration_method": "translate",
+                "type": "multi_value",
+                "value": [
+                  "responseObject.location.longitude",
+                  "responseObject.location.latitude"
+                ]
+              },
+              "geo_format": {
+                "hydration_method": "literal",
+                "value": "lat_lng"
+              },
+              "datetime": {
+                "hydration_method": "translate",
+                "type": "string",
+                "format": "unix_time",
+                "value": "responseObject.created_time"
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": false,
+          "start_cursor_parameter": "min_id",
+          "end_cursor_parameter": "max_id",
+          "cursor_value": "id"
+        }
+      }
+    },
+    {
+      "display_name": "Instagram Likes",
+      "name": "instagram_likes",
+      "description": "Posts you have Liked on Instagram",
+      "enabled_by_default": true,
+      "endpoints": [
+        "instagram_likes"
+      ],
+      "initial_mapping": "instagram_likes",
+      "mappings": {
+        "instagram_likes": {
+          "returned_data_location": "data",
+          "event_type": "comment",
+          "db_entry_mapping": {
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "instagram"
+                },
+                {
+                  "hydration_method": "literal",
+                  "value": "liked"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                }
+              ],
+              "contact_interaction_type": {
+                "hydration_method": "literal",
+                "type": "string",
+                "value": "with"
+              },
+              "mapped_fields": {
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "instagram"
+                }
+              }
+            },
+            "content": {
+              "photos": {
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.type",
+                      "value": "image"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "liked"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "photo"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  },
+                  "title": {
+                    "hydration_method": "reformat",
+                    "hydration_location": "responseObject.caption.text",
+                    "value": "Liked [$1]"
+                  }
+                }
+              },
+              "videos": {
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.type",
+                      "value": "video"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "liked"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "video"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.caption.text"
+                  },
+                  "title": {
+                    "hydration_method": "reformat",
+                    "hydration_location": "responseObject.caption.text",
+                    "value": "Liked [$1]"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "likes": {
+                "hydrate_list_location": "responseObject.likes.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "full_name"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "username"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                }
+              },
+              "comments": {
+                "hydrate_list_location": "responseObject.comments.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "from.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "from.full_name"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "from.username"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "value": "from.id"
+                  }
+                }
+              },
+              "user": {
+                "hydrate_list_location": "responseObject.user",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "translate",
+                    "value": "full_name"
+                  },
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "username"
+                  },
+                  "api_id": {
+                    "hydration_method": "translate",
+                    "value": "id"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": false,
+          "next_cursor_location": "pagination",
+          "end_cursor_parameter": "max_like_id",
+          "cursor_value": "next_max_like_id"
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "call_method": "GET",
+      "name": "instagram_feed",
+      "path": "/v1/users/self/feed",
+      "parameter_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "count": {
+          "description": "Pagination counts",
+          "hydration_method": "literal",
+          "value": "20"
+        },
+        "min_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.instagram_posts.instagram_feed.min_id",
+          "description": "Most recent Instagram item"
+        },
+        "max_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.instagram_posts.instagram_feed.max_id",
+          "description": "Highest ID of next page call"
+        }
+      }
+    },
+    {
+      "call_method": "GET",
+      "name": "instagram_likes",
+      "path": "/v1/users/self/media/liked",
+      "parameter_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "count": {
+          "description": "Pagination counts",
+          "hydration_method": "literal",
+          "value": "20"
+        },
+        "max_like_id": {
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.instagram_likes.instagram_likes.max_like_id",
+          "description": "Highest ID of next page call"
+        }
+      }
+    }
+  ]
+}

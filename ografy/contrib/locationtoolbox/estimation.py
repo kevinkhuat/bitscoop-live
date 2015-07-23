@@ -192,9 +192,7 @@ def estimate_location_last(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there isn't a hit, then the query was for a date before the oldest one for this user
     # In that case, search for the Location at the earliest available date and use that instead
@@ -218,9 +216,7 @@ def estimate_location_last(user_id, datetime, index, doc_type):
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
-                },
-                reverse_geolocation='',
-                reverse_geo_format='address'
+                }
             )
         # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
         # At a later date, once there are some Locations associated with the user, the estimated location
@@ -235,9 +231,7 @@ def estimate_location_last(user_id, datetime, index, doc_type):
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
-                },
-                reverse_geolocation='',
-                reverse_geo_format='address'
+                }
             )
 
     return geolocation
@@ -276,9 +270,7 @@ def estimate_location_next(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
 
     # If there isn't a hit, then the query was for a date after the most recent one for this user
@@ -303,9 +295,7 @@ def estimate_location_next(user_id, datetime, index, doc_type):
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
-                },
-                reverse_geolocation='',
-                reverse_geo_format='address'
+                }
             )
 
         # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
@@ -321,9 +311,7 @@ def estimate_location_next(user_id, datetime, index, doc_type):
                 geolocation={
                     'type': 'Point',
                     'coordinates': coordinates
-                },
-                reverse_geolocation='',
-                reverse_geo_format='address'
+                }
             )
 
     return geolocation
@@ -383,9 +371,7 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there isn't a result before, use the one after
     elif len(hits1) == 0:
@@ -397,9 +383,7 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there isn't a result after, use the one before
     elif len(hits2) == 0:
@@ -411,9 +395,7 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
@@ -428,9 +410,7 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
 
     return geolocation
@@ -540,9 +520,7 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there isn't a result before, use the one after
     elif hits1 is None and hits2 is not None:
@@ -554,9 +532,7 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there isn't a result after, use the one before
     elif hits2 is None and hits1 is not None:
@@ -568,9 +544,7 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
@@ -585,9 +559,7 @@ def estimate_location_between(user_id, datetime, index, doc_type):
             geolocation={
                 'type': 'Point',
                 'coordinates': coordinates
-            },
-            reverse_geolocation='',
-            reverse_geo_format='address'
+            }
         )
 
     return geolocation
