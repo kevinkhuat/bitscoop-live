@@ -6,6 +6,14 @@ MAPBOX_USER_NAME = 'liambroza.hl4bi8d0'
 MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg'
 
 
+############
+# Mandrill #
+############
+
+# MANDRILL_API_KEY = '5e_n2B_B5H8oXQeRUIfDkQ'
+MANDRILL_API_KEY = 'CwL441QKVH1rq31NDJvzfQ'  # TEST KEY
+
+
 ###########
 # Dropbox #
 ###########

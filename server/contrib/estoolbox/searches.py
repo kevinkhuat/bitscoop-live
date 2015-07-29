@@ -1,13 +1,12 @@
 import copy
 import datetime
-import json
 import hashlib
+import json
 
 from elasticsearch import Elasticsearch
 
-from server import SOURCE_PATH, get_path
+from server import SOURCE_PATH, get_path, settings
 from server.contrib.pytoolbox import sort_dictionary
-from server import settings
 
 
 es = Elasticsearch(host=settings.ELASTICSEARCH['HOST'], port=settings.ELASTICSEARCH['PORT'], use_ssl=settings.ELASTICSEARCH['USE_SSL'])

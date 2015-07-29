@@ -79,8 +79,9 @@ ADMINS = (
     ('Webmaster', 'webmaster+logging@bitscoop.com'),
 )
 # DEFAULT_CHARSET defined under "HTTP."
-# DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+DEFAULT_FROM_EMAIL = 'notify@bitscoop.com'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
 # EMAIL_FILE_PATH (not defined)
 # EMAIL_HOST = 'localhost'
 # EMAIL_HOST_PASSWORD = ''
@@ -93,6 +94,9 @@ ADMINS = (
 # # SEND_BROKEN_LINK_EMAILS defined under "Error Reporting."
 # SERVER_EMAIL = 'root@localhost'
 
+MANDRILL_SETTINGS = {
+    'merge_language': 'handlebars'
+}
 
 ###################
 # ERROR REPORTING #  https://docs.djangoproject.com/en/1.7/ref/settings/#error-reporting
@@ -249,6 +253,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
+    'djrill',
     'rest_framework',
     'social.apps.django_app.default',
 
@@ -418,3 +423,10 @@ PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 MULTIAUTH_AUTH_ERROR = 'django.http.Http404'
 MULTIAUTH_HASH_MINLENGTH = 5
 MULTIAUTH_HASH_SECRET = '65-va3nry3g0z_937wguu0$5yyz)*(ko)v7)$letyq%&hii!8u'
+
+
+#############
+# PASSWORDS #
+#############
+
+PASSWORD_RESET_CACHE_TIMEOUT = 60 * 15  # 15 Minutes

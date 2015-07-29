@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
 import re
-import server.contrib.pytoolbox.django.fields
+
 import django.core.validators
+from django.db import migrations, models
+
+import server.contrib.pytoolbox.django.fields
 
 
 class Migration(migrations.Migration):

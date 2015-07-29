@@ -1,4 +1,4 @@
-from django.db.models import Q, Manager as BaseManager
+from django.db.models import Manager as BaseManager, Q
 from django.utils.timezone import now
 
 

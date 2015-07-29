@@ -2,6 +2,7 @@ blinker
 django
 djangorestframework
 django-redis
+djrill
 elasticsearch
 eventlet
 geopy

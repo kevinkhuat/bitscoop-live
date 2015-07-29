@@ -5,14 +5,14 @@ import jsonschema
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage
 from django.forms import Form as BaseForm
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
-from django.http import Http404
 
 from server.contrib.multiauth import logout
 from server.contrib.multiauth.decorators import login_required
@@ -69,11 +69,25 @@ class AccountHandleView(View, FormMixin):
 
     def post(self, request):
         user = request.user
+
+        old_handle = user.handle or 'no handle'
+
         form = self.get_filled_form(request)
 
         if form.is_valid():
             update(user, form.cleaned_data)
             user.save()
+
+            msg = EmailMessage(to=[user.email])
+            msg.template_name = 'handle-change-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier,
+                'old_handle': old_handle
+            }
+
+            msg.send()
+
             response = JsonResponse(form.cleaned_data)
         else:
             response = JsonResponse(form.errors, status=422)
@@ -111,6 +125,16 @@ class AccountPasswordView(View, FormMixin):
             user.set_password(form.cleaned_data['new_password'])
             user.password_date = timezone.now()
             user.save()
+
+            msg = EmailMessage(to=[user.email])
+            msg.template_name = 'password-change-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier
+            }
+
+            msg.send()
+
             response = JsonResponse('', safe=False)
         else:
             response = JsonResponse(form.errors, status=422)
@@ -127,6 +151,15 @@ class AccountDeactivateView(View):
         user = request.user
         user.is_active = False
         user.save()
+
+        msg = EmailMessage(to=[user.email])
+        msg.template_name = 'deactivate-confirm'
+
+        msg.global_merge_vars = {
+            'handle': user.identifier
+        }
+
+        msg.send()
 
         logout(request)
 
@@ -166,8 +199,6 @@ class BillingView(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         raise Http404
-
-        return super().dispatch(*args, **kwargs)
 
     def get(self, request):
         return render(request, self.template_name, {
@@ -451,8 +482,33 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
 
         if form.is_valid():
             user = request.user
+
+            old_email = user.email
+
             update(user, form.cleaned_data)
             user.save()
+
+            msg = EmailMessage(to=[user.email])
+            msg.template_name = 'email-change-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier,
+                'new_email': user.email,
+                'old_email': old_email
+            }
+
+            msg.send()
+
+            msg = EmailMessage(to=[old_email])
+            msg.template_name = 'email-change-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier,
+                'new_email': user.email,
+                'old_email': old_email
+            }
+
+            msg.send()
         else:
             code = 422
 
@@ -474,8 +530,22 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
 
         if form.is_valid():
             user = request.user
+
+            old_email = user.email
+
             update(user, form.cleaned_data)
             user.save()
+
+            msg = EmailMessage(to=[user.email])
+            msg.template_name = 'email-change-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier,
+                'new_email': user.email,
+                'old_email': old_email
+            }
+
+            msg.send()
 
             response = JsonResponse(form.cleaned_data)
         else:

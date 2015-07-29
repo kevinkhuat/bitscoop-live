@@ -69,6 +69,20 @@
 					{{ form.repeated_password.errors }}
 				</div>
 
+				<!--<div class="check-box">-->
+					<!--<input type="checkbox" name="newsletter_subscribed" checked/>-->
+					<!--<label>Sign me up for the BitScoop Email Newsletter.</label>-->
+				<!--</div>-->
+
+				<div class="check-box">
+					<input type="checkbox" name="terms_privacy"/>
+					<label>I have read and agree to the BitScoop <a href="{% url 'terms' %}">Terms</a> and <a class="button" href="{% url 'privacy' %}">Privacy</a> agreements.</label>
+
+				</div>
+				<div>
+					{{ form.terms_privacy.errors }}
+				</div>
+
 				<div>
 					{{ form.non_field_errors }}
 				</div>

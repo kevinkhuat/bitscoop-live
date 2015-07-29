@@ -1,8 +1,8 @@
 import django.conf
 from django import forms
 from django.contrib.auth import authenticate, get_user_model, login
-from django.forms import Form as BaseForm
-from django.forms import ModelForm
+from django.core.mail import EmailMessage
+from django.forms import Form as BaseForm, ModelForm
 from django.http import Http404, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import TemplateDoesNotExist
@@ -213,12 +213,14 @@ class SignupView(View, FormMixin):
         password = PasswordField()
         repeated_password = forms.CharField()
         code = forms.CharField()
+        # newsletter_subscribed = forms.BooleanField(required=False)
+        terms_privacy = forms.BooleanField(required=False)
 
         class Meta:
             # FIXME: Known 1.7 bug
             # model = get_user_model()
             model = User
-            fields = ['email', 'handle', 'first_name', 'last_name']
+            fields = ['email', 'handle', 'first_name', 'last_name']  # , 'newsletter_subscribed']
 
         def clean_code(self):
             data = self.cleaned_data.get('code')
@@ -255,9 +257,13 @@ class SignupView(View, FormMixin):
             handle = self.cleaned_data.get('handle')
             password = self.cleaned_data.get('password')
             repeated_password = self.cleaned_data.get('repeated_password')
+            terms_privacy = self.cleaned_data.get('terms_privacy')
 
             if password != repeated_password:
                 self.add_error('repeated_password', 'Passwords don\'t match.')
+
+            if not terms_privacy:
+                self.add_error('terms_privacy', 'You must agree to BitScoop\'s Terms and Privacy agreements to sign up.')
 
             if email is not None:
                 email_count = user_model.objects.by_identifier(email).count()
@@ -292,6 +298,7 @@ class SignupView(View, FormMixin):
             user_model = get_user_model()
             form.cleaned_data.pop('repeated_password')
             code = form.cleaned_data.pop('code')
+            form.cleaned_data.pop('terms_privacy')
             user = user_model(**form.cleaned_data)
             user.set_password(form.cleaned_data['password'])
             user.save()
@@ -318,6 +325,15 @@ class SignupView(View, FormMixin):
             code.uses -= 1
             code.save()
             code.users.add(user)
+
+            msg = EmailMessage(to=[user.email])
+            msg.template_name = 'signup-confirm'
+
+            msg.global_merge_vars = {
+                'handle': user.identifier
+            }
+
+            msg.send()
 
             return redirect_by_name('providers')
 

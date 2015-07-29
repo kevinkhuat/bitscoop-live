@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block outer_header %}
+{% endblock %}
+
+
+{% block main %}
+	<form method="POST">
+		<div class="boxed-group">
+			<div>Reset Password</div>
+
+			<div class="padded">
+
+				<div class="text-box">
+					<input type="password" name="password" placeholder="Password" />
+				</div>
+				<div>
+					{{ form.password.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="password" name="password_repeated" placeholder="Repeat Password" />
+				</div>
+				<div>
+					{{ form.password_repeated.errors }}
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<button class="primary" type="submit">Update Password</button>
+		</div>
+	</form>
+{% endblock %}

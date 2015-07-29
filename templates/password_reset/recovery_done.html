@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+{% block outer_header %}
+{% endblock %}
+
+
+{% block main %}
+	<p>Your password has successfully been reset.</p>
+	<p>You can use it right now on the login page.</p>
+
+	<a class="button" href="{% url 'login' %}"><button>Login</button></a>
+{% endblock %}
