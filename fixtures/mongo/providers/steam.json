@@ -28,6 +28,28 @@
           "returned_data_location": "response.games",
           "event_type": "play",
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.appid"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.playtime_forever"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -123,6 +145,44 @@
             }
           },
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "parentResponseObject.appid"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "parentResponseObject.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "parentResponseObject.playtime_forever"
+                  }
+                ]
+              },
+              "child": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "parentResponseObject.appid"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {

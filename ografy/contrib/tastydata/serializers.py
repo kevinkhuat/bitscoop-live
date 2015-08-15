@@ -10,10 +10,9 @@ from rest_framework import fields as drf_fields, serializers
 from rest_framework.fields import empty
 
 from ografy.contrib.tastydata.fields import (
-    BaseGeoField, BinaryField, DocumentField, DynamicField, EmbeddedDocumentField, ListField, ObjectIdField,
-    SortedListField
+    BaseGeoField, BinaryField, DjangoField, DocumentField, DynamicField, EmbeddedDocumentField,
+    EmbeddedDocumentListField, ListField, MongoField, ObjectIdField, ReferenceField, SortedListField
 )
-from ografy.contrib.tastydata.related_fields import DjangoField, MongoField, ReferenceField
 from ografy.contrib.tastydata.utils import get_field_info
 
 
@@ -141,7 +140,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         me_fields.ReferenceField: ReferenceField,
         me_fields.ListField: ListField,
         me_fields.EmbeddedDocumentField: EmbeddedDocumentField,
-        me_fields.EmbeddedDocumentListField: ListField,
+        me_fields.EmbeddedDocumentListField: EmbeddedDocumentListField,
         me_fields.SortedListField: SortedListField,
         me_fields.DynamicField: DynamicField,
         me_fields.DictField: DocumentField,

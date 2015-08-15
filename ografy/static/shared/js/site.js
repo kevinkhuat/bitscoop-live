@@ -1,4 +1,4 @@
-define ('site', ['cookies'], function(cookies) {
+define ('site', ['lodash', 'jquery-cookie'], function(_) {
 	//Many of these event bindings may become unnecessary after the front-end revamp.
 	function bindMainAppUtilities() {
 		$('.user-button').click(function() {
@@ -120,17 +120,17 @@ define ('site', ['cookies'], function(cookies) {
 				permission_name: permission_name,
 				signal_id: signal_id
 			};
+
 			$.ajax({
 				url: '/settings/signals',
 				type: 'POST',
 				dataType: 'html',
 				data: data,
 				headers: {
-					'X-CSRFToken': cookies.getCsrfToken()
+					'X-CSRFToken': $.cookie('csrftoken')
 				}
 			}).done(function(data, xhr, response) {
-				var permission_name = data;
-				$parent.attr('data-permission-name', permission_name);
+				$parent.attr('data-permission-name', data);
 			}).fail(function(data, xhr, response) {
 				console.log('EventSource patch failed');
 			});
@@ -153,7 +153,7 @@ define ('site', ['cookies'], function(cookies) {
 					dataType: 'json',
 					data: {},
 					headers: {
-						'X-CSRFToken': cookies.getCsrfToken()
+						'X-CSRFToken': $.cookie('csrftoken')
 					}
 				}).done(function() {
 					$($thisSignalContainer).remove();
@@ -195,7 +195,7 @@ define ('site', ['cookies'], function(cookies) {
 				dataType: 'text',
 				data: data,
 				headers: {
-					'X-CSRFToken': cookies.getCsrfToken()
+					'X-CSRFToken': $.cookie('csrftoken')
 				}
 			}).done(function(data, xhr, response) {
 				window.location.pathname = data;
@@ -216,7 +216,7 @@ define ('site', ['cookies'], function(cookies) {
 				dataType: 'json',
 				data: data,
 				headers: {
-					'X-CSRFToken': cookies.getCsrfToken()
+					'X-CSRFToken': $.cookie('csrftoken')
 				}
 			}).done(function(data, xhr, response) {
 				//console.log('succeeded');

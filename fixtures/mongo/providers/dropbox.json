@@ -28,6 +28,24 @@
           "returned_data_location": "entries",
           "event_type": "edit",
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.1.path"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.1.modified"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -39,11 +57,11 @@
                   "value": "responseObject.1.modified"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "value": "with"
-              },
               "mapped_fields": {
+                "`interaction_type": {
+                  "hydration_method": "literal",
+                  "value": "with"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",

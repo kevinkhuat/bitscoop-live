@@ -30,6 +30,24 @@
           "conditions": {
           },
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "endpoint.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -37,11 +55,11 @@
                   "value": "responseObject.id_str"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "value": "to"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "value": "to"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",
@@ -162,6 +180,20 @@
           "conditions": {
           },
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -169,11 +201,11 @@
                   "value": "responseObject.id_str"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "value": "to"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "value": "to"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",
@@ -300,6 +332,20 @@
             }
           ],
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id_str"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -307,12 +353,12 @@
                   "value": "responseObject.id_str"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "type": "string",
-                "value": "from"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "from"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",

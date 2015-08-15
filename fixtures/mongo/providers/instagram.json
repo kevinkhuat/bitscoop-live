@@ -28,6 +28,28 @@
           "returned_data_location": "data",
           "event_type": "create",
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "posted"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -43,12 +65,12 @@
                   "value": "responseObject.id"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "type": "string",
-                "value": "with"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",
@@ -243,6 +265,28 @@
           "returned_data_location": "data",
           "event_type": "comment",
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "instagram"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "liked"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -258,12 +302,12 @@
                   "value": "responseObject.id"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "type": "string",
-                "value": "with"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
                 "provider_name": {
                   "hydration_method": "literal",
                   "type": "string",

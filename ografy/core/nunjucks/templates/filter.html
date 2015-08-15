@@ -1,0 +1,24 @@
+<div class="filter" data-filter-type={{ filter.type }} data-{{ filter.type }}-id={{ filter.id }}>
+	<div class="name">
+	{% if update %}
+		{% if filter.type == 'who' %}
+			{% if filter.contactInteractionType %}{{ filter.contactInteractionType|title }}{% endif %} {{ filter.name }}
+		{% elif filter.type == 'what' %}
+			{{ filter.contentType }}
+		{% elif filter.type == 'where' %}
+			{% if filter.whereType == 'area' %}
+				{{ filter.modifier|title }} polygon
+			{% elif filter.whereType == 'radius' %}
+				{{ filter.modifier|title }} {{ filter.radius }} {{ filter.unit }} of marker
+			{% endif %}
+		{% elif filter.type == 'when' %}
+			{% if startDate %}> {{ startDate }} {% endif %} {% if endDate %}< {{ endDate }} {% endif %}
+		{% elif filter.type == 'how' %}
+			{{ filter.providerName }}
+		{% endif %}
+	{% else %}
+		{{ filter.type }}
+	{% endif %}
+	</div>
+	<div class="remove">x</div>
+</div>

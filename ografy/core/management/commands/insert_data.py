@@ -1,12 +1,11 @@
-from bson.objectid import ObjectId
-import datetime
 import json
 import os
 
+from bson.objectid import ObjectId
 from django.core.management.base import BaseCommand
 
 from ografy.core import api as core_api
-from ografy.core.documents import Contact, Content, Event, Location, Signal
+from ografy.core.documents import Contact, Content, Data, Event, Location, Signal
 from ografy.settings import FIXTURE_DIRS
 
 
@@ -31,19 +30,32 @@ def create_fixture_signal(signal):
         user_id=signal['user_id'],
     )
 
-    if hasattr(signal, 'access_token'):
+    if 'access_token' in signal.keys():
         return_signal['access_token'] = signal['access_token']
 
-    if hasattr(signal, 'oauth_token'):
+    if 'oauth_token' in signal.keys():
         return_signal['oauth_token'] = signal['oauth_token']
 
-    if hasattr(signal, 'oauth_token_secret'):
+    if 'oauth_token_secret' in signal.keys():
         return_signal['oauth_token_secret'] = signal['oauth_token_secret']
 
-    if hasattr(signal, 'last_run'):
+    if 'last_run' in signal.keys():
         return_signal['last_run'] = signal['last_run']
 
     return return_signal
+
+
+def create_fixture_data(data):
+    return_data = Data(
+        id=ObjectId(data['_id']),
+        created=data['created'],
+        data_dict=data['data_dict'],
+        ografy_unique_id=data['ografy_unique_id'],
+        updated=data['updated'],
+        user_id=data['user_id'],
+    )
+
+    return return_data
 
 
 def create_fixture_event(event):
@@ -64,6 +76,9 @@ def create_fixture_event(event):
         user_id=event['user_id'],
     )
 
+    if 'contact_interaction_type' in event.keys():
+        return_event['contact_interaction_type'] = event['contact_interaction_type']
+
     return return_event
 
 
@@ -77,7 +92,7 @@ def create_fixture_location(location):
         user_id=location['user_id'],
     )
 
-    if hasattr(location, 'resolution'):
+    if 'resolution' in location.keys():
         return_location['resolution'] = location['resolution']
 
     return return_location
@@ -93,14 +108,14 @@ def create_fixture_contact(contact):
         user_id=contact['user_id']
     )
 
-    if hasattr(contact, 'api_id'):
-        Contact['api_id'] = contact['api_id']
+    if 'api_id' in contact.keys():
+        return_contact['api_id'] = contact['api_id']
 
-    if hasattr(contact, 'handle'):
-        Contact['handle'] = contact['handle']
+    if 'handle' in contact.keys():
+        return_contact['handle'] = contact['handle']
 
-    if hasattr(contact, 'name'):
-        Contact['name'] = contact['name']
+    if 'name' in contact.keys():
+        return_contact['name'] = contact['name']
 
     return return_contact
 
@@ -117,10 +132,13 @@ def create_fixture_content(content):
         user_id=content['user_id']
     )
 
-    if hasattr(content, 'title'):
+    if 'text' in content.keys():
+        return_content['text'] = content['text']
+
+    if 'title' in content.keys():
         return_content['title'] = content['title']
 
-    if hasattr(content, 'url'):
+    if 'url' in content.keys():
         return_content['url'] = content['url']
 
     return return_content
@@ -133,6 +151,10 @@ def load_fixture(path):
     for signal in fixture_data['signals']:
         insert_signal = create_fixture_signal(signal)
         core_api.SignalApi.post(insert_signal)
+
+    for data in fixture_data['data']:
+        insert_data = create_fixture_data(data)
+        core_api.DataApi.post(insert_data)
 
     for contact in fixture_data['contacts']:
         insert_contact = create_fixture_contact(contact)

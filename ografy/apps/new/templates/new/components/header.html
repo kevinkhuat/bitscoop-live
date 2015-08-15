@@ -1,11 +1,23 @@
 {% load staticfiles %}
 
 <nav class="flex align-center">
-	<a style="margin: 0 15px 0 0;"><img src="{% static 'assets/img/ografy_search.png' %}" style="height: 35px; position: relative; top: 2px;"/></a>
+	<a style="margin: 0 15px 0 0;"><img src="{% static 'assets/img/bitscoop-main.jpg' %}" style="height: 35px; position: relative; top: 2px;"/></a>
 	<a href="#" class="active"><i class="icon-map22"></i></a>
 	<a href="#"><i class="icon-list-unordered"></i></a>
 	<span class="grow"></span>
-	<a href="#"><i class="icon-plus"></i></a>
-	<a href="#"><i class="icon-help"></i></a>
-	<a href="#" style="position: relative; top: -1px; font-weight: bold; color: #BEBDBD;">DemoUser</a>
+	<a href="/providers"><i class="icon-plus"></i></a>
+	<a href="/help/documentation/account"><i class="icon-help"></i></a>
+	<div class="item link">
+		<a class="user-button item">{{ request.user.identifier }}</a>
+		<div class="flex column menu main hidden">
+			<a class="item" href="{% url 'core_settings_account' %}">
+				<i class="icon-cog" ></i>
+				Settings
+			</a>
+			<a class="item" href="{% url 'core_logout' %}">
+				<i class="icon-sign-out"></i>
+				Logout
+			</a>
+		</div>
+	</div>
 </nav>

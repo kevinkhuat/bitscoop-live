@@ -41,12 +41,7 @@ class ElasticsearchConfig(AppConfig):
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
                 'data_dict': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {
-                            'type': 'string'
-                        }
-                    }
+                    'type': 'string'
                 },
                 'handle': {
                     'type': 'string'
@@ -83,12 +78,7 @@ class ElasticsearchConfig(AppConfig):
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
                 'data_dict': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {
-                            'type': 'string'
-                        }
-                    }
+                    'type': 'string'
                 },
                 'file_extension': {
                     'type': 'string'
@@ -191,12 +181,7 @@ class ElasticsearchConfig(AppConfig):
                     'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                 },
                 'data_dict': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {
-                            'type': 'string'
-                        }
-                    }
+                    'type': 'string'
                 },
                 'datetime': {
                     'type': 'date',
@@ -259,12 +244,7 @@ class ElasticsearchConfig(AppConfig):
         body={
             'properties': {
                 'data_dict': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {
-                            'type': 'string'
-                        }
-                    }
+                    'type': 'string'
                 },
                 'datetime': {
                     'type': 'date',
@@ -321,12 +301,17 @@ def elasticsearch_transform(document):
         # 'Type': 'Point' and 'coordinates': [lon, lat]
         # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
         elif key is 'geolocation' or type(value) is 'PointField':
-            if value['type'] is 'Point':
+            if value['type'] == 'Point':
                 return_dict['geolocation'] = value['coordinates']
         elif type(value) is list:
             return_dict[key] = []
             for list_item in value:
-                return_dict[key].append(elasticsearch_transform(list_item))
+                if type(list_item) is dict:
+                    return_dict[key].append(elasticsearch_transform(list_item))
+                elif type(list_item) is bson.objectid.ObjectId:
+                    return_dict[key].append(str(list_item))
+                else:
+                    return_dict[key].append(list_item)
         elif key is 'location':
             return_dict[key] = elasticsearch_transform(value)
         elif type(value) is str:
@@ -543,10 +528,26 @@ class Signal(mongoengine.Document):
 
 # Shared documents
 
+class Data(mongoengine.Document):
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    data_dict = mongoengine.DictField()
+    ografy_unique_id = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    user_id = mongoengine.IntField()
+
+    meta = {
+        'indexes': [{
+            'name': 'contact_index',
+            'fields': ['$id', '$user_id'],
+            'default_language': 'english',
+        }]
+    }
+
+
 class Contact(mongoengine.Document):
     api_id = mongoengine.StringField()
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    data_dict = mongoengine.DictField()
+    data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     handle = mongoengine.StringField()
     name = mongoengine.StringField()
     ografy_unique_id = mongoengine.StringField()
@@ -628,7 +629,7 @@ class Content(mongoengine.Document):
 
     content_type = mongoengine.StringField(choices=CONTENT_TYPE)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    data_dict = mongoengine.DictField()
+    data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     file_extension = mongoengine.StringField()
     ografy_unique_id = mongoengine.StringField()
     owner = mongoengine.StringField()
@@ -670,7 +671,7 @@ class Location(mongoengine.Document):
         ('geohash', 'Geohash'),
     )
 
-    data_dict = mongoengine.DictField()
+    data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     datetime = mongoengine.DateTimeField(default=datetime.datetime.now)
     geo_format = mongoengine.StringField(required=True, choices=GEO_FORMAT)
     geolocation = mongoengine.PointField(required=True)
@@ -795,17 +796,17 @@ class Event(mongoengine.Document):
         ('exercise', 'Exercise')
     )
 
-    PEOPLE_INTERACTION_TYPE = (
+    CONTACT_INTERACTION_TYPE = (
         ('to', 'Sent to others'),
         ('from', 'Sent to you'),
         ('with', 'Done with others')
     )
 
-    contact_interaction_type = mongoengine.StringField(choices=PEOPLE_INTERACTION_TYPE)
-    contacts_list = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedContact))
-    content_list = mongoengine.ListField(mongoengine.EmbeddedDocumentField(EmbeddedContent))
+    contact_interaction_type = mongoengine.StringField(choices=CONTACT_INTERACTION_TYPE)
+    contacts_list = mongoengine.EmbeddedDocumentListField(EmbeddedContact)
+    content_list = mongoengine.EmbeddedDocumentListField(EmbeddedContent)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
-    data_dict = mongoengine.DictField()
+    data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     event_type = mongoengine.StringField(choices=EVENT_TYPE)
     location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
     ografy_unique_id = mongoengine.StringField()
@@ -851,3 +852,10 @@ class Event(mongoengine.Document):
 
 signals.post_save.connect(Event.post_save, sender=Event)
 signals.post_delete.connect(Event.post_delete, sender=Event)
+
+
+class Search(mongoengine.Document):
+    datetime = mongoengine.DateTimeField(default=datetime.datetime.now)
+    search_DSL = mongoengine.DictField()
+    tags = mongoengine.ListField(mongoengine.StringField())
+    user_id = mongoengine.IntField(required=True)

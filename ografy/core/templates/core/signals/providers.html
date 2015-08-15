@@ -4,13 +4,10 @@
 {% block static %}
 {{ block.super }}
 <script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.mixitup/2.1.8/jquery.mixitup.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		require(['site'], function(site) {
-			$(document).ready(function() {
-				site.bindProviderUtilities();
-			});
+	require(['jquery', 'site', 'jquery-mixitup'], function($, site) {
+		$(document).ready(function() {
+			site.bindProviderUtilities();
 		});
 	});
 </script>

@@ -47,6 +47,15 @@ motorengine.connect(
 )
 
 
+class Search(motorengine.Document):
+    __collection__ = 'search'
+
+    datetime = motorengine.DateTimeField(auto_now_on_insert=True)
+    search_DSL = DictField()
+    tags = motorengine.ListField(motorengine.StringField())
+    user_id = motorengine.IntField(required=True)
+
+
 class Provider(motorengine.Document):
     """
     The class representing a third-party service's API

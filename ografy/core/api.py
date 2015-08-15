@@ -7,6 +7,10 @@ class ContentApi(BaseApi):
     model = documents.Content
 
 
+class DataApi(BaseApi):
+    model = documents.Data
+
+
 class EventApi(BaseApi):
     model = documents.Event
 
@@ -21,6 +25,10 @@ class ContactApi(BaseApi):
 
 class ProviderApi(BaseApi):
     model = documents.Provider
+
+
+class SearchApi(BaseApi):
+    model = documents.Search
 
 
 class SettingsApi(BaseApi):

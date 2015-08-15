@@ -15,9 +15,23 @@
 		<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/cartano/cartano.js' %}"></script>
 
+		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+
+		<link rel="stylesheet" type="text/css" href="{% static 'search/css/search-light.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}" />
+
 		{% include 'new/components/mapbox-styles.html' %}
 
 		<script type="text/javascript" src="{% static 'new/new.js' %}"></script>
+
+		<script type="text/javascript">
+			require(['jquery', 'site'], function($, site) {
+				$(document).ready(function() {
+					site.bindMainAppUtilities();
+				})
+			});
+		</script>
+
 		<link rel="stylesheet" type="text/css" href="{% static 'new/new.css' %}" />
 	</head>
 	<body class="flex column">
@@ -33,82 +47,45 @@
 							<input class="icon" type="text" name="search" placeholder="find yourself" style="width: 100%" />
 							<span id="filter-toggle" class="no-select icon-triangle-up" style="padding: 12px 12px 12px 4px;"></span>
 							<!-- Probably should hide this if NOT on mobile. Safest to do in javascript, rather than media query CSS. -->
-							<input class="button" type="submit" value="Search" />
+							<!--<input class="button" type="submit" value="Search" />-->
 						</div>
 					</form>
 				</div>
 
 				<div id="panel-filter" class="autohide">
 					<div id="filters">
-						<div class="filter">
-							<!--
-								While it'd be nice to style these as a pseudo element ::after, you can't handle events on pseudo-elements.
-								So if we want to handle click events on the little "x" (hint: we do), then we don't have much of an option here.
-								Aside from that it seems to work nicely having two anchor elements, one to edit the filter and one to delete it.
-							-->
-							<div>My filter name</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>who</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>where</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>who</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>where</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>who</div>
-							<div class="close">x</div>
-						</div>
-
-						<div class="filter">
-							<div>where</div>
-							<div class="close">x</div>
-						</div>
+						<div class="add button show">+</div>
 					</div>
 
-					<div>
-						Editing the current filter
-						Dropdowns etc can go in here.
+					<div id="filterTypes" class="flex hidden">
+						<div class="add button type" data-filter-type="who">
+							Who
+						</div>
+
+						<div class="add button type" data-filter-type="what">
+							What
+						</div>
+
+						<div class="add button type" data-filter-type="when">
+							When
+						</div>
+
+						<div class="add button type" data-filter-type="how">
+							How
+						</div>
+
+						<div class="grow"></div>
+						<div class="close type">X</div>
+					</div>
+
+					<div class="filter-content flex">
 					</div>
 				</div>
 
 				<div id="panel-list">
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
-					<p>Test A</p>
 				</div>
 
-				<div id="panel-detail">
-					<p>Event Details</p>
-					<p>More details</p>
-					<p>More details</p>
+				<div id="panel-detail" class="hidden">
 				</div>
 			</div>
 

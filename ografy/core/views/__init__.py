@@ -90,7 +90,8 @@ class SignupView(View):
 
 def index(request):
     if request.user.is_authenticated():
-        template = 'core/main/main.html'
+        # TODO: Point this to the new main page once the reorganization is done.
+        template = 'new/index.html'
         context = {
             'title': 'Ografy - Home'
         }
@@ -101,37 +102,6 @@ def index(request):
             'homepage': True
         }
 
-    return render(request, template, context)
-
-
-# TODO: Remove, for testing
-def signal_scheduler(request):
-    if request.user.is_authenticated():
-        template = 'core/main/scheduler.html'
-        context = {
-            'title': 'Ografy - Signal Scheduler test page',
-            'user': request.user
-        }
-    else:
-        template = 'core/index.html'
-        context = {
-            'title': 'Ografy'
-        }
-    return render(request, template, context)
-
-
-def location(request):
-    if request.user.is_authenticated():
-        template = 'core/main/location.html'
-        context = {
-            'title': 'Ografy - Location test page',
-            'user_id': request.user.id
-        }
-    else:
-        template = 'core/index.html'
-        context = {
-            'title': 'Ografy'
-        }
     return render(request, template, context)
 
 

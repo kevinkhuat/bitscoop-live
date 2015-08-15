@@ -3,11 +3,9 @@
 
 {% block static %}
 	{{ block.super }}
-<script type="text/javascript" src="{% static 'core/js/main/utils/location.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/search/location.js' %}"></script>
 <script type="application/javascript">
-	var csrftoken;
-	require(["location", "cookies"], function(location, cookies) {
-		csrftoken = cookies.getCsrfToken();
+	require(["location", "jquery-cookie"], function(location) {
 		$('.estimate').not('disabled').click(function() {
 			location.estimate({{ user.id }});
 		});

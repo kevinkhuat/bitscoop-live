@@ -1,7 +1,9 @@
 from rest_framework import serializers as django_serializers
 
 from ografy.contrib.tastydata import serializers as tasty_serializers
-from ografy.core.documents import Contact, Content, Endpoint, Event, Location, Permission, Provider, Settings, Signal
+from ografy.core.documents import (
+    Contact, Content, Data, Endpoint, Event, Location, Permission, Provider, Search, Settings, Signal
+)
 from ografy.core.models import User
 
 
@@ -131,6 +133,20 @@ class ContentSerializer(tasty_serializers.DocumentSerializer):
             'updated',
             'url',
             'user_id',
+        )
+        depth = 5
+
+
+class DataSerializer(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Data
+        fields = (
+            'id',
+            'created',
+            'data_dict',
+            'ografy_unique_id',
+            'updated',
+            'user_id'
         )
         depth = 5
 
@@ -274,5 +290,17 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
             'date_joined',
             'is_active'
             # 'settings'
+        )
+        depth = 5
+
+
+class SearchSerializer(tasty_serializers.DocumentSerializer):
+    class Meta:
+        model = Search
+        fields = (
+            'datetime',
+            'search_DSL',
+            'tags',
+            'user_id',
         )
         depth = 5

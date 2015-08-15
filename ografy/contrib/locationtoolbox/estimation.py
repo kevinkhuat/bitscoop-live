@@ -172,41 +172,18 @@ def estimate_location_last(user_id, datetime, index, doc_type):
     # Construct the filter string
     query = get_previous_query(user_id, datetime)
 
-    # Query ES and save the result
-    search_result = es_connection.search(
-        index=index,
-        doc_type=doc_type,
-        body=query
-    )
-
-    # Store the hits from the DB; hopefully there is one
-    hits = search_result['hits']['hits']
-
-    # If there is one hit, then get its coordinates and return them
-    if len(hits) == 1:
-        coordinates = hits[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
-    # If there isn't a hit, then the query was for a date before the oldest one for this user
-    # In that case, search for the Location at the earliest available date and use that instead
-    else:
-        query = get_next_query(user_id, datetime)
-
+    try:
+        # Query ES and save the result
         search_result = es_connection.search(
             index=index,
             doc_type=doc_type,
             body=query
         )
 
+        # Store the hits from the DB; hopefully there is one
         hits = search_result['hits']['hits']
 
+        # If there is one hit, then get its coordinates and return them
         if len(hits) == 1:
             coordinates = hits[0]['_source']['geolocation']
             geolocation = EmbeddedLocation(
@@ -218,21 +195,61 @@ def estimate_location_last(user_id, datetime, index, doc_type):
                     'coordinates': coordinates
                 }
             )
-        # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
-        # At a later date, once there are some Locations associated with the user, the estimated location
-        # will be updated with a more accurate result.
+        # If there isn't a hit, then the query was for a date before the oldest one for this user
+        # In that case, search for the Location at the earliest available date and use that instead
         else:
-            # Construct a Location with the fallback coordinates
-            coordinates = [-94.596750, 39.193406]
-            geolocation = EmbeddedLocation(
-                estimated=True,
-                estimation_method='Last',
-                geo_format='lat_lng',
-                geolocation={
-                    'type': 'Point',
-                    'coordinates': coordinates
-                }
+            query = get_next_query(user_id, datetime)
+
+            search_result = es_connection.search(
+                index=index,
+                doc_type=doc_type,
+                body=query
             )
+
+            hits = search_result['hits']['hits']
+
+            if len(hits) == 1:
+                coordinates = hits[0]['_source']['geolocation']
+                geolocation = EmbeddedLocation(
+                    estimated=True,
+                    estimation_method='Last',
+                    geo_format='lat_lng',
+                    geolocation={
+                        'type': 'Point',
+                        'coordinates': coordinates
+                    }
+                )
+            # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
+            # At a later date, once there are some Locations associated with the user, the estimated location
+            # will be updated with a more accurate result.
+            else:
+                # Construct a Location with the fallback coordinates
+                coordinates = [-94.596750, 39.193406]
+                geolocation = EmbeddedLocation(
+                    estimated=True,
+                    estimation_method='Last',
+                    geo_format='lat_lng',
+                    geolocation={
+                        'type': 'Point',
+                        'coordinates': coordinates
+                    }
+                )
+
+    # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
+    # At a later date, once there are some Locations associated with the user, the estimated location
+    # will be updated with a more accurate result.
+    except:
+        # Construct a Location with the fallback coordinates
+        coordinates = [-94.596750, 39.193406]
+        geolocation = EmbeddedLocation(
+            estimated=True,
+            estimation_method='Last',
+            geo_format='lat_lng',
+            geolocation={
+                'type': 'Point',
+                'coordinates': coordinates
+            }
+        )
 
     return geolocation
 

@@ -1,156 +1,127 @@
-EVENT_MAPPING = {
-    '_id': {
-        'path': 'id'
-    },
-    'properties': {
-        'created': {
-            'type': 'date',
-            'format': 'YYYY-MM-DD\'T\'HH:mm:ss.SSSZ'
-        },
-        'datetime': {
-            'type': 'date',
-            'format': 'YYYY-MM-DD\'T\'HH:mm:ss.SSSZ'
-        },
-        'event_type': {
-            'type': 'string'
-        },
-        'id': {
-            'type': 'string'
-        },
-        'location': {
-            'type': 'geo_point'
-        },
-        'name': {
-            'type': 'string'
-        },
-        'provider': {
-            'type': 'string'
-        },
-        'provider_name': {
-            'type': 'string'
-        },
-        'signal': {
-            'type': 'string'
-        },
-        'subtype': {
-            'type': 'object',
-            'properties': {
-                'message': {
-                    'type': 'object',
-                    'properties': {
-                        'message_body': {
-                            'type': 'string'
-                        },
-                        'message_from': {
-                            'type': 'string'
-                        },
-                        'message_to': {
-                            'type': 'string'
-                        },
-                        'message_type': {
-                            'type': 'string'
-                        },
+SEARCH_TEXT_FIELDS = (
+    'contacts_list.handle',
+    'contacts_list.name',
+    'content_list.content_type',
+    'content_list.file_extension',
+    'content_list.owner',
+    'content_list.text',
+    'content_list.title',
+    'content_list.url',
+    'event_type',
+    'provider_name',
+)
+
+
+SEARCH_VALIDATION_OBJECT = {
+    "query": {
+        "filtered": {
+            "filter": {
+                "and": [
+                    {
+                        "bool": {
+                            "should": [
+                                {
+                                    "and": [
+                                        {
+                                            "or": [
+                                                {
+                                                    "term": {
+                                                        "contacts_list.name": None
+                                                    }
+                                                },
+                                                {
+                                                    "term": {
+                                                        "contacts_list.handle": None
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "term": {
+                                                "contact_interaction_type": None
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "term": {
+                                        "content_list.content_type": None
+                                    }
+                                },
+                                {
+                                    "geo_distance": {
+                                        "distance": None,
+                                        "location.geolocation": {
+                                            "lat": None,
+                                            "lon": None
+                                        }
+                                    }
+                                },
+                                {
+                                    "not": {
+                                        "geo_distance": {
+                                            "distance": None,
+                                            "location.geolocation": {
+                                                "lat": None,
+                                                "lon": None
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "not": {
+                                        "geo_polygon": {
+                                            "location.geolocation": {
+                                                "points": [
+                                                    {
+                                                        "lat": None,
+                                                        "lon": None
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "geo_polygon": {
+                                        "location.geolocation": {
+                                            "points": [
+                                                {
+                                                    "lat": None,
+                                                    "lon": None
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "datetime": {
+                                            "format": None,
+                                            "gte": None,
+                                            "lte": None
+                                        }
+                                    }
+                                },
+                                {
+                                    "term": {
+                                        "provider_name": None
+                                    }
+                                }
+                            ]
+                        }
                     }
-                },
-                'play': {
-                    'type': 'object',
-                    'properties': {
-                        'media_url': {
-                            'type': 'string'
-                        },
-                        'play_type': {
-                            'type': 'string'
-                        },
-                        'title': {
-                            'type': 'string'
-                        },
-                    }
+                ]
+            },
+            "query": {
+                "multi_match": {
+                    "query": None,
+                    "type": "most_fields",
+                    "fields": SEARCH_TEXT_FIELDS
                 }
             }
-        },
-        'updated': {
-            'type': 'string',
-            'format': 'YYYY-MM-DD\'T\'HH:mm:ss.SSSZ'
-        },
-        'user_id': {
-            'type': 'long'
         }
-    }
-}
-
-# https://www.elastic.co/guide/en/elasticsearch/guide/current/combining-filters.html
-
-FILTERS = [
-    'should',
-    'must',
-    'must_not'
-]
-
-# https://www.elastic.co/guide/en/elasticsearch/guide/current/querying-geo-shapes.html
-
-GEO_FILTERS = {
-    'circle': {
-        'within',
-        'without'
     },
-    'polygon': {
-        'within',
-        'without'
-    },
-}
-
-MAPPED_SEARCH_FIELDS = {
-    'event': {
-        'id',
-        'permission',
-        'created',
-        'datetime',
-        'event_type',
-        'name',
-        'provider',
-        'provider_name',
-        'signal',
-        'updated'
-    }
-}
-
-MAPPED_SEARCH_TEXT_FIELDS = [
-    'event.name',
-    'event.provider_name',
-    'message.message_body',
-    'message.message_from',
-    'message.message_to',
-    'play.media_url',
-    'play.title'
-]
-
-MAPPED_SEARCH_GEO_FIELDS = {
-    'event': {
-        'location'
-    }
-}
-
-RANGE_FILTERS = [
-    'gt',
-    'lt',
-    'gte',
-    'lte'
-]
-
-TEMPLATE_QUERY_STRUCTURED = {
-    'query': {
-        'filtered': {
-            'filter': {
-                'bool': {}
-            }
-        }
-    }
-}
-
-TEMPLATE_QUERY_FULL_TEXT = {
-    'multi_match': {
-        'query': '',
-        'type': 'most_fields',
-        'fields': MAPPED_SEARCH_TEXT_FIELDS
-    }
+    "size": None,
+    "from": None
 }

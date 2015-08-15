@@ -31,6 +31,24 @@
           "conditions": {
           },
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "youtube"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -122,6 +140,24 @@
           "conditions": {
           },
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "gmail"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -133,12 +169,12 @@
                   "value": "responseObject.id"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "type": "string",
-                "value": "with"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
                 "datetime": {
                   "hydration_method": "endpoint",
                   "value": {
@@ -331,6 +367,28 @@
           "returned_data_location": "items",
           "event_type": "edit",
           "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "google_drive"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.modificationDate"
+                  }
+                ]
+              }
+            },
             "event": {
               "unique_identifiers": [
                 {
@@ -346,12 +404,12 @@
                   "value": "responseObject.modificationDate"
                 }
               ],
-              "contact_interaction_type": {
-                "hydration_method": "literal",
-                "type": "string",
-                "value": "with"
-              },
               "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
                 "datetime": {
                   "hydration_method": "translate",
                   "type": "string",

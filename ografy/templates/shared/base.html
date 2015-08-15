@@ -14,9 +14,8 @@
 
 		{% block static %}
         {# TODO: Dependancy problems with libraries need to be fixed with require #}
-		<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-		<script type="text/javascript" src="{% static 'lib/require/require.js' %}"></script>
-		<script type="text/javascript" src="{% static 'core/js/main/utils/cookies.js' %}"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.19/require.min.js"></script>
+		<script type="text/javascript" src="{% static 'shared/js/paths.js' %}"></script>
 
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
 
@@ -26,8 +25,8 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}" />
 
 		<script type="text/javascript">
-			$(document).ready(function() {
-				require(['site'], function(site) {
+			require(['jquery', 'site'], function($, site) {
+				$(document).ready(function() {
 					site.bindMainAppUtilities();
 				})
 			});

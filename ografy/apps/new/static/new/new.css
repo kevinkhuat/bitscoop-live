@@ -53,7 +53,6 @@ header > nav > a.active {
 #panel > * {
 	box-sizing: content-box;
 
-	max-height: 33%;
 	overflow: auto;
 
 	background-color: #FFF;
@@ -74,6 +73,10 @@ header > nav > a.active {
 #panel-search.hidden {
 	overflow: hidden;
 	max-width: 40px;
+}
+
+#panel-list {
+	max-height: 50%;
 }
 
 .flex {
@@ -112,13 +115,12 @@ header > nav > a.active {
 	cursor: pointer;
 }
 
-input {
+#search-form input {
 	font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
 	font-weight: 300;
 	font-size: 18px;
 	outline: none;
 	border: none;
-
 	padding: 8px;
 }
 
@@ -128,22 +130,22 @@ input[type="submit"] {
 }
 
 
-#filters {
+#filters, #filterTypes {
 	border-bottom: 1px solid #DDD;
 }
 
-#filters > :first-child {
+#filters > :first-child, #filterTypes > :first-child {
 	margin-left: 4px;
 }
 
-.filter {
+.filter, .add.button {
 	display: inline-block;
 
 	margin: 3px 4px 3px 0;
 
 	background-color: #E8E8E8;
 	color: rgba(0, 0, 0, 0.6);
-	box-shadow: rgba(34, 36, 38, 0.14902) 0px 0px 0px 1px inset;
+	box-shadow: rgba(34, 36, 38, 0.14902) 0 0 0 1px inset;
 
 	border-radius: 3px;
 
@@ -157,11 +159,21 @@ input[type="submit"] {
 	user-select: none;
 }
 
+.add.button.type, .add.button.close {
+	padding: 0.2em 0.3em;
+}
+
 .filter.active {
 	background-color: #D8D8D8;
 }
 
+
+.add.button.active {
+	background-color: #AAA;
+}
+
 .filter:hover,
+.add.button:hover,
 .filter:active {
 	background-color: #DADADA;
 }
@@ -210,4 +222,91 @@ input[type="submit"] {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.filter-content > [data-filter-type] {
+	padding: 0.2em 0;
+}
+
+.filter-content .datePrefix {
+	width: 2em;
+}
+
+.filter-content input {
+	padding: 0.1em;
+	font-size: 14px;
+	width: 5em;
+	margin: 0 0.5em;
+	outline: 1px black;
+}
+
+.filter-content input[type='datetime-local'] {
+	width: 15em;
+}
+
+.filter-content select {
+	height: 2em;
+}
+
+.save {
+	cursor: pointer;
+	margin: auto 0.5em;
+}
+
+.close.content, .close.type {
+	font-size: 1.3em;
+	cursor: pointer;
+	margin: auto 0.5em;
+	width: 1em;
+}
+
+.list-element {
+	height: 1.5em;
+}
+
+.list-element > * {
+	margin: auto 0.2em;
+}
+
+.element-line > * {
+	text-align: center;
+}
+
+.list-element:not(:last-child), .what.instance:not(:last-child) {
+	border-bottom: 1px solid #E8E8E8;
+}
+
+.list-element.active {
+	background-color: #AAA;
+}
+
+.list-element:hover {
+	cursor: pointer;
+	background-color: lightgray;
+}
+
+.detail > .title {
+	background-color: #E8E8E8;
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.when.title, .where.title, .how.title {
+	width: 3em;
+}
+
+.when.detail > .datetime, .how.detail > .provider, .where.detail > .coordinates {
+	margin: auto 0;
+}
+
+.who.instance:not(:last-child) {
+	border-bottom: 1px solid #E8E8E8;
+}
+
+.hidden {
+	display: none;
+}
+
+.add.button.show {
+	padding: 0.3em 0.5em;
 }
