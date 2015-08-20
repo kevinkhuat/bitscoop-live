@@ -639,6 +639,7 @@ define ('scheduleMapper', ['cookies'], function(cookies) {
 					//Catch any issues by ending the endpoint iteration so we don't loop infinitely.
 					else if (paginationMethod === undefined) {
 						loopEnd = true;
+						permissionDeferred.resolve();
 					}
 
 					//If this isn't the last iteration through the endpoint

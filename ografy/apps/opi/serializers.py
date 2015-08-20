@@ -156,16 +156,18 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Provider
         fields = (
-            'id',
             'auth_backend',
             'auth_type',
             'backend_name',
-            'base_route',
             'client_callable',
             'description',
+            'domain',
             'endpoint_wait_time',
             'name',
+            'provider_number',
+            'scheme',
             'tags',
+            'url_name',
         )
         depth = 5
 

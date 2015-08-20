@@ -17,13 +17,12 @@ from ografy.core.documents import Settings
 class APIEndpoints(DjangoAPIView):
     def get(self, request, format=None):
         return Response({
-            'data': reverse('data-list', request=request, format=format),
             'event': reverse('event-list', request=request, format=format),
+            'contact': reverse('contact-list', request=request, format=format),
             'content': reverse('content-list', request=request, format=format),
+            'location': reverse('location-list', request=request, format=format),
             'provider': reverse('provider-list', request=request, format=format),
-            'settings': reverse('settings-list', request=request, format=format),
             'signal': reverse('signal-list', request=request, format=format),
-            'user_id': reverse('user-list', request=request, format=format),
         })
 
 
