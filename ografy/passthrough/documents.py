@@ -41,9 +41,6 @@ motorengine.connect(
     settings.MONGODB['NAME'],
     host=settings.MONGODB['HOST'],
     port=settings.MONGODB['PORT']
-    # ssl_certfile=settings.MONGODB['SSL_CERT_FILE'],
-    # ssl_cert_reqs=settings.MONGODB['SSL_CERT_REQS'],
-    # ssl_ca_certs=settings.MONGODB['SSL_CA_CERTS']
 )
 
 

@@ -49,13 +49,9 @@ Install the NodeJS requirements with:
 npm install
 ```
 
-Edit your host file to point the following DNS names to localhost (127.0.0.1):
-
-* `mem-0.ografy.internal`
-* `nrdb-0.ografy.internal`
-* `search-0.ografy.internal`
-* `ografy.io` &ndash; Note this is for development only, if you want to use the
-  real site, you'll need to comment out this host file entry! :)
+Edit your host file to point `ografy.io` to localhost (127.0.0.1). Note this is
+for development only, if you want to use the real site, you'll need to comment
+out this host file entry!
 
 
 ## Initialize ElasticSearch
@@ -75,7 +71,7 @@ Before you run the application you'll need to create the appropriate indices in
 the database. With the ElasticSearch server running:
 
 ```
-curl -XPUT http://search-0.ografy.internal:9200/core
+curl -XPUT http://localhost:9200/core
 ```
 
 This HTTP PUT request should return something along the lines of:

@@ -18,14 +18,14 @@ from ografy.settings.signals import *  # noqa
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://mem-0.ografy.internal:6379/0',
+        'LOCATION': 'redis://localhost:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
     },
     'session': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://mem-0.ografy.internal:6379/1',
+        'LOCATION': 'redis://localhost:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
@@ -46,7 +46,7 @@ DATABASES = {
         'NAME': 'ografy_db',
         'USER': 'ografy',
         'PASSWORD': 'foxtrot1234',
-        'HOST': 'rdb-0.ografy.internal',
+        'HOST': 'localhost',
         'PORT': '5432',
         # 'OPTIONS': {
         #     'sslmode': 'verify-ca',
@@ -57,17 +57,13 @@ DATABASES = {
 }
 MONGODB = {
     'NAME': 'ografy_db',
-    'HOST': 'nrdb-0.ografy.internal',
-    'PORT': 27017,
-    'SSL_CERT_FILE': 'PLACEHOLDER',
-    'SSL_CERT_REQS': ssl.CERT_REQUIRED,
-    'SSL_CA_CERTS': 'PLACEHOLDER',
+    'HOST': 'localhost',
+    'PORT': 27017
 }
 ELASTICSEARCH = {
-    'HOST': 'search-0.ografy.internal',
+    'HOST': 'localhost',
     'PORT': 9200,
-    'USE_SSL': False,
-    'SSL_CA_CERTS': 'PLACEHOLDER'
+    'USE_SSL': False
 }
 # DATABASE_ROUTERS = []
 # DEFAULT_INDEX_TABLESPACE = ''

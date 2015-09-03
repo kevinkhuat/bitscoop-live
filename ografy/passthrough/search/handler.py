@@ -11,7 +11,6 @@ from ografy.passthrough.auth import user_authenticated
 from ografy.passthrough.documents import Search
 
 
-# Implement SSL/CA CERTS
 es_connection = ESConnection(
     settings.ELASTICSEARCH['HOST'],
     settings.ELASTICSEARCH['PORT']

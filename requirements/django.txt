@@ -4,6 +4,7 @@ djangorestframework
 django-redis
 elasticsearch
 geopy
+gevent
 gunicorn
 mongoengine
 psycopg2
