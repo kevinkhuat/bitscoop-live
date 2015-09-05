@@ -207,7 +207,7 @@ input[type="submit"] {
 	height: 2em;
 	display: inline-block;
 	cursor: pointer;
-	background-image: url('/static/assets/img/ografy_search.png');
+	background-image: url('../assets/img/ografy_search.png');
 	background-repeat: no-repeat;
 	background-position: 0 50%;
 	background-size: contain;

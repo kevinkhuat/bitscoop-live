@@ -19,5 +19,7 @@ handler500 = 'ografy.core.views.errors.view500'
 
 
 if settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns  # isort: ignore
-    urlpatterns += staticfiles_urlpatterns()
+    from django.conf.urls.static import static  # isort: ignore
+    from django.contrib.staticfiles.views import serve  # isort: ignore
+
+    urlpatterns += static('/static/', view=serve)

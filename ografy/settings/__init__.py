@@ -251,7 +251,6 @@ FIXTURE_DIRS = (
     get_path(ROOT_PATH, 'fixtures'),
 )
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
@@ -377,7 +376,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 ##########
 
 STATIC_ROOT = get_path(ROOT_PATH, 'build', 'static')
-STATIC_URL = 'https://static.ografy.io/'
+STATIC_URL = get_environ_setting('STATIC_URL', 'https://dxji0l5r1504f.cloudfront.net/static/')
 STATICFILES_DIRS = (
     get_path(SOURCE_PATH, 'static'),
     get_path(ROOT_PATH, 'artifacts'),

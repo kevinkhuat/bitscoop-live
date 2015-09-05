@@ -39,10 +39,3 @@ LOGGING = {}
 #############
 
 TEMPLATE_DEBUG = True
-
-
-##########
-# STATIC #
-##########
-
-STATIC_URL = '/static/'

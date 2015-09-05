@@ -6,23 +6,27 @@
 
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
 
+		<script type="text/javascript">
+			window.staticUrl = "{% static '' %}";
+		</script>
+
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.19/require.min.js"></script>
 
-		<script type="text/javascript" src="{% static 'shared/js/paths.js' %}"></script>
-		<script type="text/javascript" src="{% static 'shared/js/templates.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/paths.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/templates.min.js' %}"></script>
 
 		<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
-		<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.js' %}"></script>
-		<script type="text/javascript" src="{% static 'lib/cartano/cartano.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/cartano/cartano.min.js' %}"></script>
 
-		<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+		<script type="text/javascript" src="{% static 'shared/js/site.min.js' %}"></script>
 
-		<link rel="stylesheet" type="text/css" href="{% static 'search/css/search-light.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'core/css/search-light.css' %}" />
 		<link rel="stylesheet" type="text/css" href="{% static 'shared/css/site-light.css' %}" />
 
 		{% include 'new/components/mapbox-styles.html' %}
 
-		<script type="text/javascript" src="{% static 'new/new.js' %}"></script>
+		<script type="text/javascript" src="{% static 'new/new.min.js' %}"></script>
 
 		<script type="text/javascript">
 			require(['jquery', 'site'], function($, site) {

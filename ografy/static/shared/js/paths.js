@@ -1,3 +1,11 @@
+require.config({
+	paths: {
+		location: window.staticUrl + 'core/js/search/location.min',
+		scheduleMapper: window.staticUrl + 'core/js/search/scheduleMapper.min',
+		search: window.staticUrl + 'new/search.min'
+	}
+});
+
 requirejs.config({
 	paths: {
 		bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/2.9.33/bluebird.min',  // https://github.com/petkaantonov/bluebird

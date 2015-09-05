@@ -3,7 +3,7 @@
 
 {% block static %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'shared/js/site.js' %}"></script>
+<script type="text/javascript" src="{% static 'shared/js/site.min.js' %}"></script>
 <script type="text/javascript">
 	require(['jquery', 'site', 'jquery-mixitup'], function($, site) {
 		$(document).ready(function() {

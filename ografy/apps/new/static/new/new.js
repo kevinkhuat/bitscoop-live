@@ -82,14 +82,6 @@ require(['jquery'], function($) {
 	});
 });
 
-require.config({
-	paths: {
-		location: 'static/core/js/search/location',
-		scheduleMapper: 'static/core/js/search/scheduleMapper',
-		search: 'static/new/search'
-	}
-});
-
 require(['cartano', 'jquery', 'nunjucks', 'search', 'jquery-cookie'], function(cartano, $, nunjucks, search) {
 	var searchResults, searchDSL, paramDSL, stringDSL, searchCallback, markerCallback, mainMap, callData, clearResults, getLeafletId, renderDetailPanel, highlightEvent, deselectEvents;
 	var eventCache = {};
@@ -192,7 +184,7 @@ require(['cartano', 'jquery', 'nunjucks', 'search', 'jquery-cookie'], function(c
 				_.forEach(marker.__parent._markers, function(childMarker) {
 					childMarker._icon.src = 'https://api.tiles.mapbox.com/mapbox.js/v2.2.1/images/marker-icon.png';
 				});
-				marker._icon.src = '/static/assets/img/marker-red.png';
+				marker._icon.src = window.staticUrl + 'assets/img/marker-red.png';
 			}
 		});
 	};
@@ -319,7 +311,7 @@ require(['cartano', 'jquery', 'nunjucks', 'search', 'jquery-cookie'], function(c
 	});
 });
 
-//require(['scheduleMapper'], function(scheduleMapper) {
-//	var user_id = 1;
-//	scheduleMapper.schedule(10000000, user_id);
-//});
+require(['scheduleMapper'], function(scheduleMapper) {
+	var user_id = 1;
+	scheduleMapper.schedule(10000000, user_id);
+});

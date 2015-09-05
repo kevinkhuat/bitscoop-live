@@ -3,8 +3,8 @@
 
 {% block static %}
 {{ block.super }}
-<script type="text/javascript" src="{% static 'shared/js/tooltip.js' %}"></script>
-<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.js' %}"></script>
+<script type="text/javascript" src="{% static 'shared/js/tooltip.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
 <script type="text/javascript">
 	require(['jutsu', 'jquery', 'site', 'tooltip',  'jquery-cookie'], function(jutsu, $, site, tooltip) {
 		$('body').autoform('.autoformEnabled', {'X-CSRFToken': $.cookie('csrftoken')});

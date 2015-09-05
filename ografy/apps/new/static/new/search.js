@@ -1078,7 +1078,7 @@ define('search', ['jquery', 'jquery-deparam', 'lodash', 'nunjucks', 'jquery-cook
 				if (layer._leaflet_id === mapId) {
 					//If it's a marker, replace its icon with the highlighted image
 					if (layer.hasOwnProperty('_icon')) {
-						layer._icon.src = '/static/assets/img/marker-red.png';
+						layer._icon.src = window.staticUrl + 'assets/img/marker-red.png';
 					}
 					//If it's a polygon, set its fill color to the highlighted color
 					else {
