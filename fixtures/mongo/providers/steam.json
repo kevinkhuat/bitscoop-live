@@ -3,20 +3,21 @@
     "provider_number": "000000000000000000000003",
     "name": "Steam",
     "client_callable": true,
-    "domain": "api.steampowered.com",
+    "domain": "https://api.steampowered.com",
     "endpoint_wait_time": 0,
     "backend_name": "steam",
     "auth_backend": "social.backends.steam.SteamOpenId",
     "description": "Internet-based digital distribution, multiplayer, and social networking platform",
-    "tags": "gaming media social",
-    "auth_type": 2,
-    "scheme": "https",
-    "url_name": "steam"
+    "tags": [
+      "gaming",
+      "media",
+      "social"
+    ],
+    "auth_type": 2
   },
-  "event_sources": [
-    {
+  "event_sources": {
+    "games_played": {
       "display_name": "Games Played",
-      "name": "games_played",
       "description": "Steam games that you have played",
       "enabled_by_default": true,
       "endpoints": [
@@ -108,12 +109,14 @@
               }
             }
           }
+        },
+        "pagination": {
+          "method": "none"
         }
       }
     },
-    {
+    "achievements": {
       "display_name": "Achievements",
-      "name": "achievements",
       "description": "Achievements in Steam games you have played",
       "enabled_by_default": true,
       "endpoints": [
@@ -274,14 +277,16 @@
               }
             }
           }
+        },
+        "pagination": {
+          "method": "none"
         }
       }
     }
-  ],
-  "endpoints": [
-    {
+  },
+  "endpoints": {
+    "games_owned": {
       "call_method": "GET",
-      "name": "games_owned",
       "path": "IPlayerService/GetOwnedGames/v0001/",
       "parameter_descriptions": {
         "steamid": {
@@ -311,9 +316,8 @@
         }
       }
     },
-    {
+    "achievements": {
       "call_method": "GET",
-      "name": "achievements",
       "path": "ISteamUserStats/GetUserStatsForGame/v0002/",
       "parameter_descriptions": {
         "steamid": {
@@ -338,9 +342,8 @@
         }
       }
     },
-    {
+    "game_schema": {
       "call_method": "GET",
-      "name": "game_schema",
       "path": "ISteamUserStats/GetSchemaForGame/v0002/",
       "parameter_descriptions": {
         "format": {
@@ -360,5 +363,5 @@
         }
       }
     }
-  ]
+  }
 }

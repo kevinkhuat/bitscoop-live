@@ -1,0 +1,219 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000009",
+    "name": "FitBit",
+    "domain": "https://api.fitbit.com",
+    "client_callable": true,
+    "backend_name": "fitbit",
+    "endpoint_wait_time": 0,
+    "auth_backend": "social.backends.fitbit.FitbitOAuth",
+    "description": "Wearable activity tracker and health logger",
+    "tags": [
+      "fitness",
+      "health"
+    ],
+    "auth_type": 1
+  },
+  "event_sources": {
+    "food": {
+      "display_name": "Food consumed",
+      "description": "Food you have logged with FitBit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "food-calories-in",
+        "foods"
+      ],
+      "initial_mapping": "food-calories-in",
+      "mappings": {
+        "food-calories-in": {
+          "conditions": [
+            {
+              "notEquals": {
+                "field": "responseObject.value",
+                "value": "0"
+              }
+            }
+          ],
+          "returned_data_location": "foods-log-caloriesIn",
+          "submapping": {
+            "endpoint": "foods",
+            "parameter_sources": {
+              "date": {
+                "hydration_method": "translate",
+                "value": "responseObject.dateTime"
+              }
+            }
+          }
+        },
+        "foods": {
+          "returned_data_location": "foods",
+          "event_type": "eat",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "fitbit"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "food"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.logDate"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "fitbit"
+                },
+                {
+                  "hydration_method": "literal",
+                  "value": "food"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.logDate"
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.logDate"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "fitbit"
+                }
+              }
+            },
+            "content": {
+              "foods": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "fitbit"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "food"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.logDate"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.loggedFood.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.loggedFood.brand"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "food"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.loggedFood.name"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.loggedFood.brand"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "none"
+        }
+      }
+    }
+  },
+  "endpoints": {
+    "food-calories-in": {
+      "call_method": "GET",
+      "path": "/1/user/-/foods/log/caloriesIn/date/[base_date]/[end_date].json",
+      "additional_path_fields": [
+        {
+          "description": "Start date of the time range",
+          "parameter": "base_date",
+          "replace": "[base_date]"
+        },
+        {
+          "description": "End date of the time range",
+          "parameter": "end_date",
+          "replace": "[end_date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "base_date": {
+          "description": "Start date of the time range",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.food.food-calories-in.base_date"
+        },
+        "end_date": {
+          "description": "End date of the time range",
+          "hydration_method": "literal",
+          "value": "today"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    },
+    "foods": {
+      "call_method": "GET",
+      "path": "/1/user/-/foods/log/date/[date].json",
+      "additional_path_fields": [
+        {
+          "description": "Date for which to retrieve food entries",
+          "parameter": "date",
+          "replace": "[date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "date": {
+          "description": "Date for which to retrieve food entries",
+          "hydration_method": "translate",
+          "value": "responseObject.dateTime"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1407 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000008",
+    "name": "reddit",
+    "client_callable": true,
+    "domain": "https://oauth.reddit.com",
+    "endpoint_wait_time": 2,
+    "backend_name": "reddit",
+    "auth_backend": "social.backends.reddit.RedditOAuth2",
+    "description": "Entertainment, social networking service and news website",
+    "tags": [
+      "media",
+      "social"
+    ],
+    "auth_type": 0
+  },
+  "event_sources": {
+    "comments": {
+      "display_name": "Comments",
+      "description": "Comments you have made on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "comments"
+      ],
+      "initial_mapping": "comments",
+      "mappings": {
+        "comments": {
+          "returned_data_location": "data.children",
+          "event_type": "message",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "comments"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "comment"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "to"
+                },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "reply": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.body"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.link_title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.link_url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "respondee": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "link_author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "link_author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "submitted": {
+      "display_name": "Threads created",
+      "description": "Threads you have created on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "submitted"
+      ],
+      "initial_mapping": "submitted",
+      "mappings": {
+        "submitted": {
+          "returned_data_location": "data.children",
+          "event_type": "create",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "thread_created"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "thread_created"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "thread": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.selftext"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.url"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "threads_upvoted": {
+      "display_name": "Threads upvoted",
+      "description": "Threads you have upvoted on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "upvoted"
+      ],
+      "initial_mapping": "upvoted",
+      "mappings": {
+        "upvoted": {
+          "returned_data_location": "data.children",
+          "event_type": "comment",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "upvote"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "upvote"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "to"
+                },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "comment": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.selftext"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "author": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "threads_downvoted": {
+      "display_name": "Threads downvoted",
+      "description": "Threads you have downvoted on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "downvoted"
+      ],
+      "initial_mapping": "downvoted",
+      "mappings": {
+        "downvoted": {
+          "returned_data_location": "data.children",
+          "event_type": "comment",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "downvote"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "upvote"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "to"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "comment": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "text": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.selftext"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "author": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "saved_comments": {
+      "display_name": "Saved comments",
+      "description": "Comments you have saved on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "saved"
+      ],
+      "initial_mapping": "saved",
+      "mappings": {
+        "saved": {
+          "returned_data_location": "data.children",
+          "event_type": "message",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "saved"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "saved"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "comment": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.link_title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link_data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "author": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "gilded_comments": {
+      "display_name": "Gilded comments",
+      "description": "Comments you have gilded on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "gilded"
+      ],
+      "initial_mapping": "gilded",
+      "mappings": {
+        "gilded": {
+          "returned_data_location": "data.children",
+          "event_type": "comment",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "gilded"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "gilded"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "with"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "gilded_comment": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.link_title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link_data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "gildee": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "messages_received": {
+      "display_name": "Private messages received",
+      "description": "Private messages you have received on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "inbox"
+      ],
+      "initial_mapping": "inbox",
+      "mappings": {
+        "inbox": {
+          "returned_data_location": "data.children",
+          "event_type": "message",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "inbox"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "inbox"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "from"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "message": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.link_title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link_data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "sender": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    },
+    "messages_sent": {
+      "display_name": "Private messages sent",
+      "description": "Private messages you have sent on reddit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "sent"
+      ],
+      "initial_mapping": "sent",
+      "mappings": {
+        "sent": {
+          "returned_data_location": "data.children",
+          "event_type": "message",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "sent"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.modhash"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "sent"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.id"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.created_utc"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.data.edited"
+                }
+              ],
+              "mapped_fields": {
+                "contact_interaction_type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "to"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "reddit"
+                }
+              }
+            },
+            "content": {
+              "message": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.id"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.created_utc"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.data.edited"
+                  }
+                ],
+                "mapped_fields": {
+                  "content_type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "text"
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "type": "string",
+                    "value": "responseObject.data.link_title"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.link_data.url"
+                  }
+                }
+              }
+            },
+            "contacts": {
+              "recipient": {
+                "hydrate_list_location": "responseObject.data",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "reddit"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                ],
+                "mapped_fields": {
+                  "handle": {
+                    "hydration_method": "translate",
+                    "value": "author"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "cursor",
+          "is_ascending": true,
+          "start_cursor_parameter": "after",
+          "cursor_value": "after",
+          "variable_cursor": "data.after"
+        }
+      }
+    }
+  },
+  "endpoints": {
+    "comments": {
+      "call_method": "GET",
+      "path": "user/[$1]/comments/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.comments.comments.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "submitted": {
+      "call_method": "GET",
+      "path": "user/[$1]/submitted/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.threads_created.submitted.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "upvoted": {
+      "call_method": "GET",
+      "path": "user/[$1]/upvoted/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.threads_upvoted.upvoted.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "downvoted": {
+      "call_method": "GET",
+      "path": "user/[$1]/downvoted/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.threads_downvoted.downvoted.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "saved": {
+      "call_method": "GET",
+      "path": "user/[$1]/saved/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.saved_comments.saved.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "gilded": {
+      "call_method": "GET",
+      "path": "user/[$1]/gilded/.json",
+      "additional_path_fields": [
+        {
+          "description": "ID of the user",
+          "parameter": "user_id",
+          "replace": "[$1]"
+        }
+      ],
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.gilded_comments.gilded.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 100
+        },
+        "user_id": {
+          "description": "The user's ID",
+          "hydration_method": "translate",
+          "value": "signal.signal_data.username"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "inbox": {
+      "call_method": "GET",
+      "path": "message/inbox/.json",
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.messages_received.inbox.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 2
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    },
+    "sent": {
+      "call_method": "GET",
+      "path": "message/sent/.json",
+      "parameter_descriptions": {
+        "after": {
+          "description": "Most recent post",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.messages_sent.sent.after"
+        },
+        "limit": {
+          "description": "Maximum number of results to return at one time",
+          "hydration_method": "literal",
+          "value": 2
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "user_agent": {
+          "description": "The user agent header",
+          "header_name": "User-Agent",
+          "header_value": "[$1]",
+          "hydration_location": "signal.signal_data.username",
+          "hydration_method": "reformat",
+          "value": "Ografy (by /u/[$1])"
+        }
+      }
+    }
+  }
+}

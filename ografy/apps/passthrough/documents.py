@@ -78,7 +78,7 @@ class Provider(motorengine.Document):
     description = motorengine.StringField()
     endpoint_wait_time = motorengine.IntField
     name = motorengine.StringField()
-    tags = motorengine.StringField()
+    tags = motorengine.ListField(motorengine.StringField())
 
     def __str__(self):
         return '{0} {1}'.format(self.id, self.backend_name)

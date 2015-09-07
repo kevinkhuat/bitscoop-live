@@ -3,28 +3,28 @@
     "provider_number": "000000000000000000000005",
     "name": "Dropbox",
     "client_callable": true,
-    "domain": "api.dropbox.com/1",
+    "domain": "https://api.dropbox.com/1",
     "backend_name": "dropbox-oauth2",
     "endpoint_wait_time": 0,
     "auth_backend": "social.backends.dropbox.DropboxOAuth2",
     "description": "Cloud storage solution",
-    "tags": "media productivity",
-    "auth_type": 0,
-    "scheme": "https",
-    "url_name": "dropbox"
+    "tags": [
+      "media",
+      "productivity"
+    ],
+    "auth_type": 0
   },
-  "event_sources": [
-    {
+  "event_sources": {
+    "edits": {
       "description": "Edits made to your Dropbox files",
       "display_name": "Edits",
-      "name": "dropbox_edits",
       "enabled_by_default": true,
       "endpoints": [
-        "dropbox_delta"
+        "delta"
       ],
-      "initial_mapping": "dropbox_delta",
+      "initial_mapping": "delta",
       "mappings": {
-        "dropbox_delta": {
+        "delta": {
           "returned_data_location": "entries",
           "event_type": "edit",
           "db_entry_mapping": {
@@ -123,11 +123,10 @@
         }
       }
     }
-  ],
-  "endpoints": [
-    {
+  },
+  "endpoints": {
+    "delta": {
       "call_method": "POST",
-      "name": "dropbox_delta",
       "path": "delta",
       "parameter_descriptions": {
         "include_media_info": {
@@ -146,9 +145,9 @@
           "save_to_signal": {
             "location": "cursor"
           },
-          "value": "signal.endpoint_data.dropbox_delta.dropbox_delta.cursor"
+          "value": "signal.endpoint_data.delta.delta.cursor"
         }
       }
     }
-  ]
+  }
 }

@@ -13,7 +13,7 @@
 				site.bindProviderUtilities();
 			});
 		});
-</script>
+	</script>
 {% endblock %}
 
 
@@ -23,6 +23,7 @@
 		<div class="filter" data-filter="all"><div class="filter-text">All</div></div>
 	</div>
 {% endblock %}
+
 
 {% block content %}
 	<div class="overflow-y-hidden">
@@ -38,7 +39,7 @@
 		</div>
 		<div class="grid container" id="provider-grid">
 			{% for provider in providers %}
-				<div class="mix provider-button {{ provider.tags }} {% if provider.associated_signal %}provider-associated{% endif %}" data-link="{% url 'core_connect' name=provider.url_name %}" name="provider-{{ provider.backend_name }}">
+				<div class="mix provider-button {% for tag in provider.tags %}{{ tag }} {% endfor %} {% if provider.associated_signal %}provider-associated{% endif %}" data-link="{% url 'core_connect' name=provider.name|slugify %}" name="provider-{{ provider.backend_name }}">
 					<div class="provider-name">
 						<i class="icon-{{ provider.backend_name }}"></i>
 						<div>{{ provider.name }}</div>

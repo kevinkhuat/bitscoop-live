@@ -1,3 +1,5 @@
+import json
+import re
 import urllib
 
 import tornado.httpclient
@@ -19,6 +21,8 @@ Storage = module_member(STORAGE)
 
 STRATEGY = getattr(settings, setting_name('STRATEGY'), 'social.strategies.django_strategy.DjangoStrategy')
 Strategy = module_member(STRATEGY)
+
+HEADER_REPLACEMENT = re.compile('\[\$1\]')
 
 
 def refresh_signal_token(loaded_backend, signal):
@@ -51,35 +55,35 @@ def get_backend_module(signal):
     return import_module('social.backends.{0}'.format(signal.provider.name.lower()))
 
 
-def add_psa_params(parameters, signal):
+def hydrate_server_fields(items, signal):
     """
-    This takes in a dictionary of parameters and their associated signal and populates any parameters that
+    This takes in a dictionary of items (parameters or headers) and their associated signal and populates any items that
     could not be populated on the client, specifically OAuth tokens and OpenID keys.
     This information is assumed to be stored somewhere on the signal.
-    The parameters in question come in storing their location on the signal, e.g. the OAuth2 Access token
+    The items in question come in storing their location on the signal, e.g. the OAuth2 Access token
     comes in as {access_token: 'access_token'}, with the value of this key/value pair indicating that the
     information is located at signal.access_token.
 
-    :param parameters: The dictionary of parameter names and values
+    :param items: The dictionary of parameter names and values
     :param signal: The associated signal
-    :return: A dictionary of the parameters for the given call
+    :return: A dictionary of the items for the given call
     """
-    for item in parameters:
-        if item == 'oauth_token' or item == 'oauth_token_secret' or item == 'access_token' or item == 'key':
+    for item in items:
+        if (item == 'oauth_token' or item == 'oauth_token_secret' or item == 'access_token' or item == 'key') and (items[item] == 'oauth_token' or items[item] == 'oauth_token_secret' or items[item] == 'access_token' or items[item] == 'key'):
             # Find the token location from the endpoint definition, currently assumes it's on the signal's explicitly populated property
-            token_location = parameters[item].split('.')
+            token_location = items[item].split('.')
 
             sliced = signal
             for index in token_location:
                 sliced = sliced._values[index]
 
-            parameters[item] = sliced
+            items[item] = sliced
 
-    return parameters
+    return items
 
 
 @gen.coroutine
-def psa_get_json(self, url, parameters, signal, loaded_backend, method='GET', *args, **kwargs):
+def psa_get_json(self, url, parameters, headers, header_descriptions, pagination_method, signal, loaded_backend, method='GET', *args, **kwargs):
     """
     This appends the parameters to the URL call and then calls the URL asynchronously.
     When the result comes back, it is written back to the client.
@@ -93,6 +97,13 @@ def psa_get_json(self, url, parameters, signal, loaded_backend, method='GET', *a
     :return:
     """
     kwargs.setdefault('headers', {})
+
+    for header, value in headers.items():
+        this_header_description = header_descriptions[header]
+
+        header_value = re.sub(HEADER_REPLACEMENT, value, this_header_description['header_value'])
+        kwargs['headers'][this_header_description['header_name']] = header_value
+
     # Add parameters to URL manually using urllib
     # kwargs.setdefault('params', parameters)
     url_parts = list(urllib.parse.urlparse(url))
@@ -124,6 +135,17 @@ def psa_get_json(self, url, parameters, signal, loaded_backend, method='GET', *a
 
             try:
                 response = yield client.fetch(request)
+                if pagination_method == 'rfc5988' and 'Link' in response.headers:
+                    constructed_response = {
+                        'Link': response.headers['Link'],
+                        'data': json.loads(response.body.decode('utf-8'))
+                    }
+
+                    constructed_response = json.dumps(constructed_response).encode('utf-8')
+                else:
+                    constructed_response = response.body
+
+                self.write(constructed_response)
             except tornado.httpclient.HTTPError as err:
                 if err.response.code == 401:
                     signal = refresh_signal_token(loaded_backend, signal)
@@ -152,8 +174,6 @@ def psa_get_json(self, url, parameters, signal, loaded_backend, method='GET', *a
                 else:
                     self.send_error('Unknown call failure')
                     self.finish()
-
-            self.write(response.body)
 
         self.finish()
     except ConnectionError as err:

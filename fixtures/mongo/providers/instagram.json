@@ -2,29 +2,29 @@
   "provider": {
     "provider_number": "000000000000000000000002",
     "name": "Instagram",
-    "domain": "api.instagram.com",
+    "domain": "https://api.instagram.com",
     "client_callable": true,
     "backend_name": "instagram",
     "endpoint_wait_time": 0,
     "auth_backend": "social.backends.instagram.InstagramOAuth2",
     "description": "Mobile photo-sharing, video-sharing and social networking service",
-    "tags": "media social",
-    "auth_type": 0,
-    "scheme": "https",
-    "url_name": "instagram"
+    "tags": [
+      "media",
+      "social"
+    ],
+    "auth_type": 0
   },
-  "event_sources": [
-    {
+  "event_sources": {
+    "posts": {
       "display_name": "Instagram Posts",
-      "name": "instagram_posts",
       "description": "Content you have posted on Instagram",
       "enabled_by_default": true,
       "endpoints": [
-        "instagram_feed"
+        "feed"
       ],
-      "initial_mapping": "instagram_feed",
+      "initial_mapping": "feed",
       "mappings": {
-        "instagram_feed": {
+        "feed": {
           "returned_data_location": "data",
           "event_type": "create",
           "db_entry_mapping": {
@@ -251,17 +251,16 @@
         }
       }
     },
-    {
+    "likes": {
       "display_name": "Instagram Likes",
-      "name": "instagram_likes",
       "description": "Posts you have Liked on Instagram",
       "enabled_by_default": true,
       "endpoints": [
-        "instagram_likes"
+        "likes"
       ],
-      "initial_mapping": "instagram_likes",
+      "initial_mapping": "likes",
       "mappings": {
-        "instagram_likes": {
+        "likes": {
           "returned_data_location": "data",
           "event_type": "comment",
           "db_entry_mapping": {
@@ -499,11 +498,10 @@
         }
       }
     }
-  ],
-  "endpoints": [
-    {
+  },
+  "endpoints": {
+    "feed": {
       "call_method": "GET",
-      "name": "instagram_feed",
       "path": "/v1/users/self/feed",
       "parameter_descriptions": {
         "access_token": {
@@ -518,19 +516,18 @@
         },
         "min_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.instagram_posts.instagram_feed.min_id",
+          "value": "signal.endpoint_data.posts.feed.min_id",
           "description": "Most recent Instagram item"
         },
         "max_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.instagram_posts.instagram_feed.max_id",
+          "value": "signal.endpoint_data.posts.feed.max_id",
           "description": "Highest ID of next page call"
         }
       }
     },
-    {
+    "likes": {
       "call_method": "GET",
-      "name": "instagram_likes",
       "path": "/v1/users/self/media/liked",
       "parameter_descriptions": {
         "access_token": {
@@ -545,10 +542,10 @@
         },
         "max_like_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.instagram_likes.instagram_likes.max_like_id",
+          "value": "signal.endpoint_data.likes.likes.max_like_id",
           "description": "Highest ID of next page call"
         }
       }
     }
-  ]
+  }
 }

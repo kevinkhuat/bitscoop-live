@@ -9,6 +9,8 @@ from ografy.settings.keys import *  # noqa
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ografy.core.backends.IdentifierBackend',
+    'ografy.contrib.psafixbox.backends.reddit.RedditOAuth2',
+    'ografy.contrib.psafixbox.backends.spotify.SpotifyOAuth2',
     # 'social.backends.amazon.AmazonOAuth2',
     # 'social.backends.angel.AngelOAuth2',
     # 'social.backends.aol.AOLOpenId',
@@ -29,7 +31,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.facebook.FacebookAppOAuth2',
     'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.fedora.FedoraOpenId',
-    # 'social.backends.fitbit.FitbitOAuth',
+    'social.backends.fitbit.FitbitOAuth',
     # 'social.backends.flickr.FlickrOAuth',
     # 'social.backends.foursquare.FoursquareOAuth2',
     'social.backends.github.GithubOAuth2',
@@ -56,11 +58,11 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.rdio.RdioOAuth1',
     # 'social.backends.rdio.RdioOAuth2',
     # 'social.backends.readability.ReadabilityOAuth',
-    'social.backends.reddit.RedditOAuth2',
+    # 'social.backends.reddit.RedditOAuth2',
     # 'social.backends.runkeeper.RunKeeperOAuth2',
     # 'social.backends.skyrock.SkyrockOAuth',
     # 'social.backends.soundcloud.SoundcloudOAuth2',
-    'social.backends.spotify.SpotifyOAuth2',
+    # 'social.backends.spotify.SpotifyOAuth2',
     # 'social.backends.stackoverflow.StackoverflowOAuth2',
     'social.backends.steam.SteamOpenId',
     # 'social.backends.stocktwits.StocktwitsOAuth2',
@@ -224,7 +226,7 @@ SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
 # SOCIAL_AUTH_GITHUB_KEY = ''
 # SOCIAL_AUTH_GITHUB_SECRET = ''
 SOCIAL_AUTH_GITHUB_SCOPE = [
-    'repo:status'
+    'repo'
 ]
 
 
@@ -322,13 +324,16 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/reddit.html
 # Signal API Management URL:    https://ssl.reddit.com/prefs/apps/
 # Authorize URL:                https://ssl.reddit.com/api/v1/authorize
-# developers: hegemonbill
 
 # SOCIAL_AUTH_REDDIT_KEY = ''
 # SOCIAL_AUTH_REDDIT_SECRET = ''
 SOCIAL_AUTH_REDDIT_AUTH_EXTRA_ARGUMENTS = {
     'duration': 'permanent'
 }
+SOCIAL_AUTH_REDDIT_SCOPE = [
+    'history',
+    'privatemessages'
+]
 
 
 ###########
@@ -342,6 +347,11 @@ SOCIAL_AUTH_REDDIT_AUTH_EXTRA_ARGUMENTS = {
 
 # SOCIAL_AUTH_SPOTIFY_KEY = ''
 # SOCIAL_AUTH_SPOTIFY_SECRET = ''
+SOCIAL_AUTH_SPOTIFY_SCOPE = [
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'user-library-read'
+]
 
 
 #################

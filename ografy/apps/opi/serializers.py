@@ -181,9 +181,7 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
             'endpoint_wait_time',
             'name',
             'provider_number',
-            'scheme',
             'tags',
-            'url_name',
         )
         depth = 5
 
@@ -232,8 +230,10 @@ class EndpointSerializer(tasty_serializers.DocumentSerializer):
         fields = (
             'additional_path_fields',
             'call_method',
+            'header_descriptions',
             'name',
             'parameter_descriptions',
+            'return_header_descriptions',
             'route',
         )
         depth = 5

@@ -61,7 +61,7 @@ def authorize(request):
 
 @login_required
 def connect(request, name):
-    expression = Q(url_name=name)
+    expression = Q(name__iexact=name)
     provider = ProviderApi.get(expression).get()
 
     return render(request, 'core/signals/connect.html', {
@@ -100,7 +100,7 @@ def verify(request, pk):
             elif signal.provider.auth_type == 0:
                 signal.access_token = signal_data.pop('access_token')
 
-                if hasattr(signal_data, 'refresh_token'):
+                if 'refresh_token' in signal_data.keys():
                     signal.refresh_token = signal_data.pop('refresh_token')
 
             signal.signal_data = signal_data

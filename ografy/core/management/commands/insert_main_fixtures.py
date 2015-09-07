@@ -14,48 +14,53 @@ from ografy.settings import FIXTURE_DIRS
 FIXTURE_DIR = os.path.join(FIXTURE_DIRS[0], 'mongo', 'providers')
 
 
-def create_fixture_endpoint(temp_endpoint, provider):
+def create_fixture_endpoint(name, value, provider):
+    scheme_and_domain = provider['domain'].split('://')
     url_parts = [''] * 6
-    url_parts[0] = provider['scheme']
-    url_parts[1] = provider['domain']
-    url_parts[2] = temp_endpoint['path']
+    url_parts[0] = scheme_and_domain[0]
+    url_parts[1] = scheme_and_domain[1]
+    url_parts[2] = value['path']
 
     route = urllib.parse.urlunparse(url_parts)
 
-    if 'additional_path_fields' in temp_endpoint.keys():
-        return Endpoint(
-            additional_path_fields=temp_endpoint['additional_path_fields'],
-            call_method=temp_endpoint['call_method'],
-            name=temp_endpoint['name'],
-            parameter_descriptions=temp_endpoint['parameter_descriptions'],
-            route=route,
-        )
-    else:
-        return Endpoint(
-            call_method=temp_endpoint['call_method'],
-            name=temp_endpoint['name'],
-            parameter_descriptions=temp_endpoint['parameter_descriptions'],
-            route=route,
-        )
+    return_endpoint = Endpoint(
+        call_method=value['call_method'],
+        name=name,
+        route=route,
+    )
+
+    if 'additional_path_fields' in value.keys():
+        return_endpoint['additional_path_fields'] = value['additional_path_fields']
+
+    if 'header_descriptions' in value.keys():
+        return_endpoint['header_descriptions'] = value['header_descriptions']
+
+    if 'parameter_descriptions' in value.keys():
+        return_endpoint['parameter_descriptions'] = value['parameter_descriptions']
+
+    if 'return_header_descriptions' in value.keys():
+        return_endpoint['return_header_descriptions'] = value['return_header_descriptions']
+
+    return return_endpoint
 
 
-def create_fixture_event_source(temp_event_source, endpoint_list):
-    temp_endpoint_dict = {}
-    event_source_endpoint_list = temp_event_source['endpoints']
+def create_fixture_event_source(name, value, endpoint_list):
+    value_dict = {}
+    event_source_endpoint_list = value['endpoints']
 
     for endpoint_name in event_source_endpoint_list:
         for endpoint in endpoint_list:
             if endpoint_name == endpoint['name']:
-                temp_endpoint_dict[endpoint['name']] = endpoint
+                value_dict[endpoint['name']] = endpoint
 
     return EventSource(
-        description=temp_event_source['description'],
-        display_name=temp_event_source['display_name'],
-        enabled_by_default=temp_event_source['enabled_by_default'],
-        endpoints=temp_endpoint_dict,
-        initial_mapping=temp_event_source['initial_mapping'],
-        mappings=temp_event_source['mappings'],
-        name=temp_event_source['name']
+        description=value['description'],
+        display_name=value['display_name'],
+        enabled_by_default=value['enabled_by_default'],
+        endpoints=value_dict,
+        initial_mapping=value['initial_mapping'],
+        mappings=value['mappings'],
+        name=name
     )
 
 
@@ -76,9 +81,7 @@ def create_fixture_provider(provider, event_source_list):
         domain=provider['domain'],
         name=provider['name'],
         provider_number=bson.ObjectId(provider['provider_number']),
-        scheme=provider['scheme'],
-        tags=provider['tags'],
-        url_name=provider['url_name']
+        tags=provider['tags']
     )
 
 
@@ -99,12 +102,12 @@ def load_fixture(path):
     endpoint_list = []
     event_source_list = []
 
-    for endpoint in fixture_data['endpoints']:
-        insert_endpoint = create_fixture_endpoint(endpoint, fixture_data['provider'])
+    for name, value in fixture_data['endpoints'].items():
+        insert_endpoint = create_fixture_endpoint(name, value, fixture_data['provider'])
         endpoint_list.append(insert_endpoint)
 
-    for event_source in fixture_data['event_sources']:
-        insert_event_source = create_fixture_event_source(event_source, endpoint_list)
+    for name, value in fixture_data['event_sources'].items():
+        insert_event_source = create_fixture_event_source(name, value, endpoint_list)
         event_source_list.append(insert_event_source)
 
     insert_provider = create_fixture_provider(fixture_data['provider'], event_source_list)

@@ -2,22 +2,25 @@
   "provider": {
     "provider_number": "000000000000000000000001",
     "name": "Google",
-    "domain": "www.googleapis.com",
+    "domain": "https://www.googleapis.com",
     "client_callable": true,
     "backend_name": "google-oauth2",
     "endpoint_wait_time": 0,
     "auth_backend": "social.backends.google.GoogleOAuth2",
     "description": "Internet-related services and products",
-    "tags": "collaboration media productivity social",
-    "auth_type": 0,
-    "scheme": "https",
-    "url_name": "google"
+    "tags": [
+      "collaboration",
+      "media",
+      "productivity",
+      "social",
+      "video"
+    ],
+    "auth_type": 0
   },
-  "event_sources": [
-    {
+  "event_sources": {
+    "youtube_videos": {
       "description": "Youtube videos you have watched",
       "display_name": "Youtube videos",
-      "name": "youtube_videos",
       "enabled_by_default": true,
       "endpoints": [
         "youtube_playlist",
@@ -111,8 +114,7 @@
         }
       }
     },
-    {
-      "name": "gmail_inbox",
+    "gmail_inbox": {
       "display_name": "Gmail Inbox",
       "description": "Email sent to you",
       "path": "gmail/v1/users/me/messages",
@@ -353,10 +355,9 @@
         }
       }
     },
-    {
+    "drive_changes": {
       "description": "Google Drive file changes",
       "display_name": "Google Drive file changes",
-      "name": "drive_changes",
       "enabled_by_default": true,
       "endpoints": [
         "drive_changes"
@@ -515,11 +516,10 @@
         }
       }
     }
-  ],
-  "endpoints": [
-    {
+  },
+  "endpoints": {
+    "youtube_channels": {
       "call_method": "GET",
-      "name": "youtube_channels",
       "path": "youtube/v3/channels",
       "parameter_descriptions": {
         "part": {
@@ -539,9 +539,8 @@
         }
       }
     },
-    {
+    "youtube_playlist": {
       "call_method": "GET",
-      "name": "youtube_playlist",
       "path": "youtube/v3/playlistItems",
       "parameter_descriptions": {
         "part": {
@@ -589,9 +588,8 @@
         }
       }
     },
-    {
+    "gmail_inbox": {
       "call_method": "GET",
-      "name": "gmail_inbox",
       "path": "gmail/v1/users/me/messages",
       "parameter_descriptions": {
         "pageToken": {
@@ -616,9 +614,8 @@
         }
       }
     },
-    {
+    "gmail_message": {
       "call_method": "GET",
-      "name": "gmail_message",
       "path": "gmail/v1/users/me/messages/[$1]",
       "additional_path_fields": [
         {
@@ -645,9 +642,8 @@
         }
       }
     },
-    {
+    "drive_changes": {
       "call_method": "GET",
-      "name": "drive_changes",
       "path": "drive/v2/changes",
       "parameter_descriptions": {
         "includeDeleted": {
@@ -680,5 +676,5 @@
         }
       }
     }
-  ]
+  }
 }

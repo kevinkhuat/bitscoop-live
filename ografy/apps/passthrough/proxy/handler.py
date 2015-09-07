@@ -38,6 +38,7 @@ class ExternalAPICall(tornado.web.RequestHandler):
         signal_list = yield Signal.objects.filter(signal_query).find_all()
         signal = signal_list[0]
         endpoint = signal.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
+        pagination_method = signal.permissions[permission_name]['event_source']['mappings']['pagination']['method']
 
         # Get the route from the endpoint
         route = endpoint['route']
@@ -52,6 +53,8 @@ class ExternalAPICall(tornado.web.RequestHandler):
         # Get the parameters from the request, then populate the ones that couldn't be sent by the client,
         # such as OAuth tokens and OpenID keys.
         parameters = json.loads(self.get_argument('parameters'))
+        headers = json.loads(self.get_argument('headers'))
+        header_descriptions = endpoint['header_descriptions']
 
         for additional_path_field in endpoint['additional_path_fields']:
             path_parameter = parameters.pop(additional_path_field['parameter'])
@@ -61,7 +64,8 @@ class ExternalAPICall(tornado.web.RequestHandler):
 
             route = re.sub(re.escape(additional_path_field['replace']), path_parameter, route)
 
-        parameters = psa_adapters.add_psa_params(parameters, signal)
+        parameters = psa_adapters.hydrate_server_fields(parameters, signal)
+        headers = psa_adapters.hydrate_server_fields(headers, signal)
 
         # TODO: Replace OAuth1 authorization with something other than PSA
         # For now, we're using PSA's authorization for OAuth1 since it was going to be a pain to write
@@ -89,7 +93,7 @@ class ExternalAPICall(tornado.web.RequestHandler):
             self.finish()
         # If it's not OAuth1, call psa_get_json to add the parameters to the URL and call it, then send the results to the client.
         else:
-            psa_adapters.psa_get_json(self, route, parameters, signal, loaded_backend, method=endpoint['call_method'])
+            psa_adapters.psa_get_json(self, route, parameters, headers, header_descriptions, pagination_method, signal, loaded_backend, method=endpoint['call_method'])
 
     @tornado.web.asynchronous
     def options(self):

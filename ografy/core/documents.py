@@ -371,8 +371,10 @@ class Endpoint(mongoengine.EmbeddedDocument):
 
     additional_path_fields = mongoengine.ListField()
     call_method = mongoengine.StringField()
+    header_descriptions = mongoengine.DictField()
     name = mongoengine.StringField()
     parameter_descriptions = mongoengine.DictField()
+    return_header_descriptions = mongoengine.DictField()
     route = mongoengine.StringField(required=True)
 
 
@@ -432,9 +434,7 @@ class Provider(mongoengine.Document):
     event_sources = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=EventSource))
     name = mongoengine.StringField()
     provider_number = mongoengine.ObjectIdField(primary_key=True)
-    scheme = mongoengine.StringField()
-    tags = mongoengine.StringField()
-    url_name = mongoengine.StringField()
+    tags = mongoengine.ListField(mongoengine.StringField())
 
     meta = {
         'indexes': [{
@@ -528,7 +528,7 @@ class Signal(mongoengine.Document):
 class Data(mongoengine.Document):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     data_dict = mongoengine.DictField()
-    ografy_unique_id = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField(unique=True)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField()
 
@@ -547,7 +547,7 @@ class Contact(mongoengine.Document):
     data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     handle = mongoengine.StringField()
     name = mongoengine.StringField()
-    ografy_unique_id = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField(unique=True)
     signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField()
@@ -621,14 +621,15 @@ class Content(mongoengine.Document):
         ('text', 'Plain text'),
         ('code', 'Computer code'),
         ('file', 'A computer file'),
-        ('web_page', 'A web page')
+        ('web_page', 'A web page'),
+        ('food', 'Food or beverage'),
     )
 
     content_type = mongoengine.StringField(choices=CONTENT_TYPE)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     file_extension = mongoengine.StringField()
-    ografy_unique_id = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField(unique=True)
     owner = mongoengine.StringField()
     signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     text = mongoengine.StringField()
@@ -720,7 +721,8 @@ class EmbeddedContent(mongoengine.EmbeddedDocument):
         ('audio', 'Music, podcast, etc.'),
         ('text', 'Plain text'),
         ('code', 'Computer code'),
-        ('file', 'A computer file')
+        ('file', 'A computer file'),
+        ('food', 'Food or beverage'),
     )
 
     content = mongoengine.ReferenceField(Content, dbref=False)
@@ -806,7 +808,7 @@ class Event(mongoengine.Document):
     data_dict = mongoengine.ListField(mongoengine.ReferenceField(Data, dbref=False))
     event_type = mongoengine.StringField(choices=EVENT_TYPE)
     location = mongoengine.EmbeddedDocumentField(EmbeddedLocation)
-    ografy_unique_id = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField(unique=True)
     provider = mongoengine.ReferenceField(Provider, dbref=False)
     provider_name = mongoengine.StringField(required=True)
     signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)

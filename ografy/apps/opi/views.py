@@ -2,6 +2,7 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
+from mongoengine.errors import NotUniqueError
 from rest_framework import status
 from rest_framework.response import Response
 from social.apps.django_app.default.models import UserSocialAuth
@@ -46,31 +47,23 @@ class DataView(MongoAPIListView):
         )
         post_data.user_id = request.user.id
 
-        existing_data = core_api.DataApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_data['ografy_unique_id']))
-        data_exists = len(existing_data) > 0
-
-        if not data_exists:
+        try:
             data_query = core_api.DataApi.post(
                 data=post_data
             )
-            data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
-            serialized_response = self.serialize(
-                data_object,
-                context={
-                    'request': request
-                }
-            )
+        except NotUniqueError:
+            data_query = core_api.DataApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_data['ografy_unique_id'])).get()
 
-            return Response(serialized_response)
-        else:
-            serialized_response = self.serialize(
-                existing_data.get(),
-                context={
-                    'request': request
-                }
-            )
+        data_object = opi_serializer.evaluate(data_query, self.Meta.QuerySet)
 
-            return Response(serialized_response)
+        serialized_response = self.serialize(
+            data_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
 
 
 class DataSingleView(MongoAPIView):
@@ -180,31 +173,23 @@ class ContactView(MongoAPIListView):
         )
         post_contact.user_id = request.user.id
 
-        existing_contact = core_api.ContactApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_contact['ografy_unique_id']))
-        contact_exists = len(existing_contact) > 0
-
-        if not contact_exists:
+        try:
             contact_query = core_api.ContactApi.post(
                 data=post_contact
             )
-            contact_object = opi_serializer.evaluate(contact_query, self.Meta.QuerySet)
-            serialized_response = self.serialize(
-                contact_object,
-                context={
-                    'request': request
-                }
-            )
+        except NotUniqueError:
+            contact_query = core_api.ContactApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_contact['ografy_unique_id'])).get()
 
-            return Response(serialized_response)
-        else:
-            serialized_response = self.serialize(
-                existing_contact.get(),
-                context={
-                    'request': request
-                }
-            )
+        contact_object = opi_serializer.evaluate(contact_query, self.Meta.QuerySet)
 
-            return Response(serialized_response)
+        serialized_response = self.serialize(
+            contact_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
 
 
 class ContactSingleView(MongoAPIView):
@@ -313,31 +298,23 @@ class ContentView(MongoAPIListView):
         )
         post_content.user_id = request.user.id
 
-        existing_content = core_api.ContentApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_content['ografy_unique_id']))
-        content_exists = len(existing_content) > 0
-
-        if not content_exists:
+        try:
             content_query = core_api.ContentApi.post(
                 data=post_content
             )
-            content_object = opi_serializer.evaluate(content_query, self.Meta.QuerySet)
-            serialized_response = self.serialize(
-                content_object,
-                context={
-                    'request': request
-                }
-            )
+        except NotUniqueError:
+            content_query = core_api.ContentApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_content['ografy_unique_id'])).get()
 
-            return Response(serialized_response)
-        else:
-            serialized_response = self.serialize(
-                existing_content.get(),
-                context={
-                    'request': request
-                }
-            )
+        content_object = opi_serializer.evaluate(content_query, self.Meta.QuerySet)
 
-            return Response(serialized_response)
+        serialized_response = self.serialize(
+            content_object,
+            context={
+                'request': request
+            }
+        )
+
+        return Response(serialized_response)
 
 
 class ContentSingleView(MongoAPIView):
@@ -446,30 +423,30 @@ class EventView(MongoAPIListView):
                 'request': request
             }
         )
+
         post_event.user_id = request.user.id
 
-        event_exists = len(core_api.EventApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_event['ografy_unique_id']))) > 0
+        if 'location' not in post_event.keys():
+            post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
 
-        if not event_exists:
-            if 'location' not in post_event.keys():
-                post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
-
+        try:
             event_query = core_api.EventApi.post(
                 data=post_event
             )
 
-            event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
-            serialized_response = self.serialize(
-                event_object,
-                context={
-                    'request': request,
-                    'format': format
-                }
-            )
+        except NotUniqueError:
+            event_query = core_api.EventApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_event['ografy_unique_id'])).get()
 
-            return Response(serialized_response)
-        else:
-            return Response('Event exists', status=409)
+        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+        serialized_response = self.serialize(
+            event_object,
+            context={
+                'request': request,
+                'format': format
+            }
+        )
+
+        return Response(serialized_response)
 
 
 class EventSingleView(MongoAPIView):

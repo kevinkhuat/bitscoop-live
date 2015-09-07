@@ -4,20 +4,19 @@
     "name": "Twitter",
     "endpoint_wait_time": 0,
     "client_callable": true,
-    "domain": "api.twitter.com/1.1",
+    "domain": "https://api.twitter.com/1.1",
     "backend_name": "twitter",
     "auth_backend": "social.backends.twitter.TwitterOAuth",
     "description": "Online social networking service",
-    "tags": "social",
-    "auth_type": 1,
-    "scheme": "https",
-    "url_name": "twitter"
+    "tags": [
+      "social"
+    ],
+    "auth_type": 1
   },
-  "event_sources": [
-    {
+  "event_sources": {
+    "tweets": {
       "description": "All tweets in your timeline",
       "display_name": "Tweets",
-      "name": "tweets",
       "enabled_by_default": true,
       "endpoints": [
         "user_timeline"
@@ -163,12 +162,10 @@
         }
       }
     },
-    {
-      "provider_name": "Twitter",
+    "direct_messages_sent": {
       "description": "Direct Messages you have sent",
       "enabled_by_default": true,
       "display_name": "Direct Messages Sent",
-      "name": "direct_messages_sent",
       "endpoints": [
         "direct_messages_sent"
       ],
@@ -196,6 +193,10 @@
             },
             "event": {
               "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "twitter"
+                },
                 {
                   "hydration_method": "translate",
                   "value": "responseObject.id_str"
@@ -309,11 +310,9 @@
         }
       }
     },
-    {
-      "provider_name": "Twitter",
+    "direct_messages_receieved": {
       "description": "Direct Messages you have recieved",
       "display_name": "Direct Messages Received",
-      "name": "direct_messages_received",
       "endpoints": [
         "direct_messages_received"
       ],
@@ -462,11 +461,10 @@
         }
       }
     }
-  ],
-  "endpoints": [
-    {
+  },
+  "endpoints": {
+    "user_timeline": {
       "call_method": "GET",
-      "name": "user_timeline",
       "path": "statuses/user_timeline.json",
       "parameter_descriptions": {
         "count": {
@@ -496,9 +494,8 @@
         }
       }
     },
-    {
+    "direct_messages_sent": {
       "call_method": "GET",
-      "name": "direct_messages_sent",
       "path": "direct_messages/sent.json",
       "parameter_descriptions": {
         "count": {
@@ -528,9 +525,8 @@
         }
       }
     },
-    {
+    "direct_messages_received": {
       "call_method": "GET",
-      "name": "direct_messages_received",
       "path": "direct_messages.json",
       "parameter_descriptions": {
         "count": {
@@ -560,5 +556,5 @@
         }
       }
     }
-  ]
+  }
 }
