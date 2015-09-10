@@ -1,27 +1,24 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'core/base.html' %}
 
-{% block content %}
+
+{% block static %}
+{{ block.super }}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
+
+{% block main %}
 <section class="lockwidth centered">
-	<div class="center centered signup">
-		<h2>Welcome to Ografy!</h2>
-		<p>We're excited to have you join us!</p>
-		<p>
-			We're currently in closed beta so your account won't be immediately enabled.
-			But you should be able to reserve a name now and log in without a problem.
-		</p>
-		<!--<p>First things first, let's create you an an account with some basic information.</p>
-		<p>For now you only need to provide a valid email address and a password. You can fill out the rest of your information later if you'd like.</p>-->
-	</div>
-
 	<div class="table centered backfill padded rounded flex column signup">
 		<div class="center centered grow" style="margin: 0 0 0.5em 0;">
 			<div class="center">
-				Sign up for Ografy
+				Sign up for BitScoop
 			</div>
 		</div>
 		<div class="center centered grow">
 			<div>
-				<form action="{% url 'core_signup' %}" method="POST">
+				<form action="{% url 'signup' %}" method="POST">
 					{% csrf_token %}
 					<div>
 						<input class="full-width" type="text" name="email" placeholder="Email address" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
@@ -44,6 +41,9 @@
 						{{ form.password.errors }}
 					</div>
 					<div>{{ form.non_field_errors }}</div>
+
+					<div class="g-recaptcha" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+
 					<div class="center">
 						<input class="button-green" type="submit" value="Sign up" style="margin: 0.5em 0 0 0"/>
 					</div>

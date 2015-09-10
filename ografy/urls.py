@@ -4,9 +4,9 @@ from django.conf.urls import include, patterns, url
 
 urlpatterns = patterns('',
     url(r'^auth/', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^opi', include('ografy.apps.opi.urls')),
+    url(r'^opi', include('ografy.apps.opi.urls', namespace='opi')),
 
-    url(r'^', include('ografy.core.urls')),
+    url(r'', include('ografy.core.urls')),
 )
 
 

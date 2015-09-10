@@ -13,69 +13,69 @@ SEARCH_TEXT_FIELDS = (
 
 
 SEARCH_VALIDATION_OBJECT = {
-    "query": {
-        "filtered": {
-            "filter": {
-                "and": [
+    'query': {
+        'filtered': {
+            'filter': {
+                'and': [
                     {
-                        "bool": {
-                            "should": [
+                        'bool': {
+                            'should': [
                                 {
-                                    "and": [
+                                    'and': [
                                         {
-                                            "or": [
+                                            'or': [
                                                 {
-                                                    "term": {
-                                                        "contacts_list.name": None
+                                                    'term': {
+                                                        'contacts_list.name': None
                                                     }
                                                 },
                                                 {
-                                                    "term": {
-                                                        "contacts_list.handle": None
+                                                    'term': {
+                                                        'contacts_list.handle': None
                                                     }
                                                 }
                                             ]
                                         },
                                         {
-                                            "term": {
-                                                "contact_interaction_type": None
+                                            'term': {
+                                                'contact_interaction_type': None
                                             }
                                         }
                                     ]
                                 },
                                 {
-                                    "term": {
-                                        "content_list.content_type": None
+                                    'term': {
+                                        'content_list.content_type': None
                                     }
                                 },
                                 {
-                                    "geo_distance": {
-                                        "distance": None,
-                                        "location.geolocation": {
-                                            "lat": None,
-                                            "lon": None
+                                    'geo_distance': {
+                                        'distance': None,
+                                        'location.geolocation': {
+                                            'lat': None,
+                                            'lon': None
                                         }
                                     }
                                 },
                                 {
-                                    "not": {
-                                        "geo_distance": {
-                                            "distance": None,
-                                            "location.geolocation": {
-                                                "lat": None,
-                                                "lon": None
+                                    'not': {
+                                        'geo_distance': {
+                                            'distance': None,
+                                            'location.geolocation': {
+                                                'lat': None,
+                                                'lon': None
                                             }
                                         }
                                     }
                                 },
                                 {
-                                    "not": {
-                                        "geo_polygon": {
-                                            "location.geolocation": {
-                                                "points": [
+                                    'not': {
+                                        'geo_polygon': {
+                                            'location.geolocation': {
+                                                'points': [
                                                     {
-                                                        "lat": None,
-                                                        "lon": None
+                                                        'lat': None,
+                                                        'lon': None
                                                     }
                                                 ]
                                             }
@@ -83,29 +83,29 @@ SEARCH_VALIDATION_OBJECT = {
                                     }
                                 },
                                 {
-                                    "geo_polygon": {
-                                        "location.geolocation": {
-                                            "points": [
+                                    'geo_polygon': {
+                                        'location.geolocation': {
+                                            'points': [
                                                 {
-                                                    "lat": None,
-                                                    "lon": None
+                                                    'lat': None,
+                                                    'lon': None
                                                 }
                                             ]
                                         }
                                     }
                                 },
                                 {
-                                    "range": {
-                                        "datetime": {
-                                            "format": None,
-                                            "gte": None,
-                                            "lte": None
+                                    'range': {
+                                        'datetime': {
+                                            'format': None,
+                                            'gte': None,
+                                            'lte': None
                                         }
                                     }
                                 },
                                 {
-                                    "term": {
-                                        "provider_name": None
+                                    'term': {
+                                        'provider_name': None
                                     }
                                 }
                             ]
@@ -113,15 +113,15 @@ SEARCH_VALIDATION_OBJECT = {
                     }
                 ]
             },
-            "query": {
-                "multi_match": {
-                    "query": None,
-                    "type": "most_fields",
-                    "fields": SEARCH_TEXT_FIELDS
+            'query': {
+                'multi_match': {
+                    'query': None,
+                    'type': 'most_fields',
+                    'fields': SEARCH_TEXT_FIELDS
                 }
             }
         }
     },
-    "size": None,
-    "from": None
+    'size': None,
+    'from': None
 }

@@ -24,14 +24,14 @@
 			<i class="workflow-icon icon-link"></i>
 			<div class="workflow-title">Connect to {{ provider.name }}</div>
 		</div>
-		<div class="workflow-description">Connect your {{ provider.name }} account to your Ografy account</div>
+		<div class="workflow-description">Connect your {{ provider.name }} account to your BitScoop account</div>
 	</div>
 	<div class="workflow-step {% if current == 'authorize' %}current{% elif current == 'connect'%}upcoming{% else %}complete{% endif %}">
 		<div class="title-align">
 			<i class="workflow-icon icon-uniF75F"></i>
 			<div class="workflow-title">Authorize Access</div>
 		</div>
-		<div class="workflow-description">Authorize your {{ provider.name }} account's connection to Ografy</div>
+		<div class="workflow-description">Authorize your {{ provider.name }} account's connection to BitScoop</div>
 	</div>
 	<div class="workflow-step {% if current == 'verify' %}current{% else %}upcoming{% endif %}">
 		<div class="title-align">

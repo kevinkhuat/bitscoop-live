@@ -180,6 +180,7 @@ proc_name = None
 #       A callable that takes a server instance as the sole argument.
 #
 
+
 def post_fork(server, worker):
     server.log.info('Worker spawned (pid: %s)', worker.pid)
 
@@ -199,8 +200,9 @@ def when_ready(server):
 def worker_int(worker):
     worker.log.info('Worker received INT or QUIT signal.')
 
-    ## get traceback info
-    import threading, sys, traceback  # isort: ignore
+    import sys  # isort: ignore
+    import threading  # isort: ignore
+    import traceback  # isort: ignore
 
     id2name = dict([(th.ident, th.name) for th in threading.enumerate()])
     code = []

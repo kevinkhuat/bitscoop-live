@@ -76,30 +76,6 @@ def connect(request, name):
 
 
 @login_required
-def providers(request):
-    providers = list(ProviderApi.get())
-    signal_by_user = Q(user_id=request.user.id)
-    signals = SignalApi.get(val=signal_by_user)
-
-    # FIXME: Make the count happen in the DB
-    for provider in providers:
-        for signal in signals:
-            if provider.provider_number == signal.provider.provider_number and signal.complete:
-                provider.associated_signal = True
-
-                if hasattr(provider, 'assoc_count'):
-                    provider.assoc_count += 1
-                else:
-                    provider.assoc_count = 1
-
-    return render(request, 'core/signals/providers.html', {
-        'title': 'Ografy - Providers',
-        'body_class': 'full',
-        'providers': providers
-    })
-
-
-@login_required
 def verify(request, pk):
     if request.method == 'GET':
         signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=pk)).get()

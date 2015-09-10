@@ -1,12 +1,18 @@
 {% extends 'core/signals/base.html' %}
+
 {% load staticfiles %}
 
+
 {% block content %}
-<div class="content-list">
-	<div class="content-item">
-		<h1>Connect your {{ provider.name }} account to Ografy</h1>
-		<h4>When you click on the button below, you will be sent to {{ provider.name }} and then prompted to log in to your account and authorize Ografy to access your data.  With many services, you may restrict Ografy's access to certain types of data.  After authorization, you will be sent back to Ografy to choose settings for the connection to this account.</h4>
-		<a class="btn btn-primary" name="social-{{ provider.backend_name }}" href="{% url 'social:begin' backend=provider.backend_name %}">Connect to {{ provider.name }}</a>
+	<div class="content-list">
+		<div class="content-item">
+			<h1>Connect your {{ provider.name }} account to BitScoop</h1>
+			<h4>
+				When you click on the button below, you will be sent to {{ provider.name }} and then prompted to log in to your account and authorize BitScoop to access your data.
+				With many services, you may restrict BitScoop's access to certain types of data.
+				After authorization, you will be sent back to BitScoop to choose settings for the connection to this account.
+			</h4>
+			<a class="btn btn-primary" name="social-{{ provider.backend_name }}" href="{% url 'social:begin' backend=provider.backend_name %}">Connect to {{ provider.name }}</a>
+		</div>
 	</div>
-</div>
 {% endblock %}

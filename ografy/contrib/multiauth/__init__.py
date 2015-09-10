@@ -1,7 +1,10 @@
 import inspect
 
 from django.conf import settings
-from django.contrib.auth import _clean_credentials, _get_user_session_key, BACKEND_SESSION_KEY, HASH_SESSION_KEY, load_backend, login as base_login, logout as base_logout
+from django.contrib.auth import (
+    BACKEND_SESSION_KEY, HASH_SESSION_KEY, _clean_credentials, _get_user_session_key, load_backend, login as base_login,
+    logout as base_logout
+)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.signals import user_login_failed
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied

@@ -1,35 +1,45 @@
-{% extends 'shared/dispatcher.html' %}
-{% load staticfiles %}
+{% extends 'core/base.html' %}
+
 
 {% block static %}
 {{ block.super }}
-<style type="text/css">
-	a > .icon-facebook:hover { color: #4862A3; }
-	a > .icon-twitter:hover { color: #55ACEE; }
-	a > .icon-googleplus:hover { color: #D94734; }
-	a > .icon-linkedin:hover { color: #1684BB; }
 
-	.social-links > a {
-		text-decoration: none;
-		color: #AAA !important;
-		display: inline-block;
-		font-size: 2.5em;
-		margin: 0 0.25em;
-	}
-</style>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
+
 {% block content %}
-<h1 class="center">Contact Us</h1>
+	<section>
+		<form action="#" method="POST">
+			<input type="text" name="email" placeholder="E-mail address" value="{{ email }}"/>
+			<select name="feeling">
+				<option value="0">Happy</option>
+				<option value="1">Confused</option>
+				<option value="2">Frustrated</option>
+				<option value="3">Angry</option>
+				<option value="4">Curious</option>
+				<option value="5">Helpful</option>
+			</select>
+			<input type="text" name="subject" placeholder="Subject (optional)" value="{{ subject }}"/>
+			<textarea name="message"></textarea>
+			<div class="g-recaptcha" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+			<input type="submit" value="Send" />
+		</form>
+	</section>
 
-<p>If you have questions, comments, or concerns we would love to hear from you.</p>
-
-<p>You can contact us directly at <a href="mailto:support@ografy.io">support@ografy.io</a> or touch base with us on:</p>
-
-<div class="social-links">
-	<a href="https://www.facebook.com/Ografy"><i class="icon-facebook"></i></a>
-	<a href="https://twitter.com/ografy"><i class="icon-twitter"></i></a>
-	<a href="https://plus.google.com/u/0/b/112429164417309337958/112429164417309337958"><i class="icon-googleplus"></i></a>
-	<a href="https://www.linkedin.com/company/ografy"><i class="icon-linkedin"></i></a>
-</div>
+	<div class="help-container">
+		<h1>Contact Us</h1>
+		<h3>
+			Technical problems
+		</h3>
+		<p>
+			If you notice any technical issues, please email support@bitscoop.com with a description of the problem you are seeing.
+		</p>
+		<h3>
+			Social Media
+		</h3>
+		<p>
+			BitScoop is on a variety of social media, including Facebook, Twitter, reddit, LinkedIn, and Instagram.
+		</p>
+	</div>
 {% endblock %}

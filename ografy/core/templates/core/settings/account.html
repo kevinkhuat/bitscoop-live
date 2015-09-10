@@ -1,30 +1,26 @@
 {% extends 'core/settings/base.html' %}
-{% load staticfiles %}
 
-{% block static %}
-	{{ block.super }}
-{% endblock %}
 
 {% block content %}
-<div class="content-list">
-	<form action="/settings/account">
-		<div class="content-item">
-			<h1>Name</h1>
-			<label><div class="text-input-width-medium">First Name</div><input class="autoformEnabled" type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></label>
-			<div>{{ form.first_name.errors }}</div>
-			<label><div class="text-input-width-medium">Last Name</div><input class="autoformEnabled" type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></label>
-			<div>{{ form.last_name.errors }}</div>
-		</div>
-		<div class="content-item">
-			<h1>Contact</h1>
-			<label><div class="text-input-width-medium">Email</div><input class="autoformEnabled" type="text" name="email" value="{{ form.email.value|default_if_none:'' }}"/></label>
-			<div>{{ form.email.errors }}</div>
-		</div>
-		<div class="content-item">
-			<h1>Handle</h1>
-			<label><div class="text-input-width-medium">Handle</div><input class="autoformEnabled" type="text" name="handle" value="{{ user.handle|default_if_none:'' }}" /></label>
-			<div>{{ form.handle.errors }}</div>
-		</div>
-	</form>
-</div>
+	<div class="content-list">
+		<form action="/settings/account">
+			<div class="content-item">
+				<h1>Name</h1>
+				<label><div class="text-input-width-medium">First Name</div><input class="autoformEnabled" type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></label>
+				<div>{{ form.first_name.errors }}</div>
+				<label><div class="text-input-width-medium">Last Name</div><input class="autoformEnabled" type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></label>
+				<div>{{ form.last_name.errors }}</div>
+			</div>
+			<div class="content-item">
+				<h1>Contact</h1>
+				<label><div class="text-input-width-medium">Email</div><input class="autoformEnabled" type="text" name="email" value="{{ form.email.value|default_if_none:'' }}"/></label>
+				<div>{{ form.email.errors }}</div>
+			</div>
+			<div class="content-item">
+				<h1>Handle</h1>
+				<label><div class="text-input-width-medium">Handle</div><input class="autoformEnabled" type="text" name="handle" value="{{ user.handle|default_if_none:'' }}" /></label>
+				<div>{{ form.handle.errors }}</div>
+			</div>
+		</form>
+	</div>
 {% endblock %}

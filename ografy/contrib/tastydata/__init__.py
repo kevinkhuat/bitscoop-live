@@ -1,5 +1,5 @@
 from ografy.contrib.tastydata.exceptions import InvalidFilterError
-from ografy.contrib.tastydata.expressions import tokenize, Symbol
+from ografy.contrib.tastydata.expressions import Symbol, tokenize
 
 
 # TODO: Update?

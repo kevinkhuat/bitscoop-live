@@ -17,7 +17,7 @@ DATABASES = {
 # HTTP #
 ########
 
-ALLOWED_HOSTS = ['.ografy.io', 'localhost']
+ALLOWED_HOSTS = ['.bitscoop.com', 'localhost']
 
 
 #############

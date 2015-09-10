@@ -1,0 +1,60 @@
+@import 'core/less/components/buttons.less';
+@import 'core/less/components/cards.less';
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+
+@import 'core/less/theme.less';
+
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	min-height: 100%;
+}
+
+body {
+	padding: 0; margin: 0;
+
+	.flex;
+
+	& > main {
+		.flex > .grow;
+	}
+}
+
+header {
+	nav {
+		.lock-width;
+		.position-center;
+
+		@margin-width: 15px;
+
+		a {
+			margin: @margin-width;
+			margin-right: 0;
+			white-space: nowrap;
+		}
+
+		& > :first-child {
+			margin-left: @margin-width * 2;
+		}
+
+		& > :last-child {
+			margin-right: @margin-width * 2;
+		}
+	}
+}
+
+footer {
+	padding: 15px;
+	font-size: 75%;
+
+	.align-center;
+}
+
+a {
+	text-decoration: none;
+}

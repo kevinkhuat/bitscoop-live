@@ -1,23 +1,32 @@
 from django.conf.urls import include, patterns, url
 
-from ografy.core.urls import main, settings, signals
-from ografy.core.urls.help import contact, documentation, faq
-
 import ografy.core.views as views
+import ografy.core.views.auth as auth_views
 
 
-urlpatterns = patterns('',
-    url(r'^$', views.index, name='core_index'),
+urlpatterns = patterns('ografy.core.views',
+    url(r'^/?$', views.home, name='home'),
+    url(r'^blog/?$', views.blog, name='blog'),
+    url(r'^contact/?$', views.ContactView.as_view(), name='contact'),
+    url(r'^faq/?$', views.faq, name='faq'),
+    url(r'^help/(?P<slug>[a-z0-9-]+)/?$', views.help, name='help'),
+    url(r'^pricing/?$', views.pricing, name='pricing'),
+    url(r'^privacy/?$', views.privacy, name='privacy'),
+    url(r'^providers/?$', views.providers, name='providers'),
+    url(r'^security/?$', views.security, name='security'),
+    url(r'^signup/?$', views.SignupView.as_view(), name='signup'),
+    url(r'^team/?$', views.team, name='team'),
+    url(r'^terms/?$', views.terms, name='terms'),
+    url(r'^upcoming/?$', views.upcoming, name='upcoming'),
 
-    url(r'^login/?$', views.LoginView.as_view(), name='core_login'),
-    url(r'^logout/?$', views.logout, name='core_logout'),
+    url(r'^login/?$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^login/sudo/?$', auth_views.SudoView.as_view(), name='sudo'),
+    url(r'^logout/?$', auth_views.logout, name='logout'),
+    url(r'^tokens/mapbox/?$', auth_views.mapbox_token, name='mapbox_token'),
 
-    url(r'^signup/?$', views.SignupView.as_view(), name='core_signup'),
+    # url(r'^account', include('ografy.core.urls.account', namespace='account')),
+    url(r'^settings', include('ografy.core.urls.settings', namespace='settings')),
+    # url(r'^signals/(?P<pk>[a-zA-Z0-9]+)/?$', user_views.signals, name='core_signals'),
 
-    url(r'^settings/', include(settings.urlpatterns)),
-    url(r'', include(signals.urlpatterns)),
-    url(r'^app/', include(main.urlpatterns)),
-    url(r'^help/documentation/', include(documentation.urlpatterns)),
-    url(r'^help/', include(contact.urlpatterns)),
-    url(r'^help/', include(faq.urlpatterns)),
+    # url(r'^[A-Za-z0-9]/?$', user_views.profile),
 )

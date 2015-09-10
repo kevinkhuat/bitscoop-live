@@ -1,28 +1,31 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'core/base.html' %}
+
 {% load staticfiles %}
 
-{% block static %}
-{{ block.super }}
-<script type="text/javascript" src="{% static 'shared/js/tooltip.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
-<script type="text/javascript">
-	require(['jutsu', 'jquery', 'site', 'tooltip',  'jquery-cookie'], function(jutsu, $, site, tooltip) {
-		$('body').autoform('.autoformEnabled', {'X-CSRFToken': $.cookie('csrftoken')});
 
-		tooltip.bindTooltip('.tooltip-trigger', '.tooltip-close');
-		site.scrollToContent();
-	});
-</script>
+{% block static %}
+	{{ block.super }}
+
+	<script type="text/javascript" src="{% static 'shared/js/tooltip.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
+	<script type="text/javascript">
+		require(['jutsu', 'jquery', 'site', 'tooltip',  'jquery-cookie'], function(jutsu, $, site, tooltip) {
+			$('body').autoform('.autoformEnabled', {
+				'X-CSRFToken': $.cookie('csrftoken')
+			});
+
+			tooltip.bindTooltip('.tooltip-trigger', '.tooltip-close');
+			site.scrollToContent();
+		});
+	</script>
 {% endblock %}
+
 
 {% block left %}
-<div class="navigation-selection">
-	<div><a class="navigation-option {% if selected == 'account' %}navigation-selected{% endif %}" href="{% url 'core_settings_account' %}">Account</a></div>
-	<div><a class="navigation-option {% if selected == 'location' %}navigation-selected{% endif %}" href="{% url 'core_settings_location' %}">Location Settings</a></div>
-	<div><a class="navigation-option {% if selected == 'security' %}navigation-selected{% endif %}" href="{% url 'core_settings_security' %}">Security</a></div>
-	<div><a class="navigation-option {% if selected == 'signal' %}navigation-selected{% endif %}" href="{% url 'core_settings_signals' %}">Signals</a></div>
-</div>
-{% endblock %}
-
-{% block content %}
+	<div class="navigation-selection">
+		<div><a class="navigation-option {% if selected == 'account' %}navigation-selected{% endif %}" href="{% url 'settings:account' %}">Account</a></div>
+		<div><a class="navigation-option {% if selected == 'location' %}navigation-selected{% endif %}" href="{% url 'settings:location' %}">Location Settings</a></div>
+		<div><a class="navigation-option {% if selected == 'security' %}navigation-selected{% endif %}" href="{% url 'settings:security' %}">Security</a></div>
+		<div><a class="navigation-option {% if selected == 'signal' %}navigation-selected{% endif %}" href="{% url 'settings:signals' %}">Signals</a></div>
+	</div>
 {% endblock %}

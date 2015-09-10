@@ -1,63 +1,67 @@
 {% extends 'core/settings/base.html' %}
+
 {% load staticfiles %}
+
 
 {% block static %}
 	{{ block.super }}
-<script type="text/javascript" src="{% static 'core/js/search/location.min.js' %}"></script>
-<script type="application/javascript">
-	require(["location", "jquery-cookie"], function(location) {
-		$('.estimate').not('disabled').click(function() {
-			location.estimate({{ user.id }});
+
+	<script type="text/javascript" src="{% static 'core/js/search/location.min.js' %}"></script>
+	<script type="application/javascript">
+		require(["location", "jquery-cookie"], function(location) {
+			$('.estimate').not('disabled').click(function() {
+				location.estimate({{ user.id }});
+			});
 		});
-	});
-</script>
+	</script>
 {% endblock %}
 
-{% block content %}
-<div class="content-list">
-	<form action="/settings/location">
-		<div class="content-item">
+
+{% block main %}
+	<div class="content-list">
+		<form action="/settings/location">
+			<div class="content-item">
+				<div class="flex content-header">
+					<h1>Allow location collection</h1>
+					<div class="tooltip-container">
+						<div class="icon-help tooltip-trigger"></div>
+						<div class="tooltip">
+							<div class="tooltip-text">Enabling this allows BitScoop to get your location every 10 minutes when it is active and record it in our database.  This allows us to better estimate your events that do not have location information as we will have many more confirmed locations from which to estimate.</div>
+							<div class="icon-cancel-circle tooltip-close"></div>
+						</div>
+					</div>
+				</div>
+				<label><input class="autoformEnabled" type="checkbox" name="allow_location_collection" value=true {% if settings.allow_location_collection %} checked="checked" {% endif %}><span>Allow Location Collection</span></label>
+			</div>
+			<div class="content-item" action="/settings/location">
 			<div class="flex content-header">
-				<h1>Allow location collection</h1>
+				<h1>Estimation Method</h1>
 				<div class="tooltip-container">
 					<div class="icon-help tooltip-trigger"></div>
 					<div class="tooltip">
-						<div class="tooltip-text">Enabling this allows Ografy to get your location every 10 minutes when it is active and record it in our database.  This allows us to better estimate your events that do not have location information as we will have many more confirmed locations from which to estimate.</div>
+						<div class="tooltip-text">Determines how to estimate the locations of events that are lacking coordinates.</div>
 						<div class="icon-cancel-circle tooltip-close"></div>
 					</div>
 				</div>
 			</div>
-			<label><input class="autoformEnabled" type="checkbox" name="allow_location_collection" value=true {% if settings.allow_location_collection %} checked="checked" {% endif %}><span>Allow Location Collection</span></label>
-		</div>
-		<div class="content-item" action="/settings/location">
-		<div class="flex content-header">
-			<h1>Estimation Method</h1>
-			<div class="tooltip-container">
-				<div class="icon-help tooltip-trigger"></div>
-				<div class="tooltip">
-					<div class="tooltip-text">Determines how to estimate the locations of events that are lacking coordinates.</div>
-					<div class="icon-cancel-circle tooltip-close"></div>
+			<label><input class="autoformEnabled" estimationMethod="Between" type="radio" name="location_estimation_method" value="Between" {% if settings.location_estimation_method == 'Between' %}checked="checked"{% endif %}><span>Interpolate between previous and next points in time</span></label>
+			<label><input class="autoformEnabled" estimationMethod="Closest" type="radio" name="location_estimation_method" value="Closest" {% if settings.location_estimation_method == 'Closest' %}checked="checked"{% endif %}><span>Use closest point in time</span></label>
+			<label><input class="autoformEnabled" estimationMethod="Next" type="radio" name="location_estimation_method" value="Next" {% if settings.location_estimation_method == 'Next' %}checked="checked"{% endif %}><span>Use next point in time</span></label>
+			<label><input class="autoformEnabled" estimationMethod="Last" type="radio" name="location_estimation_method" value="Last" {% if settings.location_estimation_method == 'Last' %}checked="checked"{% endif %}><span>Use previous point in time</span></label>
+			</div>
+		</form>
+		<div class="content-item">
+			<div class="flex content-header">
+				<h1>Re-estimate locations</h1>
+				<div class="tooltip-container">
+					<div class="icon-help tooltip-trigger"></div>
+					<div class="tooltip">
+						<div class="tooltip-text">Much of your data that BitScoop collects does not have information on where it occurred.  When we collect it, we estimate the locations using the method you have chosen above.  Re-estimating the locations may produce more accurate results if new location data has been added to your account.  This is disabled for five days following each re-estimation since it is computationally expensive.</div>
+						<div class="icon-cancel-circle tooltip-close"></div>
+					</div>
 				</div>
 			</div>
+			<input type="button" {% if new_estimate_allowed %} class="btn btn-primary estimate" value="Re-estimate" {% else %} class="btn estimate" value="Re-estimation available at {{ next_estimate_date }}" disabled{% endif %}>
 		</div>
-		<label><input class="autoformEnabled" estimationMethod="Between" type="radio" name="location_estimation_method" value="Between" {% if settings.location_estimation_method == 'Between' %}checked="checked"{% endif %}><span>Interpolate between previous and next points in time</span></label>
-		<label><input class="autoformEnabled" estimationMethod="Closest" type="radio" name="location_estimation_method" value="Closest" {% if settings.location_estimation_method == 'Closest' %}checked="checked"{% endif %}><span>Use closest point in time</span></label>
-		<label><input class="autoformEnabled" estimationMethod="Next" type="radio" name="location_estimation_method" value="Next" {% if settings.location_estimation_method == 'Next' %}checked="checked"{% endif %}><span>Use next point in time</span></label>
-		<label><input class="autoformEnabled" estimationMethod="Last" type="radio" name="location_estimation_method" value="Last" {% if settings.location_estimation_method == 'Last' %}checked="checked"{% endif %}><span>Use previous point in time</span></label>
-		</div>
-	</form>
-	<div class="content-item">
-		<div class="flex content-header">
-			<h1>Re-estimate locations</h1>
-			<div class="tooltip-container">
-				<div class="icon-help tooltip-trigger"></div>
-				<div class="tooltip">
-					<div class="tooltip-text">Much of your data that Ografy collects does not have information on where it occurred.  When we collect it, we estimate the locations using the method you have chosen above.  Re-estimating the locations may produce more accurate results if new location data has been added to your account.  This is disabled for five days following each re-estimation since it is computationally expensive.</div>
-					<div class="icon-cancel-circle tooltip-close"></div>
-				</div>
-			</div>
-		</div>
-		<input type="button" {% if new_estimate_allowed %} class="btn btn-primary estimate" value="Re-estimate" {% else %} class="btn estimate" value="Re-estimation available at {{ next_estimate_date }}" disabled{% endif %}>
 	</div>
-</div>
 {% endblock %}

@@ -20,7 +20,7 @@ from ografy.core.forms import UpdateAccountForm, UpdateLocationForm, UpdatePassw
 
 class AccountView(View):
     template_name = 'core/settings/account.html'
-    title = 'Ografy - Update Account Information'
+    title = 'Account Settings'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -123,7 +123,7 @@ class AccountView(View):
 
 class LocationView(View):
     template_name = 'core/settings/location.html'
-    title = 'Ografy - Update Location Settings'
+    title = 'Location Settings'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -173,7 +173,7 @@ class LocationView(View):
 
 class SecurityView(View):
     template_name = 'core/settings/security.html'
-    title = 'Ografy - Update Security Settings'
+    title = 'Security Settings'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -211,7 +211,7 @@ class SecurityView(View):
 
 class SignalView(View):
     template_name = 'core/settings/signals.html'
-    title = 'Ografy - Signals Settings'
+    title = 'Signal Settings'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -312,11 +312,3 @@ class SignalView(View):
             return_permission_name = new_permission.event_source.name
 
         return HttpResponse(return_permission_name, content_type='application/json')
-
-
-@login_required
-def base(request):
-    return render(request, 'core/settings/account.html', {
-        'title': 'Ografy - Base',
-        'lockwidth_override': True
-    })

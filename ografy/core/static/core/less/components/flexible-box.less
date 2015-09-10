@@ -1,0 +1,48 @@
+.flex {
+	display: -webkit-flex;
+	display: flex;
+
+	&.start {
+		justify-content: flex-start;
+	}
+
+	&.end {
+		justify-content: flex-end;
+	}
+
+	&.center {
+		justify-content: center;
+	}
+
+	&.space-between {
+		justify-content: space-between;
+	}
+
+	&.space-around {
+		justify-content: space-around;
+	}
+
+	&.x-start {
+		align-items: flex-start;
+	}
+
+	&.x-end {
+		align-items: flex-start;
+	}
+
+	&.x-center {
+		align-items: center;
+	}
+
+	&.column {
+		flex-direction: column;
+	}
+
+	&.wrap {
+		flex-wrap: wrap;
+	}
+
+	& > .grow {
+		flex: 1;
+	}
+}

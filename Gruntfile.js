@@ -9,47 +9,79 @@ global.window = MockBrowser.createWindow();
 module.exports = function(grunt) {
 	grunt.initConfig({
 		package: grunt.file.readJSON('package.json'),
-		banner: '/**\n * @license\n * Copyright (c) <%= grunt.template.today("yyyy") %> Ografy, LLC.\n * All rights reserved.\n */',
+		banner: '/**\n * @license\n * Copyright (c) <%= grunt.template.today("yyyy") %> BitScoop Labs, Inc.\n * All rights reserved.\n */',
 
 		clean: {
 			artifacts: 'artifacts',
 			build: 'build',
 			predeploy: [
-				'build/static/**/*.less',
-				'build/static/**/*.js',
-				'build/static/lib/icomoon/selection.json',
-				'!build/static/rest_framework/**/*',
-				'!build/static/**/*.min.js'
+				'artifacts/**/*.{css,js,less}',
+				'artifacts/lib/icomoon/selection.json',
+				'!artifacts/**/*.min.{css,js}'
 			]
 		},
 
 		cleanempty: {
-			build: {
+			target: {
 				options: {
 					files: false
 				},
-				src: 'build/**/*'
+				src: 'artifacts/**/*'
 			}
 		},
 
 		copy: {
-			js: {
-				files: {
-					'artifacts/core/js/search/location.min.js': 'ografy/core/static/core/js/search/location.js',
-					'artifacts/new/new.min.js': 'ografy/apps/new/static/new/new.js',
-					'artifacts/shared/js/paths.min.js': 'ografy/static/shared/js/paths.js',
-					'artifacts/core/js/search/scheduleMapper.min.js': 'ografy/core/static/core/js/search/scheduleMapper.js',
-					'artifacts/new/search.min.js': 'ografy/apps/new/static/new/search.js',
-					'artifacts/shared/js/site.min.js': 'ografy/static/shared/js/site.js',
-					'artifacts/shared/js/tooltip.min.js': 'ografy/static/shared/js/tooltip.js',
-					'artifacts/lib/cartano/cartano.min.js': 'ografy/static/lib/cartano/cartano.js',
-					'artifacts/lib/jutsu/jutsu.min.js': 'ografy/static/lib/jutsu/jutsu.js'
-				}
+			collectstatic: {
+				files: [
+					{
+						expand: true,
+						cwd: 'ografy/static/',
+						src: '**',
+						dest: 'artifacts/'
+					},
+					{
+						expand: true,
+						cwd: 'ografy/core/static/',
+						src: '**',
+						dest: 'artifacts/'
+					},
+					{
+						expand: true,
+						cwd: 'ografy/apps/explorer/static/',
+						src: '**',
+						dest: 'artifacts/'
+					}
+				]
 			},
-			nunjucks: {
-				files: {
-					'artifacts/shared/js/templates.min.js': 'artifacts/shared/js/templates.js'
-				}
+			deploy: {
+				files: [
+					{
+						expand: true,
+						cwd: 'artifacts/',
+						src: '**',
+						dest: 'build/' + new Date().getTime()
+					}
+				]
+			},
+			minify: {
+				files: [
+					'<%= cssmin.target.files %>',
+					'<%= uglify.target.files %>'
+				]
+			}
+		},
+
+		cssmin: {
+			target: {
+				files: [
+					{
+						expand: true,
+						cwd: 'artifacts/',
+						src: '**/*.css',
+						dest: 'artifacts/',
+						ext: '.min.css'
+					}
+				]
 			}
 		},
 
@@ -82,9 +114,6 @@ module.exports = function(grunt) {
 		},
 
 		jsonlint: {
-			amdsync: {
-				src: 'config/amdsync.exports.json'
-			},
 			jscs: {
 				src: 'config/jscs.json'
 			},
@@ -97,53 +126,24 @@ module.exports = function(grunt) {
 		},
 
 		less: {
-			development: {
-				expand: true,
-				src: 'ografy/**/*.less',
-				dest: 'artifacts',
-				ext: '.css',
-				rename: (function() {
-					var delimiter, names;
-
-					delimiter = 'static' + path.sep;
-					names = {};
-
-					return function(dest, less) {
-						var i, components, filename, src;
-
-						src = less.replace(/\.css$/, '.less');
-
-						if (~(i = less.indexOf(delimiter))) {
-							filename = path.join(dest, less.slice(i + delimiter.length));
-						}
-						else {
-							filename = path.join(dest, less);
-						}
-
-						filename = filename.split(path.sep).map(function(d, i) {
-							return (d === 'less') ? 'css' : d;
-						}).join(path.sep);
-
-						if (names.hasOwnProperty(filename)) {
-							grunt.log.warn('Name collison on less file "' + filename + '":\n\tOld: ' + names[filename] + '\n\tNew: ' + src);
-						}
-
-						names[filename] = src;
-
-						return filename;
-					};
-				})()
+			target: {
+				options: {
+					paths: ['artifacts/']
+				},
+				files: {
+					'artifacts/core/css/site.css': 'artifacts/core/less/site.less'
+				}
 			}
 		},
 
 		nunjucks: {
-			precompile: {
+			target: {
 				src: [
 					'ografy/nunjucks/**/*.html',
 					'ografy/core/nunjucks/**/*.html',
 					'ografy/{apps,contrib,lib}/*/nunjucks/**/*.html'
 				],
-				dest: 'artifacts/shared/js/templates.js',
+				dest: 'artifacts/core/js/templates.js',
 				options: {
 					name: (function() {
 						var delimiter, names;
@@ -173,34 +173,32 @@ module.exports = function(grunt) {
 			}
 		},
 
-		rename: {
-			deploy: {
-				src: 'build/static',
-				dest: 'build/' + new Date().getTime()
-			}
-		},
-
 		uglify: {
-			dist: {
+			target: {
 				files: [
-					'<%= copy.js.files %>',
-					'<%= copy.nunjucks.files %>'
+					{
+						expand: true,
+						cwd: 'artifacts/',
+						src: '**/*.js',
+						dest: 'artifacts/',
+						ext: '.min.js'
+					}
 				]
 			}
 		},
 
 		usebanner: {
-			dist: {
+			target: {
 				options: {
 					position: 'top',
 					banner: '<%= banner %>'
 				},
 				files: {
 					src: [
-						'build/**/*.{css,js}',
-						'!build/static/lib/**/*',
-						'build/static/lib/{cartano,jutsu}/**/*.{css,js}',
-						'!build/static/rest_framework/**/*'
+						'artifacts/**/*.{css,js}',
+						'!artifacts/lib/**/*',
+						'artifacts/lib/{cartano,jutsu}/**/*.{css,js}',
+						'artifacts/lib/requirejs/config/*.js'
 					]
 				}
 			}
@@ -209,18 +207,11 @@ module.exports = function(grunt) {
 		watch: {
 			nunjucks: {
 				files: '<%= nunjucks.precompile.src %>',
-				tasks: ['nunjucks', 'copy:nunjucks']
+				tasks: ['nunjucks', 'copy:minify']
 			},
-			less: {
-				files: '<%= less.development.src %>',
-				tasks: 'less'
-			},
-			js: {
-				files: [
-					'ografy/{apps,core,lib,static}/**/*.js',
-					'!ografy/{apps,core,lib,static}/**/*.min.js'
-				],
-				tasks: 'copy:js'
+			static: {
+				files: '<%= copy.collectstatic.files %>',
+				tasks: ['copy:collecstatic', 'less', 'copy:minify']
 			}
 		}
 	});
@@ -229,22 +220,22 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('build', [
+		'copy:collectstatic',
 		'less',
 		'nunjucks',
-		'uglify'
-	]);
-
-	grunt.registerTask('deploy', [
+		'cssmin',
+		'uglify',
 		'clean:predeploy',
-		'cleanempty:build',
-		'usebanner:dist',
-		'rename:deploy'
+		'cleanempty',
+		'usebanner',
+		'copy:deploy'
 	]);
 
 	grunt.registerTask('devel', [
+		'copy:collectstatic',
 		'less',
 		'nunjucks',
-		'copy'
+		'copy:minify'
 	]);
 
 	grunt.registerTask('lint', [

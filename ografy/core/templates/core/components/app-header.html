@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+
+<nav class="flex align-center">
+	<a style="margin: 0 15px 0 0;"><img src="{% static 'img/logo_240.png' %}" /></a>
+	<a href="#" class="active"><i class="icon-map22"></i></a>
+	<a href="#"><i class="icon-list-unordered"></i></a>
+	<span class="grow"></span>
+	<a href="/providers"><i class="icon-plus"></i></a>
+	<a href="/help/documentation/account"><i class="icon-help"></i></a>
+	<div class="item link">
+		<a class="user-button item">{{ request.user.identifier }}</a>
+		<div class="flex column menu main hidden">
+			<a class="item" href="account_settings}">
+				<i class="icon-cog" ></i>
+				Settings
+			</a>
+			<a class="item" href="logout">
+				<i class="icon-sign-out"></i>
+				Logout
+			</a>
+		</div>
+	</div>
+</nav>

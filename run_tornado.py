@@ -5,7 +5,7 @@ import tornado.web
 import tornado.wsgi
 from tornado.ioloop import IOLoop
 
-from ografy.passthrough.routes import patterns
+from ografy.apps.passthrough.routes import patterns
 
 
 # This module starts a Tornado server on a certain port.

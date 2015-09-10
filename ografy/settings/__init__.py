@@ -191,7 +191,7 @@ USE_TZ = True
 # HTTP #  https://docs.djangoproject.com/en/1.7/ref/settings/#http
 ########
 
-ALLOWED_HOSTS = ['.ografy.io']
+ALLOWED_HOSTS = ['.bitscoop.com']
 # DEFAULT_CHARSET = 'utf-8'
 # DEFAULT_CONTENT_TYPE = 'text/html'
 # DISALLOWED_USER_AGENTS = ()
@@ -260,8 +260,6 @@ INSTALLED_APPS = (
     'ografy.core',
     'ografy.contrib.multiauth',
     'ografy.apps.opi',
-
-    'ografy.apps.new',
 )
 
 
@@ -359,7 +357,7 @@ PASSWORD_HASHERS = (
 SESSION_CACHE_ALIAS = 'session'
 # SESSION_COOKIE_NAME = 'sessionid'
 # SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
-SESSION_COOKIE_DOMAIN = '.ografy.io'
+SESSION_COOKIE_DOMAIN = '.bitscoop.com'
 SESSION_COOKIE_SECURE = True
 # SESSION_COOKIE_PATH = '/'
 # SESSION_COOKIE_HTTPONLY = True

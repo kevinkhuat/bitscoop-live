@@ -1,15 +1,17 @@
 {% extends 'core/settings/base.html' %}
+
 {% load staticfiles %}
 
+
 {% block content %}
-<div class="content-list">
-	<div class="content-item">
-		<h1>Password</h1>
-		<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" /></label>
-		<div>{{ form.new_password.errors }}</div>
-		<label><div class="text-input-width-medium">Repeated</div><input type="password" name="new_password_repeated" /></label>
-		<div>{{ form.new_password.errors }}</div>
-		<label><input class="btn btn-primary" type="button" value="Update Password" onclick="updatePassword('{{ user.id }}')"/></label>
+	<div class="content-list">
+		<div class="content-item">
+			<h1>Password</h1>
+			<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" /></label>
+			<div>{{ form.new_password.errors }}</div>
+			<label><div class="text-input-width-medium">Repeated</div><input type="password" name="new_password_repeated" /></label>
+			<div>{{ form.new_password.errors }}</div>
+			<label><input class="btn btn-primary" type="button" value="Update Password" onclick="updatePassword('{{ user.id }}')"/></label>
+		</div>
 	</div>
-</div>
 {% endblock %}

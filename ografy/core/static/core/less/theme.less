@@ -1,0 +1,46 @@
+@import 'core/less/mixins/state.less';
+
+@import 'themes/active.less';
+
+
+html {
+	.pt-sans;
+
+	color: @font-color;
+}
+
+header {
+	.raleway;
+
+	a {
+		color: lighten(@font-color, 30%);
+
+		.hover(@color2);
+	}
+}
+
+footer {
+	background-color: lighten(@dark, 15%);
+	color: lighten(@dark, 65%);
+
+	border-top: 1px solid lighten(@dark, 65%);
+}
+
+a {
+	color: @color2;
+
+	.hover(@color1);
+}
+
+
+.pt-sans {
+	font-family: 'PT Sans', Arial, Helvetica, sans-serif;
+	font-weight: 400;
+}
+.raleway {
+	font-family: Raleway, Arial, Helvetica, sans-serif;
+}
+.source-sans {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 400;
+}
