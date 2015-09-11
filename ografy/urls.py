@@ -6,8 +6,6 @@ urlpatterns = patterns('',
     url(r'^auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^opi', include('ografy.apps.opi.urls')),
 
-    url(r'^test', include('ografy.apps.new.urls')),
-
     url(r'^', include('ografy.core.urls')),
 )
 
@@ -23,3 +21,10 @@ if settings.DEBUG:
     from django.contrib.staticfiles.views import serve  # isort: ignore
 
     urlpatterns += static('/static/', view=serve)
+
+    urlpatterns += (
+        url(r'^400/?$', 'ografy.core.views.errors.view400'),
+        url(r'^403/?$', 'ografy.core.views.errors.view403'),
+        url(r'^404/?$', 'ografy.core.views.errors.view404'),
+        url(r'^500/?$', 'ografy.core.views.errors.view500')
+    )

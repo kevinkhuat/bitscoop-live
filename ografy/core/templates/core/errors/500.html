@@ -1,20 +1,12 @@
-{% extends 'shared/dispatcher.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
 
-{% block static %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
-<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
-{% endblock %}
-
-{% block content %}
-<section>
-	<h2 class="center">500 (Server Runtime Error)</h2>
-
-	<div class="center">
-		<p>
-			The server encountered a runtime error.
-		</p>
-	</div>
-</section>
-{% endblock %}
+		<title>Runtime Error · BitScoop</title>
+	</head>
+	<body>
+		<p>500 (Runtime Error)</p>
+		<p>The server encountered a runtime error.</p>
+	</body>
+</html>

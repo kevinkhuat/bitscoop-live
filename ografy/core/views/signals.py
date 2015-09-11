@@ -1,12 +1,12 @@
 import datetime
 import json
 
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from mongoengine import Q
 from social.apps.django_app.default.models import UserSocialAuth
 
+from ografy.contrib.multiauth.decorators import login_required
 from ografy.core.api import ProviderApi, SignalApi
 from ografy.core.documents import Permission
 

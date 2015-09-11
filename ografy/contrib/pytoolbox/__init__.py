@@ -3,6 +3,7 @@ import re
 
 PATTERN = re.compile('[.$]')
 
+
 def strip_invalid_key_characters(input_dict):
     for key in input_dict:
         if isinstance(key, str):

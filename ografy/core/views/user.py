@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
+
+from ografy.contrib.multiauth.decorators import login_required
 
 
 @login_required
@@ -14,6 +15,7 @@ def my_profile(request):
     })
 
 
+@login_required
 def profile(request, handle):
     user_model = get_user_model()
 
@@ -35,6 +37,7 @@ def profile(request, handle):
     })
 
 
+@login_required
 def signals(request, pk):
     return render(request, 'core/user/signals.html', {
         # 'title': 'Ografy - {0}'.format(request.user.identifier),

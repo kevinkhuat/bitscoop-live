@@ -11,7 +11,7 @@ PSA_ENV = 'ografy_'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ografy.core.backends.IdentifierBackend',
-    'social.backends.amazon.AmazonOAuth2',
+    # 'social.backends.amazon.AmazonOAuth2',
     # 'social.backends.angel.AngelOAuth2',
     # 'social.backends.aol.AOLOpenId',
     # 'social.backends.appsfuel.AppsfuelOAuth2',
@@ -25,26 +25,26 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.dailymotion.DailymotionOAuth2',
     # 'social.backends.disqus.DisqusOAuth2',
     # 'social.backends.douban.DoubanOAuth2',
-    'social.backends.dropbox.DropboxOAuth',
+    # 'social.backends.dropbox.DropboxOAuth',
     'social.backends.dropbox.DropboxOAuth2',
     # 'social.backends.evernote.EvernoteSandboxOAuth',
-    'social.backends.facebook.FacebookAppOAuth2',
+    # 'social.backends.facebook.FacebookAppOAuth2',
     'social.backends.facebook.FacebookOAuth2',
     # 'social.backends.fedora.FedoraOpenId',
-    'social.backends.fitbit.FitbitOAuth',
-    'social.backends.flickr.FlickrOAuth',
-    'social.backends.foursquare.FoursquareOAuth2',
+    # 'social.backends.fitbit.FitbitOAuth',
+    # 'social.backends.flickr.FlickrOAuth',
+    # 'social.backends.foursquare.FoursquareOAuth2',
     'social.backends.github.GithubOAuth2',
-    'social.backends.google.GoogleOAuth',
+    # 'social.backends.google.GoogleOAuth',
     'social.backends.google.GoogleOAuth2',
-    'social.backends.google.GoogleOpenId',
-    'social.backends.google.GooglePlusAuth',
-    'social.backends.google.GoogleOpenIdConnect',
+    # 'social.backends.google.GoogleOpenId',
+    # 'social.backends.google.GooglePlusAuth',
+    # 'social.backends.google.GoogleOpenIdConnect',
     'social.backends.instagram.InstagramOAuth2',
     # 'social.backends.jawbone.JawboneOAuth2',
-    'social.backends.linkedin.LinkedinOAuth',
-    'social.backends.linkedin.LinkedinOAuth2',
-    'social.backends.live.LiveOAuth2',
+    # 'social.backends.linkedin.LinkedinOAuth',
+    # 'social.backends.linkedin.LinkedinOAuth2',
+    # 'social.backends.live.LiveOAuth2',
     # 'social.backends.livejournal.LiveJournalOpenId',
     # 'social.backends.mailru.MailruOAuth2',
     # 'social.backends.mendeley.MendeleyOAuth',
@@ -52,18 +52,18 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.mixcloud.MixcloudOAuth2',
     # 'social.backends.odnoklassniki.OdnoklassnikiOAuth2',
     'social.backends.open_id.OpenIdAuth',
-    'social.backends.openstreetmap.OpenStreetMapOAuth',
-    'social.backends.persona.PersonaAuth',
+    # 'social.backends.openstreetmap.OpenStreetMapOAuth',
+    # 'social.backends.persona.PersonaAuth',
     # 'social.backends.podio.PodioOAuth2',
     # 'social.backends.rdio.RdioOAuth1',
     # 'social.backends.rdio.RdioOAuth2',
     # 'social.backends.readability.ReadabilityOAuth',
     'social.backends.reddit.RedditOAuth2',
-    'social.backends.runkeeper.RunKeeperOAuth2',
+    # 'social.backends.runkeeper.RunKeeperOAuth2',
     # 'social.backends.skyrock.SkyrockOAuth',
-    'social.backends.soundcloud.SoundcloudOAuth2',
+    # 'social.backends.soundcloud.SoundcloudOAuth2',
     'social.backends.spotify.SpotifyOAuth2',
-    'social.backends.stackoverflow.StackoverflowOAuth2',
+    # 'social.backends.stackoverflow.StackoverflowOAuth2',
     'social.backends.steam.SteamOpenId',
     # 'social.backends.stocktwits.StocktwitsOAuth2',
     # 'social.backends.stripe.StripeOAuth2',
@@ -71,17 +71,17 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.thisismyjam.ThisIsMyJamOAuth1',
     # 'social.backends.trello.TrelloOAuth',
     # 'social.backends.tripit.TripItOAuth',
-    'social.backends.tumblr.TumblrOAuth',
+    # 'social.backends.tumblr.TumblrOAuth',
     # 'social.backends.twilio.TwilioAuth',
     'social.backends.twitter.TwitterOAuth',
     # 'social.backends.vk.VKOAuth2',
     # 'social.backends.weibo.WeiboOAuth2',
     # 'social.backends.xing.XingOAuth',
-    'social.backends.yahoo.YahooOAuth',
-    'social.backends.yahoo.YahooOpenId',
-    'social.backends.yammer.YammerOAuth2',
+    # 'social.backends.yahoo.YahooOAuth',
+    # 'social.backends.yahoo.YahooOpenId',
+    # 'social.backends.yammer.YammerOAuth2',
     # 'social.backends.yandex.YandexOAuth2',
-    'social.backends.vimeo.VimeoOAuth1',
+    # 'social.backends.vimeo.VimeoOAuth1',
     # 'social.backends.lastfm.LastFmAuth',
     # 'social.backends.moves.MovesOAuth2',
     # 'social.backends.email.EmailAuth',
@@ -132,8 +132,8 @@ SOCIAL_AUTH_PIPELINE = (
 # Signal API Management URL:    https://sellercentral.amazon.com/gp/homepage.html?ie=UTF8&*Version*=1&*entries*=0
 # App ID:                       amzn1.application.58fd3472c8904397997d60895c08371d
 # Access Token URL:             https://api.amazon.com/auth/o2/tokeninfo?access_token=' . urlencode($_REQUEST['access_token']));
-SOCIAL_AUTH_AMAZON_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
-SOCIAL_AUTH_AMAZON_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
+# SOCIAL_AUTH_AMAZON_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
+# SOCIAL_AUTH_AMAZON_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
 
 # Dropbox
 
@@ -149,18 +149,18 @@ SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_D
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/facebook.html#oauth2
 # Signal API Management URL:    https://developers.facebook.com/apps/296338707043090/dashboard/
 # App redirect URL:             https://apps.facebook.com/YOUR_APP_NAMESPACE
-SOCIAL_AUTH_FACEBOOK_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_KEY')
-SOCIAL_AUTH_FACEBOOK_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['user_status', 'email', 'read_friendlists', 'user_likes', 'read_mailbox']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}
+# SOCIAL_AUTH_FACEBOOK_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_KEY')
+# SOCIAL_AUTH_FACEBOOK_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_SECRET')
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['user_status', 'email', 'read_friendlists', 'user_likes', 'read_mailbox']
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}
 
 # Faceook Auth
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/facebook.html#graph-2-0
 # Signal API Management URL:    https://developers.facebook.com/apps/296338707043090/dashboard/
-SOCIAL_AUTH_FACEBOOK_APP_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_KEY')
-SOCIAL_AUTH_FACEBOOK_APP_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_SECRET')
-SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
+# SOCIAL_AUTH_FACEBOOK_APP_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_KEY')
+# SOCIAL_AUTH_FACEBOOK_APP_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_SECRET')
+# SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
 
 # FitBit
 
@@ -169,8 +169,8 @@ SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
 # Request Token URL:            https://api.fitbit.com/oauth/request_token
 # Access Token URL:             https://api.fitbit.com/oauth/access_token
 # Authorize URL:                https://www.fitbit.com/oauth/authorize
-SOCIAL_AUTH_FITBIT_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_KEY')
-SOCIAL_AUTH_FITBIT_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_SECRET')
+# SOCIAL_AUTH_FITBIT_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_KEY')
+# SOCIAL_AUTH_FITBIT_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_SECRET')
 
 # Foursquare
 
@@ -178,8 +178,8 @@ SOCIAL_AUTH_FITBIT_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_SE
 # Signal API Management URL:    https://foursquare.com/developers/app/PSHPVDWN0NCQCUUIPUC3CQBZCDMOY4B3AYOAHGAAW1Y0V0DT
 # Access Token URL              https://foursquare.com/oauth2/access_token
 # Authorize URL                 https://foursquare.com/oauth2/authorize
-SOCIAL_AUTH_FOURSQUARE_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_KEY')
-SOCIAL_AUTH_FOURSQUARE_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_SECRET')
+# SOCIAL_AUTH_FOURSQUARE_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_KEY')
+# SOCIAL_AUTH_FOURSQUARE_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_SECRET')
 
 # Github Auth
 
@@ -248,11 +248,11 @@ SOCIAL_AUTH_INSTAGRAM_AUTH_EXTRA_ARGUMENTS = {'scope': 'likes comments relations
 #                                     &scope=SCOPE
 #                                     &state=STATE
 #                                     &redirect_uri=YOUR_REDIRECT_URI
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY')
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET')
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
-SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
-SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ('firstName', 'first_name'), ('lastName', 'last_name'), ('emailAddress', 'email_address'), ('headline', 'headline'), ('industry', 'industry')]
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY')
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET')
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ('firstName', 'first_name'), ('lastName', 'last_name'), ('emailAddress', 'email_address'), ('headline', 'headline'), ('industry', 'industry')]
 
 # Reddit
 
@@ -278,10 +278,10 @@ SOCIAL_AUTH_SPOTIFY_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_
 # Signal API Management URL:    https://stackapps.com/apps/oauth/view/3718
 # Authorize URL:                https://stackexchange.com/oauth/login_success
 # Redirect URL:                 https://stackexchange.com/oauth/redirect_uri
-SOCIAL_AUTH_STACKOVERFLOW_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_KEY')
-SOCIAL_AUTH_STACKOVERFLOW_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_SECRET')
-SOCIAL_AUTH_STACKOVERFLOW_API_KEY = '3718'
-SOCIAL_AUTH_STACKOVERFLOW_SCOPE = []
+# SOCIAL_AUTH_STACKOVERFLOW_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_KEY')
+# SOCIAL_AUTH_STACKOVERFLOW_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_SECRET')
+# SOCIAL_AUTH_STACKOVERFLOW_API_KEY = '3718'
+# SOCIAL_AUTH_STACKOVERFLOW_SCOPE = []
 
 # Steam
 
@@ -298,8 +298,8 @@ SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 # Authorize URL:                http://www.tumblr.com/oauth/authorize
 # Access-token URL:             POST http://www.tumblr.com/oauth/access_tokenx
 # Auth access-token URL:        POST https://www.tumblr.com/oauth/access_token
-SOCIAL_AUTH_TUMBLR_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_KEY')
-SOCIAL_AUTH_TUMBLR_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_SECRET')
+# SOCIAL_AUTH_TUMBLR_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_KEY')
+# SOCIAL_AUTH_TUMBLR_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_SECRET')
 
 # Twitter
 
@@ -321,6 +321,6 @@ SOCIAL_AUTH_TWITTER_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TWITTER_
 # Request Token URL:            https://api.vimeo.com/oauth/request_token
 # Authorize URL                 https://api.vimeo.com/oauth/authorize
 # Access Token URL:             https://api.vimeo.com/oauth/access_token
-SOCIAL_AUTH_VIMEO_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_KEY')
-SOCIAL_AUTH_VIMEO_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_SECRET')
-SOCIAL_AUTH_VIMEO_SCOPE = []
+# SOCIAL_AUTH_VIMEO_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_KEY')
+# SOCIAL_AUTH_VIMEO_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_SECRET')
+# SOCIAL_AUTH_VIMEO_SCOPE = []

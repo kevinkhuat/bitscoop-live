@@ -1,30 +1,19 @@
 import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
 from social.apps.django_app.default.models import UserSocialAuth
 
 import ografy.apps.opi.serializers as opi_serializer
 from ografy.contrib.locationtoolbox import estimation
+from ografy.contrib.multiauth.decorators import login_required
 from ografy.contrib.pytoolbox import strip_invalid_key_characters
 from ografy.contrib.tastydata.pagination import OgrafyItemPagination
-from ografy.contrib.tastydata.views import DjangoAPIView, MongoAPIListView, MongoAPIView
+from ografy.contrib.tastydata.views import MongoAPIListView, MongoAPIView
 from ografy.core import api as core_api
 from ografy.core.documents import Settings
-
-
-class APIEndpoints(DjangoAPIView):
-    def get(self, request, format=None):
-        return Response({
-            'event': reverse('event-list', request=request, format=format),
-            'contact': reverse('contact-list', request=request, format=format),
-            'content': reverse('content-list', request=request, format=format),
-            'location': reverse('location-list', request=request, format=format),
-            'provider': reverse('provider-list', request=request, format=format),
-            'signal': reverse('signal-list', request=request, format=format),
-        })
 
 
 class DataView(MongoAPIListView):
@@ -32,6 +21,10 @@ class DataView(MongoAPIListView):
     ordering_fields = ('id', 'title')
     serializer = opi_serializer.DataSerializer
     serializer_class = opi_serializer.DataSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DataView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
         #     data_query = core_api.DataApi.get(
@@ -84,6 +77,10 @@ class DataSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.DataSerializer
     serializer_class = opi_serializer.DataSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DataSingleView, self).dispatch(*args, **kwargs)
 
     def get(self, request, pk, format=None):
         #     data_query = core_api.DataApi.get(
@@ -159,6 +156,10 @@ class ContactView(MongoAPIListView):
     serializer = opi_serializer.ContactSerializer
     serializer_class = opi_serializer.ContactSerializer
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ContactView, self).dispatch(*args, **kwargs)
+
     def get(self, request):
         #     contact_query = core_api.ContactApi.get(
         #         request.query_filter &
@@ -210,6 +211,10 @@ class ContactSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.ContactSerializer
     serializer_class = opi_serializer.ContactSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ContactSingleView, self).dispatch(*args, **kwargs)
 
     def get(self, request, pk, format=None):
         #     contact_query = core_api.ContactApi.get(
@@ -284,6 +289,10 @@ class ContentView(MongoAPIListView):
     serializer = opi_serializer.ContentSerializer
     serializer_class = opi_serializer.ContentSerializer
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ContentView, self).dispatch(*args, **kwargs)
+
     def get(self, request):
         #     content_query = core_api.ContentApi.get(
         #         request.query_filter &
@@ -335,6 +344,10 @@ class ContentSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.ContentSerializer
     serializer_class = opi_serializer.ContentSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ContentSingleView, self).dispatch(*args, **kwargs)
 
     def get(self, request, pk, format=None):
         #     content_query = core_api.ContentApi.get(
@@ -409,6 +422,10 @@ class EventView(MongoAPIListView):
     serializer = opi_serializer.EventSerializer
     serializer_class = opi_serializer.EventSerializer
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EventView, self).dispatch(*args, **kwargs)
+
     def get(self, request):
         # get_query = core_api.EventApi.get(
         #     request.query_filter &
@@ -459,6 +476,10 @@ class EventSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.EventSerializer
     serializer_class = opi_serializer.EventSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EventSingleView, self).dispatch(*args, **kwargs)
 
     def delete(self, request, pk):
         core_api.EventApi.delete(
@@ -543,6 +564,10 @@ class LocationView(MongoAPIListView):
     serializer = opi_serializer.LocationSerializer
     serializer_class = opi_serializer.LocationSerializer
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LocationView, self).dispatch(*args, **kwargs)
+
     def get(self, request):
         #     get_query = core_api.LocationApi.get(
         #         request.query_filter &
@@ -585,6 +610,10 @@ class ProviderView(MongoAPIListView):
     serializer = opi_serializer.ProviderSerializer
     serializer_class = opi_serializer.ProviderSerializer
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProviderView, self).dispatch(*args, **kwargs)
+
     def get(self, request, format=None):
         provider_query = core_api.ProviderApi.get(
             request.query_filter
@@ -597,6 +626,10 @@ class ProviderView(MongoAPIListView):
 class ProviderSingleView(MongoAPIView):
     serializer = opi_serializer.ProviderSerializer
     serializer_class = opi_serializer.ProviderSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProviderSingleView, self).dispatch(*args, **kwargs)
 
     def get(self, request, pk, format=None):
         provider_query = core_api.ProviderApi.get(
@@ -618,6 +651,10 @@ class SignalView(MongoAPIListView):
     ordering_fields = ('id', 'user_id', 'provider', 'created')
     serializer = opi_serializer.SignalSerializer
     serializer_class = opi_serializer.SignalSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SignalView, self).dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
         get_query = core_api.SignalApi.get(
@@ -663,6 +700,10 @@ class SignalSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.SignalSerializer
     serializer_class = opi_serializer.SignalSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SignalSingleView, self).dispatch(*args, **kwargs)
 
     def delete(self, request, pk):
         get_query = core_api.SignalApi.get(
@@ -768,6 +809,10 @@ class SignalSingleView(MongoAPIView):
 
 
 class EstimateLocationView(MongoAPIView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EstimateLocationView, self).dispatch(*args, **kwargs)
+
     def get(self, request, format=None):
         settings = Settings.objects.get(user_id=request.user.id)
         next_estimate_date = settings.last_estimate_all_locations + datetime.timedelta(days=5)
@@ -785,6 +830,10 @@ class SearchView(MongoAPIListView):
     ordering_fields = ('id', 'user_id', 'provider', 'created')
     serializer = opi_serializer.SearchSerializer
     serializer_class = opi_serializer.SearchSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SearchView, self).dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
         get_query = core_api.SearchApi.get(
@@ -831,6 +880,10 @@ class SearchSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
     serializer = opi_serializer.SearchSerializer
     serializer_class = opi_serializer.SearchSerializer
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SearchSingleView, self).dispatch(*args, **kwargs)
 
     def delete(self, request, pk):
         get_query = core_api.SearchApi.get(

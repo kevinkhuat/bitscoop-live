@@ -1,20 +1,12 @@
-{% extends 'shared/dispatcher.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
 
-{% block static %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.css' %}" />
-<!--<script type="text/javascript" src="{% static 'core/js/site.js' %}"></script>-->
-{% endblock %}
-
-{% block content %}
-<section>
-	<h2 class="center">403 (Forbidden)</h2>
-
-	<div class="center">
-		<p>
-			You are not allowed to access that page.
-		</p>
-	</div>
-</section>
-{% endblock %}
+		<title>Forbidden · BitScoop</title>
+	</head>
+	<body>
+		<p>403 (Forbidden)</p>
+		<p>You are not permitted to access this resource.</p>
+	</body>
+</html>

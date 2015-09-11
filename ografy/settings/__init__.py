@@ -1,5 +1,4 @@
 import re
-import ssl
 
 from django.core.validators import RegexValidator
 
@@ -214,7 +213,7 @@ MIDDLEWARE_CLASSES = (
 # SIGNING_BACKEND = 'django.core.signing.TimestampSigner'
 # USE_ETAGS = False
 # USE_X_FORWARDED_HOST = False
-WSGI_APPLICATION = 'ografy.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 ###########
@@ -395,6 +394,9 @@ STATICFILES_DIRS = (
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'ografy.core.pagination.TwentyItemPageView',
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer'
+    ],
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'DATETIME_FORMAT': 'iso-8601',
     'DATETIME_INPUT_FORMATS': ['iso-8601']
@@ -412,6 +414,13 @@ HANDLE_VALIDATORS = [
 ]
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
 PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
+
+
+#############
+# MULTIAUTH #
+#############
+
+MULTIAUTH_AUTH_ERROR = 'django.http.Http404'
 
 
 ############

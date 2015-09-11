@@ -3,7 +3,6 @@ import datetime
 import json
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, QueryDict
 from django.shortcuts import render
 from django.utils import timezone
@@ -11,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
 
+from ografy.contrib.multiauth.decorators import login_required
 from ografy.contrib.pytoolbox.collections import update
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
 from ografy.core.api import SignalApi

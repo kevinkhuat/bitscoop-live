@@ -1,12 +1,9 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 
 import ografy.apps.opi.views as views
 
 
 urlpatterns = patterns('',
-    # Login and logout views for the browsable API
-    url(r'^$', views.APIEndpoints.as_view()),
-    url(r'^/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^/contact/?$', views.ContactView.as_view(), name='contact-list'),
     url(r'^/contact/(?P<pk>[a-zA-Z0-9]+)/?$', views.ContactSingleView.as_view(), name='contact-detail'),
