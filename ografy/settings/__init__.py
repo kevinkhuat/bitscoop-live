@@ -2,7 +2,7 @@ import re
 
 from django.core.validators import RegexValidator
 
-from ografy import ROOT_PATH, SOURCE_PATH, get_path
+from ografy import ROOT_PATH, SOURCE_PATH, get_environ_setting, get_path
 from ografy.settings.signals import *  # noqa
 
 
@@ -421,10 +421,3 @@ PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 #############
 
 MULTIAUTH_AUTH_ERROR = 'django.http.Http404'
-
-
-############
-# API KEYS #
-############
-
-OGRAFY_MAPBOX_ACCESS_TOKEN = get_environ_setting('ografy_MAPBOX_ACCESS_TOKEN')

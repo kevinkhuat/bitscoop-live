@@ -97,7 +97,7 @@ require(['cartano', 'jquery', 'nunjucks', 'search', 'jquery-cookie'], function(c
 	}).done(function(data) {
 		//Create an instance of a Mapbox map using Cartano
 		mainMap = new cartano.Map('liambroza.hl4bi8d0', {
-			accessToken: data.OGRAFY_MAPBOX_ACCESS_TOKEN,
+			accessToken: data.MAPBOX_ACCESS_TOKEN,
 
 			className: 'grow',
 

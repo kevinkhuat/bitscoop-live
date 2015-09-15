@@ -1,7 +1,5 @@
-from ografy import get_environ_setting
+from ografy.settings.keys import *  # noqa
 
-
-PSA_ENV = 'ografy_'
 
 ########
 # AUTH #  https://docs.djangoproject.com/en/1.7/ref/settings/#auth
@@ -124,64 +122,95 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.user_details',
 )
 
-# Python Social Auth Backend Configuration
 
-# Amazon
+##########
+# Amazon #
+##########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/amazon.html
 # Signal API Management URL:    https://sellercentral.amazon.com/gp/homepage.html?ie=UTF8&*Version*=1&*entries*=0
 # App ID:                       amzn1.application.58fd3472c8904397997d60895c08371d
 # Access Token URL:             https://api.amazon.com/auth/o2/tokeninfo?access_token=' . urlencode($_REQUEST['access_token']));
-# SOCIAL_AUTH_AMAZON_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
-# SOCIAL_AUTH_AMAZON_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_AMAZON_KEY')
 
-# Dropbox
+# SOCIAL_AUTH_AMAZON_KEY = ''
+# SOCIAL_AUTH_AMAZON_SECRET = ''
+
+
+###########
+# Dropbox #
+###########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/dropbox.html#oauth2
 # Signal API Management URL:    https://www.dropbox.com/developers/apps/info/89dmvfe194u7nfl
 # Authorize URL:                https://www.dropbox.com/1/oauth2/authorize?client_id=<app key>&response_type=code&redirect_uri=<redirect URI>&state=<CSRF token>
 # Token URL:                    https://api.dropbox.com/1/oauth2/token -d code=<authorization code> -d grant_type=authorization_code -d redirect_uri=<redirect URI> -u <app key>:<app secret>
-SOCIAL_AUTH_DROPBOX_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_DROPBOX_OAUTH2_KEY')
-SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET')
 
-# Facebook App Graph API Auth
+# SOCIAL_AUTH_DROPBOX_OAUTH2_KEY = ''
+# SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = ''
+
+
+###############################
+# Facebook App Graph API Auth #
+###############################
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/facebook.html#oauth2
 # Signal API Management URL:    https://developers.facebook.com/apps/296338707043090/dashboard/
 # App redirect URL:             https://apps.facebook.com/YOUR_APP_NAMESPACE
-# SOCIAL_AUTH_FACEBOOK_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_KEY')
-# SOCIAL_AUTH_FACEBOOK_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_SECRET')
-# SOCIAL_AUTH_FACEBOOK_SCOPE = ['user_status', 'email', 'read_friendlists', 'user_likes', 'read_mailbox']
-# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}
 
-# Faceook Auth
+# SOCIAL_AUTH_FACEBOOK_KEY = ''
+# SOCIAL_AUTH_FACEBOOK_SECRET = ''
+SOCIAL_AUTH_FACEBOOK_SCOPE = [
+    'user_status',
+    'email',
+    'read_friendlists',
+    'user_likes',
+    'read_mailbox'
+]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {}
+
+
+################
+# Faceook Auth #
+################
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/facebook.html#graph-2-0
 # Signal API Management URL:    https://developers.facebook.com/apps/296338707043090/dashboard/
-# SOCIAL_AUTH_FACEBOOK_APP_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_KEY')
-# SOCIAL_AUTH_FACEBOOK_APP_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FACEBOOK_APP_SECRET')
-# SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
 
-# FitBit
+# SOCIAL_AUTH_FACEBOOK_APP_KEY = ''
+# SOCIAL_AUTH_FACEBOOK_APP_SECRET = ''
+SOCIAL_AUTH_FACEBOOK_APP_NAMESPACE = ''
+
+
+##########
+# FitBit #
+##########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/fitbit.html
 # Signal API Management URL:    https://dev.fitbit.com/apps/details/229BN3
 # Request Token URL:            https://api.fitbit.com/oauth/request_token
 # Access Token URL:             https://api.fitbit.com/oauth/access_token
 # Authorize URL:                https://www.fitbit.com/oauth/authorize
-# SOCIAL_AUTH_FITBIT_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_KEY')
-# SOCIAL_AUTH_FITBIT_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FITBIT_SECRET')
 
-# Foursquare
+# SOCIAL_AUTH_FITBIT_KEY = ''
+# SOCIAL_AUTH_FITBIT_SECRET = ''
+
+
+##############
+# Foursquare #
+##############
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/foursquare.html
 # Signal API Management URL:    https://foursquare.com/developers/app/PSHPVDWN0NCQCUUIPUC3CQBZCDMOY4B3AYOAHGAAW1Y0V0DT
 # Access Token URL              https://foursquare.com/oauth2/access_token
 # Authorize URL                 https://foursquare.com/oauth2/authorize
-# SOCIAL_AUTH_FOURSQUARE_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_KEY')
-# SOCIAL_AUTH_FOURSQUARE_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_FOURSQUARE_SECRET')
 
-# Github Auth
+# SOCIAL_AUTH_FOURSQUARE_KEY = ''
+# SOCIAL_AUTH_FOURSQUARE_SECRET = ''
+
+
+###############
+# Github Auth #
+###############
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/github.html
 # Signal API Management URL:    https://github.com/settings/applications/139587
@@ -191,11 +220,17 @@ SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_D
 #                                     :client_secret => CLIENT_SECRET,
 #                                     :code => session_code},
 #                                     :accept => :json
-SOCIAL_AUTH_GITHUB_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GITHUB_KEY')
-SOCIAL_AUTH_GITHUB_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GITHUB_SECRET')
-SOCIAL_AUTH_GITHUB_SCOPE = ['repo:status']
 
-# Google
+# SOCIAL_AUTH_GITHUB_KEY = ''
+# SOCIAL_AUTH_GITHUB_SECRET = ''
+SOCIAL_AUTH_GITHUB_SCOPE = [
+    'repo:status'
+]
+
+
+##########
+# Google #
+##########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/google.html#google-oauth2
 # Signal API Management URL:    https://console.developers.google.com/project/1047735864420/
@@ -208,8 +243,9 @@ SOCIAL_AUTH_GITHUB_SCOPE = ['repo:status']
 #                                     client_id=8127352506391.apps.googleusercontent.com&
 #                                     approval_prompt=force&
 #                                     include_granted_scopes=true
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = False
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
@@ -226,15 +262,24 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
     'approval_prompt': 'force'
 }
 
-# Instagram
+
+#############
+# Instagram #
+#############
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/instagram.html
 # Signal API Management URL:    http://instagram.com/developer/clients/manage/?registered=Ografy
-SOCIAL_AUTH_INSTAGRAM_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_INSTAGRAM_KEY')
-SOCIAL_AUTH_INSTAGRAM_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_INSTAGRAM_SECRET')
-SOCIAL_AUTH_INSTAGRAM_AUTH_EXTRA_ARGUMENTS = {'scope': 'likes comments relationships'}
 
-# LinkedIn
+# SOCIAL_AUTH_INSTAGRAM_KEY = ''
+# SOCIAL_AUTH_INSTAGRAM_SECRET = ''
+SOCIAL_AUTH_INSTAGRAM_AUTH_EXTRA_ARGUMENTS = {
+    'scope': 'likes comments relationships'
+}
+
+
+############
+# LinkedIn #
+############
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/linkedin.html#oauth2
 # Signal API Management URL:    https://www.linkedin.com/secure/developer
@@ -248,49 +293,88 @@ SOCIAL_AUTH_INSTAGRAM_AUTH_EXTRA_ARGUMENTS = {'scope': 'likes comments relations
 #                                     &scope=SCOPE
 #                                     &state=STATE
 #                                     &redirect_uri=YOUR_REDIRECT_URI
-# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY')
-# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET')
-# SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
-# SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
-# SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'), ('firstName', 'first_name'), ('lastName', 'last_name'), ('emailAddress', 'email_address'), ('headline', 'headline'), ('industry', 'industry')]
 
-# Reddit
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = ''
+# SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = ''
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = [
+    'r_basicprofile',
+    'r_emailaddress'
+]
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = [
+    'email-address',
+    'headline',
+    'industry'
+]
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
+    ('id', 'id'),
+    ('firstName', 'first_name'),
+    ('lastName', 'last_name'),
+    ('emailAddress', 'email_address'),
+    ('headline', 'headline'),
+    ('industry', 'industry')
+]
+
+
+##########
+# Reddit #
+##########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/reddit.html
 # Signal API Management URL:    https://ssl.reddit.com/prefs/apps/
 # Authorize URL:                https://ssl.reddit.com/api/v1/authorize
-SOCIAL_AUTH_REDDIT_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_REDDIT_KEY')
-SOCIAL_AUTH_REDDIT_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_REDDIT_SECRET')
-SOCIAL_AUTH_REDDIT_AUTH_EXTRA_ARGUMENTS = {'duration': 'permanent'}
+# developers: hegemonbill
 
-# Spotify
+# SOCIAL_AUTH_REDDIT_KEY = ''
+# SOCIAL_AUTH_REDDIT_SECRET = ''
+SOCIAL_AUTH_REDDIT_AUTH_EXTRA_ARGUMENTS = {
+    'duration': 'permanent'
+}
+
+
+###########
+# Spotify #
+###########
 
 # Backend Documentation URL:    https://developer.spotify.com/my-applications/#!/applications/1495263d3fbe4fc59f69a9a9af9f9281
 # Signal API Management URL:    http://python-social-auth.readthedocs.org/en/latest/backends/spotify.html#
 # Authorize URL:                GET https://accounts.spotify.com/authorize
 # Redirect URIs:                https://ografy.io/auth
-SOCIAL_AUTH_SPOTIFY_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_KEY')
-SOCIAL_AUTH_SPOTIFY_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_SPOTIFY_SECRET')
 
-# StackOverflow
+# SOCIAL_AUTH_SPOTIFY_KEY = ''
+# SOCIAL_AUTH_SPOTIFY_SECRET = ''
+
+
+#################
+# StackOverflow #
+#################
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/stackoverflow.html
 # Signal API Management URL:    https://stackapps.com/apps/oauth/view/3718
 # Authorize URL:                https://stackexchange.com/oauth/login_success
 # Redirect URL:                 https://stackexchange.com/oauth/redirect_uri
-# SOCIAL_AUTH_STACKOVERFLOW_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_KEY')
-# SOCIAL_AUTH_STACKOVERFLOW_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STACKOVERFLOW_SECRET')
-# SOCIAL_AUTH_STACKOVERFLOW_API_KEY = '3718'
-# SOCIAL_AUTH_STACKOVERFLOW_SCOPE = []
 
-# Steam
+# SOCIAL_AUTH_STACKOVERFLOW_KEY = ''
+# SOCIAL_AUTH_STACKOVERFLOW_SECRET = ''
+# SOCIAL_AUTH_STACKOVERFLOW_API_KEY = ''
+SOCIAL_AUTH_STACKOVERFLOW_SCOPE = []
+
+
+#########
+# Steam #
+#########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/steam.html
 # Signal API Management URL:    http://steamcommunity.com/dev/apikey
-SOCIAL_AUTH_STEAM_API_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_STEAM_API_KEY')
-SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 
-# Tumblr
+# SOCIAL_AUTH_STEAM_API_KEY = ''
+SOCIAL_AUTH_STEAM_EXTRA_DATA = [
+    'player'
+]
+
+
+##########
+# Tumblr #
+##########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/tumblr.html
 # Signal API Management URL:    https://www.tumblr.com/oauth/apps
@@ -298,10 +382,14 @@ SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 # Authorize URL:                http://www.tumblr.com/oauth/authorize
 # Access-token URL:             POST http://www.tumblr.com/oauth/access_tokenx
 # Auth access-token URL:        POST https://www.tumblr.com/oauth/access_token
-# SOCIAL_AUTH_TUMBLR_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_KEY')
-# SOCIAL_AUTH_TUMBLR_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TUMBLR_SECRET')
 
-# Twitter
+# SOCIAL_AUTH_TUMBLR_KEY = ''
+# SOCIAL_AUTH_TUMBLR_SECRET = ''
+
+
+###########
+# Twitter #
+###########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/twitter.html
 # Signal API Management URL:    https://apps.twitter.com/app/6086700/show
@@ -311,16 +399,23 @@ SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 # Authorize URL:                https://api.twitter.com/oauth/authorize
 # Access token URL:             https://api.twitter.com/oauth/access_token
 # Access Level:                 Read, write, and direct messages (modify app permissions)
-SOCIAL_AUTH_TWITTER_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TWITTER_KEY')
-SOCIAL_AUTH_TWITTER_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_TWITTER_SECRET')
+# Owner: hegemonbill
+# Owner ID: 158017896
 
-# Vimeo
+# SOCIAL_AUTH_TWITTER_KEY = ''
+# SOCIAL_AUTH_TWITTER_SECRET = ''
+
+
+#########
+# Vimeo #
+#########
 
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/vimeo.html
 # Signal API Management URL:    https://developer.vimeo.com/apps/45068
 # Request Token URL:            https://api.vimeo.com/oauth/request_token
 # Authorize URL                 https://api.vimeo.com/oauth/authorize
 # Access Token URL:             https://api.vimeo.com/oauth/access_token
-# SOCIAL_AUTH_VIMEO_KEY = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_KEY')
-# SOCIAL_AUTH_VIMEO_SECRET = get_environ_setting(PSA_ENV + 'SOCIAL_AUTH_VIMEO_SECRET')
-# SOCIAL_AUTH_VIMEO_SCOPE = []
+
+# SOCIAL_AUTH_VIMEO_KEY = ''
+# SOCIAL_AUTH_VIMEO_SECRET = ''
+SOCIAL_AUTH_VIMEO_SCOPE = []

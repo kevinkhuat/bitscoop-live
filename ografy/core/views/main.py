@@ -1,9 +1,9 @@
 import json
 
+from django.conf import settings
 from django.shortcuts import HttpResponse, render
 
 from ografy.contrib.multiauth.decorators import login_required
-from ografy.settings import OGRAFY_MAPBOX_ACCESS_TOKEN
 
 
 @login_required
@@ -18,6 +18,7 @@ def main(request):
 @login_required
 def mapbox_token(request):
     data = {
-        'OGRAFY_MAPBOX_ACCESS_TOKEN': OGRAFY_MAPBOX_ACCESS_TOKEN
+        'MAPBOX_ACCESS_TOKEN': settings.MAPBOX_ACCESS_TOKEN
     }
+
     return HttpResponse(json.dumps(data), content_type='application/json')
