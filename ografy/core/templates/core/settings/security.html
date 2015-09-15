@@ -3,15 +3,40 @@
 {% load staticfiles %}
 
 
+{% block static %}
+	{{ block.super }}
+
+	<script type="application/javascript">
+		require(['site', 'jquery-cookie'], function(site) {
+			$('#update-password').click(function() {
+				var $this = $(this);
+				var $form = $this.closest('form');
+
+				if ($('#new-password').val() === $('#new-password-repeated').val()) {
+					site.updatePassword($form);
+				}
+				else {
+					$('#password-repeated-errors').html('This field does not match the original password field')
+				}
+			});
+		});
+	</script>
+{% endblock %}
+
+
 {% block content %}
 	<div class="content-list">
-		<div class="content-item">
-			<h1>Password</h1>
-			<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" /></label>
-			<div>{{ form.new_password.errors }}</div>
-			<label><div class="text-input-width-medium">Repeated</div><input type="password" name="new_password_repeated" /></label>
-			<div>{{ form.new_password.errors }}</div>
-			<label><input class="btn btn-primary" type="button" value="Update Password" onclick="updatePassword('{{ user.id }}')"/></label>
-		</div>
+		<form action="/settings/security">
+			<div class="content-item">
+				<h1>Password</h1>
+				<label><div class="text-input-width-medium">Current password</div><input type="password" name="password" id="current-password" /></label>
+				<div id="password-update"></div>
+				<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" id="new-password" /></label>
+				<div id="password-errors"></div>
+				<label><div class="text-input-width-medium">Repeated</div><input type="password" id="new-password-repeated" /></label>
+				<div id="password-repeated-errors"></div>
+				<label><input class="btn btn-primary" id="update-password" type="button" value="Update Password"/></label>
+			</div>
+		</form>
 	</div>
 {% endblock %}

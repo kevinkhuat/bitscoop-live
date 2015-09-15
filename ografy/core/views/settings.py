@@ -200,13 +200,7 @@ class SecurityView(View):
             user.password_date = timezone.now()
             user.save()
 
-            return redirect_by_name('core_settings_account')
-        else:
-            return render(request, self.template_name, {
-                'title': self.title,
-                'lockwidth_override': True,
-                'form': form
-            })
+        return HttpResponse(json.dumps(form.errors), content_type='json', status=200)
 
 
 class SignalView(View):

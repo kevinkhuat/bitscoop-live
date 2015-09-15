@@ -319,6 +319,53 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
+	function updatePassword(form) {
+		$.ajax({
+			url: form.attr('action'),
+			type: 'POST',
+			dataType: 'html',
+			data: form.serialize(),
+			headers: {
+				'X-CSRFToken': $.cookie('csrftoken')
+			}
+		}).done(function(data, xhr, response) {
+			var errorString;
+			var errors = JSON.parse(data);
+
+			if (Object.keys(errors).length > 0) {
+				if (_.has(errors, 'new_password')) {
+					errorString = '';
+
+					_.forEach(errors.new_password, function(error) {
+						errorString += error;
+					});
+
+					$('#password-repeated-errors').html(errorString);
+				}
+				else {
+					$('#password-repeated-errors').html('');
+				}
+
+				if (_.has(errors, 'password')) {
+					errorString = '';
+
+					_.forEach(errors.password, function(error) {
+						errorString += error;
+					});
+
+					$('#password-update').html(errorString);
+				}
+				else {
+					$('#password-update').html('');
+				}
+			}
+			else {
+				$('#password-update').html('Password updated successfully');
+				$('#password-repeated-errors').html('');
+			}
+		});
+	}
+
 	return {
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
@@ -327,6 +374,7 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		bindSignalSettings: bindSignalSettings,
 		bindToggleSignal: bindToggleSignal,
 		bindVerifiedSignal: bindVerifiedSignal,
-		scrollToContent: scrollToContent
+		scrollToContent: scrollToContent,
+		updatePassword: updatePassword
 	};
 });
