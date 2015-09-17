@@ -182,7 +182,10 @@ module.exports = function(grunt) {
 
 		uglify: {
 			dist: {
-				files: '<%= copy.minify.files %>'
+				files: [
+					'<%= copy.js.files %>',
+					'<%= copy.nunjucks.files %>'
+				]
 			}
 		},
 
