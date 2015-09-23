@@ -5,7 +5,6 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	var eventSources = [];
 	var endpointCache = {};
 
-
 	/**
 	 * Starts the process of getting the user's signals and calling the eventSources if their information is out-of-date
 	 *
@@ -139,7 +138,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 			}
 			//If you need to construct a list out of multiple separate fields; for example,
 			//Instagram does not return coordinates in an array, but rather two separate key-value pairs
-			//for longitude and latitude, and we need to put them into an array.
+			//for longitude an latitude, and we need to put them into an array.
 			//In this situation, value needs to be an array where each entry is the path to the field to be mapped.
 			else if (type === 'multi_value') {
 				_.forEach(value, function(single_value) {
@@ -186,6 +185,10 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					}
 					//If none of the above are true, return the value
 					else {
+						if (type === 'string' && typeof(returnValue) !== 'string' && returnValue !== null && returnValue !== undefined) {
+							returnValue = returnValue.toString();
+						}
+
 						return returnValue;
 					}
 				}
@@ -222,6 +225,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 						//the right field or an array
 						else {
 							tempResponse = _.get(tempResponse, item);
+							if (type === 'string' && typeof(tempResponse) !== 'string') {
+								tempResponse = tempResponse.toString();
+							}
 						}
 					});
 
@@ -317,7 +323,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 */
 	function _processPermissions(signalToRun) {
 		var permissionPromiseList = [];
+		var eventList = [];
 
+		console.log('Starting to run ' + signalToRun.name + ' at ' + new Date());
 		_.forEach(signalToRun.permissions, function(permission) {
 			if (permission.enabled) {
 				var eventSource = permission.event_source;
@@ -343,7 +351,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					if (signalToRun.provider.hasOwnProperty('endpoint_wait_time')) {
 						var timeoutTime = _.get(signalToRun.provider, 'endpoint_wait_time') * 1000;
 						setTimeout(function() {
-							_processEventSource(eventSource, signalToRun, permission, permissionDeferred);
+							_processEventSource(eventList, eventSource, signalToRun, permission, permissionDeferred);
 						}, timeoutTime);
 					}
 				}).fail(function(data, xhr, response) {
@@ -356,20 +364,35 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		//the current datetime.  If any of them fail at any point, lastRun will not be updated so that we
 		//do not lose any data.
 		$.when.apply($, permissionPromiseList).done(function() {
-			var data = {};
-
-			data.last_run = new Date().toJSON();
-
+			console.log('Starting to post ' + eventList.length + ' events for ' + signalToRun.name + ' at ' + new Date());
 			$.ajax({
-				url: 'opi/signal/' + signalToRun.id,
-				type: 'PATCH',
-				data: data,
+				url: 'opi/event',
+				type: 'POST',
+				data: JSON.stringify(eventList),
 				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
 				headers: {
 					'X-CSRFToken': $.cookie('csrftoken')
 				}
 			}).done(function(data, xhr, response) {
-				console.log('Signal ' + signalToRun.id + ' lastRun updated successfully');
+				var signalData = {};
+
+				console.log('Finished posting events for ' + signalToRun.name + ' at ' + new Date());
+				signalData.last_run = new Date().toJSON();
+
+				$.ajax({
+					url: 'opi/signal/' + signalToRun.id,
+					type: 'PATCH',
+					data: signalData,
+					dataType: 'json',
+					headers: {
+						'X-CSRFToken': $.cookie('csrftoken')
+					}
+				}).done(function(data, xhr, response) {
+					console.log('Signal ' + signalToRun.name + ' lastRun updated successfully');
+				});
+			}).fail(function(data, xhr, response) {
+				console.log('Event post for signal ' + signalToRun.name + ' failed at ' + new Date());
 			});
 		});
 	}
@@ -377,13 +400,14 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	/**
 	 * Get data from an eventSource
 	 *
+	 * @param {Object} eventList The list of Events to be sent to OPI
 	 * @param {Object} eventSource One of the eventSource
 	 * @param {Object} signal The Signal associated with the permission that is calling this eventSource
 	 * @param {Object} permission The Permission that is calling this eventsource
 	 * @param {Object} permissionDeferred A promise that the event source will resolve when it is finished gathering data
 	 * @returns {Object} The raw data returned from the eventSource
 	 */
-	function _processEventSource(eventSource, signal, permission, permissionDeferred) {
+	function _processEventSource(eventList, eventSource, signal, permission, permissionDeferred) {
 		//This is the mapping of fields
 		var context = {
 			endpoints: _.get(eventSource, 'endpoints'),
@@ -396,9 +420,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		var initialMapping = _.get(context.mappings, endpointAndMappingName);
 
 		//Start the mapping process with the initial endpoint mapping
-		_processMapping(initialMapping, endpointAndMappingName, {}, undefined);
+		_processMapping(initialMapping, endpointAndMappingName, {});
 
-		function _processMapping(mapping, endpointName, parentResponseObject, inputDeferred) {
+		function _processMapping(mapping, endpointName, parentResponseObject) {
 			var firstPass = true;
 			var loopEnd = false;
 			var responseData, responseObjectsList;
@@ -440,17 +464,6 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				$.when(_callOneEndpoint(endpoint, context)).done(function(data) {
 					var returnedDataLocation = _.get(mapping, 'returned_data_location');
 					var patchData = {};
-					var localDeferred;
-					var conditionMapping = _.get(mapping, 'conditions');
-
-					if (inputDeferred === undefined) {
-						localDeferred = $.Deferred();
-						localDeferred.promise();
-						eventSourcePromiseList.push(localDeferred);
-					}
-					else {
-						localDeferred = inputDeferred;
-					}
 
 					responseData = JSON.parse(data);
 
@@ -466,233 +479,149 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 
 					//Iterate through each mappable object that was returned
 					_.forEach(responseObjectsList, function(responseObject) {
-						var skipPost = false;
-						
-						//If there are any conditions
-						_.forEach(conditionMapping, function(condition) {
-							var conditionKey = Object.keys(condition)[0];
-							var conditionVal = condition[conditionKey].value;
-							var conditionField = condition[conditionKey].field;
+						//If this endpoint was called solely to get data for another endpoint, call that endpoint
+						if (mapping.hasOwnProperty('submapping')) {
+							var endpointAndMappingName = _.get(mapping, 'submapping.endpoint');
+							var newMapping = _.get(context.mappings, endpointAndMappingName);
 
-							//Property exists
-							//	Property equals
-							if (conditionKey === 'equals') {
-								if (_.get(context, conditionField) !== conditionVal) {
-									skipPost = true;
-								}
-							}
-							else if (conditionKey === 'notEquals') {
-								if (_.get(responseObject, conditionField) === conditionVal) {
-									skipPost = true;
-								}
-							}
-							//	Property less than
-							//	Property greater than
-							//	Property typeof
-						});
-
-						if (!(skipPost)) {
-							//If this endpoint was called solely to get data for another endpoint, call that endpoint
-							if (mapping.hasOwnProperty('submapping')) {
-								var endpointAndMappingName = _.get(mapping, 'submapping.endpoint');
-								var newMapping = _.get(context.mappings, endpointAndMappingName);
-
-								responseObject.parentResponseObject = parentResponseObject;
-								context.responseObject = responseObject;
-
-								_processMapping(newMapping, endpointAndMappingName, responseObject, localDeferred);
-							}
-							//Otherwise, update the global context and call mapSingleModel
-							else {
-								var localContext = $.extend({}, context);
-								localContext.endpoint = endpoint;
-								localContext.mapping = mapping;
-								localContext.responseObject = responseObject;
-								localContext.parentResponseObject = parentResponseObject;
-
-								mapSingleModel(localContext, localDeferred);
-							}
+							responseObject.parentResponseObject = parentResponseObject;
+							context.responseObject = responseObject;
+							_processMapping(newMapping, endpointAndMappingName, responseObject);
 						}
+						//Otherwise, update the global context and call mapSingleModel
 						else {
-							localDeferred.resolve();
+							var localContext = $.extend({}, context);
+							var localDeferred = $.Deferred();
+
+							localContext.endpoint = endpoint;
+							localContext.mapping = mapping;
+							localContext.responseObject = responseObject;
+							localContext.parentResponseObject = parentResponseObject;
+
+							localDeferred.promise();
+							eventSourcePromiseList.push(localDeferred);
+
+							mapSingleModel(eventList, localContext, localDeferred);
 						}
 					});
 
-					$.when(localDeferred).done(function() {
-						//Some APIs use a cursor for their 'pagination'.  This cursor is usually the ID of an object that
-						//API provides.  It can be used to get items that have IDs before or after that cursor.
-						if (paginationMethod === 'cursor') {
-							//Some cursor-based services, such as Twitter, start with the most recent changes.
-							//This requires that you save the ID of the most recent item on your first pass through the data
-							//so that the next time you call this event source you start from that most recent change.
-							//You also have to save the ID of the oldest result in each iteration and use that as the endpoint
-							//for further calls to the iteration, working your way from newest to oldest.
-							if (firstPass && !(paginationAscending)) {
-								//If there is at least one new data point, set the new start cursor to the appropriate value
-								if (responseObjectsList.length > 0) {
-									newCursorStartValue = _.get(responseObjectsList[0], cursorValue);
-								}
-								//If not, then newCursorStartValue needs to remain the same
-								else {
-									newCursorStartValue = _.get(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter);
-								}
-
-								firstPass = false;
+					//Some APIs use a cursor for their 'pagination'.  This cursor is usually the ID of an object that
+					//API provides.  It can be used to get items that have IDs before or after that cursor.
+					if (paginationMethod === 'cursor') {
+						//Some cursor-based services, such as Twitter, start with the most recent changes.
+						//This requires that you save the ID of the most recent item on your first pass through the data
+						//so that the next time you call this event source you start from that most recent change.
+						//You also have to save the ID of the oldest result in each iteration and use that as the endpoint
+						//for further calls to the iteration, working your way from newest to oldest.
+						if (firstPass && !(paginationAscending)) {
+							//If there is at least one new data point, set the new start cursor to the appropriate value
+							if (responseObjectsList.length > 0) {
+								newCursorStartValue = _.get(responseObjectsList[0], cursorValue);
+							}
+							//If not, then newCursorStartValue needs to remain the same
+							else {
+								newCursorStartValue = _.get(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter);
 							}
 
-							//There are multiple ways that cursor-based pagination can be handled.  In some cases, all you
-							//know is how many items you got back on this iteration, but not how many there should be in total.
-							//In this situation, you have to iterate until you have gotten fewer items back than the maximum
-							//number you asked for.  Here, check if there is a parameter 'count', which is that maximum value.
-							if (_.get(endpoint, 'parameter_descriptions.count') !== undefined) {
-								//If you got back fewer items than you asked for
-								if (responseObjectsList.length < _.get(endpoint.parameter_descriptions, 'count.value')) {
-									_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
-									//In descending-order cursor pagination, we don't want to save the end value permanently; this
-									//is only used while doing the pagination, and should not carry over to future searches.
-									delete context.signal.endpoint_data[eventSource.name][endpointName][paginationEndParameter];
-									loopEnd = true;
-									patchData.endpoint_data = signal.endpoint_data;
+							firstPass = false;
+						}
 
-									//Only update parameters that need to be saved for future runs once all of the endpoints
-									//for that event source have finished running.
-									$.when.apply($, eventSourcePromiseList).then(function() {
-										$.ajax({
-											url: 'opi/signal/' + context.signal.id,
-											type: 'PATCH',
-											data: JSON.stringify(patchData),
-											contentType: 'application/json',
-											dataType: 'json',
-											headers: {
-												'X-CSRFToken': $.cookie('csrftoken')
-											}
-										}).done(function(data, xhr, response) {
-											permissionDeferred.resolve();
-										});
+						//There are multiple ways that cursor-based pagination can be handled.  In some cases, all you
+						//know is how many items you got back on this iteration, but not how many there should be in total.
+						//In this situation, you have to iterate until you have gotten fewer items back than the maximum
+						//number you asked for.  Here, check if there is a parameter 'count', which is that maximum value.
+						if (_.get(endpoint, 'parameter_descriptions.count') !== undefined) {
+							//If you got back fewer items than you asked for
+							if (responseObjectsList.length < _.get(endpoint.parameter_descriptions, 'count.value')) {
+								_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
+								//In descending-order cursor pagination, we don't want to save the end value permanently; this
+								//is only used while doing the pagination, and should not carry over to future searches.
+								delete context.signal.endpoint_data[eventSource.name][endpointName][paginationEndParameter];
+								loopEnd = true;
+								patchData.endpoint_data = signal.endpoint_data;
+
+								//Only update parameters that need to be saved for future runs once all of the endpoints
+								//for that event source have finished running.
+								$.when.apply($, eventSourcePromiseList).then(function() {
+									$.ajax({
+										url: 'opi/signal/' + context.signal.id,
+										type: 'PATCH',
+										data: JSON.stringify(patchData),
+										contentType: 'application/json',
+										dataType: 'json',
+										headers: {
+											'X-CSRFToken': $.cookie('csrftoken')
+										}
+									}).done(function(data, xhr, response) {
+										permissionDeferred.resolve();
 									});
-								}
-								//If you got back as many items as you asked for
-								else {
-									//Some endpoints provide a field for the next cursor, so check if that is a parameter
-									//that exists for this event source
-									if (nextCursorLocation !== undefined) {
-										var cursorLocation = _.get(responseData, nextCursorLocation);
+								});
+							}
+							//If you got back as many items as you asked for
+							else {
+								//Some endpoints provide a field for the next cursor, so check if that is a parameter
+								//that exists for this event source
+								if (nextCursorLocation !== undefined) {
+									var cursorLocation = _.get(responseData, nextCursorLocation);
 
-										//If there is something at the location where you expect a new cursor value,
-										//Then update the value
-										if (cursorLocation.hasOwnProperty(cursorValue)) {
-											newCursorEndValue = _.get(cursorLocation, cursorValue);
-										}
-										//If there isn't something there, then you have gotten to the end of new data
-										//and need to stop iteration this event source
-										else {
-											loopEnd = true;
-										}
+									//If there is something at the location where you expect a new cursor value,
+									//Then update the value
+									if (cursorLocation.hasOwnProperty(cursorValue)) {
+										newCursorEndValue = _.get(cursorLocation, cursorValue);
 									}
-									//If the provider doesn't have a next cursor field, then the cursor is just the ID of
-									//the last element in the responseObjectsList (this assumes that the provider returns
-									//the most recent element at the start of the array)
+									//If there isn't something there, then you have gotten to the end of new data
+									//and need to stop iteration this event source
 									else {
-										newCursorEndValue = _.get(responseObjectsList[responseObjectsList.length - 1], cursorValue);
+										loopEnd = true;
 									}
-									_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationEndParameter, newCursorEndValue);
 								}
-							}
-							//Some endpoints have a boolean field indicating whether there are more pages of data.
-							//Check if this event source has a field indicating where that would be.
-							else if (paginationCheckMore !== undefined) {
-								newCursorStartValue = _.get(responseData, nextCursorLocation);
-								_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
-
-								//If the field is false, then you have gotten to the end of the new data.
-								if (_.get(responseData, paginationCheckMore) === false) {
-									loopEnd = true;
-									patchData.endpoint_data = signal.endpoint_data;
-
-									//Only update parameters that need to be saved for future runs once all of the endpoints
-									//for that event source have finished running.
-									$.when.apply($, eventSourcePromiseList).then(function() {
-										$.ajax({
-											url: 'opi/signal/' + context.signal.id,
-											type: 'PATCH',
-											data: JSON.stringify(patchData),
-											contentType: 'application/json',
-											dataType: 'json',
-											headers: {
-												'X-CSRFToken': $.cookie('csrftoken')
-											}
-										}).done(function(data, xhr, response) {
-											permissionDeferred.resolve();
-										});
-									});
-								}
-							}
-							//Some endpoints have a field that is either null if there is no more data, or contains the cursor
-							//for the next page if there is more data.
-							else if (paginationVariableCursor !== undefined) {
-								newCursorStartValue = _.get(responseData, paginationVariableCursor);
-								_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
-
-								//If the field is null, then you have gotten to the end of the new data.
-								if (_.get(responseData, paginationVariableCursor) === null) {
-									loopEnd = true;
-									patchData.endpoint_data = signal.endpoint_data;
-
-									//Only update parameters that need to be saved for future runs once all of the endpoints
-									//for that event source have finished running.
-									$.when.apply($, eventSourcePromiseList).then(function() {
-										$.ajax({
-											url: 'opi/signal/' + context.signal.id,
-											type: 'PATCH',
-											data: JSON.stringify(patchData),
-											contentType: 'application/json',
-											dataType: 'json',
-											headers: {
-												'X-CSRFToken': $.cookie('csrftoken')
-											}
-										}).done(function(data, xhr, response) {
-											permissionDeferred.resolve();
-										});
-									});
-								}
+								//If the provider doesn't have a next cursor field, then the cursor is just the ID of
+								//the last element in the responseObjectsList (this assumes that the provider returns
+								//the most recent element at the start of the array)
 								else {
-									_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
+									newCursorEndValue = _.get(responseObjectsList[responseObjectsList.length - 1], cursorValue);
 								}
+								_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationEndParameter, newCursorEndValue);
 							}
 						}
-						//Some endpoints provide a page token for their pagination that is passed to future calls
-						//as a parameter.  This page token is typically not related to any other information about the
-						//endpoint call, i.e. it's not an ID of an entry nor is it a distinct datetime.
-						else if (paginationMethod === 'pageToken') {
-							//If the new page token is not present, then there is no more data after this
-							if (_.get(responseData, pageTokenLocation) === undefined) {
-								parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
+						//Some endpoints have a boolean field indicating whether there are more pages of data.
+						//Check if this event source has a field indicating where that would be.
+						else if (paginationCheckMore !== undefined) {
+							newCursorStartValue = _.get(responseData, nextCursorLocation);
+							_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
 
+							//If the field is false, then you have gotten to the end of the new data.
+							if (_.get(responseData, paginationCheckMore) === false) {
 								loopEnd = true;
+								patchData.endpoint_data = signal.endpoint_data;
 
-								delete context.signal.endpoint_data[eventSource.name][endpointName].pageToken;
-
-								//Sometimes there are parameters outside of the pagination fields that need to be saved
-								//to the signal for later use.  An example is that Gmail can use a date to only get messages
-								//after that date.  This isn't used for normal pagination, but should be updated every time
-								//the endpoint is run so we don't get mail that's already been retrieved.
-								_.forEach(Object.keys(parameter_descriptions), function(parameter) {
-									var thisParameter = parameter_descriptions[parameter];
-
-									if (thisParameter.hasOwnProperty('save_to_signal')) {
-										var updatedValue;
-										var updateLocation = thisParameter.save_to_signal.location;
-										if (updateLocation === 'date_now') {
-											updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
+								//Only update parameters that need to be saved for future runs once all of the endpoints
+								//for that event source have finished running.
+								$.when.apply($, eventSourcePromiseList).then(function() {
+									$.ajax({
+										url: 'opi/signal/' + context.signal.id,
+										type: 'PATCH',
+										data: JSON.stringify(patchData),
+										contentType: 'application/json',
+										dataType: 'json',
+										headers: {
+											'X-CSRFToken': $.cookie('csrftoken')
 										}
-										else {
-											updatedValue = _.get(responseData, updateLocation);
-										}
-
-										_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
-									}
+									}).done(function(data, xhr, response) {
+										permissionDeferred.resolve();
+									});
 								});
+							}
+						}
+						//Some endpoints have a field that is either null if there is no more data, or contains the cursor
+						//for the next page if there is more data.
+						else if (paginationVariableCursor !== undefined) {
+							newCursorStartValue = _.get(responseData, paginationVariableCursor);
+							_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
 
+							//If the field is null, then you have gotten to the end of the new data.
+							if (_.get(responseData, paginationVariableCursor) === null) {
+								loopEnd = true;
 								patchData.endpoint_data = signal.endpoint_data;
 
 								//Only update parameters that need to be saved for future runs once all of the endpoints
@@ -713,149 +642,205 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 								});
 							}
 							else {
-								_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'pageToken', _.get(responseData, pageTokenLocation));
+								_.set(context.signal.endpoint_data[eventSource.name][endpointName], paginationStartParameter, newCursorStartValue);
 							}
 						}
-						//Some endpoints give you the full URL for the next page
-						else if (paginationMethod === 'nextPage') {
-							if (_.get(responseData, nextPageLocation) === undefined || _.get(responseData, nextPageLocation) === null) {
-								parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
+					}
+					//Some endpoints provide a page token for their pagination that is passed to future calls
+					//as a parameter.  This page token is typically not related to any other information about the
+					//endpoint call, i.e. it's not an ID of an entry nor is it a distinct datetime.
+					else if (paginationMethod === 'pageToken') {
+						//If the new page token is not present, then there is no more data after this
+						if (_.get(responseData, pageTokenLocation) === undefined) {
+							parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
 
-								loopEnd = true;
+							loopEnd = true;
 
-								delete context.signal.endpoint_data[eventSource.name][endpointName].next_url;
+							delete context.signal.endpoint_data[eventSource.name][endpointName].pageToken;
 
-								//Sometimes there are parameters outside of the pagination fields that need to be saved
-								//to the signal for later use.  An example is that Gmail can use a date to only get messages
-								//after that date.  This isn't used for normal pagination, but should be updated every time
-								//the endpoint is run so we don't get mail that's already been retrieved.
-								_.forEach(Object.keys(parameter_descriptions), function(parameter) {
-									var thisParameter = parameter_descriptions[parameter];
+							//Sometimes there are parameters outside of the pagination fields that need to be saved
+							//to the signal for later use.  An example is that Gmail can use a date to only get messages
+							//after that date.  This isn't used for normal pagination, but should be updated every time
+							//the endpoint is run so we don't get mail that's already been retrieved.
+							_.forEach(Object.keys(parameter_descriptions), function(parameter) {
+								var thisParameter = parameter_descriptions[parameter];
 
-									if (thisParameter.hasOwnProperty('save_to_signal')) {
-										var updatedValue;
-										var updateLocation = thisParameter.save_to_signal.location;
-										if (updateLocation === 'date_now') {
-											updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
-										}
-										else {
-											updatedValue = _.get(responseData, updateLocation);
-										}
-
-										_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
+								if (thisParameter.hasOwnProperty('save_to_signal')) {
+									var updatedValue;
+									var updateLocation = thisParameter.save_to_signal.location;
+									if (updateLocation === 'date_now') {
+										updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
 									}
-								});
+									else {
+										updatedValue = _.get(responseData, updateLocation);
+									}
 
-								patchData.endpoint_data = signal.endpoint_data;
-
-								//Only update parameters that need to be saved for future runs once all of the endpoints
-								//for that event source have finished running.
-								$.when.apply($, eventSourcePromiseList).then(function() {
-									$.ajax({
-										url: 'opi/signal/' + context.signal.id,
-										type: 'PATCH',
-										data: JSON.stringify(patchData),
-										contentType: 'application/json',
-										dataType: 'json',
-										headers: {
-											'X-CSRFToken': $.cookie('csrftoken')
-										}
-									}).done(function(data, xhr, response) {
-										permissionDeferred.resolve();
-									});
-								});
-							}
-							else {
-								_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'next_url', _.get(responseData, nextPageLocation));
-							}
-						}
-						else if (paginationMethod === 'rfc5988') {
-							var linkDict = {};
-							var stringLinks = _.get(responseData, 'Link').split(',');
-
-							_.forEach(stringLinks, function(stringLink) {
-								var linkParts = stringLink.split(';');
-								_.forEach(linkParts, function(linkPart, index) {
-									linkParts[index] = linkPart.trim().replace(/</g, '').replace(/>/g, '');
-								});
-
-								linkDict[linkParts[1]] = linkParts[0];
+									_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
+								}
 							});
 
-							if (Object.keys(linkDict).indexOf(nextPageLocation) === -1) {
-								parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
+							patchData.endpoint_data = signal.endpoint_data;
 
-								loopEnd = true;
-
-								delete context.signal.endpoint_data[eventSource.name][endpointName].next_url;
-
-								//Sometimes there are parameters outside of the pagination fields that need to be saved
-								//to the signal for later use.  An example is that Gmail can use a date to only get messages
-								//after that date.  This isn't used for normal pagination, but should be updated every time
-								//the endpoint is run so we don't get mail that's already been retrieved.
-								_.forEach(Object.keys(parameter_descriptions), function(parameter) {
-									var thisParameter = parameter_descriptions[parameter];
-
-									if (thisParameter.hasOwnProperty('save_to_signal')) {
-										var updatedValue;
-										var updateLocation = thisParameter.save_to_signal.location;
-										if (updateLocation === 'date_now') {
-											updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
-										}
-										else {
-											updatedValue = _.get(responseData, updateLocation);
-										}
-
-										_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
+							//Only update parameters that need to be saved for future runs once all of the endpoints
+							//for that event source have finished running.
+							$.when.apply($, eventSourcePromiseList).then(function() {
+								$.ajax({
+									url: 'opi/signal/' + context.signal.id,
+									type: 'PATCH',
+									data: JSON.stringify(patchData),
+									contentType: 'application/json',
+									dataType: 'json',
+									headers: {
+										'X-CSRFToken': $.cookie('csrftoken')
 									}
+								}).done(function(data, xhr, response) {
+									permissionDeferred.resolve();
 								});
-
-								patchData.endpoint_data = signal.endpoint_data;
-
-								//Only update parameters that need to be saved for future runs once all of the endpoints
-								//for that event source have finished running.
-								$.when.apply($, eventSourcePromiseList).then(function() {
-									$.ajax({
-										url: 'opi/signal/' + context.signal.id,
-										type: 'PATCH',
-										data: JSON.stringify(patchData),
-										contentType: 'application/json',
-										dataType: 'json',
-										headers: {
-											'X-CSRFToken': $.cookie('csrftoken')
-										}
-									}).done(function(data, xhr, response) {
-										permissionDeferred.resolve();
-									});
-								});
-							}
-							else {
-								_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'next_url', linkDict[nextPageLocation]);
-							}
+							});
 						}
-						//Some endpoints give you a page number for the next page
-						else if (paginationMethod === 'pageNumber') {
+						else {
+							_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'pageToken', _.get(responseData, pageTokenLocation));
 						}
-						//Catch any issues by ending the endpoint iteration so we don't loop infinitely.  Some endpoints
-						//do not have any pagination, so use the same resolution for them.
-						else if (paginationMethod === undefined || paginationMethod === 'none') {
+					}
+					//Some endpoints give you the full URL for the next page
+					else if (paginationMethod === 'nextPage') {
+						if (_.get(responseData, nextPageLocation) === undefined || _.get(responseData, nextPageLocation) === null) {
+							parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
+
 							loopEnd = true;
-							permissionDeferred.resolve();
-						}
 
-						//If this isn't the last iteration through the endpoint
-						if (!loopEnd) {
-							//If we throttle endpoint calls for this provider, then wait n seconds before calling the
-							//endpoint again.
-							if (signal.provider.hasOwnProperty('endpoint_wait_time')) {
-								var timeoutTime = _.get(signal.provider, 'endpoint_wait_time') * 1000;
+							delete context.signal.endpoint_data[eventSource.name][endpointName].next_url;
 
-								setTimeout(function() {
-									_processOneEndpointIteration(endpoint, mapping, context);
-								}, timeoutTime);
-							}
+							//Sometimes there are parameters outside of the pagination fields that need to be saved
+							//to the signal for later use.  An example is that Gmail can use a date to only get messages
+							//after that date.  This isn't used for normal pagination, but should be updated every time
+							//the endpoint is run so we don't get mail that's already been retrieved.
+							_.forEach(Object.keys(parameter_descriptions), function(parameter) {
+								var thisParameter = parameter_descriptions[parameter];
+
+								if (thisParameter.hasOwnProperty('save_to_signal')) {
+									var updatedValue;
+									var updateLocation = thisParameter.save_to_signal.location;
+									if (updateLocation === 'date_now') {
+										updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
+									}
+									else {
+										updatedValue = _.get(responseData, updateLocation);
+									}
+
+									_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
+								}
+							});
+
+							patchData.endpoint_data = signal.endpoint_data;
+
+							//Only update parameters that need to be saved for future runs once all of the endpoints
+							//for that event source have finished running.
+							$.when.apply($, eventSourcePromiseList).then(function() {
+								$.ajax({
+									url: 'opi/signal/' + context.signal.id,
+									type: 'PATCH',
+									data: JSON.stringify(patchData),
+									contentType: 'application/json',
+									dataType: 'json',
+									headers: {
+										'X-CSRFToken': $.cookie('csrftoken')
+									}
+								}).done(function(data, xhr, response) {
+									permissionDeferred.resolve();
+								});
+							});
 						}
-					});
+						else {
+							_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'next_url', _.get(responseData, nextPageLocation));
+						}
+					}
+					else if (paginationMethod === 'rfc5988') {
+						var linkDict = {};
+						var stringLinks = _.get(responseData, 'Link').split(',');
+
+						_.forEach(stringLinks, function(stringLink) {
+							var linkParts = stringLink.split(';');
+							_.forEach(linkParts, function(linkPart, index) {
+								linkParts[index] = linkPart.trim().replace(/</g, '').replace(/>/g, '');
+							});
+
+							linkDict[linkParts[1]] = linkParts[0];
+						});
+
+						if (Object.keys(linkDict).indexOf(nextPageLocation) === -1) {
+							parameter_descriptions = _.get(endpoint, 'parameter_descriptions');
+
+							loopEnd = true;
+
+							delete context.signal.endpoint_data[eventSource.name][endpointName].next_url;
+
+							//Sometimes there are parameters outside of the pagination fields that need to be saved
+							//to the signal for later use.  An example is that Gmail can use a date to only get messages
+							//after that date.  This isn't used for normal pagination, but should be updated every time
+							//the endpoint is run so we don't get mail that's already been retrieved.
+							_.forEach(Object.keys(parameter_descriptions), function(parameter) {
+								var thisParameter = parameter_descriptions[parameter];
+
+								if (thisParameter.hasOwnProperty('save_to_signal')) {
+									var updatedValue;
+									var updateLocation = thisParameter.save_to_signal.location;
+									if (updateLocation === 'date_now') {
+										updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
+									}
+									else {
+										updatedValue = _.get(responseData, updateLocation);
+									}
+
+									_.set(context.signal.endpoint_data[eventSource.name][endpointName], parameter, updatedValue);
+								}
+							});
+
+							patchData.endpoint_data = signal.endpoint_data;
+
+							//Only update parameters that need to be saved for future runs once all of the endpoints
+							//for that event source have finished running.
+							$.when.apply($, eventSourcePromiseList).then(function() {
+								$.ajax({
+									url: 'opi/signal/' + context.signal.id,
+									type: 'PATCH',
+									data: JSON.stringify(patchData),
+									contentType: 'application/json',
+									dataType: 'json',
+									headers: {
+										'X-CSRFToken': $.cookie('csrftoken')
+									}
+								}).done(function(data, xhr, response) {
+									permissionDeferred.resolve();
+								});
+							});
+						}
+						else {
+							_.set(context.signal.endpoint_data[eventSource.name][endpointName], 'next_url', linkDict[nextPageLocation]);
+						}
+					}
+					//Some endpoints give you a page number for the next page
+					else if (paginationMethod === 'pageNumber') {
+					}
+					//Catch any issues by ending the endpoint iteration so we don't loop infinitely.  Some endpoints
+					//do not have any pagination, so use the same resolution for them.
+					else if (paginationMethod === undefined || paginationMethod === 'none') {
+						loopEnd = true;
+						permissionDeferred.resolve();
+					}
+
+					//If this isn't the last iteration through the endpoint
+					if (!loopEnd) {
+						//If we throttle endpoint calls for this provider, then wait n seconds before calling the
+						//endpoint again.
+						if (signal.provider.hasOwnProperty('endpoint_wait_time')) {
+							var timeoutTime = _.get(signal.provider, 'endpoint_wait_time') * 1000;
+
+							setTimeout(function() {
+								_processOneEndpointIteration(endpoint, mapping, context);
+							}, timeoutTime);
+						}
+					}
 				});
 			}
 		}
@@ -1012,7 +997,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 * @param {Object} eventSourceDeferred The deferred object that will be resolved once the item has been fully mapped.
 	 */
 	//TODO: Abstract posting into a callback passed into mapping a single model or after the mapping function returns the result
-	function mapSingleModel(context, eventSourceDeferred) {
+	function mapSingleModel(eventList, context, eventSourceDeferred) {
 		var contentList = [];
 		var contactsList = [];
 		var location;
@@ -1025,45 +1010,49 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		var eventGeolocation = _.get(locationMapping, 'geolocation');
 		var canHydrateLocation = _canHydrateLocation();
 
-		var mapDataPromises = mapData();
-
-		//Post the responseObject to the Data collection, then use the document that is returned to create all of the other documents.
-		$.when.apply($, mapDataPromises).done(function() {
-			//Call mapContent, mapContacts, and mapLocation.  Each of these can be run independently of the others.
-			//The each return a promise (mapLocation) or a list of promises (the other two).  These promises are resolved
-			//only when the mapping or mappings have been completed.
-			//(mapContacts and mapContent may create multiple db entries from a single piece of data, so they have
-			//a list of promises, one for each item they are creating).
-			var mapContentPromises = mapContent();
-			var mapContactsPromises = mapContacts();
-			var mapLocationPromise = mapLocation();
-			//Concatenate the list of promises from mapContent and mapContacts into one list and add on the promise from mapLocation.
-			var totalPromises = mapContactsPromises.concat(mapContentPromises).concat(mapLocationPromise);
-
-			$.when.apply($, totalPromises).done(function() {
-				//On some endpoints, you can get the same contact back multiple times, e.g. if you created the reddit thread
-				//and posted in it and replied to your own post.  We don't want the same contact showing up in the
-				//list of contacts multiple times, so this wil assemble a list of unique contacts for the event
-				//that is about to be posted.
-				var uniqueContactsMap = [];
-				var uniqueContactsList = [];
-
-				_.forEach(contactsList, function(contact, index) {
-					if (uniqueContactsMap.indexOf(contact.ografy_unique_id) === -1) {
-						uniqueContactsMap.push(contact.ografy_unique_id);
-						uniqueContactsList.push(contact);
-					}
-				});
-
-				mapEvent(contentList, uniqueContactsList, location, eventSourceDeferred);
-			}).fail(function() {
-				//If something failed, then don't try to map the event, as we don't have the necessary information.
-				//Just reject eventSourceDeferred so that this event source's information is not updated, and the next
-				//time it runs it will try to map this again.
-				eventSourceDeferred.reject();
-			});
+		//If there are any conditions
+		_.forEach(conditionMapping, function(conditionValue, conditionKey) {
+			//Property exists
+			//	Property equals
+			//	Property less than
+			//	Property greater than
+			//	Property typeof
 		});
-		//Only map the event once all content and contacts have been created as well as the location (if possible)
+
+		mapData();
+		//Call mapContent, mapContacts, and mapLocation.  Each of these can be run independently of the others.
+		//The each return a promise (mapLocation) or a list of promises (the other two).  These promises are resolved
+		//only when the mapping or mappings have been completed.
+		//(mapContacts and mapContent may create multiple db entries from a single piece of data, so they have
+		//a list of promises, one for each item they are creating).
+		var mapContentPromises = mapContent();
+		var mapContactsPromises = mapContacts();
+		var mapLocationPromise = mapLocation();
+		//Concatenate the list of promises from mapContent and mapContacts into one list and add on the promise from mapLocation.
+		var totalPromises = mapContactsPromises.concat(mapContentPromises).concat(mapLocationPromise);
+
+		$.when.apply($, totalPromises).done(function() {
+			//On some endpoints, you can get the same contact back multiple times, e.g. if you created the reddit thread
+			//and posted in it and replied to your own post.  We don't want the same contact showing up in the
+			//list of contacts multiple times, so this wil assemble a list of unique contacts for the event
+			//that is about to be posted.
+			var uniqueContactsMap = [];
+			var uniqueContactsList = [];
+
+			_.forEach(contactsList, function(contact, index) {
+				if (uniqueContactsMap.indexOf(contact.ografy_unique_id) === -1) {
+					uniqueContactsMap.push(contact.ografy_unique_id);
+					uniqueContactsList.push(contact);
+				}
+			});
+
+			mapEvent(contentList, uniqueContactsList, location, eventSourceDeferred);
+		}).fail(function() {
+			//If something failed, then don't try to map the event, as we don't have the necessary information.
+			//Just reject eventSourceDeferred so that this event source's information is not updated, and the next
+			//time it runs it will try to map this again.
+			eventSourceDeferred.reject();
+		});
 
 
 		//Google Drive was returning dictionaries where some keys contained periods.
@@ -1141,8 +1130,6 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 			context.responseObject = stripInvalidKeyCharacters(context.responseObject);
 
 			_.forEach(dataMapping, function(singleDataMapping) {
-				var deferred = $.Deferred();
-
 				//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
 				//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
 				//Constructing ografy_unique_id is repeatable.
@@ -1160,28 +1147,8 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					user_id: context.signal.user_id
 				};
 
-				deferred.promise();
-				deferredList.push(deferred);
-
-				$.ajax({
-					url: 'opi/data',
-					type: 'POST',
-					data: JSON.stringify(dataObject),
-					dataType: 'json',
-					contentType: 'application/json; charset=utf-8',
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function(data, xhr, response) {
-					dataList.push(data.id);
-					deferred.resolve();
-				}).fail(function(data, xhr, response) {
-					console.log('Data ' + data.id + ' mapping failed');
-					deferred.reject();
-				});
+				dataList.push(dataObject);
 			});
-
-			return deferredList;
 		}
 
 		//TODO: Make entire parent function more programmatic, better debug success/fail messages with ids?
@@ -1221,42 +1188,6 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				}
 			}
 
-			//When creating the embedded content list, strip off unnecessary fields from each content document.
-			//Also convert the ID of the discrete content document into the embedded content's 'content' field, as
-			//embedded documents do not have IDs.
-			_.forEach(contentList, function(singleContent) {
-				delete singleContent.user_id;
-				delete singleContent.ografy_unique_id;
-				delete singleContent.signal;
-				delete singleContent.data_dict;
-				singleContent.content = singleContent.id;
-				delete singleContent.id;
-			});
-
-			//When creating the embedded contacts list, strip off unnecessary fields from each contact document.
-			//Also convert the ID of the discrete contact document into the embedded contact's 'contact' field, as
-			//embedded documents do not have IDs.
-			_.forEach(contactsList, function(contact) {
-				delete contact.user_id;
-				delete contact.ografy_unique_id;
-				delete contact.signal;
-				delete contact.data_dict;
-				contact.contact = contact.id;
-				delete contact.id;
-			});
-
-			//When creating the embedded location, strip off unnecessary fields from the location document.
-			//Also convert the ID of the discrete location document into the embedded location's 'location' field, as
-			//embedded documents do not have IDs.
-			if (location !== undefined) {
-				delete location.data_dict;
-				delete location.datetime;
-				delete location.signal;
-				delete location.user_id;
-				location.location = location.id;
-				delete location.id;
-			}
-
 			//Wait for the datetime to be retrieved from an endpoint if needed.
 			//If not, this will be resolved immediately.
 			$.when(potentialPromise).done(function() {
@@ -1286,40 +1217,17 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					user_id: context.signal.user_id
 				};
 
-				$.ajax({
-					url: 'opi/event',
-					type: 'POST',
-					data: JSON.stringify(eventObject),
-					dataType: 'json',
-					contentType: 'application/json; charset=utf-8',
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function(data, xhr, response) {
-					//Resolve the deferred to indicate that this event has been fully mapped.
-					//When all the events from this event source have been mapped, the endpoint_data
-					//for that event source can be saved to the signal.
-					eventSourceDeferred.resolve();
-				}).fail(function(data, xhr, response) {
-					//If an error is sent back, then the event was not posted successfully and was not already present.
-					//In this case, reject the promise.  This will cause the event source's endpoint_data to not be
-					//updated, and the next call to this event source will get all of the data from this run again
-					//to make sure that nothing was skipped.
-					eventSourceDeferred.reject();
-				});
+				eventList.push(eventObject);
+				eventSourceDeferred.resolve();
 			});
 		}
 
 
 		//Create a location if possible
 		function mapLocation() {
-			var deferred = $.Deferred();
-
 			//Only try to create a location if it's possible to do so
 			if (canHydrateLocation) {
-				var locationObject = {
-					data_dict: dataList
-				};
+				var locationObject = {};
 
 				//Map the location's fields as specified by the event source's mapping
 				_.forEach(locationMapping, function(eventValue, eventKey) {
@@ -1341,31 +1249,13 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					}
 				});
 
-				$.ajax({
-					url: 'opi/location',
-					type: 'POST',
-					data: JSON.stringify(locationObject),
-					dataType: 'json',
-					contentType: 'application/json; charset=utf-8',
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function(data, xhr, response) {
-					location = data;
-					deferred.resolve();
-				}).fail(function(data, xhr, response) {
-					console.log('Location mapping failed');
-					deferred.reject();
-				});
+				return locationObject;
 			}
 			//If the location cannot be created, then just set it to undefined and resolve the promise.
 			//The server will estimate the location when the event gets posted.
 			else {
-				location = undefined;
-				deferred.resolve();
+				return undefined;
 			}
-
-			return deferred.promise();
 		}
 
 
@@ -1416,11 +1306,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				}
 
 				_.forEach(items, function(item) {
-					contentObject = {
-						data_dict: dataList,
-						signal: context.signal.id,
-						user_id: context.signal.user_id
-					};
+					contentObject = {};
 
 					//The masterPromiseList holds a deferred for each content item we are trying to map.
 					//For this item, push its deferred onto the list and create the promise.
@@ -1484,26 +1370,10 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 							contentObject.ografy_unique_id = ografy_unique_id;
 
 							if (!skipPost) {
-								$.ajax({
-									url: 'opi/content',
-									type: 'POST',
-									data: JSON.stringify(contentObject),
-									dataType: 'json',
-									contentType: 'application/json; charset=utf-8',
-									headers: {
-										'X-CSRFToken': $.cookie('csrftoken')
-									}
-								}).done(function(data, xhr, response) {
-									contentList.push(data);
-									masterPromise.resolve();
-								}).fail(function(data, xhr, response) {
-									console.log('Content ' + data.id + ' mapping failed');
-									masterPromise.reject();
-								});
+								contentList.push(contentObject);
 							}
-							else {
-								masterPromise.resolve();
-							}
+
+							masterPromise.resolve();
 						});
 					});
 				});
@@ -1557,11 +1427,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 						masterPromiseList.push(masterPromise);
 						masterPromise.promise();
 
-						contactObject = {
-							data_dict: dataList,
-							signal: context.signal.id,
-							user_id: context.signal.user_id
-						};
+						contactObject = {};
 
 						//Map all of the fields shown in the mapping.
 						//If a mapping needs to call an endpoint to get more data, create a promise that will be
@@ -1617,26 +1483,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 								contactObject.ografy_unique_id = ografy_unique_id;
 
 								if (!skipPost) {
-									$.ajax({
-										url: 'opi/contact',
-										type: 'POST',
-										data: JSON.stringify(contactObject),
-										dataType: 'json',
-										contentType: 'application/json; charset=utf-8',
-										headers: {
-											'X-CSRFToken': $.cookie('csrftoken')
-										}
-									}).done(function(data, xhr, response) {
-										contactsList.push(data);
-										masterPromise.resolve();
-									}).fail(function(data, xhr, response) {
-										console.log('Contact ' + data.id + ' mapping failed');
-										masterPromise.resolve();
-									});
+									contactsList.push(contactObject);
 								}
-								else {
-									masterPromise.resolve();
-								}
+								masterPromise.resolve();
 							});
 						});
 					});

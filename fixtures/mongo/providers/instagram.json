@@ -188,6 +188,7 @@
                   },
                   "api_id": {
                     "hydration_method": "translate",
+                    "type": "string",
                     "value": "id"
                   }
                 }
@@ -215,6 +216,7 @@
                   },
                   "api_id": {
                     "hydration_method": "translate",
+                    "type": "string",
                     "value": "from.id"
                   }
                 }
@@ -428,6 +430,7 @@
                   },
                   "api_id": {
                     "hydration_method": "translate",
+                    "type": "string",
                     "value": "id"
                   }
                 }
@@ -455,6 +458,7 @@
                   },
                   "api_id": {
                     "hydration_method": "translate",
+                    "type": "string",
                     "value": "from.id"
                   }
                 }
@@ -482,6 +486,7 @@
                   },
                   "api_id": {
                     "hydration_method": "translate",
+                    "type": "string",
                     "value": "id"
                   }
                 }

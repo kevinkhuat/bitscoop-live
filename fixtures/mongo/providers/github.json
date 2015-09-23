@@ -283,6 +283,7 @@
                 "mapped_fields": {
                   "api_id": {
                     "hydration_method": "endpoint",
+                    "type": "string",
                     "value": {
                       "endpoint": "repo",
                       "parameter_sources": {
@@ -384,6 +385,7 @@
                 "mapped_fields": {
                   "api_id": {
                     "hydration_method": "endpoint",
+                    "type": "string",
                     "value": {
                       "endpoint": "repo",
                       "parameter_sources": {
@@ -460,6 +462,7 @@
                 "mapped_fields": {
                   "api_id": {
                     "hydration_method": "endpoint",
+                    "type": "string",
                     "value": {
                       "endpoint": "repo",
                       "parameter_sources": {

@@ -1,8 +1,10 @@
 from rest_framework import serializers as django_serializers
+from rest_framework_bulk import BulkListSerializer, BulkSerializerMixin
 
 from ografy.contrib.tastydata import serializers as tasty_serializers
 from ografy.core.documents import (
-    Contact, Content, Data, Endpoint, Event, Location, Permission, Provider, Search, Settings, Signal
+    Contact, Content, Data, Endpoint, Event, IntermediateContact, IntermediateContent, IntermediateEvent,
+    IntermediateLocation, Location, Permission, Provider, Search, Settings, Signal
 )
 from ografy.core.models import User
 
@@ -304,3 +306,35 @@ class SearchSerializer(tasty_serializers.DocumentSerializer):
             'user_id',
         )
         depth = 5
+
+
+class IntermediateEventSerializer(BulkSerializerMixin, tasty_serializers.DocumentSerializer):
+    # Mongo References
+    # data = related_fields.ReferenceField(lookup_field='data', queryset=Data.objects.all(), view_name='data-detail')
+
+    # Django References
+    # user = related_fields.DjangoField(view_name='user-detail', lookup_field='user_id', queryset=User.objects.all())
+    # signal = related_fields.DjangoField(view_name='signal-detail', lookup_field='signal', queryset=Signal.objects.all())
+    # provider = related_fields.DjangoField(view_name='provider-detail', lookup_field='provider_', queryset=Provider.objects.all())
+
+    class Meta(object):
+        model = IntermediateEvent
+        list_serializer_class = BulkListSerializer
+        fields = (
+            'id',
+            'contact_interaction_type',
+            'contacts_list',
+            'content_list',
+            'created',
+            'data_dict',
+            'datetime',
+            'event_type',
+            'location',
+            'ografy_unique_id',
+            'provider',
+            'provider_name',
+            'signal',
+            'updated',
+            'user_id',
+        )
+        depth = 8

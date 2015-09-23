@@ -1,10 +1,11 @@
 blinker
 django
 djangorestframework
+djangorestframework-bulk
 django-redis
 elasticsearch
+eventlet
 geopy
-gevent
 gunicorn
 mongoengine
 psycopg2

@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from mongoengine.errors import NotUniqueError
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework_bulk import ListBulkCreateAPIView
 from social.apps.django_app.default.models import UserSocialAuth
 
 import ografy.apps.opi.serializers as opi_serializer
@@ -14,7 +15,7 @@ from ografy.contrib.pytoolbox import strip_invalid_key_characters
 from ografy.contrib.tastydata.pagination import OgrafyItemPagination
 from ografy.contrib.tastydata.views import MongoAPIListView, MongoAPIView
 from ografy.core import api as core_api
-from ografy.core.documents import Settings
+from ografy.core.documents import IntermediateEvent, Settings
 
 
 class DataView(MongoAPIListView):
@@ -394,10 +395,11 @@ class ContentSingleView(MongoAPIView):
         return Response(serialized_response)
 
 
-class EventView(MongoAPIListView):
+class EventView(ListBulkCreateAPIView, MongoAPIListView):
     ordering_fields = ('provider_name', 'datetime', 'name', 'created', 'updated', 'user_id', 'signal')
-    serializer = opi_serializer.EventSerializer
-    serializer_class = opi_serializer.EventSerializer
+    queryset = IntermediateEvent.objects.all()
+    serializer = opi_serializer.IntermediateEventSerializer
+    serializer_class = opi_serializer.IntermediateEventSerializer
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -416,37 +418,149 @@ class EventView(MongoAPIListView):
 
     # TODO: Add logic for for populating signal and prover from just signal id
     def post(self, request, format=None):
-        # TODO: Better user filter
-        post_event = self.deserialize(
-            request.data,
-            context={
-                'request': request
-            }
-        )
-
-        post_event.user_id = request.user.id
-
-        if 'location' not in post_event.keys():
-            post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
-
         try:
-            event_query = core_api.EventApi.post(
-                data=post_event
+            event_list = []
+
+            # TODO: Better user filter
+            post_event_list = self.deserialize(
+                request.data,
+                many=True,
+                context={
+                    'view': self
+                }
             )
 
-        except NotUniqueError:
-            event_query = core_api.EventApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_event['ografy_unique_id'])).get()
+            for post_event in post_event_list:
+                data_list = []
+                contacts_list = []
+                content_list = []
 
-        event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
-        serialized_response = self.serialize(
-            event_object,
-            context={
-                'request': request,
-                'format': format
-            }
-        )
+                user_id = request.user.id
 
-        return Response(serialized_response)
+                for data in post_event['data_dict']:
+                    post_data = dict(data.to_mongo())
+
+                    post_data['user_id'] = user_id
+
+                    try:
+                        new_data = core_api.DataApi.post(
+                            data=post_data
+                        )
+                    except NotUniqueError:
+                        new_data = core_api.DataApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_data['ografy_unique_id'])).get()
+
+                    data_list.append(new_data.id)
+
+                for contact in post_event['contacts_list']:
+                    post_contact = dict(contact.to_mongo())
+
+                    post_contact['data_dict'] = data_list
+                    post_contact['signal'] = post_event['signal']
+                    post_contact['user_id'] = user_id
+
+                    try:
+                        new_contact = core_api.ContactApi.post(
+                            data=post_contact
+                        )
+                    except NotUniqueError:
+                        new_contact = core_api.ContactApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_contact['ografy_unique_id'])).get()
+
+                    new_contact = dict(new_contact.to_mongo())
+                    del new_contact['user_id']
+                    del new_contact['ografy_unique_id']
+                    del new_contact['signal']
+                    del new_contact['data_dict']
+                    new_contact['contact'] = new_contact['_id']
+                    del new_contact['_id']
+
+                    contacts_list.append(new_contact)
+
+                for content in post_event['content_list']:
+                    post_content = dict(content.to_mongo())
+
+                    post_content['data_dict'] = data_list
+                    post_content['signal'] = post_event['signal']
+                    post_content['user_id'] = user_id
+
+                    try:
+                        new_content = core_api.ContentApi.post(
+                            data=post_content
+                        )
+                    except NotUniqueError:
+                        new_content = core_api.ContentApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_content['ografy_unique_id'])).get()
+
+                    new_content = dict(new_content.to_mongo())
+                    del new_content['user_id']
+                    del new_content['ografy_unique_id']
+                    del new_content['signal']
+                    del new_content['data_dict']
+                    new_content['content'] = new_content['_id']
+                    del new_content['_id']
+
+                    content_list.append(new_content)
+
+                if 'location' not in post_event.keys():
+                    post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
+
+                new_event = dict(post_event)
+                new_event['contacts_list'] = contacts_list
+                new_event['content_list'] = content_list
+                new_event['data_dict'] = data_list
+                new_event['user_id'] = user_id
+
+                try:
+                    event_query = core_api.EventApi.post(
+                        data=new_event
+                    )
+                except NotUniqueError:
+                    event_query = core_api.EventApi.get(MongoAPIView.Meta.Q(ografy_unique_id=new_event['ografy_unique_id'])).get()
+
+                event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+                event_list.append(event_object)
+
+            serialized_response = self.serialize(
+                event_list,
+                many=True,
+                context={
+                    'request': request,
+                    'format': format
+                }
+            )
+
+            return Response(serialized_response)
+        except:
+            serializer = opi_serializer.EventSerializer
+            serializer_class = opi_serializer.EventSerializer
+
+            post_event = self.deserialize(
+                request.data,
+                context={
+                    'request': request
+                }
+            )
+
+            post_event.user_id = request.user.id
+
+            if 'location' not in post_event.keys():
+                post_event['location'] = estimation.estimate(post_event['user_id'], post_event['datetime'])
+
+            try:
+                event_query = core_api.EventApi.post(
+                    data=post_event
+                )
+            except NotUniqueError:
+                event_query = core_api.EventApi.get(MongoAPIView.Meta.Q(ografy_unique_id=post_event['ografy_unique_id'])).get()
+
+            event_object = opi_serializer.evaluate(event_query, self.Meta.QuerySet)
+            serialized_response = self.serialize(
+                event_object,
+                context={
+                    'request': request,
+                    'format': format
+                }
+            )
+
+            return Response(serialized_response)
 
 
 class EventSingleView(MongoAPIView):

@@ -3,9 +3,10 @@ defusedxml==0.4.1
 Django==1.8.2
 django-redis==4.2.0
 djangorestframework==3.2.3
+djangorestframework-bulk==0.2.1
 elasticsearch==1.6.0
+eventlet==0.17.4
 geopy==1.10.0
-gevent==1.0.2
 gunicorn==19.3.0
 mongoengine==0.10.0
 msgpack-python==0.4.6

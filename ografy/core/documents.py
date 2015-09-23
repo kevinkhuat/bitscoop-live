@@ -858,3 +858,141 @@ class Search(mongoengine.Document):
     search_DSL = mongoengine.DictField()
     tags = mongoengine.ListField(mongoengine.StringField())
     user_id = mongoengine.IntField(required=True)
+
+
+class IntermediateData(mongoengine.EmbeddedDocument):
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    data_dict = mongoengine.DictField()
+    ografy_unique_id = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    user_id = mongoengine.IntField()
+
+    meta = {
+        'indexes': [{
+            'name': 'contact_index',
+            'fields': ['$id', '$user_id'],
+            'default_language': 'english',
+        }]
+    }
+
+
+class IntermediateContact(mongoengine.EmbeddedDocument):
+    api_id = mongoengine.StringField()
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    handle = mongoengine.StringField()
+    name = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+
+
+class IntermediateContent(mongoengine.EmbeddedDocument):
+    CONTENT_TYPE = (
+        ('photo', 'Photograph'),
+        ('video', 'Video'),
+        ('game', 'Videogame'),
+        ('audio', 'Music, podcast, etc.'),
+        ('text', 'Plain text'),
+        ('code', 'Computer code'),
+        ('file', 'A computer file')
+    )
+
+    content_type = mongoengine.StringField(choices=CONTENT_TYPE)
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    file_extension = mongoengine.StringField()
+    ografy_unique_id = mongoengine.StringField()
+    owner = mongoengine.StringField()
+    text = mongoengine.StringField()
+    title = mongoengine.StringField()
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    url = mongoengine.StringField()
+
+
+class IntermediateLocation(mongoengine.EmbeddedDocument):
+    GEO_FORMAT = (
+        ('lat_lng', 'Latitude and longitude'),
+        ('geohash', 'Geohash'),
+    )
+
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
+    estimated = mongoengine.BooleanField()
+    estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD)
+    geo_format = mongoengine.StringField(choices=GEO_FORMAT)
+    geolocation = mongoengine.PointField()
+    resolution = mongoengine.FloatField()
+
+
+class IntermediateEvent(mongoengine.Document):
+    """
+    The base class for all discrete events tracked by the Ografy engine.
+
+    #  *contact_interaction_type* How the user relates to those in the Contacts List
+    #  *contacts_list* A list of Contacts associated with the event
+    #  *content_list* A list of content objects associated with the event
+    #. *created* the date created
+    #  *data_dict* The dictionary of raw data used to construct the event, plus extra data that may be used in the future
+    #  *event_type* The type of event
+    #. *location* The location of the event
+    #  *ografy_unique_id* An ID constructed out of the user_id, signal_id, and elements unique to the event
+    #. *provider* The Provider related to the event
+    #. *provider_name* The name of the Provider
+    #. *signal* The id of the Signal related to the event
+    #. *updated* the date updated
+    #. *user_id* the id of the Django user who the event is associated with
+
+    #. *datetime* the date and time of the event
+    """
+
+    EVENT_TYPE = (
+        ('event', 'Basic Event'),
+        ('message', 'Basic Message'),
+        ('play', 'Media Play'),
+        ('edit', 'File Edit'),
+        ('comment', 'Commentary on something'),
+        ('view', 'Viewing something'),
+        ('create', 'Create something'),
+        ('call', 'Phone call'),
+        ('visit', 'Visited somewhere'),
+        ('travel', 'Traveled somwhere'),
+        ('eat', 'Eat something'),
+        ('transaction', 'Purchase or sell something'),
+        ('sleep', 'Sleep'),
+        ('exercise', 'Exercise')
+    )
+
+    CONTACT_INTERACTION_TYPE = (
+        ('to', 'Sent to others'),
+        ('from', 'Sent to you'),
+        ('with', 'Done with others')
+    )
+
+    contact_interaction_type = mongoengine.StringField(choices=CONTACT_INTERACTION_TYPE)
+    contacts_list = mongoengine.EmbeddedDocumentListField(IntermediateContact)
+    content_list = mongoengine.EmbeddedDocumentListField(IntermediateContent)
+    created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    data_dict = mongoengine.EmbeddedDocumentListField(IntermediateData)
+    event_type = mongoengine.StringField(choices=EVENT_TYPE)
+    location = mongoengine.EmbeddedDocumentField(IntermediateLocation)
+    ografy_unique_id = mongoengine.StringField(unique=True)
+    provider = mongoengine.ReferenceField(Provider, dbref=False)
+    provider_name = mongoengine.StringField(required=True)
+    signal = mongoengine.ReferenceField(Signal, dbref=False)
+    updated = mongoengine.DateTimeField(default=datetime.datetime.now)
+    user_id = mongoengine.IntField(required=True)
+
+    # Had to move this below updated because the 'created' and 'updated' defaults
+    # were incorrectly trying to reference this instead of the builtin package datetime
+    datetime = mongoengine.DateTimeField(default=datetime.datetime.now)
+
+    meta = {
+        'indexes': [{
+            'name': 'event_index',
+            'fields': ['$id', '$ografy_unique_id', '$signal', '$user_id'],
+            'default_language': 'english'
+        }]
+    }
