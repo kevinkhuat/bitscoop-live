@@ -529,6 +529,7 @@ class Data(mongoengine.Document):
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     data_dict = mongoengine.DictField()
     ografy_unique_id = mongoengine.StringField(unique=True)
+    signal = mongoengine.ReferenceField(Signal, reverse_delete_rule=mongoengine.CASCADE, dbref=False)
     updated = mongoengine.DateTimeField(default=datetime.datetime.now)
     user_id = mongoengine.IntField()
 

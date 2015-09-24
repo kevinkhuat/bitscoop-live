@@ -440,6 +440,7 @@ class EventView(ListBulkCreateAPIView, MongoAPIListView):
                 for data in post_event['data_dict']:
                     post_data = dict(data.to_mongo())
 
+                    post_data['signal'] = post_event['signal']
                     post_data['user_id'] = user_id
 
                     try:

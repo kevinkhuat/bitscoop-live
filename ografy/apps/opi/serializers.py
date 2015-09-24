@@ -147,6 +147,7 @@ class DataSerializer(tasty_serializers.DocumentSerializer):
             'created',
             'data_dict',
             'ografy_unique_id',
+            'signal',
             'updated',
             'user_id'
         )
