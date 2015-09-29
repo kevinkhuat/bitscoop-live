@@ -1,24 +1,22 @@
 import datetime as py_datetime
+import json
 import math
 
-import elasticsearch
 import geopy
 from dateutil import parser
 from geopy.distance import VincentyDistance
-from mongoengine import Q
+from motorengine import Q
+from tornado import gen
 
 from ografy import settings
-from ografy.core.api import EventApi, SettingsApi
-from ografy.core.documents import EmbeddedLocation, Event, Settings
+from ografy.apps.passthrough.documents import Settings
+from ografy.contrib.estoolbox.tornadoes_bulk import ESBulkConnection
 
 
-es_connection = elasticsearch.Elasticsearch([
-    {
-        'host': settings.ELASTICSEARCH['HOST'],
-        'port': settings.ELASTICSEARCH['PORT'],
-        'use_ssl': settings.ELASTICSEARCH['USE_SSL']
-    },
-])
+es_connection = ESBulkConnection(
+    settings.ELASTICSEARCH['HOST'],
+    settings.ELASTICSEARCH['PORT']
+)
 
 
 def get_previous_query(user_id, datetime):
@@ -126,6 +124,7 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
     return arc
 
 
+@gen.coroutine
 def estimate(user_id, datetime):
     """
     This function is called when an event does not have a location.
@@ -137,7 +136,8 @@ def estimate(user_id, datetime):
     """
 
     # Get the user's location estimation method
-    user_settings = Settings.objects.get(Q(user_id=user_id))
+    user_settings = yield Settings.objects.filter(Q({'user_id': user_id})).find_all()
+    user_settings = user_settings[0]
     location_estimation_method = user_settings.location_estimation_method
 
     # TODO: Make this flexible
@@ -145,19 +145,22 @@ def estimate(user_id, datetime):
     doc_type = 'location'
 
     # Convert the datetime to the format in which it's stored in the DB
-    datetime = datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+    # datetime = datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 
     # Call the function corresponding to the user's estimation method
     if location_estimation_method == 'Last':
-        return estimate_location_last(user_id, datetime, index, doc_type)
+        estimate_response = yield estimate_location_last(user_id, datetime, index, doc_type)
     elif location_estimation_method == 'Next':
-        return estimate_location_next(user_id, datetime, index, doc_type)
+        estimate_response = yield estimate_location_next(user_id, datetime, index, doc_type)
     elif location_estimation_method == 'Closest':
-        return estimate_location_closest(user_id, datetime, index, doc_type)
+        estimate_response = yield estimate_location_closest(user_id, datetime, index, doc_type)
     elif location_estimation_method == 'Between':
-        return estimate_location_between(user_id, datetime, index, doc_type)
+        estimate_response = yield estimate_location_between(user_id, datetime, index, doc_type)
+
+    return estimate_response
 
 
+@gen.coroutine
 def estimate_location_last(user_id, datetime, index, doc_type):
     """
     Finds the Location that most recently precedes the event being estimated
@@ -174,66 +177,57 @@ def estimate_location_last(user_id, datetime, index, doc_type):
 
     try:
         # Query ES and save the result
-        search_result = es_connection.search(
+        search_result = yield es_connection.search(
             index=index,
-            doc_type=doc_type,
-            body=query
+            type=doc_type,
+            source=query
         )
 
         # Store the hits from the DB; hopefully there is one
-        hits = search_result['hits']['hits']
+        hits = json.loads(search_result.body.decode('utf-8'))['hits']['hits']
 
         # If there is one hit, then get its coordinates and return them
         if len(hits) == 1:
             coordinates = hits[0]['_source']['geolocation']
-            geolocation = EmbeddedLocation(
-                estimated=True,
-                estimation_method='Last',
-                geo_format='lat_lng',
-                geolocation={
-                    'type': 'Point',
-                    'coordinates': coordinates
-                }
-            )
+            geolocation = {
+                'estimated': True,
+                'estimation_method': 'Last',
+                'geo_format': 'lat_lng',
+                'geolocation': coordinates
+            }
         # If there isn't a hit, then the query was for a date before the oldest one for this user
         # In that case, search for the Location at the earliest available date and use that instead
         else:
             query = get_next_query(user_id, datetime)
 
-            search_result = es_connection.search(
+            search_result = yield es_connection.search(
                 index=index,
-                doc_type=doc_type,
-                body=query
+                type=doc_type,
+                source=query
             )
 
-            hits = search_result['hits']['hits']
+            hits = json.loads(search_result.body.decode('utf-8'))['hits']['hits']
 
             if len(hits) == 1:
                 coordinates = hits[0]['_source']['geolocation']
-                geolocation = EmbeddedLocation(
-                    estimated=True,
-                    estimation_method='Last',
-                    geo_format='lat_lng',
-                    geolocation={
-                        'type': 'Point',
-                        'coordinates': coordinates
-                    }
-                )
+                geolocation = {
+                    'estimated': True,
+                    'estimation_method': 'Last',
+                    'geo_format': 'lat_lng',
+                    'geolocation': coordinates
+                }
             # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
             # At a later date, once there are some Locations associated with the user, the estimated location
             # will be updated with a more accurate result.
             else:
                 # Construct a Location with the fallback coordinates
                 coordinates = [-94.596750, 39.193406]
-                geolocation = EmbeddedLocation(
-                    estimated=True,
-                    estimation_method='Last',
-                    geo_format='lat_lng',
-                    geolocation={
-                        'type': 'Point',
-                        'coordinates': coordinates
-                    }
-                )
+                geolocation = {
+                    'estimated': True,
+                    'estimation_method': 'Last',
+                    'geo_format': 'lat_lng',
+                    'geolocation': coordinates
+                }
 
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
@@ -241,19 +235,17 @@ def estimate_location_last(user_id, datetime, index, doc_type):
     except:
         # Construct a Location with the fallback coordinates
         coordinates = [-94.596750, 39.193406]
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Last',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
 
     return geolocation
 
 
+@gen.coroutine
 def estimate_location_next(user_id, datetime, index, doc_type):
     """
     Finds the Location that most closely follows the event being estimated
@@ -267,73 +259,77 @@ def estimate_location_next(user_id, datetime, index, doc_type):
     # Construct the filter string
     query = get_next_query(user_id, datetime)
 
-    # Query ES and save the result
-    search_result = es_connection.search(
-        index=index,
-        doc_type=doc_type,
-        body=query
-    )
-
-    # Store the hits from the DB; hopefully there is one
-    hits = search_result['hits']['hits']
-
-    # If there is one hit, then get its coordinates and return them
-    if len(hits) == 1:
-        coordinates = hits[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
-
-    # If there isn't a hit, then the query was for a date after the most recent one for this user
-    # In that case, search for the Location at the latest available date and use that instead
-    else:
-        query = get_previous_query(user_id, datetime)
-
-        search_result = es_connection.search(
+    try:
+        # Query ES and save the result
+        search_result = yield es_connection.search(
             index=index,
-            doc_type=doc_type,
-            body=query
+            type=doc_type,
+            source=query
         )
 
-        hits = search_result['hits']['hits']
+        # Store the hits from the DB; hopefully there is one
+        hits = json.loads(search_result.body.decode('utf-8'))['hits']['hits']
 
+        # If there is one hit, then get its coordinates and return them
         if len(hits) == 1:
             coordinates = hits[0]['_source']['geolocation']
-            geolocation = EmbeddedLocation(
-                estimated=True,
-                estimation_method='Last',
-                geo_format='lat_lng',
-                geolocation={
-                    'type': 'Point',
-                    'coordinates': coordinates
-                }
+            geolocation = {
+                'estimated': True,
+                'estimation_method': 'Next',
+                'geo_format': 'lat_lng',
+                'geolocation': coordinates
+            }
+        # If there isn't a hit, then the query was for a date after the newest one for this user
+        # In that case, search for the Location at the latest available date and use that instead
+        else:
+            query = get_previous_query(user_id, datetime)
+
+            search_result = yield es_connection.search(
+                index=index,
+                type=doc_type,
+                source=query
             )
 
-        # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
-        # At a later date, once there are some Locations associated with the user, the estimated location
-        # will be updated with a more accurate result.
-        else:
-            # Construct a Location with the fallback coordinates
-            coordinates = [-94.596750, 39.193406]
-            geolocation = EmbeddedLocation(
-                estimated=True,
-                estimation_method='Last',
-                geo_format='lat_lng',
-                geolocation={
-                    'type': 'Point',
-                    'coordinates': coordinates
+            hits = json.loads(search_result.body.decode('utf-8'))['hits']['hits']
+
+            if len(hits) == 1:
+                coordinates = hits[0]['_source']['geolocation']
+                geolocation = {
+                    'estimated': True,
+                    'estimation_method': 'Next',
+                    'geo_format': 'lat_lng',
+                    'geolocation': coordinates
                 }
-            )
+            # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
+            # At a later date, once there are some Locations associated with the user, the estimated location
+            # will be updated with a more accurate result.
+            else:
+                # Construct a Location with the fallback coordinates
+                coordinates = [-94.596750, 39.193406]
+                geolocation = {
+                    'estimated': True,
+                    'estimation_method': 'Last',
+                    'geo_format': 'lat_lng',
+                    'geolocation': coordinates
+                }
+
+    # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
+    # At a later date, once there are some Locations associated with the user, the estimated location
+    # will be updated with a more accurate result.
+    except:
+        # Construct a Location with the fallback coordinates
+        coordinates = [-94.596750, 39.193406]
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Next',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
 
     return geolocation
 
 
+@gen.coroutine
 def estimate_location_closest(user_id, datetime, index, doc_type):
     """
     Finds the Location that most closely precedes and follows the event being estimated
@@ -348,24 +344,27 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
     query1 = get_previous_query(user_id, datetime)
     query2 = get_next_query(user_id, datetime)
 
-    # Construct an ES Multi Search
-    body = [
-        {},
-        query1,
-        {},
-        query2
-    ]
-
-    # Perform the Multi Search
-    search_result = es_connection.msearch(
-        body=body,
+    # Search both before and after the event
+    es_connection.search(
+        source=query1,
         index=index,
-        doc_type=doc_type
+        type=doc_type,
+        callback=(yield gen.Callback('search_result_previous'))
     )
 
+    es_connection.search(
+        source=query2,
+        index=index,
+        type=doc_type,
+        callback=(yield gen.Callback('search_result_next'))
+    )
+
+    search_result_previous = yield gen.Wait('search_result_previous')
+    search_result_next = yield gen.Wait('search_result_next')
+
     # Store the hits from the DB; hopefully there is one for each search
-    hits1 = search_result['responses'][0]['hits']['hits']
-    hits2 = search_result['responses'][1]['hits']['hits']
+    hits1 = json.loads(search_result_previous.body.decode('utf-8'))['hits']['hits']
+    hits2 = json.loads(search_result_next.body.decode('utf-8'))['hits']['hits']
 
     geolocation = ''
 
@@ -381,58 +380,47 @@ def estimate_location_closest(user_id, datetime, index, doc_type):
         else:
             coordinates = geolocation2['geolocation']
 
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Next',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there isn't a result before, use the one after
     elif len(hits1) == 0:
         coordinates = hits2[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Closest',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there isn't a result after, use the one before
     elif len(hits2) == 0:
         coordinates = hits1[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Closest',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
     # will be updated with a more accurate result.
     else:
         # Construct a Location with the fallback coordinates
         coordinates = [-94.596750, 39.193406]
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Closest',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
 
     return geolocation
 
 
+@gen.coroutine
 def estimate_location_between(user_id, datetime, index, doc_type):
     """
     Finds the locations that most closely precede and follow the event being estimated
@@ -451,40 +439,33 @@ def estimate_location_between(user_id, datetime, index, doc_type):
     query1 = get_previous_query(user_id, datetime)
     query2 = get_next_query(user_id, datetime)
 
-    # Construct an ES Multi Search
-    body = [
-        {'index': index},
-        query1,
-        {'index': index},
-        query2
-    ]
-
-    # Perform the Multi Search
-    search_result = es_connection.msearch(
-        body=body,
+    # Search both before and after the event
+    es_connection.search(
+        source=query1,
         index=index,
-        doc_type=doc_type
+        type=doc_type,
+        callback=(yield gen.Callback('search_result_previous'))
     )
 
-    hits1 = None
-    hits2 = None
+    es_connection.search(
+        source=query2,
+        index=index,
+        type=doc_type,
+        callback=(yield gen.Callback('search_result_next'))
+    )
+
+    search_result_previous = yield gen.Wait('search_result_previous')
+    search_result_next = yield gen.Wait('search_result_next')
 
     # Store the hits from the DB; hopefully there is one for each search
-    if 'hits' in search_result['responses'][0]:
-        hits1 = search_result['responses'][0]['hits']['hits']
-        if len(hits1) == 0:
-            hits1 = None
-
-    if 'hits' in search_result['responses'][1]:
-        hits2 = search_result['responses'][1]['hits']['hits']
-        if len(hits2) == 0:
-            hits2 = None
+    hits1 = json.loads(search_result_previous.body.decode('utf-8'))['hits']['hits']
+    hits2 = json.loads(search_result_next.body.decode('utf-8'))['hits']['hits']
 
     geolocation = ''
 
     # If there is a result both before and after, estimate a point in between them in proportion to
     # how far away each surrounding point is in time from the point being estimated
-    if hits1 is not None and hits2 is not None and len(hits1) > 0 and len(hits2) > 0:
+    if len(hits1) == 1 and len(hits2) == 1:
         geolocation1 = hits1[0]['_source']
         geolocation2 = hits2[0]['_source']
 
@@ -530,59 +511,48 @@ def estimate_location_between(user_id, datetime, index, doc_type):
         returnlat2, returnlon2 = destination.latitude, destination.longitude
 
         coordinates = [returnlon2, returnlat2]
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Between',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there isn't a result before, use the one after
-    elif hits1 is None and hits2 is not None:
+    elif len(hits1) == 0 and len(hits2) == 1:
         coordinates = hits2[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Between',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there isn't a result after, use the one before
-    elif hits2 is None and hits1 is not None:
+    elif len(hits2) == 0 and len(hits1) == 1:
         coordinates = hits1[0]['_source']['geolocation']
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Between',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
     # If there are no Locations on which to estimate, use a fallback point in the middle of the country.
     # At a later date, once there are some Locations associated with the user, the estimated location
     # will be updated with a more accurate result.
     else:
         # Construct a Location with the fallback coordinates
         coordinates = [-94.596750, 39.193406]
-        geolocation = EmbeddedLocation(
-            estimated=True,
-            estimation_method='Last',
-            geo_format='lat_lng',
-            geolocation={
-                'type': 'Point',
-                'coordinates': coordinates
-            }
-        )
+        geolocation = {
+            'estimated': True,
+            'estimation_method': 'Between',
+            'geo_format': 'lat_lng',
+            'geolocation': coordinates
+        }
 
     return geolocation
 
 
-def reeestimate_all(user_id):
+@gen.coroutine
+def reestimate_all(user_id):
     """
     This function gets all of the events for a user that were estimated and checks if there is
     a different estimation for each one.  If so, it patches the event with the new estimation.
@@ -594,55 +564,98 @@ def reeestimate_all(user_id):
     :return: Nothing
     """
 
+    search_end = False
+    from_parameter = 0
+    size_parameter = 1000
+    events_with_estimated_locations = []
+
     # Get all of the events whose locations are estimated
-    events_with_estimated_locations = Event.objects(__raw__={
-        'user_id': user_id,
-        'location.estimated': True
-    })
+    estimated_location_query = {
+        'query': {
+            'filtered': {
+                'filter': {
+                    'and': [
+                        {
+                            'bool': {
+                                'must': {
+                                    'term': {
+                                        'location.estimated': True
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            'bool': {
+                                'must': {
+                                    'term': {
+                                        'user_id': user_id
+                                    }
+                                }
+                            }
+                        },
+                    ]
+                }
+            }
+        },
+        'from': from_parameter,
+        'size': size_parameter
+    }
+
+    while not search_end:
+        estimated_location_query['from'] = from_parameter
+
+        response = yield es_connection.search(
+            index='core',
+            type='event',
+            source=estimated_location_query
+        )
+
+        decoded_result = json.loads(response.body.decode('utf-8'))['hits']['hits']
+        events_with_estimated_locations += decoded_result
+
+        if len(decoded_result) < size_parameter:
+            search_end = True
+        else:
+            from_parameter += size_parameter
 
     # Get the user's settings, and from that get their location estimation method
-    user_settings = Settings.objects.get(Q(user_id=user_id))
+    user_settings = yield Settings.objects.filter(Q({'user_id': user_id})).find_all()
+    user_settings = user_settings[0]
     location_estimation_method = user_settings.location_estimation_method
 
     index = 'core'
     doc_type = 'location'
 
     # Iterate through the set of events
-    for event in events_with_estimated_locations:
-        datetime = event.datetime
-
-        # Convert the datetime to the format in which it's stored in the DB
-        datetime = datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+    for event_result in events_with_estimated_locations:
+        event = event_result['_source']
+        datetime = event['datetime']
 
         new_location = ''
 
         # Call the function corresponding to the user's estimation method
         if location_estimation_method == 'Last':
-            new_location = estimate_location_last(user_id, datetime, index, doc_type)
+            new_location = yield estimate_location_last(user_id, datetime, index, doc_type)
         elif location_estimation_method == 'Next':
-            new_location = estimate_location_next(user_id, datetime, index, doc_type)
+            new_location = yield estimate_location_next(user_id, datetime, index, doc_type)
         elif location_estimation_method == 'Closest':
-            new_location = estimate_location_closest(user_id, datetime, index, doc_type)
+            new_location = yield estimate_location_closest(user_id, datetime, index, doc_type)
         elif location_estimation_method == 'Between':
-            new_location = estimate_location_between(user_id, datetime, index, doc_type)
+            new_location = yield estimate_location_between(user_id, datetime, index, doc_type)
 
         # To save on DB writes, only patch the event's location if it's different from what's currently there.
-        if event['location']['geolocation']['coordinates'] != new_location['geolocation']['coordinates']:
+        if event['location']['geolocation'] != new_location['geolocation']:
 
             # Replace the event's location with the new one.
             event['location'] = new_location
 
             # Patch the event in the DB.
-            EventApi.patch(
-                val=event.id,
-                data={
-                    'location': new_location
-                }
+            es_connection.put(
+                index='core',
+                type='event',
+                uid=event_result['_id'],
+                contents=event
             )
 
-    SettingsApi.patch(
-        val=user_settings.id,
-        data={
-            'last_estimate_all_locations': py_datetime.datetime.now()
-        }
-    )
+    user_settings.last_estimate_all_locations = py_datetime.datetime.now()
+    yield user_settings.save()

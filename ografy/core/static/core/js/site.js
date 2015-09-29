@@ -148,10 +148,12 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 				var $thisSignalContainer = $this.closest('.drawer-container');
 				var $thisSignalId = $thisSignalContainer.data('signal-id');
 				$.ajax({
-					url: '/opi/signal/' + $thisSignalId,
+					url: 'https://p.bitscoop.com/signals',
 					type: 'DELETE',
 					dataType: 'json',
-					data: {},
+					data: {
+						signal_id: $thisSignalId
+					},
 					headers: {
 						'X-CSRFToken': $.cookie('csrftoken')
 					}
@@ -189,7 +191,7 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 
 			data.permissions = JSON.stringify(data.permissions);
 			$.ajax({
-				url: '/verify/' + signalId,
+				url: '/connections/verify/' + signalId,
 				type: 'POST',
 				'content-type': 'application/json',
 				dataType: 'text',
@@ -304,7 +306,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
-		bindProviderUtilities: bindProviderUtilities,
 		bindSignalSettings: bindSignalSettings,
 		bindToggleSignal: bindToggleSignal,
 		bindVerifiedSignal: bindVerifiedSignal,

@@ -364,15 +364,21 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		//the current datetime.  If any of them fail at any point, lastRun will not be updated so that we
 		//do not lose any data.
 		$.when.apply($, permissionPromiseList).done(function() {
+			var callData = {
+				events: JSON.stringify(eventList)
+			};
+
 			console.log('Starting to post ' + eventList.length + ' events for ' + signalToRun.name + ' at ' + new Date());
 			$.ajax({
-				url: 'opi/event',
+				url: 'https://p.bitscoop.com/events',
 				type: 'POST',
-				data: JSON.stringify(eventList),
-				dataType: 'json',
-				contentType: 'application/json; charset=utf-8',
+				data: callData,
+				dataType: 'text',
 				headers: {
 					'X-CSRFToken': $.cookie('csrftoken')
+				},
+				xhrFields: {
+					withCredentials: true
 				}
 			}).done(function(data, xhr, response) {
 				var signalData = {};
@@ -1021,15 +1027,15 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 
 		mapData();
 		//Call mapContent, mapContacts, and mapLocation.  Each of these can be run independently of the others.
-		//The each return a promise (mapLocation) or a list of promises (the other two).  These promises are resolved
+		//The first two return a list of promises (the other two).  These promises are resolved
 		//only when the mapping or mappings have been completed.
 		//(mapContacts and mapContent may create multiple db entries from a single piece of data, so they have
 		//a list of promises, one for each item they are creating).
 		var mapContentPromises = mapContent();
 		var mapContactsPromises = mapContacts();
-		var mapLocationPromise = mapLocation();
-		//Concatenate the list of promises from mapContent and mapContacts into one list and add on the promise from mapLocation.
-		var totalPromises = mapContactsPromises.concat(mapContentPromises).concat(mapLocationPromise);
+		location = mapLocation();
+		//Concatenate the list of promises from mapContent and mapContacts into one list.
+		var totalPromises = mapContactsPromises.concat(mapContentPromises);
 
 		$.when.apply($, totalPromises).done(function() {
 			//On some endpoints, you can get the same contact back multiple times, e.g. if you created the reddit thread
@@ -1206,7 +1212,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					ografy_unique_id: ografy_unique_id,
 					contact_interaction_type: _hydrateField(context, _.get(eventMapping.mapped_fields, 'contact_interaction_type')),
 					content_list: contentList,
-					data_dict: dataList,
+					data_list: dataList,
 					datetime: jsonDatetime,
 					event_type: _.get(context.mapping, 'event_type'),
 					location: location,

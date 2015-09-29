@@ -1,4 +1,4 @@
-{% extends 'core/signals/base.html' %}
+{% extends 'core/connections/base.html' %}
 {% load staticfiles %}
 
 {% block static %}
@@ -12,7 +12,7 @@
 </script>
 {% endblock %}
 
-{% block content %}
+{% block main %}
 <div class="content-list" data-signal-id="{{ signal.id }}">
 	<div class="content-item">
 		<h1>Verify {{ signal.provider.name }} Connection Settings</h1>

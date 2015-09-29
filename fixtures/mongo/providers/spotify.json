@@ -122,7 +122,7 @@
                   },
                   {
                     "hydration_method": "translate",
-                    "value": "responseObject.id"
+                    "value": "responseObject.track.id"
                   }
                 ]
               }
@@ -204,7 +204,7 @@
         "limit": {
           "description": "Pagination counts",
           "hydration_method": "literal",
-          "value": "2"
+          "value": "50"
         },
         "next_url": {
           "description": "The URL for the next page",
@@ -241,7 +241,7 @@
         "limit": {
           "description": "Pagination counts",
           "hydration_method": "literal",
-          "value": "2"
+          "value": "50"
         },
         "next_url": {
           "description": "The URL for the next page",

@@ -25,7 +25,7 @@ urlpatterns = patterns('ografy.core.views',
     url(r'^tokens/mapbox/?$', auth_views.mapbox_token, name='mapbox_token'),
 
     url(r'^settings', include('ografy.core.urls.settings', namespace='settings')),
-    # url(r'^connections', include('ografy.core.urls.signals', namespace='connections')),
+    url(r'^connections', include('ografy.core.urls.connections', namespace='connections')),
 
     # url(r'^[A-Za-z0-9]/?$', user_views.profile),
 )

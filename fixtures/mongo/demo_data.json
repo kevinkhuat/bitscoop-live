@@ -4,7 +4,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7da",
       "api_id" : "158017896",
       "created" : "2015-08-25T17:19:58.017Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "handle" : "hegemonbill",
@@ -17,7 +17,7 @@
       "_id" : "55dcdc026a835a6d3060f802",
       "api_id" : "1934417741",
       "created" : "2015-08-25T17:20:02.493Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "handle" : "barankyle30",
@@ -32,7 +32,7 @@
       "_id" : "55dcdbfd6a835a6d3060f7d9",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:57.905Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_631612420637614080",
@@ -45,7 +45,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7db",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:58.058Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d2"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_630126014576726016",
@@ -58,7 +58,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7dd",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:58.402Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d3"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_625059477037801472",
@@ -71,7 +71,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7de",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:58.475Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d4"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660846175285250",
@@ -84,7 +84,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7df",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:58.594Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d5"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660814395056128",
@@ -97,7 +97,7 @@
       "_id" : "55dcdbff6a835a6d3060f7eb",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:59.292Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d6"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660298789265408",
@@ -110,7 +110,7 @@
       "_id" : "55dcdbff6a835a6d3060f7ec",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:59.362Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d7"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660277754769409",
@@ -123,7 +123,7 @@
       "_id" : "55dcdbff6a835a6d3060f7ed",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:59.471Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d8"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660144409485314",
@@ -136,7 +136,7 @@
       "_id" : "55dcdbff6a835a6d3060f7f0",
       "content_type" : "text",
       "created" : "2015-08-25T17:19:59.810Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223744889491459",
@@ -149,7 +149,7 @@
       "_id" : "55dcdc006a835a6d3060f7f8",
       "content_type" : "text",
       "created" : "2015-08-25T17:20:00.688Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223526861246467",
@@ -162,7 +162,7 @@
       "_id" : "55dcdc006a835a6d3060f7f9",
       "content_type" : "text",
       "created" : "2015-08-25T17:20:00.901Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223410695802887",
@@ -175,7 +175,7 @@
       "_id" : "55dcdc016a835a6d3060f7fd",
       "content_type" : "text",
       "created" : "2015-08-25T17:20:01.644Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223921541058564",
@@ -188,7 +188,7 @@
       "_id" : "55dcdc016a835a6d3060f7fe",
       "content_type" : "text",
       "created" : "2015-08-25T17:20:01.829Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627222411784523779",
@@ -201,7 +201,7 @@
       "_id" : "55dcdc026a835a6d3060f7ff",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:02.008Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e1"
       ],
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_221910_The Stanley Parable",
@@ -215,7 +215,7 @@
       "_id" : "55dcdc026a835a6d3060f800",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:02.079Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e2"
       ],
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_291650_Pillars of Eternity",
@@ -229,7 +229,7 @@
       "_id" : "55dcdc026a835a6d3060f801",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:02.250Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
@@ -244,7 +244,7 @@
       "_id" : "55dcdc026a835a6d3060f803",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:02.717Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e4"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
@@ -259,7 +259,7 @@
       "_id" : "55dcdc036a835a6d3060f804",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:03.170Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e5"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
@@ -274,7 +274,7 @@
       "_id" : "55dcdc036a835a6d3060f805",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:03.674Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e6"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
@@ -289,7 +289,7 @@
       "_id" : "55dcdc046a835a6d3060f806",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:04.100Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e7"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
@@ -304,7 +304,7 @@
       "_id" : "55dcdc046a835a6d3060f807",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:04.938Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e8"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
@@ -318,7 +318,7 @@
       "_id" : "55dcdc056a835a6d3060f808",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:05.259Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e9"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
@@ -332,7 +332,7 @@
       "_id" : "55dcdc056a835a6d3060f809",
       "content_type" : "video",
       "created" : "2015-08-25T17:20:05.570Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
@@ -346,7 +346,7 @@
       "_id" : "55dcdc066a835a6d3060f80f",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:06.639Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f2"
       ],
@@ -361,7 +361,7 @@
       "_id" : "55dcdc066a835a6d3060f811",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:06.871Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f3"
       ],
@@ -376,7 +376,7 @@
       "_id" : "55dcdc076a835a6d3060f813",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:07.072Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f4"
       ],
@@ -391,7 +391,7 @@
       "_id" : "55dcdc076a835a6d3060f814",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:07.138Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f5"
       ],
@@ -406,7 +406,7 @@
       "_id" : "55dcdc076a835a6d3060f815",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:07.203Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f6"
       ],
@@ -421,7 +421,7 @@
       "_id" : "55dcdc076a835a6d3060f816",
       "content_type" : "game",
       "created" : "2015-08-25T17:20:07.272Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f7"
       ],
@@ -2197,7 +2197,7 @@
         }
       ],
       "created" : "2015-08-25T17:19:59.549Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "event_type" : "message",
@@ -2205,13 +2205,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_631612420637614080",
       "provider" : "000000000000000000000004",
@@ -2234,7 +2231,7 @@
         }
       ],
       "created" : "2015-08-25T17:19:59.687Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d2"
       ],
       "event_type" : "message",
@@ -2242,13 +2239,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_630126014576726016",
       "provider" : "000000000000000000000004",
@@ -2271,7 +2265,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:01.108Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d3"
       ],
       "event_type" : "message",
@@ -2279,13 +2273,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_625059477037801472",
       "provider" : "000000000000000000000004",
@@ -2308,7 +2299,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:01.235Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d4"
       ],
       "event_type" : "message",
@@ -2316,13 +2307,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660846175285250",
       "provider" : "000000000000000000000004",
@@ -2345,7 +2333,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:01.427Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d5"
       ],
       "event_type" : "message",
@@ -2353,13 +2341,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" :[
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660814395056128",
       "provider" : "000000000000000000000004",
@@ -2382,7 +2367,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.042Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d6"
       ],
       "event_type" : "message",
@@ -2390,13 +2375,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660298789265408",
       "provider" : "000000000000000000000004",
@@ -2419,7 +2401,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.159Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d7"
       ],
       "event_type" : "message",
@@ -2427,13 +2409,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660277754769409",
       "provider" : "000000000000000000000004",
@@ -2456,7 +2435,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.370Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfd6a835a6d3060f7d8"
       ],
       "event_type" : "message",
@@ -2464,13 +2443,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660144409485314",
       "provider" : "000000000000000000000004",
@@ -2501,7 +2477,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.514Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "event_type" : "message",
@@ -2509,13 +2485,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -94.5967500000000001,
-            39.1934060000000031
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -94.5967500000000001,
+          39.1934060000000031
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223744889491459",
       "provider" : "000000000000000000000004",
@@ -2546,7 +2519,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.723Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "event_type" : "message",
@@ -2554,13 +2527,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223526861246467",
       "provider" : "000000000000000000000004",
@@ -2591,7 +2561,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:06.949Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "event_type" : "message",
@@ -2599,13 +2569,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223410695802887",
       "provider" : "000000000000000000000004",
@@ -2636,7 +2603,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.382Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "event_type" : "message",
@@ -2644,13 +2611,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223921541058564",
       "provider" : "000000000000000000000004",
@@ -2681,7 +2645,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.537Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "event_type" : "message",
@@ -2689,13 +2653,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627222411784523779",
       "provider" : "000000000000000000000004",
@@ -2719,7 +2680,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.666Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e1"
       ],
       "event_type" : "play",
@@ -2727,13 +2688,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_The Stanley Parable_176",
       "provider" : "000000000000000000000003",
@@ -2757,7 +2715,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.765Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e2"
       ],
       "event_type" : "play",
@@ -2765,13 +2723,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_291650_Pillars of Eternity_0",
       "provider" : "000000000000000000000003",
@@ -2790,20 +2745,6 @@
           "contact" : "55dcdc026a835a6d3060f802",
           "handle" : "barankyle30",
           "updated" : "2015-08-25T17:20:07.875Z"
-        },
-        {
-          "api_id" : "1934417741",
-          "created" : "2015-08-25T17:20:07.876Z",
-          "contact" : "55dcdc026a835a6d3060f802",
-          "handle" : "barankyle30",
-          "updated" : "2015-08-25T17:20:07.877Z"
-        },
-        {
-          "api_id" : "1934417741",
-          "created" : "2015-08-25T17:20:07.878Z",
-          "contact" : "55dcdc026a835a6d3060f802",
-          "handle" : "barankyle30",
-          "updated" : "2015-08-25T17:20:07.878Z"
         }
       ],
       "content_list" : [
@@ -2815,19 +2756,10 @@
           "title" : "Liked It's a wild horse.",
           "updated" : "2015-08-25T17:20:02.289Z",
           "url" : "https://instagram.com/p/3XkBZGKtg-/"
-        },
-        {
-          "content" : "55dcdc026a835a6d3060f801",
-          "content_type" : "video",
-          "created" : "2015-08-25T17:20:02.250Z",
-          "text" : "It's a wild horse.",
-          "title" : "Liked It's a wild horse.",
-          "updated" : "2015-08-25T17:20:02.289Z",
-          "url" : "https://instagram.com/p/3XkBZGKtg-/"
         }
       ],
       "created" : "2015-08-25T17:20:07.882Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "event_type" : "comment",
@@ -2835,13 +2767,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
       "provider" : "000000000000000000000002",
@@ -2897,7 +2826,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.007Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e4"
       ],
       "event_type" : "comment",
@@ -2905,13 +2834,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
       "provider" : "000000000000000000000002",
@@ -2967,7 +2893,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.136Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbfe6a835a6d3060f7e5"
       ],
       "event_type" : "comment",
@@ -2975,13 +2901,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
       "provider" : "000000000000000000000002",
@@ -3037,7 +2960,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.266Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e6"
       ],
       "event_type" : "comment",
@@ -3045,13 +2968,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
       "provider" : "000000000000000000000002",
@@ -3100,7 +3020,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.426Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e7"
       ],
       "event_type" : "create",
@@ -3108,13 +3028,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
       "provider" : "000000000000000000000002",
@@ -3161,7 +3078,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.550Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e8"
       ],
       "event_type" : "create",
@@ -3169,13 +3086,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
       "provider" : "000000000000000000000002",
@@ -3222,7 +3136,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.685Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7e9"
       ],
       "event_type" : "create",
@@ -3230,13 +3144,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
       "provider" : "000000000000000000000002",
@@ -3283,19 +3194,16 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.803Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
       "event_type" : "create",
       "location" : {
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "type" : "Point",
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ]
-        },
+        "geolocation" :  [
+          -116.9975705789999978,
+          33.0961162440000010
+        ],
         "location" : "55dcdc056a835a6d3060f80a"
       },
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
@@ -3320,7 +3228,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.080Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f2"
       ],
@@ -3329,13 +3237,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_888",
       "provider" : "000000000000000000000003",
@@ -3359,7 +3264,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.181Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f3"
       ],
@@ -3368,13 +3273,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_430",
       "provider" : "000000000000000000000003",
@@ -3398,7 +3300,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.501Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f4"
       ],
@@ -3407,13 +3309,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_ACHIEVEMENT",
       "provider" : "000000000000000000000003",
@@ -3437,7 +3336,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.610Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f5"
       ],
@@ -3446,13 +3345,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_WELCOMEBACK",
       "provider" : "000000000000000000000003",
@@ -3476,7 +3372,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.745Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f6"
       ],
@@ -3485,13 +3381,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_JUMPING",
       "provider" : "000000000000000000000003",
@@ -3515,7 +3408,7 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.869Z",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f7"
       ],
@@ -3524,13 +3417,10 @@
         "estimated" : true,
         "estimation_method" : "Last",
         "geo_format" : "lat_lng",
-        "geolocation" : {
-          "coordinates" : [
-            -116.9975705789999978,
-            33.0961162440000010
-          ],
-          "type" : "Point"
-        }
+        "geolocation" : [
+          -116.9975705789999978,
+          33.0961162440000010
+        ]
       },
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_BEATTHEGAME",
       "provider" : "000000000000000000000003",
@@ -3544,18 +3434,15 @@
   "locations": [
     {
       "_id" : "55dcdc056a835a6d3060f80a",
-      "data_dict" : [
+      "data_id_list" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
       "datetime" : "2015-06-01T01:31:00.000Z",
       "geo_format" : "lat_lng",
-      "geolocation" : {
-        "type" : "Point",
-        "coordinates" : [
-          -116.9975705789999978,
-          33.0961162440000010
-        ]
-      },
+      "geolocation" : [
+        -116.9975705789999978,
+        33.0961162440000010
+      ],
       "user_id" : 1
     }
   ],

@@ -1,4 +1,3 @@
-import datetime
 import json
 import os
 import urllib
@@ -7,7 +6,7 @@ import bson
 from django.core.management.base import BaseCommand
 
 from ografy.core import api as core_api
-from ografy.core.documents import Endpoint, EventSource, Provider, Settings
+from ografy.core.documents import Endpoint, EventSource, Provider
 from ografy.settings import FIXTURE_DIRS
 
 
@@ -85,17 +84,6 @@ def create_fixture_provider(provider, event_source_list):
     )
 
 
-def create_fixture_settings():
-    return Settings(
-        allow_location_collection=True,
-        created=datetime.datetime.now,
-        last_estimate_all_locations=datetime.datetime.now,
-        location_estimation_method='Last',
-        updated=datetime.datetime.now,
-        user_id=1
-    )
-
-
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
@@ -121,6 +109,3 @@ class Command(BaseCommand):
         for file in file_list:
             file_path = os.path.abspath(os.path.join(FIXTURE_DIR, file))
             load_fixture(file_path)
-
-        insert_settings = create_fixture_settings()
-        core_api.SettingsApi.post(insert_settings)

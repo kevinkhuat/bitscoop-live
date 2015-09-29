@@ -5,6 +5,7 @@ django-redis==4.2.0
 djangorestframework==3.2.3
 easydict==1.6
 elasticsearch==1.6.0
+geopy==1.10.0
 greenlet==0.4.7
 mongoengine==0.10.0
 motor==0.3

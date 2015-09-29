@@ -74,3 +74,9 @@ node_modules
 ############
 /ografy/static/lib/jutsu/jutsu*.js
 /ografy/static/lib/cartano/cartano*.js
+
+
+########
+# Keys #
+########
+/ografy/settings/keys.py

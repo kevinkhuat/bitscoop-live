@@ -3,6 +3,7 @@ django
 django-redis
 djangorestframework
 elasticsearch
+geopy
 mongoengine
 motor==0.3
 motorengine==0.8.11

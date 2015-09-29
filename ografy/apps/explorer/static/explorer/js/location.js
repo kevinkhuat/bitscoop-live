@@ -1,4 +1,4 @@
-define ('location', function(require, exports, module) {
+define ('location', ['jquery', 'jquery-cookie'], function($) {
 	//Used by navigator.geolocation's functions - see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
 	var options = {
 		enableHighAccuracy: true,
@@ -11,9 +11,6 @@ define ('location', function(require, exports, module) {
 
 	//Set to false to disable console.log output
 	var logging = true;
-
-	//Holds the CSRF token that's passed into the module
-	var csrftoken;
 
 	//Temporary store of the most recent position retrievied by one of navigator.geolocation's functions
 	var lastPosition;
@@ -83,14 +80,20 @@ define ('location', function(require, exports, module) {
 			source: navigator.userAgent
 		};
 
+		var locationPost = {
+			location: JSON.stringify(locationObject)
+		};
+
 		$.ajax({
-			url: 'opi/location',
+			url: 'https://p.bitscoop.com/locations',
 			type: 'POST',
-			data: JSON.stringify(locationObject),
-			dataType: 'json',
-			contentType: 'application/json; charset=utf-8',
+			data: locationPost,
+			dataType: 'text',
 			headers: {
-				'X-CSRFToken': csrftoken
+				'X-CSRFToken': $.cookie('csrftoken')
+			},
+			xhrFields: {
+				withCredentials: true
 			}
 		}).done(function(data, xhr, response) {
 			if (logging) {
@@ -161,12 +164,12 @@ define ('location', function(require, exports, module) {
 	}
 
 	//The main position tracking function for this module.
-	//It takes in the user's ID and the tDelta they set, the maxAccurateAge and Distance, and the csrftoken.
+	//It takes in the user's ID and the tDelta they set, and the maxAccurateAge and Distance.
 	//It creates a new instance of Location, defined in this module with the first four of these inputs.
 	//It checks to see if the client implements navigator.geolocation, and if so will use those to get the user's location.
 	//if that isn't available, then it will do nothing other than output a message to the console saying it can't
 	//do geolocation.
-	function trackPosition(user_ID, tDelta, maxAccurateAgeInput, maxAccurateDistanceInput, accuracyToleranceMult, csrfToken) {
+	function trackPosition(user_ID, tDelta, maxAccurateAgeInput, maxAccurateDistanceInput, accuracyToleranceMult) {
 		var deferred = $.Deferred();
 
 		//Set variables based on inputs or default values if not passed in
@@ -176,7 +179,6 @@ define ('location', function(require, exports, module) {
 		maxAccurateDistance = (maxAccurateDistance === null) ? 10 : maxAccurateDistanceInput;
 		accuracyToleranceMultiplier = (accuracyToleranceMult === null) ? 10 : accuracyToleranceMult;
 
-		csrftoken = csrfToken;
 		//Check to see if navigator.geolocation is present
 		if (navigator.geolocation) {
 			//Set the initial position to where the user is when the page first loads
@@ -194,7 +196,7 @@ define ('location', function(require, exports, module) {
 				setInterval(intervalCheck, tDelta * 1000);
 			});
 		}
-		//If navigator.geoloation isn't present, then output a debugging message.
+		//If navigator.geolocation isn't present, then output a debugging message.
 		else {
 			console.log('This browser does not support geolocation');
 		}
@@ -202,12 +204,14 @@ define ('location', function(require, exports, module) {
 
 	function estimate() {
 		$.ajax({
-			url: '/opi/estimate',
+			url: 'https://p.bitscoop.com/estimate',
 			type: 'GET',
-			dataType: 'html',
-			contentType: 'application/json; charset=utf-8',
+			dataType: 'text',
 			headers: {
-				'X-CSRFToken': csrftoken
+				'X-CSRFToken': $.cookie('csrftoken')
+			},
+			xhrFields: {
+				withCredentials: true
 			}
 		}).done(function(data, xhr, response) {
 			if (logging) {
@@ -220,7 +224,7 @@ define ('location', function(require, exports, module) {
 		});
 	}
 
-	module.exports = {
+	return {
 		trackPosition: trackPosition,
 		estimate: estimate
 	};

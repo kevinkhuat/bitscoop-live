@@ -100,7 +100,7 @@ SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
 SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'ografy.apps.xauth.mail.send_validation'
 SOCIAL_AUTH_EMAIL_VALIDATION_URL = '/email-sent/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/authorize'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/connections/authorize'
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/connect'
 
 # SOCIAL_AUTH_USERNAME_FORM_URL = '/signup-username'
@@ -324,6 +324,7 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
 # Backend Documentation URL:    http://python-social-auth.readthedocs.org/en/latest/backends/reddit.html
 # Signal API Management URL:    https://ssl.reddit.com/prefs/apps/
 # Authorize URL:                https://ssl.reddit.com/api/v1/authorize
+# Developers:                   hegemonbill
 
 # SOCIAL_AUTH_REDDIT_KEY = ''
 # SOCIAL_AUTH_REDDIT_SECRET = ''

@@ -44,12 +44,12 @@ def authorize(request):
             if not found:
                 UserSocialAuth.objects.get(id=backend.id).delete()
 
-        return HttpResponseRedirect(reverse('core_providers'))
+        return HttpResponseRedirect(reverse('providers'))
 
     else:
         signal = unverified_signals[0]
 
-        return HttpResponseRedirect(reverse('core_verify', kwargs={'pk': signal.id}))
+        return HttpResponseRedirect(reverse('connections:verify', kwargs={'pk': signal.id}))
 
     # # Messed up signals
     # return render(request, 'core/signals/authorize.html', {
@@ -64,14 +64,14 @@ def connect(request, name):
     expression = Q(name__iexact=name)
     provider = ProviderApi.get(expression).get()
 
-    return render(request, 'core/signals/connect.html', {
+    return render(request, 'core/connections/connect.html', {
         'title': 'Ografy - Connect to ' + provider.name,
         'content_class': 'left',
         'provider': provider,
         'flex_override': True,
         'user': request.user.id,
         'current': 'connect',
-        'postback_url': reverse('core_authorize')
+        'postback_url': reverse('connections:authorize')
     })
 
 
@@ -83,7 +83,7 @@ def verify(request, pk):
 
         # If something went wrong with authorization,
         if signal.connected is False:
-            return render(request, 'core/signals/authorize.html', {
+            return render(request, 'core/connections/authorize.html', {
                 'title': 'Ografy - Authorize ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
@@ -106,7 +106,7 @@ def verify(request, pk):
             signal.signal_data = signal_data
             signal.save()
 
-            return render(request, 'core/signals/verify.html', {
+            return render(request, 'core/connections/verify.html', {
                 'title': 'Ografy - Verify ' + signal.provider.name + ' Connection',  # Change to signal
                 'flex_override': True,
                 'content_class': 'left',
@@ -154,4 +154,4 @@ def verify(request, pk):
 
         signal.save()
 
-        return HttpResponse(reverse('core_providers'))
+        return HttpResponse(reverse('providers'))

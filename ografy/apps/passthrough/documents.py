@@ -44,15 +44,6 @@ motorengine.connect(
 )
 
 
-class Search(motorengine.Document):
-    __collection__ = 'search'
-
-    datetime = motorengine.DateTimeField(auto_now_on_insert=True)
-    search_DSL = DictField()
-    tags = motorengine.ListField(motorengine.StringField())
-    user_id = motorengine.IntField(required=True)
-
-
 class Provider(motorengine.Document):
     """
     The class representing a third-party service's API
@@ -132,3 +123,30 @@ class Signal(motorengine.Document):
     @property
     def __str__(self):
         return '{0} {1} {2} {3}'.format(self.id, self.name, self.provider)
+
+
+class Settings(motorengine.Document):
+    """
+    The data class for user settings data.
+
+    #. *created* the date created
+    #. *updated* the date updated
+    #. *data_blob* a blog of user settings data
+    """
+
+    __collection__ = 'settings'
+
+    LOCATION_ESTIMATION_METHOD = (
+        ('Last', 'Last known location'),
+        ('Next', 'Next known location'),
+        ('Closest', 'Closest location'),
+        ('Between', 'Interpolate between last and next'),
+    )
+
+    # To be managed by the REST API
+    allow_location_collection = motorengine.BooleanField(default=True)
+    created = motorengine.DateTimeField(auto_now_on_insert=True)
+    last_estimate_all_locations = motorengine.DateTimeField(auto_now_on_insert=True)
+    location_estimation_method = motorengine.StringField()
+    updated = motorengine.DateTimeField(auto_now_on_insert=True)
+    user_id = motorengine.IntField(required=True)

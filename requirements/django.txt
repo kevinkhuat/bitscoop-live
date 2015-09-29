@@ -1,7 +1,6 @@
 blinker
 django
 djangorestframework
-djangorestframework-bulk
 django-redis
 elasticsearch
 eventlet

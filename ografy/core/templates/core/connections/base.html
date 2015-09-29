@@ -1,14 +1,14 @@
-{% extends 'shared/dispatcher.html' %}
+{% extends 'core/base.html' %}
 {% load staticfiles %}
 
 
 {% block static %}
 	{{ block.super }}
 
-	<script type="text/javascript" src="{% static 'shared/js/tooltip.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'shared/js/paths.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/tooltip.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/requirejs/config/paths.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'shared/js/site.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/site.min.js' %}"></script>
 	<script type="text/javascript">
 		require(['jutsu', 'tooltip', 'site', 'jquery-cookie'], function(jutsu, tooltip, site) {
 			$('body').autoform('.autoformEnabled', {'X-CSRFToken': $.cookie('csrftoken')});

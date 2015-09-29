@@ -5,7 +5,6 @@ from django.template.loader import TemplateDoesNotExist
 from django.views.generic import View
 from mongoengine import Q
 
-from ografy.contrib.multiauth.decorators import login_required
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
 from ografy.core.api import ProviderApi, SignalApi
 from ografy.core.forms import SignUpForm

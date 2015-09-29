@@ -251,6 +251,17 @@
                           "body.data"
                         ],
                         [
+                          "payload.parts[0].parts",
+                          {
+                            "type": "list",
+                            "hydration_method": "find",
+                            "selector_location": "partId",
+                            "selector_type": "literal",
+                            "selector": 0.0
+                          },
+                          "body.data"
+                        ],
+                        [
                           "payload.body.data"
                         ]
                       ]
