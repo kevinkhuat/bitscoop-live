@@ -1,6 +1,5 @@
 import datetime
 
-import bson
 import mongoengine
 
 from ografy import settings
@@ -11,64 +10,6 @@ mongoengine.connect(
     host=settings.MONGODB['HOST'],
     port=settings.MONGODB['PORT']
 )
-
-
-def elasticsearch_transform(document):
-    """
-    A function that gets all of the information needed to index a document in Elasticsearch and formats it appropriately
-    #. *event_id* the id of the base event
-    #. *subtype* the event subtype, if there is one
-    #. *subtype_include_fields* a list of the subtype-specific fields that should be mapped for Elasticsearch
-    """
-
-    return_dict = {}
-
-    if isinstance(document, mongoengine.Document):
-        transform_dict = document.to_mongo().to_dict()
-    else:
-        transform_dict = document
-
-    # Map all of the Event's fields
-    for key, value in transform_dict.items():
-        # If the field is a reference, get the string of the ID that the reference points to
-        # e.g. Permission is a reference, and you would just store that Permission's ID
-        if type(value) is mongoengine.Document:
-            return_dict[key] = str(value.id)
-        # Elasticsearch cannot store ObjectID's, so convert any ID's to just the string of the ID
-        elif type(value) is bson.objectid.ObjectId:
-            return_dict[key] = str(value)
-        # Convert datetimes to ECMA 262 notation, which is yyyy-mm-ddTHH:MM:SS.sssZ
-        elif type(value) is datetime.datetime:
-            return_dict[key] = value.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-        # Coordinates are stored in Mongo in GeoJSON format, which is a dictionary containing key-value pairs
-        # 'Type': 'Point' and 'coordinates': [lon, lat]
-        # Elasticsearch can only store the array of coordinates, so pull just the lat and lon out
-        elif key is 'geolocation' or type(value) is 'PointField':
-            if value['type'] == 'Point':
-                return_dict['geolocation'] = value['coordinates']
-        elif type(value) is list:
-            return_dict[key] = []
-            for list_item in value:
-                if type(list_item) is dict:
-                    return_dict[key].append(elasticsearch_transform(list_item))
-                elif type(list_item) is bson.objectid.ObjectId:
-                    return_dict[key].append(str(list_item))
-                else:
-                    return_dict[key].append(list_item)
-        elif key is 'location':
-            return_dict[key] = elasticsearch_transform(value)
-        elif type(value) is str:
-            # Reformat dates if they are obtained in string format
-            try:
-                temp_time = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                return_dict[key] = temp_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-            except ValueError:
-                return_dict[key] = value
-        # In all other cases, return whatever value is stored in Mongo exactly as it is
-        else:
-            return_dict[key] = value
-
-    return return_dict
 
 
 class Settings(mongoengine.Document):

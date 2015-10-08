@@ -220,7 +220,7 @@ require(['cartano', 'jquery', 'nunjucks', 'search', 'jquery-cookie'], function(c
 
 		//Call the Tornado endpoint for ElasticSearch.
 		$.ajax({
-			url: 'https://p.bitscoop.com/search',
+			url: 'https://p.bitscoop.com/events',
 			type: 'GET',
 			dataType: 'text',
 			data: callData,

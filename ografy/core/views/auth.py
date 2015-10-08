@@ -41,6 +41,10 @@ class LoginView(View):
             if not form.cleaned_data['remember_me']:
                 request.session.set_expiry(0)
 
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+
             return redirect_by_name('home')
 
 

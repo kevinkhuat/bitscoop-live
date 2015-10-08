@@ -3,7 +3,7 @@ require.config({
 		location: window.staticUrl + 'explorer/js/location.min',
 		map: window.staticUrl + 'explorer/js/map.min',
 		scheduleMapper: window.staticUrl + 'explorer/js/scheduleMapper.min',
-		search: window.staticUrl + 'explorer/js/search.min',
+		search: window.staticUrl + 'core/js/components/search.min',
 		providers: window.staticUrl + 'core/js/pages/providers.min',
 		connections: window.staticUrl + 'core/js/pages/connections.min'
 	}

@@ -2,6 +2,7 @@ import datetime
 import json
 
 import tornado.web
+from social.apps.django_app.default.models import UserSocialAuth
 from tornado import gen
 
 from ografy import settings
@@ -375,6 +376,32 @@ class LocationHandler(tornado.web.RequestHandler):
         self.finish()
 
     @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def delete(self, slug=None):
+        user_id = self.request.user.id
+
+        delete_user_documents('location', user_id)
+
+        self.finish()
+
+    @tornado.web.asynchronous
+    def options(self):
+        self.finish()
+
+
+class SearchHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def delete(self, slug=None):
+        user_id = self.request.user.id
+
+        delete_user_documents('search', user_id)
+
+        self.finish()
+
+    @tornado.web.asynchronous
     def options(self):
         self.finish()
 
@@ -408,26 +435,69 @@ class SignalHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def delete(self, slug=None):
         user_id = self.request.user.id
-
         signal_id_to_delete = self.get_argument('signal_id')
-        signal_to_delete = yield Signal.objects.get(id=signal_id_to_delete, user_id=user_id)
-        index = 'core'
 
-        terms = {
-            'user_id': user_id,
-            'signal': signal_id_to_delete
-        }
-
-        # Bulk delete each document that references this Signal.
-        # When a user deletes a Signal, we're taking that to mean they do not want any of the information associated
-        # with that Signal to remain in our system.
-        for type in ['data', 'contact', 'content', 'event']:
-            es_connection.bulk_delete(index, type, terms)
-
-        yield signal_to_delete.delete()
+        delete_signal_and_linked_documents(signal_id_to_delete, user_id)
 
         self.finish()
 
     @tornado.web.asynchronous
     def options(self):
         self.finish()
+
+
+class AccountHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def delete(self, slug=None):
+        user = self.request.user
+        user_id = user.id
+
+        Settings.objects.filter(user_id=user_id).delete()
+        signals = Signal.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('signal_get')))
+
+        UserSocialAuth.objects.filter(user=user).delete()
+
+        delete_user_documents('search', user_id)
+        delete_user_documents('location', user_id)
+
+        yield gen.Wait('signal_get')
+
+        for signal in signals:
+            delete_signal_and_linked_documents(str(signal._id), user_id)
+
+        user.delete()
+
+        self.finish()
+
+    @tornado.web.asynchronous
+    def options(self):
+        self.finish()
+
+
+@gen.coroutine
+def delete_signal_and_linked_documents(signal_id, user_id):
+    signal_to_delete = yield Signal.objects.get(id=signal_id, user_id=user_id)
+    index = 'core'
+
+    terms = {
+        'user_id': user_id,
+        'signal': signal_id
+    }
+
+    for type in ['data', 'contact', 'content', 'event']:
+        es_connection.bulk_delete(index, type, terms)
+
+    yield signal_to_delete.delete()
+
+
+@gen.coroutine
+def delete_user_documents(doc_type, user_id):
+    index = 'core'
+
+    terms = {
+        'user_id': user_id
+    }
+
+    es_connection.bulk_delete(index, doc_type, terms)

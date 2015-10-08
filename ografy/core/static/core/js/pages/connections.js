@@ -1,3 +1,2 @@
 define(['providers'], function(providers) {
-
 });

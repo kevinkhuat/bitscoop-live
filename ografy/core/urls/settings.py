@@ -6,6 +6,7 @@ import ografy.core.views.settings as views
 urlpatterns = patterns('',
     url(r'^/?$', views.AccountView.as_view(), name='base'),
     url(r'^/account/?$', views.AccountView.as_view(), name='account'),
+    url(r'^/account/deactivate/?$', views.AccountDeactivateView.as_view(), name='deactivate'),
     url(r'^/billing/?$', views.BillingView.as_view(), name='billing'),
     url(r'^/emails/?$', views.EmailsView.as_view(), name='emails'),
     url(r'^/location/?$', views.LocationView.as_view(), name='location'),

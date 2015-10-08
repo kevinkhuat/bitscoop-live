@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
 
+from ografy.contrib.multiauth import logout
 from ografy.contrib.multiauth.decorators import login_required
 from ografy.contrib.pytoolbox.collections import update
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
@@ -119,6 +120,16 @@ class AccountView(View):
                 'lockwidth_override': True,
                 'form': form
             })
+
+
+class AccountDeactivateView(View):
+    def post(self, request):
+        user = request.user
+        user.is_active = False
+        user.save()
+
+        logout(request)
+        return HttpResponse(status=204)
 
 
 class BillingView(View):
