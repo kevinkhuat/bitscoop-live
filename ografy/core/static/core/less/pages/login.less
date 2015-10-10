@@ -1,0 +1,25 @@
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+
+
+body.login {
+	header nav {
+		.lock-width;
+	}
+
+	main {
+		.flex-center;
+
+		& > div {
+			width: 50%;
+			.position-center;
+			.align-center;
+
+			.text-box {
+				.position-center;
+				width: 250px;
+			}
+		}
+	}
+}

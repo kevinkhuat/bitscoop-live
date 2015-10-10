@@ -1,0 +1,47 @@
+@import 'core/less/components/controls.less';
+
+
+#search-bar {
+	width: 100%;
+
+	font-size: 1.6rem;
+
+	#filters {
+		padding: 0.5em 0.6em;
+	}
+
+	#search-box {
+		&:first-child > input {
+			padding-left: 0.6em;
+		}
+
+		& > input {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+
+	#search-button {
+		padding: 0.5em 0.6em;
+	}
+
+	input {
+		font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
+		font-weight: 300;
+		font-size: 1.8rem;
+	}
+
+	&.darken {
+		& > #filters {
+			background-color: @input-border-color;
+		}
+
+		& > #search {
+			background-color: @input-border-color;
+		}
+
+		& > input {
+			padding: 0.25em 0.4em;
+		}
+	}
+}

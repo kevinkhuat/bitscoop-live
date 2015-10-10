@@ -6,11 +6,11 @@
 		<!-- <link rel="manifest" href="{% static 'manifest.json' %}" /> -->
 
 		<title>{% if title %}{{ title }} &middot; {% endif %}BitScoop</title>
-		<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" />
+		<link rel="shortcut icon" href="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/favicon.png" />
 
 		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" /> -->
 		<!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-		<!-- <link rel="apple-touch-icon" href="{% static 'img/logo_240.png' %}"> -->
+		<!-- <link rel="apple-touch-icon" href="{% static 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png' %}"> -->
 
 		{% block static %}
 			<script type="text/javascript">
@@ -41,14 +41,14 @@
 			<!-- External fonts -->
 			<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
 			<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese%7CRaleway%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese&#038;ver=4.3" />
-			<link rel="stylesheet" type="text/css" href="{% static 'lib/icomoon/fonticons.css' %}" />
+			<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 			<!-- Styles -->
 			<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.min.css' %}" />
 		{% endblock %}
 	</head>
 
-	<body class="column">
+	<body class="{{ page_name }}">
 		{% block outer_header %}
 			<header>
 				{% block header %}
@@ -57,28 +57,14 @@
 			</header>
 		{% endblock %}
 
-		{% block outer_main %}
-			<main>
-				{% block main %}
-					{% block outer_left %}
-						<aside id="left">
-							{% block left %}{% endblock %}
-						</aside>
-					{% endblock %}
-
-					{% block outer_content %}
-						<section id="content">
-							{% block content %}{% endblock %}
-						</section>
-					{% endblock %}
-
-					{% block outer_right %}
-						<aside id="right">
-							{% block right %}{% endblock %}
-						</aside>
-					{% endblock %}
+		{% block outer_content %}
+			<section id="content">
+				{% block outer_main %}
+					<main>
+						{% block main %}{% endblock %}
+					</main>
 				{% endblock %}
-			</main>
+			</section>
 		{% endblock %}
 
 		{% block outer_footer %}

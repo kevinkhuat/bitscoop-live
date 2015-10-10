@@ -1,31 +1,51 @@
 {% extends 'core/base.html' %}
 
-{% load staticfiles %}
 
-
-{% block static %}
-	{{ block.super }}
-
-	<script type="text/javascript" src="{% static 'shared/js/tooltip.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/jutsu/jutsu.min.js' %}"></script>
-	<script type="text/javascript">
-		require(['jutsu', 'jquery', 'site', 'tooltip',  'jquery-cookie'], function(jutsu, $, site, tooltip) {
-			$('body').autoform('.autoformEnabled', {
-				'X-CSRFToken': $.cookie('csrftoken')
-			});
-
-			tooltip.bindTooltip('.tooltip-trigger', '.tooltip-close');
-			site.scrollToContent();
-		});
-	</script>
+{% block header %}
+	{% include 'core/components/header.html' with mode='home' %}
 {% endblock %}
 
 
-{% block left %}
-	<div class="navigation-selection">
-		<div><a class="navigation-option {% if selected == 'account' %}navigation-selected{% endif %}" href="{% url 'settings:account' %}">Account</a></div>
-		<div><a class="navigation-option {% if selected == 'location' %}navigation-selected{% endif %}" href="{% url 'settings:location' %}">Location Settings</a></div>
-		<div><a class="navigation-option {% if selected == 'security' %}navigation-selected{% endif %}" href="{% url 'settings:security' %}">Security</a></div>
-		<div><a class="navigation-option {% if selected == 'signal' %}navigation-selected{% endif %}" href="{% url 'settings:signals' %}">Signals</a></div>
-	</div>
+{% block main %}
+	<aside id="left">
+		<div id="menu" class="boxed-group">
+			<div>Settings</div>
+
+			<div>
+				<a href="{% url 'settings:profile' %}">Profile</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:account' %}">Account</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:emails' %}">Emails</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:notifications' %}">Notifications</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:signals' %}">Connections</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:security' %}">Security</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:location' %}">Location</a>
+			</div>
+
+			<div>
+				<a href="{% url 'settings:billing' %}">Billing</a>
+			</div>
+		</div>
+	</aside>
+
+	<section id="settings">
+		{% block settings %}{% endblock %}
+	</section>
 {% endblock %}

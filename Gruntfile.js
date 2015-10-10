@@ -131,7 +131,10 @@ module.exports = function(grunt) {
 					paths: ['artifacts/']
 				},
 				files: {
-					'artifacts/core/css/site.css': 'artifacts/core/less/site.less'
+					'artifacts/core/css/site.css': [
+						'artifacts/core/less/site.less',
+						'artifacts/*/less/**/*.less'
+					]
 				}
 			}
 		},
@@ -206,12 +209,16 @@ module.exports = function(grunt) {
 
 		watch: {
 			nunjucks: {
-				files: '<%= nunjucks.precompile.src %>',
+				files: '<%= nunjucks.target.src %>',
 				tasks: ['nunjucks', 'copy:minify']
 			},
 			static: {
-				files: '<%= copy.collectstatic.files %>',
-				tasks: ['copy:collecstatic', 'less', 'copy:minify']
+				files: [
+					'ografy/static/**',
+					'ografy/core/static/**',
+					'ografy/apps/explorer/static/**'
+				],
+				tasks: ['copy:collectstatic', 'less', 'copy:minify']
 			}
 		}
 	});

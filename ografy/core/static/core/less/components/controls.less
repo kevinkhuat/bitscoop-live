@@ -1,0 +1,86 @@
+@import 'core/less/theme.less';
+
+
+@input-border-color: darken(@light, 15%);
+@input-margin: 0.5em;
+
+input {
+	outline: none;
+	border: 1px solid @input-border-color;
+
+	background-color: transparent;
+
+	&[type="button"],
+	&[type="submit"] {
+		cursor: pointer;
+	}
+
+	&[type="text"],
+	&[type="email"],
+	&[type="password"] {
+		font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
+		font-weight: 300;
+		font-size: 1.25em;
+
+		margin: 0.25em;
+		padding: 0.5em;
+	}
+}
+
+label {
+	font-size: 1.25em;
+	cursor: pointer;
+
+	input[type="checkbox"] {
+		position: relative;
+		top: -2px;
+
+		margin-right: 1em;
+
+		cursor: pointer;
+	}
+}
+
+
+div.text-box {
+	border: 1px solid @input-border-color;
+	margin: @input-margin;
+	padding: 0;
+
+	input {
+		outline: none;
+		border: none;
+
+		margin: 0;
+		padding: 0.5em;
+
+		width: 100%;
+	}
+}
+
+
+.input-container {
+	margin: @input-margin;
+}
+
+
+.input-group {
+	display: inline-flex;
+
+	border: 1px solid @input-border-color;
+
+	& > * {
+		cursor: pointer;
+		outline: none;
+		border: none;
+	}
+
+	& > input {
+		cursor: auto;
+	}
+
+	div.text-box {
+		border: none;
+		margin: 0;
+	}
+}

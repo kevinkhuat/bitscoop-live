@@ -1,26 +1,58 @@
 {% extends 'core/settings/base.html' %}
 
 
-{% block content %}
-	<div class="content-list">
-		<form action="/settings/account">
-			<div class="content-item">
-				<h1>Name</h1>
-				<label><div class="text-input-width-medium">First Name</div><input class="autoformEnabled" type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" /></label>
-				<div>{{ form.first_name.errors }}</div>
-				<label><div class="text-input-width-medium">Last Name</div><input class="autoformEnabled" type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" /></label>
-				<div>{{ form.last_name.errors }}</div>
+{% block settings %}
+	<form action="{% url 'settings:profile' %}" method="POST">
+		<div class="boxed-group">
+			<div>
+				Profile Settings
 			</div>
-			<div class="content-item">
-				<h1>Contact</h1>
-				<label><div class="text-input-width-medium">Email</div><input class="autoformEnabled" type="text" name="email" value="{{ form.email.value|default_if_none:'' }}"/></label>
-				<div>{{ form.email.errors }}</div>
+
+			<div class="padded">
+				<div class="bold">
+					Handle
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" />
+				</div>
 			</div>
-			<div class="content-item">
-				<h1>Handle</h1>
-				<label><div class="text-input-width-medium">Handle</div><input class="autoformEnabled" type="text" name="handle" value="{{ user.handle|default_if_none:'' }}" /></label>
-				<div>{{ form.handle.errors }}</div>
+		</div>
+
+		<div class="boxed-group">
+			<div>
+				Password Settings
 			</div>
-		</form>
-	</div>
+
+			<div class="padded">
+				<div class="bold">
+					New Password
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="new_password" value="{{ form.new_password.value|default_if_none:'' }}" />
+				</div>
+
+				<div class="bold">
+					New Password Repeated
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="new_password_repeated" value="{{ form.new_password_repeated.value|default_if_none:'' }}" />
+				</div>
+			</div>
+		</div>
+
+		<div class="boxed-group">
+			<div>
+				Deactivate Account
+			</div>
+		</div>
+
+		<div class="boxed-group">
+			<div>
+				Delete Account
+			</div>
+		</div>
+	</form>
 {% endblock %}

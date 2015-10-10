@@ -121,6 +121,34 @@ class AccountView(View):
             })
 
 
+class BillingView(View):
+    template_name = 'core/settings/billing.html'
+    title = 'Billing Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(BillingView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'title': self.title
+        })
+
+
+class EmailsView(View):
+    template_name = 'core/settings/emails.html'
+    title = 'Email Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EmailsView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'title': self.title
+        })
+
+
 class LocationView(View):
     template_name = 'core/settings/location.html'
     title = 'Location Settings'
@@ -169,6 +197,34 @@ class LocationView(View):
             return HttpResponse(status=200)
         else:
             return HttpResponse({'form': form}, content_type='json', status=400)
+
+
+class NotificationsView(View):
+    template_name = 'core/settings/notifications.html'
+    title = 'Notification Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NotificationsView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'title': self.title
+        })
+
+
+class ProfileView(View):
+    template_name = 'core/settings/profile.html'
+    title = 'Profile Settings'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProfileView, self).dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'title': self.title
+        })
 
 
 class SecurityView(View):

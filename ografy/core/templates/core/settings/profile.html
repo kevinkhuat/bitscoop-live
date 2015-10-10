@@ -1,0 +1,38 @@
+{% extends 'core/settings/base.html' %}
+
+
+{% block settings %}
+	<form action="{% url 'settings:profile' %}" method="POST">
+		<div class="boxed-group">
+			<div>
+				Profile Settings
+			</div>
+
+			<div class="padded">
+				<div class="bold">
+					First Name
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" />
+				</div>
+
+				<div class="bold">
+					Last Name
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="first_name" value="{{ form.last_name.value|default_if_none:'' }}" />
+				</div>
+
+				<div class="bold">
+					Email
+				</div>
+
+				<div class="text-box shrink">
+					<input type="text" name="first_name" value="{{ form.email.value|default_if_none:'' }}" />
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}

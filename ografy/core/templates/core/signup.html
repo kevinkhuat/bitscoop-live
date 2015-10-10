@@ -2,54 +2,65 @@
 
 
 {% block static %}
-{{ block.super }}
+	{{ block.super }}
 
-<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
 
 {% block main %}
-<section class="lockwidth centered">
-	<div class="table centered backfill padded rounded flex column signup">
-		<div class="center centered grow" style="margin: 0 0 0.5em 0;">
-			<div class="center">
-				Sign up for BitScoop
-			</div>
-		</div>
-		<div class="center centered grow">
-			<div>
-				<form action="{% url 'signup' %}" method="POST">
-					{% csrf_token %}
-					<div>
-						<input class="full-width" type="text" name="email" placeholder="Email address" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
-						{{ form.email.errors }}
-					</div>
-					<div>
-						<input class="full-width" type="text" name="handle" placeholder="Username" value="{{ form.handle.value|default_if_none:'' }}" />
-						{{ form.handle.errors }}
-					</div>
-					<div>
-						<input class="full-width" type="text" name="first_name" placeholder="First name" value="{{ form.first_name.value|default_if_none:'' }}" />
-						{{ form.first_name.errors }}
-					</div>
-					<div>
-						<input class="full-width" type="text" name="last_name" placeholder="Last name" value="{{ form.last_name.value|default_if_none:'' }}" />
-						{{ form.last_name.errors }}
-					</div>
-					<div>
-						<input class="full-width" type="password" name="password" placeholder="Password" />
-						{{ form.password.errors }}
-					</div>
-					<div>{{ form.non_field_errors }}</div>
+	<div>
+		<h2>Sign up for BitScoop</h2>
 
-					<div class="g-recaptcha" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+		<div>
+			<form action="{% url 'signup' %}" method="POST">
+				{% csrf_token %}
 
-					<div class="center">
-						<input class="button-green" type="submit" value="Sign up" style="margin: 0.5em 0 0 0"/>
-					</div>
-				</form>
-			</div>
+				<div class="text-box">
+					<input type="text" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
+				</div>
+				<div>
+					{{ form.email.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="handle" placeholder="Username (optional)" value="{{ form.handle.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.handle.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="first_name" placeholder="First name" value="{{ form.first_name.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.first_name.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="last_name" placeholder="Last name" value="{{ form.last_name.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.last_name.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="password" name="password" placeholder="Password" />
+				</div>
+				<div>
+					{{ form.password.errors }}
+				</div>
+
+				<div>
+					{{ form.non_field_errors }}
+				</div>
+
+				<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+
+				<div>
+					<input class="button-green" type="submit" value="Sign up" />
+				</div>
+			</form>
 		</div>
 	</div>
-</section>
 {% endblock %}

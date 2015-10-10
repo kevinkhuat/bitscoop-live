@@ -1,0 +1,50 @@
+@import 'core/less/theme.less';
+
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+
+
+body.settings {
+	header > nav,
+	main {
+		.lock-width;
+	}
+
+	main {
+		padding: 15px;
+		min-width: 500px;
+
+		.flex-row !important;
+	}
+
+	#menu {
+		width: 200px;
+		margin-right: 15px;
+
+		a {
+			display: block;
+			padding: 0.4em 0.5em;
+			color: lighten(@dark, 45%);
+		}
+
+		a:hover,
+		a:active {
+			color: @color1;
+			background-color: darken(@light, 1%);
+		}
+
+		a.active {
+			font-weight: bold;
+			font-color: @dark;
+		}
+	}
+
+	#settings {
+		.flex-grow;
+	}
+
+	.shrink {
+		width: 250px;
+	}
+}

@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% load staticfiles %}
+
+
+{% block static %}
+	{{ block.super }}
+
+	{# mapbox #}
+	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css" />
+	{# mapbox-directions #}
+	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css'/>
+	{# leaflet-draw #}
+	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css" />
+	{# leaflet-fullscreen #}
+	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css" />
+	{# leaflet-markercluster #}
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css'/>
+	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
+	{# leaflet-zoomslider #}
+	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css" />
+
+
+	<script type="text/javascript">
+		require(['map']);
+	</script>
+{% endblock %}
+
+
+{% block header %}
+	{% include 'core/components/header.html' with mode='app' %}
+{% endblock %}
+
+
+{% block main %}
+	<div id="left">
+		<div id="list" class="hidden"></div>
+		<div id="detail" class="hidden"></div>
+	</div>
+
+	<div id="top">
+	</div>
+
+	<div id="background" class="flex flex-grow autoblur"></div>
+{% endblock %}
+
+
+{% block outer_footer %}
+{% endblock %}

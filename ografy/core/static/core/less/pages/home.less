@@ -1,0 +1,35 @@
+@import 'core/less/theme.less';
+
+@import 'core/less/mixins/format.less';
+
+
+body.home {
+	#profile-pic-large {
+		width: 150px;
+		border-radius: 500px;
+	}
+
+	#facets {
+		margin: 30px;
+	}
+
+	#facets .card {
+		width: 350px; height: 200px;
+		margin: 15px; padding: 15px;
+		text-align: center;
+	}
+
+	&:not(.authenticated) {
+		& header > nav {
+			.lock-width;
+		}
+
+		& footer {
+			background-color: lighten(@dark, 15%);
+			color: lighten(@dark, 65%);
+
+			border-top: 1px solid lighten(@dark, 65%);
+		}
+	}
+}
+

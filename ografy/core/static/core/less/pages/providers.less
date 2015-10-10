@@ -1,0 +1,91 @@
+@import 'core/less/theme.less';
+
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+@import 'core/less/mixins/selection.less';
+
+
+body.providers {
+	overflow-y: hidden;
+
+	&:not(.authenticated) header nav {
+		.lock-width;
+	}
+
+	#search-bar {
+		width: 400px;
+	}
+
+	#filters {
+		.flex;
+		.flex-wrap;
+		.flex-center;
+		.flex-x-center;
+
+		& > div {
+			text-transform: uppercase;
+			padding: 0.25em 0.5em;
+			border-bottom: 2px solid transparent;
+			cursor: pointer;
+
+			.raleway;
+			.no-select;
+
+			&:hover,
+			&:active,
+			&.active {
+				color: @color4;
+				border-color: @color4;
+			}
+		}
+	}
+
+	#provider-grid {
+		@spacing: 10px;
+
+		overflow-y: scroll;
+		height: 0;
+		padding: @spacing;
+
+		.flex-grow;
+		.align-center;
+
+		& > div {
+			font-size: 1.8em;
+			display: inline-block;
+			width: 175px; height: 175px;
+			margin: @spacing;
+			background-color: darken(@light, 15%);
+			border: 3px solid darken(@light, 25%);
+			cursor: pointer;
+
+			.align-center;
+			.no-select;
+
+			&.associated {
+				color: @light;
+				background-color: @color1;
+				border-color: lighten(@color1, 25%);
+			}
+
+			&.mix {
+				display: none;
+			}
+
+			&:hover,
+			&:active,
+			&.active {
+				border-color: @color4;
+			}
+
+			& > div {
+				height: 100%;
+
+				.flex;
+				.flex-column;
+				.flex-center;
+			}
+		}
+	}
+}

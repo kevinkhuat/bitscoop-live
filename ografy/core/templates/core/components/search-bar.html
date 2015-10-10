@@ -1,0 +1,20 @@
+<form id="search-bar-form" action="{% if action %}{{ action }}{% else %}{% url 'home' %}{% endif %}" method="POST">
+	<div id="search-bar" class="input-group">
+		{% if not hide_filters %}
+			<div id="filters" class="flex flex-x-center">
+				<i class="fa fa-caret-down"></i>
+			</div>
+		{% endif %}
+
+		<div id="search-box" class="flex-grow text-box">
+			<input type="text" name="search" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %} />
+		</div>
+
+		<div id="search-button" class="flex flex-x-center">
+			<i class="fa fa-search"></i>
+		</div>
+	</div>
+
+	<input class="hidden" type="submit" />
+</form>
+

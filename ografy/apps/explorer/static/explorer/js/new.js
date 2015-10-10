@@ -13,7 +13,6 @@
 //	});
 //});
 
-
 require(['jquery'], function($) {
 	// When certain "important" elements are clicked, fire the "autoblur" event on detail panes.
 	// Individual autoblur compatible elements handle the event in certain ways, e.g. the list pane shrinks to an icon and the detail pane scoots away.

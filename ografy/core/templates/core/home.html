@@ -3,24 +3,7 @@
 {% load staticfiles %}
 
 
-{% block static %}
-	{{ block.super }}
-
-	<style type="text/css">
-		#facets {
-			margin: 30px;
-		}
-
-		#facets .card {
-			width: 350px; height: 200px;
-			margin: 15px; padding: 15px;
-			text-align: center;
-		}
-	</style>
-{% endblock %}
-
-
-{% block content %}
+{% block main %}
 	<section class="flex" style="position: relative; min-height: 500px;">
 		<div class="video-wrapper" style="position: absolute; top: 0; left: 0; z-index: -100; height: 500px; width: 100%; overflow: hidden;">
 			<video id="bgvideo" style="position: absolute; top: 0; left: 0; width: 100%;" poster="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/pool-jump.png" muted autoplay loop>
@@ -29,7 +12,7 @@
 			</video>
 		</div>
 
-		<div class="flex grow column center x-center">
+		<div class="flex flex-grow flex-column flex-center flex-x-center">
 			<div class="card padded bold align-center" style="font-size: 300%; color: #FFF; background-color: rgba(75, 75, 75, 0.4);">Discover the Internet<br/>of YOU</div>
 			<div class="flex">
 				<div>Learn More</div>
@@ -38,22 +21,22 @@
 		</div>
 	</section>
 
-	<section id="facets" class="flex wrap space-around">
-		<div class="card flex column center x-center align-center">
+	<section id="facets" class="flex flex-wrap flex-space-around">
+		<div class="card flex flex-column flex-center flex-x-center align-center">
 			<h1>Icon 1</h1>
 			<h3>Search</h3>
 			<p>Connect with your information across platforms.</p>
 			<p>Pictures, videos, texts, social media posts.</p>
 		</div>
 
-		<div class="card flex column center x-center align-center">
+		<div class="card flex flex-column flex-center flex-x-center align-center">
 			<h1>Icon 2</h1>
 			<h3>Explore</h3>
 			<p>Reveal the richness of your life in your data.</p>
 			<p>A complete view of real-time and history events.</p>
 		</div>
 
-		<div class="card flex column center x-center align-center">
+		<div class="card flex flex-column flex-center flex-x-center align-center">
 			<h1>Icon 3</h1>
 			<h3>Share</h3>
 			<p>Visualize your connected information.</p>

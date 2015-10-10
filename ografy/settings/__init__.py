@@ -257,9 +257,10 @@ INSTALLED_APPS = (
     'rest_framework',
     'social.apps.django_app.default',
 
-    'ografy.core',
-    'ografy.contrib.multiauth',
+    'ografy.apps.explorer',
     'ografy.apps.opi',
+    'ografy.contrib.multiauth',
+    'ografy.core',
 )
 
 
@@ -295,8 +296,11 @@ SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
+
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+
+    'ografy.contrib.pytoolbox.django.context_processors.page_name',
 )
 # TEMPLATE_DEBUG = False
 TEMPLATE_DIRS = (

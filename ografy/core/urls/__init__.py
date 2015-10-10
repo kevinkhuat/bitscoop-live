@@ -24,9 +24,8 @@ urlpatterns = patterns('ografy.core.views',
     url(r'^logout/?$', auth_views.logout, name='logout'),
     url(r'^tokens/mapbox/?$', auth_views.mapbox_token, name='mapbox_token'),
 
-    # url(r'^account', include('ografy.core.urls.account', namespace='account')),
     url(r'^settings', include('ografy.core.urls.settings', namespace='settings')),
-    # url(r'^signals/(?P<pk>[a-zA-Z0-9]+)/?$', user_views.signals, name='core_signals'),
+    # url(r'^connections', include('ografy.core.urls.signals', namespace='connections')),
 
     # url(r'^[A-Za-z0-9]/?$', user_views.profile),
 )

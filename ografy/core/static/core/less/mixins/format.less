@@ -2,6 +2,10 @@
 	display: none !important;
 }
 
+.block {
+	display: block;
+}
+
 .bold {
 	font-weight: bold !important;
 }
@@ -10,8 +14,23 @@
 	text-align: center !important;
 }
 
+.full-width {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .lock-width {
 	max-width: 1080px !important;
+	.position-center;
+}
+
+.padding(@padding: 15px) {
+	padding: @padding;
+}
+
+.padded {
+	.padding;
 }
 
 .position-center {

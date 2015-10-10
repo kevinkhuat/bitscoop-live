@@ -26,7 +26,7 @@ class ContactView(View):
 class SignupView(View):
     def get(self, request):
         if request.user.is_authenticated():
-            return redirect_by_name('index')
+            return redirect_by_name('home')
 
         return render(request, 'core/signup.html', {
             'title': 'Sign Up'
@@ -69,7 +69,7 @@ class SignupView(View):
         else:
             login(request, user)
 
-            return redirect_by_name('index')
+            return redirect_by_name('home')
 
 
 def blog(request):

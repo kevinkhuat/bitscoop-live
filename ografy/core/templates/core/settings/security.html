@@ -1,42 +1,46 @@
 {% extends 'core/settings/base.html' %}
 
-{% load staticfiles %}
 
+{% block settings %}
+	<div class="boxed-group">
+		<div>
+			Application Keys
+		</div>
+	</div>
 
-{% block static %}
-	{{ block.super }}
+	<div class="boxed-group">
+		<div>
+			Allowed Networks
+		</div>
+	</div>
 
-	<script type="application/javascript">
-		require(['site', 'jquery-cookie'], function(site) {
-			$('#update-password').click(function() {
-				var $this = $(this);
-				var $form = $this.closest('form');
+	<div class="boxed-group">
+		<div>
+			Active Sessions
+		</div>
+	</div>
 
-				if ($('#new-password').val() === $('#new-password-repeated').val()) {
-					site.updatePassword($form);
-				}
-				else {
-					$('#password-repeated-errors').html('This field does not match the original password field')
-				}
-			});
-		});
-	</script>
-{% endblock %}
+	<div class="boxed-group">
+		<div>
+			Two-factor Authentication
+		</div>
+	</div>
 
+	<div class="boxed-group">
+		<div>
+			SMS
+		</div>
+	</div>
 
-{% block content %}
-	<div class="content-list">
-		<form action="/settings/security">
-			<div class="content-item">
-				<h1>Password</h1>
-				<label><div class="text-input-width-medium">Current password</div><input type="password" name="password" id="current-password" /></label>
-				<div id="password-update"></div>
-				<label><div class="text-input-width-medium">New password</div><input type="password" name="new_password" id="new-password" /></label>
-				<div id="password-errors"></div>
-				<label><div class="text-input-width-medium">Repeated</div><input type="password" id="new-password-repeated" /></label>
-				<div id="password-repeated-errors"></div>
-				<label><input class="btn btn-primary" id="update-password" type="button" value="Update Password"/></label>
-			</div>
-		</form>
+	<div class="boxed-group">
+		<div>
+			Image Key
+		</div>
+	</div>
+
+	<div class="boxed-group">
+		<div>
+			Recovery Keys
+		</div>
 	</div>
 {% endblock %}

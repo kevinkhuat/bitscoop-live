@@ -1,0 +1,33 @@
+@import 'core/less/theme.less';
+
+@import 'core/less/components/controls.less';
+
+
+body.explorer-main {
+	header {
+		border-bottom: 1px solid @input-border-color;
+	}
+
+	main {
+		position: relative;
+	}
+
+	#left {
+		position: absolute;
+		top: 0; left: 0; z-index: 10;
+
+		height: 100%;
+
+		width: 35%;
+		min-width: 400px;
+	}
+
+	#search-bar-form {
+		width: 50%;
+		min-width: 400px;
+	}
+
+	.mapbox-logo {
+		display: none !important;
+	}
+}

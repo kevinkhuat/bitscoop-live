@@ -9,6 +9,26 @@ html {
 	color: @font-color;
 }
 
+h1 {
+	font-size: 2em;
+	margin: 0 0 0.5em 0;
+}
+
+h2 {
+	font-size: 1.65em;
+	margin: 0 0 0.5em 0;
+}
+
+h3 {
+	font-size: 1.5em;
+	margin: 0 0 0.5em 0;
+}
+
+p {
+	margin: 0 0 0.5em 0;
+	line-height: 140%;
+}
+
 header {
 	.raleway;
 
@@ -16,14 +36,8 @@ header {
 		color: lighten(@font-color, 30%);
 
 		.hover(@color2);
+		.active(@color2);
 	}
-}
-
-footer {
-	background-color: lighten(@dark, 15%);
-	color: lighten(@dark, 65%);
-
-	border-top: 1px solid lighten(@dark, 65%);
 }
 
 a {
@@ -32,7 +46,17 @@ a {
 	.hover(@color1);
 }
 
+.inbox:after {
+	background-color: @color3;
+	color: @light;
 
+	border: 2px solid @light;
+}
+
+
+.fa {
+	font-family: FontAwesome !important;
+}
 .pt-sans {
 	font-family: 'PT Sans', Arial, Helvetica, sans-serif;
 	font-weight: 400;
