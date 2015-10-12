@@ -37,11 +37,22 @@ class DictField(motorengine.BaseField):
 
 
 # Connect to the Mongo server using MotorEngine
-motorengine.connect(
+motor_connection = motorengine.connect(
     settings.MONGODB['NAME'],
     host=settings.MONGODB['HOST'],
     port=settings.MONGODB['PORT']
 )
+
+
+class Data(motorengine.Document):
+    __collection__ = 'data'
+
+    created = motorengine.DateTimeField(required=True, auto_now_on_insert=True)
+    data_dict = DictField()
+    ografy_unique_id = motorengine.StringField(required=True, unique=True)
+    signal = motorengine.StringField(required=True)
+    updated = motorengine.DateTimeField(required=True, auto_now_on_insert=True, auto_now_on_update=True)
+    user_id = motorengine.IntField(required=True)
 
 
 class Provider(motorengine.Document):

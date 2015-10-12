@@ -2,12 +2,13 @@ import datetime
 import json
 
 import tornado.web
+from pymongo.errors import BulkWriteError
 from social.apps.django_app.default.models import UserSocialAuth
 from tornado import gen
 
 from ografy import settings
 from ografy.apps.passthrough.auth import user_authenticated
-from ografy.apps.passthrough.documents import Settings, Signal
+from ografy.apps.passthrough.documents import Data, Settings, Signal, motor_connection
 from ografy.contrib.estoolbox.security import InvalidDSLQueryException, add_user_filter, validate_dsl
 from ografy.contrib.estoolbox.tornadoes_bulk import ESBulkConnection
 from ografy.contrib.locationtoolbox import estimation
@@ -285,6 +286,14 @@ class EventHandler(tornado.web.RequestHandler):
             # This holds up this entire method until the Data has been uniquely indexed.
             yield gen.Wait('data_bulk_unique_post_and_id_replace')
 
+            bulk = motor_connection.data.initialize_unordered_bulk_op()
+
+            for data in bulk_data_list:
+                data['_id'] = data_id_mapping_dict[data['ografy_unique_id']]
+                bulk.insert(data)
+
+            bulk.execute(callback=(yield gen.Callback('mongo_data_insert')))
+
         # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
         # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
         # Use this to replace all of the unique IDs in every Contact with its associated ES ID.
@@ -340,6 +349,12 @@ class EventHandler(tornado.web.RequestHandler):
         event_post_response = yield es_connection.bulk_unique_post('core', 'event', bulk_event_list, event_unique_id_list)
         # Decode the response so that it can be sent back to the client that made the call.
         event_post_response_decoded = json.loads(event_post_response.body.decode('utf-8'))
+
+        try:
+            yield gen.Wait('mongo_data_insert')
+            pass
+        except BulkWriteError as err:
+            pass
 
         self.write(event_post_response_decoded)
         self.finish()
@@ -456,6 +471,7 @@ class AccountHandler(tornado.web.RequestHandler):
 
         Settings.objects.filter(user_id=user_id).delete()
         signals = Signal.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('signal_get')))
+        Data.objects.filter(user_id=user_id).delete()
 
         UserSocialAuth.objects.filter(user=user).delete()
 
