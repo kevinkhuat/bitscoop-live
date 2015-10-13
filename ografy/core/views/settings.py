@@ -16,7 +16,7 @@ from ografy.contrib.pytoolbox.collections import update
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
 from ografy.core.api import SignalApi
 from ografy.core.documents import Permission, Settings
-from ografy.core.forms import UpdateAccountForm, UpdateLocationForm, UpdatePasswordForm
+from ografy.core.forms import UpdateAccountForm, UpdateHandleForm, UpdateLocationForm, UpdatePasswordForm
 
 
 class AccountView(View):
@@ -29,35 +29,38 @@ class AccountView(View):
 
     def get(self, request):
         user = request.user
-        form = UpdateAccountForm({
-            'email': user.email,
-            # 'handle': user.handle,
-            'first_name': user.first_name,
-            'last_name': user.last_name
+        form = UpdateHandleForm({
+            'handle': user.handle
         })
 
         return render(request, self.template_name, {
             'title': self.title,
             'lockwidth_override': True,
-            'form': form,
-            'selected': 'account'
+            'form': form
         })
 
     def post(self, request):
+        user = request.user
+        form = UpdatePasswordForm(request.POST)
+        form.full_clean()
+
+        if not request.user.check_password(form.cleaned_data['current_password']):
+            form.add_error('password', 'Invalid password.')
+
+        if form.is_valid():
+            user.set_password(form.cleaned_data['new_password'])
+            user.password_date = timezone.now()
+            user.save()
+
+        return HttpResponse(json.dumps(form.errors), content_type='json', status=200)
+
+    def patch(self, request):
         user_model = get_user_model()
 
         user = request.user
         inputs = QueryDict(request.body.decode('utf-8'))
-        form = UpdateAccountForm(inputs)
+        form = UpdateHandleForm(inputs)
         form.full_clean()
-
-        email = form.cleaned_data.get('email')
-
-        if email is not None:
-            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
-
-            if email_count > 0:
-                form.add_error('email', 'Email is in use.')
 
         handle = form.cleaned_data.get('handle')
 
@@ -71,55 +74,7 @@ class AccountView(View):
             update(user, form.cleaned_data)
             user.save()
 
-            return redirect_by_name('core_settings_account')
-        else:
-            return render(request, self.template_name, {
-                'title': self.title,
-                'lockwidth_override': True,
-                'form': form
-            })
-
-    def patch(self, request):
-        user_model = get_user_model()
-
-        user = request.user
-        inputs = QueryDict(request.body.decode('utf-8'))
-        form = UpdateAccountForm(inputs)
-        form.full_clean()
-
-        email = form.cleaned_data.get('email')
-
-        if email is not None:
-            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
-
-            if email_count > 0:
-                form.add_error('email', 'Email is in use.')
-
-        handle = form.cleaned_data.get('handle')
-
-        if handle is not None:
-            handle_count = user_model.objects.filter(handle__iexact=handle).exclude(id=user.id).count()
-
-            if handle_count > 0:
-                form.add_error('handle', 'Handle is in use.')
-
-        partial_form = copy.deepcopy(form)
-
-        for field in form.cleaned_data:
-            if field not in form.changed_data:
-                partial_form.cleaned_data.pop(field)
-
-        if partial_form.is_valid():
-            update(user, partial_form.cleaned_data)
-            user.save()
-
-            return HttpResponse(status=200)
-        else:
-            return render(request, self.template_name, {
-                'title': self.title,
-                'lockwidth_override': True,
-                'form': form
-            })
+        return HttpResponse(json.dumps(form.errors), content_type='json', status=200)
 
 
 class AccountDeactivateView(View):
@@ -181,7 +136,6 @@ class LocationView(View):
             'next_estimate_date': next_estimate_date,
             'new_estimate_allowed': new_estimate_allowed,
             'settings': settings,
-            'selected': 'location',
             'user': user
         })
 
@@ -233,9 +187,79 @@ class ProfileView(View):
         return super(ProfileView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
+        user = request.user
+        form = UpdateAccountForm({
+            'email': user.email,
+            # 'handle': user.handle,
+            'first_name': user.first_name,
+            'last_name': user.last_name
+        })
         return render(request, self.template_name, {
+            'form': form,
             'title': self.title
         })
+
+    def post(self, request):
+        user_model = get_user_model()
+
+        user = request.user
+        inputs = QueryDict(request.body.decode('utf-8'))
+        form = UpdateAccountForm(inputs)
+        form.full_clean()
+
+        email = form.cleaned_data.get('email')
+
+        if email is not None:
+            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
+
+            if email_count > 0:
+                form.add_error('email', 'Email is in use.')
+
+        if form.is_valid():
+            update(user, form.cleaned_data)
+            user.save()
+
+            return redirect_by_name('settings:account')
+        else:
+            return render(request, self.template_name, {
+                'title': self.title,
+                'lockwidth_override': True,
+                'form': form
+            })
+
+    def patch(self, request):
+        user_model = get_user_model()
+
+        user = request.user
+        inputs = QueryDict(request.body.decode('utf-8'))
+        form = UpdateAccountForm(inputs)
+        form.full_clean()
+
+        email = form.cleaned_data.get('email')
+
+        if email is not None:
+            email_count = user_model.objects.filter(email__iexact=email).exclude(id=user.id).count()
+
+            if email_count > 0:
+                form.add_error('email', 'Email is in use.')
+
+        partial_form = copy.deepcopy(form)
+
+        for field in form.cleaned_data:
+            if field not in form.changed_data:
+                partial_form.cleaned_data.pop(field)
+
+        if partial_form.is_valid():
+            update(user, partial_form.cleaned_data)
+            user.save()
+
+            return HttpResponse(status=200)
+        else:
+            return render(request, self.template_name, {
+                'title': self.title,
+                'lockwidth_override': True,
+                'form': form
+            })
 
 
 class SecurityView(View):
@@ -250,24 +274,8 @@ class SecurityView(View):
         return render(request, self.template_name, {
             'user': request.user,
             'title': self.title,
-            'lockwidth_override': True,
-            'selected': 'security',
+            'lockwidth_override': True
         })
-
-    def post(self, request):
-        user = request.user
-        form = UpdatePasswordForm(request.POST)
-        form.full_clean()
-
-        if not request.user.check_password(form.cleaned_data['password']):
-            form.add_error('password', 'Invalid password.')
-
-        if form.is_valid():
-            user.set_password(form.cleaned_data['new_password'])
-            user.password_date = timezone.now()
-            user.save()
-
-        return HttpResponse(json.dumps(form.errors), content_type='json', status=200)
 
 
 class SignalView(View):
@@ -307,8 +315,7 @@ class SignalView(View):
         return render(request, self.template_name, {
             'title': self.title,
             'signals': signals,
-            'lockwidth_override': True,
-            'selected': 'signal'
+            'lockwidth_override': True
         })
 
     def post(self, request):

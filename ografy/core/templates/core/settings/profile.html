@@ -1,8 +1,19 @@
 {% extends 'core/settings/base.html' %}
 
+{% load staticfiles %}
+
+
+{% block static %}
+	{{ block.super }}
+
+	<script type="text/javascript">
+		require(['profileSettings']);
+	</script>
+{% endblock %}
+
 
 {% block settings %}
-	<form action="{% url 'settings:profile' %}" method="POST">
+	<form action="{% url 'settings:profile' %}" method="PATCH">
 		<div class="boxed-group">
 			<div>
 				Profile Settings
@@ -14,7 +25,7 @@
 				</div>
 
 				<div class="text-box shrink">
-					<input type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" />
+					<input class="autoformEnabled" type="text" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" />
 				</div>
 
 				<div class="bold">
@@ -22,7 +33,7 @@
 				</div>
 
 				<div class="text-box shrink">
-					<input type="text" name="first_name" value="{{ form.last_name.value|default_if_none:'' }}" />
+					<input class="autoformEnabled" type="text" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" />
 				</div>
 
 				<div class="bold">
@@ -30,7 +41,7 @@
 				</div>
 
 				<div class="text-box shrink">
-					<input type="text" name="first_name" value="{{ form.email.value|default_if_none:'' }}" />
+					<input class="autoformEnabled" type="text" name="email" value="{{ form.email.value|default_if_none:'' }}" />
 				</div>
 			</div>
 		</div>

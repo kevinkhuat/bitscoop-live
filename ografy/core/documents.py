@@ -28,7 +28,7 @@ class Settings(mongoengine.Document):
     )
 
     # To be managed by the REST API
-    allow_location_collection = mongoengine.BooleanField(default=True)
+    allow_location_collection = mongoengine.BooleanField(default=False)
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     last_estimate_all_locations = mongoengine.DateTimeField(default=datetime.datetime.now)
     location_estimation_method = mongoengine.StringField(choices=LOCATION_ESTIMATION_METHOD, default='Between')

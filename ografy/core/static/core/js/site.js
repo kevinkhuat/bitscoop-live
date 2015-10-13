@@ -105,76 +105,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
-	function bindSignalSettings() {
-		$('.signal-settings-block').on('change', 'input[type=checkbox]', function() {
-			var $this = $(this);
-			var enabled = this.checked;
-			var $parent = $this.parents('.event-source-checkbox');
-			var event_source_name = $parent.attr('data-event-source-name');
-			var permission_name = $parent.attr('data-permission-name');
-			var signal_id = $parent.attr('data-signal-id');
-
-			var data = {
-				enabled: enabled,
-				event_source_name: event_source_name,
-				permission_name: permission_name,
-				signal_id: signal_id
-			};
-
-			$.ajax({
-				url: '/settings/signals',
-				type: 'POST',
-				dataType: 'html',
-				data: data,
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				}
-			}).done(function(data, xhr, response) {
-				$parent.attr('data-permission-name', data);
-			}).fail(function(data, xhr, response) {
-				console.log('EventSource patch failed');
-			});
-		});
-
-		$('body')
-			.on('click', '.delete-cancel', function() {
-				$(this).parents('.delete-check').addClass('hidden');
-			})
-			.on('click', '.delete-signal', function() {
-				$(this).parent().siblings('.delete-check').toggleClass('hidden');
-			})
-			.on('click', '.delete-confirm', function() {
-				var $this = $(this);
-				var $thisSignalContainer = $this.closest('.drawer-container');
-				var $thisSignalId = $thisSignalContainer.data('signal-id');
-				$.ajax({
-					url: 'https://p.bitscoop.com/signals',
-					type: 'DELETE',
-					dataType: 'json',
-					data: {
-						signal_id: $thisSignalId
-					},
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function() {
-					$($thisSignalContainer).remove();
-				});
-			})
-			.on('click', '.content-drawer-trigger', function() {
-				var $this = $(this);
-				$this.siblings('.content-drawer').slideToggle(200).end();
-				$this.toggleClass('drawer-open');
-			});
-
-		$('.content-list').on('change', 'input[name=name]', function(event) {
-			var $target = $(event.target);
-			var newName = $target.val();
-			$target.closest('.drawer-container').find('.signal-name').html(newName);
-		});
-	}
-
-
 	function bindVerifiedSignal(selector) {
 		$('body').on('click', selector, function() {
 			var data = {};
@@ -207,27 +137,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
-	function bindToggleSignal(selector) {
-		$('body').on('click', selector, function() {
-			var signalId = $(this).parents('.drawer-container').data('signal-id');
-			var data = {};
-			data.enabled = !($('#onoffswitch-' + signalId)[0].checked);
-			$.ajax({
-				url: '/opi/signal/' + signalId,
-				type: 'PATCH',
-				dataType: 'json',
-				data: data,
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				}
-			}).done(function(data, xhr, response) {
-				//console.log('succeeded');
-			}).fail(function(data, xhr, response) {
-				//console.log('failed');
-			});
-		});
-	}
-
 	function bindHelpUtilities() {
 		$('.help-categories')
 			.on('click', '.grid-help-placeholder', function() {
@@ -255,61 +164,11 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
-	function updatePassword(form) {
-		$.ajax({
-			url: form.attr('action'),
-			type: 'POST',
-			dataType: 'html',
-			data: form.serialize(),
-			headers: {
-				'X-CSRFToken': $.cookie('csrftoken')
-			}
-		}).done(function(data, xhr, response) {
-			var errorString;
-			var errors = JSON.parse(data);
-
-			if (Object.keys(errors).length > 0) {
-				if (_.has(errors, 'new_password')) {
-					errorString = '';
-
-					_.forEach(errors.new_password, function(error) {
-						errorString += error;
-					});
-
-					$('#password-repeated-errors').html(errorString);
-				}
-				else {
-					$('#password-repeated-errors').html('');
-				}
-
-				if (_.has(errors, 'password')) {
-					errorString = '';
-
-					_.forEach(errors.password, function(error) {
-						errorString += error;
-					});
-
-					$('#password-update').html(errorString);
-				}
-				else {
-					$('#password-update').html('');
-				}
-			}
-			else {
-				$('#password-update').html('Password updated successfully');
-				$('#password-repeated-errors').html('');
-			}
-		});
-	}
-
 	return {
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
-		bindSignalSettings: bindSignalSettings,
-		bindToggleSignal: bindToggleSignal,
 		bindVerifiedSignal: bindVerifiedSignal,
-		scrollToContent: scrollToContent,
-		updatePassword: updatePassword
+		scrollToContent: scrollToContent
 	};
 });

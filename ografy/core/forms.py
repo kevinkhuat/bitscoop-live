@@ -53,6 +53,12 @@ class UpdateAccountForm(Form):
     difference in stock Django.
     """
     email = forms.EmailField(max_length=256, required=False)
+
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+
+
+class UpdateHandleForm(Form):
     handle = forms.CharField(
         max_length=20,
         required=False,
@@ -61,10 +67,8 @@ class UpdateAccountForm(Form):
             RegexValidator(re.compile(r'^((?![o0]+[g9]+r+[a4]+(f|ph)+y+).)*$', re.I), _('Username cannot contain Ografy.'), 'invalid'),
         ]
     )
-    first_name = forms.CharField(max_length=30, required=False)
-    last_name = forms.CharField(max_length=30, required=False)
 
 
 class UpdatePasswordForm(Form):
-    password = forms.CharField()
+    current_password = forms.CharField()
     new_password = PasswordField()

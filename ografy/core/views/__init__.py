@@ -6,7 +6,7 @@ from django.views.generic import View
 from mongoengine import Q
 
 from ografy.contrib.pytoolbox.django.response import redirect_by_name
-from ografy.core.api import ProviderApi, SignalApi
+from ografy.core.api import ProviderApi, SettingsApi, SignalApi
 from ografy.core.forms import SignUpForm
 
 
@@ -58,6 +58,8 @@ class SignupView(View):
             user.set_password(form.cleaned_data['password'])
             user.save()
             user = authenticate(identifier=user.email, password=form.cleaned_data.get('password'))
+
+            SettingsApi.post({'user_id': user.id})
 
         if user is None:
             return render(request, 'core/signup.html', {

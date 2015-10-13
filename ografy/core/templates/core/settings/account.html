@@ -1,23 +1,37 @@
 {% extends 'core/settings/base.html' %}
 
+{% load staticfiles %}
+
+
+{% block static %}
+{{ block.super }}
+
+<script type="text/javascript">
+	require(['accountSettings']);
+</script>
+{% endblock %}
+
 
 {% block settings %}
-	<form action="{% url 'settings:profile' %}" method="POST">
-		<div class="boxed-group">
-			<div>
-				Profile Settings
-			</div>
-
-			<div class="padded">
-				<div class="bold">
-					Handle
+			<div class="boxed-group">
+				<div>
+					Profile Settings
 				</div>
 
-				<div class="text-box shrink">
-					<input type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" />
+				<div class="padded">
+					<form action="{% url 'settings:account' %}">
+						<div class="bold">
+							Handle
+						</div>
+
+						<div class="text-box shrink">
+							<input class="autoformEnabled" type="text" name="handle" value="{{ form.handle.value|default_if_none:'' }}" />
+						</div>
+
+						<div name="handle_update"></div>
+					</form>
 				</div>
 			</div>
-		</div>
 
 		<div class="boxed-group">
 			<div>
@@ -25,21 +39,37 @@
 			</div>
 
 			<div class="padded">
-				<div class="bold">
-					New Password
-				</div>
+				<form action="{% url 'settings:account' %}">
+					<div class="bold">
+						Current Password
+					</div>
 
-				<div class="text-box shrink">
-					<input type="text" name="new_password" value="{{ form.new_password.value|default_if_none:'' }}" />
-				</div>
+					<div class="text-box shrink">
+						<input type="password" name="current_password" value="{{ form.current_password.value|default_if_none:'' }}" />
+					</div>
 
-				<div class="bold">
-					New Password Repeated
-				</div>
+					<div name="password_update"></div>
 
-				<div class="text-box shrink">
-					<input type="text" name="new_password_repeated" value="{{ form.new_password_repeated.value|default_if_none:'' }}" />
-				</div>
+					<div class="bold">
+						New Password
+					</div>
+
+					<div class="text-box shrink">
+						<input type="password" name="new_password" value="{{ form.new_password.value|default_if_none:'' }}" />
+					</div>
+
+					<div class="bold">
+						New Password Repeated
+					</div>
+
+					<div class="text-box shrink">
+						<input type="password" name="new_password_repeated" value="{{ form.new_password_repeated.value|default_if_none:'' }}" />
+					</div>
+
+					<div name="password_errors"></div>
+
+					<input type="button" name="update_password" value="Update Password"/>
+				</form>
 			</div>
 		</div>
 
@@ -54,5 +84,4 @@
 				Delete Account
 			</div>
 		</div>
-	</form>
 {% endblock %}

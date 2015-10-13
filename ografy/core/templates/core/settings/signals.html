@@ -7,12 +7,7 @@
 	{{ block.super }}
 
 	<script type="text/javascript">
-		require(['site'], function(site) {
-			$(document).ready(function() {
-				site.bindSignalSettings();
-				site.bindToggleSignal('.onoffswitch-label');
-			});
-		});
+		require(['signalSettings']);
 	</script>
 {% endblock %}
 
@@ -28,121 +23,122 @@
 				These are all of your accounts that you have authorized BitScoop to access.
 				The on/off toggle sets whether or not new data should be pulled from that signal.
 			</p>
-
-			{% for signal in signals %}
-				<form action="/opi/signal/{{ signal.id }}">
-					<div class="content-item drawer-container" data-signal-id="{{ signal.id }}">
-						<div class="flex grow content-drawer-trigger">
-							<div class="grow">
-								<i class="signal-icon icon-{{ signal.provider.backend_name }}"></i>
-								<div class="signal-name">{{ signal.name }}</div>
-							</div>
+		</div>
+	</div>
+	<div>
+		{% for signal in signals %}
+		<form action="/opi/signal/{{ signal.id }}">
+			<div class="content-item drawer-container" data-signal-id="{{ signal.id }}">
+				<div class="flex grow content-drawer-trigger">
+					<div class="grow">
+						<i class="signal-icon icon-{{ signal.provider.backend_name }}"></i>
+						<h1 class="signal-name">{{ signal.name }}</h1>
+					</div>
+				</div>
+				<div class="content-drawer">
+					<div class="flex onoff-container">
+						<div class="onoffswitch">
+							<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
+							<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}">
+								<span class="onoffswitch-inner" ></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
 						</div>
-						<div class="content-drawer">
-							<div class="flex onoff-container">
-								<div class="onoffswitch">
-									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitch-{{ signal.id }}" {% if signal.enabled %}checked {% endif %}>
-									<label class="onoffswitch-label" for="onoffswitch-{{ signal.id }}">
-										<span class="onoffswitch-inner" ></span>
-										<span class="onoffswitch-switch"></span>
-									</label>
-								</div>
-								<div class='delete-signal'>
-									<i class="icon-cancel-circle"></i>
-								</div>
+						<div class='delete-signal'>
+							<i class="icon-cancel-circle"></i>
+						</div>
+					</div>
+					<div class="delete-check hidden">
+						Delete signal?  This cannot be reversed.
+						<div class="flex row">
+							<input class="delete-confirm btn btn-primary" type="button" value="Yes">
+							<input class="delete-cancel btn btn-danger" type="button" value="No" style="margin-left: auto;">
+						</div>
+					</div>
+					<div class="signal-settings-block">
+						<div class="content-header">
+							<h1 class="bold">Name your connection to {{ signal.provider.name }}</h1>
+						</div>
+						<input class="autoformEnabled" name="name" type="text" value='{{ signal.name }}'/>
+						<div class="flex content-header margin-top">
+							<h1>Permissions</h1>
+							<!--<div class="tooltip-container">-->
+							<!--<div class="icon-help tooltip-trigger"></div>-->
+							<!--<div class="tooltip">-->
+							<!--<div class="tooltip-text">Choose which types of data BitScoop will get from your {{ signal.provider.name }} account.  Even if you authorized BitScoop to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.  If you de-select a type from which BitScoop has already collected data, the data already collected will continue to show up in your search resdivts, but new data of that type will not be collected.</div>-->
+							<!--<div class="icon-cancel-circle tooltip-close"></div>-->
+							<!--</div>-->
+							<!--</div>-->
+						</div>
+						<div class="permission-container">
+							{% for event_source_pairing in signal.event_source_list %}
+							<div name="{{ signal.provider_name }}" data-signal-id="{{ signal.id }}" data-event-source-name="{{ event_source_pairing.event_source.name }}" data-permission-name="{% if not event_source_pairing.permission.event_source.name == None %}{{ event_source_pairing.permission.event_source.name }}{% else %}None{% endif %}" class="event-source-checkbox">
+								<label class="permission-min-width">
+									<input type="checkbox"
+									       {% if not event_source_pairing.permission == None and event_source_pairing.permission.enabled %}
+									       checked="checked"
+									       {% endif %}
+											>
+									<span>{{ event_source_pairing.event_source.display_name }}</span>
+								</label>
+								<!--<div class="tooltip-container near">-->
+								<!--<div class="icon-help tooltip-trigger"></div>-->
+								<!--<div class="tooltip">-->
+								<!--<div class="tooltip-text">{{ event_source_pairing.event_source.description }}</div>-->
+								<!--<div class="icon-cancel-circle tooltip-close"></div>-->
+								<!--</div>-->
+								<!--</div>-->
 							</div>
-							<div class="delete-check hidden">
-								Delete signal?  This cannot be reversed.
-								<div class="flex row">
-									<input class="delete-confirm btn btn-primary" type="button" value="Yes">
-									<input class="delete-cancel btn btn-danger" type="button" value="No" style="margin-left: auto;">
-								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="signal-settings-block">
+						<div class="flex content-header margin-top">
+							<h1>Update Frequency</h1>
+							<!--<div class="tooltip-container">-->
+							<!--<div class="icon-help tooltip-trigger"></div>-->
+							<!--<div class="tooltip">-->
+							<!--<div class="tooltip-text">How often BitScoop will automatically search for new data from this provider</div>-->
+							<!--<div class="icon-cancel-circle tooltip-close"></div>-->
+							<!--</div>-->
+							<!--</div>-->
+						</div>
+						<div class="grouped fields" id="frequency">
+							<!--<div class="field">-->
+							<!--<label class="display-inline-block">-->
+							<!--<input class="autoformEnabled" updateFrequency=0 value=0 type="radio" name="frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %} disabled>-->
+							<!--<span class="premium-message">Premium On Demand</span>-->
+							<!--</label>-->
+							<!--</div>-->
+							<div class="field">
+								<label class="display-inline-block">
+									<input class="autoformEnabled" updateFrequency=1 value=1 type="radio" name="frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
+									<span>Daily</span>
+								</label>
 							</div>
-							<div class="signal-settings-block">
-								<div class="content-header">
-									<h1 class="bold">Name your connection to {{ signal.provider.name }}</h1>
-								</div>
-								<input class="autoformEnabled" name="name" type="text" value='{{ signal.name }}'/>
-								<div class="flex content-header margin-top">
-									<h1>Permissions</h1>
-									<div class="tooltip-container">
-										<div class="icon-help tooltip-trigger"></div>
-										<div class="tooltip">
-											<div class="tooltip-text">Choose which types of data BitScoop will get from your {{ signal.provider.name }} account.  Even if you authorized BitScoop to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.  If you de-select a type from which BitScoop has already collected data, the data already collected will continue to show up in your search resdivts, but new data of that type will not be collected.</div>
-											<div class="icon-cancel-circle tooltip-close"></div>
-										</div>
-									</div>
-								</div>
-								<div class="permission-container">
-									{% for event_source_pairing in signal.event_source_list %}
-										<div name="{{ signal.provider_name }}" data-signal-id="{{ signal.id }}" data-event-source-name="{{ event_source_pairing.event_source.name }}" data-permission-name="{% if not event_source_pairing.permission.event_source.name == None %}{{ event_source_pairing.permission.event_source.name }}{% else %}None{% endif %}" class="event-source-checkbox">
-											<label class="permission-min-width">
-												<input type="checkbox"
-														{% if not event_source_pairing.permission == None and event_source_pairing.permission.enabled %}
-															checked="checked"
-														{% endif %}
-														>
-												<span>{{ event_source_pairing.event_source.display_name }}</span>
-											</label>
-											<div class="tooltip-container near">
-												<div class="icon-help tooltip-trigger"></div>
-												<div class="tooltip">
-													<div class="tooltip-text">{{ event_source_pairing.event_source.description }}</div>
-													<div class="icon-cancel-circle tooltip-close"></div>
-												</div>
-											</div>
-										</div>
-									{% endfor %}
-								</div>
+							<div class="field">
+								<label class="display-inline-block">
+									<input class="autoformEnabled" updateFrequency=2 value=2 type="radio" name="frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
+									<span>Weekly</span>
+								</label>
 							</div>
-							<div class="signal-settings-block">
-								<div class="flex content-header margin-top">
-									<h1>Update Frequency</h1>
-									<div class="tooltip-container">
-										<div class="icon-help tooltip-trigger"></div>
-										<div class="tooltip">
-											<div class="tooltip-text">How often BitScoop will automatically search for new data from this provider</div>
-											<div class="icon-cancel-circle tooltip-close"></div>
-										</div>
-									</div>
-								</div>
-								<div class="grouped fields" id="frequency">
-									<!--<div class="field">-->
-									<!--<label class="display-inline-block">-->
-									<!--<input class="autoformEnabled" updateFrequency=0 value=0 type="radio" name="frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %} disabled>-->
-									<!--<span class="premium-message">Premium On Demand</span>-->
-									<!--</label>-->
-									<!--</div>-->
-									<div class="field">
-										<label class="display-inline-block">
-											<input class="autoformEnabled" updateFrequency=1 value=1 type="radio" name="frequency" {% if signal.frequency == 1 %}checked="checked"{% endif %}>
-											<span>Daily</span>
-										</label>
-									</div>
-									<div class="field">
-										<label class="display-inline-block">
-											<input class="autoformEnabled" updateFrequency=2 value=2 type="radio" name="frequency" {% if signal.frequency == 2 %}checked="checked"{% endif %}>
-											<span>Weekly</span>
-										</label>
-									</div>
-									<div class="field">
-										<label class="display-inline-block">
-											<input class="autoformEnabled" updateFrequency=3 value=3 type="radio" name="frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
-											<span>Manual</span>
-										</label>
-									</div>
-									<div class="field">
-										<label class="display-inline-block">
-											<input class="autoformEnabled" updateFrequency=4 value=4 type="radio" name="frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
-											<span>Once</span>
-										</label>
-									</div>
-								</div>
+							<div class="field">
+								<label class="display-inline-block">
+									<input class="autoformEnabled" updateFrequency=3 value=3 type="radio" name="frequency" {% if signal.frequency == 3 %}checked="checked"{% endif %}>
+									<span>Manual</span>
+								</label>
+							</div>
+							<div class="field">
+								<label class="display-inline-block">
+									<input class="autoformEnabled" updateFrequency=4 value=4 type="radio" name="frequency" {% if signal.frequency == 4 %}checked="checked"{% endif %}>
+									<span>Once</span>
+								</label>
 							</div>
 						</div>
 					</div>
-				</form>
-			{% endfor %}
-		</div>
+				</div>
+			</div>
+		</form>
+		{% endfor %}
 	</div>
 {% endblock %}

@@ -1,9 +1,13 @@
 require.config({
 	paths: {
+		accountSettings: window.staticUrl + 'core/js/pages/accountSettings.min',
 		location: window.staticUrl + 'explorer/js/location.min',
+		locationSettings: window.staticUrl + 'core/js/pages/locationSettings.min',
 		map: window.staticUrl + 'explorer/js/map.min',
+		profileSettings: window.staticUrl + 'core/js/pages/profileSettings.min',
 		scheduleMapper: window.staticUrl + 'explorer/js/scheduleMapper.min',
 		search: window.staticUrl + 'core/js/components/search.min',
+		signalSettings: window.staticUrl + 'core/js/pages/signalSettings.min',
 		providers: window.staticUrl + 'core/js/pages/providers.min',
 		connections: window.staticUrl + 'core/js/pages/connections.min'
 	}
