@@ -62,10 +62,10 @@ def put_mappings():
         callback=(yield gen.Callback('search_mapping'))
     )
 
+    yield gen.Wait('event_mapping')
     yield gen.Wait('contact_mapping')
     yield gen.Wait('content_mapping')
     yield gen.Wait('data_mapping')
-    yield gen.Wait('event_mapping')
     yield gen.Wait('location_mapping')
     yield gen.Wait('search_mapping')
 

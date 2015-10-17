@@ -13,6 +13,14 @@ SOCIAL_AUTH_DROPBOX_OAUTH2_KEY = 'xt2y27n233v4pid'
 SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = 'gn9xfasa2c44tou'
 
 
+###########
+# Dropbox #
+###########
+
+SOCIAL_AUTH_FITBIT_KEY = 'baad89bd24aa24eb6bd5b946ca02d818'
+SOCIAL_AUTH_FITBIT_SECRET = '631772090c6f127d80e1dfd52e381e2c'
+
+
 ###############
 # Github Auth #
 ###############

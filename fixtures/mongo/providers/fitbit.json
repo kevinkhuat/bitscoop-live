@@ -20,12 +20,12 @@
       "description": "Food you have logged with FitBit",
       "enabled_by_default": true,
       "endpoints": [
-        "food-calories-in",
+        "food_calories_in",
         "foods"
       ],
-      "initial_mapping": "food-calories-in",
+      "initial_mapping": "food_calories_in",
       "mappings": {
-        "food-calories-in": {
+        "food_calories_in": {
           "conditions": [
             {
               "notEquals": {
@@ -117,10 +117,6 @@
                   {
                     "hydration_method": "translate",
                     "value": "responseObject.loggedFood.name"
-                  },
-                  {
-                    "hydration_method": "translate",
-                    "value": "responseObject.loggedFood.brand"
                   }
                 ],
                 "mapped_fields": {
@@ -146,10 +142,230 @@
           "method": "none"
         }
       }
+    },
+    "sleep": {
+      "display_name": "Sleep",
+      "description": "Sleep time you have logged with FitBit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "sleep_start_time",
+        "sleep"
+      ],
+      "initial_mapping": "sleep_start_time",
+      "mappings": {
+        "sleep_start_time": {
+          "conditions": [
+            {
+              "notEquals": {
+                "field": "responseObject.value",
+                "value": "0"
+              }
+            }
+          ],
+          "returned_data_location": "sleep-startTime",
+          "submapping": {
+            "endpoint": "sleep",
+            "parameter_sources": {
+              "date": {
+                "hydration_method": "translate",
+                "value": "responseObject.dateTime"
+              }
+            }
+          }
+        },
+        "sleep": {
+          "returned_data_location": "sleep",
+          "event_type": "sleep",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "fitbit"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "sleep"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.startTime"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "fitbit"
+                },
+                {
+                  "hydration_method": "literal",
+                  "value": "sleep"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.startTime"
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.startTime"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "fitbit"
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "none"
+        }
+      }
+    },
+    "exercise": {
+      "display_name": "Exercise",
+      "description": "Exercise activities you have logged with FitBit",
+      "enabled_by_default": true,
+      "endpoints": [
+        "activities_activity_calories",
+        "activities"
+      ],
+      "initial_mapping": "activities_activity_calories",
+      "mappings": {
+        "activities_activity_calories": {
+          "conditions": [
+            {
+              "notEquals": {
+                "field": "responseObject.value",
+                "value": "0"
+              }
+            }
+          ],
+          "returned_data_location": "activities-activityCalories",
+          "submapping": {
+            "endpoint": "activities",
+            "parameter_sources": {
+              "date": {
+                "hydration_method": "translate",
+                "value": "responseObject.dateTime"
+              }
+            }
+          }
+        },
+        "activities": {
+          "returned_data_location": "activities",
+          "event_type": "exercise",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "fitbit"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "exercise"
+                  },
+                  {
+                    "hydration_method": "concat",
+                    "value": [
+                      {
+                        "hydration_method": "translate",
+                        "value": "parentResponseObject.dateTime"
+                      },
+                      {
+                        "hydration_method": "literal",
+                        "value": "T"
+                      },
+                      {
+                        "hydration_method": "translate",
+                        "value": "responseObject.startTime"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "fitbit"
+                },
+                {
+                  "hydration_method": "literal",
+                  "value": "exercise"
+                },
+                {
+                  "hydration_method": "concat",
+                  "value": [
+                    {
+                      "hydration_method": "translate",
+                      "value": "parentResponseObject.dateTime"
+                    },
+                    {
+                      "hydration_method": "literal",
+                      "value": "T"
+                    },
+                    {
+                      "hydration_method": "translate",
+                      "value": "responseObject.startTime"
+                    }
+                    ]
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "concat",
+                  "value": [
+                    {
+                      "hydration_method": "translate",
+                      "value": "parentResponseObject.dateTime"
+                    },
+                    {
+                      "hydration_method": "literal",
+                      "value": "T"
+                    },
+                    {
+                      "hydration_method": "translate",
+                      "value": "responseObject.startTime"
+                    }
+                  ]
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "fitbit"
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "none"
+        }
+      }
     }
   },
   "endpoints": {
-    "food-calories-in": {
+    "food_calories_in": {
       "call_method": "GET",
       "path": "/1/user/-/foods/log/caloriesIn/date/[base_date]/[end_date].json",
       "additional_path_fields": [
@@ -168,7 +384,11 @@
         "base_date": {
           "description": "Start date of the time range",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.food.food-calories-in.base_date"
+          "value": "signal.endpoint_data.food.food_calories_in.base_date",
+          "default": "2015-09-01",
+          "save_to_signal": {
+            "location": "date_now"
+          }
         },
         "end_date": {
           "description": "End date of the time range",
@@ -200,6 +420,146 @@
       "parameter_descriptions": {
         "date": {
           "description": "Date for which to retrieve food entries",
+          "hydration_method": "translate",
+          "value": "responseObject.dateTime"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    },
+    "sleep_start_time": {
+      "call_method": "GET",
+      "path": "/1/user/-/sleep/startTime/date/[base_date]/[end_date].json",
+      "additional_path_fields": [
+        {
+          "description": "Start date of the time range",
+          "parameter": "base_date",
+          "replace": "[base_date]"
+        },
+        {
+          "description": "End date of the time range",
+          "parameter": "end_date",
+          "replace": "[end_date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "base_date": {
+          "description": "Start date of the time range",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.sleep.sleep_start_time.base_date",
+          "default": "2015-09-01",
+          "save_to_signal": {
+            "location": "date_now"
+          }
+        },
+        "end_date": {
+          "description": "End date of the time range",
+          "hydration_method": "literal",
+          "value": "today"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    },
+    "sleep": {
+      "call_method": "GET",
+      "path": "/1/user/-/sleep/date/[date].json",
+      "additional_path_fields": [
+        {
+          "description": "Date for which to retrieve sleep entries",
+          "parameter": "date",
+          "replace": "[date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "date": {
+          "description": "Date for which to retrieve sleep entries",
+          "hydration_method": "translate",
+          "value": "responseObject.dateTime"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    },
+    "activities_activity_calories": {
+      "call_method": "GET",
+      "path": "/1/user/-/activities/activityCalories/date/[base_date]/[end_date].json",
+      "additional_path_fields": [
+        {
+          "description": "Start date of the time range",
+          "parameter": "base_date",
+          "replace": "[base_date]"
+        },
+        {
+          "description": "End date of the time range",
+          "parameter": "end_date",
+          "replace": "[end_date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "base_date": {
+          "description": "Start date of the time range",
+          "hydration_method": "translate",
+          "value": "signal.endpoint_data.exercise.activities_activity_calories.base_date",
+          "default": "2015-09-01",
+          "save_to_signal": {
+            "location": "date_now"
+          }
+        },
+        "end_date": {
+          "description": "End date of the time range",
+          "hydration_method": "literal",
+          "value": "today"
+        },
+        "oauth_token": {
+          "description": "OAuth1 public key",
+          "hydration_method": "server",
+          "value": "oauth_token"
+        },
+        "oauth_token_secret": {
+          "description": "OAuth1 private key",
+          "hydration_method": "server",
+          "value": "oauth_token_secret"
+        }
+      }
+    },
+    "activities": {
+      "call_method": "GET",
+      "path": "/1/user/-/activities/date/[date].json",
+      "additional_path_fields": [
+        {
+          "description": "Date for which to retrieve activity entries",
+          "parameter": "date",
+          "replace": "[date]"
+        }
+      ],
+      "parameter_descriptions": {
+        "date": {
+          "description": "Date for which to retrieve activity entries",
           "hydration_method": "translate",
           "value": "responseObject.dateTime"
         },

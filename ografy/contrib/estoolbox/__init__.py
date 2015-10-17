@@ -402,7 +402,7 @@ EVENT_MAPPING = {
                 'doc_values': True
             },
             'updated': {
-                'type': 'string',
+                'type': 'date',
                 'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
                 'doc_values': True
             },
