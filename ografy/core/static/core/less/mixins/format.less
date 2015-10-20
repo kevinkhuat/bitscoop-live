@@ -6,6 +6,10 @@
 	display: block;
 }
 
+.blockify > * {
+	display: block;
+}
+
 .bold {
 	font-weight: bold !important;
 }
@@ -18,6 +22,12 @@
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.hide-empty {
+	&:empty {
+		display: none !important;
+	}
 }
 
 .lock-width {

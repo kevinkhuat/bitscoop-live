@@ -1,4 +1,5 @@
-<div class="list-element flex" data-event-id={{ id }} data-leaflet-id={{ leaflet_id }}>
-	<div class="icon-{{ provider_name|lower }}"></div>
-	<div class="grow">{{ datetime }}</div>
+<div class="list-element" data-event-id={{ id }} data-leaflet-id={{ leaflet_id }}>
+	<div class="fa fa-{{ content_type | lower }}"></div>
+	<div class="flex-grow">{{ datetime }}</div>
+	<div class="fa fa-{{ provider_name | lower }}"></div>
 </div>

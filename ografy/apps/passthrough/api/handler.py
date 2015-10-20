@@ -1,5 +1,6 @@
 import datetime
 import json
+import urllib
 
 import tornado.web
 from pymongo.errors import BulkWriteError
@@ -9,7 +10,8 @@ from tornado import gen
 from ografy import settings
 from ografy.apps.passthrough.auth import user_authenticated
 from ografy.apps.passthrough.documents import Data, Settings, Signal, motor_connection
-from ografy.contrib.estoolbox.security import InvalidDSLQueryException, add_user_filter, validate_dsl
+from ografy.contrib.estoolbox import SEARCH_TEXT_FIELDS
+from ografy.contrib.estoolbox.security import InvalidDSLQueryException, validate_dsl
 from ografy.contrib.estoolbox.tornadoes_bulk import ESBulkConnection
 from ografy.contrib.locationtoolbox import estimation
 from ografy.contrib.pytoolbox import strip_invalid_key_characters
@@ -44,23 +46,117 @@ class EventHandler(tornado.web.RequestHandler):
     @user_authenticated
     @gen.coroutine
     def get(self, slug=None):
-        @gen.coroutine
-        def _search_callback(response):
-            index = 'core'
-            type = 'search'
+        limit = json.loads(self.get_argument('limit'))
+        offset = json.loads(self.get_argument('offset'))
+        filters = json.loads(self.get_argument('filters', default='{"bool":{"must":[],"must_not":[],"should":[]}}'))
+        q = self.get_argument('q')
 
-            self.write(response.body.decode('utf-8'))
+        try:
+            validate_dsl(filters)
+
+            query = {
+                'query': {
+                    'filtered': {
+                        'filter': {
+                            'and': [
+                                filters,
+                                {
+                                    'bool': {
+                                        'must': [
+                                            {
+                                                'term': {
+                                                    'user_id': self.request.user.id
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                'size': limit,
+                'from': offset
+            }
+
+            if len(q) > 0:
+                query['query']['filtered']['query'] = {
+                    'multi_match': {
+                        'query': q,
+                        'type': 'most_fields',
+                        'fields': SEARCH_TEXT_FIELDS
+                    }
+                }
+
+            index = 'core'
+            object_type = 'event'
+
+            response = yield es_connection.search(
+                index=index,
+                type=object_type,
+                source=query
+            )
+
+            object_type = 'search'
+
+            cleaned_results = []
+            body_decoded = json.loads(response.body.decode('utf-8'))
+            result_total = body_decoded['hits']['total']
+            results = body_decoded['hits']['hits']
+
+            for result in results:
+                cleaned_results.append({'id': result['_id'], 'result': result['_source']})
+
+            search_response = {
+                'results': cleaned_results
+            }
+
+            if offset == 0:
+                search_response['prev'] = None
+            else:
+                url_parts = list(urllib.parse.urlparse(self.request.uri))
+                url_parts[0] = 'https'
+                url_parts[1] = self.request.host
+                url_parts[4] = urllib.parse.urlencode({
+                    'limit': limit,
+                    'offset': offset - limit,
+                    'q': q,
+                    'filters': json.dumps(filters)
+                })
+
+                previous_url = urllib.parse.urlunparse(url_parts)
+
+                search_response['prev'] = previous_url
+
+            if limit + offset >= result_total:
+                search_response['next'] = None
+            else:
+                url_parts = list(urllib.parse.urlparse(self.request.uri))
+                url_parts[0] = 'https'
+                url_parts[1] = self.request.host
+                url_parts[4] = urllib.parse.urlencode({
+                    'limit': limit,
+                    'offset': offset + limit,
+                    'q': q,
+                    'filters': json.dumps(filters)
+                })
+
+                next_url = urllib.parse.urlunparse(url_parts)
+
+                search_response['next'] = next_url
+
+            self.write(search_response)
 
             action_and_metadata = {
                 'index': {
                     '_index': index,
-                    '_type': type
+                    '_type': object_type
                 }
             }
 
             document = {
                 'datetime': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
-                'search_DSL': strip_invalid_key_characters(dsl_query),
+                'search_DSL': strip_invalid_key_characters(query),
                 'tags': [],
                 'user_id': self.request.user.id
             }
@@ -68,33 +164,12 @@ class EventHandler(tornado.web.RequestHandler):
             bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(document) + '\n'
 
             yield es_connection.bulk_operation(
-                type=type,
+                type=object_type,
                 index=index,
                 body=bulk_insert_body
             )
 
             self.finish()
-
-        def _search(dsl_query):
-            # TODO: Make this flexible
-            index = 'core'
-            object_type = 'event'
-
-            es_connection.search(
-                callback=_search_callback,
-                index=index,
-                type=object_type,
-                source=dsl_query
-            )
-
-        query = json.loads(self.get_argument('dsl'))
-
-        try:
-            validate_dsl(query)
-
-            dsl_query = add_user_filter(query, self.request.user.id)
-
-            _search(dsl_query)
         except InvalidDSLQueryException:
             self.send_error(400, mesg='Invalid DSL query. Please check the documentation')
 

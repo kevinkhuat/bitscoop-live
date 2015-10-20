@@ -2178,6 +2178,7 @@
   "events": [
     {
       "_id" : "55dcdbff6a835a6d3060f7ee",
+      "contact_interaction_type": "to",
       "contacts_list" : [
         {
           "api_id" : "158017896",
@@ -2458,6 +2459,7 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f80e",
+      "contact_interaction_type": "to",
       "contacts_list" : [
         {
           "api_id" : "158017896",
@@ -2500,6 +2502,7 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f810",
+      "contact_interaction_type": "to",
       "contacts_list" : [
         {
           "api_id" : "158017896",
@@ -2542,6 +2545,7 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f812",
+      "contact_interaction_type": "to",
       "contacts_list" : [
         {
           "api_id" : "158017896",
@@ -2584,6 +2588,7 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f817",
+      "contact_interaction_type": "from",
       "contacts_list" : [
         {
           "api_id" : "158017896",
@@ -2626,6 +2631,7 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f818",
+      "contact_interaction_type": "from",
       "contacts_list" : [
         {
           "api_id" : "158017896",

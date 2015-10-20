@@ -27,6 +27,20 @@ input {
 	}
 }
 
+select {
+	outline: none;
+	border: 1px solid @input-border-color;
+	border-radius: 0;
+	background-color: transparent;
+
+	font-size: 1em;
+
+	margin: 0.25em;
+	padding: 0.5em;
+
+	.source-sans(300);
+}
+
 label {
 	font-size: 1.25em;
 	cursor: pointer;
@@ -36,6 +50,14 @@ label {
 		top: -2px;
 
 		margin-right: 1em;
+
+		cursor: pointer;
+	}
+
+	input[type="radio"] {
+		position: relative;
+
+		margin-right: 0.5em;
 
 		cursor: pointer;
 	}
@@ -61,6 +83,11 @@ div.text-box {
 
 .input-container {
 	margin: @input-margin;
+
+	select {
+		width: 100%;
+		display: block;
+	}
 }
 
 
@@ -79,7 +106,7 @@ div.text-box {
 		cursor: auto;
 	}
 
-	div.text-box {
+	& > div.text-box {
 		border: none;
 		margin: 0;
 	}

@@ -169,7 +169,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
-		bindVerifiedSignal: bindVerifiedSignal,
 		scrollToContent: scrollToContent
 	};
 });

@@ -78,12 +78,17 @@ class AccountView(View):
 
 
 class AccountDeactivateView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AccountDeactivateView, self).dispatch(*args, **kwargs)
+
     def post(self, request):
         user = request.user
         user.is_active = False
         user.save()
 
         logout(request)
+
         return HttpResponse(status=204)
 
 

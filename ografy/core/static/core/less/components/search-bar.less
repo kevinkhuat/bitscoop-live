@@ -1,47 +1,305 @@
+@import 'core/less/theme.less';
+
 @import 'core/less/components/controls.less';
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+@import 'core/less/mixins/selection.less';
 
 
 #search-bar {
-	width: 100%;
+	@padding: 0.6em;
 
+	position: relative;
+	width: 100%;
 	font-size: 1.6rem;
 
-	#filters {
-		padding: 0.5em 0.6em;
+	.source-sans;
+
+	#advanced {
+		padding: 0 @padding;
+
+		.flex;
+		.flex-x-center;
+	}
+
+	&:not(.expanded) {
+		#filter-controls {
+			display: none;
+		}
+	}
+
+	#filter-controls {
+		position: absolute;
+		left: 0; top: 100%; z-index: 100;
+		width: 100%;
+		cursor: auto;
+
+		.flex;
+		.flex-x-start;
+
+		& > div {
+			position: relative;
+			top: 10px;
+
+			background-color: @light;
+			border: 1px solid @input-border-color;
+		}
+
+		#filter-editor {
+			left: -1px;
+			margin-right: 8px;
+
+			padding: 0.85 * @padding @padding;
+
+			.no-select;
+
+			#filter-buttons {
+				.flex;
+				.flex-center;
+
+				.control {
+					font-size: 1.3em;
+					padding: 0.25em 0.5em;
+
+					cursor: pointer;
+
+					&:not(.disabled) {
+						&:hover {
+							position: relative;
+							color: @color4;
+
+							&:after {
+								display: inline-flex;
+								.flex-x-center;
+								.flex-center;
+
+								width: 0.85em; height: 0.85em;
+
+								position: absolute;
+								top: 0; right: 0;
+
+								margin: 0; padding: 0;
+
+								color: @color4;
+								background-color: @light;
+								border-radius: 5em;
+
+								content: '+';
+							}
+						}
+
+						&:active {
+							color: @color4;
+						}
+					}
+
+					&.disabled {
+						color: lighten(@font-color, 75%);
+						cursor: auto;
+					}
+
+					&.active {
+						color: @color4 !important;
+					}
+				}
+			}
+
+			#filter-values {
+				font-size: 0.75em;
+
+				input {
+					font-size: 1.1em;
+				}
+
+				label {
+					font-size: 1em;
+				}
+
+				form {
+					display: none;
+				}
+
+				&.who {
+					form.who {
+						display: block;
+					}
+				}
+
+				&.what {
+					form.what {
+						display: block;
+					}
+				}
+
+				&.when {
+					form.when {
+						display: block;
+					}
+				}
+
+				&.where {
+					form.where {
+						display: block;
+					}
+				}
+
+				&.connector {
+					form.connector {
+						display: block;
+					}
+				}
+
+				#filter-name {
+					padding: 0 1em;
+
+					.text-box {
+						border-left: none;
+						border-right: none;
+
+						margin-bottom: 1em;
+					}
+
+					&.hidden {
+						display: none;
+					}
+
+					input {
+						text-align: center;
+
+						font-size: 1em;
+						color: lighten(@font-color, 35%);
+					}
+				}
+			}
+		}
+
+		#filter-list {
+			left: 1px;
+			padding: 0.85 * @padding @padding 0 @padding;
+
+			max-height: 250px;
+			overflow-y: auto;
+
+			.no-select;
+			.hide-empty;
+
+			.filter {
+				display: inline-block;
+				margin-bottom: 0.85 / 0.7 * @padding;
+				cursor: pointer;
+
+				&:hover,
+				&:active,
+				&.active {
+					color: @dark;
+					background-color: darken(@light, 5%);
+					border-color: darken(@light, 25%);
+				}
+			}
+		}
+	}
+
+	#query-form {
+		&:first-child {
+			padding-left: @padding
+		}
 	}
 
 	#search-box {
-		&:first-child > input {
-			padding-left: 0.6em;
-		}
+		margin: 0;
+		border: none;
 
 		& > input {
-			padding-left: 0;
-			padding-right: 0;
+			padding: 0.35em 0;
+		}
+	}
+
+	#filters {
+		overflow: hidden;
+		cursor: auto;
+		padding-left: 0.5 * @padding;
+
+		.flex;
+		.flex-x-center;
+		.hide-empty;
+
+		.filter {
+			position: relative;
+			top: 1px;
+			cursor: pointer;
+
+			span {
+				display: block;
+				padding: 0.2em 0.3em;
+			}
+
+			i {
+				display: none;
+			}
+		}
+	}
+
+	#filter-overflow-count {
+		.flex;
+		.flex-x-center;
+		.hide-empty;
+
+		div {
+			font-size: 0.7em;
+			color: lighten(@dark, 35%);
+			background-color: darken(@light, 2%);
+
+			border: 1px solid darken(@light, 15%);
+			border-radius: 4px;
+
+			position: relative;
+			top: 1px;
+			padding: 0.2em 0.4em;
+		}
+	}
+
+	.filter {
+		display: inline-block;
+
+		font-size: 0.7em;
+
+		white-space: nowrap;
+
+		color: lighten(@dark, 35%);
+		background-color: darken(@light, 2%);
+
+		border: 1px solid darken(@light, 15%);
+		border-radius: 4px;
+
+		margin-right: 0.35em;
+
+		.source-sans;
+		.no-select;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		& > * {
+			padding: 0.45em;
+
+			&:first-child {
+				padding-right: 0em;
+			}
 		}
 	}
 
 	#search-button {
-		padding: 0.5em 0.6em;
+		padding: 0 @padding;
+
+		.flex;
+		.flex-x-center;
 	}
 
 	input {
 		font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
 		font-weight: 300;
 		font-size: 1.8rem;
-	}
-
-	&.darken {
-		& > #filters {
-			background-color: @input-border-color;
-		}
-
-		& > #search {
-			background-color: @input-border-color;
-		}
-
-		& > input {
-			padding: 0.25em 0.4em;
-		}
 	}
 }

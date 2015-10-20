@@ -1,14 +1,14 @@
-<div class="detail flex column">
+<div class="detail flex flex-column">
 	<div class="icon-{{ event.provider_name|lower }}"></div>
 	<div class="what detail">
 		<div class="what title">What</div>
 		{% for content in event.content_list %}
 		<div class="what instance">
 			<div class="title-type flex">
-				<div class="grow">
+				<div class="flex-grow">
 					{{ content.title }}
 				</div>
-				<div class="grow">
+				<div class="flex-grow">
 					{{ content.content_type|title }}
 				</div>
 			</div>
@@ -35,10 +35,10 @@
 		{% for contact in event.contacts_list %}
 		<div class="who instance">
 			<div class="names flex">
-				<div class="grow">
+				<div class="flex-grow">
 					{{ contact.name }}
 				</div>
-				<div class="grow">
+				<div class="flex-grow">
 					{{ contact.handle }}
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 	</div>
 	<div class="when detail flex">
 		<div class="when title">When</div>
-		<div class="datetime grow">
+		<div class="datetime flex-grow">
 			{{ datetime }}
 		</div>
 	</div>

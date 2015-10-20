@@ -9,11 +9,11 @@
 
 
 {% block main %}
-	<div>
-		<h2>Sign up for BitScoop</h2>
+	<form action="{% url 'signup' %}" method="POST">
+		<div class="boxed-group">
+			<div>Sign up for BitScoop</div>
 
-		<div>
-			<form action="{% url 'signup' %}" method="POST">
+			<div>
 				{% csrf_token %}
 
 				<div class="text-box">
@@ -54,13 +54,13 @@
 				<div>
 					{{ form.non_field_errors }}
 				</div>
-
-				<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
-
-				<div>
-					<input class="button-green" type="submit" value="Sign up" />
-				</div>
-			</form>
+			</div>
 		</div>
-	</div>
+
+		<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+
+		<div>
+			<input class="button-green" type="submit" value="Sign up" />
+		</div>
+	</form>
 {% endblock %}

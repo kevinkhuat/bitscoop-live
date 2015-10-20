@@ -7,15 +7,16 @@
 
 		{% if mode == 'app' %}
 			{% include 'core/components/search-bar.html' %}
-
-			<a href="#"><i class="fa fa-table"></i></a>
-			<a href="#" class="active"><i class="fa fa-map-o"></i></a>
-			<a href="#"><i class="fa fa-list"></i></a>
 		{% endif %}
+
+		<a href="{% url 'explorer:main' %}"><i class="fa fa-table"></i></a>
+		<a href="{% url 'explorer:main' %}"><i class="fa fa-map-o"></i></a>
+		<a href="{% url 'explorer:main' %}"><i class="fa fa-list"></i></a>
 
 		<span class="flex-grow"></span>
 
 		<a href="#"><i class="fa fa-question-circle"></i></a>
+		<a href="{% url 'providers' %}"><i class="fa fa-plus"></i></a>
 		<a href="{% url 'settings:base' %}"><i class="fa fa-cog"></i></a>
 
 		<a href="#">{{ request.user.identifier }}</a>
@@ -27,7 +28,7 @@
 
 		<span class="flex-grow"></span>
 
-		{% include 'core/components/search-bar.html' with hide_filters=True placeholder='Search connections' action='' %}
+		{% include 'core/components/search-bar.html' with hide_advanced=True hide_filters=True placeholder='Search connections' action='' %}
 
 		<input type="button" value="Done" />
 	</nav>
@@ -43,6 +44,8 @@
 		{% if not request.user.is_authenticated %}
 			<a href="{% url 'login' %}">Log In</a>
 			<a href="{% url 'signup' %}">TRY NOW!</a>
+		{% else %}
+			<a href="{% url 'explorer:main' %}">Explore</a>
 		{% endif %}
 	</nav>
 {% endif %}

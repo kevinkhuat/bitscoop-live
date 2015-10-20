@@ -2,11 +2,11 @@
 
 
 {% block main %}
-	<div>
-		<h2>Login to BitScoop</h2>
+	<form action="{% url 'login' %}" method="POST">
+		<div class="boxed-group">
+			<div>Login to BitScoop</div>
 
-		<div>
-			<form action="{% url 'login' %}" method="POST">
+			<div>
 				{% csrf_token %}
 
 				<div class="text-box">
@@ -24,11 +24,11 @@
 				<div class="input-container">
 					<label><input type="checkbox" name="remember_me" value="1" />Remember me</label>
 				</div>
-
-				<div>
-					<input type="submit" value="Log In" />
-				</div>
-			</form>
+			</div>
 		</div>
-	</div>
+
+		<div>
+			<input type="submit" value="Log In" />
+		</div>
+	</form>
 {% endblock %}

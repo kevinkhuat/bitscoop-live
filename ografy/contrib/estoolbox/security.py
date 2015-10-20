@@ -1,28 +1,6 @@
 from ografy.contrib.estoolbox import SEARCH_VALIDATION_OBJECT
 
 
-# Internal function to add a search term to an explicit query "datTime 6/15/15"
-def _add_term(key, val):
-    return {
-        'term': {
-            key: val
-        }
-    }
-
-
-# Add user ID filter
-def add_user_filter(query, user_id):
-    query['query']['filtered']['filter']['and'].append(
-        {
-            'bool': {
-                'must': _add_term('user_id', user_id)
-            }
-        }
-    )
-
-    return query
-
-
 class InvalidDSLQueryException(Exception):
     pass
 
@@ -34,7 +12,7 @@ def _check_allowed_properties(query, validation_query):
                 raise InvalidDSLQueryException('Invalid DSL query. Please check the documentation')
             elif validation_query[attr] is not None:
                 _check_allowed_properties(value, validation_query[attr])
-    elif isinstance(query, list):
+    elif isinstance(query, list) or isinstance(query, set):
         success = False
 
         for query_item in query:

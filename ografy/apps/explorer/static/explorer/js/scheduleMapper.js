@@ -8,10 +8,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	/**
 	 * Starts the process of getting the user's signals and calling the eventSources if their information is out-of-date
 	 *
-	 * @param {Integer} userId  The ID of the current user
 	 */
 	//TODO: Get userId from user eventSource and not signal
-	function run(userId) {
+	function run() {
 		endpointCache = {};
 		$.when(_getSignals(signals)).done(function() {
 			_checkAllSignalsLastRun();
@@ -26,13 +25,12 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 * Then sets a timer to run the process again at an interval specified as an input
 	 *
 	 * @param {Integer} time_ms  How often, in ms, this module should check
-	 * @param {Integer} user_id  The ID of the current user
 	 */
 	//Schedules
-	function schedule(time_ms, user_id) {
-		run(user_id);
+	function schedule(time_ms) {
+		run();
 		setInterval(function() {
-			run(user_id);
+			run();
 		}, time_ms);
 	}
 
@@ -43,7 +41,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 */
 	function _getSignals() {
 		return $.ajax({
-			url: 'opi/signal',
+			url: '/opi/signal',
 			type: 'GET',
 			dataType: 'json',
 			headers: {
@@ -347,7 +345,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				permissionPromiseList.push(permissionDeferred);
 
 				$.ajax({
-					url: 'opi/provider/' + signalToRun.provider,
+					url: '/opi/provider/' + signalToRun.provider,
 					type: 'GET',
 					dataType: 'json',
 					headers: {
@@ -398,7 +396,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				signalData.last_run = new Date().toJSON();
 
 				$.ajax({
-					url: 'opi/signal/' + signalToRun.id,
+					url: '/opi/signal/' + signalToRun.id,
 					type: 'PATCH',
 					contentType: 'application/json',
 					data: JSON.stringify(signalData),

@@ -1,9 +1,15 @@
 @import 'core/less/theme.less';
 
 @import 'core/less/components/controls.less';
+@import 'core/less/components/flexible-box.less';
+
+@import 'core/less/mixins/format.less';
+@import 'core/less/mixins/selection.less';
 
 
-body.explorer-main {
+body.explorer.main {
+	@control-margin: 10px;
+
 	header {
 		border-bottom: 1px solid @input-border-color;
 	}
@@ -16,15 +22,111 @@ body.explorer-main {
 		position: absolute;
 		top: 0; left: 0; z-index: 10;
 
-		height: 100%;
+		&:not(.expanded) {
+			#list,
+			#detail {
+				display: none;
+			}
+		}
 
-		width: 35%;
-		min-width: 400px;
+		&.expanded {
+			width: 25%;
+			min-width: 400px;
+
+			#expand-details {
+				left: 100%;
+			}
+		}
+
+		#expand-details {
+			position: absolute;
+			top: @control-margin; left: @control-margin; z-index: 15;
+
+			width: 1.25em; height: 1.25em;
+
+			font-size: 1.5em;
+			background-color: @light;
+			cursor: pointer;
+
+			.flex;
+			.flex-x-center;
+			.flex-center;
+
+			i {
+				position: relative;
+
+				&.fa-caret-right {
+					left: 1px;
+				}
+
+				&.fa-caret-left {
+					left: -1px;
+				}
+			}
+		}
 	}
 
-	#search-bar-form {
+	#list {
+		.hide-empty;
+
+		margin: @control-margin;
+		background-color: @light;
+		border: 1px solid @input-border-color;
+		overflow-y: auto;
+		max-height: 250px;
+
+		.list-element {
+			.flex;
+			.flex-x-center;
+
+			.no-select;
+
+			padding: 0 0.5em;
+			cursor: pointer;
+
+			&:nth-child(even) {
+				background-color: darken(@light, 5%);
+			}
+
+			&:hover,
+			&.active {
+				background-color: lighten(@color1, 15%);
+				color: @light;
+			}
+
+			> * {
+				padding: 0.5em;
+			}
+		}
+	}
+
+	#detail {
+		.hide-empty;
+
+		border: 1px solid @input-border-color;
+		background-color: @light;
+		padding: 1em; margin: @control-margin;
+
+		overflow: hidden;
+	}
+
+	#search-bar {
 		width: 50%;
 		min-width: 400px;
+
+		#filter-controls {
+			& > div {
+				top: 20px;
+			}
+		}
+	}
+
+	.leaflet-control-container {
+		a {
+			&.highlight {
+				background-color: @color4;
+			}
+		}
 	}
 
 	.mapbox-logo {

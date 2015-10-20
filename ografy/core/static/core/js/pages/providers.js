@@ -9,4 +9,8 @@ define(['jquery', 'jquery-mixitup'], function($) {
 			window.location = $this.data('link');
 		}
 	});
+
+	$('nav input[type="button"]').on('click', function(e) {
+		history.back();
+	});
 });

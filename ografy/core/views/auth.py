@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from django.shortcuts import HttpResponse, render
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from ografy.contrib.multiauth.decorators import login_required
@@ -49,6 +50,10 @@ class LoginView(View):
 
 
 class SudoView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(SudoView, self).dispatch(*args, **kwargs)
+
     def post(self, request):
         return HttpResponse('', status=200)
 

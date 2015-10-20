@@ -1,4 +1,4 @@
-SEARCH_TEXT_FIELDS = (
+SEARCH_TEXT_FIELDS = [
     'contacts_list.handle',
     'contacts_list.name',
     'content_list.content_type',
@@ -9,121 +9,124 @@ SEARCH_TEXT_FIELDS = (
     'content_list.url',
     'event_type',
     'provider_name',
-)
+]
 
 
 SEARCH_VALIDATION_OBJECT = {
-    'query': {
-        'filtered': {
-            'filter': {
+    'bool': {
+        'should': [
+            {
                 'and': [
                     {
-                        'bool': {
-                            'should': [
-                                {
-                                    'and': [
-                                        {
-                                            'or': [
-                                                {
-                                                    'term': {
-                                                        'contacts_list.name': None
-                                                    }
-                                                },
-                                                {
-                                                    'term': {
-                                                        'contacts_list.handle': None
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            'term': {
-                                                'contact_interaction_type': None
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    'term': {
-                                        'content_list.content_type': None
-                                    }
-                                },
-                                {
-                                    'geo_distance': {
-                                        'distance': None,
-                                        'location.geolocation': {
-                                            'lat': None,
-                                            'lon': None
-                                        }
-                                    }
-                                },
-                                {
-                                    'not': {
-                                        'geo_distance': {
-                                            'distance': None,
-                                            'location.geolocation': {
-                                                'lat': None,
-                                                'lon': None
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    'not': {
-                                        'geo_polygon': {
-                                            'location.geolocation': {
-                                                'points': [
-                                                    {
-                                                        'lat': None,
-                                                        'lon': None
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    'geo_polygon': {
-                                        'location.geolocation': {
-                                            'points': [
-                                                {
-                                                    'lat': None,
-                                                    'lon': None
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    'range': {
-                                        'datetime': {
-                                            'format': None,
-                                            'gte': None,
-                                            'lte': None
-                                        }
-                                    }
-                                },
-                                {
-                                    'term': {
-                                        'provider_name': None
-                                    }
+                        'or': [
+                            {
+                                'term': {
+                                    'contacts_list.name': None
                                 }
-                            ]
+                            },
+                            {
+                                'term': {
+                                    'contacts_list.handle': None
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        'term': {
+                            'contact_interaction_type': None
                         }
                     }
                 ]
             },
-            'query': {
-                'multi_match': {
-                    'query': None,
-                    'type': 'most_fields',
-                    'fields': SEARCH_TEXT_FIELDS
+            {
+                'term': {
+                    'contact_interaction_type': None
+                }
+            },
+            {
+                'or': [
+                    {
+                        'term': {
+                            'contacts_list.name': None
+                        }
+                    },
+                    {
+                        'term': {
+                            'contacts_list.handle': None
+                        }
+                    }
+                ]
+            },
+            {
+                'term': {
+                    'content_list.content_type': None
+                }
+            },
+            {
+                'geo_distance': {
+                    'distance': None,
+                    'location.geolocation': {
+                        'lat': None,
+                        'lon': None
+                    }
+                }
+            },
+            {
+                'not': {
+                    'geo_distance': {
+                        'distance': None,
+                        'location.geolocation': {
+                            'lat': None,
+                            'lon': None
+                        }
+                    }
+                }
+            },
+            {
+                'not': {
+                    'geo_polygon': {
+                        'location.geolocation': {
+                            'points': [
+                                {
+                                    'lat': None,
+                                    'lon': None
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                'geo_polygon': {
+                    'location.geolocation': {
+                        'points': [
+                            {
+                                'lat': None,
+                                'lon': None
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                'range': {
+                    'datetime': {
+                        'time_zone': None,
+                        'format': None,
+                        'gte': None,
+                        'lte': None
+                    }
+                }
+            },
+            {
+                'term': {
+                    'signal': None
                 }
             }
-        }
-    },
-    'size': None,
-    'from': None
+        ],
+        'must': [],
+        'must_not': []
+    }
 }
 
 
@@ -144,10 +147,14 @@ CONTACT_MAPPING = {
                 'doc_values': True
             },
             'handle': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'name': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'ografy_unique_id': {
                 'type': 'string',
@@ -177,7 +184,9 @@ CONTENT_MAPPING = {
     'content': {
         'properties': {
             'content_type': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'created': {
                 'type': 'date',
@@ -268,12 +277,16 @@ EVENT_MAPPING = {
     'event': {
         'properties': {
             'contact_interaction_type': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'contacts_list': {
                 'properties': {
                     'api_id': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'contact': {
                         'type': 'string',
@@ -286,10 +299,14 @@ EVENT_MAPPING = {
                         'doc_values': True
                     },
                     'handle': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'name': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'updated': {
                         'type': 'date',
@@ -306,7 +323,9 @@ EVENT_MAPPING = {
                         'doc_values': True
                     },
                     'content_type': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'created': {
                         'type': 'date',
@@ -314,10 +333,14 @@ EVENT_MAPPING = {
                         'doc_values': True
                     },
                     'file_extension': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'owner': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     },
                     'text': {
                         'type': 'string'
@@ -331,7 +354,9 @@ EVENT_MAPPING = {
                         'doc_values': True
                     },
                     'url': {
-                        'type': 'string'
+                        'type': 'string',
+                        'index': 'not_analyzed',
+                        'doc_values': True
                     }
                 }
             },
@@ -351,7 +376,9 @@ EVENT_MAPPING = {
                 'doc_values': True
             },
             'event_type': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'location': {
                 'type': 'object',
@@ -394,7 +421,9 @@ EVENT_MAPPING = {
                 'doc_values': True
             },
             'provider_name': {
-                'type': 'string'
+                'type': 'string',
+                'index': 'not_analyzed',
+                'doc_values': True
             },
             'signal': {
                 'type': 'string',

@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     print('Starting HTTP proxy...')  # noqa
 
-    application.listen(port)
+    application.listen(port, address='127.0.0.1')
 
     IOLoop.configure('tornado.platform.asyncio.AsyncIOLoop')
     IOLoop.current().start()

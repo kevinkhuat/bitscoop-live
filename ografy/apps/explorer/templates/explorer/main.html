@@ -12,6 +12,8 @@
 	<link rel='stylesheet' type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css'/>
 	{# leaflet-draw #}
 	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css" />
+	{# leaflet-awesome-markers #}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
 	{# leaflet-fullscreen #}
 	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css" />
 	{# leaflet-markercluster #}
@@ -20,9 +22,8 @@
 	{# leaflet-zoomslider #}
 	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css" />
 
-
 	<script type="text/javascript">
-		require(['map']);
+		require(['explorer']);
 	</script>
 {% endblock %}
 
@@ -33,12 +34,13 @@
 
 
 {% block main %}
-	<div id="left">
-		<div id="list" class="hidden"></div>
-		<div id="detail" class="hidden"></div>
-	</div>
+	<div id="left" class="autoblur">
+		<div id="list"></div>
+		<div id="detail"></div>
 
-	<div id="top">
+		<div id="expand-details" class="leaflet-bar hidden">
+			<i class="fa fa-caret-right"></i>
+		</div>
 	</div>
 
 	<div id="background" class="flex flex-grow autoblur"></div>
