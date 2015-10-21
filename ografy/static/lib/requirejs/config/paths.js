@@ -9,7 +9,10 @@ require.config({
 		search: window.staticUrl + 'core/js/components/search.min',
 		signalSettings: window.staticUrl + 'core/js/pages/signalSettings.min',
 		providers: window.staticUrl + 'core/js/pages/providers.min',
-		connections: window.staticUrl + 'core/js/pages/connections.min'
+		connections: window.staticUrl + 'core/js/pages/connections.min',
+
+		//Tooltip
+		tooltip: window.staticUrl + 'core/js/components/tooltip.min'
 	}
 });
 

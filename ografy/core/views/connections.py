@@ -8,15 +8,15 @@ from social.apps.django_app.default.models import UserSocialAuth
 
 from ografy.contrib.multiauth.decorators import login_required
 from ografy.core.api import ProviderApi, SignalApi
-from ografy.core.documents import Permission
+from ografy.core.documents import Permission, Signal
 
 
 @login_required
 def authorize(request):
-    # # Look up signals from API for current user where signal
-    # # is not verified or complete.
     unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
     unverified_signals = list(SignalApi.get(val=Q(user_id=request.user.id) & (Q(complete=False) | Q(connected=False))))
+
+    user = request.user
 
     signal_count = len(unverified_signals)
 
@@ -49,14 +49,27 @@ def authorize(request):
     else:
         signal = unverified_signals[0]
 
-        return HttpResponseRedirect(reverse('connections:verify', kwargs={'pk': signal.id}))
+        signal_data = UserSocialAuth.objects.filter(user=user.id, id=signal.usa_id).get().extra_data
 
-    # # Messed up signals
-    # return render(request, 'core/signals/authorize.html', {
-    #     'title': 'Ografy - Authorize ' + signal.name + ' Connection',  # Change to signal
-    #     'content_class': 'left',
-    #     'signal': signal
-    # })
+        # OAuth1 returns tokens on extra_data.  Signal.signal_data is serialized and sent to the user, and we don't
+        # want those tokens available on the client, so delete them from signal.signal_data
+        if signal.provider.auth_type == 1:
+            signal.oauth_token = signal_data['access_token'].pop('oauth_token')
+            signal.oauth_token_secret = signal_data['access_token'].pop('oauth_token_secret')
+        # OAuth2 also returns tokens on extra_data, and we similarly do not want those tokens passed to the client.
+        elif signal.provider.auth_type == 0:
+            signal.access_token = signal_data.pop('access_token')
+
+            if 'refresh_token' in signal_data.keys():
+                signal.refresh_token = signal_data.pop('refresh_token')
+
+        signal.signal_data = signal_data
+        signal.complete = True
+        signal.enabled = True
+
+        signal.save()
+
+        return HttpResponseRedirect(reverse('providers'))
 
 
 @login_required
@@ -64,68 +77,29 @@ def connect(request, name):
     expression = Q(name__iexact=name)
     provider = ProviderApi.get(expression).get()
 
-    return render(request, 'core/connections/connect.html', {
-        'title': 'Ografy - Connect to ' + provider.name,
-        'content_class': 'left',
-        'provider': provider,
-        'flex_override': True,
-        'user': request.user.id,
-        'current': 'connect',
-        'postback_url': reverse('connections:authorize')
-    })
-
-
-@login_required
-def verify(request, pk):
     if request.method == 'GET':
-        signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=pk)).get()
-        event_sources = ProviderApi.get(Q(provider_number=signal.provider.provider_number)).get().event_sources
+        event_sources = provider.event_sources
 
-        # If something went wrong with authorization,
-        if signal.connected is False:
-            return render(request, 'core/connections/authorize.html', {
-                'title': 'Ografy - Authorize ' + signal.provider.name + ' Connection',  # Change to signal
-                'flex_override': True,
-                'content_class': 'left',
-                'current': 'verify',
-                'signal': signal
-            })
-        else:
-            signal_data = UserSocialAuth.objects.filter(user=request.user.id, id=signal.usa_id).get().extra_data
-            # OAuth1 returns tokens on extra_data.  Signal.signal_data is serialized and sent to the user, and we don't
-            # want those tokens available on the client, so delete them from signal.signal_data
-            if signal.provider.auth_type == 1:
-                signal.oauth_token = signal_data['access_token'].pop('oauth_token')
-                signal.oauth_token_secret = signal_data['access_token'].pop('oauth_token_secret')
-            elif signal.provider.auth_type == 0:
-                signal.access_token = signal_data.pop('access_token')
-
-                if 'refresh_token' in signal_data.keys():
-                    signal.refresh_token = signal_data.pop('refresh_token')
-
-            signal.signal_data = signal_data
-            signal.save()
-
-            return render(request, 'core/connections/verify.html', {
-                'title': 'Ografy - Verify ' + signal.provider.name + ' Connection',  # Change to signal
-                'flex_override': True,
-                'content_class': 'left',
-                'signal': signal,
-                'provider': signal.provider,
-                'current': 'verify',
-                'event_source_dict': event_sources
-            })
+        return render(request, 'core/connections/connect.html', {
+            'title': 'Ografy - Connect to ' + provider.name,
+            'flex_override': True,
+            'provider': provider,
+            'event_source_dict': event_sources,
+            'postback_url': reverse('connections:authorize')
+        })
     elif request.method == 'POST':
-        signal = SignalApi.get(Q(user_id=request.user.id) & Q(id=pk)).get()
-        provider = ProviderApi.get(Q(provider_number=signal.provider.provider_number)).get()
-
-        if not signal.complete:
-            signal.complete = True
-            signal.enabled = True
-
-        signal.name = request.POST['name']
-        signal.frequency = int(request.POST['updateFrequency'])
-        signal.save()
+        signal = Signal(
+            user_id=request.user.id,
+            frequency=int(request.POST['updateFrequency']),
+            provider=provider,
+            name=request.POST['name'],
+            connected=True,
+            complete=False,
+            enabled=False,
+            created=datetime.datetime.now(),
+            updated=datetime.datetime.now(),
+            last_run=None
+        )
 
         # Get the event_source dictionary from the request
         permissions_list = json.loads(request.POST['permissions'])
@@ -152,6 +126,6 @@ def verify(request, pk):
                                 else:
                                     signal.endpoint_data[event_source_name][endpoint][parameter] = parameter_descriptions[parameter]['default']
 
-        signal.save()
+        SignalApi.post(signal)
 
-        return HttpResponse(reverse('providers'))
+        return HttpResponse(reverse('social:begin', kwargs={'backend': provider.backend_name}))

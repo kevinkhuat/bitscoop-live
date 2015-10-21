@@ -105,10 +105,10 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
-	function bindVerifiedSignal(selector) {
+	function bindConnectSignal(selector) {
 		$('body').on('click', selector, function() {
 			var data = {};
-			var signalId = $(this).parents('.content-list').data('signal-id');
+			var providerName = $('[data-provider-name]').data('provider-name');
 			data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
 			data.permissions = [];
 			data.name = $('input[name=signal-name]')[0].value;
@@ -121,7 +121,7 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 
 			data.permissions = JSON.stringify(data.permissions);
 			$.ajax({
-				url: '/connections/verify/' + signalId,
+				url: '/connections/connect/' + providerName.toLowerCase(),
 				type: 'POST',
 				'content-type': 'application/json',
 				dataType: 'text',
@@ -165,6 +165,7 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 	}
 
 	return {
+		bindConnectSignal: bindConnectSignal,
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,
