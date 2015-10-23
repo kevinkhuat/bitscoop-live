@@ -80,6 +80,36 @@ This HTTP PUT request should return something along the lines of:
 {"acknowledged":true}
 ```
 
+#### A note about ElasticSearch mappings:
+ElasticSearch field mappings are PUT into the database when `run_tornado.py` is
+run. On a freshly-created index, the mapping is created and applied. If a
+mapping already exists, ElasticSearch will attempt to merge the old and new
+mapping; if they're identical, then nothing new will happen and the mappings
+will remain the same. Restarting the Tornado server should have no effect on
+existing mappings since the mappings it attempts to apply should be identical to
+what is already there.
+
+In production, it should be impossible to insert data into ElasticSearch without
+a mapping present since the act of starting the Tornado server performs the
+mappings, and the Tornado server is the only place where data is inserted into
+ElasticSearch. If you are manually inserting data into ElasticSearch in
+development, such as by running the `insert_data` command, it is possible to
+insert data when no mapping exists. If you encounter ElasticSearch mapping
+errors, first delete the existing ElasticSearch index by running:
+
+```
+curl -XDELETE http://localhost:9200/core
+```
+
+Then re-create the index with:
+
+```
+curl -XPUT http://localhost:9200/core
+```
+
+Restart the Tornado server to have it insert the field mappings, and then
+finally add the manual data you were attempting to before.
+
 
 ## Initialize MongoDB
 From the main project directory run:
