@@ -1,0 +1,986 @@
+{
+  "provider": {
+    "provider_number": "000000000000000000000010",
+    "name": "Slice",
+    "client_callable": true,
+    "domain": "https://api.slice.com",
+    "endpoint_wait_time": 0,
+    "backend_name": "slice",
+    "auth_backend": "social.backends.slice.SliceOAuth2",
+    "description": "Online purchase tracker",
+    "tags": [
+      "finance"
+    ],
+    "auth_type": 0
+  },
+  "event_sources": {
+    "orders": {
+      "display_name": "Orders",
+      "description": "Orders you have placed online",
+      "enabled_by_default": true,
+      "endpoints": [
+        "orders",
+        "item",
+        "merchant",
+        "email"
+      ],
+      "initial_mapping": "orders",
+      "mappings": {
+        "orders": {
+          "returned_data_location": "result",
+          "type": "transaction",
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.orderNumber"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "transaction"
+                },
+                {
+                  "hydration_method": "split",
+                  "value": {
+                    "location": "responseObject.href",
+                    "split_separator": "/",
+                    "item_number": "last"
+                  }
+                }
+              ],
+              "mapped_fields": {
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "slice"
+                },
+                "datetime": {
+                  "hydration_method": "endpoint",
+                  "format": "unix_time_ms",
+                  "value": {
+                    "endpoint": "email",
+                    "parameter_sources": {
+                      "access_token": {
+                        "hydration_method": "server",
+                        "value": "access_token"
+                      },
+                      "id": {
+                        "hydration_method": "split",
+                        "value": {
+                          "location": "responseObject.orderEmails[0].href",
+                          "split_separator": "/",
+                          "item_number": "last"
+                        }
+                      }
+                    },
+                    "value_location": [
+                      [
+                        "result.sentDate"
+                      ]
+                    ]
+                  }
+                }
+              }
+            },
+            "content": {
+              "receipts": {
+                "hydrate_list_location": "responseObject.orderEmails",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "slice"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "receipt"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "receipt"
+                  },
+                  "owner": {
+                    "hydration_method": "literal",
+                    "value": "me"
+                  },
+                  "text": {
+                    "hydration_method": "concat",
+                    "value": [
+                      {
+                        "hydration_method": "reformat",
+                        "hydration_location": "responseObject.orderTotal",
+                        "value": "Total: [$1]\n"
+                      },
+                      {
+                        "hydration_method": "reformat",
+                        "hydration_location": "responseObject.orderNumber",
+                        "value": "Order Number: [$1]\n"
+                      }
+                    ]
+                  },
+                  "title": {
+                    "hydration_method": "concat",
+                    "value": [
+                      {
+                        "hydration_method": "endpoint",
+                        "value": {
+                          "endpoint": "merchant",
+                          "parameter_sources": {
+                            "access_token": {
+                              "hydration_method": "server",
+                              "value": "access_token"
+                            },
+                            "id": {
+                              "hydration_method": "split",
+                              "value": {
+                                "location": "responseObject.merchant.href",
+                                "split_separator": "/",
+                                "item_number": "last"
+                              }
+                            }
+                          },
+                          "value_location": [
+                            [
+                              "result.name"
+                            ]
+                          ]
+                        }
+                      },
+                      {
+                        "hydration_method": "translate",
+                        "value": "responseObject.purchaseType.name"
+                      }
+                    ]
+                  }
+                },
+                "url": {
+                  "hydration_method": "endpoint",
+                  "value": {
+                    "endpoint": "email",
+                    "parameter_sources": {
+                      "access_token": {
+                        "hydration_method": "server",
+                        "value": "access_token"
+                      },
+                      "id": {
+                        "hydration_method": "split",
+                        "value": {
+                          "location": "responseObject.href",
+                          "split_separator": "/",
+                          "item_number": "last"
+                        }
+                      }
+                    },
+                    "value_location": [
+                      [
+                        "result.content"
+                      ]
+                    ]
+                  }
+                }
+              },
+              "digital_items": {
+                "hydrate_list_location": "responseObject.items",
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.purchaseType.name",
+                      "value": "Digital Download"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "transaction"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "type": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.category.name"
+                        ]
+                      ],
+                      "translation": "content"
+                    }
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.productUrl"
+                        ],
+                        [
+                          "result.imageUrl"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.description"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "organizations": {
+              "merchants": {
+                "hydrate_list_location": "responseObject.merchant",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "organization"
+                  },
+                  {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "merchant",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "responseObject.merchant.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.name"
+                        ]
+                      ]
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "name": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "merchant",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "responseObject.merchant.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.name"
+                        ]
+                      ]
+                    }
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "value": "products"
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "merchant",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "responseObject.merchant.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.websiteUrl"
+                        ],
+                        [
+                          "result.returnPolicyUrl"
+                        ],
+                        [
+                          "result.serviceFormUrl"
+                        ],
+                        [
+                          "result.priceDropPolicyUrl"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "places": {
+              "destination_address": {
+                "hydrate_list_location": "responseObject.shipments",
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "transaction"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "reverse_geolocation": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "shipment",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.destinationAddress.locationString"
+                        ]
+                      ]
+                    }
+                  },
+                  "reverse_geolocation_type": {
+                    "hydration_method": "literal",
+                    "value": "address"
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "value": "residential"
+                  }
+                }
+              }
+            },
+            "things": {
+              "shippable_purchase": {
+                "hydrate_list_location": "responseObject.items",
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.purchaseType.name",
+                      "value": "Shippable Purchase"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "transaction"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "type": [
+                    {
+                      "hydration_method": "endpoint",
+                      "value": {
+                        "endpoint": "item",
+                        "parameter_sources": {
+                          "access_token": {
+                            "hydration_method": "server",
+                            "value": "access_token"
+                          },
+                          "id": {
+                            "hydration_method": "split",
+                            "value": {
+                              "location": "subObject.href",
+                              "split_separator": "/",
+                              "item_number": "last"
+                            }
+                          }
+                        },
+                        "value_location": [
+                          [
+                            "result.category.name"
+                          ]
+                        ],
+                        "translation": "things"
+                      }
+                    }
+                  ],
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.productUrl"
+                        ],
+                        [
+                          "result.imageUrl"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.description"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              },
+              "in_store_purchase": {
+                "hydrate_list_location": "responseObject.items",
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.purchaseType.name",
+                      "value": "In-Store Purchase"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "transaction"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "type": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.category.name"
+                        ]
+                      ],
+                      "translation": "things"
+                    }
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.productUrl"
+                        ],
+                        [
+                          "result.imageUrl"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.description"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              },
+              "in_store_pickup": {
+                "hydrate_list_location": "responseObject.items",
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.purchaseType.name",
+                      "value": "In-Store Pickup"
+                    }
+                  }
+                ],
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "transaction"
+                  },
+                  {
+                    "hydration_method": "split",
+                    "value": {
+                      "location": "href",
+                      "split_separator": "/",
+                      "item_number": "last"
+                    }
+                  }
+                ],
+                "mapped_fields": {
+                  "type": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.category.name"
+                        ]
+                      ],
+                      "translation": "things"
+                    }
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.productUrl"
+                        ],
+                        [
+                          "result.imageUrl"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.description"
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "nextPage",
+          "next_link_location": "next"
+        },
+        "type_mappings": {
+          "content": {
+            "Books": "text",
+            "Toys and Games": "game",
+            "Movies & TV": "video",
+            "Music": "Audio",
+            "Software & Mobile Apps": "software",
+            "Magazines": "text"
+          },
+          "things": {
+            "Books": "books-magazines",
+            "Baby Products": "baby",
+            "Home & Kitchen": "home-kitchen",
+            "Apparel & Accessories": "apparel-accessories",
+            "Health and Beauty": "health-beauty",
+            "Jewelry & Watches": "apparel-accessories",
+            "Toys & Games": "toys-games",
+            "Tools & Home Improvement": "tools-home-improvement",
+            "Grocery & Gourmet Food": "food",
+            "Automotive": "automotive",
+            "Movies & TV": "movies-tv",
+            "Office Products": "office",
+            "Appliances": "appliances",
+            "Sports & Outdoors": "sports-outdoors",
+            "Shoes": "apparel-accessories",
+            "Pet Supplies": "pet",
+            "Gift Cards": "gifts",
+            "Music": "music",
+            "Electronics & Accessories": "electronics",
+            "Software and Mobile Apps": "electronics",
+            "Flowers & Gifts": "gifts",
+            "Tickets & Events": "tickets-events",
+            "Photos & Paper Products": "office",
+            "Magazines": "books-magazines"
+          }
+        }
+      }
+    }
+  },
+  "endpoints": {
+    "orders": {
+      "call_method": "GET",
+      "path": "api/v1/orders",
+      "parameter_descriptions": {
+        "limit": {
+          "description": "Pagination counts",
+          "hydration_method": "literal",
+          "value": "50"
+        },
+        "since": {
+          "description": "Earliest date from which to return results",
+          "hydration_method": "translate",
+          "save_to_signal": {
+            "location": "epoch_now"
+          },
+          "value": "signal.endpoint_data.orders.orders.since"
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "Bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    "item": {
+      "call_method": "GET",
+      "path": "api/v1/items/[id]",
+      "additional_path_fields": [
+        {
+          "description": "ID of the item",
+          "parameter": "id",
+          "replace": "[id]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of an item",
+          "hydration_method": "split",
+          "value": {
+            "location": "subObject.href",
+            "split_separator": "/",
+            "item_number": "last"
+          }
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "Bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    "email": {
+      "call_method": "GET",
+      "path": "api/v1/emails/[id]",
+      "additional_path_fields": [
+        {
+          "description": "ID of the item",
+          "parameter": "id",
+          "replace": "[id]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of an item",
+          "hydration_method": "split",
+          "value": {
+            "location": "responseObject.orderEmails[0].href",
+            "split_separator": "/",
+            "item_number": "last"
+          }
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "Bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    "merchant": {
+      "call_method": "GET",
+      "path": "api/v1/merchants/[id]",
+      "additional_path_fields": [
+        {
+          "description": "ID of the item",
+          "parameter": "id",
+          "replace": "[id]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of an item",
+          "hydration_method": "split",
+          "value": {
+            "location": "responseObject.merchant.href",
+            "split_separator": "/",
+            "item_number": "last"
+          }
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "Bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    },
+    "shipment": {
+      "call_method": "GET",
+      "path": "api/v1/shipments/[id]",
+      "additional_path_fields": [
+        {
+          "description": "ID of the item",
+          "parameter": "id",
+          "replace": "[id]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of an item",
+          "hydration_method": "split",
+          "value": {
+            "location": "subObject.href",
+            "split_separator": "/",
+            "item_number": "last"
+          }
+        }
+      },
+      "header_descriptions": {
+        "access_token": {
+          "description": "OAuth2 access key",
+          "header_name": "Authorization",
+          "header_value": "Bearer [$1]",
+          "hydration_method": "server",
+          "value": "access_token"
+        }
+      }
+    }
+  }
+}

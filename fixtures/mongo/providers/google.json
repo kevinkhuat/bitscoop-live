@@ -30,7 +30,7 @@
       "mappings": {
         "youtube_playlist": {
           "returned_data_location": "items",
-          "event_type": "play",
+          "type": "play",
           "conditions": {
           },
           "db_entry_mapping": {
@@ -89,7 +89,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "video"
@@ -138,7 +138,7 @@
       "mappings": {
         "gmail_inbox": {
           "returned_data_location": "messages",
-          "event_type": "message",
+          "type": "message",
           "conditions": {
           },
           "db_entry_mapping": {
@@ -222,7 +222,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -377,7 +377,7 @@
       "mappings": {
         "drive_changes": {
           "returned_data_location": "items",
-          "event_type": "edit",
+          "type": "edit",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -451,7 +451,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "file"

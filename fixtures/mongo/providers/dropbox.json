@@ -26,7 +26,7 @@
       "mappings": {
         "delta": {
           "returned_data_location": "entries",
-          "event_type": "edit",
+          "type": "edit",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -58,7 +58,7 @@
                 }
               ],
               "mapped_fields": {
-                "`interaction_type": {
+                "contact_interaction_type": {
                   "hydration_method": "literal",
                   "value": "with"
                 },
@@ -95,7 +95,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "file"

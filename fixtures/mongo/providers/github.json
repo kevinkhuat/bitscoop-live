@@ -28,7 +28,7 @@
       "mappings": {
         "events": {
           "returned_data_location": "data",
-          "event_type": "edit",
+          "type": "edit",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -93,7 +93,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "code"
@@ -132,7 +132,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "code"
@@ -172,7 +172,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "code"
@@ -222,7 +222,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "code"

@@ -25,7 +25,7 @@
       "mappings": {
         "user_timeline": {
           "returned_data_location": "",
-          "event_type": "message",
+          "type": "message",
           "conditions": {
           },
           "db_entry_mapping": {
@@ -89,7 +89,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -172,7 +172,7 @@
       "initial_mapping": "direct_messages_sent",
       "mappings": {
         "direct_messages_sent": {
-          "event_type": "message",
+          "type": "message",
           "returned_data_location": "",
           "conditions": {
           },
@@ -232,7 +232,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -279,7 +279,7 @@
             },
             "location": {
               "datetime": {
-                "type": "translate",
+                "hydration_method": "translate",
                 "type": "string",
                 "value": "responseObject.datetime"
               },
@@ -291,7 +291,7 @@
               "geolocation": {
                 "hydration_method": "translate",
                 "type": "list",
-                "value": "responseObject.coordinates"
+                "value": "responseObject.coordinates.coordinates"
               },
               "resolution": {
                 "hydration_method": "translate",
@@ -320,7 +320,7 @@
       "enabled_by_default": true,
       "mappings": {
         "direct_messages_received": {
-          "event_type": "message",
+          "type": "message",
           "returned_data_location": "",
           "conditions": {
           },
@@ -383,7 +383,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"

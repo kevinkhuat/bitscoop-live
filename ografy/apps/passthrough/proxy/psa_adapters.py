@@ -52,7 +52,12 @@ def get_backend_module(signal):
     :param signal:
     :return: the backend module for the given signal
     """
-    return import_module('social.backends.{0}'.format(signal.provider.name.lower()))
+    name = format(signal.provider.name.lower())
+
+    if name in ['reddit', 'slice', 'spotify']:
+        return import_module('ografy.contrib.psafixbox.backends.' + name)
+    else:
+        return import_module('social.backends.' + name)
 
 
 def hydrate_server_fields(items, signal):

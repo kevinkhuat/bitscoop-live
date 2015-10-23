@@ -4,7 +4,7 @@
       "_id" : "55dcdbfe6a835a6d3060f7da",
       "api_id" : "158017896",
       "created" : "2015-08-25T17:19:58.017Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "handle" : "hegemonbill",
@@ -17,7 +17,7 @@
       "_id" : "55dcdc026a835a6d3060f802",
       "api_id" : "1934417741",
       "created" : "2015-08-25T17:20:02.493Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "handle" : "barankyle30",
@@ -30,9 +30,9 @@
   "content": [
     {
       "_id" : "55dcdbfd6a835a6d3060f7d9",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:57.905Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_631612420637614080",
@@ -43,9 +43,9 @@
     },
     {
       "_id" : "55dcdbfe6a835a6d3060f7db",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:58.058Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d2"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_630126014576726016",
@@ -56,9 +56,9 @@
     },
     {
       "_id" : "55dcdbfe6a835a6d3060f7dd",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:58.402Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d3"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_625059477037801472",
@@ -69,9 +69,9 @@
     },
     {
       "_id" : "55dcdbfe6a835a6d3060f7de",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:58.475Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d4"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660846175285250",
@@ -82,9 +82,9 @@
     },
     {
       "_id" : "55dcdbfe6a835a6d3060f7df",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:58.594Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d5"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660814395056128",
@@ -95,9 +95,9 @@
     },
     {
       "_id" : "55dcdbff6a835a6d3060f7eb",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:59.292Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d6"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660298789265408",
@@ -108,9 +108,9 @@
     },
     {
       "_id" : "55dcdbff6a835a6d3060f7ec",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:59.362Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d7"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660277754769409",
@@ -121,9 +121,9 @@
     },
     {
       "_id" : "55dcdbff6a835a6d3060f7ed",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:59.471Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d8"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660144409485314",
@@ -134,9 +134,9 @@
     },
     {
       "_id" : "55dcdbff6a835a6d3060f7f0",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:19:59.810Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223744889491459",
@@ -147,9 +147,9 @@
     },
     {
       "_id" : "55dcdc006a835a6d3060f7f8",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:20:00.688Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223526861246467",
@@ -160,9 +160,9 @@
     },
     {
       "_id" : "55dcdc006a835a6d3060f7f9",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:20:00.901Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223410695802887",
@@ -173,9 +173,9 @@
     },
     {
       "_id" : "55dcdc016a835a6d3060f7fd",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:20:01.644Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223921541058564",
@@ -186,9 +186,9 @@
     },
     {
       "_id" : "55dcdc016a835a6d3060f7fe",
-      "content_type" : "text",
+      "type" : "text",
       "created" : "2015-08-25T17:20:01.829Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
       "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627222411784523779",
@@ -199,9 +199,9 @@
     },
     {
       "_id" : "55dcdc026a835a6d3060f7ff",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:02.008Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e1"
       ],
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_221910_The Stanley Parable",
@@ -213,9 +213,9 @@
     },
     {
       "_id" : "55dcdc026a835a6d3060f800",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:02.079Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e2"
       ],
       "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_291650_Pillars of Eternity",
@@ -227,9 +227,9 @@
     },
     {
       "_id" : "55dcdc026a835a6d3060f801",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:02.250Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
@@ -242,9 +242,9 @@
     },
     {
       "_id" : "55dcdc026a835a6d3060f803",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:02.717Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e4"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
@@ -257,9 +257,9 @@
     },
     {
       "_id" : "55dcdc036a835a6d3060f804",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:03.170Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e5"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
@@ -272,9 +272,9 @@
     },
     {
       "_id" : "55dcdc036a835a6d3060f805",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:03.674Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e6"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
@@ -287,9 +287,9 @@
     },
     {
       "_id" : "55dcdc046a835a6d3060f806",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:04.100Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e7"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
@@ -302,9 +302,9 @@
     },
     {
       "_id" : "55dcdc046a835a6d3060f807",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:04.938Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e8"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
@@ -316,9 +316,9 @@
     },
     {
       "_id" : "55dcdc056a835a6d3060f808",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:05.259Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e9"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
@@ -330,9 +330,9 @@
     },
     {
       "_id" : "55dcdc056a835a6d3060f809",
-      "content_type" : "video",
+      "type" : "video",
       "created" : "2015-08-25T17:20:05.570Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
       "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
@@ -344,9 +344,9 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f80f",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:06.639Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f2"
       ],
@@ -359,9 +359,9 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f811",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:06.871Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f3"
       ],
@@ -374,9 +374,9 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f813",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:07.072Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f4"
       ],
@@ -389,9 +389,9 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f814",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:07.138Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f5"
       ],
@@ -404,9 +404,9 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f815",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:07.203Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f6"
       ],
@@ -419,9 +419,9 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f816",
-      "content_type" : "game",
+      "type" : "game",
       "created" : "2015-08-25T17:20:07.272Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f7"
       ],
@@ -2179,7 +2179,8 @@
     {
       "_id" : "55dcdbff6a835a6d3060f7ee",
       "contact_interaction_type": "to",
-      "contacts_list" : [
+      "contacts" : [
+
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:19:59.547Z",
@@ -2188,20 +2189,20 @@
           "updated" : "2015-08-25T17:19:59.547Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdbfd6a835a6d3060f7d9",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:57.905Z",
           "text" : "@hegemonbill I'm testing to see how tweet replies work.",
           "updated" : "2015-08-25T17:19:57.927Z"
         }
       ],
       "created" : "2015-08-25T17:19:59.549Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2221,21 +2222,21 @@
     },
     {
       "_id" : "55dcdbff6a835a6d3060f7ef",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbfe6a835a6d3060f7db",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:58.058Z",
           "text" : "Is location on?",
           "updated" : "2015-08-25T17:19:58.083Z"
         }
       ],
       "created" : "2015-08-25T17:19:59.687Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d2"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2255,21 +2256,21 @@
     },
     {
       "_id" : "55dcdc016a835a6d3060f7fa",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbfe6a835a6d3060f7dd",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:58.402Z",
           "text" : "Location location location",
           "updated" : "2015-08-25T17:19:58.422Z"
         }
       ],
       "created" : "2015-08-25T17:20:01.108Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d3"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2289,21 +2290,21 @@
     },
     {
       "_id" : "55dcdc016a835a6d3060f7fb",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbfe6a835a6d3060f7de",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:58.475Z",
           "text" : "Message received",
           "updated" : "2015-08-25T17:19:58.501Z"
         }
       ],
       "created" : "2015-08-25T17:20:01.235Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d4"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2323,21 +2324,21 @@
     },
     {
       "_id" : "55dcdc016a835a6d3060f7fc",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbfe6a835a6d3060f7df",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:58.594Z",
           "text" : "Cool pants",
           "updated" : "2015-08-25T17:19:58.613Z"
         }
       ],
       "created" : "2015-08-25T17:20:01.427Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d5"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2357,21 +2358,21 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f80b",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbff6a835a6d3060f7eb",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:59.292Z",
           "text" : "Arglebargle",
           "updated" : "2015-08-25T17:19:59.311Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.042Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d6"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2391,21 +2392,21 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f80c",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbff6a835a6d3060f7ec",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:59.362Z",
           "text" : "Test 2",
           "updated" : "2015-08-25T17:19:59.387Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.159Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d7"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2425,21 +2426,21 @@
     },
     {
       "_id" : "55dcdc066a835a6d3060f80d",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdbff6a835a6d3060f7ed",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:59.471Z",
           "text" : "Test #1",
           "updated" : "2015-08-25T17:19:59.493Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.370Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfd6a835a6d3060f7d8"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2460,7 +2461,7 @@
     {
       "_id" : "55dcdc066a835a6d3060f80e",
       "contact_interaction_type": "to",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:20:06.512Z",
@@ -2469,20 +2470,20 @@
           "updated" : "2015-08-25T17:20:06.512Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdbff6a835a6d3060f7f0",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:19:59.810Z",
           "text" : "Who is the milkman?",
           "updated" : "2015-08-25T17:19:59.829Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.514Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2503,7 +2504,7 @@
     {
       "_id" : "55dcdc066a835a6d3060f810",
       "contact_interaction_type": "to",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:20:06.720Z",
@@ -2512,20 +2513,20 @@
           "updated" : "2015-08-25T17:20:06.721Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc006a835a6d3060f7f8",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:20:00.688Z",
           "text" : "Mega scruples.",
           "updated" : "2015-08-25T17:20:00.704Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.723Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2546,7 +2547,7 @@
     {
       "_id" : "55dcdc066a835a6d3060f812",
       "contact_interaction_type": "to",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:20:06.946Z",
@@ -2555,20 +2556,20 @@
           "updated" : "2015-08-25T17:20:06.946Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc006a835a6d3060f7f9",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:20:00.901Z",
           "text" : "No, mortal frenemy.",
           "updated" : "2015-08-25T17:20:00.935Z"
         }
       ],
       "created" : "2015-08-25T17:20:06.949Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2589,7 +2590,7 @@
     {
       "_id" : "55dcdc076a835a6d3060f817",
       "contact_interaction_type": "from",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:20:07.377Z",
@@ -2598,20 +2599,20 @@
           "updated" : "2015-08-25T17:20:07.378Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc016a835a6d3060f7fd",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:20:01.644Z",
           "text" : "Your dad",
           "updated" : "2015-08-25T17:20:01.684Z"
         }
       ],
       "created" : "2015-08-25T17:20:07.382Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2632,7 +2633,7 @@
     {
       "_id" : "55dcdc076a835a6d3060f818",
       "contact_interaction_type": "from",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "158017896",
           "created" : "2015-08-25T17:20:07.533Z",
@@ -2641,20 +2642,20 @@
           "updated" : "2015-08-25T17:20:07.533Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc016a835a6d3060f7fe",
-          "content_type" : "text",
+          "type" : "text",
           "created" : "2015-08-25T17:20:01.829Z",
           "text" : "Friend?",
           "updated" : "2015-08-25T17:20:01.850Z"
         }
       ],
       "created" : "2015-08-25T17:20:07.537Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
-      "event_type" : "message",
+      "type" : "message",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2674,11 +2675,11 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f819",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc026a835a6d3060f7ff",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:02.008Z",
           "title" : "The Stanley Parable",
           "updated" : "2015-08-25T17:20:02.032Z",
@@ -2686,10 +2687,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.666Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e1"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2709,11 +2710,11 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f81a",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc026a835a6d3060f800",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:02.079Z",
           "title" : "Pillars of Eternity",
           "updated" : "2015-08-25T17:20:02.112Z",
@@ -2721,10 +2722,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.765Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e2"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2744,7 +2745,7 @@
     },
     {
       "_id" : "55dcdc076a835a6d3060f81b",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:07.875Z",
@@ -2753,10 +2754,10 @@
           "updated" : "2015-08-25T17:20:07.875Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc026a835a6d3060f801",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:02.250Z",
           "text" : "It's a wild horse.",
           "title" : "Liked It's a wild horse.",
@@ -2765,10 +2766,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:07.882Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
-      "event_type" : "comment",
+      "type" : "comment",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2788,7 +2789,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f81c",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.000Z",
@@ -2811,10 +2812,10 @@
           "updated" : "2015-08-25T17:20:08.004Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc026a835a6d3060f803",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:02.717Z",
           "text" : "Serious power",
           "title" : "Liked Serious power",
@@ -2823,7 +2824,7 @@
         },
         {
           "content" : "55dcdc026a835a6d3060f803",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:02.717Z",
           "text" : "Serious power",
           "title" : "Liked Serious power",
@@ -2832,10 +2833,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.007Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e4"
       ],
-      "event_type" : "comment",
+      "type" : "comment",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2855,7 +2856,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f81d",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.129Z",
@@ -2878,10 +2879,10 @@
           "updated" : "2015-08-25T17:20:08.131Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc036a835a6d3060f804",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:03.170Z",
           "text" : "The room",
           "title" : "Liked The room",
@@ -2890,7 +2891,7 @@
         },
         {
           "content" : "55dcdc036a835a6d3060f804",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:03.170Z",
           "text" : "The room",
           "title" : "Liked The room",
@@ -2899,10 +2900,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.136Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbfe6a835a6d3060f7e5"
       ],
-      "event_type" : "comment",
+      "type" : "comment",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2922,7 +2923,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f81e",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.262Z",
@@ -2945,10 +2946,10 @@
           "updated" : "2015-08-25T17:20:08.264Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc036a835a6d3060f805",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:03.674Z",
           "text" : "Nice piece",
           "title" : "Liked Nice piece",
@@ -2957,7 +2958,7 @@
         },
         {
           "content" : "55dcdc036a835a6d3060f805",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:03.674Z",
           "text" : "Nice piece",
           "title" : "Liked Nice piece",
@@ -2966,10 +2967,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.266Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e6"
       ],
-      "event_type" : "comment",
+      "type" : "comment",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -2989,7 +2990,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f81f",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.408Z",
@@ -3005,10 +3006,10 @@
           "updated" : "2015-08-25T17:20:08.415Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc046a835a6d3060f806",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:04.100Z",
           "text" : "The room",
           "title" : "The room",
@@ -3017,7 +3018,7 @@
         },
         {
           "content" : "55dcdc046a835a6d3060f806",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:04.100Z",
           "text" : "The room",
           "title" : "The room",
@@ -3026,10 +3027,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.426Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e7"
       ],
-      "event_type" : "create",
+      "type" : "create",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3049,7 +3050,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f820",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.543Z",
@@ -3065,10 +3066,10 @@
           "updated" : "2015-08-25T17:20:08.544Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc046a835a6d3060f807",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:04.938Z",
           "text" : "Nice piece",
           "title" : "Nice piece",
@@ -3076,7 +3077,7 @@
         },
         {
           "content" : "55dcdc046a835a6d3060f807",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:04.938Z",
           "text" : "Nice piece",
           "title" : "Nice piece",
@@ -3084,10 +3085,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.550Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e8"
       ],
-      "event_type" : "create",
+      "type" : "create",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3107,7 +3108,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f821",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.678Z",
@@ -3123,10 +3124,10 @@
           "updated" : "2015-08-25T17:20:08.680Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc056a835a6d3060f808",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:05.259Z",
           "text" : "Serious power",
           "title" : "Serious power",
@@ -3134,7 +3135,7 @@
         },
         {
           "content" : "55dcdc056a835a6d3060f808",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:05.259Z",
           "text" : "Serious power",
           "title" : "Serious power",
@@ -3142,10 +3143,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.685Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7e9"
       ],
-      "event_type" : "create",
+      "type" : "create",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3165,7 +3166,7 @@
     },
     {
       "_id" : "55dcdc086a835a6d3060f822",
-      "contacts_list" : [
+      "contacts" : [
         {
           "api_id" : "1934417741",
           "created" : "2015-08-25T17:20:08.795Z",
@@ -3181,10 +3182,10 @@
           "updated" : "2015-08-25T17:20:08.797Z"
         }
       ],
-      "content_list" : [
+      "content" : [
         {
           "content" : "55dcdc056a835a6d3060f809",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:05.570Z",
           "text" : "It's a wild horse.",
           "title" : "It's a wild horse.",
@@ -3192,7 +3193,7 @@
         },
         {
           "content" : "55dcdc056a835a6d3060f809",
-          "content_type" : "video",
+          "type" : "video",
           "created" : "2015-08-25T17:20:05.570Z",
           "text" : "It's a wild horse.",
           "title" : "It's a wild horse.",
@@ -3200,10 +3201,10 @@
         }
       ],
       "created" : "2015-08-25T17:20:08.803Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
-      "event_type" : "create",
+      "type" : "create",
       "location" : {
         "geo_format" : "lat_lng",
         "geolocation" :  [
@@ -3222,11 +3223,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f823",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc066a835a6d3060f80f",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:06.639Z",
           "title" : "8888888888888888",
           "updated" : "2015-08-25T17:20:06.662Z",
@@ -3234,11 +3235,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.080Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f2"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3258,11 +3259,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f824",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc066a835a6d3060f811",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:06.871Z",
           "title" : "Click on door 430 five times.",
           "updated" : "2015-08-25T17:20:06.889Z",
@@ -3270,11 +3271,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.181Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f3"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3294,11 +3295,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f825",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc076a835a6d3060f813",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:07.072Z",
           "title" : "Achievement",
           "updated" : "2015-08-25T17:20:07.087Z",
@@ -3306,11 +3307,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.501Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f4"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3330,11 +3331,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f826",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc076a835a6d3060f814",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:07.138Z",
           "title" : "Welcome back!",
           "updated" : "2015-08-25T17:20:07.157Z",
@@ -3342,11 +3343,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.610Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f5"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3366,11 +3367,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f827",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc076a835a6d3060f815",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:07.203Z",
           "title" : "You can't jump",
           "updated" : "2015-08-25T17:20:07.225Z",
@@ -3378,11 +3379,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.745Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f6"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3402,11 +3403,11 @@
     },
     {
       "_id" : "55dcdc096a835a6d3060f828",
-      "contacts_list" : [],
-      "content_list" : [
+      "contacts" : [],
+      "content" : [
         {
           "content" : "55dcdc076a835a6d3060f816",
-          "content_type" : "game",
+          "type" : "game",
           "created" : "2015-08-25T17:20:07.272Z",
           "title" : "Beat the game",
           "updated" : "2015-08-25T17:20:07.294Z",
@@ -3414,11 +3415,11 @@
         }
       ],
       "created" : "2015-08-25T17:20:09.869Z",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f7"
       ],
-      "event_type" : "play",
+      "type" : "play",
       "location" : {
         "estimated" : true,
         "estimation_method" : "Last",
@@ -3440,7 +3441,7 @@
   "locations": [
     {
       "_id" : "55dcdc056a835a6d3060f80a",
-      "data_id_list" : [
+      "data" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
       "datetime" : "2015-06-01T01:31:00.000Z",
@@ -3516,7 +3517,7 @@
             "initial_mapping" : "games_owned",
             "mappings" : {
               "games_owned" : {
-                "event_type" : "play",
+                "type" : "play",
                 "returned_data_location" : "response.games",
                 "db_entry_mapping" : {
                   "content" : {
@@ -3526,7 +3527,7 @@
                           "hydration_method" : "translate",
                           "value" : "responseObject.name"
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "game"
@@ -3711,7 +3712,7 @@
                 "returned_data_location" : "response.games"
               },
               "achievements" : {
-                "event_type" : "play",
+                "type" : "play",
                 "returned_data_location" : "playerstats.achievements",
                 "db_entry_mapping" : {
                   "content" : {
@@ -3742,7 +3743,7 @@
                             "endpoint" : "game_schema"
                           }
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "game"
@@ -3939,7 +3940,7 @@
                 "next_cursor_location" : "pagination"
               },
               "instagram_likes" : {
-                "event_type" : "comment",
+                "type" : "comment",
                 "returned_data_location" : "data",
                 "db_entry_mapping" : {
                   "content" : {
@@ -3950,7 +3951,7 @@
                           "hydration_method" : "reformat",
                           "value" : "Liked [$1]"
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "video"
@@ -3994,7 +3995,7 @@
                           "hydration_method" : "reformat",
                           "value" : "Liked [$1]"
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "photo"
@@ -4217,7 +4218,7 @@
                 "end_cursor_parameter" : "max_id"
               },
               "instagram_feed" : {
-                "event_type" : "create",
+                "type" : "create",
                 "returned_data_location" : "data",
                 "db_entry_mapping" : {
                   "location" : {
@@ -4247,7 +4248,7 @@
                           "hydration_method" : "translate",
                           "value" : "responseObject.caption.text"
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "video"
@@ -4286,7 +4287,7 @@
                           "hydration_method" : "translate",
                           "value" : "responseObject.caption.text"
                         },
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "photo"
@@ -4516,7 +4517,7 @@
             "initial_mapping" : "direct_messages_received",
             "mappings" : {
               "direct_messages_received" : {
-                "event_type" : "message",
+                "type" : "message",
                 "unique_identifiers" : [
                   {
                     "hydration_method" : "translate",
@@ -4549,7 +4550,7 @@
                   "content" : {
                     "messages" : {
                       "mapped_fields" : {
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "text"
@@ -4708,7 +4709,7 @@
                 "end_cursor_parameter" : "max_id"
               },
               "user_timeline" : {
-                "event_type" : "message",
+                "type" : "message",
                 "returned_data_location" : "",
                 "db_entry_mapping" : {
                   "location" : {
@@ -4735,7 +4736,7 @@
                   "content" : {
                     "tweets" : {
                       "mapped_fields" : {
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "text"
@@ -4890,7 +4891,7 @@
                 "end_cursor_parameter" : "max_id"
               },
               "direct_messages_sent" : {
-                "event_type" : "message",
+                "type" : "message",
                 "returned_data_location" : "",
                 "db_entry_mapping" : {
                   "location" : {
@@ -4917,7 +4918,7 @@
                   "content" : {
                     "messages" : {
                       "mapped_fields" : {
-                        "content_type" : {
+                        "type" : {
                           "type" : "string",
                           "hydration_method" : "literal",
                           "value" : "text"

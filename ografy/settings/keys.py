@@ -53,6 +53,14 @@ SOCIAL_AUTH_REDDIT_KEY = 'h7ph9Kpy9LklQQ'
 SOCIAL_AUTH_REDDIT_SECRET = 'KuHqLJBRd-tAudrstMVHE7fnwm4'
 
 
+#########
+# Slice #
+#########
+
+SOCIAL_AUTH_SLICE_KEY = '35fdde5b'
+SOCIAL_AUTH_SLICE_SECRET = '2c5d2caa37a7d5ea49786594aac10570'
+
+
 ###########
 # Spotify #
 ###########

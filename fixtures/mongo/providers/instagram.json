@@ -26,7 +26,7 @@
       "mappings": {
         "feed": {
           "returned_data_location": "data",
-          "event_type": "create",
+          "type": "create",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -105,7 +105,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "photo"
@@ -144,7 +144,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "video"
@@ -264,7 +264,7 @@
       "mappings": {
         "likes": {
           "returned_data_location": "data",
-          "event_type": "comment",
+          "type": "comment",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -341,7 +341,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "photo"
@@ -385,7 +385,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "video"

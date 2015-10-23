@@ -10,6 +10,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'ografy.core.backends.IdentifierBackend',
     'ografy.contrib.psafixbox.backends.reddit.RedditOAuth2',
+    'ografy.contrib.psafixbox.backends.slice.SliceOAuth2',
     'ografy.contrib.psafixbox.backends.spotify.SpotifyOAuth2',
     # 'social.backends.amazon.AmazonOAuth2',
     # 'social.backends.angel.AngelOAuth2',

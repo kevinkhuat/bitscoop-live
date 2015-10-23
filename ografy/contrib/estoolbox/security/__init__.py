@@ -1,7 +1,11 @@
-from ografy.contrib.estoolbox import SEARCH_VALIDATION_OBJECT
+from ografy.contrib.estoolbox.security.validators import FILTER_VALIDATOR
 
 
 class InvalidDSLQueryException(Exception):
+    pass
+
+
+class InvalidTagExcpetion(Exception):
     pass
 
 
@@ -37,5 +41,26 @@ def _check_allowed_properties(query, validation_query):
         raise InvalidDSLQueryException('Invalid DSL query. Please check the documentation')
 
 
+def validate_tags(document, field_validator):
+    for key in field_validator.keys():
+        if key in document.keys():
+            field_value = document[key]
+            validator_value = field_validator[key]
+
+            # If the field contains only a single tag, and it's not in a list
+            if not isinstance(field_value, list):
+                # If this field is supposed to contain a list of tags, then there's an error
+                if validator_value['many']:
+                    raise InvalidTagExcpetion('Only one tag allowed, but a list of tags was provided')
+                else:
+                    pass
+            elif isinstance(field_value, list):
+                allowed_fields = validator_value['allowed']
+
+                for item in field_value:
+                    if item not in allowed_fields and item is not None:
+                        raise InvalidTagExcpetion('An invalid tag was found')
+
+
 def validate_dsl(query):
-    _check_allowed_properties(query, SEARCH_VALIDATION_OBJECT)
+    _check_allowed_properties(query, FILTER_VALIDATOR)

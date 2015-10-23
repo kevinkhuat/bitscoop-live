@@ -32,7 +32,6 @@ environment and install the requirements with:
 
 ```
 pip install -r requirements/django.txt
-pip install -r requirements/development.txt
 ```
 
 In a separate terminal activate the Tornado virtual environment and install the
@@ -40,7 +39,6 @@ requirements with:
 
 ```
 pip install -r requirments/tornado.txt
-pip install -r requirments/development.txt
 ```
 
 Install the NodeJS requirements with:
@@ -49,9 +47,9 @@ Install the NodeJS requirements with:
 npm install
 ```
 
-Edit your host file to point `ografy.io` to localhost (127.0.0.1). Note this is
-for development only, if you want to use the real site, you'll need to comment
-out this host file entry!
+Edit your host file to point both `bitscoop.com` and `p.bitscoop.com` to
+localhost (127.0.0.1). Note this is for development only, if you want to use the
+real site, you'll need to comment out this host file entry!
 
 
 ## Initialize ElasticSearch
@@ -67,8 +65,9 @@ You can then boot the ElasticSearch server with:
 elasticsearch -Des.config=config/elasticsearch/elasticsearch.yml
 ```
 
-Before you run the application you'll need to create the appropriate indices in
-the database. With the ElasticSearch server running:
+Before this ElasticSearch database can save data, you must create an index. You
+need only do this once, but it must be repeated if you delete the database to
+refresh the project. With the ElasticSearch service running:
 
 ```
 curl -XPUT http://localhost:9200/core
@@ -80,35 +79,21 @@ This HTTP PUT request should return something along the lines of:
 {"acknowledged":true}
 ```
 
-#### A note about ElasticSearch mappings:
-ElasticSearch field mappings are PUT into the database when `run_tornado.py` is
-run. On a freshly-created index, the mapping is created and applied. If a
-mapping already exists, ElasticSearch will attempt to merge the old and new
-mapping; if they're identical, then nothing new will happen and the mappings
-will remain the same. Restarting the Tornado server should have no effect on
-existing mappings since the mappings it attempts to apply should be identical to
-what is already there.
+You will then need to create the mappings used by the various front-end
+applications. From either the Django or Tornado virtual environments run:
 
-In production, it should be impossible to insert data into ElasticSearch without
-a mapping present since the act of starting the Tornado server performs the
-mappings, and the Tornado server is the only place where data is inserted into
-ElasticSearch. If you are manually inserting data into ElasticSearch in
-development, such as by running the `insert_data` command, it is possible to
-insert data when no mapping exists. If you encounter ElasticSearch mapping
-errors, first delete the existing ElasticSearch index by running:
+```
+python manage.py migrate_elasticsearch
+```
+
+If you need to refresh the mappings you can recreate the index without deleting
+the database by running:
 
 ```
 curl -XDELETE http://localhost:9200/core
-```
-
-Then re-create the index with:
-
-```
 curl -XPUT http://localhost:9200/core
+python manage.py migrate_elasticsearch
 ```
-
-Restart the Tornado server to have it insert the field mappings, and then
-finally add the manual data you were attempting to before.
 
 
 ## Initialize MongoDB
@@ -131,7 +116,7 @@ the MongoDB service. The run the following commands in the MongoDB command line:
 
 ```
 use ografy_db
-db.dummy.insert({'test':'data'})
+db.dummy.insert({})
 db.getCollection('dummy').drop()
 exit
 ```
@@ -155,8 +140,7 @@ nginx -p . -c config/nginx.conf
 ```
 
 You'll need to execute this command with sudo privileges to bind to port 80 and
-443 (even on localhost). You can change the ports in the configuration if you
-need to, but the application is not tested against this.
+443 (even on localhost).
 
 
 ## Initialize Redis
@@ -175,23 +159,14 @@ redis-server config/redis.conf
 
 ## Insert Initial Data
 
-You'll need to insert the initial data into the development sqlite and MongoDB
-databases. With your virtual environment active run:
+You'll need to insert the initial data into the development sqlite, MongoDB, and
+ElasticSearch databases. With your Django virtual environment active run:
 
 ```
-export DJANGO_SETTINGS_MODULE="ografy.settings.development"
-source config/signals.sh
 python manage.py migrate
 python manage.py insert_main_fixtures
 python manage.py insert_data
 ```
-
-The MongoDB server needs to be available for the `insert_main_fixtures` and
-`insert_data` management commands to succeed.
-
-Note that sourcing on API keys found in `config/signals.sh` may fail if the file
-is not version controlled in the future with fake keys. You'll need to acquire
-these keys from an Ografy developer or supply your own.
 
 
 ## Running a Development Server
@@ -199,14 +174,21 @@ You can run a local development server to test changes to the web application.
 First make sure you compile the appropriate static files.
 
 ```
-grunt less
-grunt nunjucks
+grunt devel
+```
+
+You can watch for file changes and automatically re-run the `devel` Grunt task
+with:
+
+```
+grunt watch
 ```
 
 You need to start the tornado auth server after activating the Tornado virtual
 environment from the main project directory with:
 
 ```
+export DJANGO_SETTINGS_MODULE=ografy.settings.development
 python tornado.py
 ```
 
@@ -214,5 +196,33 @@ You must also start the main application after activating the Django virtual
 environment from the main project directory with:
 
 ```
-gunicorn wsgi --env DJANGO_SETTINGS_MODULE=ografy.settings.development --reload
+python manage.py runserver
+```
+
+
+## Quick Reference
+Execute these commands from the main project directory to get a development
+server up and running. Check the preceeding instructions for more specific
+details and examples.
+
+Back-end servers:
+
+```
+sudo nginx -p . -c config/nginx.conf
+redis-server config/redis.conf
+elasticsearch -Des.config=config/elasticsearch/elasticsearch.yml
+mongod -f config/mongod.conf
+```
+
+Front-end passthrough run from the Tornado virtual environment.
+
+```
+export DJANGO_SETTINGS_MODULE=ografy.settings.development
+python run_tornado.py
+```
+
+Front-end web run from the Django virtual environment.
+
+```
+python manage.py runserver
 ```

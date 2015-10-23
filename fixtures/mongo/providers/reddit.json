@@ -26,7 +26,7 @@
       "mappings": {
         "comments": {
           "returned_data_location": "data.children",
-          "event_type": "message",
+          "type": "message",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -103,7 +103,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -168,7 +168,7 @@
       "mappings": {
         "submitted": {
           "returned_data_location": "data.children",
-          "event_type": "create",
+          "type": "create",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -240,7 +240,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -284,7 +284,7 @@
       "mappings": {
         "upvoted": {
           "returned_data_location": "data.children",
-          "event_type": "comment",
+          "type": "comment",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -361,7 +361,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -426,7 +426,7 @@
       "mappings": {
         "downvoted": {
           "returned_data_location": "data.children",
-          "event_type": "comment",
+          "type": "comment",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -495,7 +495,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -560,7 +560,7 @@
       "mappings": {
         "saved": {
           "returned_data_location": "data.children",
-          "event_type": "message",
+          "type": "message",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -629,7 +629,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -689,7 +689,7 @@
       "mappings": {
         "gilded": {
           "returned_data_location": "data.children",
-          "event_type": "comment",
+          "type": "comment",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -758,7 +758,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -818,7 +818,7 @@
       "mappings": {
         "inbox": {
           "returned_data_location": "data.children",
-          "event_type": "message",
+          "type": "message",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -887,7 +887,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"
@@ -947,7 +947,7 @@
       "mappings": {
         "sent": {
           "returned_data_location": "data.children",
-          "event_type": "message",
+          "type": "message",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -1016,7 +1016,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "text"

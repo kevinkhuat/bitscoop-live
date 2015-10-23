@@ -27,7 +27,7 @@
       "mappings": {
         "playlists": {
           "returned_data_location": "items",
-          "event_type": "create",
+          "type": "create",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -75,7 +75,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "audio"
@@ -111,7 +111,7 @@
       "mappings": {
         "saved_tracks": {
           "returned_data_location": "items",
-          "event_type": "play",
+          "type": "play",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -164,7 +164,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "audio"

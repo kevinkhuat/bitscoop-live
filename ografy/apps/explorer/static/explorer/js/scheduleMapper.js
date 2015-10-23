@@ -108,7 +108,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 * @returns {Object} Can be a string, an int, an array, or a promise
 	 */
 	function _hydrateField(context, propertyMapping) {
-		var returnValue;
+		var returnValue, deferred;
 		var value = _.get(propertyMapping, 'value');
 		var hydration_method = _.get(propertyMapping, 'hydration_method');
 		var type = _.get(propertyMapping, 'type');
@@ -199,13 +199,12 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		//This option will return a promise because we need to wait for the ajax call to the endpoint to finish.
 		else if (hydration_method === 'endpoint') {
 			var endpoint = _.get(context.endpoints, _.get(propertyMapping, 'value.endpoint'));
-			var deferred = $.Deferred();
 			var finalResponse;
+
+			deferred = $.Deferred();
 
 			//Call the endpoint and pass through the data
 			$.when(_callOneEndpoint(endpoint, context, {})).done(function(data) {
-				var response = JSON.parse(data);
-
 				//There may be more than one spot where the data can be stored
 				_.forEach(propertyMapping.value.value_location, function(potential_value_location) {
 					var tempResponse = JSON.parse(data);
@@ -229,8 +228,16 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					});
 
 					//If there is data where it was expected, set that data to finalResponse
-					if (tempResponse !== undefined) {
+					if (tempResponse !== undefined && finalResponse === undefined) {
 						finalResponse = tempResponse;
+
+						//For fields such as types, we may need to translate data from the response via a mapping
+						//dictionary that is specified in the provider definition.
+						if (_.has(propertyMapping.value, 'translation')) {
+							var typeMappings = _.get(context.mappings, 'type_mappings');
+
+							finalResponse = _.get(_.get(typeMappings, propertyMapping.value.translation), finalResponse);
+						}
 					}
 				});
 
@@ -289,16 +296,54 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 
 			return value.replace('[$1]', _.get(context, hydration_location));
 		}
-		//Sometimes more than one field needs to be used to hydrate a parameter
+		//Sometimes more than one field needs to be used to hydrate a parameter.
+		//Some of these fields could require endpoint calls, so we need to use promises
+		//to handle those cases.
 		else if (hydration_method === 'concat') {
+			var promiseList = [];
+			var returnValues = [];
+			deferred = $.Deferred();
 			returnValue = '';
 
 			//Iterate over each field and perform its hydration
-			_.forEach(value, function(single_value) {
-				returnValue += _hydrateField(context, single_value);
+			_.forEach(value, function(single_value, index) {
+				if (single_value.hydration_method === 'endpoint') {
+					var potentialPromise;
+					potentialPromise = _hydrateField(context, single_value);
+
+					promiseList.push(potentialPromise);
+					potentialPromise.done(function(response) {
+						returnValues[index] = response;
+					});
+				}
+				else {
+					returnValues[index] = _hydrateField(context, single_value);
+				}
 			});
 
-			return returnValue;
+			$.when.apply($, promiseList).done(function() {
+				_.forEach(returnValues, function(value) {
+					returnValue += value + ' ';
+				});
+
+				deferred.resolveWith(this, [returnValue]);
+			});
+
+			return deferred.promise();
+		}
+		else if (hydration_method === 'split') {
+			var itemNumber, splitLocation, splitSeparator, splitArray, valueToSplit;
+			splitLocation = _.get(value, 'location');
+			splitSeparator = _.get(value, 'split_separator');
+			valueToSplit = _.get(context, splitLocation);
+			splitArray = valueToSplit.split(splitSeparator);
+
+			itemNumber = _.get(value, 'item_number');
+			if (itemNumber === 'last') {
+				itemNumber = splitArray.length - 1;
+			}
+
+			return splitArray[itemNumber];
 		}
 		//If the value is static, just pass back the value
 		else if (hydration_method === 'literal') {
@@ -773,6 +818,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 										if (updateLocation === 'date_now') {
 											updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
 										}
+										else if (updateLocation === 'epoch_now') {
+											updatedValue = new Date().getTime().toString();
+										}
 										else {
 											updatedValue = _.get(responseData, updateLocation);
 										}
@@ -833,6 +881,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 										if (updateLocation === 'date_now') {
 											updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
 										}
+										else if (updateLocation === 'epoch_now') {
+											updatedValue = new Date().getTime().toString();
+										}
 										else {
 											updatedValue = _.get(responseData, updateLocation);
 										}
@@ -878,6 +929,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 									var updateLocation = thisParameter.save_to_signal.location;
 									if (updateLocation === 'date_now') {
 										updatedValue = new Date().toJSON().split('T')[0].replace(/-/g, '/');
+									}
+									else if (updateLocation === 'epoch_now') {
+										updatedValue = new Date().getTime().toString();
 									}
 									else {
 										updatedValue = _.get(responseData, updateLocation);
@@ -1074,50 +1128,75 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 */
 	//TODO: Abstract posting into a callback passed into mapping a single model or after the mapping function returns the result
 	function mapSingleModel(eventList, context, eventSourceDeferred) {
-		var contentList = [];
-		var contactsList = [];
-		var location;
-		var dataList = [];
-		var dbEntryMapping = _.get(context.mapping, 'db_entry_mapping');
-		var conditionMapping = _.get(context.mapping, 'conditions');
+		var canHydrateLocation, organizationsList, conditionMapping, contentList, contactsList, dataList, dbEntryMapping, eventGeolocation, location, locationMapping, mapOrganizationsPromises, mapContactsPromises, mapContentPromises, mapPlacesPromises, mapThingsPromises, placesList, thingsList, totalPromises;
+
+		contentList = [];
+		contactsList = [];
+		organizationsList = [];
+		placesList = [];
+		thingsList = [];
+		dataList = [];
+		dbEntryMapping = _.get(context.mapping, 'db_entry_mapping');
+		conditionMapping = _.get(context.mapping, 'conditions');
 
 		//Used in geolocation logic
-		var locationMapping = _.get(dbEntryMapping, 'location');
-		var eventGeolocation = _.get(locationMapping, 'geolocation');
-		var canHydrateLocation = _canHydrateLocation();
+		locationMapping = _.get(dbEntryMapping, 'location');
+		eventGeolocation = _.get(locationMapping, 'geolocation');
+		canHydrateLocation = _canHydrateLocation();
 
 		//If there are any conditions
 		_.forEach(conditionMapping, function(conditionValue, conditionKey) {
 		});
 
 		mapData();
-		//Call mapContent, mapContacts, and mapLocation.  Each of these can be run independently of the others.
-		//The first two return a list of promises (the other two).  These promises are resolved
-		//only when the mapping or mappings have been completed.
-		//(mapContacts and mapContent may create multiple db entries from a single piece of data, so they have
-		//a list of promises, one for each item they are creating).
-		var mapContentPromises = mapContent();
-		var mapContactsPromises = mapContacts();
+		//Call mapContent, mapContacts, mapOrganizations, and mapLocation.  Each of these can be run independently of the others.
+		//The first three return a list of promises.  These promises are resolved only when the mapping or mappings
+		//have been completed.  mapContacts, mapContent, and mapOrganizations may create multiple db entries from a single piece of data,
+		//so they have a list of promises, one for each item they are creating.
+		mapContentPromises = mapContent();
+		mapContactsPromises = mapContacts();
+		mapOrganizationsPromises = mapOrganizations();
+		mapPlacesPromises = mapPlaces();
+		mapThingsPromises = mapThings();
+
 		location = mapLocation();
-		//Concatenate the list of promises from mapContent and mapContacts into one list.
-		var totalPromises = mapContactsPromises.concat(mapContentPromises);
+		//Concatenate the list of promises from mapContent, mapContacts, and mapPeople into one list.
+		totalPromises = mapContactsPromises.concat(mapContentPromises).concat(mapOrganizationsPromises).concat(mapThingsPromises);
 
 		$.when.apply($, totalPromises).done(function() {
 			//On some endpoints, you can get the same contact back multiple times, e.g. if you created the reddit thread
 			//and posted in it and replied to your own post.  We don't want the same contact showing up in the
 			//list of contacts multiple times, so this wil assemble a list of unique contacts for the event
 			//that is about to be posted.
-			var uniqueContactsMap = [];
+			var uniqueOrganizationsList = [];
+			var uniqueOrganizationsMap = [];
 			var uniqueContactsList = [];
+			var uniqueContactsMap = [];
+			var uniquePlacesList = [];
+			var uniquePlacesMap = [];
 
-			_.forEach(contactsList, function(contact, index) {
+			_.forEach(contactsList, function(contact) {
 				if (uniqueContactsMap.indexOf(contact.ografy_unique_id) === -1) {
 					uniqueContactsMap.push(contact.ografy_unique_id);
 					uniqueContactsList.push(contact);
 				}
 			});
 
-			mapEvent(contentList, uniqueContactsList, location, eventSourceDeferred);
+			_.forEach(organizationsList, function(organization) {
+				if (uniqueOrganizationsMap.indexOf(organization.ografy_unique_id) === -1) {
+					uniqueOrganizationsMap.push(organization.ografy_unique_id);
+					uniqueOrganizationsList.push(organization);
+				}
+			});
+
+			_.forEach(placesList, function(place) {
+				if (uniquePlacesMap.indexOf(place.ografy_unique_id) === -1) {
+					uniquePlacesMap.push(place.ografy_unique_id);
+					uniquePlacesList.push(place);
+				}
+			});
+
+			mapEvent(contentList, uniqueContactsList, uniqueOrganizationsList, uniquePlacesList, thingsList, location, eventSourceDeferred);
 		}).fail(function() {
 			//If something failed, then don't try to map the event, as we don't have the necessary information.
 			//Just reject eventSourceDeferred so that this event source's information is not updated, and the next
@@ -1223,7 +1302,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		}
 
 		//TODO: Make entire parent function more programmatic, better debug success/fail messages with ids?
-		function mapEvent(contentList, contactsList, location, eventSourceDeferred) {
+		function mapEvent(contentList, contactsList, organizationsList, placesList, thingsList, location, eventSourceDeferred) {
 			var jsonDatetime, eventObject, potentialPromise;
 			var eventMapping = _.get(dbEntryMapping, 'event');
 
@@ -1236,7 +1315,22 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				if (datetimeMapping.hydration_method === 'endpoint') {
 					potentialPromise = _hydrateField(context, datetimeMapping);
 					potentialPromise.done(function(response) {
-						jsonDatetime = new Date(response).toJSON();
+						//Some endpoints are not returned in normal datetime formats nor epoch time.  Convert these
+						//non-standard times.
+						if (datetimeMapping.hasOwnProperty('format')) {
+							//TODO: Should conversion from unix time and similar conversions be done in hydrateField?
+							//Unix time needs to be multiplied by 1000 to get to epoch time.
+							if (datetimeMapping.format === 'unix_time') {
+								jsonDatetime = new Date(response * 1000).toJSON();
+							}
+							else if (datetimeMapping.format === 'unix_time_ms') {
+								jsonDatetime = new Date(response).toJSON();
+							}
+						}
+						//If the datetime is in a normal, parseable format, just create a new date and convert it to JSON format.
+						else {
+							jsonDatetime = new Date(response).toJSON();
+						}
 					});
 				}
 				//If the datetime can be obtained locally, do so.  We don't have to wait for any promises to be resolved.
@@ -1250,6 +1344,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 						//Unix time needs to be multiplied by 1000 to get to epoch time.
 						if (datetimeMapping.format === 'unix_time') {
 							jsonDatetime = new Date(jsonDatetime * 1000).toJSON();
+						}
+						else if (datetimeMapping.format === 'unix_time_ms') {
+							jsonDatetime = new Date(response).toJSON();
 						}
 					}
 					//If the datetime is in a normal, parseable format, just create a new date and convert it to JSON format.
@@ -1274,17 +1371,20 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
 
 				eventObject = {
-					ografy_unique_id: ografy_unique_id,
+					organizations: organizationsList,
+					contacts: contactsList,
 					contact_interaction_type: _hydrateField(context, _.get(eventMapping.mapped_fields, 'contact_interaction_type')),
-					content_list: contentList,
-					data_list: dataList,
+					content: contentList,
+					data: dataList,
 					datetime: jsonDatetime,
-					event_type: _.get(context.mapping, 'event_type'),
 					location: location,
-					contacts_list: contactsList,
+					ografy_unique_id: ografy_unique_id,
+					places: placesList,
 					provider: context.signal.provider.provider_number,
 					provider_name: context.signal.provider.name,
 					signal: context.signal.id,
+					things: thingsList,
+					type: _.get(context.mapping, 'type'),
 					user_id: context.signal.user_id
 				};
 
@@ -1310,6 +1410,9 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 							if (eventValue.format === 'unix_time') {
 								locationObject[eventKey] = new Date(datetime * 1000).toJSON();
 							}
+							else if (datetimeMapping.format === 'unix_time_ms') {
+								jsonDatetime = new Date(response).toJSON();
+							}
 						}
 						else {
 							locationObject[eventKey] = new Date(datetime).toJSON();
@@ -1333,7 +1436,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		//Create content documents in the DB from this item
 		function mapContent() {
 			var masterPromiseList = [];
-			var contentObject;
+			var subObject;
 			var contentMasterMapping = _.get(dbEntryMapping, 'content');
 			var promiseList = [];
 
@@ -1364,85 +1467,91 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					}
 				});
 
-				if (contentSingleMap.hasOwnProperty('hydrate_list_location')) {
-					items = _.get(context, contentSingleMap.hydrate_list_location);
-				}
-				else {
-					items = [context];
-				}
+				if (!(skipPost)) {
+					if (contentSingleMap.hasOwnProperty('hydrate_list_location')) {
+						items = _.get(context, contentSingleMap.hydrate_list_location);
+					}
+					else {
+						items = [context];
+					}
 
-				_.forEach(items, function(item) {
-					contentObject = {};
+					_.forEach(items, function(item) {
+						subObject = {};
 
-					//The masterPromiseList holds a deferred for each content item we are trying to map.
-					//For this item, push its deferred onto the list and create the promise.
-					masterPromiseList.push(masterPromise);
-					masterPromise.promise();
+						//The masterPromiseList holds a deferred for each content item we are trying to map.
+						//For this item, push its deferred onto the list and create the promise.
+						masterPromiseList.push(masterPromise);
+						masterPromise.promise();
 
-					//Map the fields for this content item.
-					//As with other mappings like this, a promise is created if the field has to come from another
-					//endpoint call, and that promise is resovled when that further endpoint call is finished.
-					_.forEach(contentSingleMap.mapped_fields, function(contentValue, contentKey) {
-						if (contentValue.hydration_method === 'endpoint') {
-							var potentialPromise = _hydrateField(item, contentValue);
+						//Map the fields for this content item.
+						//As with other mappings like this, a promise is created if the field has to come from another
+						//endpoint call, and that promise is resovled when that further endpoint call is finished.
+						_.forEach(contentSingleMap.mapped_fields, function(contentValue, contentKey) {
+							if (contentValue.hydration_method === 'endpoint' || contentValue.hydration_method === 'concat') {
+								var potentialPromise;
 
-							promiseList.push(potentialPromise);
-							potentialPromise.done(function(response) {
-								contentObject[contentKey] = response;
-							});
-						}
-						else {
-							contentObject[contentKey] = _hydrateField(item, contentValue);
-						}
-					});
+								context.subObject = item;
+								potentialPromise = _hydrateField(context, contentValue);
 
-					//This waits for any field mapping promises to be resolved.
-					$.when.apply($, promiseList).done(function() {
-						var promiseList = [];
-						//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
-						//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
-						//Constructing ografy_unique_id is repeatable.
-						var ografy_unique_id = context.signal.user_id + '_' + context.signal.id + '_';
-
-						//TODO: Hash the unique ID once we're comfortable that this is working properly
-						_.forEach(contentSingleMap.unique_identifiers, function(identifier) {
-							var potentialPromise;
-							var newField = _hydrateField(item, identifier);
-
-							if (identifier.hydration_method === 'endpoint') {
-								potentialPromise = _hydrateField(item, identifier);
 								promiseList.push(potentialPromise);
 								potentialPromise.done(function(response) {
-									newField = response;
+									subObject[contentKey] = response;
 								});
 							}
 							else {
-								newField = _hydrateField(item, identifier);
+								subObject[contentKey] = _hydrateField(item, contentValue);
 							}
+						});
 
-							$.when(potentialPromise).done(function() {
-								if (newField === undefined || newField === null) {
-									skipPost = true;
+						//This waits for any field mapping promises to be resolved.
+						$.when.apply($, promiseList).done(function() {
+							var promiseList = [];
+							//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
+							//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
+							//Constructing ografy_unique_id is repeatable.
+							var ografy_unique_id = context.signal.user_id + '_' + context.signal.id + '_';
+
+							//TODO: Hash the unique ID once we're comfortable that this is working properly
+							_.forEach(contentSingleMap.unique_identifiers, function(identifier) {
+								var newField, potentialPromise;
+
+								if (identifier.hydration_method === 'endpoint' || identifier.hydration_method === 'concat') {
+									context.subObject = item;
+
+									potentialPromise = _hydrateField(context, identifier);
+									promiseList.push(potentialPromise);
+									potentialPromise.done(function(response) {
+										newField = response;
+									});
 								}
 								else {
-									ografy_unique_id += newField + '_';
+									newField = _hydrateField(item, identifier);
 								}
+
+								$.when(potentialPromise).done(function() {
+									if (newField === undefined || newField === null) {
+										skipPost = true;
+									}
+									else {
+										ografy_unique_id += newField + '_';
+									}
+								});
+							});
+
+							$.when.apply($, promiseList).done(function() {
+								ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
+
+								subObject.ografy_unique_id = ografy_unique_id;
+
+								if (!skipPost) {
+									contentList.push(subObject);
+								}
+
+								masterPromise.resolve();
 							});
 						});
-
-						$.when.apply($, promiseList).done(function() {
-							ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
-
-							contentObject.ografy_unique_id = ografy_unique_id;
-
-							if (!skipPost) {
-								contentList.push(contentObject);
-							}
-
-							masterPromise.resolve();
-						});
 					});
-				});
+				}
 			});
 
 			return masterPromiseList;
@@ -1556,6 +1665,403 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 						});
 					});
 				});
+			});
+
+			return masterPromiseList;
+		}
+
+		function mapOrganizations() {
+			var organizationsMapping = _.get(dbEntryMapping, 'organizations');
+			var masterPromiseList = [];
+
+			_.forEach(organizationsMapping, function(organizationMapping) {
+				var hydratePromise, contextHydrateList;
+				//hydrateList is where potential organizations are listed on the object we are mapping.
+				var hydrateList = _.get(organizationMapping, 'hydrate_list_location');
+				var deferred = $.Deferred();
+
+				//If we need to call an endpoint to get more information for this organization, do so, and create
+				//a promise that is only resolved when the endpoint call has finsihed.
+				if (organizationMapping.hasOwnProperty('call_endpoint')) {
+					hydratePromise = _hydrateField(context, organizationMapping.call_endpoint);
+					hydratePromise.done(function(item) {
+						context.childObject = item;
+						deferred.resolve();
+					});
+				}
+				else {
+					deferred.resolve();
+				}
+
+				$.when(deferred).done(function() {
+					//Get the list of organizations to be created
+					contextHydrateList = _.get(context, hydrateList);
+
+					//The contextHydrateList is supposed to be a list.  If it's a single organization, add them to a list
+					//anyway so it can be iterated over.
+					if (!(Array.isArray(contextHydrateList))) {
+						contextHydrateList = [contextHydrateList];
+					}
+
+					_.forEach(contextHydrateList, function(organization) {
+						var masterPromise = $.Deferred();
+						var organizationObject;
+						var promiseList = [];
+						var skipPost = false;
+
+						//The masterPromiseList holds a deferred for each organization item we are trying to map.
+						//For this item, push its deferred onto the list and create the promise.
+						masterPromiseList.push(masterPromise);
+						masterPromise.promise();
+
+						organizationObject = {};
+
+						//Map all of the fields shown in the mapping.
+						//If a mapping needs to call an endpoint to get more data, create a promise that will be
+						//resolved only when the endpoint has been called.
+						_.forEach(organizationMapping.mapped_fields, function(organizationValue, organizationKey) {
+							if (organizationValue.hydration_method === 'endpoint') {
+								var potentialPromise = _hydrateField(context, organizationValue);
+								promiseList.push(potentialPromise);
+								potentialPromise.done(function(response) {
+									organizationObject[organizationKey] = response;
+								});
+							}
+							else {
+								organizationObject[organizationKey] = _hydrateField(organization, organizationValue);
+							}
+						});
+
+						$.when.apply($, promiseList).done(function() {
+							var promiseList = [];
+							//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
+							//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
+							//Constructing ografy_unique_id is repeatable.
+							var ografy_unique_id = context.signal.user_id + '_' + context.signal.id + '_';
+
+							//TODO: Hash the unique ID once we're comfortable that this is working properly
+							_.forEach(organizationMapping.unique_identifiers, function(identifier) {
+								var newField, potentialPromise;
+
+								if (identifier.hydration_method === 'endpoint') {
+									potentialPromise = _hydrateField(context, identifier);
+									promiseList.push(potentialPromise);
+									potentialPromise.done(function(response) {
+										newField = response;
+									});
+								}
+								else {
+									newField = _hydrateField(organization, identifier);
+								}
+
+								$.when(potentialPromise).done(function() {
+									if (newField === undefined || newField === null) {
+										skipPost = true;
+									}
+									else {
+										ografy_unique_id += newField + '_';
+									}
+								});
+							});
+
+							$.when.apply($, promiseList).done(function() {
+								ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
+
+								organizationObject.ografy_unique_id = ografy_unique_id;
+
+								if (!skipPost) {
+									organizationsList.push(organizationObject);
+								}
+								masterPromise.resolve();
+							});
+						});
+					});
+				});
+			});
+
+			return masterPromiseList;
+		}
+
+		//Create place documents in the DB from this item
+		function mapPlaces() {
+			var masterPromiseList = [];
+			var subObject;
+			var placesMasterMapping = _.get(dbEntryMapping, 'places');
+			var promiseList = [];
+
+			//Some endpoints may provide multiple types of places, so map each of them as specified in their
+			//individual mappings.
+			_.forEach(placesMasterMapping, function(placesSingleMap) {
+				var skipPost = false;
+				var masterPromise = $.Deferred();
+				var conditionMapping = _.get(placesSingleMap, 'conditions');
+				var items;
+
+				//If there are conditions on the mapping, check to see if this item matches each condition.
+				//If any of them do not, then this item will not be posted to the DB.
+				_.forEach(conditionMapping, function(condition) {
+					var conditionKey = Object.keys(condition)[0];
+					var conditionVal = condition[conditionKey].value;
+					var conditionField = condition[conditionKey].field;
+
+					if (conditionKey === 'equals') {
+						if (_.get(context, conditionField) !== conditionVal) {
+							skipPost = true;
+						}
+					}
+					else if (conditionKey === 'notEquals') {
+						if (_.get(context, conditionField) === conditionVal) {
+							skipPost = true;
+						}
+					}
+				});
+
+				if (!(skipPost)) {
+					if (placesSingleMap.hasOwnProperty('hydrate_list_location')) {
+						items = _.get(context, placesSingleMap.hydrate_list_location);
+					}
+					else {
+						items = [context];
+					}
+
+					_.forEach(items, function(item) {
+						subObject = {};
+
+						//The masterPromiseList holds a deferred for each place item we are trying to map.
+						//For this item, push its deferred onto the list and create the promise.
+						masterPromiseList.push(masterPromise);
+						masterPromise.promise();
+
+						//Map the fields for this place item.
+						//As with other mappings like this, a promise is created if the field has to come from another
+						//endpoint call, and that promise is resovled when that further endpoint call is finished.
+						_.forEach(placesSingleMap.mapped_fields, function(placesValue, placesKey) {
+							if (placesValue.constructor === Array) {
+								_.forEach(placesValue, function(placeValue, placeKey) {
+									if (placeValue.hydration_method === 'endpoint' || placeValue.hydration_method === 'concat') {
+										var potentialPromise;
+
+										context.subObject = item;
+										potentialPromise = _hydrateField(context, placeValue);
+
+										promiseList.push(potentialPromise);
+										potentialPromise.done(function(response) {
+											subObject[placeKey].append(response);
+										});
+									}
+									else {
+										subObject[placeKey].append(_hydrateField(item, placeValue));
+									}
+								});
+							}
+							else if (placesValue.hydration_method === 'endpoint' || placesValue.hydration_method === 'concat') {
+								var potentialPromise;
+
+								context.subObject = item;
+								potentialPromise = _hydrateField(context, placesValue);
+
+								promiseList.push(potentialPromise);
+								potentialPromise.done(function(response) {
+									subObject[placesKey] = response;
+								});
+							}
+							else {
+								subObject[placesKey] = _hydrateField(item, placesValue);
+							}
+						});
+
+						//This waits for any field mapping promises to be resolved.
+						$.when.apply($, promiseList).done(function() {
+							var promiseList = [];
+							//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
+							//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
+							//Constructing ografy_unique_id is repeatable.
+							var ografy_unique_id = context.signal.user_id + '_' + context.signal.id + '_';
+
+							//TODO: Hash the unique ID once we're comfortable that this is working properly
+							_.forEach(placesSingleMap.unique_identifiers, function(identifier) {
+								var newField, potentialPromise;
+
+								if (identifier.hydration_method === 'endpoint' || identifier.hydration_method === 'concat') {
+									context.subObject = item;
+
+									potentialPromise = _hydrateField(context, identifier);
+									promiseList.push(potentialPromise);
+									potentialPromise.done(function(response) {
+										newField = response;
+									});
+								}
+								else {
+									newField = _hydrateField(item, identifier);
+								}
+
+								$.when(potentialPromise).done(function() {
+									if (newField === undefined || newField === null) {
+										skipPost = true;
+									}
+									else {
+										ografy_unique_id += newField + '_';
+									}
+								});
+							});
+
+							$.when.apply($, promiseList).done(function() {
+								ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
+
+								subObject.ografy_unique_id = ografy_unique_id;
+
+								if (!skipPost) {
+									placesList.push(subObject);
+								}
+
+								masterPromise.resolve();
+							});
+						});
+					});
+				}
+			});
+
+			return masterPromiseList;
+		}
+
+		//Create thing documents in the DB from this item
+		function mapThings() {
+			var masterPromiseList = [];
+			var subObject;
+			var thingsMasterMapping = _.get(dbEntryMapping, 'things');
+			var promiseList = [];
+
+			//Some endpoints may provide multiple types of things, so map each of them as specified in their
+			//individual mappings.
+			_.forEach(thingsMasterMapping, function(thingsSingleMap) {
+				var skipPost = false;
+				var masterPromise = $.Deferred();
+				var conditionMapping = _.get(thingsSingleMap, 'conditions');
+				var items;
+
+				//If there are conditions on the mapping, check to see if this item matches each condition.
+				//If any of them do not, then this item will not be posted to the DB.
+				_.forEach(conditionMapping, function(condition) {
+					var conditionKey = Object.keys(condition)[0];
+					var conditionVal = condition[conditionKey].value;
+					var conditionField = condition[conditionKey].field;
+
+					if (conditionKey === 'equals') {
+						if (_.get(context, conditionField) !== conditionVal) {
+							skipPost = true;
+						}
+					}
+					else if (conditionKey === 'notEquals') {
+						if (_.get(context, conditionField) === conditionVal) {
+							skipPost = true;
+						}
+					}
+				});
+
+				if (!(skipPost)) {
+					if (thingsSingleMap.hasOwnProperty('hydrate_list_location')) {
+						items = _.get(context, thingsSingleMap.hydrate_list_location);
+					}
+					else {
+						items = [context];
+					}
+
+					_.forEach(items, function(item) {
+						subObject = {};
+
+						//The masterPromiseList holds a deferred for each thing item we are trying to map.
+						//For this item, push its deferred onto the list and create the promise.
+						masterPromiseList.push(masterPromise);
+						masterPromise.promise();
+
+						//Map the fields for this thing item.
+						//As with other mappings like this, a promise is created if the field has to come from another
+						//endpoint call, and that promise is resovled when that further endpoint call is finished.
+						_.forEach(thingsSingleMap.mapped_fields, function(thingsValue, thingsKey) {
+							if (thingsValue.constructor === Array) {
+								subObject[thingsKey] = [];
+								_.forEach(thingsValue, function(thingValue) {
+									if (thingValue.hydration_method === 'endpoint' || thingValue.hydration_method === 'concat') {
+										var potentialPromise;
+
+										context.subObject = item;
+										potentialPromise = _hydrateField(context, thingValue);
+
+										promiseList.push(potentialPromise);
+										potentialPromise.done(function(response) {
+											subObject[thingsKey].push(response);
+										});
+									}
+									else {
+										subObject[thingsKey].push(_hydrateField(item, thingValue));
+									}
+								});
+							}
+							else if (thingsValue.hydration_method === 'endpoint' || thingsValue.hydration_method === 'concat') {
+								var potentialPromise;
+
+								context.subObject = item;
+								potentialPromise = _hydrateField(context, thingsValue);
+
+								promiseList.push(potentialPromise);
+								potentialPromise.done(function(response) {
+									subObject[thingsKey] = response;
+								});
+							}
+							else {
+								subObject[thingsKey] = _hydrateField(item, thingsValue);
+							}
+						});
+
+						//This waits for any field mapping promises to be resolved.
+						$.when.apply($, promiseList).done(function() {
+							var promiseList = [];
+							//The ografy_unqiue_id is a way for us to tell this particular item apart from other items of its type.
+							//While the item's ID is also unique, we can't reconstruct an ObjectID from the data we receive.
+							//Constructing ografy_unique_id is repeatable.
+							var ografy_unique_id = context.signal.user_id + '_' + context.signal.id + '_';
+
+							//TODO: Hash the unique ID once we're comfortable that this is working properly
+							_.forEach(thingsSingleMap.unique_identifiers, function(identifier) {
+								var newField, potentialPromise;
+
+								if (identifier.hydration_method === 'endpoint' || identifier.hydration_method === 'concat') {
+									context.subObject = item;
+
+									potentialPromise = _hydrateField(context, identifier);
+									promiseList.push(potentialPromise);
+									potentialPromise.done(function(response) {
+										newField = response;
+									});
+								}
+								else {
+									newField = _hydrateField(item, identifier);
+								}
+
+								$.when(potentialPromise).done(function() {
+									if (newField === undefined || newField === null) {
+										skipPost = true;
+									}
+									else {
+										ografy_unique_id += newField + '_';
+									}
+								});
+							});
+
+							$.when.apply($, promiseList).done(function() {
+								ografy_unique_id = ografy_unique_id.substring(0, ografy_unique_id.length - 1);
+
+								subObject.ografy_unique_id = ografy_unique_id;
+
+								if (!skipPost) {
+									thingsList.push(subObject);
+								}
+
+								masterPromise.resolve();
+							});
+						});
+					});
+				}
 			});
 
 			return masterPromiseList;

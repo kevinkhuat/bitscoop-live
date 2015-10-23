@@ -17,7 +17,7 @@ define(['cartano', 'jquery', 'leaflet', 'lodash', 'nunjucks', 'scheduleMapper', 
 		}
 
 		// TODO: Make this a little more robust, how do we determine the content type if there is more than one.
-		content_type = content[0].content_type;
+		content_type = content[0].type;
 
 		return content_type_translation[content_type] || 'map-marker';
 	}
@@ -159,23 +159,6 @@ define(['cartano', 'jquery', 'leaflet', 'lodash', 'nunjucks', 'scheduleMapper', 
 		search.shrink();
 	});
 
-	$(document).on('geofilter', function(e) {
-		var filters, id, map;
-
-		map = e.map;
-		filters = e.filters;
-
-		if (e.action === 'create') {
-
-		}
-		else if (e.action === 'update') {
-
-		}
-		else if (e.action === 'delete') {
-
-		}
-	});
-
 	$(document).on('map:move', function(e) {
 		var map;
 
@@ -313,8 +296,8 @@ define(['cartano', 'jquery', 'leaflet', 'lodash', 'nunjucks', 'scheduleMapper', 
 			//Render the list element for this event
 			listElement = nunjucks.render('explorer/list_element.html', {
 				datetime: datetime,
-				event_type: result.event_type,
-				content_type: getContentFontIcon(result.content_list),
+				event_type: result.type,
+				content_type: getContentFontIcon(result.content),
 				id: id,
 				leaflet_id: leafletId,
 				provider_name: result.provider_name

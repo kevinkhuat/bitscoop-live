@@ -27,7 +27,7 @@
       "mappings": {
         "games_owned": {
           "returned_data_location": "response.games",
-          "event_type": "play",
+          "type": "play",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -91,7 +91,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "game"
@@ -140,7 +140,7 @@
         },
         "achievements": {
           "returned_data_location": "playerstats.achievements",
-          "event_type": "play",
+          "type": "play",
           "conditions": {
             "property_equals": {
               "property": "achieved",
@@ -218,7 +218,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "game"

@@ -171,7 +171,7 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		$filter.data('geofilter', geofilter);
 		$filter.data('map', map);
 
-		$(geofilter.element).data('filter', $filter.get(0))
+		$(geofilter.element).data('filter', $filter.get(0));
 	});
 
 	$(document).on('geofilter:update', function(e) {
@@ -327,8 +327,8 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 			if (type === 'who') {
 				if (data.contact) {
-					filter = new filters.TermFilter('contacts_list.name', data.contact);
-					filter = filter.or(new filters.TermFilter('contacts_list.handle', data.contact));
+					filter = new filters.TermFilter('contacts.name', data.contact);
+					filter = filter.or(new filters.TermFilter('contacts.handle', data.contact));
 				}
 
 				if (data.interaction) {
@@ -338,7 +338,7 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 			}
 			else if (type === 'what') {
 				if (data.type) {
-					filter = new filters.TermFilter('content_list.content_type', data.type);
+					filter = new filters.TermFilter('content.type', data.type);
 				}
 			}
 			else if (type === 'when') {
@@ -396,13 +396,13 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 		serialized = {};
 
-		serialized['data'] = data = {};
+		serialized.data = data = {};
 
 		if (type = $('#filter-values').attr('class')) {
-			serialized['type'] = type;
+			serialized.type = type;
 
 			if (name = $('#filter-name input').val()) {
-				serialized['name'] = name;
+				serialized.name = name;
 			}
 
 			$('form.' + type).serializeArray().map(function(d) {

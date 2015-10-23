@@ -43,7 +43,7 @@ define(['type'], function(type) {
 
 		dsl = {};
 
-		dsl['and'] = context = [];
+		dsl.and = context = [];
 
 		for (i = 0; i < this.filters.length; i++) {
 			context.push(this.filters[i].toDSL());
@@ -70,7 +70,7 @@ define(['type'], function(type) {
 
 		dsl = {};
 
-		dsl['or'] = context = [];
+		dsl.or = context = [];
 
 		for (i = 0; i < this.filters.length; i++) {
 			context.push(this.filters[i].toDSL());
@@ -134,7 +134,7 @@ define(['type'], function(type) {
 		dsl = {};
 
 		if (this._must.length > 0) {
-			context = dsl['must'] = [];
+			context = dsl.must = [];
 
 			for (i = 0; i < this._must.length; i++) {
 				context.push(this._must[i].toDSL());
@@ -142,7 +142,7 @@ define(['type'], function(type) {
 		}
 
 		if (this._must_not.length > 0) {
-			context = dsl['must_not'] = [];
+			context = dsl.must_not = [];
 
 			for (i = 0; i < this._must_not.length; i++) {
 				context.push(this._must_not[i].toDSL());
@@ -150,7 +150,7 @@ define(['type'], function(type) {
 		}
 
 		if (this._should.length > -1) {
-			context = dsl['should'] = [];
+			context = dsl.should = [];
 
 			for (i = 0; i < this._should.length; i++) {
 				context.push(this._should[i].toDSL());
@@ -190,13 +190,13 @@ define(['type'], function(type) {
 		dsl = {};
 
 		if (this.points instanceof Geolocation) {
-			dsl['geo_distance'] = context = {
+			dsl.geo_distance = context = {
 				distance: this.distance
 			};
 			context[this.field] = this.points;
 		}
 		else {
-			dsl['geo_polygon'] = context = {};
+			dsl.geo_polygon = context = {};
 			context[this.field] = {
 				points: this.points
 			};
@@ -242,7 +242,7 @@ define(['type'], function(type) {
 		dsl = {};
 		dateformat = false;
 
-		dsl['range'] = context = {};
+		dsl.range = context = {};
 		context[this.field] = context = {};
 
 		if (this._lt) {
@@ -297,7 +297,7 @@ define(['type'], function(type) {
 
 		dsl = {};
 
-		dsl['term'] = context = {};
+		dsl.term = context = {};
 		context[this.field] = this.value;
 
 		return dsl;

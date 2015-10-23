@@ -47,7 +47,7 @@
         },
         "foods": {
           "returned_data_location": "foods",
-          "event_type": "eat",
+          "type": "eat",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -120,7 +120,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "content_type": {
+                  "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "food"
@@ -175,7 +175,7 @@
         },
         "sleep": {
           "returned_data_location": "sleep",
-          "event_type": "sleep",
+          "type": "sleep",
           "db_entry_mapping": {
             "data": {
               "main": {
@@ -266,7 +266,7 @@
         },
         "activities": {
           "returned_data_location": "activities",
-          "event_type": "exercise",
+          "type": "exercise",
           "db_entry_mapping": {
             "data": {
               "main": {
