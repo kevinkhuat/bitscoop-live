@@ -26,13 +26,16 @@ def associate_user_and_signal(backend, uid, user=None, social=None, *args, **kwa
     association = associate_user(backend=backend, uid=uid, user=user, social=social, **kwargs)
 
     if association:
-        social = association['social']
+        if ('is_new' in association.keys() and association['is_new']) or ('new_association' in association.keys() and association['new_association']):
+            social = association['social']
+        else:
+            social = backend.strategy.storage.user.get_social_auth_for_user(user=user, provider=backend.name)[0]
 
-        signal['usa_id'] = social.id
+    signal['usa_id'] = social.id
 
-        if backend.setting('API_KEY') is not None:
-            signal.access_token = backend.setting('API_KEY')
+    if backend.setting('API_KEY') is not None:
+        signal.access_token = backend.setting('API_KEY')
 
-        signal.save()
+    signal.save()
 
     return association

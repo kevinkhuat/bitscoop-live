@@ -13,26 +13,19 @@ from server.core.documents import Permission, Signal
 
 @login_required
 def authorize(request):
-    unassociated_backends = list(UserSocialAuth.objects.filter(user=request.user))
-    unverified_signals = list(SignalApi.get(val=Q(user_id=request.user.id) & (Q(complete=False) | Q(connected=False))))
-
     user = request.user
-
+    unassociated_backends = list(UserSocialAuth.objects.filter(user=user))
+    unverified_signals = list(SignalApi.get(val=Q(user_id=user.id) & (Q(complete=False) | Q(connected=False))))
     signal_count = len(unverified_signals)
 
     # If there is more than one unverified+incomplete signal,
     # delete all and start over.
     if signal_count == 0 or signal_count > 1:
-        for signal in unverified_signals:
-            for backend in unassociated_backends:
-                if backend.id == signal.usa_id:
-                    unassociated_backends.remove(backend)
-
         # TODO: Change to bulk delete
         for signal in unverified_signals:
             SignalApi.delete(val=signal.id)
 
-        user_signals = list(SignalApi.get(val=Q(user_id=request.user.id)))
+        user_signals = list(SignalApi.get(val=Q(user_id=user.id)))
 
         for backend in unassociated_backends:
             found = False
