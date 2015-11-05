@@ -20,6 +20,7 @@
     "grunt-jsonlint": "^1.0.4",
     "grunt-nunjucks": "^0.1.4",
     "jshint-stylish": "^1.0.0",
+    "less-plugin-autoprefix": "^1.5.1",
     "load-grunt-tasks": "^3.1.0",
     "mock-browser": "^0.90.33"
   }

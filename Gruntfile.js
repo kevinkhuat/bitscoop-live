@@ -128,7 +128,12 @@ module.exports = function(grunt) {
 		less: {
 			target: {
 				options: {
-					paths: ['artifacts/']
+					paths: ['artifacts/'],
+					plugins: [
+						new (require('less-plugin-autoprefix'))({
+							browsers: ['last 2 versions']
+						})
+					]
 				},
 				files: {
 					'artifacts/core/css/site.css': [
