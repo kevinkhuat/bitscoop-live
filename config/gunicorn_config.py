@@ -1,4 +1,4 @@
-# Ografy Gunicorn configuration file.
+# BitScoop Gunicorn configuration file.
 
 #
 # Server socket

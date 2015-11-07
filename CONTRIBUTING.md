@@ -1,8 +1,8 @@
-# Contributing to Ografy
+# Contributing to BitScoop
 This document details the process by which you can set up a development
-environment and submit changes to the Ografy core repository.
+environment and submit changes to the BitScoop core repository.
 
-The general workflow for contributing a change to Ografy is:
+The general workflow for contributing a change to BitScoop is:
 
 1. Fork the repository and clone your fork locally.
 2. Suggest an issue or request that an existing, unassigned issue be assigned
@@ -21,18 +21,18 @@ The general workflow for contributing a change to Ografy is:
 
 ## Set up Git
 
-### Fork the Ografy Repository
-You'll want to create a fork of the Ografy repository so that you may freely
-create and push to your own branches. Ografy contribution is handled by way of
+### Fork the BitScoop Repository
+You'll want to create a fork of the BitScoop repository so that you may freely
+create and push to your own branches. BitScoop contribution is handled by way of
 pull requests to the master repository from your fork. Once you have forked the
 repository, clone your fork to your local drive.
 
 ### Add an Upstream
-You'll want to add the Ografy master repository as an upstream remote. From
+You'll want to add the BitScoop master repository as an upstream remote. From
 within your clone directory, run:
 
 ```
-git remote add upstream https://github.com/sjberry/ografy.git
+git remote add upstream https://github.com/bitscooplabs/web-server.git
 ```
 
 To track the master repository. To fetch new changes (initially, and
@@ -54,12 +54,12 @@ git fetch upstream -p
 Before you submit a pull request it is required that you run the requisite
 linters.
 
-* **flake8** &ndash; Used to enforce the Ografy coding style.
+* **flake8** &ndash; Used to enforce the BitScoop coding style.
 * **isort** &ndash; Used to ensure Python imports are properly sorted.
-* **grunt** &ndash; Used to enforce the Ografy coding style for supporting
+* **grunt** &ndash; Used to enforce the BitScoop coding style for supporting
   static files.
 
-Activate the ografy virtual environment (or a new virtual environment
+Activate the bitscoop virtual environment (or a new virtual environment
 specifically for testing) and install the development dependencies:
 
 ```

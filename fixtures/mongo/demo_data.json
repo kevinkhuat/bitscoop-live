@@ -8,7 +8,7 @@
         "55dcdbfd6a835a6d3060f7d1"
       ],
       "handle" : "hegemonbill",
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_158017896",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_158017896",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "updated" : "2015-08-25T17:19:58.017Z",
       "user_id" : 1
@@ -21,7 +21,7 @@
         "55dcdbfe6a835a6d3060f7e3"
       ],
       "handle" : "barankyle30",
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "updated" : "2015-08-25T17:20:02.493Z",
       "user_id" : 1
@@ -35,7 +35,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d1"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_631612420637614080",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_631612420637614080",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "@hegemonbill I'm testing to see how tweet replies work.",
       "updated" : "2015-08-25T17:19:57.927Z",
@@ -48,7 +48,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d2"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_630126014576726016",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_630126014576726016",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Is location on?",
       "updated" : "2015-08-25T17:19:58.083Z",
@@ -61,7 +61,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d3"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_625059477037801472",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_625059477037801472",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Location location location",
       "updated" : "2015-08-25T17:19:58.422Z",
@@ -74,7 +74,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d4"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660846175285250",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660846175285250",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Message received",
       "updated" : "2015-08-25T17:19:58.501Z",
@@ -87,7 +87,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d5"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660814395056128",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660814395056128",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Cool pants",
       "updated" : "2015-08-25T17:19:58.613Z",
@@ -100,7 +100,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d6"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660298789265408",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660298789265408",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Arglebargle",
       "updated" : "2015-08-25T17:19:59.311Z",
@@ -113,7 +113,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d7"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660277754769409",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660277754769409",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Test 2",
       "updated" : "2015-08-25T17:19:59.387Z",
@@ -126,7 +126,7 @@
       "data" : [
         "55dcdbfd6a835a6d3060f7d8"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660144409485314",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_603660144409485314",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Test #1",
       "updated" : "2015-08-25T17:19:59.493Z",
@@ -139,7 +139,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223744889491459",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223744889491459",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Who is the milkman?",
       "updated" : "2015-08-25T17:19:59.829Z",
@@ -152,7 +152,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223526861246467",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223526861246467",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Mega scruples.",
       "updated" : "2015-08-25T17:20:00.704Z",
@@ -165,7 +165,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7dc"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223410695802887",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223410695802887",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "No, mortal frenemy.",
       "updated" : "2015-08-25T17:20:00.935Z",
@@ -178,7 +178,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223921541058564",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_627223921541058564",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Your dad",
       "updated" : "2015-08-25T17:20:01.684Z",
@@ -191,7 +191,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e0"
       ],
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_twitter_627222411784523779",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_twitter_627222411784523779",
       "signal" : "55dcdbe06a835a4bcb2392e7",
       "text" : "Friend?",
       "updated" : "2015-08-25T17:20:01.850Z",
@@ -204,7 +204,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e1"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_221910_The Stanley Parable",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_221910_The Stanley Parable",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "The Stanley Parable",
       "updated" : "2015-08-25T17:20:02.032Z",
@@ -218,7 +218,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e2"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_291650_Pillars of Eternity",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_291650_Pillars of Eternity",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "Pillars of Eternity",
       "updated" : "2015-08-25T17:20:02.112Z",
@@ -232,7 +232,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e3"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "It's a wild horse.",
       "title" : "Liked It's a wild horse.",
@@ -247,7 +247,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e4"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "Serious power",
       "title" : "Liked Serious power",
@@ -262,7 +262,7 @@
       "data" : [
         "55dcdbfe6a835a6d3060f7e5"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "The room",
       "title" : "Liked The room",
@@ -277,7 +277,7 @@
       "data" : [
         "55dcdbff6a835a6d3060f7e6"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "Nice piece",
       "title" : "Liked Nice piece",
@@ -292,7 +292,7 @@
       "data" : [
         "55dcdbff6a835a6d3060f7e7"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "The room",
       "title" : "The room",
@@ -307,7 +307,7 @@
       "data" : [
         "55dcdbff6a835a6d3060f7e8"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "Nice piece",
       "title" : "Nice piece",
@@ -321,7 +321,7 @@
       "data" : [
         "55dcdbff6a835a6d3060f7e9"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "Serious power",
       "title" : "Serious power",
@@ -335,7 +335,7 @@
       "data" : [
         "55dcdbff6a835a6d3060f7ea"
       ],
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
       "signal" : "55dcdbd36a835a4bcb2392e6",
       "text" : "It's a wild horse.",
       "title" : "It's a wild horse.",
@@ -350,7 +350,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f2"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_888",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_888",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "8888888888888888",
       "updated" : "2015-08-25T17:20:06.662Z",
@@ -365,7 +365,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f3"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_430",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_430",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "Click on door 430 five times.",
       "updated" : "2015-08-25T17:20:06.889Z",
@@ -380,7 +380,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f4"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_ACHIEVEMENT",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_ACHIEVEMENT",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "Achievement",
       "updated" : "2015-08-25T17:20:07.087Z",
@@ -395,7 +395,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f5"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_WELCOMEBACK",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_WELCOMEBACK",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "Welcome back!",
       "updated" : "2015-08-25T17:20:07.157Z",
@@ -410,7 +410,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f6"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_JUMPING",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_JUMPING",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "You can't jump",
       "updated" : "2015-08-25T17:20:07.225Z",
@@ -425,7 +425,7 @@
         "55dcdbff6a835a6d3060f7f1",
         "55dcdc006a835a6d3060f7f7"
       ],
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_BEATTHEGAME",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_steam_TSP_BEATTHEGAME",
       "signal" : "55dcdbc56a835a4bcb2392e5",
       "title" : "Beat the game",
       "updated" : "2015-08-25T17:20:07.294Z",
@@ -523,7 +523,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_631612420637614080",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_631612420637614080",
       "updated" : "2015-08-25T17:19:57.014Z",
       "user_id" : 1
     },
@@ -605,7 +605,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_630126014576726016",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_630126014576726016",
       "updated" : "2015-08-25T17:19:57.146Z",
       "user_id" : 1
     },
@@ -620,7 +620,7 @@
         "playtime_forever" : 176,
         "name" : "The Stanley Parable"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_games_played_221910_The Stanley Parable_176",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_games_played_221910_The Stanley Parable_176",
       "updated" : "2015-08-25T17:19:58.772Z",
       "user_id" : 1
     },
@@ -635,7 +635,7 @@
         "playtime_forever" : 0,
         "name" : "Pillars of Eternity"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_games_played_291650_Pillars of Eternity_0",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_games_played_291650_Pillars of Eternity_0",
       "updated" : "2015-08-25T17:19:58.808Z",
       "user_id" : 1
     },
@@ -646,7 +646,7 @@
         "achieved" : 1,
         "name" : "TSP_888"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_The Stanley Parable_176",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_The Stanley Parable_176",
       "updated" : "2015-08-25T17:19:59.964Z",
       "user_id" : 1
     },
@@ -657,7 +657,7 @@
         "achieved" : 1,
         "name" : "TSP_888"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_888",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_888",
       "updated" : "2015-08-25T17:20:00.005Z",
       "user_id" : 1
     },
@@ -668,7 +668,7 @@
         "achieved" : 1,
         "name" : "TSP_430"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_430",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_430",
       "updated" : "2015-08-25T17:20:00.103Z",
       "user_id" : 1
     },
@@ -750,7 +750,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_625059477037801472",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_625059477037801472",
       "updated" : "2015-08-25T17:19:57.239Z",
       "user_id" : 1
     },
@@ -832,7 +832,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660846175285250",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660846175285250",
       "updated" : "2015-08-25T17:19:57.452Z",
       "user_id" : 1
     },
@@ -914,7 +914,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660814395056128",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660814395056128",
       "updated" : "2015-08-25T17:19:57.558Z",
       "user_id" : 1
     },
@@ -996,7 +996,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660298789265408",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660298789265408",
       "updated" : "2015-08-25T17:19:57.635Z",
       "user_id" : 1
     },
@@ -1078,7 +1078,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660277754769409",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660277754769409",
       "updated" : "2015-08-25T17:19:57.736Z",
       "user_id" : 1
     },
@@ -1160,7 +1160,7 @@
           "profile_background_tile" : false
         }
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660144409485314",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_tweets_user_timeline_603660144409485314",
       "updated" : "2015-08-25T17:19:57.809Z",
       "user_id" : 1
     },
@@ -1247,7 +1247,7 @@
           "default_profile_image" : false,
           "following" : true,
           "favourites_count" : 0,
-          "description" : "CEO @Ografy http://t.co/rtuxAHl1Zx",
+          "description" : "CEO @BitScoop http://t.co/rtuxAHl1Zx",
           "default_profile" : false,
           "geo_enabled" : true,
           "profile_banner_url" : "https://pbs.twimg.com/profile_banners/158017896/1417983163",
@@ -1279,13 +1279,13 @@
             "description" : {
               "urls" : [
                 {
-                  "display_url" : "ografy.io",
+                  "display_url" : "bitscoop.com",
                   "indices" : [
                     12,
                     34
                   ],
                   "url" : "http://t.co/rtuxAHl1Zx",
-                  "expanded_url" : "http://www.ografy.io"
+                  "expanded_url" : "http://www.bitscoop.com"
                 }
               ]
             }
@@ -1301,7 +1301,7 @@
         "sender_id" : 2840684163,
         "text" : "Who is the milkman?"
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_direct_messages_sent_undefined",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_direct_messages_sent_undefined",
       "updated" : "2015-08-25T17:19:58.152Z",
       "user_id" : 1
     },
@@ -1342,7 +1342,7 @@
           "default_profile_image" : false,
           "following" : true,
           "favourites_count" : 0,
-          "description" : "CEO @Ografy http://t.co/rtuxAHl1Zx",
+          "description" : "CEO @BitScoop http://t.co/rtuxAHl1Zx",
           "default_profile" : false,
           "geo_enabled" : true,
           "profile_banner_url" : "https://pbs.twimg.com/profile_banners/158017896/1417983163",
@@ -1374,13 +1374,13 @@
             "description" : {
               "urls" : [
                 {
-                  "display_url" : "ografy.io",
+                  "display_url" : "bitscoop.com",
                   "indices" : [
                     12,
                     34
                   ],
                   "url" : "http://t.co/rtuxAHl1Zx",
-                  "expanded_url" : "http://www.ografy.io"
+                  "expanded_url" : "http://www.bitscoop.com"
                 }
               ]
             }
@@ -1442,7 +1442,7 @@
         "sender_id" : 1.58018e+08,
         "text" : "Your dad"
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_direct_messages_received_undefined",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_direct_messages_received_undefined",
       "updated" : "2015-08-25T17:19:58.660Z",
       "user_id" : 1
     },
@@ -1527,7 +1527,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_997424267826747454_1934417741",
       "updated" : "2015-08-25T17:19:58.851Z",
       "user_id" : 1
     },
@@ -1607,7 +1607,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045722258886809960_1934417741",
       "updated" : "2015-08-25T17:19:58.901Z",
       "user_id" : 1
     },
@@ -1704,7 +1704,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045736041134873346_1934417741",
       "updated" : "2015-08-25T17:19:58.959Z",
       "user_id" : 1
     },
@@ -1784,7 +1784,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_likes_instagram_liked_1045722698877688182_1934417741",
       "updated" : "2015-08-25T17:19:59.009Z",
       "user_id" : 1
     },
@@ -1795,7 +1795,7 @@
         "achieved" : 1,
         "name" : "TSP_ACHIEVEMENT"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_ACHIEVEMENT",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_ACHIEVEMENT",
       "updated" : "2015-08-25T17:20:00.217Z",
       "user_id" : 1
     },
@@ -1806,7 +1806,7 @@
         "achieved" : 1,
         "name" : "TSP_WELCOMEBACK"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_WELCOMEBACK",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_WELCOMEBACK",
       "updated" : "2015-08-25T17:20:00.366Z",
       "user_id" : 1
     },
@@ -1817,7 +1817,7 @@
         "achieved" : 1,
         "name" : "TSP_JUMPING"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_JUMPING",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_JUMPING",
       "updated" : "2015-08-25T17:20:00.472Z",
       "user_id" : 1
     },
@@ -1828,7 +1828,7 @@
         "achieved" : 1,
         "name" : "TSP_BEATTHEGAME"
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_BEATTHEGAME",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_achievements_221910_TSP_BEATTHEGAME",
       "updated" : "2015-08-25T17:20:00.598Z",
       "user_id" : 1
     },
@@ -1925,7 +1925,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045736041134873346_1934417741",
       "updated" : "2015-08-25T17:19:59.066Z",
       "user_id" : 1
     },
@@ -2005,7 +2005,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045722698877688182_1934417741",
       "updated" : "2015-08-25T17:19:59.120Z",
       "user_id" : 1
     },
@@ -2085,7 +2085,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_1045722258886809960_1934417741",
       "updated" : "2015-08-25T17:19:59.185Z",
       "user_id" : 1
     },
@@ -2170,7 +2170,7 @@
           "username" : "barankyle30"
         }
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posts_instagram_posted_997424267826747454_1934417741",
       "updated" : "2015-08-25T17:19:59.234Z",
       "user_id" : 1
     }
@@ -2212,7 +2212,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_631612420637614080",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_631612420637614080",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2246,7 +2246,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_630126014576726016",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_630126014576726016",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2280,7 +2280,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_625059477037801472",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_625059477037801472",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2314,7 +2314,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660846175285250",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_603660846175285250",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2348,7 +2348,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660814395056128",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_603660814395056128",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2382,7 +2382,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660298789265408",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_603660298789265408",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2416,7 +2416,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660277754769409",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_603660277754769409",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2450,7 +2450,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_603660144409485314",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_603660144409485314",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2493,7 +2493,7 @@
           39.1934060000000031
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223744889491459",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_627223744889491459",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2536,7 +2536,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223526861246467",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_627223526861246467",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2579,7 +2579,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223410695802887",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_627223410695802887",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2622,7 +2622,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627223921541058564",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_627223921541058564",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2665,7 +2665,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbe06a835a4bcb2392e7_627222411784523779",
+      "identifier" : "1_55dcdbe06a835a4bcb2392e7_627222411784523779",
       "provider" : "000000000000000000000004",
       "provider_name" : "Twitter",
       "signal" : "55dcdbe06a835a4bcb2392e7",
@@ -2700,7 +2700,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_The Stanley Parable_176",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_The Stanley Parable_176",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -2735,7 +2735,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_291650_Pillars of Eternity_0",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_291650_Pillars of Eternity_0",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -2779,7 +2779,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_997424267826747454_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -2846,7 +2846,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722258886809960_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -2913,7 +2913,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045736041134873346_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -2980,7 +2980,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_liked_1045722698877688182_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -3040,7 +3040,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045736041134873346_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -3098,7 +3098,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722698877688182_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -3156,7 +3156,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_1045722258886809960_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -3213,7 +3213,7 @@
         ],
         "location" : "55dcdc056a835a6d3060f80a"
       },
-      "ografy_unique_id" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
+      "identifier" : "1_55dcdbd36a835a4bcb2392e6_instagram_posted_997424267826747454_1934417741",
       "provider" : "000000000000000000000002",
       "provider_name" : "Instagram",
       "signal" : "55dcdbd36a835a4bcb2392e6",
@@ -3249,7 +3249,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_888",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_888",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -3285,7 +3285,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_430",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_430",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -3321,7 +3321,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_ACHIEVEMENT",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_ACHIEVEMENT",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -3357,7 +3357,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_WELCOMEBACK",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_WELCOMEBACK",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -3393,7 +3393,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_JUMPING",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_JUMPING",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",
@@ -3429,7 +3429,7 @@
           33.0961162440000010
         ]
       },
-      "ografy_unique_id" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_BEATTHEGAME",
+      "identifier" : "1_55dcdbc56a835a4bcb2392e5_221910_TSP_BEATTHEGAME",
       "provider" : "000000000000000000000003",
       "provider_name" : "Steam",
       "signal" : "55dcdbc56a835a4bcb2392e5",

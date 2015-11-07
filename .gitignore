@@ -72,11 +72,11 @@ node_modules
 ############
 # Symlinks #
 ############
-/ografy/static/lib/jutsu/jutsu*.js
-/ografy/static/lib/cartano/cartano*.js
+/webserver/static/lib/jutsu/jutsu*.js
+/webserver/static/lib/cartano/cartano*.js
 
 
 ########
 # Keys #
 ########
-/ografy/settings/keys.py
+/webserver/settings/keys.py

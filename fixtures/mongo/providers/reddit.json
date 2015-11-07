@@ -1108,7 +1108,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1153,7 +1153,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1198,7 +1198,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1243,7 +1243,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1288,7 +1288,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1333,7 +1333,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1366,7 +1366,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     },
@@ -1399,7 +1399,7 @@
           "header_value": "[$1]",
           "hydration_location": "signal.signal_data.username",
           "hydration_method": "reformat",
-          "value": "Ografy (by /u/[$1])"
+          "value": "BitScoop (by /u/[$1])"
         }
       }
     }

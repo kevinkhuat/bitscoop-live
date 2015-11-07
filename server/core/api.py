@@ -1,0 +1,19 @@
+import server.core.documents as documents
+import server.core.models as models
+from server.contrib.tastydata.api import BaseApi
+
+
+class ProviderApi(BaseApi):
+    model = documents.Provider
+
+
+class SettingsApi(BaseApi):
+    model = documents.Settings
+
+
+class SignalApi(BaseApi):
+    model = documents.Signal
+
+
+class UserApi(BaseApi):
+    model = models.User

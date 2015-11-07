@@ -1,4 +1,4 @@
-Ografy requires the following installations.
+BitScoop requires the following installations.
 
 * ElasticSearch 
 * MongoDB
@@ -12,7 +12,7 @@ Since the installation process differs by platform, the details are outside the
 scope of this document. Check the official documentation for how to install and
 set up these packages.
 
-Running the Ografy application during local development requires the following
+Running the BitScoop application during local development requires the following
 supporting processes to be active. With the configurations found in `config/`
 each of these processes runs without daemonizing and logs to the console.
 
@@ -23,11 +23,11 @@ each of these processes runs without daemonizing and logs to the console.
 
 
 ## Environment Setup
-Create a two virtual environments outide the Ografy repository folder. You'll
+Create a two virtual environments outide the BitScoop repository folder. You'll
 need one for the Django app and one for the Tornado app since the dependencies
 conflict.
 
-Change directory into the ografy project folder, activate the Django virtual
+Change directory into the bitscoop project folder, activate the Django virtual
 environment and install the requirements with:
 
 ```
@@ -115,21 +115,21 @@ the database to refresh the project. Open a new terminal window and connect to
 the MongoDB service. The run the following commands in the MongoDB command line:
 
 ```
-use ografy_db
+use bitscoop
 db.dummy.insert({})
 db.getCollection('dummy').drop()
 exit
 ```
 
-This will create the `ografy_db` database, write a collection to persist the
+This will create the `bitscoop` database, write a collection to persist the
 database to disk, remove the dummy collection, and exit out of the MongoDB
-shell. You should now have a file `databases/mongo/ografy_db.0` if the commands
+shell. You should now have a file `databases/mongo/bitscoop.0` if the commands
 succeeded (and you ran the commands from the correct folder).
 
 
 ## Initialize Nginx
 Nginx is used as a reverse proxy to manage subdomains, SSL, and HTTPS
-redirection. While the ografy application can technically be accessed directly
+redirection. While the bitscoop application can technically be accessed directly
 over localhost during development, many pages will error out unless you're
 hitting the nginx exposed ports (80 or 443).
 
@@ -188,7 +188,7 @@ You need to start the tornado auth server after activating the Tornado virtual
 environment from the main project directory with:
 
 ```
-export DJANGO_SETTINGS_MODULE=ografy.settings.development
+export DJANGO_SETTINGS_MODULE=server.settings.development
 python tornado.py
 ```
 
@@ -217,7 +217,7 @@ mongod -f config/mongod.conf
 Front-end passthrough run from the Tornado virtual environment.
 
 ```
-export DJANGO_SETTINGS_MODULE=ografy.settings.development
+export DJANGO_SETTINGS_MODULE=server.settings.development
 python run_tornado.py
 ```
 

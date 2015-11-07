@@ -35,19 +35,19 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'ografy/static/',
+						cwd: 'server/static/',
 						src: '**',
 						dest: 'artifacts/'
 					},
 					{
 						expand: true,
-						cwd: 'ografy/core/static/',
+						cwd: 'server/core/static/',
 						src: '**',
 						dest: 'artifacts/'
 					},
 					{
 						expand: true,
-						cwd: 'ografy/apps/explorer/static/',
+						cwd: 'server/apps/explorer/static/',
 						src: '**',
 						dest: 'artifacts/'
 					}
@@ -92,8 +92,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js',
-					'!ografy/static/lib/**/*.js'
+					'server/**/*.js',
+					'!server/static/lib/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -107,8 +107,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
-					'ografy/**/*.js',
-					'!ografy/static/lib/**/*.js'
+					'server/**/*.js',
+					'!server/static/lib/**/*.js'
 				]
 			}
 		},
@@ -147,9 +147,9 @@ module.exports = function(grunt) {
 		nunjucks: {
 			target: {
 				src: [
-					'ografy/nunjucks/**/*.html',
-					'ografy/core/nunjucks/**/*.html',
-					'ografy/{apps,contrib,lib}/*/nunjucks/**/*.html'
+					'server/nunjucks/**/*.html',
+					'server/core/nunjucks/**/*.html',
+					'server/{apps,contrib,lib}/*/nunjucks/**/*.html'
 				],
 				dest: 'artifacts/core/js/templates.js',
 				options: {
@@ -219,9 +219,9 @@ module.exports = function(grunt) {
 			},
 			static: {
 				files: [
-					'ografy/static/**',
-					'ografy/core/static/**',
-					'ografy/apps/explorer/static/**'
+					'server/static/**',
+					'server/core/static/**',
+					'server/apps/explorer/static/**'
 				],
 				tasks: ['copy:collectstatic', 'less', 'copy:minify']
 			}
