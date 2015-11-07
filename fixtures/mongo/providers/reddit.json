@@ -73,7 +73,7 @@
                 },
                 "datetime": {
                   "hydration_method": "translate",
-                  "type": "string",
+                  "format": "unix_time",
                   "value": [
                     "responseObject.data.edited",
                     "responseObject.data.created_utc"
@@ -210,7 +210,7 @@
               "mapped_fields": {
                 "datetime": {
                   "hydration_method": "translate",
-                  "type": "string",
+                  "format": "unix_time",
                   "value": [
                     "responseObject.data.edited",
                     "responseObject.data.created_utc"
@@ -331,7 +331,7 @@
                 },
                 "datetime": {
                   "hydration_method": "translate",
-                  "type": "string",
+                  "format": "unix_time",
                   "value": [
                     "responseObject.data.edited",
                     "responseObject.data.created_utc"
@@ -471,6 +471,14 @@
                   "type": "string",
                   "value": "to"
                 },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "format": "unix_time",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
                 "provider_name": {
                   "hydration_method": "literal",
                   "type": "string",
@@ -605,6 +613,14 @@
                   "type": "string",
                   "value": "with"
                 },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "format": "unix_time",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
                 "provider_name": {
                   "hydration_method": "literal",
                   "type": "string",
@@ -733,6 +749,14 @@
                   "hydration_method": "literal",
                   "type": "string",
                   "value": "with"
+                },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "format": "unix_time",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
                 },
                 "provider_name": {
                   "hydration_method": "literal",
@@ -863,6 +887,14 @@
                   "type": "string",
                   "value": "from"
                 },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "format": "unix_time",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
+                },
                 "provider_name": {
                   "hydration_method": "literal",
                   "type": "string",
@@ -991,6 +1023,14 @@
                   "hydration_method": "literal",
                   "type": "string",
                   "value": "to"
+                },
+                "datetime": {
+                  "hydration_method": "translate",
+                  "format": "unix_time",
+                  "value": [
+                    "responseObject.data.edited",
+                    "responseObject.data.created_utc"
+                  ]
                 },
                 "provider_name": {
                   "hydration_method": "literal",
