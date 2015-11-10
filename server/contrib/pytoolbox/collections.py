@@ -25,6 +25,10 @@ class DictView(Mapping):
             yield key
 
 
+def clear_empty_keys(d):
+    return {k: v for k, v in d.items() if v}
+
+
 def update(obj, kwargs):
     for key, value in kwargs.items():
         setattr(obj, key, value)

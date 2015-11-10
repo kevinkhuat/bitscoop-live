@@ -6,6 +6,7 @@ elasticsearch
 eventlet
 geopy
 gunicorn
+jsonschema
 mongoengine
 psycopg2
 python-dateutil

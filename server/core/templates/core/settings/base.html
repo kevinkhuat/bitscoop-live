@@ -1,6 +1,13 @@
 {% extends 'core/base.html' %}
 
 
+{% block static %}
+	{{ block.super }}
+
+	<link rel="stylesheet" type="text/css" href="https://d3buhrktqnvzt8.cloudfront.net/minimodal/0.1.2/minimodal-0.1.2.css" />
+{% endblock %}
+
+
 {% block header %}
 	{% include 'core/components/header.html' with mode='home' %}
 {% endblock %}
@@ -28,7 +35,7 @@
 			</div>
 
 			<div>
-				<a href="{% url 'settings:signals' %}">Connections</a>
+				<a href="{% url 'settings:connections' %}">Connections</a>
 			</div>
 
 			<div>

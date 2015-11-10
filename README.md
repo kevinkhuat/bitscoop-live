@@ -117,7 +117,7 @@ the MongoDB service. The run the following commands in the MongoDB command line:
 ```
 use bitscoop
 db.dummy.insert({})
-db.getCollection('dummy').drop()
+db.dummy.drop()
 exit
 ```
 

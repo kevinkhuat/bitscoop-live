@@ -1,1 +1,34 @@
-@import 'core/less/theme.less';
+body.connections {
+	&.connect {
+		header > nav,
+		main {
+			.lock-width;
+		}
+
+		main {
+			.flex-x-center;
+			.flex-center;
+		}
+
+		#workflow {
+			width: 500px;
+			margin: 15px;
+			margin-bottom: 50px;
+		}
+
+		.tooltip {
+			margin-left: 3em;
+			color: lighten(@font-color, 30%);
+		}
+
+		.label {
+			font-weight: bold;
+			font-size: 1.5em;
+			margin-bottom: 0.5em;
+		}
+
+		footer {
+			display: none;
+		}
+	}
+}

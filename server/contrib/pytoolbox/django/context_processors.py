@@ -3,7 +3,7 @@ def page_name(request):
     context = {}
 
     if resolver_match:
-        name = resolver_match.url_name
+        name = resolver_match.url_name or ''
 
         if resolver_match.namespace:
             namespace = resolver_match.namespace.replace(':', ' ')

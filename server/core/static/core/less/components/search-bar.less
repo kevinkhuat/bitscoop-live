@@ -1,12 +1,3 @@
-@import 'core/less/theme.less';
-
-@import 'core/less/components/controls.less';
-@import 'core/less/components/flexible-box.less';
-
-@import 'core/less/mixins/format.less';
-@import 'core/less/mixins/selection.less';
-
-
 #search-bar {
 	@padding: 0.6em;
 
@@ -95,11 +86,12 @@
 					}
 
 					&.disabled {
-						color: lighten(@font-color, 75%);
+						opacity: 0.35;
 						cursor: auto;
 					}
 
 					&.active {
+						opacity: 1 !important;
 						color: @color4 !important;
 					}
 				}

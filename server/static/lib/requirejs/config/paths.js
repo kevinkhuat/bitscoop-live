@@ -7,6 +7,7 @@ require.config({
 		autoblur: window.staticUrl + 'core/js/tools/autoblur.min',
 		debounce: window.staticUrl + 'core/js/tools/debounce.min',
 		filters: window.staticUrl + 'core/js/tools/filters.min',
+		'form-monitor': window.staticUrl + 'core/js/tools/form-monitor.min',
 		location: window.staticUrl + 'core/js/tools/location.min',
 		scheduleMapper: window.staticUrl + 'explorer/js/scheduleMapper.min',
 		type: window.staticUrl + 'core/js/tools/type.min',
@@ -16,13 +17,16 @@ require.config({
 		search: window.staticUrl + 'core/js/components/search.min',
 
 		// Pages
-		accountSettings: window.staticUrl + 'core/js/pages/accountSettings.min',
+		'account-settings': window.staticUrl + 'core/js/pages/settings/account.min',
 		connections: window.staticUrl + 'core/js/pages/connections.min',
+		'connection-settings': window.staticUrl + 'core/js/pages/settings/connections.min',
 		explorer: window.staticUrl + 'explorer/js/pages/explorer.min',
-		locationSettings: window.staticUrl + 'core/js/pages/locationSettings.min',
-		profileSettings: window.staticUrl + 'core/js/pages/profileSettings.min',
+		'location-settings': window.staticUrl + 'core/js/pages/settings/location.min',
+		'profile-settings': window.staticUrl + 'core/js/pages/settings/profile.min',
 		providers: window.staticUrl + 'core/js/pages/providers.min',
-		signalSettings: window.staticUrl + 'core/js/pages/signalSettings.min'
+
+		// Extensions
+		'jquery-regexp-selector': window.staticUrl + 'lib/jquery/plugins/regexp-selector.min'
 	}
 });
 
@@ -50,6 +54,7 @@ requirejs.config({
 		'leaflet-fullscreen': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min',  // https://github.com/Leaflet/Leaflet.fullscreen
 		'leaflet-markercluster': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster',  // https://github.com/Leaflet/Leaflet.markercluster
 		'leaflet-zoomslider': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider',  // https://github.com/kartena/Leaflet.zoomslider
+		minimodal: 'https://d3buhrktqnvzt8.cloudfront.net/minimodal/0.1.2/minimodal-0.1.2.min',  // https://github.com/sjberry/minimodal
 		'mapbox-directions': 'https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions' // https://github.com/mapbox/mapbox-directions.js
 	},
 

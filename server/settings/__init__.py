@@ -205,10 +205,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'server.contrib.pytoolbox.django.middleware.MobileMiddleware',  # Set Mobile request yes/no flag for all requests.
-    'server.contrib.pytoolbox.django.middleware.XhrMiddleware',  # Set XMLHttpRequest yes/no flag for all requests.
+    'server.contrib.pytoolbox.django.middleware.AcceptMiddleware',  # Parses HTTP-Accept headers.
     'server.contrib.pytoolbox.django.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
 )
+
 # SECURE_PROXY_SSL_HEADER = None
 # SIGNING_BACKEND = 'django.core.signing.TimestampSigner'
 # USE_ETAGS = False
@@ -275,7 +275,7 @@ INSTALLED_APPS = (
 # CSRF_COOKIE_PATH = '/'
 CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_AGE = 60 * 60 * 24 * 7 * 52
-CSRF_FAILURE_VIEW = 'server.errors.view403'
+CSRF_FAILURE_VIEW = 'server.core.views.errors.view403'
 # FIXME: Should we be version controlling this? Where does this setting manifest other than signed cookie sessions (which we aren't using)?
 SECRET_KEY = '~-/W,dd1~t|"#%Y#pIag%28ua1wmKWclQ<ntDQxD)X~_S9bSa?Z/9K[(g?0u1LglbA86?qqW,B5GiaFN'
 # X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -412,8 +412,8 @@ REST_FRAMEWORK = {
 ########
 
 HANDLE_VALIDATORS = [
-    RegexValidator(re.compile(r'^(?=[a-zA-Z0-9_\.]{3,20}$)(?=.*[a-zA-Z])'), '3-20 letters, numbers, underscores, or periods. Must contain least one letter.', 'invalid'),
-    RegexValidator(re.compile(r'^((?![b]+[i1\|]+r+[t7]+(s5)+(c)+(o0)+(p)+).)*$', re.I), 'Username cannot contain BitScoop.', 'invalid'),
+    RegexValidator(re.compile(r'^(?=[a-zA-Z0-9_\.]{3,20}$)(?=.*[a-zA-Z])'), '3-20 letters, numbers, underscores, or periods. Must contain at least one letter.'),
+    RegexValidator(re.compile(r'[b]+[i1\|]+[t7]+[s5]+[c]+[o0]+[p]*', re.I), 'Username cannot contain BitScoop.', inverse_match=True),
 ]
 INVALID_PASSWORD_MESSAGE = '8-48 characters. At least one lowercase, one uppercase, and one number.'
 PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'

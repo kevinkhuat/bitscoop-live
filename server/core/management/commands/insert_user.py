@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     errors.extend(e.error_list)
 
             if errors:
-                print(errors)
+                self.stderr.write(errors)
             else:
                 handle_valid = True
 
@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 PasswordValidator().__call__(password)
                 password_valid = True
             except exceptions.ValidationError as e:
-                print(e.error_list)
+                self.stderr.write(e.error_list)
 
         user_model = get_user_model()
         new_user = user_model(handle=handle, email=email, first_name=first_name, last_name=last_name)

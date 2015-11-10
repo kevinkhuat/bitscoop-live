@@ -4,13 +4,17 @@ define(['jquery', 'jquery-mixitup'], function($) {
 	});
 
 	$(document).on('click', '.mix', function() {
-		$this = $(this);
+		var $this = $(this);
+
 		if (!($this.hasClass('associated'))) {
 			window.location = $this.data('link');
 		}
+		else {
+			window.location = '/settings/connections?provider=' + $this.data('id');
+		}
 	});
 
-	$('nav input[type="button"]').on('click', function(e) {
-		history.back();
+	$('#done').on('click', function(e) {
+		window.location.href = '/explore';
 	});
 });

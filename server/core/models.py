@@ -31,6 +31,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
+    gender = models.CharField(max_length=30, null=True, blank=True)
+    birthday = models.DateField(blank=True, null=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     # last_login = models.DateTimeField(blank=True, null=True)  # Inherited from AbstractBaseUser.

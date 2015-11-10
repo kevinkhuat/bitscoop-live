@@ -35,6 +35,20 @@
 	.position-center;
 }
 
+.paragraphed {
+	& > * {
+		margin-bottom: 1em;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.paragraph {
+	margin-bottom: 0.5em;
+}
+
 .padding(@padding: 15px) {
 	padding: @padding;
 }
@@ -46,4 +60,22 @@
 .position-center {
 	margin-left: auto !important;
 	margin-right: auto !important;
+}
+
+
+.no-select {
+	user-select: none;
+}
+
+.active(@color) {
+	&:active,
+	&.active {
+		color: @color;
+	}
+}
+
+.hover(@color) {
+	&:hover {
+		color: @color;
+	}
 }

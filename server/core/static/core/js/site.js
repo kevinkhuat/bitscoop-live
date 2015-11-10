@@ -1,4 +1,4 @@
-define ('site', ['lodash', 'jquery-cookie'], function(_) {
+define(['lodash', 'jquery-cookie'], function(_) {
 	//Many of these event bindings may become unnecessary after the front-end revamp.
 	function bindMainAppUtilities() {
 		$('.user-button').click(function() {
@@ -105,38 +105,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 		});
 	}
 
-	function bindConnectSignal(selector) {
-		$('body').on('click', selector, function() {
-			var data = {};
-			var providerName = $('[data-provider-name]').data('provider-name');
-			data.updateFrequency = $('input:radio:checked').attr('updateFrequency');
-			data.permissions = [];
-			data.name = $('input[name=signal-name]')[0].value;
-
-			$('input:checkbox:checked').each(function() {
-				var parent = $(this).parents('.event-source-checkbox');
-				var eventSourceName = parent.attr('data-event-source-name');
-				data.permissions.push(eventSourceName);
-			});
-
-			data.permissions = JSON.stringify(data.permissions);
-			$.ajax({
-				url: '/connections/connect/' + providerName.toLowerCase(),
-				type: 'POST',
-				'content-type': 'application/json',
-				dataType: 'text',
-				data: data,
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				}
-			}).done(function(data, xhr, response) {
-				window.location.pathname = data;
-			}).fail(function(data, xhr, response) {
-				console.log('fail');
-			});
-		});
-	}
-
 	function bindHelpUtilities() {
 		$('.help-categories')
 			.on('click', '.grid-help-placeholder', function() {
@@ -165,7 +133,6 @@ define ('site', ['lodash', 'jquery-cookie'], function(_) {
 	}
 
 	return {
-		bindConnectSignal: bindConnectSignal,
 		bindFAQUtilities: bindFAQUtilities,
 		bindHelpUtilities: bindHelpUtilities,
 		bindMainAppUtilities: bindMainAppUtilities,

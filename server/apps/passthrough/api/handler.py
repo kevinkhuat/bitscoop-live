@@ -709,7 +709,7 @@ class EstimateLocationHandler(tornado.web.RequestHandler):
         next_estimate_date = settings.last_estimate_all_locations + datetime.timedelta(days=5)
         new_estimate_allowed = datetime.datetime.now() > next_estimate_date
 
-        if (new_estimate_allowed):
+        if new_estimate_allowed:
             estimation.reestimate_all(self.request.user.id)
 
             self.set_status(200, 'Re-estimation successful.')
@@ -733,6 +733,7 @@ class SignalHandler(tornado.web.RequestHandler):
 
         delete_signal_and_linked_documents(signal_id_to_delete, user_id)
 
+        self.write('Deletion successful')
         self.finish()
 
     @tornado.web.asynchronous
@@ -744,20 +745,17 @@ class AccountHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     @user_authenticated
     @gen.coroutine
-    def delete(self, slug=None):
+    def delete(self):
         user = self.request.user
         user_id = user.id
 
         Settings.objects.filter(user_id=user_id).delete()
-        signals = Signal.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('signal_get')))
-        Data.objects.filter(user_id=user_id).delete()
-
-        UserSocialAuth.objects.filter(user=user).delete()
+        Signal.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('signal_get')))
 
         delete_user_documents('search', user_id)
         delete_user_documents('location', user_id)
 
-        yield gen.Wait('signal_get')
+        signals = yield gen.Wait('signal_get')
 
         for signal in signals:
             delete_signal_and_linked_documents(str(signal._id), user_id)
@@ -780,6 +778,9 @@ def delete_signal_and_linked_documents(signal_id, user_id):
         'user_id': user_id,
         'signal': signal_id
     }
+
+    Data.objects.filter(signal=signal_id).delete()
+    UserSocialAuth.objects.filter(id=signal_to_delete.usa_id).delete()
 
     for type in ['organization', 'contact', 'content', 'data', 'event', 'place', 'thing']:
         es_connection.bulk_delete(index, type, terms)

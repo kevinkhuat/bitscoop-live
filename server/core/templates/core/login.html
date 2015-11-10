@@ -6,7 +6,7 @@
 		<div class="boxed-group">
 			<div>Login to BitScoop</div>
 
-			<div>
+			<div class="padded">
 				{% csrf_token %}
 
 				<div class="text-box">
@@ -28,7 +28,7 @@
 		</div>
 
 		<div>
-			<input type="submit" value="Log In" />
+			<button class="primary" type="submit">Log In</button>
 		</div>
 	</form>
 {% endblock %}

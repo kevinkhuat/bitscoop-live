@@ -13,7 +13,7 @@
 		<div class="boxed-group">
 			<div>Sign up for BitScoop</div>
 
-			<div>
+			<div class="padded">
 				{% csrf_token %}
 
 				<div class="text-box">
@@ -31,14 +31,14 @@
 				</div>
 
 				<div class="text-box">
-					<input type="text" name="first_name" placeholder="First name" value="{{ form.first_name.value|default_if_none:'' }}" />
+					<input type="text" name="first_name" placeholder="First name (optional)" value="{{ form.first_name.value|default_if_none:'' }}" />
 				</div>
 				<div>
 					{{ form.first_name.errors }}
 				</div>
 
 				<div class="text-box">
-					<input type="text" name="last_name" placeholder="Last name" value="{{ form.last_name.value|default_if_none:'' }}" />
+					<input type="text" name="last_name" placeholder="Last name (optional)" value="{{ form.last_name.value|default_if_none:'' }}" />
 				</div>
 				<div>
 					{{ form.last_name.errors }}
@@ -51,6 +51,13 @@
 					{{ form.password.errors }}
 				</div>
 
+				<div class="text-box">
+					<input type="password" name="repeated_password" placeholder="Repeated Password" />
+				</div>
+				<div>
+					{{ form.repeated_password.errors }}
+				</div>
+
 				<div>
 					{{ form.non_field_errors }}
 				</div>
@@ -60,7 +67,7 @@
 		<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
 
 		<div>
-			<input class="button-green" type="submit" value="Sign up" />
+			<button class="primary">Sign up</button>
 		</div>
 	</form>
 {% endblock %}

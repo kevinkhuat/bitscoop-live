@@ -136,10 +136,7 @@ module.exports = function(grunt) {
 					]
 				},
 				files: {
-					'artifacts/core/css/site.css': [
-						'artifacts/core/less/site.less',
-						'artifacts/*/less/**/*.less'
-					]
+					'artifacts/core/css/site.css': 'artifacts/core/less/site.less'
 				}
 			}
 		},
@@ -219,9 +216,9 @@ module.exports = function(grunt) {
 			},
 			static: {
 				files: [
-					'server/static/**',
-					'server/core/static/**',
-					'server/apps/explorer/static/**'
+					'server/static/**/*.{js,css,less}',
+					'server/core/static/**/*.{js,css,less}',
+					'server/apps/explorer/static/**/*.{js,css,less}'
 				],
 				tasks: ['copy:collectstatic', 'less', 'copy:minify']
 			}

@@ -1,103 +1,73 @@
 {% extends 'core/connections/base.html' %}
 {% load staticfiles %}
 
+
 {% block static %}
-{{ block.super }}
-<script type="text/javascript">
-	require(['site'], function(site) {
-		$(document).ready(function() {
-			site.bindConnectSignal('.connect-button');
-		});
-	});
-</script>
+	{{ block.super }}
+
+	<script type="text/javascript">
+		require(['connections']);
+	</script>
 {% endblock %}
 
+
+{% block header %}
+	{% include 'core/components/header.html' with mode='home' %}
+{% endblock %}
+
+
 {% block main %}
-<div class="content-list" data-signal-id="{{ signal.id }}">
-	<div class="content-item" data-provider-name="{{ provider.name }}">
-		<h1>Connect to {{ provider.name }}</h1>
-	</div>
-	<div class="content-item">
-		<h1 class="bold">Name your connection to {{ provider.name }}</h1>
-		<form>
-			<input class="text-input-width-medium" name="signal-name" type="text" name="email" value='My {{ provider.name }} Account'/>
-		</form>
-	</div>
-	<div class="content-item">
-		<div class="flex content-header">
-			<h1>Permissions</h1>
-			<div class="tooltip-container">
-				<div class="icon-help tooltip-trigger"></div>
-				<div class="tooltip">
-					<div class="tooltip-text">Choose which types of data BitScoop will get from your {{ signal.provider.name }} account.  Even if you authorized BitScoop to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.  If you de-select a type from which BitScoop has already collected data, the data already collected will continue to show up in your search results, but new data of that type will not be collected.</div>
-					<div class="icon-cancel-circle tooltip-close"></div>
-				</div>
+	<div id="workflow" class="boxed-group" data-signal-id="{{ signal.id }}">
+		<div class="align-center" data-provider-name="{{ provider.name }}">
+			<div class="flex flex-x-center">
+				<i class="fa fa-{{ provider.name|lower }}"></i>
+				<div class="flex-grow">New {{ provider.name }} Connection</div>
+				<i class="fa fa-{{ provider.name|lower }}" style="color: transparent;"></i>
 			</div>
 		</div>
-		<div class="permission-container">
-			{% for event_source_name, event_source in event_source_dict.items %}
-			<div name="{{ signal.provider_name }}" data-event-source-name="{{ event_source.name }}" class="event-source-checkbox">
-				<label class="permission-min-width">
-					<input type="checkbox" {% if event_source.enabled_by_default %} checked="checked" {% endif %}>
-					<span>{{ event_source.display_name }}</span>
-				</label>
-				<div class="tooltip-container near">
-					<div class="icon-help tooltip-trigger"></div>
-					<div class="tooltip">
-						<div class="tooltip-text">{{ event_source.description }}</div>
-						<div class="icon-cancel-circle tooltip-close"></div>
+
+		<form action="{% url 'connections:connect' provider.name|lower %}">
+			<div class="padded paragraphed">
+				<div class="align-center">
+					<input class="line-entry align-center" type="text" name="signal-name" placeholder="My {{ provider.name }} Account" style="padding-top: 0;" autofocus />
+				</div>
+
+				<div style="margin-top: 25px;">
+					<div class="label">What would you like?</div>
+					<!--<div>
+						Choose which types of data BitScoop will get from your {{ signal.provider.name }} account.
+						Even if you authorized BitScoop to get a certain type when you first connected the account, you can choose to have it skipped by de-selecting its permission.
+						If you de-select a type from which BitScoop has already collected data, the data already collected will continue to show up in your search results, but new data of that type will not be collected.
+					</div>-->
+					<div>
+						{% for event_source_name, event_source in event_source_dict.items %}
+							<div class="paragraph" name="{{ signal.provider_name }}" data-event-source-name="{{ event_source.name }}" class="event-source-checkbox">
+								<label><input type="checkbox" name="{{ event_source.name }}"{% if event_source.enabled_by_default %} checked{% endif %} />{{ event_source.display_name }}</label>
+								<div class="tooltip" data-for="">{{ event_source.description }}</div>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
-			</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="content-item form">
-		<div class="flex content-header">
-			<h1>Update Frequency</h1>
-			<div class="tooltip-container">
-				<div class="icon-help tooltip-trigger"></div>
-				<div class="tooltip">
-					<div class="tooltip-text">How often BitScoop will automatically search for new data from this provider</div>
-					<div class="icon-cancel-circle tooltip-close"></div>
+
+				<!--<div>
+					<div class="bold" style="font-size: 1.5em; margin-bottom: 0.5em;">Update Frequency</div>
+					<div>
+						How often BitScoop will automatically search for new data from this provider
+					</div>
+					<div>
+						<label><input type="radio" name="update-frequency" value="1" checked />Daily</label>
+						<label><input type="radio" name="update-frequency" value="2" />Weekly</label>
+						<label><input type="radio" name="update-frequency" value="3" />Manual</label>
+						<label><input type="radio" name="update-frequency" value="4" />Once</label>
+					</div>
+				</div>-->
+
+				<input type="hidden" name="update-frequency" value="1" />
+
+				<div class="align-center" style="margin-top: 25px;">
+					<button class="primary" type="submit">Connect to {{ provider.name }}</button>
 				</div>
 			</div>
-		</div>
-		<div class="grouped fields" id="frequency">
-			<!--<div class="field">-->
-			<!--<label>-->
-			<!--<input updateFrequency=0 type="radio" name="update-frequency" {% if signal.frequency == 0 %}checked="checked"{% endif %} disabled>-->
-			<!--<span class="premium-message">Premium On Demand</span>-->
-			<!--</label>-->
-			<!--</div>-->
-			<div class="field">
-				<label>
-					<input updateFrequency=1 type="radio" name="update-frequency" checked="checked">
-					<span>Daily</span>
-				</label>
-			</div>
-			<div class="field">
-				<label>
-					<input updateFrequency=2 type="radio" name="update-frequency">
-					<span>Weekly</span>
-				</label>
-			</div>
-			<div class="field">
-				<label>
-					<input updateFrequency=3 type="radio" name="update-frequency">
-					<span>Manual</span>
-				</label>
-			</div>
-			<div class="field">
-				<label>
-					<input updateFrequency=4 type="radio" name="update-frequency">
-					<span>Once</span>
-				</label>
-			</div>
-		</div>
+		</form>
 	</div>
-	<div>
-		<input class="btn btn-primary connect-button" type="button" value="Connect to {{ provider.name }}"/>
-	</div>
-</div>
 {% endblock %}

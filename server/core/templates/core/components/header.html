@@ -3,15 +3,16 @@
 
 {% if mode == 'app' or mode == 'home' %}
 	<nav>
-		<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
-
 		{% if mode == 'app' %}
+			<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
 			{% include 'core/components/search-bar.html' %}
-		{% endif %}
 
-		<a href="{% url 'explorer:main' %}"><i class="fa fa-table"></i></a>
-		<a href="{% url 'explorer:main' %}"><i class="fa fa-map-o"></i></a>
-		<a href="{% url 'explorer:main' %}"><i class="fa fa-list"></i></a>
+			<a href="{% url 'explorer:main' %}"><i class="fa fa-table"></i></a>
+			<a href="{% url 'explorer:main' %}"><i class="fa fa-map-o"></i></a>
+			<a href="{% url 'explorer:main' %}"><i class="fa fa-list"></i></a>
+		{% else %}
+			<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
+		{% endif %}
 
 		<span class="flex-grow"></span>
 
@@ -19,18 +20,19 @@
 		<a href="{% url 'providers' %}"><i class="fa fa-plus"></i></a>
 		<a href="{% url 'settings:base' %}"><i class="fa fa-cog"></i></a>
 
-		<a href="#">{{ request.user.identifier }}</a>
+		<a id="handle-link" href="#">{{ request.user.identifier }}</a>
 		<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
 	</nav>
 {% elif mode == 'provider' %}
 	<nav>
-		<img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" />
+		<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
 
 		<span class="flex-grow"></span>
 
-		{% include 'core/components/search-bar.html' with hide_advanced=True hide_filters=True placeholder='Search connections' action='' %}
-
-		<input type="button" value="Done" />
+		<div class="flex flex-x-center">
+			{% include 'core/components/search-bar.html' with hide_advanced=True hide_filters=True placeholder='Search connections' action='' %}
+			<button id="done" class="primary">Done</button>
+		</div>
 	</nav>
 {% else %}
 	<nav>

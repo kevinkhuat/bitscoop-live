@@ -1,19 +1,21 @@
 [
   {
     "fields": {
-      "handle": "DemoUser",
+      "handle": "biffs",
       "password": "pbkdf2_sha256$20000$G7MkOQqsTOjH$NBWkpUDMve0NAii/BAt9BCRjNdVHPuXf0JdQMVGNrCg=",
       "date_joined": "2014-03-01T03:19:30.842Z",
       "is_staff": false,
-      "email": "demo.user@example.com",
-      "last_name": "User",
-      "_upper_email": "DEMO.USER@EXAMPLE.COM",
+      "email": "biff.scoops@bitscoop.com",
+      "gender": "",
+      "birthday": null,
+      "last_name": "Scoops",
+      "_upper_email": "BIFF.SCOOPS@BITSCOOP.COM",
       "is_active": true,
       "user_permissions": [],
-      "_upper_handle": "DEMOUSER",
+      "_upper_handle": "BIFFS",
       "last_login": null,
       "groups": [],
-      "first_name": "Demo",
+      "first_name": "Biff",
       "is_superuser": false
     },
     "model": "core.user",
