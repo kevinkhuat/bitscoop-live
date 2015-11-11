@@ -12,7 +12,7 @@ from django.core.management import execute_from_command_line
 if __name__ == '__main__':
     cwd = os.getcwd()
     name = os.path.basename(os.path.normpath(cwd))
-    lib_path = os.path.join(cwd, name, 'lib')
+    lib_path = os.path.join(cwd, 'server', 'lib')
     sys.path.append(os.path.abspath(lib_path))
 
     # parser = CommandParser(None, usage="%(prog)s subcommand [options] [args]", add_help=False)
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     if not DJANGO_SETTINGS_MODULE:
         cwd = os.getcwd()
         name = os.path.basename(os.path.normpath(cwd))
-        settings = importlib.import_module('{0}.settings'.format(name))
+        settings = importlib.import_module('server.settings')
         iterator = pkgutil.walk_packages(path=settings.__path__, prefix=settings.__name__ + '.', onerror=lambda x: None)
         settings_modules = [settings.__name__]
 
