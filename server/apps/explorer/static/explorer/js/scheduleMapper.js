@@ -15,7 +15,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 		$.when(_getSignals(signals)).done(function() {
 			_checkAllSignalsLastRun();
 			if (signalsToRun.length > 0) {
-				_processSignals();
+				_processSignal(0);
 			}
 		});
 	}
@@ -364,9 +364,17 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 * Iterates through each signal to be run and calls processPermissions on them.
 	 *
 	 */
-	function _processSignals() {
-		_.forEach(signalsToRun, function(signalToRun) {
-			_processPermissions(signalToRun);
+	function _processSignal(index) {
+		var signalToRun, signalName;
+
+		signalName = Object.keys(signalsToRun)[index];
+		signalToRun = signalsToRun[signalName];
+
+		$.when(_processPermissions(signalToRun)).done(function() {
+			if (index < Object.keys(signalsToRun).length - 1) {
+				index++;
+				_processSignal(index);
+			}
 		});
 	}
 
@@ -375,53 +383,21 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 	 *
 	 */
 	function _processPermissions(signalToRun) {
-		var permissionPromiseList = [];
-		var eventList = [];
+		var permissionPromiseList, signalPromise, signalData;
 
-		console.log('Starting to run ' + signalToRun.name + ' at ' + new Date());
-		_.forEach(signalToRun.permissions, function(permission) {
-			if (permission.enabled) {
-				var eventSource = permission.event_source;
-				var permissionDeferred = $.Deferred();
+		permissionPromiseList = [];
+		signalPromise = $.Deferred();
+		signalData = {};
 
-				//Each enabled permission will have a promise created for it.  This promise will only be resolved
-				//if its event source runs successfully.
-				permissionDeferred.promise();
-				permissionPromiseList.push(permissionDeferred);
+		function _postData(startIndex, eventList, promise) {
+			var callData, eventSlice;
 
-				$.ajax({
-					url: '/opi/provider/' + signalToRun.provider,
-					type: 'GET',
-					dataType: 'json',
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function(data, xhr, response) {
-					signalToRun.provider = data;
-
-					//Crude rate limiting
-					//If the provider says to wait n seconds between calls, then wait n seconds between starting each event source.
-					if (signalToRun.provider.hasOwnProperty('endpoint_wait_time')) {
-						var timeoutTime = _.get(signalToRun.provider, 'endpoint_wait_time') * 1000;
-						setTimeout(function() {
-							_processEventSource(eventList, eventSource, signalToRun, permission, permissionDeferred);
-						}, timeoutTime);
-					}
-				}).fail(function(data, xhr, response) {
-					console.log('Failed initial signal GET');
-				});
-			}
-		});
-
-		//When all of a signal's permissions have run successfully, update the signal's lastRun field to the
-		//the current datetime.  If any of them fail at any point, lastRun will not be updated so that we
-		//do not lose any data.
-		$.when.apply($, permissionPromiseList).done(function() {
-			var callData = {
-				events: JSON.stringify(eventList)
+			eventSlice = eventList.slice(startIndex, startIndex + 1000);
+			callData = {
+				events: JSON.stringify(eventSlice)
 			};
 
-			console.log('Starting to post ' + eventList.length + ' events for ' + signalToRun.name + ' at ' + new Date());
+			console.log('Starting to post ' + eventSlice.length + ' events for ' + signalToRun.name + ' at ' + new Date());
 			$.ajax({
 				url: 'https://p.bitscoop.com/events',
 				type: 'POST',
@@ -434,28 +410,83 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					withCredentials: true
 				}
 			}).done(function(data, xhr, response) {
-				var signalData = {};
+				startIndex += 1000;
 
-				console.log('Finished posting events for ' + signalToRun.name + ' at ' + new Date());
-				signalData.endpoint_data = signalToRun.endpoint_data;
-				signalData.last_run = new Date().toJSON();
+				console.log('Finished posting ' + eventSlice.length + ' events for ' + signalToRun.name + ' at ' + new Date());
 
-				$.ajax({
-					url: '/opi/signal/' + signalToRun.id,
-					type: 'PATCH',
-					contentType: 'application/json',
-					data: JSON.stringify(signalData),
-					dataType: 'json',
-					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					}
-				}).done(function(data, xhr, response) {
-					console.log('Signal ' + signalToRun.name + ' lastRun updated successfully');
-				});
+				if (startIndex >= eventList.length - 1) {
+					signalData.endpoint_data = signalToRun.endpoint_data;
+					signalData.last_run = new Date().toJSON();
+
+					promise.resolve();
+				}
+				else {
+					_postData(startIndex, eventList, promise);
+				}
 			}).fail(function(data, xhr, response) {
 				console.log('Event post for signal ' + signalToRun.name + ' failed at ' + new Date());
 			});
-		});
+		}
+
+		function _runPermission(index) {
+			var eventList, eventSource, permission, permissionName, permissionDeferred, $promise;
+
+			eventList = [];
+			$promise = $.Deferred();
+			permissionName = Object.keys(signalToRun.permissions)[index];
+			permission = signalToRun.permissions[permissionName];
+			eventSource = permission.event_source;
+			//Each permission will have a promise created for it.  This promise will only be resolved
+			//if its event source runs successfully.  If the permission isn't enabled, then that permission
+			//will be skipped.
+			permissionDeferred = $.Deferred();
+
+			if (permission.enabled) {
+				permissionDeferred.promise();
+				permissionPromiseList.push(permissionDeferred);
+
+				console.log('Starting to fetch ' + permission.event_source.name + '.');
+				_processEventSource(eventList, eventSource, signalToRun, permission, permissionDeferred);
+			}
+
+			//When all of a signal's permissions have run successfully, update the signal's lastRun field to the
+			//the current datetime.  If any of them fail at any point, lastRun will not be updated so that we
+			//do not lose any data.
+			$.when(permissionDeferred).done(function(e) {
+				$promise.promise();
+				_postData(0, eventList, $promise);
+
+				$.when($promise).done(function() {
+					if (index < Object.keys(signalToRun.permissions).length - 1) {
+						index++;
+						_runPermission(index);
+					}
+					else {
+						$.ajax({
+							url: '/opi/signal/' + signalToRun.id,
+							type: 'PATCH',
+							contentType: 'application/json',
+							data: JSON.stringify(signalData),
+							dataType: 'json',
+							headers: {
+								'X-CSRFToken': $.cookie('csrftoken')
+							}
+						}).done(function (data, xhr, response) {
+							console.log('Signal ' + signalToRun.name + ' lastRun updated successfully');
+							signalPromise.resolve();
+						});
+					}
+				});
+			}).fail(function() {
+				console.log('Permission ' + permission.name + ' failed.');
+			});
+		}
+
+		console.log('Starting to run ' + signalToRun.name + ' at ' + new Date());
+		signalPromise.promise();
+		_runPermission(0);
+
+		return signalPromise;
 	}
 
 	/**
@@ -959,15 +990,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 
 						//If this isn't the last iteration through the endpoint
 						if (!loopEnd) {
-							//If we throttle endpoint calls for this provider, then wait n seconds before calling the
-							//endpoint again.
-							if (signal.provider.hasOwnProperty('endpoint_wait_time')) {
-								var timeoutTime = _.get(signal.provider, 'endpoint_wait_time') * 1000;
-
-								setTimeout(function() {
-									_processOneEndpointIteration(endpoint, mapping, context, parentDeferred);
-								}, timeoutTime);
-							}
+							_processOneEndpointIteration(endpoint, mapping, context, parentDeferred);
 						}
 					});
 				});
@@ -1115,6 +1138,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 				});
 			}
 		});
+
 		return deferred.promise();
 	}
 
