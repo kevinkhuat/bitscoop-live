@@ -5,20 +5,22 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 	var RESIZE_DEBOUNCE = 250;  // ms
 	var ACTIVE_GEO_FILL_COLOR = '#ff9933';
 	var PASSIVE_GEO_FILL_COLOR = '#f06eaa';
-	var limit = 10;
-	var offset = 0;
+	var RESULT_PAGE_LIMIT = 100;
+	var isMobile = (devicePixelRatio >= 1.25 && innerWidth < 1080) || (devicePixelRatio >= 3);
 
 
-	$.get('/opi/signal').done(function(data) {
+	$.get('/opi/connections').done(function(data) {
 		var $select;
 
 		$select = $('form.connector select[name="connection"]');
 
 		$.each(data, function(i, d) {
-			$('<option>')
-				.attr('value', d.id)
-				.text(d.name)
-				.appendTo($select);
+			if (d.auth_status.connected) {
+				$('<option>')
+					.attr('value', d.id)
+					.text(d.name)
+					.appendTo($select);
+			}
 		});
 
 		$('#advanced').on('click press', function(e) {
@@ -43,8 +45,30 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		_compactOverflowFilters();
 	}, RESIZE_DEBOUNCE));
 
+	$('#query-form').on('keypress', function(e) {
+		if (e.which === 13) {
+			e.preventDefault();
+		}
+	}).on('keyup', function(e) {
+		if (e.which === 13) {
+			e.preventDefault();
+
+			$('#query-form').trigger({
+				type: 'submit',
+				paramData: {
+					offset: 0
+				}
+			});
+		}
+	});
+
 	$('#search-button').on('click press', function(e) {
-		$('#query-form').submit();
+		$('#query-form').trigger({
+			type: 'submit',
+			paramData: {
+				offset: 0
+			}
+		});
 	});
 
 	$('#search-bar').on('click', '.filter > .fa-close', function(e) {
@@ -68,7 +92,10 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		$filter.remove();
 	});
 
-	$('#search-bar').on('click', '#filter-overflow-count div', expand);
+	$('#search-bar').on('click', '#filter-overflow-count', function(e) {
+		e.stopPropagation();
+		expand();
+	});
 
 	$('#search-bar').on('click', '#filters .filter', function(e) {
 		expand();
@@ -132,8 +159,6 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 	$('.control[data-type="where"]').on('click', function(e) {
 		var listener, $set;
 
-		e.stopPropagation();
-
 		_saveFilter();
 		activeFilter = void(0);
 		$('.filter.active').removeClass('active');
@@ -152,7 +177,7 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		$(document).one('drawstart', listener);
 	});
 
-	$('#filter-name input').on('keydown keyup', function(e) {
+	$('#filter-name input').on('keydown keyup paste change', function(e) {
 		var name, type, $this = $(this);
 
 		name = $this.val();
@@ -205,6 +230,70 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		}
 	});
 
+	$(document).on('explorer:more', function(e) {
+		$.ajax({
+			url: e.more,
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'json',
+			data: [],
+			headers: {
+				'X-CSRFToken': $.cookie('csrftoken')
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data, xhr, response) {
+			$('#search-bar').trigger({
+				type: 'search:results',
+				results: data,
+				clearData: false
+			});
+		});
+	});
+
+	$(document).on('explorer:sort', function(e) {
+		e.paramData.limit = RESULT_PAGE_LIMIT;
+
+		$.ajax({
+			url: 'https://p.bitscoop.com/events',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'json',
+			data: e.paramData,
+			headers: {
+				'X-CSRFToken': $.cookie('csrftoken')
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data, xhr, response) {
+			$('#search-bar').trigger({
+				type: 'search:results',
+				results: data,
+				clearData: false
+			});
+		});
+	});
+
+	$(document).on('click', '#filter-controls', function(e) {
+		var thisId, $this = $(e.target);
+
+		thisId = $this.attr('id');
+
+		if (thisId !== '#filter-editor' && thisId !== 'filter-list' && $this.parents('#filter-editor').length === 0 && $this.parents('#filter-list').length === 0) {
+			shrink();
+		}
+	});
+
+	$(document).on('click', function(e) {
+		var $this = $(e.target);
+
+		if ($this.parents('#search-bar').length === 0 && $this.attr('id') !== '#search-bar') {
+			shrink();
+		}
+	});
+
 	$('#query-form').on('submit', function(e) {
 		var paramData, filterDSL, searchQuery;
 
@@ -212,18 +301,17 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 		shrink();
 
-		searchQuery = $('#search-query').val();
 		filterDSL = _getFilterDSL();
 
-		paramData = {
-			filters: JSON.stringify(filterDSL),
-			q: searchQuery,
-			offset: offset,
-			limit: limit
-		};
+		e.paramData.limit = RESULT_PAGE_LIMIT;
+		e.paramData.filters = JSON.stringify(filterDSL);
 
-		console.log(filterDSL);
-		console.log(JSON.stringify(filterDSL));
+		paramData = e.paramData;
+
+		searchQuery = $('#search-query').val();
+		if (searchQuery != '') {
+			paramData.q = searchQuery;
+		}
 
 		$.ajax({
 			url: 'https://p.bitscoop.com/events',
@@ -238,17 +326,14 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 				withCredentials: true
 			}
 		}).done(function(data, xhr, response) {
-			var results;
-
-			results = data.results;
-
 			//When the search is done, trigger a search:results event.
 			//This can be caught by any other libraries and used to initiate post-search behavior, such as
 			//the map view adding marker at the coordinates of each result and adding the results to a list.
 			//Set clearData to true to indicate that this is a new search, not a pagination of a current search.
 			$('#search-bar').trigger({
 				type: 'search:results',
-				results: results,
+				results: data,
+				searchParams: paramData,
 				clearData: true
 			});
 		});
@@ -323,8 +408,6 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 			serialized = $d.data('serialized');
 			data = serialized.data;
 
-			console.log(data);
-
 			if (type === 'who') {
 				if (data.contact) {
 					filter = new filters.TermFilter('contacts.name', data.contact);
@@ -353,6 +436,20 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 				if (data.to) {
 					filter.lte(new Date(data.to));
 				}
+
+				if (data.estimated) {
+					operand = new filters.RangeFilter('created');
+
+					if (data.from) {
+						operand.gte(new Date(data.from));
+					}
+
+					if (data.to) {
+						operand.gte(new Date(data.from));
+					}
+
+					filter = filter.or(operand);
+				}
 			}
 			else if (type === 'where') {
 				geofilter = $d.data('geofilter');
@@ -375,10 +472,15 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 				if (data.geometry === 'outside') {
 					filter = filter.not();
 				}
+
+				if (!(data.estimated)) {
+					operand = new filters.TermFilter('location.estimated', false);
+					filter = filter.and(operand);
+				}
 			}
 			else if (type === 'connector') {
 				if (data.connection) {
-					filter = new filters.TermFilter('signal', data.connection);
+					filter = new filters.TermFilter('connection', data.connection);
 				}
 			}
 
@@ -476,6 +578,10 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 		if (activeFilter && activeFilter.data('type') === 'where') {
 			$(activeFilter.data('geofilter').element).attr('fill', ACTIVE_GEO_FILL_COLOR);
 		}
+
+		if (isMobile) {
+			$('#content').hide();
+		}
 	}
 
 
@@ -490,6 +596,10 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 		if (activeFilter && activeFilter.data('type') === 'where') {
 			$(activeFilter.data('geofilter').element).attr('fill', PASSIVE_GEO_FILL_COLOR);
+		}
+
+		if (isMobile) {
+			$('#content').show();
 		}
 	}
 

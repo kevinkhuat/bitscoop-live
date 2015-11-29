@@ -19,7 +19,8 @@
       "display_name": "Tweets",
       "enabled_by_default": true,
       "endpoints": [
-        "user_timeline"
+        "user_timeline",
+        "twitter_oembed"
       ],
       "initial_mapping": "user_timeline",
       "mappings": {
@@ -89,6 +90,27 @@
                   }
                 ],
                 "mapped_fields": {
+                  "embed_content": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "twitter_oembed",
+                      "parameter_sources": {
+                        "id": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.id_str"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "html"
+                        ]
+                      ]
+                    }
+                  },
+                  "embed_format": {
+                    "hydration_method": "literal",
+                    "value": "iframe"
+                  },
                   "type": {
                     "hydration_method": "literal",
                     "type": "string",
@@ -98,6 +120,10 @@
                     "hydration_method": "translate",
                     "type": "string",
                     "value": "responseObject.text"
+                  },
+                  "url": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.entities.urls[0].url"
                   }
                 }
               }
@@ -131,7 +157,7 @@
             },
             "location": {
               "datetime": {
-                "type": "translate",
+                "hydration_method": "translate",
                 "type": "string",
                 "value": "responseObject.datetime"
               },
@@ -474,22 +500,22 @@
         },
         "oauth_token": {
           "hydration_method": "server",
-          "value": "oauth_token",
+          "value": "auth_data.oauth_token",
           "description": "OAuth1 public key"
         },
         "oauth_token_secret": {
           "hydration_method": "server",
-          "value": "oauth_token_secret",
+          "value": "auth_data.oauth_token_secret",
           "description": "OAuth1 private key"
         },
         "since_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.tweets.user_timeline.since_id",
+          "value": "connection.endpoint_data.tweets.user_timeline.since_id",
           "description": "Most recent tweet"
         },
         "max_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.tweets.user_timeline.max_id",
+          "value": "connection.endpoint_data.tweets.user_timeline.max_id",
           "description": "Highest ID of next page call"
         }
       }
@@ -505,22 +531,22 @@
         },
         "oauth_token": {
           "hydration_method": "server",
-          "value": "oauth_token",
+          "value": "auth_data.oauth_token",
           "description": "OAuth1 public key"
         },
         "oauth_token_secret": {
           "hydration_method": "server",
-          "value": "oauth_token_secret",
+          "value": "auth_data.oauth_token_secret",
           "description": "OAuth1 private key"
         },
         "since_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.direct_messages_sent.direct_messages_sent.since_id",
+          "value": "connection.endpoint_data.direct_messages_sent.direct_messages_sent.since_id",
           "description": "Most recent tweet"
         },
         "max_id": {
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.direct_messages_sent.direct_messages_sent.max_id",
+          "value": "connection.endpoint_data.direct_messages_sent.direct_messages_sent.max_id",
           "description": "Highest ID of next page call"
         }
       }
@@ -537,22 +563,40 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         },
         "since_id": {
           "description": "Most recent tweet",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.direct_messages_received.direct_messages_received.since_id"
+          "value": "connection.endpoint_data.direct_messages_received.direct_messages_received.since_id"
         },
         "max_id": {
           "description": "Highest ID of next page call",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.direct_messages_received.direct_messages_received.max_id"
+          "value": "connection.endpoint_data.direct_messages_received.direct_messages_received.max_id"
+        }
+      }
+    },
+    "twitter_oembed": {
+      "call_method": "GET",
+      "path": "statuses/oembed.json?id=[__id__]",
+      "additional_path_fields": [
+        {
+          "description": "ID of tweet",
+          "parameter": "id",
+          "replace": "[__id__]"
+        }
+      ],
+      "parameter_descriptions": {
+        "id": {
+          "description": "ID of tweet",
+          "hydration_method": "translate",
+          "value": "responseObject.id_str"
         }
       }
     }

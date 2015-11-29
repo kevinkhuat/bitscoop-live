@@ -1,0 +1,23 @@
+<div class="mix object-details contact" data-object-id="contacts.{{ contact.id }}" {% for sortField in sortFields %}
+     data-{{ sortField.attr }}="{{ contact[sortField.property] }}" {% endfor %}>
+	{% if contact.embed_thumbnail %}
+	<img src="{{ contact.embed_thumbnail }}"/>
+	{% else %}
+	<div class="icon-big fa fa-user"></div>
+	{% endif %}
+
+	{% if contact.name %}
+	<div>{{ contact.name }}</div>
+	{% endif %}
+
+	{% if not isEventDetail %}
+	<div class="provider-name">
+		<i class="{{ contact.providerIcon }}"></i>
+		<span>{{ contact.provider_name }}</span>
+	</div>
+	{% endif %}
+
+	{% if contact.handle %}
+	<div>{{ contact.handle }}</div>
+	{% endif %}
+</div>

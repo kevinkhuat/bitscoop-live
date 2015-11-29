@@ -1,115 +1,50 @@
-body.explorer.main {
-	@control-margin: 10px;
+#map {
+	position: relative;
+	left: 0;
+	bottom: 0;
+	min-height: 20em;
+	width: 25%;
+	border-top: 0;
+}
 
+.leaflet-right {
+	z-index: 20 !important;
+}
+
+#search-bar {
+	width: 50%;
+	min-width: 400px;
+
+	#filter-controls {
+		& > div {
+			top: 20px;
+		}
+
+		@media @mobile {
+			.control[data-type="where"] {
+				display: none;
+			}
+		}
+	}
+}
+
+body.explorer {
 	header {
 		border-bottom: 1px solid @input-border-color;
 	}
 
-	main {
-		position: relative;
+	.type-grid {
+		.flex;
+		.flex-wrap;
+		.flex-x-start;
+
+		height: 100%;
+		max-height: 100%;
+		border: 0;
 	}
 
-	#left {
-		position: absolute;
-		top: 0; left: 0; z-index: 10;
-
-		&:not(.expanded) {
-			#list,
-			#detail {
-				display: none;
-			}
-		}
-
-		&.expanded {
-			width: 25%;
-			min-width: 400px;
-
-			#expand-details {
-				left: 100%;
-			}
-		}
-
-		#expand-details {
-			position: absolute;
-			top: @control-margin; left: @control-margin; z-index: 15;
-
-			width: 1.25em; height: 1.25em;
-
-			font-size: 1.5em;
-			background-color: @light;
-			cursor: pointer;
-
-			.flex;
-			.flex-x-center;
-			.flex-center;
-
-			i {
-				position: relative;
-
-				&.fa-caret-right {
-					left: 1px;
-				}
-
-				&.fa-caret-left {
-					left: -1px;
-				}
-			}
-		}
-	}
-
-	#list {
-		.hide-empty;
-
-		margin: @control-margin;
-		background-color: @light;
-		border: 1px solid @input-border-color;
-		overflow-y: auto;
-		max-height: 250px;
-
-		.list-element {
-			.flex;
-			.flex-x-center;
-
-			.no-select;
-
-			padding: 0 0.5em;
-			cursor: pointer;
-
-			&:nth-child(even) {
-				background-color: darken(@light, 5%);
-			}
-
-			&:hover,
-			&.active {
-				background-color: lighten(@color1, 15%);
-				color: @light;
-			}
-
-			> * {
-				padding: 0.5em;
-			}
-		}
-	}
-
-	#detail {
-		.hide-empty;
-
-		border: 1px solid @input-border-color;
-		background-color: @light;
-		padding: 1em; margin: @control-margin;
-
-		overflow: hidden;
-	}
-
-	#search-bar {
-		width: 50%;
-		min-width: 400px;
-
-		#filter-controls {
-			& > div {
-				top: 20px;
-			}
-		}
+	.type-grid:empty, #grid:empty {
+		display: flex !important;
 	}
 
 	.leaflet-control-container {
@@ -123,4 +58,119 @@ body.explorer.main {
 	.mapbox-logo {
 		display: none !important;
 	}
+
+	&.grid, &.results, &.list, &.feed {
+		#background {
+			.flex;
+			.flex-grow;
+			flex-direction: column;
+			overflow-y: auto;
+			position: relative;
+		}
+
+		#grid-scroll, #list-scroll, #details-scroll {
+			position: absolute;
+			margin: 0;
+			border: 0;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			max-height: 100%;
+			width: 100%;
+		}
+	}
+
+	#pagination {
+		.pt-sans;
+
+		padding: 0.2em 0;
+		font-size: 1.2em;
+
+		@media @mobile-portrait {
+			font-size: 0.75em;
+			padding: 0.5em 0;
+		}
+
+		& > div, span {
+			padding: 0 0.2em;
+			display: table-cell;
+		}
+	}
+
+	#moreResults {
+		padding: 0;
+		cursor: pointer;
+		color: @color2;
+		border-color: @color2;
+		font-weight: bold;
+	}
+}
+
+body.explorer.grid, body.explorer.feed {
+	#background {
+		background-color: darken(@light, 5%);
+
+		#grid-scroll {
+			.flex;
+			.flex-column;
+		}
+	}
+
+	#list {
+		.flex;
+		.flex-wrap;
+		.flex-x-start;
+		border: 0;
+
+		justify-content: center;
+		margin: 0;
+	}
+
+	#map {
+		position: relative;
+		left: 0;
+		bottom: 0;
+		min-height: 20em;
+		width: 25%;
+		border-top: 0;
+
+		@media @mobile {
+			width: 100%;
+		}
+	}
+}
+
+.sort-fields {
+	.flex;
+	.flex-space-around;
+	.flex-wrap;
+
+	padding: 0.5em;
+	text-transform: uppercase;
+	flex-grow: 0;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.sort-selector {
+	@media @mobile {
+		font-size: 1.2em;
+		padding: 0.5em;
+	}
+
+	&:hover,
+	&:active,
+	&.active {
+		color: @color4;
+		border-color: @color4;
+	}
+}
+
+.object-details {
+	font-size: 1.5em;
+}
+
+.awesome-marker {
+	cursor: pointer;
 }

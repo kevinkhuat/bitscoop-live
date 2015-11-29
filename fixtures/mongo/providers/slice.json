@@ -22,7 +22,8 @@
         "orders",
         "item",
         "merchant",
-        "email"
+        "email",
+        "shipment"
       ],
       "initial_mapping": "orders",
       "mappings": {
@@ -115,11 +116,6 @@
                   }
                 ],
                 "mapped_fields": {
-                  "type": {
-                    "hydration_method": "literal",
-                    "type": "string",
-                    "value": "receipt"
-                  },
                   "owner": {
                     "hydration_method": "literal",
                     "value": "me"
@@ -174,6 +170,11 @@
                     ]
                   }
                 },
+                "type": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "receipt"
+                },
                 "url": {
                   "hydration_method": "endpoint",
                   "value": {
@@ -225,6 +226,56 @@
                   }
                 ],
                 "mapped_fields": {
+                  "thumbnail": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.imageUrl"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.description"
+                        ]
+                      ]
+                    }
+                  },
                   "type": {
                     "hydration_method": "endpoint",
                     "value": {
@@ -275,31 +326,6 @@
                         ],
                         [
                           "result.imageUrl"
-                        ]
-                      ]
-                    }
-                  },
-                  "title": {
-                    "hydration_method": "endpoint",
-                    "value": {
-                      "endpoint": "item",
-                      "parameter_sources": {
-                        "access_token": {
-                          "hydration_method": "server",
-                          "value": "access_token"
-                        },
-                        "id": {
-                          "hydration_method": "split",
-                          "value": {
-                            "location": "subObject.href",
-                            "split_separator": "/",
-                            "item_number": "last"
-                          }
-                        }
-                      },
-                      "value_location": [
-                        [
-                          "result.description"
                         ]
                       ]
                     }
@@ -488,35 +514,7 @@
                   }
                 ],
                 "mapped_fields": {
-                  "type": [
-                    {
-                      "hydration_method": "endpoint",
-                      "value": {
-                        "endpoint": "item",
-                        "parameter_sources": {
-                          "access_token": {
-                            "hydration_method": "server",
-                            "value": "access_token"
-                          },
-                          "id": {
-                            "hydration_method": "split",
-                            "value": {
-                              "location": "subObject.href",
-                              "split_separator": "/",
-                              "item_number": "last"
-                            }
-                          }
-                        },
-                        "value_location": [
-                          [
-                            "result.category.name"
-                          ]
-                        ],
-                        "translation": "things"
-                      }
-                    }
-                  ],
-                  "url": {
+                  "thumbnail": {
                     "hydration_method": "endpoint",
                     "value": {
                       "endpoint": "item",
@@ -535,9 +533,6 @@
                         }
                       },
                       "value_location": [
-                        [
-                          "result.productUrl"
-                        ],
                         [
                           "result.imageUrl"
                         ]
@@ -565,6 +560,60 @@
                       "value_location": [
                         [
                           "result.description"
+                        ]
+                      ]
+                    }
+                  },
+                  "type": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.category.name"
+                        ]
+                      ],
+                      "translation": "things"
+                    }
+                  },
+                  "url": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "item",
+                      "parameter_sources": {
+                        "access_token": {
+                          "hydration_method": "server",
+                          "value": "access_token"
+                        },
+                        "id": {
+                          "hydration_method": "split",
+                          "value": {
+                            "location": "subObject.href",
+                            "split_separator": "/",
+                            "item_number": "last"
+                          }
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "result.productUrl"
+                        ],
+                        [
+                          "result.imageUrl"
                         ]
                       ]
                     }
@@ -842,10 +891,10 @@
         "since": {
           "description": "Earliest date from which to return results",
           "hydration_method": "translate",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "epoch_now"
           },
-          "value": "signal.endpoint_data.orders.orders.since"
+          "value": "connection.endpoint_data.orders.orders.since"
         }
       },
       "header_descriptions": {

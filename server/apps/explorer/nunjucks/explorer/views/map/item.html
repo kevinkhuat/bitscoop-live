@@ -1,0 +1,13 @@
+<div class="mix list-item" data-object-id="{{ objectType }}.{{ object.id }}" {%
+     for sortField in sortFields %} data-{{ sortField.attr
+     }}="{% if object[sortField.property] == undefined %}~{% else %}{{ object[sortField.property] }}{% endif %}" {%
+     endfor %}>
+	{% for column in columns %}
+	<div>
+		{% if column.type == 'icon' %}
+		<i class="{{ object[column.icon] }}"></i>
+		{% endif %}
+		<span>{{ object[column.property] }}</span>
+	</div>
+	{% endfor %}
+</div>

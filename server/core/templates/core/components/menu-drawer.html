@@ -1,0 +1,35 @@
+<div id="menu">
+	<div id="close-menu">
+		<i class="fa fa-times"></i>
+	</div>
+	{% if mode == 'app' %}
+		<div class="view-bar">
+			<div class="title">View</div>
+			<div class="view">
+				<a class="view-selector" data-selector="results">
+					<i class="fa fa-arrow-circle-left"></i>
+					<span>Results</span>
+				</a>
+				<div class="flex">
+					<a class="view-selector" data-selector="grid"><i class="fa fa-th disabled"></i></a>
+					<a class="view-selector" data-selector="list"><i class="fa fa-list disabled"></i></a>
+					<a class="view-selector" data-selector="feed"><i class="fa fa-clone disabled"></i></a>
+					<a class="view-selector" data-selector="map"><i class="fa fa-map-o disabled"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="sort-bar">
+			<div class="title"></div>
+			<div class="sort-fields"></div>
+		</div>
+	{% endif %}
+	<div class="title">Menu</div>
+	<!--<a id="handle-link" href="/"><i class="fa fa-home"></i> {{ request.user.identifier }}</a>-->
+	<!-- TODO: Add active styling instead of removing current view link-->
+	{% if mode != 'app' %}
+	<a href="{% url 'explorer:main' %}"><i class="fa fa-th-large"></i> Explorer</a>
+	{% endif %}
+	<a href="{% url 'providers' %}"><i class="fa fa-plus"></i> Providers</a>
+	<a href="{% url 'settings:base' %}"><i class="fa fa-cog"></i> Settings</a>
+	<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+</div>

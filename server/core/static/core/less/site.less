@@ -1,12 +1,26 @@
 @import 'themes/active.less';
 
+@import 'explorer/less/components/action-bar.less';
+@import 'explorer/less/components/drawer.less';
+@import 'explorer/less/components/grid-item.less';
+@import 'explorer/less/components/list-item.less';
+
+@import 'explorer/less/objects/objects.less';
+
+@import 'explorer/less/pages/feed.less';
+@import 'explorer/less/pages/grid.less';
+@import 'explorer/less/pages/list.less';
+@import 'explorer/less/pages/main.less';
+@import 'explorer/less/pages/map.less';
+@import 'explorer/less/pages/results.less';
+
 @import 'core/less/animations.less';
 @import 'core/less/controls.less';
 @import 'core/less/flexbox.less';
 @import 'core/less/fonts.less';
 @import 'core/less/mixins.less';
+@import 'core/less/mobile.less';
 @import 'core/less/tables.less';
-
 @import 'core/less/components/cards.less';
 @import 'core/less/components/search-bar.less';
 
@@ -19,7 +33,6 @@
 
 @import 'core/less/shims/icons.less';
 
-
 * {
 	box-sizing: border-box;
 }
@@ -27,6 +40,14 @@
 html {
 	height: 100%;
 	font-size: 10px;
+
+	@media @mobile-portrait {
+		font-size: 20px;
+	}
+
+	@media @mobile-landscape {
+		font-size: 14px;
+	}
 
 	.pt-sans;
 
@@ -54,7 +75,8 @@ p {
 }
 
 body {
-	padding: 0; margin: 0;
+	padding: 0;
+	margin: 0;
 	min-height: 100%;
 
 	font-size: 1.3em;
@@ -68,10 +90,29 @@ body {
 }
 
 header {
+	.raleway;
+
+	a {
+		color: lighten(@font-color, 15%);
+		font-size: 1.2em;
+
+		&.active {
+			color: @color2;
+		}
+
+		&:hover {
+			color: @color1;
+		}
+	}
+
 	nav {
 		@margin-width: 10px;
 
-		padding: 7px 0;
+		padding: 5px 0;
+
+		@media @mobile {
+			padding: 10px 0;
+		}
 
 		.flex;
 		.flex-x-center;
@@ -79,7 +120,12 @@ header {
 		a {
 			white-space: nowrap;
 
+			cursor: pointer;
 			.no-select;
+
+			@media @mobile-portrait {
+				margin: 0 0.5em;
+			}
 		}
 
 		& > * {
@@ -93,27 +139,73 @@ header {
 		& > :last-child {
 			margin-right: @margin-width * 2;
 		}
+
+		.view-bar {
+			.flex;
+
+			justify-content: space-around;
+			min-width: 10em;
+			font-size: 1.2em;
+
+			&.disabled {
+				display: none !important;
+			}
+		}
 	}
-}
 
+	& > .sort-bar {
+		.flex;
+		.flex-space-between;
 
+		height: 2em;
+		background-color: @color1;
+		color: @light;
 
-header {
-	.raleway;
+		.sort-selector {
+			padding: 0 2em;
 
-	a {
-		color: lighten(@font-color, 15%);
-		font-size: 1.2em;
+			&.active {
+				color: @dark;
+			}
+			&:hover {
+				color: @color4;
+			}
+		}
 
-		.hover(@color2);
-		.active(@color2);
+		.view-selector, .facet {
+			font-weight: bold;
+			text-transform: uppercase;
+			padding: 0.25em;
+			font-size: 1.2em;
+		}
+
+		.view-selector {
+			.flex;
+
+			margin-left: 20px;
+			align-items: baseline;
+
+			cursor: pointer;
+
+			&:hover {
+				color: @color4;
+			}
+
+			& > span {
+				font-weight: bold;
+				margin-left: 0.2em;
+			}
+		}
+
+		.facet {
+			color: @dark;
+			margin-right: 20px
+		}
+
+		&.disabled {
+			display: none !important;
+		}
 	}
-}
-
-a {
-	color: @color2;
-
-	.hover(@color1);
 }
 
 .inbox:after {
@@ -142,6 +234,10 @@ footer {
 	padding: 15px;
 	font-size: 75%;
 
+	@media @mobile {
+		margin-top: 4em;
+	}
+
 	.align-center;
 }
 
@@ -149,16 +245,153 @@ a {
 	text-decoration: none;
 }
 
-#logo {
-	height: 40px;
+#home {
+	.flex-grow;
 }
 
+.logo {
+	height: 40px;
 
-.boxed-group {
+	@media @mobile {
+		height: 60px;
+	}
+}
+
+#links {
+	.flex;
+
+	@media @mobile {
+		display: none;
+	}
+
+	& > * {
+		margin: 0 0.5em;
+	}
+}
+
+#menu {
+	.flex-column;
+	.flex-grow;
+
+	display: none;
+	top: 0;
+	background-color: @light;
+	position: absolute;
+	z-index: 30;
+	right: 0;
+	min-width: 300px;
+
+	&.open {
+		.flex;
+
+		@media @mobile-portrait {
+			font-size: 1.4em;
+		}
+
+		@media @mobile-landscape {
+			font-size: 1.2em;
+		}
+
+		width: 25%;
+
+		@media @mobile {
+			width: 90%;
+		}
+		height: 100%;
+	}
+
+	a {
+		display: block;
+		padding: 0.5em;
+		font-size: 1.2em;
+		color: lighten(@dark, 45%);
+	}
+
+	& > a {
+		font-size: 2em;
+		&:hover {
+			color: @color4;
+		}
+	}
+
+	& > :last-child {
+		border-bottom: 1px solid darken(@light, 15%);
+	}
+
+	.title {
+		padding: 6px 15px;
+
+		background-color: darken(@light, 5%);
+		font-weight: bold;
+
+		font-size: 1.2em;
+
+		border-top: none;
+	}
+
+	.view {
+		.flex;
+		.flex-space-between;
+	}
+
+	.view-selector {
+		cursor: pointer;
+
+		@media @mobile {
+			font-size: 2em;
+		}
+
+		&.active {
+			color: @color2;
+		}
+		&:hover {
+			color: @color1;
+		}
+		&.disabled {
+			cursor: default;
+			color: darken(@light, 20%);
+		}
+
+		&[data-selector="map"] {
+			@media @mobile {
+				display: none;
+			}
+		}
+	}
+
+	#close-menu {
+		position: absolute;
+		right: 0;
+		top: 0;
+		cursor: pointer;
+		padding: 0.5em;
+
+		@media @mobile {
+			padding: 0.2em 0.3em;
+		}
+
+		&:hover {
+			color: @color3;
+		}
+	}
+
+	.view-bar, .sort-bar {
+		&.disabled {
+			display: none !important;
+		}
+	}
+}
+
+#menu-button {
+	display: flex;
+	cursor: pointer;
+	font-size: 2.5em;
+}
+
+.boxed-group,
+#menu {
 	@border-color: darken(@light, 15%);
 	@border-radius: 2px;
-
-	margin-bottom: 15px;
 
 	border: 1px solid @border-color;
 	border-radius: @border-radius @border-radius 0 0;
@@ -170,9 +403,13 @@ a {
 	& > * {
 		border-top: 1px solid @border-color;
 	}
+}
+
+.boxed-group {
+	margin-bottom: 15px;
 
 	& > :first-child {
-		padding: 0.4em 0.5em;
+		padding: 6px 15px;
 
 		background-color: darken(@light, 5%);
 		font-weight: bold;
@@ -180,6 +417,14 @@ a {
 		font-size: 1.2em;
 
 		border-top: none;
+	}
+}
+
+.boxed-group {
+	&:not(#settings-menu) {
+		@media @mobile {
+			border: none;
+		}
 	}
 }
 
@@ -193,7 +438,8 @@ a {
 		.flex-x-center;
 
 		position: absolute;
-		top: -0.65em; right: -1.1em;
+		top: -0.65em;
+		right: -1.1em;
 
 		font-size: 0.25em;
 
@@ -209,6 +455,7 @@ a {
 .success {
 	color: forestgreen;
 }
+
 .success-icon {
 	color: forestgreen;
 	opacity: 0;
@@ -224,6 +471,7 @@ a {
 .errorlist {
 	color: firebrick;
 }
+
 ul.errorlist {
 	text-align: left;
 }
@@ -245,5 +493,19 @@ ul.errorlist {
 		& > div > div {
 			.position-center;
 		}
+	}
+}
+
+input[type='radio'], input[type='checkbox'] {
+	@media @mobile {
+		transform: scale(2);
+	}
+}
+
+.show-on-mobile {
+	display: none;
+
+	@media @mobile {
+		.flex;
 	}
 }

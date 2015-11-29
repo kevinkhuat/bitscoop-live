@@ -62,7 +62,7 @@
 					<br/>
 					<label><input type="radio" name="gender" value="other"{% if form.gender.value|lower != 'male' and form.gender.value|lower != 'female' %} checked{% endif %} />Other</label>
 				</div>
-				<div class="text-box shrink" style="margin-left: 20px; margin-top: 5px; width: 230px; {% if form.gender.value|lower == 'male' or form.gender.value|lower == 'female' %} display: none; {% endif %}">
+				<div class="text-box shrink" style="margin-left: 20px; margin-top: 5px; {% if form.gender.value|lower == 'male' or form.gender.value|lower == 'female' %} display: none; {% endif %}">
 					<input type="text" name="other_gender"{% if form.gender.value|lower != 'male' and form.gender.value|lower != 'female' %} value="{{ form.gender.value|default_if_none:'' }}" {% endif %} />
 				</div>
 				<div class="errorlist" data-for="gender">

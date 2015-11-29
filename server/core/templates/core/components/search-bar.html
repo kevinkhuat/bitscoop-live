@@ -19,12 +19,12 @@
 						<i class="fa fa-clock-o"></i>
 					</div>
 
-					<div class="control disabled" data-type="where">
-						<i class="fa fa-globe"></i>
-					</div>
-
 					<div class="control" data-type="connector">
 						<i class="fa fa-plug"></i>
+					</div>
+
+					<div class="control disabled" data-type="where">
+						<i class="fa fa-globe"></i>
 					</div>
 				</div>
 
@@ -41,7 +41,7 @@
 						</div>
 
 						<div class="text-box">
-							<input type="text" name="contact" />
+							<input type="text" name="contact"/>
 						</div>
 
 						<div>
@@ -64,11 +64,14 @@
 						<div class="input-container">
 							<select name="type">
 								<option></option>
+								<option value="achievement">Achievement</option>
 								<option value="audio">Audio</option>
 								<option value="code">Code</option>
 								<option value="file">File</option>
 								<option value="game">Game</option>
-								<option value="photo">Photo</option>
+								<option value="image">Image</option>
+								<option value="receipt">Receipt</option>
+								<option value="software">Software</option>
 								<option value="text">Text</option>
 								<option value="video">Video</option>
 								<option value="web-page">Web Page</option>
@@ -77,6 +80,14 @@
 					</form>
 
 					<form class="when">
+						<div>
+							Return estimated results?
+						</div>
+
+						<div>
+							<input type="checkbox" name="estimated" />
+						</div>
+
 						<div>
 							From:
 						</div>
@@ -91,25 +102,6 @@
 
 						<div class="text-box">
 							<input type="date" name="to" />
-						</div>
-					</form>
-
-					<form class="where">
-						<!--<div>
-							Distance:
-						</div>
-
-						<div class="text-box">
-							<input type="text" name="distance" />
-						</div>-->
-
-						<div>
-							Area:
-						</div>
-
-						<div class="input-container blockify">
-							<label for="where-type-1"><input id="where-type-1" type="radio" name="geometry" value="inside" checked />Inside</label>
-							<label for="where-type-2"><input id="where-type-2" type="radio" name="geometry" value="outside" />Outside</label>
 						</div>
 					</form>
 
@@ -134,6 +126,33 @@
 							</select>
 						</div>
 					</form>
+
+					<form class="where">
+						<!--<div>
+							Distance:
+						</div>
+
+						<div class="text-box">
+							<input type="text" name="distance" />
+						</div>-->
+
+						<div>
+							Return estimated results?
+						</div>
+
+						<div>
+							<input type="checkbox" name="estimated" />
+						</div>
+
+						<div>
+							Area:
+						</div>
+
+						<div class="input-container blockify">
+							<label for="where-type-1"><input id="where-type-1" type="radio" name="geometry" value="inside" checked />Inside</label>
+							<label for="where-type-2"><input id="where-type-2" type="radio" name="geometry" value="outside" />Outside</label>
+						</div>
+					</form>
 				</div>
 			</div>
 
@@ -143,7 +162,7 @@
 
 	<form id="query-form" action="{% if action %}{{ action }}{% else %}{% url 'home' %}{% endif %}" method="POST" class="flex-grow">
 		<div id="search-box" class="text-box">
-			<input id="search-query" type="text" name="search" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %} />
+			<input id="search-query" type="search" name="search" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %} />
 		</div>
 
 		<input class="hidden" type="submit" />

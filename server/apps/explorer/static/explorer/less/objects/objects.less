@@ -1,0 +1,173 @@
+.object-details {
+	.flex;
+	.flex-column;
+	.flex-space-around;
+
+	max-width: 500px;
+	word-break: break-word;
+	background-color: @light;
+	padding: 1em;
+	margin: 0.5em;
+
+	@media @mobile {
+		margin: 0 0 1em 0;
+		width: 100%;
+		max-width: inherit;
+
+		&:first-child {
+			margin-top: 1em;
+		}
+	}
+
+	& > * {
+		margin-bottom: 5px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.datetime {
+		.text-center;
+	}
+
+	&.contact {
+		& div {
+			.text-center;
+			font-size: 1.2em;
+		}
+
+		& .icon-big {
+			.text-center;
+			font-size: 5em;
+		}
+	}
+
+	&.content {
+		& > img {
+			margin-left: auto;
+			margin-right: auto;
+			width: 100%;
+		}
+
+		& > iframe {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		& > .content-title {
+			.text-center;
+			font-size: 1.5em;
+
+			margin-left: auto;
+			margin-right: auto;
+
+		}
+
+		& > .icons {
+			.flex;
+			.flex-space-between;
+
+			margin-left: auto;
+			margin-right: auto;
+
+			& > div {
+				margin: 0 0.5em;
+			}
+		}
+
+		& > .text-area {
+			.text-center;
+		}
+	}
+
+	&.event {
+		& > i {
+			.text-center;
+			font-size: 4em;
+		}
+
+		& > .provider-name, & > .event-type {
+			.text-capitalize;
+			.text-center;
+
+			font-size: 1.5em;
+		}
+	}
+
+	&.location {
+		font-size: 1.2em;
+	}
+
+	&.organization {
+		& > .organization-title {
+			.text-center;
+			font-size: 1.5em;
+		}
+
+		& > .organization-icon, .organization-type {
+			.text-center;
+			text-transform: uppercase;
+		}
+
+		.organization-icon {
+			font-size: 1.5em;
+		}
+	}
+
+	&.place {
+		.text-center;
+
+		& > .place-name {
+			font-size: 1.5em;
+		}
+
+		& > i {
+			font-size: 2em;
+		}
+	}
+
+	&.thing {
+		& > iframe {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		& > .thing-title {
+			.text-center;
+			font-size: 1.5em;
+
+			margin-left: auto;
+			margin-right: auto;
+
+		}
+
+		& > .text-area {
+			.text-center;
+		}
+
+		& > .icons {
+			.flex;
+			.flex-space-between;
+
+			margin-left: auto;
+			margin-right: auto;
+
+			& > div {
+				margin: 0 0.5em;
+			}
+
+			& .thing-type {
+				.text-capitalize;
+			}
+		}
+	}
+
+	#map-container {
+		.flex;
+		.flex-grow;
+
+		min-width: 200px;
+		min-height: 200px;
+	}
+}

@@ -1,0 +1,85 @@
+.grid-item {
+	.no-select;
+	.flex;
+	.flex-end;
+	.flex-column;
+
+	position: relative;
+
+	border: 3px solid @light;
+
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-clip: content-box;
+
+	box-shadow: 0 0 5px 1px fade(@dark, 25%);
+
+	width: 20em;
+	height: 20em;
+
+	padding: 0;
+	margin: 1em;
+
+	cursor: pointer;
+	background-color: @light;
+
+	&:hover {
+		border-color: @color1;
+	}
+	&.active {
+		background-color: lighten(@color1, 40%);
+		border: 3px solid @color1;
+	}
+
+	> * {
+		padding: 0.5em;
+	}
+
+	> :first-child {
+		.flex-grow;
+		.flex-center;
+		.flex-x-center;
+	}
+
+	.type-icon {
+		.flex-grow;
+		.flex-center;
+		.flex-x-center;
+		.align-center;
+
+		font-size: 10em;
+		color: fade(darken(@font-color, 10%), 65%);
+	}
+
+	.title-bar {
+		color: @font-color;
+		background-color: fade(darken(@light, 5%), 85%);
+
+		.title {
+			white-space: nowrap;
+			font-weight: bold;
+			overflow-x: hidden;
+			margin: auto 5px;
+		}
+	}
+
+	.bubble {
+		.flex;
+		.flex-center;
+		.flex-x-center;
+
+		background-color: darken(@light, 10%);
+		width: 32px;
+		height: 32px;
+		position: relative;
+		border-radius: 500px;
+		font-size: 17px;
+
+		@media @mobile {
+			width: 64px;
+			height: 64px;
+			font-size: 35px;
+		}
+	}
+}

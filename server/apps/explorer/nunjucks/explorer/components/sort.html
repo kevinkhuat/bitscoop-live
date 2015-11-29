@@ -1,0 +1,6 @@
+{% for field in fields %}
+<div class="sort-selector" data-sort="{{ field.attr }}:none">
+	<div class="sort-arrow fa"></div>
+	<span>{{ field.name }}</span>
+</div>
+{% endfor %}

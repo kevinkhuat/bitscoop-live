@@ -70,6 +70,7 @@ class MapboxTokenView(View):
 
     def get(self, request):
         data = {
+            'MAPBOX_USER_NAME': settings.MAPBOX_USER_NAME,
             'MAPBOX_ACCESS_TOKEN': settings.MAPBOX_ACCESS_TOKEN
         }
 

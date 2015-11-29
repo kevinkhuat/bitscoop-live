@@ -95,18 +95,23 @@
                   }
                 ],
                 "mapped_fields": {
-                  "type": {
-                    "hydration_method": "literal",
-                    "type": "string",
-                    "value": "file"
-                  },
                   "file_extension": {
                     "hydration_method": "translate",
                     "value": "responseObject.1.mime_type"
                   },
+                  "thumbnail": {
+                    "hydration_method": "reformat",
+                    "hydration_location": "responseObject.1.path",
+                    "value": "https://content.dropboxapi.com/1/thumbnails/auto/[$1]"
+                  },
                   "title": {
                     "hydration_method": "translate",
                     "value": "responseObject.1.path"
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "file"
                   }
                 }
               }
@@ -137,15 +142,15 @@
         "access_token": {
           "description": "OAuth2 access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "cursor": {
           "description": "ID of the latest change found in the previous search",
           "hydration_method": "translate",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "cursor"
           },
-          "value": "signal.endpoint_data.delta.delta.cursor"
+          "value": "connection.endpoint_data.delta.delta.cursor"
         }
       }
     }

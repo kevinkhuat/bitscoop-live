@@ -13,31 +13,33 @@
 
 
 {% block settings %}
-	{% for signal in signals %}
-		<div class="connection boxed-group" data-id="{{ signal.id }}" data-provider-id="{{ signal.provider.id }}">
+	{% for connection in connections|dictsort:'provider.name.lower' %}
+		<div class="connection boxed-group" data-id="{{ connection.id }}" data-provider-id="{{ connection.provider.id }}">
 			<div class="flex flex-x-center title">
-				<i class="fa fa-{{ signal.provider.name|lower }}"></i>
-				<div class="flex-grow name">{{ signal.name }}</div>
+				<div class="icon-name">
+					<i class="fa fa-{{ connection.provider.name|lower }}"></i>
+					<div class="flex-grow name">{{ connection.name }}</div>
+					<div class="disabled"></div>
+				</div>
+				<div class="last-run">
+					{% if connection.last_run %}
+						<div class="updates">
+							<div style="margin-right: 0.5em;">Refreshed:</div>
+							<i class="fa fa-calendar-o"></i>
+							<div>{{ connection.last_run|date }}</div>
+							<i class="fa fa-clock-o"></i>
+							<div>{{ connection.last_run|time }}</div>
+							<div>UTC</div>
+						</div>
+					{% else %}
+						<div class="updates">
+							<div>Initial update pending</div>
+							<span></span>
+							<i class="fa fa-spinner spinner"></i>
+						</div>
+					{% endif %}
+				</div>
 
-				<div class="disabled"></div>
-
-				{% if signal.last_run %}
-					<div class="updates">
-						<div style="margin-right: 0.5em;">Refreshed:</div>
-						<i class="fa fa-calendar-o"></i>
-						<div>{{ signal.last_run|date }}</div>
-						<i class="fa fa-clock-o"></i>
-						<div>{{ signal.last_run|time }}</div>
-					</div>
-				{% else %}
-					<div class="updates">
-						<div>Initial update pending</div>
-						<span></span>
-						<i class="fa fa-spinner spinner"></i>
-					</div>
-				{% endif %}
-
-				<span style="margin: 0 5px;"></span>
 				<i class="fa fa-caret-down expand-indicator"></i>
 			</div>
 
@@ -46,21 +48,21 @@
 					<div>
 						<div class="flex flex-x-center label">
 							<div>Name</div>
-							<i class="fa fa-check-circle flex-grow success-icon" data-for="name" data-namespace="{{ signal.id }}"></i>
+							<i class="fa fa-check-circle flex-grow success-icon" data-for="name" data-namespace="{{ connection.id }}"></i>
 						</div>
 						<div class="text-box shrink">
-							<input name="name" type="text" value="{{ signal.name }}" />
+							<input name="name" type="text" value="{{ connection.name }}" />
 						</div>
 					</div>
 
 					<div>
 						<div class="label">What would you like?</div>
 						<div>
-							{% for permission in signal.permissions %}
+							{% for permission in connection.permissions %}
 								<div class="paragraph">
 									<div class="flex flex-x-center">
 										<label><input class="flag" type="checkbox" name="{{ permission.name }}"{% if permission.enabled %} checked{% endif %} />{{ permission.display_name }}</label>
-										<i class="fa fa-check-circle flex-grow success-icon" data-for="{{ permission.name }}" data-namespace="{{ signal.id }}"></i>
+										<i class="fa fa-check-circle flex-grow success-icon" data-for="{{ permission.name }}" data-namespace="{{ connection.id }}"></i>
 									</div>
 									<div class="tooltip" data-for="">{{ permission.description }}</div>
 								</div>
@@ -70,8 +72,8 @@
 
 					<input class="hidden" type="submit" />
 
-					<div class="flex flex-x-center">
-						{% if signal.enabled %}
+					<div class="delete-disable">
+						{% if connection.enabled %}
 							<button class="danger disable">Disable</button>
 						{% else %}
 							<button class="primary enable">Enable</button>

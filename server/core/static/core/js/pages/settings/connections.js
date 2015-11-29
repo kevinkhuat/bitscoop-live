@@ -35,7 +35,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 
 		serialized = _.pick(formData, ['name', 'enabled']);
 		id = $this.closest('.connection').data('id');
-		serialized.signal_id = id;
+		serialized.connection_id = id;
 		eventSources = {};
 
 		$.each(formData, function(key, value) {
@@ -80,7 +80,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				url: '/settings/connections',
 				method: 'PATCH',
 				data: JSON.stringify({
-					signal_id: id,
+					connection_id: id,
 					enabled: true
 				}),
 				contentType: 'application/json',
@@ -113,7 +113,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 			id = $modal.data('connection-id');
 
 			data = {
-				signal_id: id,
+				connection_id: id,
 				enabled: false
 			};
 
@@ -152,7 +152,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 			id = $modal.data('connection-id');
 
 			$.ajax({
-				url: 'https://p.bitscoop.com/signals?signal_id=' + id,
+				url: 'https://p.bitscoop.com/connections?connection_id=' + id,
 				method: 'DELETE',
 				headers: {
 					'X-CSRFToken': $.cookie('csrftoken')

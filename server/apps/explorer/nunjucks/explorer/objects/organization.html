@@ -1,0 +1,21 @@
+<div class="mix object-details organization" data-object-id="organizations.{{ organization.id }}" {% for sortField in
+     sortFields %} data-{{ sortField.attr }}="{{ organization[sortField.property] }}" {% endfor %}>
+	{% if organization.thumbnail %}
+	<img src="{{ organization.thumbnail }}"/>
+	{% else %}
+	<div>
+		<i class="icon-big fa fa-building"></i>
+		<span>{{ organization.name }}</span>
+	</div>
+	{% endif %}
+
+	{% if organization.url %}
+	<a class="organization-title" href="{{ organization.url }}" target="_blank">{{ organization.name }}</a>
+	{% else %}
+	<div class="organization-title">{{ organization.title }}</div>
+	{% endif %}
+
+	<i class="{{ organization.organizationTypeIcon }} organization-icon"></i>
+
+	<div class="organization-type">{{ organization.type }}</div>
+</div>

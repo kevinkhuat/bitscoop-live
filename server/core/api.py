@@ -11,8 +11,8 @@ class SettingsApi(BaseApi):
     model = documents.Settings
 
 
-class SignalApi(BaseApi):
-    model = documents.Signal
+class ConnectionApi(BaseApi):
+    model = documents.Connection
 
 
 class UserApi(BaseApi):

@@ -2,30 +2,36 @@
 
 
 {% if mode == 'app' or mode == 'home' %}
+	{% include 'core/components/menu-drawer.html' with mode=mode %}
 	<nav>
 		{% if mode == 'app' %}
-			<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
 			{% include 'core/components/search-bar.html' %}
-
-			<a href="{% url 'explorer:main' %}"><i class="fa fa-table"></i></a>
-			<a href="{% url 'explorer:main' %}"><i class="fa fa-map-o"></i></a>
-			<a href="{% url 'explorer:main' %}"><i class="fa fa-list"></i></a>
 		{% else %}
-			<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
 		{% endif %}
 
-		<span class="flex-grow"></span>
+		<div class="view-bar" style="display: none">
+			<a class="view-selector" data-selector="grid"><i class="fa fa-th disabled"></i></a>
+			<a class="view-selector" data-selector="list"><i class="fa fa-list disabled"></i></a>
+			<a class="view-selector" data-selector="feed"><i class="fa fa-clone disabled"></i></a>
+			<a class="view-selector" data-selector="map"><i class="fa fa-map-o disabled"></i></a>
+		</div>
 
-		<a href="#"><i class="fa fa-question-circle"></i></a>
-		<a href="{% url 'providers' %}"><i class="fa fa-plus"></i></a>
-		<a href="{% url 'settings:base' %}"><i class="fa fa-cog"></i></a>
-
-		<a id="handle-link" href="#">{{ request.user.identifier }}</a>
-		<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+		<div id="menu-button"><div class="fa fa-bars"/></div>
 	</nav>
+	<div class="sort-bar" style="display: none">
+		<div class="view-selector" data-selector="results">
+			<div class="fa fa-arrow-circle-left"></div>
+			<span>Results</span>
+		</div>
+		<div class="sort-fields"></div>
+		<div class="facet"></div>
+	</div>
 {% elif mode == 'provider' %}
+	{% include 'core/components/menu-drawer.html' with mode=mode %}
 	<nav>
-		<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
 
 		<span class="flex-grow"></span>
 
@@ -33,10 +39,12 @@
 			{% include 'core/components/search-bar.html' with hide_advanced=True hide_filters=True placeholder='Search connections' action='' %}
 			<button id="done" class="primary">Done</button>
 		</div>
+
+		<div id="menu-button"><div class="fa fa-bars"/></div>
 	</nav>
 {% else %}
 	<nav>
-		<a href="{% url 'home' %}"><img id="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo-text.png" /></a>
 
 		<span class="flex-grow"></span>
 

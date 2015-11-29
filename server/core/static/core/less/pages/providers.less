@@ -7,12 +7,20 @@ body.providers {
 
 	#search-bar {
 		width: 400px;
+
+		@media @mobile {
+			font-size: 1em;
+		}
 	}
 
 	#done {
 		width: 100px;
 		align-self: stretch;
 		margin-left: 1em;
+
+		@media @mobile {
+			width: 100%;
+		}
 	}
 
 	#filters {
@@ -21,7 +29,13 @@ body.providers {
 		.flex-center;
 		.flex-x-center;
 
-		& > div {
+		@media @maxwidth768, @mobile {
+			margin: 0 auto;
+			z-index: 10;
+			width: 30em;
+		}
+
+		& > .filter {
 			text-transform: uppercase;
 			padding: 0.25em 0.5em;
 			border-bottom: 2px solid transparent;
@@ -35,7 +49,63 @@ body.providers {
 			&.active {
 				color: @color4;
 				border-color: @color4;
+
+				@media @maxwidth768, @mobile {
+					border-color: transparent;
+				}
 			}
+
+			&.visible {
+				@media @maxwidth768, @mobile {
+					display: inline-block;
+				}
+			}
+
+			&:active.visible,
+			&.active.visible {
+				@media @maxwidth1080, @mobile {
+					background-color: lighten(@light, 5%);
+				}
+			}
+
+			@media @maxwidth768, @mobile {
+				display: none;
+				width: 10em;
+				margin-bottom: 1em;
+				background: @light;
+				font-size: 1.3em;
+			}
+
+			& > .filter-text {
+				padding: 0.5em;
+				display: inline-block;
+				height: 50px;
+				width: auto;
+				color: inherit;
+				line-height: 30px;
+			}
+		}
+	}
+
+	.mobile-placeholder {
+		display: none;
+		cursor: pointer;
+
+		.raleway;
+		.no-select;
+
+		@media @maxwidth768, @mobile {
+			width: 10em;
+			height: 2em;
+			display: flex;
+			margin: 0 auto;
+			font-size: 2em;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.placeholder-text {
+			margin-right: 0.5em;
 		}
 	}
 
@@ -52,7 +122,12 @@ body.providers {
 		& > div {
 			font-size: 1.8em;
 			display: inline-block;
-			width: 175px; height: 175px;
+			width: 175px;
+			height: 175px;
+			@media @mobile {
+				width: 275px;
+				height: 275px;
+			}
 			margin: @spacing;
 			background-color: darken(@light, 15%);
 			border: 3px solid darken(@light, 25%);
@@ -83,6 +158,12 @@ body.providers {
 				.flex;
 				.flex-column;
 				.flex-center;
+
+				@media @mobile-portrait {
+					h1 {
+						margin: 0;
+					}
+				}
 			}
 		}
 	}

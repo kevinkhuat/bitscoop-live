@@ -121,7 +121,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.mail.mail_validation',
     # 'social.pipeline.user.create_user',
     # 'social.pipeline.social_auth.associate_user',
-    'server.core.pipeline.associate_user_and_signal',
+    'server.core.pipeline.associate_user_and_connection',
     # 'social.pipeline.debug.debug',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',

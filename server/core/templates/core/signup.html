@@ -11,7 +11,7 @@
 {% block main %}
 	<form action="{% url 'signup' %}" method="POST">
 		<div class="boxed-group">
-			<div>Sign up for BitScoop</div>
+			<div>Sign Up</div>
 
 			<div class="padded">
 				{% csrf_token %}
@@ -45,14 +45,14 @@
 				</div>
 
 				<div class="text-box">
-					<input type="password" name="password" placeholder="Password" />
+					<input type="password" name="password" placeholder="Password" value="{{ form.password.value }}" />
 				</div>
 				<div>
 					{{ form.password.errors }}
 				</div>
 
 				<div class="text-box">
-					<input type="password" name="repeated_password" placeholder="Repeated Password" />
+					<input type="password" name="repeated_password" placeholder="Repeated Password" value="{{ form.repeated_password.value }}" />
 				</div>
 				<div>
 					{{ form.repeated_password.errors }}
@@ -67,7 +67,7 @@
 		<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
 
 		<div>
-			<button class="primary">Sign up</button>
+			<button class="primary">Sign Up</button>
 		</div>
 	</form>
 {% endblock %}

@@ -1,4 +1,4 @@
-define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie'], function(debounce, formMonitor, $, _, errorlist) {
+define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie'], function(debounce, formMonitor, $, _) {
 	$(document).formMonitor('form.auto');
 
 	$(document).on('change', 'input[name="gender"]', function(e) {
@@ -20,12 +20,12 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie'], functi
 		formData = e.formData;
 
 		if (formData.gender === 'other') {
-			delete formData['gender'];
+			delete formData.gender;
 		}
 
 		if (formData.hasOwnProperty('other_gender')) {
-			formData.gender = formData['other_gender'];
-			delete formData['other_gender'];
+			formData.gender = formData.other_gender;
+			delete formData.other_gender;
 		}
 
 		$.ajax({

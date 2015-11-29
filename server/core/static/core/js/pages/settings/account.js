@@ -20,7 +20,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'minimo
 
 			formMonitor.done(data);
 
-			if (handle = data['handle']) {
+			if (handle = data.handle) {
 				$('#handle-link').text(handle);
 			}
 		}).fail(function(response) {

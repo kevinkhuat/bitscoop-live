@@ -22,6 +22,5 @@ define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie'], function(debounc
 		}).fail(function(response) {
 			formMonitor.fail(response.responseJSON);
 		});
-
 	}, 1000));
 });

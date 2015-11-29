@@ -43,17 +43,6 @@ motor_connection = motorengine.connect(
 )
 
 
-class Data(motorengine.Document):
-    __collection__ = 'data'
-
-    created = motorengine.DateTimeField(required=True, auto_now_on_insert=True)
-    data_dict = DictField()
-    identifier = motorengine.StringField(required=True, unique=True)
-    signal = motorengine.StringField(required=True)
-    updated = motorengine.DateTimeField(required=True, auto_now_on_insert=True, auto_now_on_update=True)
-    user_id = motorengine.IntField(required=True)
-
-
 class Provider(motorengine.Document):
     """
     The class representing a third-party service's API
@@ -69,15 +58,17 @@ class Provider(motorengine.Document):
         description: A short description of the service's functionality
         tags: A list of categories that describe the service, used on the Connect page to sort them by general functionality
     """
-    __collection__ = 'provider'
+    __collection__ = 'providers'
 
     auth_backend = motorengine.StringField()
     auth_type = motorengine.IntField()
     backend_name = motorengine.StringField()
-    base_route = motorengine.StringField()
     client_callable = motorengine.BooleanField(default=True)
     description = motorengine.StringField()
-    endpoint_wait_time = motorengine.IntField
+    domain = motorengine.StringField()
+    endpoint_wait_time = motorengine.IntField()
+    endpoints = DictField()
+    event_sources = DictField()
     name = motorengine.StringField()
     tags = motorengine.ListField(motorengine.StringField())
 
@@ -85,47 +76,43 @@ class Provider(motorengine.Document):
         return '{0} {1}'.format(self.id, self.backend_name)
 
 
-class Signal(motorengine.Document):
+class Connection(motorengine.Document):
     """
     The class representing an account of a Provider
 
     Attributes:
-        id: A unique database descriptor obtained when saving a Signal.
-        user_id: A foreign key relationship to the User entity who owns the Signal.
-        provider: A reference to the Provider from which this Signal was created.
+        id: A unique database descriptor obtained when saving a Connection.
+        user_id: A foreign key relationship to the User entity who owns the Connection.
+        provider: A reference to the Provider from which this Connection was created.
         name: The name of the linked service.
         usa_id: The User Social Auth's unique identifier for this account
         complete: Indicates that the connection to the account has been verified by the user
         connected: Indicates that the connection to the account has been authorized (not necessarily verified by the user)
-        enabled: Indicates that the Signal will fetch updates when requested
-        frequency: How often the signal will check the provider API for new data (see tuple below for mapping)
-        last_run: The last time the signal hit the provider API to check for new data
-        created: When the signal was first created
-        updated: When the signal's settings were last updated
+        enabled: Indicates that the Connection will fetch updates when requested
+        frequency: How often the connection will check the provider API for new data (see tuple below for mapping)
+        last_run: The last time the connection hit the provider API to check for new data
+        created: When the connection was first created
+        updated: When the connection's settings were last updated
         access_token: Stores OAuth2 or OpenID access token
         oauth_token: OAuth1 public token
         oauth_secret_token: OAuth1 private token
-        extra_data: Provider-specific data, e.g. account's user (not to be confused with the Signal's user) and account's handle
+        extra_data: Provider-specific data, e.g. account's user (not to be confused with the Connection's user) and account's handle
     """
-    __collection__ = 'signal'
+    __collection__ = 'connections'
 
-    # TODO: Encrypt tokens or remove from Signal
+    # TODO: Encrypt tokens or remove from Connection
 
-    access_token = motorengine.StringField()
-    complete = motorengine.BooleanField(default=False)
-    connected = motorengine.BooleanField(default=False)
+    auth_data = DictField()
+    auth_status = DictField()
     created = motorengine.DateTimeField(required=True)
     enabled = motorengine.BooleanField(default=False)
     endpoint_data = DictField()
     frequency = motorengine.IntField()
     last_run = motorengine.DateTimeField()
+    metadata = DictField()
     name = motorengine.StringField()
-    oauth_token = motorengine.StringField()
-    oauth_token_secret = motorengine.StringField()
     permissions = DictField()
     provider = motorengine.ReferenceField(Provider)
-    refresh_token = motorengine.StringField()
-    signal_data = DictField()
     updated = motorengine.DateTimeField(required=True)
     usa_id = motorengine.IntField()
     user_id = motorengine.IntField()

@@ -3,7 +3,7 @@ import re
 from django.core.validators import RegexValidator
 
 from server import ROOT_PATH, SOURCE_PATH, get_environ_setting, get_path
-from server.settings.signals import *  # noqa
+from server.settings.connections import *  # noqa
 
 
 # Organized according to:

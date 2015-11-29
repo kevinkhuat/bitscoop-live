@@ -19,8 +19,8 @@ from server.contrib.pytoolbox.collections import update
 from server.contrib.pytoolbox.django.forms import AllowEmptyMixin
 from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import AcceptedTypesMixin, FormMixin
-from server.core.api import SignalApi
-from server.core.documents import Permission, Settings, Signal
+from server.core.api import ConnectionApi
+from server.core.documents import Connection, Permission, Settings
 from server.core.fields import PasswordField
 
 
@@ -131,12 +131,17 @@ class AccountDeactivateView(View):
 
 
 class BaseView(View):
+    template_name = 'core/settings/base.html'
+    title = 'Settings'
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return redirect_by_name('settings:profile')
+        return render(request, self.template_name, {
+            'title': self.title
+        })
 
 
 class BillingView(View):
@@ -159,7 +164,7 @@ class ConnectionsView(View):
     json_schema = {
         'type': 'object',
         'properties': {
-            'signal_id': {
+            'connection_id': {
                 'type': 'string',
             },
             'name': {
@@ -179,42 +184,42 @@ class ConnectionsView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        signals = list(SignalApi.get(Q(user_id=request.user.id) & Q(complete=True)))
-        signal_data = []
+        connections = list(ConnectionApi.get(Q(user_id=request.user.id) & Q(auth_status__complete=True)))
+        connection_data = []
 
-        for signal in signals:
+        for connection in connections:
             permissions = []
 
-            for event_source_name, event_source in signal.provider.event_sources.items():
+            for event_source_name, event_source in connection.provider.event_sources.items():
                 name = event_source.name
                 permissions.append({
                     'name': name,
                     'display_name': event_source.display_name,
                     'description': event_source.description,
-                    'enabled': name in signal.permissions and signal.permissions[name].enabled
+                    'enabled': name in connection.permissions and connection.permissions[name].enabled
                 })
 
-            signal_data.append({
-                'id': str(signal.id),
-                'name': signal.name,
+            connection_data.append({
+                'id': str(connection.id),
+                'name': connection.name,
                 'provider': {
-                    'id': signal.provider.id,
-                    'name': signal.provider.name
+                    'id': connection.provider.id,
+                    'name': connection.provider.name
                 },
-                'enabled': signal.enabled,
+                'enabled': connection.enabled,
                 'permissions': permissions,
-                'last_run': signal.last_run
+                'last_run': connection.last_run
             })
 
         return render(request, self.template_name, {
             'title': self.title,
-            'signals': signal_data
+            'connections': connection_data
         })
 
     def patch(self, request):
         # {
-        #     "signal_id": "5987293847sdflkjsdf87",
-        #     "name": "sample_signal",
+        #     "connection_id": "5987293847sdflkjsdf87",
+        #     "name": "sample_connection",
         #     "enabled": true,
         #     "event_sources": {
         #         "sample_permission": true
@@ -249,48 +254,48 @@ class ConnectionsView(View):
                 except jsonschema.ValidationError as err:
                     return HttpResponseBadRequest(err.message)
 
-        signal_id = deserialized['signal_id']
-        signal = Signal.objects.get(id=signal_id)
+        connection_id = deserialized['connection_id']
+        connection = Connection.objects.get(id=connection_id)
 
         if 'name' in deserialized:
-            signal['name'] = deserialized.get('name')
+            connection['name'] = deserialized.get('name')
 
         if 'enabled' in deserialized:
-            signal['enabled'] = deserialized.get('enabled')
+            connection['enabled'] = deserialized.get('enabled')
 
         if 'event_sources' in deserialized:
             for event_source_name in event_sources:
                 # If the Permission exists, update its enabled status based on what was passed to the server
-                if event_source_name in signal.permissions:
-                    signal['permissions'][event_source_name]['enabled'] = event_sources[event_source_name]
+                if event_source_name in connection.permissions:
+                    connection['permissions'][event_source_name]['enabled'] = event_sources[event_source_name]
                 # If the Permission does not exist, then create it.  As part of the creation process, endpoint_data
-                # for each endpoint that the associated event source might call also needs to be added to the signal,
+                # for each endpoint that the associated event source might call also needs to be added to the connection,
                 # and any default parameters for those endpoints need to be hydrated.
                 else:
-                    provider = signal.provider
+                    provider = connection.provider
                     this_event_source = provider['event_sources'][event_source_name]
 
                     new_permission = Permission(
                         enabled=True,
-                        event_source=this_event_source
+                        frequency=1
                     )
 
-                    signal.permissions[event_source_name] = new_permission
-                    signal.endpoint_data[event_source_name] = {}
+                    connection.permissions[event_source_name] = new_permission
+                    connection.endpoint_data[event_source_name] = {}
 
                     for endpoint in this_event_source['endpoints']:
-                        signal.endpoint_data[event_source_name][endpoint] = {}
+                        connection.endpoint_data[event_source_name][endpoint] = {}
 
-                        for parameter in this_event_source['endpoints'][endpoint]['parameter_descriptions']:
-                            this_parameter = this_event_source['endpoints'][endpoint]['parameter_descriptions'][parameter]
+                        for parameter in provider['endpoints'][endpoint]['parameter_descriptions']:
+                            this_parameter = provider['endpoints'][endpoint]['parameter_descriptions'][parameter]
 
                             if 'default' in this_parameter.keys():
                                 if this_parameter['default'] == 'date_now':
-                                    signal.endpoint_data[event_source_name][endpoint][parameter] = datetime.date.today().isoformat().replace('-', '/')
+                                    connection.endpoint_data[event_source_name][endpoint][parameter] = datetime.date.today().isoformat().replace('-', '/')
                                 else:
-                                    signal.endpoint_data[event_source_name][endpoint][parameter] = this_parameter['default']
+                                    connection.endpoint_data[event_source_name][endpoint][parameter] = this_parameter['default']
 
-        SignalApi.put(signal_id, signal)
+        ConnectionApi.put(connection_id, connection)
 
         return HttpResponse(status=204)
 

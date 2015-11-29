@@ -1121,7 +1121,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.comments.comments.after"
+          "value": "connection.endpoint_data.comments.comments.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1131,7 +1131,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1140,13 +1140,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1166,7 +1166,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.threads_created.submitted.after"
+          "value": "connection.endpoint_data.threads_created.submitted.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1176,7 +1176,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1185,13 +1185,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1211,7 +1211,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.threads_upvoted.upvoted.after"
+          "value": "connection.endpoint_data.threads_upvoted.upvoted.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1221,7 +1221,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1230,13 +1230,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1256,7 +1256,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.threads_downvoted.downvoted.after"
+          "value": "connection.endpoint_data.threads_downvoted.downvoted.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1266,7 +1266,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1275,13 +1275,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1301,7 +1301,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.saved_comments.saved.after"
+          "value": "connection.endpoint_data.saved_comments.saved.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1311,7 +1311,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1320,13 +1320,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1346,7 +1346,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.gilded_comments.gilded.after"
+          "value": "connection.endpoint_data.gilded_comments.gilded.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1356,7 +1356,7 @@
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.username"
+          "value": "connection.metadata.username"
         }
       },
       "header_descriptions": {
@@ -1365,13 +1365,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1384,7 +1384,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.messages_received.inbox.after"
+          "value": "connection.endpoint_data.messages_received.inbox.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1398,13 +1398,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }
@@ -1417,7 +1417,7 @@
         "after": {
           "description": "Most recent post",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.messages_sent.sent.after"
+          "value": "connection.endpoint_data.messages_sent.sent.after"
         },
         "limit": {
           "description": "Maximum number of results to return at one time",
@@ -1431,13 +1431,13 @@
           "header_name": "Authorization",
           "header_value": "bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "user_agent": {
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.username",
+          "hydration_location": "connection.metadata.username",
           "hydration_method": "reformat",
           "value": "BitScoop (by /u/[$1])"
         }

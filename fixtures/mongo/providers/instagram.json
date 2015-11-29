@@ -86,10 +86,14 @@
             },
             "content": {
               "photos": {
-                "restrict_field": {
-                  "field": "responseObject.type",
-                  "value": "image"
-                },
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.type",
+                      "value": "image"
+                    }
+                  }
+                ],
                 "unique_identifiers": [
                   {
                     "hydration_method": "literal",
@@ -112,7 +116,7 @@
                   },
                   "url": {
                     "hydration_method": "translate",
-                    "value": "responseObject.images.standard_resolution.url"
+                    "value": "responseObject.link"
                   },
                   "text": {
                     "hydration_method": "translate",
@@ -125,10 +129,14 @@
                 }
               },
               "videos": {
-                "restrict_field": {
-                  "field": "responseObject.type",
-                  "value": "video"
-                },
+                "conditions": [
+                  {
+                    "equals": {
+                      "field": "responseObject.type",
+                      "value": "image"
+                    }
+                  }
+                ],
                 "unique_identifiers": [
                   {
                     "hydration_method": "literal",
@@ -151,7 +159,7 @@
                   },
                   "url": {
                     "hydration_method": "translate",
-                    "value": "responseObject.videos.standard_resolution.url"
+                    "value": "responseObject.link"
                   },
                   "text": {
                     "hydration_method": "translate",

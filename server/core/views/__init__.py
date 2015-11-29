@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model, login
+from django.core.urlresolvers import reverse
 from django.forms import ModelForm
-from django.http import Http404, HttpResponseNotAllowed
+from django.http import Http404, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import TemplateDoesNotExist
 from django.views.generic import View
@@ -9,7 +10,7 @@ from mongoengine import Q
 
 from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import FormMixin
-from server.core.api import ProviderApi, SettingsApi, SignalApi
+from server.core.api import ConnectionApi, ProviderApi, SettingsApi
 from server.core.fields import PasswordField
 from server.core.models import User
 
@@ -56,7 +57,8 @@ class HelpView(View):
 class HomeView(View):
     def get(self, request):
         if request.user.is_authenticated():
-            template = 'core/user/home.html'
+            # template = 'core/user/home.html'
+            return HttpResponseRedirect(reverse('explorer:main'))
         else:
             template = 'core/home.html'
 
@@ -80,14 +82,14 @@ class PrivacyView(View):
 class ProvidersView(View):
     def get(self, request):
         providers = list(ProviderApi.get())
-        signal_by_user = Q(user_id=request.user.id)
-        signals = SignalApi.get(val=signal_by_user)
+        connection_by_user = Q(user_id=request.user.id)
+        connections = ConnectionApi.get(val=connection_by_user)
 
         # FIXME: Make the count happen in the DB
         for provider in providers:
-            for signal in signals:
-                if provider.provider_number == signal.provider.provider_number and signal.complete:
-                    provider.associated_signal = True
+            for connection in connections:
+                if provider.provider_number == connection.provider.provider_number and connection.auth_status['complete']:
+                    provider.associated_connection = True
 
                     if hasattr(provider, 'assoc_count'):
                         provider.assoc_count += 1

@@ -14,13 +14,16 @@ FIXTURE_DIR = os.path.join(settings.FIXTURE_DIRS[0], 'mongo', 'providers')
 
 
 def create_fixture_endpoint(name, value, provider):
-    scheme_and_domain = provider['domain'].split('://')
-    url_parts = [''] * 6
-    url_parts[0] = scheme_and_domain[0]
-    url_parts[1] = scheme_and_domain[1]
-    url_parts[2] = value['path']
+    if 'url' not in value.keys():
+        scheme_and_domain = provider['domain'].split('://')
+        url_parts = [''] * 6
+        url_parts[0] = scheme_and_domain[0]
+        url_parts[1] = scheme_and_domain[1]
+        url_parts[2] = value['path']
 
-    route = urllib.parse.urlunparse(url_parts)
+        route = urllib.parse.urlunparse(url_parts)
+    else:
+        route = value['url']
 
     return_endpoint = Endpoint(
         call_method=value['call_method'],
@@ -43,27 +46,25 @@ def create_fixture_endpoint(name, value, provider):
     return return_endpoint
 
 
-def create_fixture_event_source(name, value, endpoint_list):
-    value_dict = {}
+def create_fixture_event_source(name, value):
     event_source_endpoint_list = value['endpoints']
+    endpoint_list = []
 
     for endpoint_name in event_source_endpoint_list:
-        for endpoint in endpoint_list:
-            if endpoint_name == endpoint['name']:
-                value_dict[endpoint['name']] = endpoint
+        endpoint_list.append(endpoint_name)
 
     return EventSource(
         description=value['description'],
         display_name=value['display_name'],
         enabled_by_default=value['enabled_by_default'],
-        endpoints=value_dict,
+        endpoints=endpoint_list,
         initial_mapping=value['initial_mapping'],
         mappings=value['mappings'],
         name=name
     )
 
 
-def create_fixture_provider(provider, event_source_list):
+def create_fixture_provider(provider, endpoints, event_source_list):
     event_source_dict = {}
 
     for event_source in event_source_list:
@@ -75,9 +76,10 @@ def create_fixture_provider(provider, event_source_list):
         backend_name=provider['backend_name'],
         client_callable=provider['client_callable'],
         description=provider['description'],
-        endpoint_wait_time=provider['endpoint_wait_time'],
-        event_sources=event_source_dict,
         domain=provider['domain'],
+        endpoint_wait_time=provider['endpoint_wait_time'],
+        endpoints=endpoints,
+        event_sources=event_source_dict,
         name=provider['name'],
         provider_number=bson.ObjectId(provider['provider_number']),
         tags=provider['tags']
@@ -87,18 +89,18 @@ def create_fixture_provider(provider, event_source_list):
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
-    endpoint_list = []
+    endpoints = {}
     event_source_list = []
 
     for name, value in fixture_data['endpoints'].items():
         insert_endpoint = create_fixture_endpoint(name, value, fixture_data['provider'])
-        endpoint_list.append(insert_endpoint)
+        endpoints[insert_endpoint['name']] = insert_endpoint
 
     for name, value in fixture_data['event_sources'].items():
-        insert_event_source = create_fixture_event_source(name, value, endpoint_list)
+        insert_event_source = create_fixture_event_source(name, value)
         event_source_list.append(insert_event_source)
 
-    insert_provider = create_fixture_provider(fixture_data['provider'], event_source_list)
+    insert_provider = create_fixture_provider(fixture_data['provider'], endpoints, event_source_list)
     provider = core_api.ProviderApi.post(insert_provider)
 
 

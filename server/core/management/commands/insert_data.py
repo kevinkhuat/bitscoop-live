@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from elasticsearch import Elasticsearch
 
 from server.core import api as core_api
-from server.core.documents import Settings, Signal
+from server.core.documents import Connection, Settings
 from server.settings import FIXTURE_DIRS
 
 
@@ -20,56 +20,39 @@ MONGO_DIR = os.path.join(FIXTURE_DIRS[0], 'mongo')
 DEMO_FILE_NAME = 'demo_data.json'
 
 
-def create_fixture_signal(signal):
-    return_signal = Signal(
-        id=signal['_id'],
-        complete=signal['complete'],
-        connected=signal['connected'],
-        created=signal['created'],
-        enabled=signal['enabled'],
-        endpoint_data=signal['endpoint_data'],
-        frequency=signal['frequency'],
-        name=signal['name'],
-        permissions=signal['permissions'],
-        provider=signal['provider'],
-        signal_data=signal['signal_data'],
-        updated=signal['updated'],
-        user_id=signal['user_id'],
+def create_fixture_connection(connection):
+    return_connection = Connection(
+        id=connection['_id'],
+        auth_data=connection['auth_data'],
+        auth_status={
+            'complete': connection['auth_status']['complete'],
+            'connected': connection['auth_status']['connected']
+        },
+        created=connection['created'],
+        enabled=connection['enabled'],
+        endpoint_data=connection['endpoint_data'],
+        frequency=connection['frequency'],
+        metadata=connection['metadata'],
+        name=connection['name'],
+        permissions=connection['permissions'],
+        provider=connection['provider'],
+        updated=connection['updated'],
+        user_id=connection['user_id'],
     )
 
-    if 'access_token' in signal.keys():
-        return_signal['access_token'] = signal['access_token']
+    if 'last_run' in connection.keys():
+        return_connection['last_run'] = connection['last_run']
 
-    if 'oauth_token' in signal.keys():
-        return_signal['oauth_token'] = signal['oauth_token']
-
-    if 'oauth_token_secret' in signal.keys():
-        return_signal['oauth_token_secret'] = signal['oauth_token_secret']
-
-    if 'last_run' in signal.keys():
-        return_signal['last_run'] = signal['last_run']
-
-    return return_signal
+    return return_connection
 
 
 def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
 
-    for signal in fixture_data['signals']:
-        insert_signal = create_fixture_signal(signal)
-        core_api.SignalApi.post(insert_signal)
-
-    for data in fixture_data['data']:
-        id = data['_id']
-        del data['_id']
-
-        es.index(
-            index='core',
-            id=id,
-            doc_type='data',
-            body=data
-        )
+    for connection in fixture_data['connections']:
+        insert_connection = create_fixture_connection(connection)
+        core_api.ConnectionApi.post(insert_connection)
 
     for contact in fixture_data['contacts']:
         id = contact['_id']
@@ -102,6 +85,39 @@ def load_fixture(path):
             id=id,
             doc_type='location',
             body=location
+        )
+
+    for organization in fixture_data['organizations']:
+        id = organization['_id']
+        del organization['_id']
+
+        es.index(
+            index='core',
+            id=id,
+            doc_type='organization',
+            body=organization
+        )
+
+    for place in fixture_data['places']:
+        id = place['_id']
+        del place['_id']
+
+        es.index(
+            index='core',
+            id=id,
+            doc_type='place',
+            body=place
+        )
+
+    for thing in fixture_data['things']:
+        id = thing['_id']
+        del thing['_id']
+
+        es.index(
+            index='core',
+            id=id,
+            doc_type='thing',
+            body=thing
         )
 
     for event in fixture_data['events']:

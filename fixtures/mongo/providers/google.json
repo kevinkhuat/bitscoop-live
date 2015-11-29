@@ -18,17 +18,18 @@
     "auth_type": 0
   },
   "event_sources": {
-    "youtube_videos": {
-      "description": "Youtube videos you have watched",
-      "display_name": "Youtube videos",
+    "youtube_watch": {
+      "description": "Videos you have watched on YouTube",
+      "display_name": "YouTube videos watched",
       "enabled_by_default": true,
       "endpoints": [
-        "youtube_playlist",
-        "youtube_channels"
+        "youtube_watch_playlist",
+        "youtube_channels",
+        "youtube_oembed"
       ],
-      "initial_mapping": "youtube_playlist",
+      "initial_mapping": "youtube_watch_playlist",
       "mappings": {
-        "youtube_playlist": {
+        "youtube_watch_playlist": {
           "returned_data_location": "items",
           "type": "play",
           "conditions": {
@@ -77,7 +78,7 @@
               }
             },
             "content": {
-              "youtube_play": {
+              "youtube_watch": {
                 "unique_identifiers": [
                   {
                     "hydration_method": "literal",
@@ -89,14 +90,169 @@
                   }
                 ],
                 "mapped_fields": {
+                  "embed_content": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "youtube_oembed",
+                      "parameter_sources": {
+                        "video_url": {
+                          "hydration_method": "reformat",
+                          "hydration_location": "responseObject.snippet.resourceId.videoId",
+                          "value": "https://www.youtube.com/watch?v=[$1]"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "html"
+                        ]
+                      ]
+                    }
+                  },
+                  "embed_format": {
+                    "hydration_method": "literal",
+                    "value": "iframe"
+                  },
+                  "thumbnail": {
+                    "hydration_method": "translate",
+                    "value": [
+                      "responseObject.snippet.thumbnails.medium.url",
+                      "responseObject.snippet.thumbnails.default.url"
+                    ]
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.snippet.title"
+                  },
                   "type": {
                     "hydration_method": "literal",
                     "type": "string",
                     "value": "video"
                   },
+                  "url": {
+                    "hydration_method": "reformat",
+                    "hydration_location": "responseObject.snippet.resourceId.videoId",
+                    "value": "https://www.youtube.com/watch?v=[$1]"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pagination": {
+          "method": "pageToken",
+          "page_token_location": "nextPageToken"
+        }
+      }
+    },
+    "youtube_uploads": {
+      "description": "Videos you have uploaded to YouTube ",
+      "display_name": "YouTube videos created",
+      "enabled_by_default": true,
+      "endpoints": [
+        "youtube_uploads_playlist",
+        "youtube_channels",
+        "youtube_oembed"
+      ],
+      "initial_mapping": "youtube_uploads_playlist",
+      "mappings": {
+        "youtube_uploads_playlist": {
+          "returned_data_location": "items",
+          "type": "create",
+          "conditions": {
+          },
+          "db_entry_mapping": {
+            "data": {
+              "main": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "translate",
+                    "value": "permission.event_source.name"
+                  },
+                  {
+                    "hydration_method": "literal",
+                    "value": "youtube"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ]
+              }
+            },
+            "event": {
+              "unique_identifiers": [
+                {
+                  "hydration_method": "literal",
+                  "value": "youtube"
+                },
+                {
+                  "hydration_method": "translate",
+                  "value": "responseObject.id"
+                }
+              ],
+              "mapped_fields": {
+                "datetime": {
+                  "hydration_method": "translate",
+                  "type": "string",
+                  "value": "responseObject.snippet.publishedAt"
+                },
+                "provider_name": {
+                  "hydration_method": "literal",
+                  "type": "string",
+                  "value": "google"
+                }
+              }
+            },
+            "content": {
+              "youtube_uploads": {
+                "unique_identifiers": [
+                  {
+                    "hydration_method": "literal",
+                    "value": "youtube"
+                  },
+                  {
+                    "hydration_method": "translate",
+                    "value": "responseObject.id"
+                  }
+                ],
+                "mapped_fields": {
+                  "embed_content": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "youtube_oembed",
+                      "parameter_sources": {
+                        "video_url": {
+                          "hydration_method": "reformat",
+                          "hydration_location": "responseObject.snippet.resourceId.videoId",
+                          "value": "https://www.youtube.com/watch?v=[$1]"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "html"
+                        ]
+                      ]
+                    }
+                  },
+                  "embed_format": {
+                    "hydration_method": "literal",
+                    "value": "iframe"
+                  },
+                  "thumbnail": {
+                    "hydration_method": "translate",
+                    "value": [
+                      "responseObject.snippet.thumbnails.medium.url",
+                      "responseObject.snippet.thumbnails.default.url"
+                    ]
+                  },
                   "title": {
                     "hydration_method": "translate",
                     "value": "responseObject.snippet.title"
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "video"
                   },
                   "url": {
                     "hydration_method": "reformat",
@@ -115,8 +271,8 @@
       }
     },
     "gmail_inbox": {
-      "display_name": "Gmail Inbox",
-      "description": "Email sent to you",
+      "display_name": "Gmail",
+      "description": "Email you have sent and received",
       "path": "gmail/v1/users/me/messages",
       "enabled_by_default": true,
       "endpoints": [
@@ -367,8 +523,8 @@
       }
     },
     "drive_changes": {
-      "description": "Google Drive file changes",
-      "display_name": "Google Drive file changes",
+      "description": "Google Drive",
+      "display_name": "Files you have created, edited, and viewed on Google Drive",
       "enabled_by_default": true,
       "endpoints": [
         "drive_changes"
@@ -451,18 +607,25 @@
                   }
                 ],
                 "mapped_fields": {
-                  "type": {
-                    "hydration_method": "literal",
-                    "type": "string",
-                    "value": "file"
-                  },
                   "file_extension": {
                     "hydration_method": "translate",
                     "value": "responseObject.file.mimeType"
                   },
+                  "thumbnail": {
+                    "hydration_method": "translate",
+                    "value": [
+                      "responseObject.file.thumbnailLink",
+                      "responseObject.file.iconLink"
+                    ]
+                  },
                   "title": {
                     "hydration_method": "translate",
                     "value": "responseObject.file.title"
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "file"
                   },
                   "url": {
                     "hydration_method": "translate",
@@ -472,8 +635,8 @@
               }
             },
             "contacts": {
-              "owners": {
-                "hydrate_list_location": "responseObject.file.owners",
+              "last_modifying_user": {
+                "hydrate_list_location": "responseObject.file.lastModifyingUser",
                 "unique_identifiers": [
                   {
                     "hydration_method": "literal",
@@ -496,7 +659,7 @@
                 }
               },
               "owners": {
-                "hydrate_list_location": "responseObject.file.lastModifyingUser",
+                "hydrate_list_location": "responseObject.file.owners",
                 "unique_identifiers": [
                   {
                     "hydration_method": "literal",
@@ -550,7 +713,7 @@
         }
       }
     },
-    "youtube_playlist": {
+    "youtube_watch_playlist": {
       "call_method": "GET",
       "path": "youtube/v3/playlistItems",
       "parameter_descriptions": {
@@ -595,7 +758,56 @@
         "pageToken": {
           "description": "Token for the next page in the results",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.youtube_videos.youtube_playlist.pageToken"
+          "value": "connection.endpoint_data.youtube_watch.youtube_watch_playlist.pageToken"
+        }
+      }
+    },
+    "youtube_uploads_playlist": {
+      "call_method": "GET",
+      "path": "youtube/v3/playlistItems",
+      "parameter_descriptions": {
+        "part": {
+          "description": "Channel resources",
+          "hydration_method": "literal",
+          "value": "snippet"
+        },
+        "playlistId": {
+          "description": "ID of the user's Uploads playlist",
+          "hydration_method": "endpoint",
+          "value": {
+            "endpoint": "youtube_channels",
+            "parameter_sources": {
+              "access_token": {
+                "hydration_method": "server",
+                "value": "access_token"
+              }
+            },
+            "value_location": [
+              [
+                "items[0].contentDetails.relatedPlaylists.uploads"
+              ]
+            ]
+          }
+        },
+        "access_token": {
+          "description": "OAuth2 access key",
+          "hydration_method": "server",
+          "value": "access_token"
+        },
+        "maxResults": {
+          "description": "Maximum number of results to be returned at once",
+          "hydration_method": "literal",
+          "value": 50
+        },
+        "fields": {
+          "description": "Restrict which fields are returned by the endpoint",
+          "hydration_method": "literal",
+          "value": "items(id,snippet),nextPageToken"
+        },
+        "pageToken": {
+          "description": "Token for the next page in the results",
+          "hydration_method": "translate",
+          "value": "connection.endpoint_data.youtube_uploads.youtube_uploads_playlist.pageToken"
         }
       }
     },
@@ -606,7 +818,7 @@
         "pageToken": {
           "description": "Token for the next page in the results",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
+          "value": "connection.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
         },
         "access_token": {
           "description": "OAuth2 access key",
@@ -616,8 +828,8 @@
         "q": {
           "description": "QueryString",
           "hydration_method": "reformat",
-          "hydration_location": "signal.endpoint_data.gmail_inbox.gmail_inbox.q",
-          "save_to_signal": {
+          "hydration_location": "connection.endpoint_data.gmail_inbox.gmail_inbox.q",
+          "save_to_connection": {
             "location": "date_now"
           },
           "value": "after:[$1]",
@@ -644,7 +856,7 @@
         "pageToken": {
           "description": "Token for the next page in the results",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
+          "value": "connection.endpoint_data.gmail_inbox.gmail_inbox.pageToken"
         },
         "access_token": {
           "description": "OAuth2 access key",
@@ -670,7 +882,7 @@
         "pageToken": {
           "description": "Token for the next page in the results",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.drive_changes.drive_changes.pageToken"
+          "value": "connection.endpoint_data.drive_changes.drive_changes.pageToken"
         },
         "access_token": {
           "description": "OAuth2 access key",
@@ -680,10 +892,29 @@
         "startChangeId": {
           "description": "ID of the latest change found in the previous search",
           "hydration_method": "translate",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "largestChangeId"
           },
-          "value": "signal.endpoint_data.drive_changes.drive_changes.startChangeId"
+          "value": "connection.endpoint_data.drive_changes.drive_changes.startChangeId"
+        }
+      }
+    },
+    "youtube_oembed": {
+      "call_method": "GET",
+      "url": "https://www.youtube.com/oembed?url=[__url__]&format=json",
+      "additional_path_fields": [
+        {
+          "description": "URL of YouTube video",
+          "parameter": "video_url",
+          "replace": "[__url__]"
+        }
+      ],
+      "parameter_descriptions": {
+        "video_url": {
+          "description": "URL of YouTube video",
+          "hydration_method": "reformat",
+          "hydration_location": "responseObject.snippet.resourceId.videoId",
+          "value": "https://www.youtube.com/watch?v=[$1]"
         }
       }
     }

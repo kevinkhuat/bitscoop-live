@@ -96,6 +96,31 @@
                     "type": "string",
                     "value": "game"
                   },
+                  "thumbnail": {
+                    "hydration_method": "concat",
+                    "value": [
+                      {
+                        "hydration_method": "literal",
+                        "value": "http://media.steampowered.com/steamcommunity/public/images/apps/"
+                      },
+                      {
+                        "hydration_method": "translate",
+                        "value": "responseObject.appid"
+                      },
+                      {
+                        "hydration_method": "literal",
+                        "value": "/"
+                      },
+                      {
+                        "hydration_method": "translate",
+                        "value": "responseObject.img_logo_url"
+                      },
+                      {
+                        "hydration_method": "literal",
+                        "value": ".jpg"
+                      }
+                    ]
+                  },
                   "title": {
                     "hydration_method": "translate",
                     "value": "responseObject.name"
@@ -248,7 +273,7 @@
                       ]
                     }
                   },
-                  "url": {
+                  "thumbnail": {
                     "hydration_method": "endpoint",
                     "value": {
                       "endpoint": "game_schema",
@@ -292,7 +317,7 @@
         "steamid": {
           "description": "Steam ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.player.steamid"
+          "value": "connection.metadata.player.steamid"
         },
         "format": {
           "description": "API data output format",
@@ -312,7 +337,7 @@
         "key": {
           "description": "OpenID access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         }
       }
     },
@@ -323,7 +348,7 @@
         "steamid": {
           "description": "Steam ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.player.steamid"
+          "value": "connection.metadata.player.steamid"
         },
         "format": {
           "description": "API data output format",
@@ -338,7 +363,7 @@
         "key": {
           "description": "OpenID access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         }
       }
     },
@@ -359,7 +384,7 @@
         "key": {
           "description": "OpenID access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         }
       }
     }

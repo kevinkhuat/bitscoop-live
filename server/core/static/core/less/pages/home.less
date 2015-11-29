@@ -28,9 +28,16 @@ body.home {
 		}
 
 		#facets .card {
-			width: 350px; height: 200px;
-			margin: 15px; padding: 15px;
+			width: 350px;
+			height: 200px;
+			margin: 15px;
+			padding: 15px;
 			text-align: center;
+
+			@media @mobile {
+				width: 16em;
+				height: 14em;
+			}
 		}
 	}
 }

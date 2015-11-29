@@ -21,7 +21,8 @@
       "enabled_by_default": true,
       "endpoints": [
         "playlists",
-        "me"
+        "me",
+        "spotify_playlist_oembed"
       ],
       "initial_mapping": "playlists",
       "mappings": {
@@ -75,6 +76,48 @@
                   }
                 ],
                 "mapped_fields": {
+                  "embed_content": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "spotify_playlist_oembed",
+                      "parameter_sources": {
+                        "url": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.uri"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "html"
+                        ]
+                      ]
+                    }
+                  },
+                  "embed_format": {
+                    "hydration_method": "literal",
+                    "value": "iframe"
+                  },
+                  "thumbnail": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "spotify_playlist_oembed",
+                      "parameter_sources": {
+                        "url": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.uri"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "thumbnail_url"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.name"
+                  },
                   "type": {
                     "hydration_method": "literal",
                     "type": "string",
@@ -83,10 +126,6 @@
                   "url": {
                     "hydration_method": "translate",
                     "value": "responseObject.external_urls.spotify"
-                  },
-                  "title": {
-                    "hydration_method": "translate",
-                    "value": "responseObject.name"
                   }
                 }
               }
@@ -105,7 +144,8 @@
       "description": "Tracks you have saved",
       "enabled_by_default": true,
       "endpoints": [
-        "saved_tracks"
+        "saved_tracks",
+        "spotify_track_oembed"
       ],
       "initial_mapping": "saved_tracks",
       "mappings": {
@@ -164,6 +204,48 @@
                   }
                 ],
                 "mapped_fields": {
+                  "embed_content": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "spotify_track_oembed",
+                      "parameter_sources": {
+                        "url": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.track.uri"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "html"
+                        ]
+                      ]
+                    }
+                  },
+                  "embed_format": {
+                    "hydration_method": "literal",
+                    "value": "iframe"
+                  },
+                  "thumbnail": {
+                    "hydration_method": "endpoint",
+                    "value": {
+                      "endpoint": "spotify_track_oembed",
+                      "parameter_sources": {
+                        "url": {
+                          "hydration_method": "translate",
+                          "value": "responseObject.track.uri"
+                        }
+                      },
+                      "value_location": [
+                        [
+                          "thumbnail_url"
+                        ]
+                      ]
+                    }
+                  },
+                  "title": {
+                    "hydration_method": "translate",
+                    "value": "responseObject.track.name"
+                  },
                   "type": {
                     "hydration_method": "literal",
                     "type": "string",
@@ -172,10 +254,6 @@
                   "url": {
                     "hydration_method": "translate",
                     "value": "responseObject.track.external_urls.spotify"
-                  },
-                  "title": {
-                    "hydration_method": "translate",
-                    "value": "responseObject.track.name"
                   }
                 }
               }
@@ -209,7 +287,7 @@
         "next_url": {
           "description": "The URL for the next page",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.playlists.playlists.next_url"
+          "value": "connection.endpoint_data.playlists.playlists.next_url"
         },
         "user_id": {
           "description": "The user's ID",
@@ -230,7 +308,7 @@
           "header_name": "Authorization",
           "header_value": "Bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         }
       }
     },
@@ -246,7 +324,7 @@
         "next_url": {
           "description": "The URL for the next page",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.saved_tracks.saved_tracks.next_url"
+          "value": "connection.endpoint_data.saved_tracks.saved_tracks.next_url"
         }
       },
       "header_descriptions": {
@@ -255,7 +333,7 @@
           "header_name": "Authorization",
           "header_value": "Bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         }
       }
     },
@@ -268,7 +346,43 @@
           "header_name": "Authorization",
           "header_value": "Bearer [$1]",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
+        }
+      }
+    },
+    "spotify_playlist_oembed": {
+      "call_method": "GET",
+      "url": "https://embed.spotify.com/oembed/?url=[__url__]",
+      "additional_path_fields": [
+        {
+          "description": "URL of Spotify object",
+          "parameter": "url",
+          "replace": "[__url__]"
+        }
+      ],
+      "parameter_descriptions": {
+        "url": {
+          "description": "URL of Spotify object",
+          "hydration_method": "translate",
+          "value": "responseObject.uri"
+        }
+      }
+    },
+    "spotify_track_oembed": {
+      "call_method": "GET",
+      "url": "https://embed.spotify.com/oembed/?url=[__url__]",
+      "additional_path_fields": [
+        {
+          "description": "URL of Spotify object",
+          "parameter": "url",
+          "replace": "[__url__]"
+        }
+      ],
+      "parameter_descriptions": {
+        "url": {
+          "description": "URL of Spotify object",
+          "hydration_method": "translate",
+          "value": "responseObject.track.uri"
         }
       }
     }

@@ -5,10 +5,10 @@ import server.apps.opi.views as views
 
 urlpatterns = patterns('',
 
-    url(r'^/provider/?$', views.ProviderView.as_view(), name='provider-list'),
-    url(r'^/provider/(?P<pk>[a-zA-Z0-9]+)/?$', views.ProviderSingleView.as_view(), name='provider-detail'),
+    url(r'^/providers/?$', views.ProviderView.as_view(), name='provider-list'),
+    url(r'^/providers/(?P<pk>[a-zA-Z0-9]+)/?$', views.ProviderSingleView.as_view(), name='provider-detail'),
 
-    url(r'^/signal/?$', views.SignalView.as_view(), name='signal-list'),
-    url(r'^/signal/(?P<pk>[a-zA-Z0-9]+)/?$', views.SignalSingleView.as_view(), name='signal-detail'),
-    url(r'^/signal/(?P<pk>[a-zA-Z0-9]+)/provider$', views.SignalSingleView.provider, name='signal-provider'),
+    url(r'^/connections/?$', views.ConnectionView.as_view(), name='connection-list'),
+    url(r'^/connections/(?P<pk>[a-zA-Z0-9]+)/?$', views.ConnectionSingleView.as_view(), name='connection-detail'),
+    url(r'^/connections/(?P<pk>[a-zA-Z0-9]+)/provider$', views.ConnectionSingleView.provider, name='connection-provider'),
 )

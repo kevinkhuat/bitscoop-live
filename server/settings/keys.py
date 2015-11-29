@@ -2,6 +2,7 @@
 # MapBox #
 ##########
 
+MAPBOX_USER_NAME = 'liambroza.hl4bi8d0'
 MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiaGVnZW1vbmJpbGwiLCJhIjoiR3NrS0JMYyJ9.NUb5mXgMOIbh-r7itnVgmg'
 
 

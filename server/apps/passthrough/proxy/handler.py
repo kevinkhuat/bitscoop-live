@@ -8,7 +8,7 @@ from motorengine import Q
 from tornado import gen
 
 from server.apps.passthrough.auth import user_authenticated
-from server.apps.passthrough.documents import Signal
+from server.apps.passthrough.documents import Connection
 from server.apps.passthrough.proxy import psa_adapters
 
 
@@ -32,23 +32,23 @@ class ExternalAPICall(tornado.web.RequestHandler):
         # Need to cast the ObjectID as such since MotorEngine doesn't handle the raw string well
         endpoint_name = self.get_argument('endpoint_name')
         permission_name = self.get_argument('permission_name')
-        signal_id = ObjectId(self.get_argument('signal_id'))
-        signal_query = Q({'_id': signal_id})
+        connection_id = ObjectId(self.get_argument('connection_id'))
+        connection_query = Q({'_id': connection_id})
 
-        signal_list = yield Signal.objects.filter(signal_query).find_all()
-        signal = signal_list[0]
-        endpoint = signal.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
-        pagination_method = signal.permissions[permission_name]['event_source']['mappings']['pagination']['method']
+        connection_list = yield Connection.objects.filter(connection_query).find_all()
+        connection = connection_list[0]
+        endpoint = connection.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
+        pagination_method = connection.permissions[permission_name]['event_source']['mappings']['pagination']['method']
 
         # Get the route from the endpoint
         route = endpoint['route']
 
-        # Need to explicitly load the Signal's reference to its Provider
-        yield signal.load_references(fields=['provider'])
+        # Need to explicitly load the Connection's reference to its Provider
+        yield connection.load_references(fields=['provider'])
 
-        # 'Fun' PSA code for getting the backend associated with the signal
-        backend_module = psa_adapters.get_backend_module(signal)
-        loaded_backend = psa_adapters.get_psa_backend(signal)
+        # 'Fun' PSA code for getting the backend associated with the connection
+        backend_module = psa_adapters.get_backend_module(connection)
+        loaded_backend = psa_adapters.get_psa_backend(connection)
 
         # Get the parameters from the request, then populate the ones that couldn't be sent by the client,
         # such as OAuth tokens and OpenID keys.
@@ -64,8 +64,8 @@ class ExternalAPICall(tornado.web.RequestHandler):
 
             route = re.sub(re.escape(additional_path_field['replace']), path_parameter, route)
 
-        parameters = psa_adapters.hydrate_server_fields(parameters, signal)
-        headers = psa_adapters.hydrate_server_fields(headers, signal)
+        parameters = psa_adapters.hydrate_server_fields(parameters, connection)
+        headers = psa_adapters.hydrate_server_fields(headers, connection)
 
         # TODO: Replace OAuth1 authorization with something other than PSA
         # For now, we're using PSA's authorization for OAuth1 since it was going to be a pain to write
@@ -85,15 +85,35 @@ class ExternalAPICall(tornado.web.RequestHandler):
             url_parts[4] = urllib.parse.urlencode(query)
             route = urllib.parse.urlunparse(url_parts)
 
-            response = loaded_backend.get_json(
-                route,
-                auth=loaded_backend.oauth_auth(parameters)
-            )
-            self.write(json.dumps(response))
-            self.finish()
+            try:
+                response = loaded_backend.get_json(
+                    route,
+                    auth=loaded_backend.oauth_auth(parameters)
+                )
+                self.write(json.dumps(response))
+                self.finish()
+            except Exception as err:
+                if hasattr(err, 'code'):
+                    if err.code in [401, 404, 429]:
+                        self.write({
+                            'error': err.code
+                        })
+                        self.finish()
+
+                    else:
+                        self.send_error(err.code)
+                if hasattr(err, 'response.status_code'):
+                    if err.response.status_code in [401, 404, 429]:
+                        self.write({
+                            'error': err.response.status_code
+                        })
+                        self.finish()
+                    else:
+                        self.send_error(err.response.status_code)
+
         # If it's not OAuth1, call psa_get_json to add the parameters to the URL and call it, then send the results to the client.
         else:
-            psa_adapters.psa_get_json(self, route, parameters, headers, header_descriptions, pagination_method, signal, loaded_backend, method=endpoint['call_method'])
+            psa_adapters.psa_get_json(self, route, parameters, headers, header_descriptions, pagination_method, connection, loaded_backend, method=endpoint['call_method'])
 
     @tornado.web.asynchronous
     def options(self):
@@ -117,12 +137,12 @@ class Proxy(tornado.web.RequestHandler):
             # Get API URL
             endpoint_name = self.get_argument('endpoint_name')
             permission_name = self.get_argument('permission_name')
-            signal_id = ObjectId(self.get_argument('signal_id'))
-            signal_query = Q({'_id': signal_id})
+            connection_id = ObjectId(self.get_argument('connection_id'))
+            connection_query = Q({'_id': connection_id})
 
-            signal_list = yield Signal.objects.filter(signal_query).find_all()
-            signal = signal_list[0]
-            endpoint = signal.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
+            connection_list = yield Connection.objects.filter(connection_query).find_all()
+            connection = connection_list[0]
+            endpoint = connection.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
 
             # Get the route from the endpoint
             route = endpoint['route']
@@ -135,8 +155,8 @@ class Proxy(tornado.web.RequestHandler):
             self.write(response.body)
             self.finish()
 
-        except Exception:
-            self.send_error(Exception)
+        except Exception as err:
+            self.send_error(err.code)
             self.finish()
 
     @tornado.web.asynchronous
@@ -156,18 +176,18 @@ class Signature(tornado.web.RequestHandler):
             # TODO: requests handled this step synchronously with requests.OAuth1lib
             endpoint_name = self.get_argument('endpoint_name')
             permission_name = self.get_argument('permission_name')
-            signal_id = ObjectId(self.get_argument('signal_id'))
-            signal_query = Q({'_id': signal_id})
+            connection_id = ObjectId(self.get_argument('connection_id'))
+            connection_query = Q({'_id': connection_id})
 
-            signal_list = yield Signal.objects.filter(signal_query).find_all()
-            signal = signal_list[0]
-            endpoint = signal.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
+            connection_list = yield Connection.objects.filter(connection_query).find_all()
+            connection = connection_list[0]
+            endpoint = connection.permissions[permission_name]['event_source']['endpoints'][endpoint_name]
 
             # Get the route from the endpoint
             route = endpoint['route']
 
-            # Need to explicitly load the Signal's reference to its Provider
-            yield signal.load_references(fields=['provider'])
+            # Need to explicitly load the Connection's reference to its Provider
+            yield connection.load_references(fields=['provider'])
 
             # Get the parameters from the request, then populate the ones that couldn't be sent by the client,
             # such as OAuth tokens and OpenID keys.
@@ -176,13 +196,13 @@ class Signature(tornado.web.RequestHandler):
                 path_parameter = parameters.pop(additional_path_field['parameter'])
                 route = re.sub(re.escape(additional_path_field['replace']), path_parameter, route)
 
-            parameters = psa_adapters.add_psa_params(parameters, signal)
+            parameters = psa_adapters.add_psa_params(parameters, connection)
 
             self.write(parameters)
             self.finish()
 
-        except Exception:
-            self.send_error()
+        except Exception as err:
+            self.send_error(err.code)
             self.finish()
 
     @tornado.web.asynchronous

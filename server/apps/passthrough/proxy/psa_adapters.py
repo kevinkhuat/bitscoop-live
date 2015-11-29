@@ -25,34 +25,34 @@ Strategy = module_member(STRATEGY)
 HEADER_REPLACEMENT = re.compile('\[\$1\]')
 
 
-def refresh_signal_token(loaded_backend, signal):
-    refresh_response = loaded_backend.refresh_token(signal.refresh_token)
-    signal.access_token = refresh_response['access_token']
-    signal.save()
-    return signal
+def refresh_connection_token(loaded_backend, connection):
+    refresh_response = loaded_backend.refresh_token(connection.refresh_token)
+    connection.auth_data.access_token = refresh_response['access_token']
+    connection.save()
+    return connection
 
 
-def get_psa_backend(signal):
+def get_psa_backend(connection):
     """
-    Return the PSA backend associated with a given signal
+    Return the PSA backend associated with a given connection
 
-    :param signal:
-    :return: the PSA backend for the given signal
+    :param connection:
+    :return: the PSA backend for the given connection
     """
     redirect_uri = '/'
-    backend_class = get_backend(BACKENDS, signal.provider.backend_name)
+    backend_class = get_backend(BACKENDS, connection.provider.backend_name)
 
     return backend_class(Strategy(Storage), redirect_uri)
 
 
-def get_backend_module(signal):
+def get_backend_module(connection):
     """
-    Return the backend module associated with a given signal
+    Return the backend module associated with a given connection
 
-    :param signal:
-    :return: the backend module for the given signal
+    :param connection:
+    :return: the backend module for the given connection
     """
-    name = format(signal.provider.name.lower())
+    name = format(connection.provider.name.lower())
 
     if name in ['reddit', 'slice', 'spotify']:
         return import_module('server.contrib.psafixbox.backends.' + name)
@@ -60,25 +60,25 @@ def get_backend_module(signal):
         return import_module('social.backends.' + name)
 
 
-def hydrate_server_fields(items, signal):
+def hydrate_server_fields(items, connection):
     """
-    This takes in a dictionary of items (parameters or headers) and their associated signal and populates any items that
+    This takes in a dictionary of items (parameters or headers) and their associated connection and populates any items that
     could not be populated on the client, specifically OAuth tokens and OpenID keys.
-    This information is assumed to be stored somewhere on the signal.
-    The items in question come in storing their location on the signal, e.g. the OAuth2 Access token
+    This information is assumed to be stored somewhere on the connection.
+    The items in question come in storing their location on the connection, e.g. the OAuth2 Access token
     comes in as {access_token: 'access_token'}, with the value of this key/value pair indicating that the
-    information is located at signal.access_token.
+    information is located at connection.access_token.
 
     :param items: The dictionary of parameter names and values
-    :param signal: The associated signal
+    :param connection: The associated connection
     :return: A dictionary of the items for the given call
     """
     for item in items:
         if (item == 'oauth_token' or item == 'oauth_token_secret' or item == 'access_token' or item == 'key') and (items[item] == 'oauth_token' or items[item] == 'oauth_token_secret' or items[item] == 'access_token' or items[item] == 'key'):
-            # Find the token location from the endpoint definition, currently assumes it's on the signal's explicitly populated property
+            # Find the token location from the endpoint definition, currently assumes it's on the connection's explicitly populated property
             token_location = items[item].split('.')
 
-            sliced = signal
+            sliced = connection
             for index in token_location:
                 sliced = sliced._values[index]
 
@@ -88,7 +88,7 @@ def hydrate_server_fields(items, signal):
 
 
 @gen.coroutine
-def psa_get_json(self, url, parameters, headers, header_descriptions, pagination_method, signal, loaded_backend, method='GET', *args, **kwargs):
+def psa_get_json(self, url, parameters, headers, header_descriptions, pagination_method, connection, loaded_backend, method='GET', *args, **kwargs):
     """
     This appends the parameters to the URL call and then calls the URL asynchronously.
     When the result comes back, it is written back to the client.
@@ -130,6 +130,7 @@ def psa_get_json(self, url, parameters, headers, header_descriptions, pagination
             session = SSLHttpAdapter.ssl_adapter_session(loaded_backend.SSL_PROTOCOL)
             response = session.request(method, url, *args, **kwargs)
             self.write(response)
+            self.finish()
         else:
             if method == 'POST':
                 kwargs['method'] = method
@@ -140,6 +141,7 @@ def psa_get_json(self, url, parameters, headers, header_descriptions, pagination
 
             try:
                 response = yield client.fetch(request)
+
                 if pagination_method == 'rfc5988' and 'Link' in response.headers:
                     constructed_response = {
                         'Link': response.headers['Link'],
@@ -151,11 +153,12 @@ def psa_get_json(self, url, parameters, headers, header_descriptions, pagination
                     constructed_response = response.body
 
                 self.write(constructed_response)
+                self.finish()
             except tornado.httpclient.HTTPError as err:
                 if err.response.code == 401:
-                    signal = refresh_signal_token(loaded_backend, signal)
+                    connection = refresh_connection_token(loaded_backend, connection)
 
-                    parameters['access_token'] = signal.access_token
+                    parameters['access_token'] = connection.auth_data.access_token
 
                     url_parts = list(urllib.parse.urlparse(url))
                     query = dict(urllib.parse.parse_qsl(url_parts[4]))
@@ -166,20 +169,36 @@ def psa_get_json(self, url, parameters, headers, header_descriptions, pagination
 
                     request = tornado.httpclient.HTTPRequest(url, **kwargs)
                     client = tornado.httpclient.AsyncHTTPClient()
-                    response = yield client.fetch(request)
+                    try:
+                        response = yield client.fetch(request)
 
-                    if response.code == 401:
-                        self.send_error('Failure after token refresh')
-                        self.finish()
+                        if pagination_method == 'rfc5988' and 'Link' in response.headers:
+                            constructed_response = {
+                                'Link': response.headers['Link'],
+                                'data': json.loads(response.body.decode('utf-8'))
+                            }
 
-                elif err.response.code == 429:
-                    self.send_error('Too many requests')
-                    self.finish()
+                            constructed_response = json.dumps(constructed_response).encode('utf-8')
+                        else:
+                            constructed_response = response.body
 
+                        self.write(constructed_response)
+                        self.write(err)
+                    except tornado.httpclient.HTTPError as err:
+                        if err.code in [401, 404, 429]:
+                            self.write({
+                                'error': err.code
+                            })
+                            self.finish()
+                        else:
+                            self.send_error(err.code)
                 else:
-                    self.send_error('Unknown call failure')
-                    self.finish()
-
-        self.finish()
+                    if err.code in [401, 404, 429]:
+                        self.write({
+                            'error': err.code
+                        })
+                        self.finish()
+                    else:
+                        self.send_error(err.code)
     except ConnectionError as err:
         raise AuthFailed(loaded_backend, str(err))

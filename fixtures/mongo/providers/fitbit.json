@@ -99,7 +99,7 @@
                 }
               }
             },
-            "content": {
+            "things": {
               "foods": {
                 "unique_identifiers": [
                   {
@@ -120,11 +120,6 @@
                   }
                 ],
                 "mapped_fields": {
-                  "type": {
-                    "hydration_method": "literal",
-                    "type": "string",
-                    "value": "food"
-                  },
                   "text": {
                     "hydration_method": "translate",
                     "value": "responseObject.loggedFood.name"
@@ -132,6 +127,11 @@
                   "title": {
                     "hydration_method": "translate",
                     "value": "responseObject.loggedFood.brand"
+                  },
+                  "type": {
+                    "hydration_method": "literal",
+                    "type": "string",
+                    "value": "food"
                   }
                 }
               }
@@ -384,9 +384,9 @@
         "base_date": {
           "description": "Start date of the time range",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.food.food_calories_in.base_date",
+          "value": "connection.endpoint_data.food.food_calories_in.base_date",
           "default": "2015-09-01",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "date_now"
           }
         },
@@ -398,12 +398,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     },
@@ -426,12 +426,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     },
@@ -454,9 +454,9 @@
         "base_date": {
           "description": "Start date of the time range",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.sleep.sleep_start_time.base_date",
+          "value": "connection.endpoint_data.sleep.sleep_start_time.base_date",
           "default": "2015-09-01",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "date_now"
           }
         },
@@ -468,12 +468,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     },
@@ -496,12 +496,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     },
@@ -524,9 +524,9 @@
         "base_date": {
           "description": "Start date of the time range",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.exercise.activities_activity_calories.base_date",
+          "value": "connection.endpoint_data.exercise.activities_activity_calories.base_date",
           "default": "2015-09-01",
-          "save_to_signal": {
+          "save_to_connection": {
             "location": "date_now"
           }
         },
@@ -538,12 +538,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     },
@@ -566,12 +566,12 @@
         "oauth_token": {
           "description": "OAuth1 public key",
           "hydration_method": "server",
-          "value": "oauth_token"
+          "value": "auth_data.oauth_token"
         },
         "oauth_token_secret": {
           "description": "OAuth1 private key",
           "hydration_method": "server",
-          "value": "oauth_token_secret"
+          "value": "auth_data.oauth_token_secret"
         }
       }
     }

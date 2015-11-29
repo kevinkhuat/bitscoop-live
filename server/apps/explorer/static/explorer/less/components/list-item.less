@@ -1,0 +1,38 @@
+.list-item {
+	.no-select;
+
+	display: table-row !important;
+	font-size: 1.2em;
+	width: 100%;
+	cursor: pointer;
+	word-break: break-word;
+
+	&:nth-child(even) {
+		background-color: darken(@light, 5%);
+	}
+
+	> * {
+		display: table-cell !important;
+		padding: 0.4em 1em;
+	}
+
+	&:hover {
+		background-color: darken(@light, 20%);
+		color: @light;
+	}
+
+	&.active {
+		background-color: darken(@light, 15%);
+		color: @light;
+	}
+
+	.prettyType, .type, .provider_name, .firstItemType {
+		text-transform: capitalize;
+	}
+
+	@media @mobile {
+		.title {
+			text-overflow: clip;
+		}
+	}
+}

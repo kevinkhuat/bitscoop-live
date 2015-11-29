@@ -4,7 +4,7 @@
 {% block main %}
 	<form action="{% url 'login' %}" method="POST">
 		<div class="boxed-group">
-			<div>Login to BitScoop</div>
+			<div>Login</div>
 
 			<div class="padded">
 				{% csrf_token %}
@@ -28,7 +28,7 @@
 		</div>
 
 		<div>
-			<button class="primary" type="submit">Log In</button>
+			<button class="primary" type="submit">Login</button>
 		</div>
 	</form>
 {% endblock %}

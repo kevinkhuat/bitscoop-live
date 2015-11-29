@@ -1,7 +1,7 @@
 from rest_framework import serializers as django_serializers
 
 from server.contrib.tastydata import serializers as tasty_serializers
-from server.core.documents import Endpoint, Permission, Provider, Settings, Signal
+from server.core.documents import Connection, Endpoint, Permission, Provider, Settings
 from server.core.models import User
 
 
@@ -43,27 +43,25 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
         depth = 5
 
 
-class SignalSerializer(tasty_serializers.DocumentSerializer):
+class ConnectionSerializer(tasty_serializers.DocumentSerializer):
     # Django References
     # user = django_serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field='user_id')
     # provider = django_serializers.HyperlinkedIdentityField(view_name='provider-detail', lookup_field='provider')
 
     class Meta:
-        model = Signal
+        model = Connection
         fields = (
             'id',
-            'complete',
-            'connected',
+            'auth_status',
             'created',
             'enabled',
             'endpoint_data',
             'frequency',
             'last_run',
+            'metadata',
             'name',
             'permissions',
             'provider',
-            'refresh_token',
-            'signal_data',
             'updated',
             'usa_id',
             'user_id',
@@ -133,7 +131,7 @@ class UserSerializer(django_serializers.HyperlinkedModelSerializer):
     # settings = related_fields.MongoField(view_name='settings-detail', depth=5, lookup_field='user_id', queryset=User.objects.all())
 
     # Django References
-    # signals = django_serializers.HyperlinkedRelatedField(view_name='signal-list', lookup_field='user_id', queryset=Signal.objects.all())
+    # signals = django_serializers.HyperlinkedRelatedField(view_name='signal-list', lookup_field='user_id', queryset=Connection.objects.all())
     # permissions
 
     class Meta:

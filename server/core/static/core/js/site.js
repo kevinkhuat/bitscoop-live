@@ -60,13 +60,13 @@ define(['lodash', 'jquery-cookie'], function(_) {
 
 		$('header nav .item')
 			.add('.menu .add-filter')
-			.add('.signal-button')
+			.add('.connection-button')
 			.add('ul.links > li > *')
 			.add('.filter-button')
 			.add('.dropdown span')
 			.add('.list.item')
 			.add('.selector')
-			.add('.delete-signal')
+			.add('.delete-connection')
 			.mouseenter(function() {
 				$(this).addClass('hover');
 			})

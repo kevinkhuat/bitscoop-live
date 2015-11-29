@@ -233,10 +233,14 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 
 						//For fields such as types, we may need to translate data from the response via a mapping
 						//dictionary that is specified in the provider definition.
-						if (_.has(propertyMapping.value, 'translation')) {
-							var typeMappings = _.get(context.mappings, 'type_mappings');
+						if (propertyMapping.value.endpoint === 'item' && propertyMapping.value.value_location[0][0] === 'result.category.name') {
+							if (_.has(propertyMapping.value, 'translation')) {
+								console.log(propertyMapping.value.translation);
+								var typeMappings = _.get(context.mappings, 'type_mappings');
 
-							finalResponse = _.get(_.get(typeMappings, propertyMapping.value.translation), finalResponse);
+								finalResponse = _.get(_.get(typeMappings, propertyMapping.value.translation), finalResponse);
+								console.log(finalResponse);
+							}
 						}
 					}
 				});
@@ -471,7 +475,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 							headers: {
 								'X-CSRFToken': $.cookie('csrftoken')
 							}
-						}).done(function (data, xhr, response) {
+						}).done(function(data, xhr, response) {
 							console.log('Signal ' + signalToRun.name + ' lastRun updated successfully');
 							signalPromise.resolve();
 						});
@@ -1405,7 +1409,7 @@ define ('scheduleMapper', ['jquery', 'lodash', 'jquery-cookie', 'jquery-deparam'
 					identifier: identifier,
 					places: placesList,
 					provider: context.signal.provider.provider_number,
-					provider_name: context.signal.provider.name,
+					provider_name: _hydrateField(context, _.get(eventMapping.mapped_fields, 'provider_name')),
 					signal: context.signal.id,
 					things: thingsList,
 					type: _.get(context.mapping, 'type'),

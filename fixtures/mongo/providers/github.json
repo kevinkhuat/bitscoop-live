@@ -522,22 +522,22 @@
         "access_token": {
           "description": "OAuth2 access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "next_url": {
           "description": "The URL for the next page",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.events.events.next_url"
+          "value": "connection.endpoint_data.events.events.next_url"
         },
         "page": {
           "description": "The page number for the endpoint",
           "hydration_method": "translate",
-          "value": "signal.endpoint_data.events.events.page"
+          "value": "connection.endpoint_data.events.events.page"
         },
         "user_id": {
           "description": "The user's ID",
           "hydration_method": "translate",
-          "value": "signal.signal_data.login"
+          "value": "connection.metadata.login"
         }
       },
       "header_descriptions": {
@@ -545,7 +545,7 @@
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.login",
+          "hydration_location": "connection.metadata.login",
           "hydration_method": "reformat",
           "value": "[$1]"
         }
@@ -565,7 +565,7 @@
         "access_token": {
           "description": "OAuth2 access key",
           "hydration_method": "server",
-          "value": "access_token"
+          "value": "auth_data.access_token"
         },
         "repo_name": {
           "description": "Name of Repository",
@@ -578,7 +578,7 @@
           "description": "The user agent header",
           "header_name": "User-Agent",
           "header_value": "[$1]",
-          "hydration_location": "signal.signal_data.login",
+          "hydration_location": "connection.metadata.login",
           "hydration_method": "reformat",
           "value": "[$1]"
         }

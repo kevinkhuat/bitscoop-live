@@ -1,0 +1,35 @@
+<div class="mix grid-item" data-object-id="{{ objectType }}.{{ object.id }}" {%
+     if thumbnail %}style="background-image:url({{ thumbnail }}" {% endif %}{% for sortField in sortFields %} data-{{
+     sortField.attr
+     }}="{% if object[sortField.property] == undefined %}~{% else %}{{ object[sortField.property] }}{% endif %}" {%
+     endfor %}>
+	<div class="flex">
+		<i class="type-icon {{ largeIcon }}"></i>
+	</div>
+	{% if title or date or leftIcon or rightIcon %}
+	<div class="title-bar flex">
+		{% if leftIcon %}
+		<div class="bubble left">
+			<i class="{{ leftIcon }}"></i>
+		</div>
+		{% endif %}
+		{% if title %}
+		<div class="title flex-grow align-center">{{ title }}</div>
+		{% elif date %}
+		<div class="title flex-grow align-center">
+			<div class="datetime">
+				<span class="calendar icon"></span>
+				<span>{{ date }}</span>
+				<span class="clock-o icon"></span>
+				<span>{{ time }}</span>
+			</div>
+		</div>
+		{% endif %}
+		{% if rightIcon %}
+		<div class="bubble right">
+			<i class="{{ rightIcon }}"></i>
+		</div>
+		{% endif %}
+	</div>
+	{% endif %}
+</div>

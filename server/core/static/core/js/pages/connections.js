@@ -11,17 +11,17 @@ define(['jquery', 'jquery-cookie'], function($) {
 			serialized[d.name] = d.value;
 		});
 
-		if (!serialized['signal-name']) {
-			serialized['signal-name'] = $form.find('input[name="signal-name"]').attr('placeholder');
+		if (!serialized['connection-name']) {
+			serialized['connection-name'] = $form.find('input[name="connection-name"]').attr('placeholder');
 		}
 
 		data = {};
 		permissions = data.permissions = [];
 		data.updateFrequency = parseInt(serialized['update-frequency']);
-		data.name = serialized['signal-name'];
+		data.name = serialized['connection-name'];
 
 		delete serialized['update-frequency'];
-		delete serialized['signal-name'];
+		delete serialized['connection-name'];
 
 		$.each(serialized, function(d) {
 			permissions.push(d);

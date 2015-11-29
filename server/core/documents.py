@@ -43,7 +43,7 @@ class Settings(mongoengine.Document):
     }
 
 
-# Provider and Signal Association documents
+# Provider and Connection Association documents
 
 class Endpoint(mongoengine.EmbeddedDocument):
     """
@@ -83,7 +83,7 @@ class EventSource(mongoengine.EmbeddedDocument):
     description = mongoengine.StringField(required=True)
     display_name = mongoengine.StringField(required=True)
     enabled_by_default = mongoengine.BooleanField(default=True)
-    endpoints = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Endpoint))
+    endpoints = mongoengine.ListField()
     initial_mapping = mongoengine.StringField()
     mappings = mongoengine.DictField()
     name = mongoengine.StringField(required=True)
@@ -117,12 +117,14 @@ class Provider(mongoengine.Document):
     description = mongoengine.StringField()
     domain = mongoengine.StringField()
     endpoint_wait_time = mongoengine.IntField()
+    endpoints = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Endpoint))
     event_sources = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=EventSource))
     name = mongoengine.StringField()
     provider_number = mongoengine.ObjectIdField(primary_key=True)
     tags = mongoengine.ListField(mongoengine.StringField())
 
     meta = {
+        'collection': 'providers',
         'indexes': [{
             'name': 'provider_index',
             'fields': ['$id'],
@@ -136,38 +138,43 @@ class Provider(mongoengine.Document):
 
 class Permission(mongoengine.EmbeddedDocument):
     """
-    The class representing a user's permissions for a specific Signal's EventSource, e.g. the permission to get user A's Facebook Friends list
+    The class representing a user's permissions for a specific Connection's EventSource, e.g. the permission to get user A's Facebook Friends list
 
     Attributes:
     event_source: A reference to the base EventSource for this Permission
     enabled: Whether or not this endpoint will be checked for new data on future runs
     """
 
-    event_source = mongoengine.EmbeddedDocumentField(document_type=EventSource)
+    FREQUENCY = (
+        (0, 'Premium On Demand'),
+        (1, 'Daily'),
+        (2, 'Weekly'),
+        (3, 'Manual'),
+        (4, 'Once'),
+    )
+
     enabled = mongoengine.BooleanField(default=True)
+    frequency = mongoengine.IntField(default=1, choices=FREQUENCY)
+    last_run = mongoengine.DateTimeField()
 
 
-class Signal(mongoengine.Document):
+class Connection(mongoengine.Document):
     """
     The class representing an account of a Provider
 
     Attributes:
-        id: A unique database descriptor obtained when saving a Signal.
-        user_id: A foreign key relationship to the User entity who owns the Signal.
-        provider: A reference to the Provider from which this Signal was created.
+        id: A unique database descriptor obtained when saving a Connection.
+        user_id: A foreign key relationship to the User entity who owns the Connection.
+        provider: A reference to the Provider from which this Connection was created.
         name: The name of the linked service.
         usa_id: The User Social Auth's unique identifier for this account
         complete: Indicates that the connection to the account has been verified by the user
         connected: Indicates that the connection to the account has been authorized (not necessarily verified by the user)
-        enabled: Indicates that the Signal will fetch updates when requested
-        frequency: How often the signal will check the provider API for new data (see tuple below for mapping)
-        last_run: The last time the signal hit the provider API to check for new data
-        created: When the signal was first created
-        updated: When the signal's settings were last updated
-        access_token: Stores OAuth2 or OpenID access token
-        oauth_token: OAuth1 public token
-        oauth_secret_token: OAuth1 private token
-        signal_data: Provider-specific data, e.g. account's user_id (not to be confused with the Signal's user_id) and account's handle
+        enabled: Indicates that the Connection will fetch updates when requested
+        frequency: How often the connection will check the provider API for new data (see tuple below for mapping)
+        last_run: The last time the connection hit the provider API to check for new data
+        created: When the connection was first created
+        updated: When the connection's settings were last updated
     """
     FREQUENCY = (
         (0, 'Premium On Demand'),
@@ -177,30 +184,30 @@ class Signal(mongoengine.Document):
         (4, 'Once'),
     )
 
-    # TODO: Encrypt tokens or remove from Signal
-    access_token = mongoengine.StringField()
-    complete = mongoengine.BooleanField(default=False)
-    connected = mongoengine.BooleanField(default=False)
+    # TODO: Encrypt tokens or remove from Connection
+    auth_data = mongoengine.DictField()
+    auth_status = mongoengine.DictField()
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
     enabled = mongoengine.BooleanField(default=False)
     endpoint_data = mongoengine.DictField()
     frequency = mongoengine.IntField(default=1, choices=FREQUENCY)
     last_run = mongoengine.DateTimeField()
+    metadata = mongoengine.DictField()
     name = mongoengine.StringField()
     oauth_token = mongoengine.StringField()
     oauth_token_secret = mongoengine.StringField()
     permissions = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Permission))
     provider = mongoengine.ReferenceField(Provider, dbref=False)
     refresh_token = mongoengine.StringField()
-    signal_data = mongoengine.DictField()
     updated = mongoengine.DateTimeField()
     usa_id = mongoengine.IntField()
     user_id = mongoengine.IntField()
 
     meta = {
+        'collection': 'connections',
         'indexes': [{
-            'name': 'signal_index',
-            'fields': ['$id', '$complete', '$connected', '$enabled', '$provider', '$user_id'],
+            'name': 'connection_index',
+            'fields': ['$id', '$auth_status', '$enabled', '$provider', '$user_id'],
             'default_language': 'english'
         }]
     }

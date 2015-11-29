@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from elasticsearch import Elasticsearch
 
 from server.contrib.estoolbox.mappings import (
-    CONTACT_MAPPING, CONTENT_MAPPING, DATA_MAPPING, EVENT_MAPPING, LOCATION_MAPPING, ORGANIZATION_MAPPING,
+    CONTACT_MAPPING, CONTENT_MAPPING, EVENT_MAPPING, LOCATION_MAPPING, ORGANIZATION_MAPPING,
     PERSON_MAPPING, PLACE_MAPPING, SEARCH_MAPPING, THING_MAPPING
 )
 
@@ -35,12 +35,6 @@ class Command(BaseCommand):
             index='core',
             doc_type='content',
             body=json.dumps(CONTENT_MAPPING)
-        )
-
-        es_connection.indices.put_mapping(
-            index='core',
-            doc_type='data',
-            body=json.dumps(DATA_MAPPING)
         )
 
         es_connection.indices.put_mapping(

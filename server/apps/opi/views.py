@@ -54,23 +54,23 @@ class ProviderSingleView(MongoAPIView):
         ))
 
 
-class SignalView(MongoAPIListView):
+class ConnectionView(MongoAPIListView):
     ordering_fields = ('id', 'user_id', 'provider', 'created')
-    serializer = opi_serializer.SignalSerializer
-    serializer_class = opi_serializer.SignalSerializer
+    serializer = opi_serializer.ConnectionSerializer
+    serializer_class = opi_serializer.ConnectionSerializer
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(SignalView, self).dispatch(*args, **kwargs)
+        return super(ConnectionView, self).dispatch(*args, **kwargs)
 
     def get(self, request, format=None):
-        get_query = core_api.SignalApi.get(
+        get_query = core_api.ConnectionApi.get(
             request.query_filter &
             request.auth_filter
         )
-        signal_list = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
+        connection_list = opi_serializer.evaluate(get_query, self.Meta.QuerySet)
         serialized_response = self.serialize(
-            signal_list,
+            connection_list,
             many=True,
             context={
                 'request': request,
@@ -82,18 +82,18 @@ class SignalView(MongoAPIListView):
 
     def post(self, request, format=None):
         # TODO: Better user filter
-        post_signal = self.deserialize(
+        post_connection = self.deserialize(
             request.data,
             context={
                 'request': request
             }
         )
-        post_signal.user_id = request.user
-        signal = core_api.SignalApi.post(
-            data=post_signal
+        post_connection.user_id = request.user
+        connection = core_api.ConnectionApi.post(
+            data=post_connection
         )
         serialized_response = self.serialize(
-            signal,
+            connection,
             context={
                 'request': request,
                 'format': format
@@ -103,30 +103,30 @@ class SignalView(MongoAPIListView):
         return Response(serialized_response)
 
 
-class SignalSingleView(MongoAPIView):
+class ConnectionSingleView(MongoAPIView):
     # TODO: Check user association on any updates & add access permissions
-    serializer = opi_serializer.SignalSerializer
-    serializer_class = opi_serializer.SignalSerializer
+    serializer = opi_serializer.ConnectionSerializer
+    serializer_class = opi_serializer.ConnectionSerializer
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(SignalSingleView, self).dispatch(*args, **kwargs)
+        return super(ConnectionSingleView, self).dispatch(*args, **kwargs)
 
     def delete(self, request, pk):
-        get_query = core_api.SignalApi.get(
+        get_query = core_api.ConnectionApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
+        connection_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
 
-        usa_id = signal_object['usa_id']
+        usa_id = connection_object['usa_id']
         try:
             user_social_auth_object = UserSocialAuth.objects.get(user=request.user.id, id=usa_id)
             user_social_auth_object.delete()
         except ObjectDoesNotExist:
             pass
 
-        core_api.SignalApi.delete(
+        core_api.ConnectionApi.delete(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
@@ -134,13 +134,13 @@ class SignalSingleView(MongoAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, pk, format=None):
-        get_query = core_api.SignalApi.get(
+        get_query = core_api.ConnectionApi.get(
             request.auth_filter &
             MongoAPIView.Meta.Q(pk=pk)
         )
-        signal_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
+        connection_object = opi_serializer.evaluate(get_query, self.Meta.QuerySet, many=False)
         serialized_response = self.serialize(
-            signal_object,
+            connection_object,
             context={
                 'request': request,
                 'format': format
@@ -152,18 +152,18 @@ class SignalSingleView(MongoAPIView):
     def patch(self, request, pk, format=None):
         # TODO: Better user filter
 
-        patch_signal = self.deserialize(
+        patch_connection = self.deserialize(
             request.data,
             context={
                 'request': request
             },
             partial=True
         )
-        patch_signal.user_id = request.user
+        patch_connection.user_id = request.user
 
-        data = core_api.SignalApi.patch(
+        data = core_api.ConnectionApi.patch(
             val=pk,
-            data=patch_signal
+            data=patch_connection
         )
         serialized_response = self.serialize(
             data,
@@ -177,20 +177,20 @@ class SignalSingleView(MongoAPIView):
 
     def put(self, request, pk, format=None):
         # TODO: Better user filter
-        post_signal = self.deserialize(
+        post_connection = self.deserialize(
             request.data,
             context={
                 'request': request
             }
         )
-        post_signal.user_id = request.user
+        post_connection.user_id = request.user
 
-        signal = core_api.SignalApi.put(
+        connection = core_api.ConnectionApi.put(
             pk=pk,
-            data=post_signal
+            data=post_connection
         )
         serialized_response = self.serialize(
-            signal,
+            connection,
             context={
                 'request': request,
                 'format': format

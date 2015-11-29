@@ -1,0 +1,15 @@
+<div class="mix object-details place" data-object-id="places.{{ place.id }}" {% for sortField in sortFields %} data-{{
+     sortField.attr }}="{{ place[sortField.property] }}" {% endfor %}>
+	{% if place.name %}
+	<div class="place-name">{{ place.name }}</div>
+	{% endif %}
+
+	<i class="fa fa-map-pin"></i>
+
+	<div class="reverse-geolocation">{{ place.reverse_geolocation }}</div>
+
+	<div class="text-capitalize">{{ place.type }}</div>
+
+	<div class="text-area">{{ place.text }}</div>
+</div>
+

@@ -1,0 +1,71 @@
+body.explorer.list {
+	#list-container {
+		.flex;
+		.flex-grow;
+
+		@media @mobile-portrait {
+			.flex-column-reverse;
+		}
+
+		#left {
+			.flex;
+			position: relative;
+
+			&:not(.expanded) {
+				#map,
+				#details {
+					display: none;
+				}
+			}
+
+			&.expanded {
+				top: 0;
+				left: 0;
+				border-right: 1px solid @input-border-color;
+				background-color: darken(@light, 10%);
+
+				width: 25%;
+				min-width: 400px;
+				height: inherit;
+				overflow-y: auto;
+
+				@media @mobile-portrait {
+					.flex-grow;
+					width: 100%;
+					border-right: 0;
+					border-top: 5px solid @input-border-color
+				}
+
+				#details {
+					.flex;
+					.flex-column;
+				}
+			}
+		}
+
+		#list {
+			display: table !important;
+			table-layout: fixed;
+			border-collapse: collapse;
+			border: 0;
+
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-color: @light;
+		}
+
+		#list:empty {
+			display: flex !important;
+		}
+
+		#map {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			height: 50%;
+			width: 100%;
+			border-top: 1px solid @input-border-color;
+		}
+	}
+}

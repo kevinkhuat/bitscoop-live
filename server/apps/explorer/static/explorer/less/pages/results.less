@@ -1,0 +1,72 @@
+body.explorer.results {
+	#background {
+		background-color: darken(@light, 5%);
+
+		#grid-scroll {
+			.flex;
+			flex-direction: column;
+		}
+
+		.results {
+			.flex;
+		}
+	}
+
+	.type-grid {
+		.flex;
+		.flex-grow;
+
+		margin: 0 2em;
+	}
+
+	.more-select {
+		.no-select;
+		.flex;
+		.flex-column;
+		.flex-x-center;
+		.flex-center;
+
+		padding: 0;
+		margin: 1em;
+		cursor: pointer;
+
+		color: fade(darken(@font-color, 10%), 65%);
+
+		i {
+			font-size: 8em;
+		}
+
+		div {
+			font-size: 2em;
+			font-weight: 900;
+		}
+	}
+
+	#map {
+		position: relative;
+		left: 0;
+		bottom: 0;
+		min-height: 20em;
+		width: 25%;
+		border-top: 0;
+
+		@media @mobile {
+			width: 100%;
+		}
+	}
+
+	.type-header {
+		.no-select;
+		.flex;
+
+		cursor: pointer;
+		background-color: lighten(@color1, 20%);
+		margin: 0.5em;
+		color: @light;
+
+		padding: 0.5em;
+		font-size: 2em;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+}

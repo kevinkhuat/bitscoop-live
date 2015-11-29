@@ -4,12 +4,10 @@ import urllib
 
 import tornado.web
 from django.conf import settings
-from pymongo.errors import BulkWriteError
-from social.apps.django_app.default.models import UserSocialAuth
 from tornado import gen
 
 from server.apps.passthrough.auth import user_authenticated
-from server.apps.passthrough.documents import Data, Settings, Signal, motor_connection
+from server.apps.passthrough.documents import Connection, Settings
 from server.contrib.estoolbox.security import InvalidDSLQueryException, InvalidTagExcpetion, validate_dsl, validate_tags
 from server.contrib.estoolbox.security.validators import (
     CONTENT_TAG_VALIDATOR, EVENT_TAG_VALIDATOR, ORGANIZATION_TAG_VALIDATOR, PLACE_TAG_VALIDATOR, SEARCH_TEXT_FIELDS,
@@ -49,132 +47,192 @@ class EventHandler(tornado.web.RequestHandler):
     @user_authenticated
     @gen.coroutine
     def get(self, slug=None):
-        limit = json.loads(self.get_argument('limit'))
-        offset = json.loads(self.get_argument('offset'))
-        filters = json.loads(self.get_argument('filters', default='{"bool":{"must":[],"must_not":[],"should":[]}}'))
-        q = self.get_argument('q')
+        limit = self.get_arguments('limit')
 
-        try:
-            validate_dsl(filters)
+        if len(limit) > 0:
+            limit = json.loads(limit[0])
 
-            query = {
-                'query': {
-                    'filtered': {
-                        'filter': {
-                            'and': [
-                                filters,
-                                {
-                                    'bool': {
-                                        'must': [
-                                            {
-                                                'term': {
-                                                    'user_id': self.request.user.id
-                                                }
+        offset = self.get_arguments('offset')
+
+        if len(offset) > 0:
+            offset = json.loads(offset[0])
+        else:
+            offset = 0
+
+        filters = self.get_arguments('filters')
+
+        if len(filters) > 0:
+            filters = json.loads(filters[0])
+            try:
+                validate_dsl(filters)
+            except InvalidDSLQueryException:
+                self.send_error(400, mesg='Invalid DSL query. Please check the documentation')
+        else:
+            filters = {
+                'bool': {
+                    'must': [],
+                    'must_not': [],
+                    'should': []
+                }
+            }
+
+        query = {
+            'query': {
+                'filtered': {
+                    'filter': {
+                        'and': [
+                            filters,
+                            {
+                                'bool': {
+                                    'must': [
+                                        {
+                                            'term': {
+                                                'user_id': self.request.user.id
                                             }
-                                        ]
-                                    }
+                                        }
+                                    ]
                                 }
-                            ]
-                        }
-                    }
-                },
-                'size': limit,
-                'from': offset
-            }
-
-            if len(q) > 0:
-                query['query']['filtered']['query'] = {
-                    'multi_match': {
-                        'query': q,
-                        'type': 'most_fields',
-                        'fields': SEARCH_TEXT_FIELDS
+                            }
+                        ]
                     }
                 }
+            },
+            'size': limit,
+            'from': offset,
+        }
 
-            index = 'core'
-            object_type = 'event'
+        sort_field = self.get_arguments('sort_field')
 
-            response = yield es_connection.search(
-                index=index,
-                type=object_type,
-                source=query
-            )
+        if len(sort_field) > 0:
+            sort_field = sort_field[0]
 
-            object_type = 'search'
+            sort_order = self.get_arguments('sort_order')
 
-            cleaned_results = []
-            body_decoded = json.loads(response.body.decode('utf-8'))
-            result_total = body_decoded['hits']['total']
-            results = body_decoded['hits']['hits']
-
-            for result in results:
-                cleaned_results.append({'id': result['_id'], 'result': result['_source']})
-
-            search_response = {
-                'results': cleaned_results
-            }
-
-            if offset == 0:
-                search_response['prev'] = None
+            if len(sort_order) > 0:
+                sort_order = sort_order[0]
             else:
-                url_parts = list(urllib.parse.urlparse(self.request.uri))
-                url_parts[0] = 'https'
-                url_parts[1] = self.request.host
-                url_parts[4] = urllib.parse.urlencode({
-                    'limit': limit,
-                    'offset': offset - limit,
-                    'q': q,
-                    'filters': json.dumps(filters)
-                })
+                sort_order = 'desc'
+        else:
+            sort_field = '_score'
+            sort_order = 'desc'
 
-                previous_url = urllib.parse.urlunparse(url_parts)
+        q = self.get_arguments('q')
 
-                search_response['prev'] = previous_url
-
-            if limit + offset >= result_total:
-                search_response['next'] = None
-            else:
-                url_parts = list(urllib.parse.urlparse(self.request.uri))
-                url_parts[0] = 'https'
-                url_parts[1] = self.request.host
-                url_parts[4] = urllib.parse.urlencode({
-                    'limit': limit,
-                    'offset': offset + limit,
-                    'q': q,
-                    'filters': json.dumps(filters)
-                })
-
-                next_url = urllib.parse.urlunparse(url_parts)
-
-                search_response['next'] = next_url
-
-            self.write(search_response)
-
-            action_and_metadata = {
-                'index': {
-                    '_index': index,
-                    '_type': object_type
+        if len(q) > 0 and q[0] != '' and q[0] != '[]':
+            q = q[0]
+            query['query']['filtered']['query'] = {
+                'multi_match': {
+                    'query': q,
+                    'type': 'most_fields',
+                    'fields': SEARCH_TEXT_FIELDS
                 }
             }
+        else:
+            q = ''
+            sort_field = 'datetime'
 
-            document = {
-                'datetime': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
-                'search_DSL': strip_invalid_key_characters(query),
-                'tags': [],
-                'user_id': self.request.user.id
+        query['sort'] = [
+            {
+                sort_field: {
+                    'order': sort_order
+                }
             }
+        ]
 
-            bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(document) + '\n'
+        index = 'core'
+        object_type = 'event'
 
-            yield es_connection.bulk_operation(
-                type=object_type,
-                index=index,
-                body=bulk_insert_body
-            )
+        response = yield es_connection.search(
+            index=index,
+            type=object_type,
+            source=query
+        )
 
-            self.finish()
-        except InvalidDSLQueryException:
-            self.send_error(400, mesg='Invalid DSL query. Please check the documentation')
+        object_type = 'search'
+
+        cleaned_results = []
+        body_decoded = json.loads(response.body.decode('utf-8'))
+        result_total = body_decoded['hits']['total']
+        results = body_decoded['hits']['hits']
+
+        for result in results:
+            cleaned_result = result['_source']
+            cleaned_result['id'] = result['_id']
+            if hasattr(result, '_score'):
+                cleaned_result['relevance'] = result['_score']
+            else:
+                cleaned_result['relevance'] = ''
+
+            cleaned_results.append(cleaned_result)
+
+        search_response = {
+            'results': cleaned_results,
+            'count': result_total
+        }
+
+        if offset == 0:
+            search_response['prev'] = None
+        else:
+            url_parts = list(urllib.parse.urlparse(self.request.uri))
+            url_parts[0] = 'https'
+            url_parts[1] = self.request.host
+            url_parts[4] = urllib.parse.urlencode({
+                'limit': limit,
+                'offset': offset - limit,
+                'q': q,
+                'filters': json.dumps(filters),
+                'sort_field': sort_field,
+                'sort_order': sort_order
+            })
+
+            previous_url = urllib.parse.urlunparse(url_parts)
+
+            search_response['prev'] = previous_url
+
+        if limit + offset >= result_total:
+            search_response['next'] = None
+        else:
+            url_parts = list(urllib.parse.urlparse(self.request.uri))
+            url_parts[0] = 'https'
+            url_parts[1] = self.request.host
+            url_parts[4] = urllib.parse.urlencode({
+                'limit': limit,
+                'offset': offset + limit,
+                'q': q,
+                'filters': json.dumps(filters),
+                'sort_field': sort_field,
+                'sort_order': sort_order
+            })
+
+            next_url = urllib.parse.urlunparse(url_parts)
+
+            search_response['next'] = next_url
+
+        self.write(search_response)
+
+        action_and_metadata = {
+            'index': {
+                '_index': index,
+                '_type': object_type
+            }
+        }
+
+        document = {
+            'datetime': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+            'search_DSL': strip_invalid_key_characters(query),
+            'tags': [],
+            'user_id': self.request.user.id
+        }
+
+        bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(document) + '\n'
+
+        yield es_connection.bulk_operation(
+            type=object_type,
+            index=index,
+            body=bulk_insert_body
+        )
+
+        self.finish()
 
     # Posting Events is a multi-step process that actually involves posting associated Contacts, Content, and Data, and
     # posting every one of these document types requires a uniqueness check so that the same document isn't posted
@@ -185,17 +243,13 @@ class EventHandler(tornado.web.RequestHandler):
     def post(self, slug=None):
         # Each document type needs a few different lists/dictionaries for the insertion process.
         # The bulk list is just a list of all of the documents that are going to be inserted.
-        bulk_data_list = []
+        bulk_contact_list = []
         # The unique ID list is a list of all the unique IDs of documents that are going to be inserted.
         # It is used to make sure that the same document isn't added more than once.  For example, if a number of
         # Twitter direct messages are from the same person, we only want to attempt to insert that Contact once.
-        data_unique_id_list = []
+        contact_unique_id_list = []
         # The mapping dictionary is used to store the ElasticSearch IDs of documents that are already present
         # in the database.  The keys are unique IDs and the values are ElasticSearch IDs.
-        data_id_mapping_dict = {}
-
-        bulk_contact_list = []
-        contact_unique_id_list = []
         contact_id_mapping_dict = {}
 
         bulk_content_list = []
@@ -230,40 +284,13 @@ class EventHandler(tornado.web.RequestHandler):
             event_organizations = []
             event_contacts = []
             event_content = []
-            event_data = []
             event_places = []
             event_things = []
 
-            # Parse each Data object associated with this Event.
-            for data in post_event['data']:
-                # Get the current datetime
-                datenow = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
-                # Add the user ID
-                data['user_id'] = user_id
-                # Set the created and updated fields to the current datetime
-                data['created'] = datenow
-                data['updated'] = datenow
-                # Add the Signal ID
-                data['signal'] = post_event['signal']
-
-                # Only add the current Data object's unique ID to the unique ID list if it isn't already present.
-                # This is to prevent the same document from being indexed multiple times (more relevant to inserting
-                # Content and Contacts, but doesn't hurt to do it for Data as well).
-                if data['identifier'] not in data_unique_id_list:
-                    # Add a copy of the Data object to the global list of all Data being inserted
-                    bulk_data_list.append(data.copy())
-                    # Add the Data's unique ID to the list of unique IDs of Data being inserted
-                    data_unique_id_list.append(data['identifier'])
-
-                # Add the Data's unique ID to the list of Data this Event references
-                event_data.append(data['identifier'])
-
             # Parse each Contact object associated with this Event
             for contact in post_event['contacts']:
-                # Add a copy of the list of Data IDs that are associated with this Event.
-                contact['data'] = event_data.copy()
-                # Add the Signal ID.
-                contact['signal'] = post_event['signal']
+                # Add the Connection ID.
+                contact['connection'] = post_event['connection']
                 # Add the user ID.
                 contact['user_id'] = user_id
 
@@ -275,11 +302,10 @@ class EventHandler(tornado.web.RequestHandler):
                     # Add the Contact's unique ID to the list of unique IDs of Contacts being inserted
                     contact_unique_id_list.append(contact['identifier'])
 
-                # The local copy of the Contact present in the Event does not need the user ID, Signal ID or data ID list
+                # The local copy of the Contact present in the Event does not need the user ID, Connection ID or data ID list
                 # since the Event stores all those fields.  Delete them from the copy being stored on the Event.
                 del contact['user_id']
-                del contact['signal']
-                del contact['data']
+                del contact['connection']
                 # The local copy of the Contact also does not need the unique ID.  It will need the ElasticSearch ID
                 # of the entry in the Contact collection, but we don't have that yet since it hasn't been indexed.
                 # In the interim, have the ES ID field store the unique ID; once Contacts have been indexed,
@@ -302,10 +328,8 @@ class EventHandler(tornado.web.RequestHandler):
                     valid_organization = False
 
                 if valid_organization:
-                    # Add a copy of the list of Data IDs that are associated with this Event.
-                    organization['data'] = event_data.copy()
-                    # Add the Signal ID.
-                    organization['signal'] = post_event['signal']
+                    # Add the Connection ID.
+                    organization['connection'] = post_event['connection']
                     # Add the user ID.
                     organization['user_id'] = user_id
 
@@ -317,11 +341,10 @@ class EventHandler(tornado.web.RequestHandler):
                         # Add the Organization's unique ID to the list of unique IDs of Organizations being inserted
                         organization_unique_id_list.append(organization['identifier'])
 
-                    # The local copy of the Organization present in the Event does not need the user ID, Signal ID or data ID list
+                    # The local copy of the Organization present in the Event does not need the user ID, Connection ID or data ID list
                     # since the Event stores all those fields.  Delete them from the copy being stored on the Event.
                     del organization['user_id']
-                    del organization['signal']
-                    del organization['data']
+                    del organization['connection']
                     # The local copy of the Organization also does not need the unique ID.  It will need the ElasticSearch ID
                     # of the entry in the Organization collection, but we don't have that yet since it hasn't been indexed.
                     # In the interim, have the ES ID field store the unique ID; once Organizations have been indexed,
@@ -344,10 +367,8 @@ class EventHandler(tornado.web.RequestHandler):
                     valid_content = False
 
                 if valid_content:
-                    # Add a copy of the list of Data IDs that are associated with this Event.
-                    content['data'] = event_data.copy()
-                    # Add the Signal ID.
-                    content['signal'] = post_event['signal']
+                    # Add the Connection ID.
+                    content['connection'] = post_event['connection']
                     # Add the user ID.
                     content['user_id'] = user_id
 
@@ -359,11 +380,10 @@ class EventHandler(tornado.web.RequestHandler):
                         # Add the Content's unique ID to the list of unique IDs of Content being inserted
                         content_unique_id_list.append(content['identifier'])
 
-                    # The local copy of the Content present in the Event does not need the user ID, Signal ID or data ID list
+                    # The local copy of the Content present in the Event does not need the user ID, Connection ID or data ID list
                     # since the Event stores all those fields.  Delete them from the copy being stored on the Event.
                     del content['user_id']
-                    del content['signal']
-                    del content['data']
+                    del content['connection']
                     # The local copy of the Content also does not need the unique ID.  It will need the ElasticSearch ID
                     # of the entry in the Content collection, but we don't have that yet since it hasn't been indexed.
                     # In the interim, have the ES ID field store the unique ID; once Contents have been indexed,
@@ -385,10 +405,8 @@ class EventHandler(tornado.web.RequestHandler):
                     valid_place = False
 
                 if valid_place:
-                    # Add a copy of the list of Data IDs that are associated with this Event.
-                    place['data'] = event_data.copy()
-                    # Add the Signal ID.
-                    place['signal'] = post_event['signal']
+                    # Add the Connection ID.
+                    place['connection'] = post_event['connection']
                     # Add the user ID.
                     place['user_id'] = user_id
 
@@ -400,11 +418,10 @@ class EventHandler(tornado.web.RequestHandler):
                         # Add the Content's unique ID to the list of unique IDs of Content being inserted
                         place_unique_id_list.append(place['identifier'])
 
-                    # The local copy of the Content present in the Event does not need the user ID, Signal ID or data ID list
+                    # The local copy of the Content present in the Event does not need the user ID, Connection ID or data ID list
                     # since the Event stores all those fields.  Delete them from the copy being stored on the Event.
                     del place['user_id']
-                    del place['signal']
-                    del place['data']
+                    del place['connection']
                     # The local copy of the Content also does not need the unique ID.  It will need the ElasticSearch ID
                     # of the entry in the Content collection, but we don't have that yet since it hasn't been indexed.
                     # In the interim, have the ES ID field store the unique ID; once Contents have been indexed,
@@ -427,10 +444,8 @@ class EventHandler(tornado.web.RequestHandler):
                     valid_thing = False
 
                 if valid_thing:
-                    # Add a copy of the list of Data IDs that are associated with this Event.
-                    thing['data'] = event_data.copy()
-                    # Add the Signal ID.
-                    thing['signal'] = post_event['signal']
+                    # Add the Connection ID.
+                    thing['connection'] = post_event['connection']
                     # Add the user ID.
                     thing['user_id'] = user_id
 
@@ -442,11 +457,10 @@ class EventHandler(tornado.web.RequestHandler):
                         # Add the Thing's unique ID to the list of unique IDs of Thing being inserted
                         thing_unique_id_list.append(thing['identifier'])
 
-                    # The local copy of the Thing present in the Event does not need the user ID, Signal ID or data ID list
+                    # The local copy of the Thing present in the Event does not need the user ID, Connection ID or data ID list
                     # since the Event stores all those fields.  Delete them from the copy being stored on the Event.
                     del thing['user_id']
-                    del thing['signal']
-                    del thing['data']
+                    del thing['connection']
                     # The local copy of the Thing also does not need the unique ID.  It will need the ElasticSearch ID
                     # of the entry in the Thing collection, but we don't have that yet since it hasn't been indexed.
                     # In the interim, have the ES ID field store the unique ID; once Things have been indexed,
@@ -500,7 +514,6 @@ class EventHandler(tornado.web.RequestHandler):
                 post_event['organizations'] = event_organizations.copy()
                 post_event['contacts'] = event_contacts.copy()
                 post_event['content'] = event_content.copy()
-                post_event['data'] = event_data.copy()
                 post_event['places'] = event_places.copy()
                 # Add the user ID.
                 post_event['user_id'] = user_id
@@ -509,61 +522,6 @@ class EventHandler(tornado.web.RequestHandler):
                 bulk_event_list.append(post_event.copy())
                 # Add the Event's unique ID to the list of unique IDs of Events being inserted
                 event_unique_id_list.append(post_event['identifier'])
-
-        # If there is Data to be indexed, then do so.
-        # bulk_unique_post_and_id_replace will populate the unique ID list with the necessary key-value relations
-        # between unique IDs and ElasticSearch IDs.
-        # The callback using gen.Callback allows for us to wait until any point in the code for that to finish before
-        # continuing.  It's not really necessary to use this for Data, since nothing else can be done until the Data
-        # posting process has completed, but it's in line with the way the other document types are handled.
-        if len(bulk_data_list) > 0:
-            bulk_unique_post_and_id_replace('core', 'data', bulk_data_list, data_unique_id_list, data_id_mapping_dict, callback=(yield gen.Callback('data_bulk_unique_post_and_id_replace')))
-
-            # This holds up this entire method until the Data has been uniquely indexed.
-            yield gen.Wait('data_bulk_unique_post_and_id_replace')
-
-            bulk = motor_connection.data.initialize_unordered_bulk_op()
-
-            for data in bulk_data_list:
-                data['_id'] = data_id_mapping_dict[data['identifier']]
-                bulk.insert(data)
-
-            bulk.execute(callback=(yield gen.Callback('mongo_data_insert')))
-
-        # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
-        # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
-        # Use this to replace all of the unique IDs in every Organization with its associated ES ID.
-        for organization in bulk_organization_list:
-            for index, data in enumerate(organization['data']):
-                organization['data'][index] = data_id_mapping_dict[data]
-
-        # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
-        # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
-        # Use this to replace all of the unique IDs in every Contact with its associated ES ID.
-        for contact in bulk_contact_list:
-            for index, data in enumerate(contact['data']):
-                contact['data'][index] = data_id_mapping_dict[data]
-
-        # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
-        # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
-        # Use this to replace all of the unique IDs in every Content with its associated ES ID.
-        for content in bulk_content_list:
-            for index, data in enumerate(content['data']):
-                content['data'][index] = data_id_mapping_dict[data]
-
-        # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
-        # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
-        # Use this to replace all of the unique IDs in every Place with its associated ES ID.
-        for place in bulk_place_list:
-            for index, data in enumerate(place['data']):
-                place['data'][index] = data_id_mapping_dict[data]
-
-        # Now that the Data is indexed, the ID mapping dictionary has key-value relations between the unique IDs
-        # and the ElasticSearch IDs of the Data documents corresponding to those unique IDs.
-        # Use this to replace all of the unique IDs in every Thing with its associated ES ID.
-        for thing in bulk_thing_list:
-            for index, data in enumerate(thing['data']):
-                thing['data'][index] = data_id_mapping_dict[data]
 
         # If there are Organizations, Contacts, Content, Places, or Things to be indexed, then do so.
         # bulk_unique_post_and_id_replace will populate the unique ID list with the necessary key-value relations
@@ -604,9 +562,6 @@ class EventHandler(tornado.web.RequestHandler):
         # and the ElasticSearch IDs of the Data, Organization, Contact, and Content documents corresponding to those unique IDs.
         # Use these mapping dictionaries to replace all of the unique IDs in every Event with the associated ES ID.
         for event in bulk_event_list:
-            for index, data in enumerate(event['data']):
-                event['data'][index] = data_id_mapping_dict[data]
-
             for organization in event['organizations']:
                 organization['organization'] = organization_id_mapping_dict[organization['organization']]
 
@@ -627,13 +582,6 @@ class EventHandler(tornado.web.RequestHandler):
         event_post_response = yield es_connection.bulk_unique_post('core', 'event', bulk_event_list, event_unique_id_list)
         # Decode the response so that it can be sent back to the client that made the call.
         event_post_response_decoded = json.loads(event_post_response.body.decode('utf-8'))
-
-        if len(bulk_data_list) > 0:
-            try:
-                yield gen.Wait('mongo_data_insert')
-                pass
-            except BulkWriteError:
-                pass
 
         self.write(event_post_response_decoded)
         self.finish()
@@ -670,32 +618,6 @@ class LocationHandler(tornado.web.RequestHandler):
         self.finish()
 
     @tornado.web.asynchronous
-    @user_authenticated
-    @gen.coroutine
-    def delete(self, slug=None):
-        user_id = self.request.user.id
-
-        delete_user_documents('location', user_id)
-
-        self.finish()
-
-    @tornado.web.asynchronous
-    def options(self):
-        self.finish()
-
-
-class SearchHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    @user_authenticated
-    @gen.coroutine
-    def delete(self, slug=None):
-        user_id = self.request.user.id
-
-        delete_user_documents('search', user_id)
-
-        self.finish()
-
-    @tornado.web.asynchronous
     def options(self):
         self.finish()
 
@@ -723,15 +645,15 @@ class EstimateLocationHandler(tornado.web.RequestHandler):
         self.finish()
 
 
-class SignalHandler(tornado.web.RequestHandler):
+class ConnectionHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     @user_authenticated
     @gen.coroutine
     def delete(self, slug=None):
         user_id = self.request.user.id
-        signal_id_to_delete = self.get_argument('signal_id')
+        connection_id_to_delete = self.get_argument('connection_id')
 
-        delete_signal_and_linked_documents(signal_id_to_delete, user_id)
+        delete_connection_and_linked_documents(connection_id_to_delete, user_id)
 
         self.write('Deletion successful')
         self.finish()
@@ -750,15 +672,15 @@ class AccountHandler(tornado.web.RequestHandler):
         user_id = user.id
 
         Settings.objects.filter(user_id=user_id).delete()
-        Signal.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('signal_get')))
+        Connection.objects.filter(user_id=user_id).find_all(callback=(yield gen.Callback('connection_get')))
 
         delete_user_documents('search', user_id)
         delete_user_documents('location', user_id)
 
-        signals = yield gen.Wait('signal_get')
+        connections = yield gen.Wait('connection_get')
 
-        for signal in signals:
-            delete_signal_and_linked_documents(str(signal._id), user_id)
+        for connection in connections:
+            delete_connection_and_linked_documents(str(connection._id), user_id)
 
         user.delete()
 
@@ -770,22 +692,19 @@ class AccountHandler(tornado.web.RequestHandler):
 
 
 @gen.coroutine
-def delete_signal_and_linked_documents(signal_id, user_id):
-    signal_to_delete = yield Signal.objects.get(id=signal_id, user_id=user_id)
+def delete_connection_and_linked_documents(connection_id, user_id):
+    connection_to_delete = yield Connection.objects.get(id=connection_id, user_id=user_id)
     index = 'core'
 
     terms = {
         'user_id': user_id,
-        'signal': signal_id
+        'connection': connection_id
     }
 
-    Data.objects.filter(signal=signal_id).delete()
-    UserSocialAuth.objects.filter(id=signal_to_delete.usa_id).delete()
-
-    for type in ['organization', 'contact', 'content', 'data', 'event', 'place', 'thing']:
+    for type in ['organization', 'contact', 'content', 'event', 'place', 'thing']:
         es_connection.bulk_delete(index, type, terms)
 
-    yield signal_to_delete.delete()
+    yield connection_to_delete.delete()
 
 
 @gen.coroutine
