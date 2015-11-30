@@ -1,6 +1,6 @@
-define(['type'], function(type) {
+define(['moment', 'type'], function(moment, type) {
 	// FIXME: This is sensitive to non whole hour time zones.
-	var timezoneOffset = -1 / 60 * new Date().getTimezoneOffset() + ':00';
+	var currentTimezoneOffset = moment().format('Z');
 
 
 	function Geolocation(lat, lng) {
@@ -120,6 +120,8 @@ define(['type'], function(type) {
 
 	BoolFilter.prototype.mustNot = function BoolFilter$mustNot(filter) {
 		this._must_not.push(filter);
+
+		return this;
 	};
 
 	BoolFilter.prototype.should = function BoolFilter$should(filter) {
@@ -206,6 +208,25 @@ define(['type'], function(type) {
 	};
 
 
+	function MatchFilter(field, value) {
+		this.field = field;
+		this.value = value;
+	}
+
+	MatchFilter.prototype = new Filter();
+
+	MatchFilter.prototype.toDSL = function MatchFilter$toDSL() {
+		var context, dsl;
+
+		dsl = {};
+
+		dsl.match = context = {};
+		context[this.field] = this.value;
+
+		return dsl;
+	};
+
+
 	function RangeFilter(field) {
 		this.field = field;
 	}
@@ -278,7 +299,7 @@ define(['type'], function(type) {
 		if (dateformat) {
 			context.format = 'date_time';
 			//context.format = 'yyyy-MM-dd\'T\'HH:mm\'Z\'';
-			context.time_zone = timezoneOffset;
+			context.time_zone = currentTimezoneOffset;
 		}
 
 		return dsl;
@@ -312,6 +333,7 @@ define(['type'], function(type) {
 
 		BoolFilter: BoolFilter,
 		GeoFilter: GeoFilter,
+		MatchFilter: MatchFilter,
 		RangeFilter: RangeFilter,
 		TermFilter: TermFilter
 	};

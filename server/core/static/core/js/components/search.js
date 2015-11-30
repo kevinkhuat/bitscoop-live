@@ -396,7 +396,7 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 
 	function _getFilterDSL() {
-		var bool;
+		var bool, connectorFilters, whatFilters, whenFilters, whereFilters, whoFilters;
 
 		bool = new filters.BoolFilter();
 
@@ -410,18 +410,32 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 			if (type === 'who') {
 				if (data.contact) {
-					filter = new filters.TermFilter('contacts.name', data.contact);
-					filter = filter.or(new filters.TermFilter('contacts.handle', data.contact));
+					filter = new filters.MatchFilter('contacts.name', data.contact);
+					filter = filter.or(new filters.MatchFilter('contacts.handle', data.contact));
 				}
 
 				if (data.interaction) {
 					operand = new filters.TermFilter('contact_interaction_type', data.interaction);
 					filter = filter ? filter.and(operand) : operand;
 				}
+
+				if (whoFilters) {
+					whoFilters.or(filter);
+				}
+				else {
+					whoFilters = new filters.OrFilter(filter);
+				}
 			}
 			else if (type === 'what') {
 				if (data.type) {
 					filter = new filters.TermFilter('content.type', data.type);
+				}
+
+				if (whatFilters) {
+					whatFilters.or(filter);
+				}
+				else {
+					whatFilters = new filters.OrFilter(filter);
 				}
 			}
 			else if (type === 'when') {
@@ -450,6 +464,13 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 
 					filter = filter.or(operand);
 				}
+
+				if (whenFilters) {
+					whenFilters.or(filter);
+				}
+				else {
+					whenFilters = new filters.OrFilter(filter);
+				}
 			}
 			else if (type === 'where') {
 				geofilter = $d.data('geofilter');
@@ -477,17 +498,47 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 					operand = new filters.TermFilter('location.estimated', false);
 					filter = filter.and(operand);
 				}
+
+				if (whereFilters) {
+					whereFilters.or(filter);
+				}
+				else {
+					whereFilters = new filters.OrFilter(filter);
+				}
 			}
 			else if (type === 'connector') {
 				if (data.connection) {
 					filter = new filters.TermFilter('connection', data.connection);
 				}
-			}
 
-			if (filter) {
-				bool.should(filter);
+				if (connectorFilters) {
+					connectorFilters.or(filter);
+				}
+				else {
+					connectorFilters = new filters.OrFilter(filter);
+				}
 			}
 		});
+
+		if (connectorFilters != null) {
+			bool.must(connectorFilters);
+		}
+
+		if (whoFilters != null) {
+			bool.must(whoFilters);
+		}
+
+		if (whatFilters != null) {
+			bool.must(whatFilters);
+		}
+
+		if (whenFilters != null) {
+			bool.must(whenFilters);
+		}
+
+		if (whereFilters != null) {
+			bool.must(whereFilters);
+		}
 
 		return bool.toDSL();
 	}

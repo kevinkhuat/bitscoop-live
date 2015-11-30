@@ -78,7 +78,7 @@ class EventHandler(tornado.web.RequestHandler):
 
         query = {
             'query': {
-                'filtered': {
+                'bool': {
                     'filter': {
                         'and': [
                             filters,
@@ -98,7 +98,7 @@ class EventHandler(tornado.web.RequestHandler):
                 }
             },
             'size': limit,
-            'from': offset,
+            'from': offset
         }
 
         sort_field = self.get_arguments('sort_field')
@@ -119,8 +119,7 @@ class EventHandler(tornado.web.RequestHandler):
         q = self.get_arguments('q')
 
         if len(q) > 0 and q[0] != '' and q[0] != '[]':
-            q = q[0]
-            query['query']['filtered']['query'] = {
+            query['query']['bool']['must'] = {
                 'multi_match': {
                     'query': q,
                     'type': 'most_fields',

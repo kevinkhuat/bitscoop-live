@@ -146,19 +146,28 @@ SEARCH_TEXT_FIELDS = [
 
 FILTER_VALIDATOR = {
     'bool': {
-        'should': [
+        'must': [
             {
-                'and': [
+                'or': [
                     {
-                        'or': [
+                        'and': [
                             {
-                                'term': {
-                                    'contacts.name': None
-                                }
+                                'or': [
+                                    {
+                                        'match': {
+                                            'contacts.name': None
+                                        }
+                                    },
+                                    {
+                                        'match': {
+                                            'contacts.handle': None
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 'term': {
-                                    'contacts.handle': None
+                                    'contact_interaction_type': None
                                 }
                             }
                         ]
@@ -167,49 +176,34 @@ FILTER_VALIDATOR = {
                         'term': {
                             'contact_interaction_type': None
                         }
-                    }
+                    },
+                    {
+                        'or': [
+                            {
+                                'match': {
+                                    'contacts.name': None
+                                }
+                            },
+                            {
+                                'match': {
+                                    'contacts.handle': None
+                                }
+                            }
+                        ]
+                    },
                 ]
-            },
-            {
-                'term': {
-                    'contact_interaction_type': None
-                }
             },
             {
                 'or': [
                     {
                         'term': {
-                            'contacts.name': None
+                            'content.type': None
                         }
                     },
-                    {
-                        'term': {
-                            'contacts.handle': None
-                        }
-                    }
                 ]
             },
             {
-                'term': {
-                    'content.type': None
-                }
-            },
-            {
-                'geo_distance': {
-                    'distance': None,
-                    'location.geolocation': {
-                        'lat': None,
-                        'lon': None
-                    }
-                }
-            },
-            {
-                'and': [
-                    {
-                        'term': {
-                            'location.estimated': None
-                        }
-                    },
+                'or': [
                     {
                         'geo_distance': {
                             'distance': None,
@@ -218,27 +212,25 @@ FILTER_VALIDATOR = {
                                 'lon': None
                             }
                         }
-                    }
-                ]
-
-            },
-            {
-                'not': {
-                    'geo_distance': {
-                        'distance': None,
-                        'location.geolocation': {
-                            'lat': None,
-                            'lon': None
-                        }
-                    }
-                }
-            },
-            {
-                'and': [
+                    },
                     {
-                        'term': {
-                            'location.estimated': None
-                        }
+                        'and': [
+                            {
+                                'term': {
+                                    'location.estimated': None
+                                }
+                            },
+                            {
+                                'geo_distance': {
+                                    'distance': None,
+                                    'location.geolocation': {
+                                        'lat': None,
+                                        'lon': None
+                                    }
+                                }
+                            }
+                        ]
+
                     },
                     {
                         'not': {
@@ -250,30 +242,27 @@ FILTER_VALIDATOR = {
                                 }
                             }
                         }
-                    }
-                ]
-
-            },
-            {
-                'not': {
-                    'geo_polygon': {
-                        'location.geolocation': {
-                            'points': [
-                                {
-                                    'lat': None,
-                                    'lon': None
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            {
-                'and': [
+                    },
                     {
-                        'term': {
-                            'location.estimated': None
-                        }
+                        'and': [
+                            {
+                                'term': {
+                                    'location.estimated': None
+                                }
+                            },
+                            {
+                                'not': {
+                                    'geo_distance': {
+                                        'distance': None,
+                                        'location.geolocation': {
+                                            'lat': None,
+                                            'lon': None
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+
                     },
                     {
                         'not': {
@@ -288,28 +277,30 @@ FILTER_VALIDATOR = {
                                 }
                             }
                         }
-                    }
-                ]
-
-            },
-            {
-                'geo_polygon': {
-                    'location.geolocation': {
-                        'points': [
+                    },
+                    {
+                        'and': [
                             {
-                                'lat': None,
-                                'lon': None
+                                'term': {
+                                    'location.estimated': None
+                                }
+                            },
+                            {
+                                'not': {
+                                    'geo_polygon': {
+                                        'location.geolocation': {
+                                            'points': [
+                                                {
+                                                    'lat': None,
+                                                    'lon': None
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
                             }
                         ]
-                    }
-                }
-            },
-            {
-                'and': [
-                    {
-                        'term': {
-                            'location.estimated': None
-                        }
+
                     },
                     {
                         'geo_polygon': {
@@ -322,32 +313,33 @@ FILTER_VALIDATOR = {
                                 ]
                             }
                         }
-                    }
-                ]
+                    },
+                    {
+                        'and': [
+                            {
+                                'term': {
+                                    'location.estimated': None
+                                }
+                            },
+                            {
+                                'geo_polygon': {
+                                    'location.geolocation': {
+                                        'points': [
+                                            {
+                                                'lat': None,
+                                                'lon': None
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
 
-            },
-            {
-                'range': {
-                    'datetime': {
-                        'time_zone': None,
-                        'format': None,
-                        'gte': None,
-                        'lte': None
-                    }
-                }
+                    },
+                ]
             },
             {
                 'or': [
-                    {
-                        'range': {
-                            'created': {
-                                'time_zone': None,
-                                'format': None,
-                                'gte': None,
-                                'lte': None
-                            }
-                        }
-                    },
                     {
                         'range': {
                             'datetime': {
@@ -357,16 +349,44 @@ FILTER_VALIDATOR = {
                                 'lte': None
                             }
                         }
-                    }
+                    },
+                    {
+                        'or': [
+                            {
+                                'range': {
+                                    'created': {
+                                        'time_zone': None,
+                                        'format': None,
+                                        'gte': None,
+                                        'lte': None
+                                    }
+                                }
+                            },
+                            {
+                                'range': {
+                                    'datetime': {
+                                        'time_zone': None,
+                                        'format': None,
+                                        'gte': None,
+                                        'lte': None
+                                    }
+                                }
+                            }
+                        ]
+                    },
                 ]
             },
             {
-                'term': {
-                    'connection': None
-                }
+                'or': [
+                    {
+                        'term': {
+                            'connection': None
+                        }
+                    }
+                ]
             }
         ],
-        'must': [],
+        'should': [],
         'must_not': []
     }
 }

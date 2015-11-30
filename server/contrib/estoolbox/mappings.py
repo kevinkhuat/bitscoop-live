@@ -10,48 +10,40 @@ CONTACT_MAPPING = {
         'properties': {
             'connection': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'handle': {
                 'type': 'string'
             },
             'identifier': {  # How do we uniquely identify this contact for that provider. Provider & identifier used together to identify uniqueness on the index
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'name': {  # Optional
                 'type': 'string'
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'remote_id': {  # Optional - Such as what is twitter's ID for this handle
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'source': {  # Optional - Endpoint the data came from and can be used to update it
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'user_id': {  # Optional
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -64,33 +56,27 @@ CONTENT_MAPPING = {
         'properties': {
             'connection': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'embed_content': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'embed_format': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'embed_thumbnail': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'identifier': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'mimetype': {  # Optional
                 'type': 'string'
@@ -100,18 +86,15 @@ CONTENT_MAPPING = {
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'remote_id': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'source': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'text': {  # Optional
                 'type': 'string'
@@ -124,17 +107,14 @@ CONTENT_MAPPING = {
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'url': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {  # Optional
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -147,8 +127,7 @@ EVENT_MAPPING = {
         'properties': {
             'connection': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'contact_interaction_type': {  # Optional
                 'type': 'string'
@@ -161,13 +140,11 @@ EVENT_MAPPING = {
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'created': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'handle': {
                         'type': 'string'
@@ -177,8 +154,7 @@ EVENT_MAPPING = {
                     },
                     'updated': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     }
                 }
             },
@@ -186,28 +162,23 @@ EVENT_MAPPING = {
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'created': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'embed_content': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'embed_format': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'embed_thumbnail': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'mimetype': {  # Optional
                         'type': 'string'
@@ -226,96 +197,79 @@ EVENT_MAPPING = {
                     },
                     'updated': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'url': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     }
                 }
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'datetime': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'location': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'datetime': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'estimated': {
-                        'type': 'boolean',
-                        'doc_values': True
+                        'type': 'boolean'
                     },
                     'geo_format': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'geolocation': {
-                        'type': 'geo_point',
-                        'doc_values': True
+                        'type': 'geo_point'
                     },
                     'resolution': {  # Optional
-                        'type': 'float',
-                        'doc_values': True
+                        'type': 'float'
                     }
                 }
             },
             'identifier': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'places': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'created': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'location': {  # Optional
                         'type': 'object',
                         'properties': {
                             'id': {
                                 'type': 'string',
-                                'index': 'not_analyzed',
-                                'doc_values': True
+                                'index': 'not_analyzed'
                             },
                             'geo_format': {
                                 'type': 'string',
-                                'index': 'not_analyzed',
-                                'doc_values': True
+                                'index': 'not_analyzed'
                             },
                             'geolocation': {
-                                'type': 'geo_point',
-                                'doc_values': True
+                                'type': 'geo_point'
                             },
                             'resolution': {  # Optional
-                                'type': 'float',
-                                'doc_values': True
+                                'type': 'float'
                             }
                         }
                     },
@@ -327,13 +281,11 @@ EVENT_MAPPING = {
                     },
                     'reverse_geo_format': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'source': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'text': {  # Optional
                         'type': 'string'
@@ -343,20 +295,17 @@ EVENT_MAPPING = {
                     },
                     'updated': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'url': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     }
                 }
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'provider_name': {
                 'type': 'string'
@@ -366,49 +315,40 @@ EVENT_MAPPING = {
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'created': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'embed_content': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'embed_format': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'embed_thumbnail': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'locations': {  # Optional
                         'type': 'object',
                         'properties': {
                             'id': {
                                 'type': 'string',
-                                'index': 'not_analyzed',
-                                'doc_values': True
+                                'index': 'not_analyzed'
                             },
                             'geo_format': {
                                 'type': 'string',
-                                'index': 'not_analyzed',
-                                'doc_values': True
+                                'index': 'not_analyzed'
                             },
                             'geolocation': {
-                                'type': 'geo_point',
-                                'doc_values': True
+                                'type': 'geo_point'
                             },
                             'resolution': {  # Optional
-                                'type': 'float',
-                                'doc_values': True
+                                'type': 'float'
                             }
                         }
                     },
@@ -426,13 +366,11 @@ EVENT_MAPPING = {
                     },
                     'updated': {  # Optional
                         'type': 'date',
-                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                        'doc_values': True
+                        'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
                     },
                     'url': {  # Optional
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     }
                 }
             },
@@ -441,17 +379,14 @@ EVENT_MAPPING = {
             },
             'source': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'user_id': {
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -464,45 +399,36 @@ LOCATION_MAPPING = {
         'properties': {
             'connection': {  # Optional - Location might be generated by us, in which case no connection
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'datetime': {
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'geo_format': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'geolocation': {
-                'type': 'geo_point',
-                'doc_values': True
+                'type': 'geo_point'
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'remote_id': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'resolution': {  # Optional
-                'type': 'float',
-                'doc_values': True
+                'type': 'float'
             },
             'source': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {  # Optional - Only user specific when it's tied to events or collected user locations over time. Not user specific only if it is tied to a thing or place
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -514,16 +440,14 @@ ORGANIZATION_MAPPING = {
         'properties': {
             'connection': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'contacts': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'handle': {
                         'type': 'string'
@@ -535,46 +459,39 @@ ORGANIZATION_MAPPING = {
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'identifier': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'name': {  # Optional
                 'type': 'string'
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'text': {  # Optional
                 'type': 'string'
             },
             'thumbnail': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'type': {
                 'type': 'string'
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'url': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {  # Optional
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -589,16 +506,14 @@ PERSON_MAPPING = {
             },
             'connection': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'contacts': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'handle': {
                         'type': 'string'
@@ -619,25 +534,21 @@ PERSON_MAPPING = {
             },
             'identifier': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'provider': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'text': {  # Optional
                 'type': 'string'
             },
             'thumbnail': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {  # Optional
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -649,34 +560,28 @@ PLACE_MAPPING = {
         'properties': {
             'connection': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'location': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'geo_format': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'geolocation': {
-                        'type': 'geo_point',
-                        'doc_values': True
+                        'type': 'geo_point'
                     },
                     'resolution': {  # Optional
-                        'type': 'float',
-                        'doc_values': True
+                        'type': 'float'
                     }
                 }
             },
@@ -685,21 +590,18 @@ PLACE_MAPPING = {
             },
             'remote_id': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'reverse_geolocation': {  # Optional
                 'type': 'string'
             },
             'reverse_geo_format': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'source': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'text': {  # Optional
                 'type': 'string'
@@ -709,17 +611,14 @@ PLACE_MAPPING = {
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'url': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {  # Optional
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -731,8 +630,7 @@ SEARCH_MAPPING = {
         'properties': {
             'datetime': {
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'search_DSL': {
                 'type': 'object',
@@ -742,8 +640,7 @@ SEARCH_MAPPING = {
                 'type': 'string'
             },
             'user_id': {
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
@@ -755,69 +652,57 @@ THING_MAPPING = {
         'properties': {
             'connection': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'created': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'embed_content': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'embed_format': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'embed_thumbnail': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'locations': {  # Optional
                 'type': 'object',
                 'properties': {
                     'id': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'geo_format': {
                         'type': 'string',
-                        'index': 'not_analyzed',
-                        'doc_values': True
+                        'index': 'not_analyzed'
                     },
                     'geolocation': {
-                        'type': 'geo_point',
-                        'doc_values': True
+                        'type': 'geo_point'
                     },
                     'resolution': {  # Optional
-                        'type': 'float',
-                        'doc_values': True
+                        'type': 'float'
                     }
                 }
             },
             'identifier': {
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'owner': {  # Optional
                 'type': 'string'
             },
             'remote_id': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'source': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'text': {  # Optional
                 'type': 'string'
@@ -830,17 +715,14 @@ THING_MAPPING = {
             },
             'updated': {  # Optional
                 'type': 'date',
-                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ',
-                'doc_values': True
+                'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
             'url': {  # Optional
                 'type': 'string',
-                'index': 'not_analyzed',
-                'doc_values': True
+                'index': 'not_analyzed'
             },
             'user_id': {
-                'type': 'long',
-                'doc_values': True
+                'type': 'long'
             }
         }
     }
