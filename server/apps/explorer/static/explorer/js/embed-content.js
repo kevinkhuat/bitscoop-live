@@ -60,7 +60,7 @@ define(['jquery'], function($) {
 
 	AUDIO_TEMPLATE = '<audio controls style="width:100%"><source src="___embed_content___" type="___type___"></audio>';
 	IFRAME_TEMPLATE = '<iframe src="___embed_content___" width="100%" height="400px"/>';
-	IMAGE_TEMPLATE = '<img src="___embed_content___" alt="___title___" style="width:100%;height:100%;">';
+	IMAGE_TEMPLATE = '<img src="___embed_content___" alt="___title___">';
 	VIDEO_TEMPLATE = '<video width="100%" height="100%" controls><source src="___embed_content___" type="___type___"></video>';
 
 	/**

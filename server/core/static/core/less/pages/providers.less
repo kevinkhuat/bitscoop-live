@@ -1,4 +1,8 @@
 body.providers {
+	.logo {
+		height: 30px;
+	}
+
 	overflow-y: hidden;
 
 	&:not(.authenticated) header nav {
@@ -7,10 +11,6 @@ body.providers {
 
 	#search-bar {
 		width: 400px;
-
-		@media @mobile {
-			font-size: 1em;
-		}
 	}
 
 	#done {
@@ -20,7 +20,12 @@ body.providers {
 
 		@media @mobile {
 			width: 100%;
+			margin: 0;
 		}
+	}
+
+	main {
+		width: 100%;
 	}
 
 	#filters {
@@ -49,10 +54,6 @@ body.providers {
 			&.active {
 				color: @color4;
 				border-color: @color4;
-
-				@media @maxwidth768, @mobile {
-					border-color: transparent;
-				}
 			}
 
 			&.visible {
@@ -124,10 +125,6 @@ body.providers {
 			display: inline-block;
 			width: 175px;
 			height: 175px;
-			@media @mobile {
-				width: 275px;
-				height: 275px;
-			}
 			margin: @spacing;
 			background-color: darken(@light, 15%);
 			border: 3px solid darken(@light, 25%);
@@ -158,12 +155,6 @@ body.providers {
 				.flex;
 				.flex-column;
 				.flex-center;
-
-				@media @mobile-portrait {
-					h1 {
-						margin: 0;
-					}
-				}
 			}
 		}
 	}

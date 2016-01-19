@@ -1,25 +1,34 @@
-<div class="mix object-details event" data-object-id="events.{{ event.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{% if event[sortField.property] == undefined %}~{% else %}{{ event[sortField.property] }}{% endif %}" {% endfor %}>
-	<i class="{{ event.eventTypeIcon }}"></i>
+<div class="mix object-details-container" data-object-id="events.{{ event.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{% if event[sortField.property] == undefined %}~{% else %}{{ event[sortField.property] }}{% endif %}" {% endfor %}>
 
-	<div class="event-type">{{ event.type }}</div>
+	<div class="object-details event">
+		<div>
+			<div class="icon {{ event.eventTypeIcon }}"></div>
+			<div class="event-type">{{ event.type }}</div>
+		</div>
 
-	<i class="{{ event.providerIcon }}"></i>
+		<div>
+			<div class="icon {{ event.providerIcon }}"></div>
+			<div class="provider-name">{{ event.provider_name }}</div>
+		</div>
 
-	<div class="provider-name">{{ event.provider_name }}</div>
-
-	{% if event.date %}
-	<div class="datetime">
-		{% if event.datetimeEstimated %}
-		<div>Estimated</div>
-		{% endif %}
-		<span class="fa fa-calendar icon"></span>
+		{% if event.date %}
+			<div class="datetime">
+				{% if event.datetimeEstimated %}
+					<div>Estimated</div>
+				{% endif %}
+				<span class="fa fa-calendar"></span>
 			<span>
 				{{ event.date }}
 			</span>
-		<span class="fa fa-clock-o icon"></span>
+				<span class="fa fa-clock-o"></span>
 			<span>
 				{{ event.time }}
 			</span>
+			</div>
+		{% endif %}
 	</div>
-	{% endif %}
+
+	<div class="action-bar-container">
+		{{ actionBar }}
+	</div>
 </div>

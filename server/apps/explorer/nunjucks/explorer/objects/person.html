@@ -1,12 +1,19 @@
-<div class="mix object-details person" data-object-id="people.{{ id }}" {% for sortField in sortFields %} data-{{
-     sortField.attr }}="{{ person[sortField.property] }}" {% endfor %}>
-	{% if person.embed_thumbnail %}
-	<img src="{{ person.embed_thumbnail }}"/>
-	{% else %}
-	<span class="icon-big fa fa-user"></span>
-	{% endif %}
+<div class="mix object-details-container" data-object-id="people.{{ id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{{ person[sortField.property] }}" {% endfor %}>
 
-	<span>{{ person.first_name }} {{ person.last_name }}</span>
+	<div class="object-details person">
+		{% if person.embed_thumbnail %}
+			<img src="{{ person.embed_thumbnail }}"/>
+		{% else %}
+			<span class="icon-big fa fa-user"></span>
+		{% endif %}
 
-	<span>{{ person.age }} {{ person.gender }}</span>
+		<span>{{ person.first_name }} {{ person.last_name }}</span>
+
+		<span>{{ person.age }} {{ person.gender }}</span>
+	</div>
+
+	<div class="action-bar-container">
+		{{ actionBar }}
+	</div>
 </div>
+

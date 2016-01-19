@@ -1,31 +1,38 @@
-<div class="mix object-details content" data-object-id="content.{{ content.id }}" {% for sortField in sortFields %}
+<div class="mix object-details-container" data-object-id="content.{{ content.id }}" {% for sortField in sortFields %}
      data-{{ sortField.attr }}="{{ content[sortField.property] }}" {% endfor %}>
-	{% if content.formatted_embed_content %}
-	{{ content.formatted_embed_content }}
-	{% elif content.embed_thumbnail %}
-	<img src="{{ content.embed_thumbnail }}"/>
-	{% endif %}
 
-	{% if content.url %}
-	<a class="content-title" href="{{ content.url }}" target="_blank">{{ content.title }}</a>
-	{% else %}
-	<div class="content-title">{{ content.title }}</div>
-	{% endif %}
-
-	{% if content.text %}
-	<div class="text-area">{{ content.text }}</div>
-	{% endif %}
-
-	<div class="icons">
-		<div>
-			<i class="{{ content.contentTypeIcon }}"></i>
-			<span class="text-capitalize">{{ content.type }}</span>
-		</div>
-		{% if not isEventDetail %}
-		<div>
-			<i class="{{ content.providerIcon }}"></i>
-			<span class="text-capitalize">{{ content.provider_name }}</span>
-		</div>
+	<div class="object-details content">
+		{% if content.formatted_embed_content %}
+			{{ content.formatted_embed_content }}
+		{% elif content.embed_thumbnail %}
+			<img src="{{ content.embed_thumbnail }}"/>
 		{% endif %}
+
+		{% if content.url %}
+			<a class="content-title" href="{{ content.url }}" target="_blank">{{ content.title }}</a>
+		{% else %}
+			<div class="content-title">{{ content.title }}</div>
+		{% endif %}
+
+		{% if content.text %}
+			<div class="text-area">{{ content.text }}</div>
+		{% endif %}
+
+		<div class="icons">
+			<div>
+				<i class="{{ content.contentTypeIcon }}"></i>
+				<span class="text-capitalize">{{ content.type }}</span>
+			</div>
+			{% if not isEventDetail %}
+				<div>
+					<i class="{{ content.providerIcon }}"></i>
+					<span class="text-capitalize">{{ content.provider_name }}</span>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="action-bar-container">
+		{{ actionBar }}
 	</div>
 </div>

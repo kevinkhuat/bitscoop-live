@@ -1,4 +1,4 @@
-define(['embed-content', 'icons', 'moment'], function(embedContent, icons, moment) {
+define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedContent, externalActions, icons, moment) {
 	var isMobile, objectContextDict;
 
 	isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 1080);
@@ -85,7 +85,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						contact:contact,
 						sortFields: objectContextDict.contacts.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.contacts.render(contact)
 					};
 				},
 				sort: {
@@ -169,7 +170,7 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 							{
 								type: 'text',
 								property: 'mimetype',
-								displayMobile: true
+								displayMobile: false
 							}
 						],
 						object: content,
@@ -197,10 +198,6 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 								type: 'icon',
 								icon: 'icon',
 								property: 'type'
-							},
-							{
-								type: 'text',
-								property: 'mimetype'
 							}
 						],
 						object: content,
@@ -217,7 +214,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						content: content,
 						sortFields: objectContextDict.content.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.content.render(content)
 					};
 				},
 				sort: {
@@ -389,7 +387,7 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 							{
 								type: 'text',
 								property: 'formattedDatetime',
-								displayMobile: true
+								displayMobile: false
 							},
 							{
 								type: 'text',
@@ -473,7 +471,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 
 					return {
 						event: event,
-						sortFields: objectContextDict.events.sort.fields
+						sortFields: objectContextDict.events.sort.fields,
+						actionBar: externalActions.objects.events.render(event)
 					};
 				},
 				sort: {
@@ -494,11 +493,11 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 							property: 'type',
 							attr: 'type'
 						},
-						{
-							name: 'Item Type',
-							property: 'firstItemType',
-							attr: 'item-type'
-						},
+						//{
+						//	name: 'Item Type',
+						//	property: 'firstItemType',
+						//	attr: 'item-type'
+						//},
 						{
 							name: 'Contact',
 							property: 'firstContactHandle',
@@ -508,12 +507,12 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 							name: 'Time',
 							property: 'sortDatetime',
 							attr: 'datetime'
-						},
-						{
-							name: 'Place',
-							property: 'firstPlaceName',
-							attr: 'place'
-						}
+						}//,
+						//{
+						//	name: 'Place',
+						//	property: 'firstPlaceName',
+						//	attr: 'place'
+						//}
 					]
 				}
 			},
@@ -568,7 +567,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						location: location,
 						sortFields: objectContextDict.locations.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.locations.render(location)
 					};
 				},
 				sort: {
@@ -652,7 +652,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						organization: organization,
 						sortFields: objectContextDict.organizations.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.organizations.render(organization)
 					};
 				},
 				sort: {
@@ -753,7 +754,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						person: person,
 						sortFields:  objectContextDict.people.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.people.render(person)
 					};
 				},
 				sort: {
@@ -826,7 +828,7 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 							{
 								type: 'text',
 								property: 'type',
-								displayMobile: true
+								displayMobile: false
 							}
 						],
 						object: place,
@@ -855,7 +857,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						place: place,
 						sortFields: objectContextDict.places.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.places.render(place)
 					};
 				},
 				sort: {
@@ -976,7 +979,8 @@ define(['embed-content', 'icons', 'moment'], function(embedContent, icons, momen
 					return {
 						thing: thing,
 						sortFields: objectContextDict.things.sort.fields,
-						isEventDetail: isEventDetail
+						isEventDetail: isEventDetail,
+						actionBar: externalActions.objects.things.render(thing)
 					};
 				},
 				sort: {

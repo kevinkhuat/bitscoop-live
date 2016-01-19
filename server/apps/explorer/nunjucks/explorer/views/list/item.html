@@ -1,7 +1,7 @@
 <div class="mix list-item" data-object-id="{{ objectType }}.{{ object.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{% if object[sortField.property] == undefined %}~{% else %}{{ object[sortField.property] }}{% endif %}" {% endfor %}>
 	{% for column in columns %}
 		{% if column.displayMobile and isMobile or not isMobile %}
-		<div>
+		<div {% if column.type == 'icon' %}class="icon-column"{% endif %}>
 			{% if not isMobile %}
 				{% if column.type == 'icon' %}
 				<i class="{{ object[column.icon] }}"></i>

@@ -1,31 +1,88 @@
-#map {
-	position: relative;
-	left: 0;
-	bottom: 0;
-	min-height: 20em;
-	width: 25%;
-	border-top: 0;
+header {
+	& > #search-bar {
+		width: 50%;
+		min-width: 400px;
+
+		#filter-controls {
+			& > div {
+				top: 20px;
+			}
+
+			@media @mobile {
+				.control[data-type="where"] {
+					display: none;
+				}
+			}
+		}
+	}
+
+	& > nav {
+		.view-bar {
+			.flex;
+
+			justify-content: space-around;
+			min-width: 10em;
+			font-size: 1.2em;
+
+			&.disabled {
+				display: none !important;
+			}
+		}
+	}
+
+	& > .sort-bar {
+		.flex;
+		.flex-space-between;
+		.flex-x-center;
+
+		background-color: @background1;
+		color: @light;
+
+		.sort-selector {
+			padding: 0.5em 4em 0.5em 0;
+
+			&:hover {
+				color: @color4;
+			}
+		}
+
+		.view-selector {
+			font-weight: bold;
+			text-transform: uppercase;
+			padding: 0.25em;
+			font-size: 1.2em;
+		}
+
+		.view-selector {
+			.flex;
+
+			margin-left: 20px;
+			align-items: baseline;
+
+			cursor: pointer;
+
+			&:hover {
+				color: @color4;
+			}
+
+			& > span {
+				font-weight: bold;
+				margin-left: 0.2em;
+			}
+		}
+
+		.facet {
+			margin-left: 3px
+		}
+
+		&.disabled {
+			display: none !important;
+		}
+	}
 }
 
 .leaflet-right {
 	z-index: 20 !important;
-}
-
-#search-bar {
-	width: 50%;
-	min-width: 400px;
-
-	#filter-controls {
-		& > div {
-			top: 20px;
-		}
-
-		@media @mobile {
-			.control[data-type="where"] {
-				display: none;
-			}
-		}
-	}
 }
 
 body.explorer {
@@ -66,6 +123,8 @@ body.explorer {
 			flex-direction: column;
 			overflow-y: auto;
 			position: relative;
+
+			box-shadow: inset 0 0 10px fade(@dark, 15%);
 		}
 
 		#grid-scroll, #list-scroll, #details-scroll {
@@ -81,23 +140,6 @@ body.explorer {
 		}
 	}
 
-	#pagination {
-		.pt-sans;
-
-		padding: 0.2em 0;
-		font-size: 1.2em;
-
-		@media @mobile-portrait {
-			font-size: 0.75em;
-			padding: 0.5em 0;
-		}
-
-		& > div, span {
-			padding: 0 0.2em;
-			display: table-cell;
-		}
-	}
-
 	#moreResults {
 		padding: 0;
 		cursor: pointer;
@@ -107,7 +149,7 @@ body.explorer {
 	}
 }
 
-body.explorer.grid, body.explorer.feed {
+body.explorer.grid {
 	#background {
 		background-color: darken(@light, 5%);
 
@@ -146,31 +188,28 @@ body.explorer.grid, body.explorer.feed {
 	.flex-space-around;
 	.flex-wrap;
 
-	padding: 0.5em;
 	text-transform: uppercase;
 	flex-grow: 0;
 	font-weight: bold;
 	cursor: pointer;
-}
 
-.sort-selector {
-	@media @mobile {
-		font-size: 1.2em;
-		padding: 0.5em;
+	& > .sort-selector {
+		@media @mobile {
+			font-size: 1.2em;
+			padding: 0.5em;
+		}
+
+		&:hover {
+			color: @color4;
+			border-color: @color4;
+		}
 	}
-
-	&:hover,
-	&:active,
-	&.active {
-		color: @color4;
-		border-color: @color4;
-	}
-}
-
-.object-details {
-	font-size: 1.5em;
 }
 
 .awesome-marker {
 	cursor: pointer;
+}
+
+.hidden-beta {
+	display: none;
 }

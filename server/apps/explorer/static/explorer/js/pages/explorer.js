@@ -1,8 +1,8 @@
 define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'lodash', 'moment', 'nunjucks', 'object-context', 'search', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers'],
 	function(cartano, debounce, embedContent, icons, $, leaflet, _, moment, nunjucks, objectContext, search, viewstate) {
-		var DETAILS_ORDERING, EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MAX_EMBED_WIDTH, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults;
+		var DETAILS_ORDERING, EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults;
 
-		isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 1080);
+		isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
 
 		// Valid View States: feed, grid, list, map, result
 		resultsContainerComponent = new viewstate.Component('main');
@@ -10,7 +10,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		listView = new viewstate.View('explorer/views/list/base.html');
 		feedView = new viewstate.View('explorer/views/feed/base.html');
 		mapView = new viewstate.View('explorer/views/map/base.html');
-		resultView = new viewstate.View('explorer/views/results/base.html');
+		resultsView = new viewstate.View('explorer/views/results/base.html');
 
 		//TODO: Explore getting sizes for DOM elements programmatically
 		GRID_ITEM_SIZE = 276; //px
@@ -19,7 +19,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		SCROLL_DEBOUNCE = 250; //ms
 		//TODO: Calculate this by screen size
 		SCROLL_MIN_COUNT = 50;
-		DETAILS_ORDERING = ['content', 'things', 'events', 'contacts', 'places', 'locations', 'organizations'];
+		DETAILS_ORDERING = ['events', 'content', 'things', 'contacts', 'places', 'locations', 'organizations'];
 		PREVIEW_ORDERING = ['content', 'events', 'contacts', 'things', 'places', 'locations', 'organizations'];
 		EVENT_MAPPED_RELATED_FIELDS = ['contacts', 'content', 'organizations', 'places', 'locations', 'things'];
 		HIDE_MAP_FACETS = ['contacts', 'content', 'organizations', 'things'];
@@ -338,19 +338,19 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		 * Renders the page for a newly-selected view state.
 		 */
 		function renderState() {
-			var $body, $sortBar, $list, $viewBar;
+			var currentObjectContext, $backToResults, $body, $sortBar, $list, $homeButton, $viewBar;
 
 			/**
 			 * Renders the Result view
 			 */
 			function renderState$renderResultsView() {
-				resultView.render().done(function() {
+				resultsView.render().done(function() {
 					var numItems;
 
 					$body.addClass('results');
 
 					//Switch the container to result view
-					resultsContainerComponent.insert(resultView);
+					resultsContainerComponent.insert(resultsView);
 
 					//Calculate how many preview items to render based on the window's width, the size of an item,
 					//and how large the DOM element for more results is.
@@ -371,9 +371,16 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						//the current object type and insert it into the DOM.
 						//Then render the results for this object type and insert them into the list.
 						if (resultObjects.length > 0) {
-							$list.after(nunjucks.render('explorer/views/results/more.html', {
-								renderType: renderType
-							}));
+							if (isMobile) {
+								$('.type-header[data-result-type="' + renderType + '"]').append(nunjucks.render('explorer/views/results/more.html', {
+									renderType: renderType
+								}));
+							}
+							else {
+								$list.after(nunjucks.render('explorer/views/results/more.html', {
+									renderType: renderType
+								}));
+							}
 
 							renderResults(resultObjects, objectContext[renderType].grid, 'explorer/views/grid/item.html', $list);
 						}
@@ -422,6 +429,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			//Select useful DOM elements.
 			$body = $('body');
 			$list = $('#list');
+			$homeButton = $('#home');
+			$backToResults = $('#back-to-results');
 			$sortBar = $('.sort-bar');
 			$viewBar = $('.view-bar');
 
@@ -439,6 +448,11 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 				$viewBar.show();
 				$sortBar.show();
 
+				if (isMobile) {
+					$homeButton.addClass('hidden');
+					$backToResults.removeClass('hidden');
+				}
+
 				//Show all the view selectors, then hide the selectors for views that are not applicable to the current object type.
 				$('.view-selector').removeClass('hidden');
 				renderState$hideInvalidViews();
@@ -454,15 +468,25 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			else {
 				$viewBar.hide();
 				$sortBar.hide();
+
+				if (isMobile) {
+					$homeButton.removeClass('hidden');
+					$backToResults.addClass('hidden');
+				}
 			}
 
 			$('#background').off('scroll');
-			$('#list').off('scroll');
+			$list.off('scroll');
 
 			//Different behavior for each view state.
 			switch(explorerState.currentViewState) {
 				case 'results':
-					renderState$renderResultsView();
+					if (explorerState.totalResultCount > 0) {
+						renderState$renderResultsView();
+					}
+					else {
+						$('main').html(nunjucks.render('explorer/components/no-results.html'));
+					}
 					break;
 
 				case 'list':
@@ -544,6 +568,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						resultsContainerComponent.insert(feedView);
 
 						$list = $('#list');
+
+						currentObjectContext = searchResults[explorerState.objectTypeShown];
 
 						//Construct a details panel for each object of the current type and insert it into the list.
 						_.forEach(currentObjectContext, function(resultObject) {
@@ -661,7 +687,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		 * @private
 		 */
 		function _renderObjectDetails($target) {
-			var detailsContent, detailsObject, selectedObjectType;
+			var detailsContent, detailsObject, newPanel, selectedObjectType;
 
 			selectedObjectType = explorerState.selectedObjectType;
 			detailsObject = searchResults[selectedObjectType][explorerState.selectedObjectId];
@@ -716,8 +742,6 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 					//If rendering a place, also render a location panel for the place's location and add it to the drawer/details window.
 					//TODO: When places have a list of locations, render a bounding box instead of a single marker.
 					if (selectedObjectType === 'places' && explorerState.currentViewState !== 'map') {
-						var newPanel;
-
 						newPanel = nunjucks.render(objectTemplateMap.locations, objectContext.locations.details(detailsObject.location));
 						$target.append(newPanel);
 					}
@@ -885,12 +909,13 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			objectType = dataObjectId[0];
 			objectId = dataObjectId[1];
 
-			//Save the ID and type to the global state.
-			explorerState.selectedObjectId = objectId;
+			//Save the type to the global state.
 			explorerState.selectedObjectType = objectType;
 
 			//If the object is currently selected, then de-select it.
 			if ($this.hasClass('active')) {
+				//Set the global object ID to null since we're de-selecting the active object.
+				explorerState.selectedObjectId = null;
 				$('.grid-item, .list-item').removeClass('active');
 
 				//If this is targeting the grid view drawer, then close the drawer.
@@ -921,6 +946,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			}
 			//If the object is not selected, then select it.
 			else {
+				//Set the object ID to the global state
+				explorerState.selectedObjectId = objectId;
 				$('.grid-item, .list-item').removeClass('active');
 
 				$this.addClass('active');
@@ -951,15 +978,12 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		}
 
 		function checkScrollPagination(e) {
-			var $list, $this = $(e.target);
+			var $lastChild, $list, $target = $(e.target);
 
 			$list = $('#list');
 
 			//Automatically get the next page of results when you reach the last item.
 			if (explorerState.currentResultCount < explorerState.totalResultCount) {
-				var $target, $lastChild;
-
-				$target = $this;
 				$lastChild = $list.children().last();
 
 				if ($target.scrollTop() + $target.height() > $lastChild.position().top + $lastChild.height() - SCROLL_LOAD_LIMIT) {
@@ -972,13 +996,13 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		}
 
 		function prepopulateFacet() {
-			var objectTypeCount;
+			var objectTypeCount, searchParams;
 
 			objectTypeCount = Object.keys(searchResults[explorerState.objectTypeShown]).length;
 
 			//TODO: Remove this ugly hack when API works better
 			if (objectTypeCount < SCROLL_MIN_COUNT && explorerState.currentResultCount < explorerState.totalResultCount) {
-				var searchParams = {
+				searchParams = {
 					filters: explorerState.currentSearch,
 					offset: explorerState.currentResultCount,
 					sort_field: explorerState.currentSort.split(':')[0],
@@ -1035,6 +1059,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 				});
 			});
 
+			// TODO: Remove everything below and move to a load function
 			//We want to leave a breadcrumb for the users to discover the filters.
 			//Generate a when filter that runs up until tomorrow at midnight (once datetimepicker is implemented, merely
 			//up until now).
@@ -1068,7 +1093,14 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		});
 
 		//Bind event listeners that are used in multiple views to document.
-		$(document).on('search:results', function(e) {
+		$(document).on('submit', '#query-form', function() {
+			var $main;
+
+			$main = $('main');
+
+			$main.empty();
+			$main.html(nunjucks.render('explorer/components/waiting.html'));
+		}).on('search:results', function(e) {
 			//When a search is completed:
 			explorerState.moreLink = e.results.next;
 			explorerState.totalResultCount = e.results.count;
@@ -1090,9 +1122,6 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			if (e.clearData) {
 				explorerState.currentViewState = 'results';
 				renderState();
-			}
-			else {
-				addNewResults();
 			}
 		}).on('click', '.view-selector:not(.active)', function() {
 			//When the user clicks a view selector for a view other than the one currently being displayed:
@@ -1128,7 +1157,9 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 				//just scroll down to that item.
 				//Othwerise, trigger a click on the active object's new grid- or list-item, which will open up its details in the new view.
 				if (explorerState.currentViewState === 'feed') {
-					$('[data-object-id="' + explorerState.selectedObjectId + '"]')[0].scrollIntoView();
+					if (explorerState.selectedObjectId) {
+						$('[data-object-id="' + explorerState.selectedObjectId + '"]')[0].scrollIntoView();
+					}
 				}
 				else {
 					$('[data-object-id="' + explorerState.selectedObjectId + '"]').trigger('click');
@@ -1141,10 +1172,10 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			renderState();
 		}).on('click', '.sort-selector', function(e) {
 			//When the user clicks on a sort selector, sort on that field.
-			var activeObjectId, sortAttr, $activeObject, $list, $sortArrow, $sortItems, $this = $(this);
+			var activeObjectId, searchParams, sortAttr, $activeObject, $list, $sortArrow, $sortItems, $this = $(this);
 
 			if (explorerState.objectTypeShown == 'events' && explorerState.currentResultCount < explorerState.totalResultCount) {
-				var searchParams = {
+				searchParams = {
 					filters: explorerState.currentSearch,
 					offset: explorerState.currentResultCount,
 					sort_field: explorerState.currentSort.split(':')[0],
@@ -1172,7 +1203,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 			//Save references to DOM elements.
 			$sortItems = $('.sort-selector');
-			$sortItems.removeClass('active');
+			//$sortItems.removeClass('active');
 			$sortArrow = $this.find('.fa');
 
 			//sortAttr is [sortType, asc/desc]
@@ -1195,7 +1226,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			});
 
 			//Make the selected sort active.
-			$this.addClass('active');
+			//$this.addClass('active');
 
 			//If the new sort type is the same as the previous sort type, then swap to the opposite asc/desc of what was in use before.
 			if (explorerState.currentSort.split(':')[0] === sortAttr[0]) {
@@ -1241,7 +1272,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			}
 		}).on('marker:click', function(e) {
 			//When the user clicks on a marker or markercluster:
-			var marker, $this = $(e.target);
+			var marker;
 
 			marker = e.marker;
 
@@ -1298,7 +1329,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 				$('[data-object-id="' + explorerState.selectedObjectId + '"]').trigger('click');
 			}
-		}).on('click', '#home', function(e) {
+		}).on('click', '#home, #back-to-results', function(e)
+		{
 			//If not in the Results view, when the user clicks on the home button, they're taken back to the Results view.
 			if (explorerState.currentViewState !== 'results') {
 				explorerState.currentViewState = 'results';
@@ -1306,10 +1338,28 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 				return false;
 			}
+		}).on('click', '.action-bar .share-action', function(e) {
+			$(e.target).parents('.action-bar-container').find('.share-menu').toggleClass('hidden');
+
+			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+				renderDrawer();
+			}
+		}).on('click', '.action-bar .action-action', function(e) {
+			$(e.target).parents('.action-bar-container').find('.action-menu').toggleClass('hidden');
+
+			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+				renderDrawer();
+			}
+		}).on('click', '.action-bar .location-action', function(e) {
+			$(e.target).parents('.action-bar-container').find('.location-menu').toggleClass('hidden');
+
+			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+				renderDrawer();
+			}
 		});
 
 		//Bind Results view-specific events.
-		resultView.on('click', '.grid-item', function() {
+		resultsView.on('click', '.grid-item', function() {
 			//When the user clicks on the item for an object, save the objectId of that object,
 			//go to grid view for that object type and then select that object.
 			var gridItem, objectId, $this = $(this);

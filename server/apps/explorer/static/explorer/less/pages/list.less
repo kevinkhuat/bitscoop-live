@@ -22,7 +22,8 @@ body.explorer.list {
 				top: 0;
 				left: 0;
 				border-right: 1px solid @input-border-color;
-				background-color: darken(@light, 10%);
+				background-color: @background2;
+				box-shadow: inset 0 0 15px fade(@dark, 25%);
 
 				width: 25%;
 				min-width: 400px;
@@ -31,7 +32,9 @@ body.explorer.list {
 
 				@media @mobile-portrait {
 					.flex-grow;
+
 					width: 100%;
+					min-width: 0;
 					border-right: 0;
 					border-top: 5px solid @input-border-color
 				}
@@ -53,6 +56,17 @@ body.explorer.list {
 			width: 100%;
 			margin: 0;
 			background-color: @light;
+			
+			@media @mobile{
+				& .icon-column {
+					width: 1.7em;
+					padding: 0;
+
+					& i > {
+						margin: 0 auto;
+					}
+				}
+			}
 		}
 
 		#list:empty {

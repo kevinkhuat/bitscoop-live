@@ -1,22 +1,38 @@
 body.explorer.feed {
+	#background {
+		background-color: @background2;
+	}
+
 	#grid-scroll {
 		#list {
-			.flex-column;
-			flex-wrap: inherit;
-			height: inherit;
+			width: 80%;
+			margin: 0 auto;
+
+			@media @mobile {
+				width: 100%;
+			}
 		}
 	}
 
 	.object-details {
 		margin: 0.5em auto;
-		min-width: 40%;
+		width: 100%;
 
 		@media @mobile {
 			margin: 0 0 1em 0;
+			padding: 1em 0 2em 0;
 		}
 
-		& img {
-			width: 50%;
+		&:first-child {
+			margin-top: 1em;
+		}
+
+		&:last-child {
+			margin-bottom: 1em;
+		}
+
+		@media @mobile {
+			margin: 0 0 1em 0;
 		}
 	}
 }

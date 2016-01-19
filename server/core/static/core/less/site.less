@@ -1,19 +1,17 @@
 @import 'themes/active.less';
-
 @import 'explorer/less/components/action-bar.less';
 @import 'explorer/less/components/drawer.less';
 @import 'explorer/less/components/grid-item.less';
 @import 'explorer/less/components/list-item.less';
-
+@import 'explorer/less/components/no-results.less';
+@import 'explorer/less/components/waiting.less';
 @import 'explorer/less/objects/objects.less';
-
 @import 'explorer/less/pages/feed.less';
 @import 'explorer/less/pages/grid.less';
 @import 'explorer/less/pages/list.less';
 @import 'explorer/less/pages/main.less';
 @import 'explorer/less/pages/map.less';
 @import 'explorer/less/pages/results.less';
-
 @import 'core/less/animations.less';
 @import 'core/less/controls.less';
 @import 'core/less/flexbox.less';
@@ -23,14 +21,12 @@
 @import 'core/less/tables.less';
 @import 'core/less/components/cards.less';
 @import 'core/less/components/search-bar.less';
-
 @import 'core/less/pages/connections.less';
 @import 'core/less/pages/home.less';
 @import 'core/less/pages/login.less';
 @import 'core/less/pages/providers.less';
 @import 'core/less/pages/settings.less';
 @import 'core/less/pages/signup.less';
-
 @import 'core/less/shims/icons.less';
 
 * {
@@ -40,14 +36,6 @@
 html {
 	height: 100%;
 	font-size: 10px;
-
-	@media @mobile-portrait {
-		font-size: 20px;
-	}
-
-	@media @mobile-landscape {
-		font-size: 14px;
-	}
 
 	.pt-sans;
 
@@ -110,10 +98,6 @@ header {
 
 		padding: 5px 0;
 
-		@media @mobile {
-			padding: 10px 0;
-		}
-
 		.flex;
 		.flex-x-center;
 
@@ -134,76 +118,18 @@ header {
 
 		& > :first-child {
 			margin-left: @margin-width * 2;
+
+			@media @mobile {
+				margin-left: @margin-width;
+			}
 		}
 
 		& > :last-child {
 			margin-right: @margin-width * 2;
-		}
 
-		.view-bar {
-			.flex;
-
-			justify-content: space-around;
-			min-width: 10em;
-			font-size: 1.2em;
-
-			&.disabled {
-				display: none !important;
+			@media @mobile {
+				margin-right: @margin-width;
 			}
-		}
-	}
-
-	& > .sort-bar {
-		.flex;
-		.flex-space-between;
-
-		height: 2em;
-		background-color: @color1;
-		color: @light;
-
-		.sort-selector {
-			padding: 0 2em;
-
-			&.active {
-				color: @dark;
-			}
-			&:hover {
-				color: @color4;
-			}
-		}
-
-		.view-selector, .facet {
-			font-weight: bold;
-			text-transform: uppercase;
-			padding: 0.25em;
-			font-size: 1.2em;
-		}
-
-		.view-selector {
-			.flex;
-
-			margin-left: 20px;
-			align-items: baseline;
-
-			cursor: pointer;
-
-			&:hover {
-				color: @color4;
-			}
-
-			& > span {
-				font-weight: bold;
-				margin-left: 0.2em;
-			}
-		}
-
-		.facet {
-			color: @dark;
-			margin-right: 20px
-		}
-
-		&.disabled {
-			display: none !important;
 		}
 	}
 }
@@ -251,10 +177,6 @@ a {
 
 .logo {
 	height: 40px;
-
-	@media @mobile {
-		height: 60px;
-	}
 }
 
 #links {
@@ -284,101 +206,131 @@ a {
 	&.open {
 		.flex;
 
-		@media @mobile-portrait {
-			font-size: 1.4em;
-		}
-
-		@media @mobile-landscape {
-			font-size: 1.2em;
-		}
-
 		width: 25%;
+		height: 100%;
 
 		@media @mobile {
 			width: 90%;
 		}
-		height: 100%;
 	}
 
-	a {
-		display: block;
-		padding: 0.5em;
-		font-size: 1.2em;
-		color: lighten(@dark, 45%);
-	}
-
-	& > a {
-		font-size: 2em;
-		&:hover {
-			color: @color4;
-		}
-	}
-
-	& > :last-child {
-		border-bottom: 1px solid darken(@light, 15%);
-	}
-
-	.title {
-		padding: 6px 15px;
-
-		background-color: darken(@light, 5%);
-		font-weight: bold;
-
-		font-size: 1.2em;
-
-		border-top: none;
-	}
-
-	.view {
+	.menu-header {
 		.flex;
-		.flex-space-between;
-	}
+		.flex-column;
+		.flex-grow;
 
-	.view-selector {
-		cursor: pointer;
-
-		@media @mobile {
-			font-size: 2em;
+		a {
+			display: block;
+			padding: 0.5em;
+			font-size: 1.2em;
+			color: lighten(@dark, 45%);
 		}
 
-		&.active {
-			color: @color2;
-		}
-		&:hover {
-			color: @color1;
-		}
-		&.disabled {
-			cursor: default;
-			color: darken(@light, 20%);
+		& > a {
+			font-size: 1.6em;
+
+			&:hover {
+				color: @color4;
+			}
 		}
 
-		&[data-selector="map"] {
+		& > :last-child {
+			border-bottom: 1px solid darken(@light, 15%);
+		}
+
+		.title {
+			padding: 0.5em;
+
+			background-color: darken(@light, 10%);
+			font-weight: bold;
+
+			font-size: 1.2em;
+
+			border-top: none;
+		}
+
+		.view {
+			.flex;
+			.flex-wrap;
+			.flex-space-between;
+		}
+
+		.view-selector {
+			cursor: pointer;
+
 			@media @mobile {
-				display: none;
+				font-size: 2em;
+			}
+
+			&.active {
+				color: @color2;
+			}
+			&:hover {
+				color: @color1;
+			}
+			&.disabled {
+				cursor: default;
+				color: darken(@light, 20%);
+			}
+
+			&[data-selector="map"] {
+				@media @mobile {
+					display: none;
+				}
+			}
+		}
+
+		#close-menu {
+			position: absolute;
+			right: 0;
+			top: 0;
+			cursor: pointer;
+			padding: 0.5em;
+			font-size: 1.2em;
+
+			&:hover {
+				color: @color3;
+			}
+		}
+
+		.view-bar, .sort-bar {
+			&.disabled {
+				display: none !important;
 			}
 		}
 	}
+}
 
-	#close-menu {
-		position: absolute;
-		right: 0;
-		top: 0;
-		cursor: pointer;
-		padding: 0.5em;
+.bitscoop-footer {
+	.flex;
+	.flex-column;
+	.flex-end;
+	.align-center;
 
-		@media @mobile {
-			padding: 0.2em 0.3em;
-		}
+	.footer-links {
+		.flex;
+		.flex-row;
+		.flex-space-between;
 
-		&:hover {
-			color: @color3;
+		margin: 0.5em;
+	}
+}
+
+#menu {
+
+	> .bitscoop-footer {
+		font-size: 0.8em;
+
+		.footer-links {
+			margin: 5px;
 		}
 	}
+}
 
-	.view-bar, .sort-bar {
-		&.disabled {
-			display: none !important;
-		}
+footer {
+	> .bitscoop-footer {
+		width: 250px;
+		margin: 0 auto;
 	}
 }
 
@@ -386,6 +338,13 @@ a {
 	display: flex;
 	cursor: pointer;
 	font-size: 2.5em;
+}
+
+#back-to-results {
+	cursor: pointer;
+	font-size: 3.5em;
+	color: @color1;
+	margin: -5px 10px;
 }
 
 .boxed-group,
@@ -420,14 +379,6 @@ a {
 	}
 }
 
-.boxed-group {
-	&:not(#settings-menu) {
-		@media @mobile {
-			border: none;
-		}
-	}
-}
-
 .inbox {
 	position: relative;
 
@@ -449,6 +400,18 @@ a {
 		min-width: 1em;
 
 		content: attr(data-count);
+	}
+}
+
+@media @mobile {
+	input[type="radio"] {
+		margin: 1em 1em;
+	}
+}
+
+@media @mobile {
+	input[type="checkbox"] {
+		margin: 1em 1em;
 	}
 }
 

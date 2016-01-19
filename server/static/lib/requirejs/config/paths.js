@@ -29,7 +29,7 @@ require.config({
 
 		// Explorer Utils
 		'embed-content': window.staticUrl + 'explorer/js/embed-content.min',
-		'event-util': window.staticUrl + 'explorer/js/event-util.min',
+		'external-actions': window.staticUrl + 'explorer/js/external-actions.min',
 		scheduleMapper: window.staticUrl + 'explorer/js/scheduleMapper.min',
 
 		// Explorer Components
@@ -59,10 +59,9 @@ requirejs.config({
 		mapbox: 'https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox',  // https://github.com/mapbox/mapbox.js
 		moment: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min', //http://momentjs.com/
 		nunjucks: 'https://d1m45eggqhap5f.cloudfront.net/nunjucks/1.3.3/nunjucks-1.3.3.min',  // https://github.com/mozilla/nunjucks
-		'share-button': window.staticUrl + 'lib/share-button/share-button.min', // https://github.com/carrot/share-button/releases
 
 		// Google Analytics Shim
-		"ga": '//www.google-analytics.com/analytics',
+		ga: '//www.google-analytics.com/analytics',
 
 		// Plugins
 		'jquery-cookie': 'https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min',  // https://github.com/carhartl/jquery-cookie

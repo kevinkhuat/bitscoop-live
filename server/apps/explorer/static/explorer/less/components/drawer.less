@@ -8,12 +8,14 @@
 		.flex;
 		.flex-center;
 		.flex-wrap;
+		align-items: stretch;
 
+		box-shadow: inset 0 0 15px fade(@dark, 25%);
 		position: relative;
 		display: none;
 		overflow: hidden;
 		padding: 10px;
-		background-color: lighten(@color1, 40%);
+		background-color: @background2;
 
 		@media @mobile {
 			flex-direction: column;

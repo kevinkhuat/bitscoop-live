@@ -5,6 +5,10 @@
 	width: 100%;
 	font-size: 1.6rem;
 
+	@media @mobile {
+		margin: 0;
+	}
+
 	.source-sans;
 
 	#advanced {
@@ -50,11 +54,6 @@
 			padding: 0.85 * @padding @padding;
 
 			.no-select;
-
-			@media @mobile {
-				width: 100%;
-				font-size: 1.5em;
-			}
 
 			#filter-buttons {
 				.flex;
@@ -190,11 +189,6 @@
 			.no-select;
 			.hide-empty;
 
-			@media @mobile {
-				margin-top: 0.2em;
-				font-size: 1.3em;
-			}
-
 			.filter {
 				display: inline-block;
 				margin-bottom: 0.85 / 0.7 * @padding;
@@ -256,10 +250,6 @@
 		.flex-x-center;
 		.hide-empty;
 
-		@media @mobile {
-			margin-right: 0.5em;
-		}
-
 		div {
 			font-size: 0.7em;
 			color: lighten(@dark, 35%);
@@ -271,11 +261,6 @@
 			position: relative;
 			top: 1px;
 			padding: 0.2em 0.4em;
-
-			@media @mobile {
-				padding: 0.5em 0.8em;
-				font-weight: bold;
-			}
 		}
 	}
 
@@ -318,7 +303,7 @@
 	}
 
 	input {
-		font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
+		font-admily: 'Source Sans Pro', 'Lucida Grande', sans-serif;
 		font-weight: 300;
 		font-size: 1.8rem;
 	}

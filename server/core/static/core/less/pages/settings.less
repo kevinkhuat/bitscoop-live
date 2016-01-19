@@ -4,14 +4,24 @@ body.settings {
 		.lock-width;
 	}
 
+	@media @mobile {
+		font-size: 1.5em;
+	}
+
 	main {
 		padding: 15px;
 		min-width: 500px;
 
 		.flex-row !important;
 
+		@media @mobile {
+			min-width: 0;
+			width: 100%;
+		}
+
 		& > #left {
 			@media @mobile {
+				min-width: 0;
 				width: 100%;
 			}
 		}
@@ -22,6 +32,25 @@ body.settings {
 			@media @mobile {
 				display: none;
 			}
+		}
+	}
+
+	&.base {
+		#left {
+			margin: 0 auto;
+			font-size: 1.5em;
+
+			#settings-menu {
+				width: 300px;
+
+				@media @mobile {
+					width: 100%;
+				}
+			}
+		}
+
+		#settings {
+			display: none;
 		}
 	}
 
@@ -54,13 +83,6 @@ body.settings {
 
 	#settings-menu {
 		width: 200px;
-
-		@media @mobile {
-			width: 100%;
-			background-color: @light;
-			font-size: 1.5em;
-		}
-
 		margin-right: 15px;
 
 		& > * {
@@ -81,7 +103,7 @@ body.settings {
 
 		a.active {
 			font-weight: bold;
-			font-color: @dark;
+			color: @dark;
 		}
 	}
 
@@ -102,10 +124,6 @@ body.settings {
 	#settings {
 		.flex-grow;
 		.no-select;
-
-		@media @mobile-portrait {
-			font-size: 1.5em;
-		}
 	}
 
 	.shrink {
@@ -189,12 +207,13 @@ body.settings {
 					animation-duration: 4000ms;
 					animation-iteration-count: infinite;
 					animation-timing-function: linear;
+
+					margin-right: 0.5em;
 				}
 
 				i {
-					@media @mobile {
-						margin-right: 0.5em;
-					}
+					margin-right: 0.5em;
+
 				}
 			}
 

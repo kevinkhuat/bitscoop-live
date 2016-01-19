@@ -1,100 +1,20 @@
-define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, moment, nunjucks) {
-	var SHARE_DESC_DEFAULT = 'Shared with BitScoop';
-
-	var URL_WOLFRAM_DOMAIN_ROUTE = 'http://www.wolframalpha.com/input/?i=';
-	var URL_WOLFRAM_LOC_PARAMS = '{{ LAT }}+lat+{{ LONG }}+long+';
-
-	var URL_GOOGLE_DOMAIN = 'https://www.google.com';
-	var URL_GOOGLE_MAPS_LOCATION_ROUTE_PARAMS = '/maps?q={{ LAT }},{{ LONG }}';
-	var URL_GOOGLE_MAPS_LOCATION_NAV_ROUTE_PARAMS = '/maps/dir/Current+Location/{{ LAT }},{{ LONG }}';
-
-	var URL_WEATHER_FORECAST_DOMAIN_ROUTE_PARAMS = 'http://forecast.weather.gov/MapClick.php?lat={{ LAT }}&lon={{ LONG }}';
-
-	function _replaceLocation(URLString, location) {
-		URLString.replace('{{ LAT }}', location.LAT).replace('{{ LONG }}', location.LONG);
-	}
-
-	function createActionBar(url, title, description, imageURL, location, datetime) {
-		var actionBar = nunjucks.render('explorer/grid_view_item.html', {
-			// https://gearside.com/easily-link-to-locations-and-directions-using-the-new-google-maps/
-			// https://www.google.com/maps?q=33.514671899999996,-117.7216579
-			GoogleMapsURL: URL_GOOGLE_DOMAIN + _replaceLocation(URL_GOOGLE_MAPS_LOCATION_ROUTE_PARAMS, location),
-			// https://www.google.com/maps/dir/Current+Location/43.12345,-76.12345
-			GoogleMapsNavURL: URL_GOOGLE_DOMAIN + _replaceLocation(URL_GOOGLE_MAPS_LOCATION_NAV_ROUTE_PARAMS, location),
-			// http://www.wolframalpha.com/input/?i=48.8567+lat+2.3508+long+ =
-			WolframLocSearchURL: URL_WOLFRAM_DOMAIN_ROUTE + _replaceLocation(URL_WOLFRAM_LOC_PARAMS, location),
-			// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT
-			WolframClockURL: URL_WOLFRAM_DOMAIN_ROUTE + moment(datetime).format('MMMM Do, YYYY HH:mm:ss a zz'),
-			// http://www.wolframalpha.com/input/?i=France
-			// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT+weather+Paris
-			// http://www.wolframalpha.com/input/?i=capricorn+one
-			WolframCalcURL: URL_WOLFRAM_DOMAIN_ROUTE + title,
-			// http://forecast.weather.gov/MapClick.php?lat=40.781581302919285&lon=-73.96648406982422
-			WeatherURL: _replaceLocation(URL_WEATHER_FORECAST_DOMAIN_ROUTE_PARAMS, location)
-		});
-
-		var $actionBar = $(actionBar);
-
-		// Google social interactions
-		// https://developers.google.com/analytics/devguides/collection/analyticsjs/social-interactions
-
-		var config = {
-			//protocol:     // the protocol you'd prefer to use. [Default: your current protocol]
-			url: url,          // the url you'd like to share. [Default: `window.location.href`]
-			title: title,        // title to be shared alongside your link [Default: See below in defaults section]
-			description: description,  // text to be shared alongside your link, [Default: See below in defaults section]
-			image: imageURL,        // image to be shared [Default: See below in defaults section]
-			//ui: {
-			//  flyout:       // change the flyout direction of the shares. chose from `top left`, `top center`, `top right`, `bottom left`, `bottom right`, `bottom center`, `middle left`, or `middle right` [Default: `top center`]
-			//  button_font:  // include the Lato font set from the Google Fonts API. [Default: `true`]
-			//  buttonText:  // change the text of the button, [Default: `Share`]
-			//  icon_font:    // include the minified Entypo font set. [Default: `true`]
-			//},
-			networks: {
-				googlePlus: {
-					//enabled: // Enable Google+. [Default: true]
-					//url:     // the url you'd like to share to Google+ [Default: config.url]
-					//before: function(element) {
-					//	this.url = element.getAttribute('data-url');
-					//	this.text = 'Changing the Facebook Share Configurations';
-					//},
-					after: function() {
-						console.log('User Google+ shared: ', this.url);
-						ga('send', {
-							hitType: 'social',
-							socialNetwork: 'Google+',
-							socialAction: 'share',
-							socialTarget: url
-						});
-					}
-				},
-				twitter: {
-					//enabled:      // Enable Twitter. [Default: true]
-					//url:          // the url you'd like to share to Twitter [Default: config.url]
-					//description:  // text to be shared alongside your link to Twitter [Default: config.description]
-					after: function() {
-						console.log('User Twitter shared: ', this.url);
-						ga('send', {
-							hitType: 'social',
-							socialNetwork: 'Twitter',
-							socialAction: 'share',
-							socialTarget: url
-						});
-					}
-				},
+define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks) {
+	var TEMPLATES = {
+		defaults: {
+			url: 'https://bitscoop.com',            // the url you'd like to share.
+			title: 'Shared with BitScoop',          // title to be shared alongside your link
+			description: 'Shared with BitScoop',    // text to be shared alongside your link
+			imageURL: 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png',       // image to be shared
+			hashtags: '@BitScoop',
+			via: '@BitScoopLabs'
+		},
+		urls: {
+			share: {
 				facebook: {
-					//enabled:      // Enable Facebook. [Default: true]
-					//load_sdk:     // Load the FB SDK. If false, it will default to Facebook's sharer.php implementation.
-					//              // NOTE: This will disable the ability to dynamically set values and rely directly on applicable Open Graph tags.
-					//              // [Default: true]
-					//url:          // the url you'd like to share to Facebook [Default: config.url]
-					//app_id:       // Facebook app id for tracking shares. if provided, will use the facebook API
-					//title:        // title to be shared alongside your link to Facebook [Default: config.title]
-					caption: SHARE_DESC_DEFAULT,      // caption to be shared alongside your link to Facebook [Default: null]
-					//description:  // text to be shared alongside your link to Facebook [Default: config.description]
-					//image:        // image to be shared to Facebook [Default: config.image]
+					href: 'http://www.facebook.com/sharer.php?s=100&p[title]={{ title }}&p[summary]={{ description }}&p[url]={{ url }}&p[images][0]={{ imageURL }}',
+					app_id: '',       // Facebook app id for tracking shares. if provided, will use the facebook API
+					caption: '',      // caption to be shared alongside your link to Facebook
 					after: function() {
-						console.log('User facebook shared: ', this.url);
 						ga('send', {
 							hitType: 'social',
 							socialNetwork: 'facebook',
@@ -103,13 +23,42 @@ define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, m
 						});
 					}
 				},
-				pinterest: {
-					//enabled:      // Enable Pinterest. [Default: true]
-					//url:          // the url you'd like to share to Pinterest [Default: config.url]
-					//image:        // image to be shared to Pinterest [Default: config.image]
-					//description:  // text to be shared alongside your link to Pinterest [Default: config.description]
+				twitter: {
+					href: 'https://twitter.com/intent/tweet?text={{ title }}+{{ description }}&url={{ url }}&hashtags={{ hashtags }}&via={{ via }}',
 					after: function() {
-						console.log('User Pinterest shared: ', this.url);
+						ga('send', {
+							hitType: 'social',
+							socialNetwork: 'tumblr',
+							socialAction: 'share',
+							socialTarget: url
+						});
+					}
+				},
+				googlePlus: {
+					href: 'https://plus.google.com/share?url={{ url }}',
+					after: function() {
+						ga('send', {
+							hitType: 'social',
+							socialNetwork: 'Google+',
+							socialAction: 'share',
+							socialTarget: url
+						});
+					}
+				},
+				tumblr: {
+					href: 'http://www.tumblr.com/share/link?url={{ url }}&name={{ title }}&description={{ description }}',
+					after: function() {
+						ga('send', {
+							hitType: 'social',
+							socialNetwork: 'Twitter',
+							socialAction: 'share',
+							socialTarget: url
+						});
+					}
+				},
+				pinterest: {
+					href: 'http://pinterest.com/pin/create/button/?url={{ url }}&media={{ imageURL }}&description={{ description }}',
+					after: function() {
 						ga('send', {
 							hitType: 'social',
 							socialNetwork: 'Pinterest',
@@ -119,11 +68,8 @@ define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, m
 					}
 				},
 				reddit: {
-					//enabled:  // Enable Reddit. [Default: true]
-					//url:      // the url you'd like to share to Reddit [Default: config.url]
-					//title:    // title to be shared alongside your link to Reddit [Default: config.title]
+					href: 'http://www.reddit.com/submit?url={{ url }}&title={{ title }}',
 					after: function() {
-						console.log('User reddit shared: ', this.url);
 						ga('send', {
 							hitType: 'social',
 							socialNetwork: 'reddit',
@@ -133,12 +79,8 @@ define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, m
 					}
 				},
 				linkedin: {
-					//enabled:      // Enable LinkedIn. [Default: true]
-					//url:          // the url you'd like to share to LinkedIn [Default: config.url]
-					//title:        // title to be shared alongside your link to LinkedIn [Default: config.title],
-					//description:  // text to be shared alongside your link to LinkedIn [Default: config.description]
+					href: 'http://www.linkedin.com/shareArticle?mini=true&url={{ url }}&title={{ title }}&summary={{ description }}&source={{ url }}',
 					after: function() {
-						console.log('User Linked In shared: ', this.url);
 						ga('send', {
 							hitType: 'social',
 							socialNetwork: 'Linked In',
@@ -147,26 +89,9 @@ define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, m
 						});
 					}
 				},
-				whatsapp: {
-					//enabled:      // Enable WhatsApp. [Default: true]
-					//description:  // text to be shared alongside your link to WhatsApp [Default: config.description],
-					//url:          // the url you'd like to share to WhatsApp [Default: config.url]
-					after: function() {
-						console.log('User WhatsApp shared: ', this.url);
-						ga('send', {
-							hitType: 'social',
-							socialNetwork: 'WhatsApp',
-							socialAction: 'share',
-							socialTarget: url
-						});
-					}
-				},
 				email: {
-					//enabled:      // Enable Email. [Default: true]
-					//title:        // the subject of the email [Default: config.title]
-					//description:  // The body of the email [Default: config.description]
+					href: 'mailto:?subject={{ url }}&body={{ description }}: {{ url }}',
 					after: function() {
-						console.log('User Email shared: ', this.url);
 						ga('send', {
 							hitType: 'social',
 							socialNetwork: 'Email',
@@ -174,15 +99,239 @@ define(['ga', 'jquery', 'moment', 'nunjucks', 'share-button'], function(ga, $, m
 							socialTarget: url
 						});
 					}
+				},
+				sms: {
+					href: 'sms:&body={{ title }}+{{ url }}',
+					after: function() {
+						ga('send', {
+							hitType: 'sms',
+							socialNetwork: 'Email',
+							socialAction: 'share',
+							socialTarget: url
+						});
+					}
+				}
+			},
+			actions: {
+				wolfram_calc: {
+					// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT
+					// http://www.wolframalpha.com/input/?i=France
+					// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT+weather+Paris
+					// http://www.wolframalpha.com/input/?i=capricorn+one
+					href: 'http://www.wolframalpha.com/input/?i={{ title }}'
+				}
+			},
+			location: {
+				googleMaps_show: {
+					// https://www.google.com/maps?q=33.514671899999996,-117.7216579
+					href: 'https://www.google.com/maps?q={{ lat }},{{ lng }}'
+				},
+				googleMaps_nav: {
+					// https://www.google.com/maps/dir/Current+Location/43.12345,-76.12345
+					href: 'https://www.google.com/maps/dir/Current+Location/{{ lat }},{{ lng }}'
+				},
+				wolfram: {
+					// http://www.wolframalpha.com/input/?i=48.8567+lat+2.3508+long
+					href: 'http://www.wolframalpha.com/input/?i={{ lat }}+latitude,+{{ lng }}+longitude'
+				},
+				weather: {
+					// http://forecast.weather.gov/MapClick.php?lat=40.781581302919285&lon=-73.96648406982422
+					href: 'http://forecast.weather.gov/MapClick.php?lat={{ lat }}&lon={{ lng }}'
 				}
 			}
-		};
+		}
+	};
 
-		var share = new ShareButton('.share-button', config);
-		share.open();
-
-		return share;
+	function _fixedEncodeURIComponent(str) {
+		return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+			return '%' + c.charCodeAt(0).toString(16);
+		});
 	}
 
-	return createActionBar;
+	// Google social interactions
+	// https://developers.google.com/analytics/devguides/collection/analyticsjs/social-interactions
+
+	function _hydrateLocationURL(URLString, lat, lng) {
+		return URLString.replace('{{ lat }}', _fixedEncodeURIComponent(lat))
+			.replace('{{ lng }}', _fixedEncodeURIComponent(lng));
+	}
+
+	function _hydrateShareURL(URLString, url, title, description, imageURL) {
+		return URLString.replace('{{ url }}', _fixedEncodeURIComponent(url === '' ? TEMPLATES.defaults.url : url))
+			.replace('{{ title }}', _fixedEncodeURIComponent(title === '' ? TEMPLATES.defaults.title : title))
+			.replace('{{ description }}', _fixedEncodeURIComponent(description === '' ? TEMPLATES.defaults.description : description))
+			.replace('{{ imageURL }}', _fixedEncodeURIComponent(imageURL === '' ? TEMPLATES.defaults.imageURL : imageURL))
+			.replace('{{ hashtags }}', _fixedEncodeURIComponent(TEMPLATES.defaults.hashtags))
+			.replace('{{ via }}', _fixedEncodeURIComponent(TEMPLATES.defaults.via));
+	}
+
+	var renderActions = {
+		objects: {
+			contacts: {
+				render: function renderActions$objects$contact(contact) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							action: true
+						}) + renderActions.actions.share(
+							'',
+							contact.source + ' - ' + contact.name + ' - ' + contact.handle + ' - ' + TEMPLATES.defaults.title,
+							contact.source + ' - ' + contact.name + ' - ' + contact.handle + ' - ' + TEMPLATES.defaults.description,
+							''
+						) + renderActions.actions.actions(
+							'',
+							contact.name,
+							contact.name,
+							''
+						);
+				}
+			},
+			content: {
+				render: function renderActions$objects$content(content) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							action: true
+						}) + renderActions.actions.share(
+							content.url === null ? '' : content.url,
+							content.title + ' - ' + TEMPLATES.defaults.title,
+							content.text + ' - ' + TEMPLATES.defaults.description,
+							content.embed_thumbnail === null ? '' : content.embed_thumbnail
+						) + renderActions.actions.actions(
+							content.url === null ? '' : content.url,
+							content.title,
+							content.text,
+							content.embed_thumbnail === null ? '' : content.embed_thumbnail
+						);
+				}
+			},
+			events: {
+				render: function renderActions$objects$event(event) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							action: true
+						}) + renderActions.actions.share(
+							'',
+							event.provider_name + ' - ' + event.type + ' - ' + moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz') + ' - ' + TEMPLATES.defaults.description,
+							event.provider_name + ' - ' + event.type + ' - ' + moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz') + ' - ' + TEMPLATES.defaults.description,
+							''
+						) + renderActions.actions.actions(
+							'',
+							moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz'),
+							moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz'),
+							''
+						);
+				}
+			},
+			locations: {
+				render: function renderActions$objects$location(location) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							location: true,
+							action: true
+						}) + renderActions.actions.share(
+							_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, location.geolocation[1], location.geolocation[0]),
+							'',
+							'',
+							''
+						) + renderActions.actions.location(
+							location.geolocation[1],
+							location.geolocation[0]
+						) + renderActions.actions.actions(
+							'',
+							location.geolocation[1] + ' latitude, ' + location.geolocation[0] + ' longitude ',
+							location.geolocation[1] + ' latitude, ' + location.geolocation[0] + ' longitude ',
+							''
+						);
+				}
+			},
+			organizations: {
+				render: function renderActions$objects$place(organization) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							location: false,
+							action: true
+						}) + renderActions.actions.share(
+							organization.url === null ? '' : organization.thumbnail,
+							organization.title + ' - ' + TEMPLATES.defaults.title,
+							organization.text + ' - ' + TEMPLATES.defaults.description,
+							organization.thumbnail === null ? '' : organization.thumbnail
+						) + renderActions.actions.actions(
+							organization.url === null ? '' : organization.thumbnail,
+							organization.title + ' - ' + TEMPLATES.defaults.title,
+							organization.text + ' - ' + TEMPLATES.defaults.description,
+							organization.thumbnail === null ? '' : organization.thumbnail
+						);
+				}
+			},
+			places: {
+				render: function renderActions$objects$place(place) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							location: true,
+							action: true
+						}) + renderActions.actions.share(
+							_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, place.location.geolocation[1], place.location.geolocation[0]),
+							'',
+							'',
+							''
+						) + renderActions.actions.location(
+							place.location.geolocation[1],
+							place.location.geolocation[0]
+						) + renderActions.actions.actions(
+							'',
+							place.location.geolocation[1] + ' latitude, ' + place.location.geolocation[0] + ' longitude ',
+							place.location.geolocation[1] + ' latitude, ' + place.location.geolocation[0] + ' longitude ',
+							''
+						);
+				}
+			},
+			things: {
+				render: function renderActions$objects$thing(thing) {
+					return nunjucks.render('explorer/components/action/bar.html', {
+							share: true,
+							action: true
+						}) + renderActions.actions.share(
+							'',
+							thing.source + ' - ' + thing.name + ' - ' + thing.handle + ' - ' + TEMPLATES.defaults.title,
+							thing.source + ' - ' + thing.name + ' - ' + thing.handle + ' - ' + TEMPLATES.defaults.description,
+							''
+						) + renderActions.actions.actions(
+							'',
+							thing.name,
+							thing.name,
+							''
+						);
+				}
+			}
+		},
+		actions: {
+			share: function renderActions$actions$share(url, title, description, imageURL) {
+				return nunjucks.render('explorer/components/action/share.html', {
+					facebook_href: _hydrateShareURL(TEMPLATES.urls.share.facebook.href, url, title, description, imageURL),
+					twitter_href: _hydrateShareURL(TEMPLATES.urls.share.twitter.href, url, title, description, imageURL),
+					googlePlus_href: _hydrateShareURL(TEMPLATES.urls.share.googlePlus.href, url, title, description, imageURL),
+					tumblr_href: _hydrateShareURL(TEMPLATES.urls.share.tumblr.href, url, title, description, imageURL),
+					pinterest_href: _hydrateShareURL(TEMPLATES.urls.share.pinterest.href, url, title, description, imageURL),
+					reddit_href: _hydrateShareURL(TEMPLATES.urls.share.reddit.href, url, title, description, imageURL),
+					linkedin_href: _hydrateShareURL(TEMPLATES.urls.share.linkedin.href, url, title, description, imageURL),
+					email_href: _hydrateShareURL(TEMPLATES.urls.share.email.href, url, title, description, imageURL),
+					sms_href: _hydrateShareURL(TEMPLATES.urls.share.sms.href, url, title, description, imageURL)
+				});
+			},
+			location: function renderActions$actions$location(lat, lng) {
+				return nunjucks.render('explorer/components/action/location.html', {
+					googleMaps_show_href: _hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, lat, lng),
+					googleMaps_nav_href: _hydrateLocationURL(TEMPLATES.urls.location.googleMaps_nav.href, lat, lng),
+					weather_href: _hydrateLocationURL(TEMPLATES.urls.location.weather.href, lat, lng),
+					wolfram_href: _hydrateLocationURL(TEMPLATES.urls.location.wolfram.href, lat, lng)
+				});
+			},
+			actions: function renderActions$actions$location(url, title, description, imageURL, lat, lng, dateTime) {
+				return nunjucks.render('explorer/components/action/actions.html', {
+					wolfram_calc_href: _hydrateShareURL(TEMPLATES.urls.actions.wolfram_calc.href, url, title, description, imageURL)
+				});
+			}
+		}
+	};
+
+	return renderActions;
 });

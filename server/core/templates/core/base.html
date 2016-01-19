@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>{% load staticfiles %}
-		<meta charset="utf-8" />
+<head>{% load staticfiles %}
+	<meta charset="utf-8"/>
 
-		<!-- <link rel="manifest" href="{% static 'manifest.json' %}" /> -->
+	<title>{% if title %}{{ title }} &middot; {% endif %}BitScoop</title>
 
-		<title>{% if title %}{{ title }} &middot; {% endif %}BitScoop</title>
-		<link rel="shortcut icon" href="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/favicon.png" />
+	{% include 'core/components/metatags.html' %}
 
-		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" /> -->
-		<!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-		<!-- <link rel="apple-touch-icon" href="{% static 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png' %}"> -->
+	{% block static %}
+		<script type="text/javascript">
+			window.staticUrl = "{% static '' %}";
+		</script>
 
-		{% block static %}
-			<script type="text/javascript">
-				window.staticUrl = "{% static '' %}";
-			</script>
+		<!-- RequireJS configuration -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
+		<script type="text/javascript" src="{% static 'lib/requirejs/config/paths.min.js' %}"></script>
 
-			<!-- RequireJS configuration -->
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
-			<script type="text/javascript" src="{% static 'lib/requirejs/config/paths.min.js' %}"></script>
+		<script type="text/javascript">
+			require(['expand-menu']);
+		</script>
 
-			<script type="text/javascript">
-				require(['expand-menu']);
-			</script>
+		<!-- External fonts -->
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700"/>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese%7CRaleway%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese&#038;ver=4.3"/>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-			<!-- External fonts -->
-			<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700" />
-			<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese%7CRaleway%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese&#038;ver=4.3" />
-			<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<!-- Styles -->
+		<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.min.css' %}"/>
+	{% endblock %}
+</head>
 
-			<!-- Styles -->
-			<link rel="stylesheet" type="text/css" href="{% static 'core/css/site.min.css' %}" />
-			<link rel="stylesheet" type="text/css" href="{% static 'lib/share-button/share-button.min.css' %}" />
+<body class="{{ page_name }}">
+{% block outer_header %}
+	<header>
+		{% block header %}
+			{% include 'core/components/header.html' %}
 		{% endblock %}
-	</head>
+	</header>
+{% endblock %}
 
-	<body class="{{ page_name }}">
-		{% block outer_header %}
-			<header>
-				{% block header %}
-					{% include 'core/components/header.html' %}
-				{% endblock %}
-			</header>
+{% block outer_content %}
+	<section id="content">
+		{% block outer_main %}
+			<main>
+				{% block main %}{% endblock %}
+			</main>
 		{% endblock %}
+	</section>
+{% endblock %}
 
-		{% block outer_content %}
-			<section id="content">
-				{% block outer_main %}
-					<main>
-						{% block main %}{% endblock %}
-					</main>
-				{% endblock %}
-			</section>
+{% block outer_footer %}
+	<footer>
+		{% block footer %}
+			<div class="bitscoop-footer">
+				<div class="copyright">&copy 2015 BitScoop Labs, Inc. | All Rights Reserved.</div>
+				<div class="footer-links">
+					<a class="privacy-policy" href="{% url 'privacy' %}">Privacy Policy</a>
+					<a class="terms-of-use" href="{% url 'terms' %}">Terms of Use</a>
+				</div>
+			</div>
 		{% endblock %}
-
-		{% block outer_footer %}
-			<footer>
-				{% block footer %}
-					<div>&copy 2015 BitScoop Labs, Inc. | All Rights Reserved.</div>
-				{% endblock %}
-			</footer>
-		{% endblock %}
-	</body>
+	</footer>
+{% endblock %}
+</body>
 </html>
