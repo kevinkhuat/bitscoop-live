@@ -38,6 +38,7 @@ def create_fixture_connection(connection):
         provider=connection['provider'],
         updated=connection['updated'],
         user_id=connection['user_id'],
+        demo=True,
     )
 
     if 'last_run' in connection.keys():

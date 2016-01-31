@@ -105,6 +105,7 @@ class Connection(motorengine.Document):
     auth_data = DictField()
     auth_status = DictField()
     created = motorengine.DateTimeField(required=True)
+    demo = motorengine.BooleanField()
     enabled = motorengine.BooleanField(default=False)
     endpoint_data = DictField()
     frequency = motorengine.IntField()

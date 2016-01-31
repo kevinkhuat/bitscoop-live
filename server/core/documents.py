@@ -188,6 +188,7 @@ class Connection(mongoengine.Document):
     auth_data = mongoengine.DictField()
     auth_status = mongoengine.DictField()
     created = mongoengine.DateTimeField(default=datetime.datetime.now)
+    demo = mongoengine.BooleanField()
     enabled = mongoengine.BooleanField(default=False)
     endpoint_data = mongoengine.DictField()
     frequency = mongoengine.IntField(default=1, choices=FREQUENCY)
