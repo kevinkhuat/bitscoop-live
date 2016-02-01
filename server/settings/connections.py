@@ -9,6 +9,7 @@ from server.settings.keys import *  # noqa
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'server.core.backends.IdentifierBackend',
+    'server.contrib.psafixbox.backends.instagram.InstagramOAuth2',
     'server.contrib.psafixbox.backends.reddit.RedditOAuth2',
     'server.contrib.psafixbox.backends.slice.SliceOAuth2',
     'server.contrib.psafixbox.backends.spotify.SpotifyOAuth2',
@@ -41,7 +42,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social.backends.google.GoogleOpenId',
     # 'social.backends.google.GooglePlusAuth',
     # 'social.backends.google.GoogleOpenIdConnect',
-    'social.backends.instagram.InstagramOAuth2',
+    # 'social.backends.instagram.InstagramOAuth2',
     # 'social.backends.jawbone.JawboneOAuth2',
     # 'social.backends.linkedin.LinkedinOAuth',
     # 'social.backends.linkedin.LinkedinOAuth2',

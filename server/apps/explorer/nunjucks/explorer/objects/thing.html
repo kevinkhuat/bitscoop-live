@@ -4,7 +4,13 @@
 		{% if thing.formatted_embed_content %}
 			{{ thing.formatted_embed_content }}
 		{% elif thing.embed_thumbnail %}
-			<img src="{{ thing.embed_thumbnail }}"/>
+			{% if not thing.title %}
+				<img src="{{ thing.embed_thumbnail }}"/>
+			{% else %}
+				<a href="{{ thing.url }}" target="_blank">
+					<img src="{{ thing.embed_thumbnail }}"/>
+				</a>
+			{% endif %}
 		{% endif %}
 
 		{% if thing.url %}
@@ -14,7 +20,7 @@
 		{% endif %}
 
 		{% if thing.text %}
-			<div class="text-area">{{ thing.text }}</div>
+			<pre class="text-area">{{ thing.text }}</pre>
 		{% endif %}
 
 		<div class="icons">

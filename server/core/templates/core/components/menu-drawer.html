@@ -33,13 +33,25 @@
 		{% endif %}
 		<a href="{% url 'providers' %}"><i class="fa fa-plus"></i> Providers</a>
 		<a href="{% url 'settings:base' %}"><i class="fa fa-cog"></i> Settings</a>
-		<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
 	</div>
-	<div class="bitscoop-footer">
-		<div class="copyright">&copy 2015 BitScoop Labs, Inc. | All Rights Reserved.</div>
-		<div class="footer-links">
-			<a class="privacy-policy" href="{% url 'privacy' %}">Privacy Policy</a>
-			<a class="terms-of-use" href="{% url 'terms' %}">Terms of Use</a>
+	<div  class="menu-footer">
+		<div class="user-info">
+			<div>
+				{% if request.user.full_name %}
+					<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.full_name }}</a>
+				{% else %}
+					<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.handle }}</a>
+				{% endif %}
+			</div>
+			<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+		</div>
+
+		<div class="bitscoop-footer">
+			<div class="copyright">BitScoop Labs &copy 2016</div>
+			<span class="spacer"> | </span>
+			<a class="privacy-policy" href="{% url 'privacy' %}">Privacy</a>
+			<span class="spacer"> | </span>
+			<a class="terms-of-use" href="{% url 'terms' %}">Terms</a>
 		</div>
 	</div>
 </div>

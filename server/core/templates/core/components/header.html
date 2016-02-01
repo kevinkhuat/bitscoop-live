@@ -5,7 +5,7 @@
 	{% include 'core/components/menu-drawer.html' with mode=mode %}
 	<nav>
 		{% if mode == 'app' %}
-			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
+			<img id="home" class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" />
 			<a id="back-to-results" class="hidden"><i class="fa fa-arrow-circle-left"></i></a>
 			{% include 'core/components/search-bar.html' %}
 		{% else %}
@@ -23,7 +23,6 @@
 	</nav>
 	<div class="sort-bar" style="display: none">
 		<div class="view-selector" data-selector="results">
-			<div class="fa fa-arrow-circle-left"></div>
 			<span>Results / </span>
 			<div class="facet"></div>
 		</div>
@@ -49,12 +48,12 @@
 
 		<span class="flex-grow"></span>
 
-		<a href="#">About</a>
-		<a href="{% url 'providers' %}">Providers</a>
+{#		<a href="#">About</a>#}
+{#		<a href="{% url 'providers' %}">Providers</a>#}
 
 		{% if not request.user.is_authenticated %}
-			<a href="{% url 'login' %}">Log In</a>
-			<a href="{% url 'signup' %}">TRY NOW!</a>
+{#			<a href="{% url 'login' %}">Log In</a>#}
+{#			<a href="{% url 'signup' %}">TRY NOW!</a>#}
 		{% else %}
 			<a href="{% url 'explorer:main' %}">Explore</a>
 		{% endif %}

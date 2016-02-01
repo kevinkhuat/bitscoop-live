@@ -3,7 +3,11 @@
 	<div class="object-details event">
 		<div>
 			<div class="icon {{ event.eventTypeIcon }}"></div>
+		{% if event.context %}
+			<div class="event-type">{{ event.context }}</div>
+		{% else %}
 			<div class="event-type">{{ event.type }}</div>
+		{% endif %}
 		</div>
 
 		<div>

@@ -114,9 +114,9 @@ class Provider(mongoengine.Document):
     )
 
     auth_type = mongoengine.IntField(choices=AUTH_TYPES)
-    client_callable = mongoengine.BooleanField(default=True)
     description = mongoengine.StringField()
     domain = mongoengine.StringField()
+    enabled = mongoengine.BooleanField(default=True)
     endpoint_wait_time = mongoengine.IntField()
     endpoints = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Endpoint))
     psa_legacy = mongoengine.DictField()

@@ -1,7 +1,7 @@
 define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedContent, externalActions, icons, moment) {
 	var isMobile, objectContextDict;
 
-	isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 1080);
+	isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
 
 	//objectContextDict contains the mappings for generating the context for every object type for every view state,
 	//as well as for rendering that object type's details panel.
@@ -249,7 +249,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 					var datetime, datetimeEstimated, gridItem, title, thumbnail;
 
 					//TODO: Can we do this better?
-					if (event.content.length > 0) {
+					if (event.content && event.content.length > 0) {
 						if (event.content[0].embed_thumbnail) {
 							thumbnail = event.content[0].embed_thumbnail;
 						}
@@ -260,7 +260,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 
 						event.firstItemType = event.content[0].type;
 					}
-					else if (event.things.length) {
+					else if (event.things && event.things.length) {
 						if (event.things[0].embed_thumbnail) {
 							thumbnail = event.things[0].embed_thumbnail;
 						}
@@ -272,7 +272,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 						event.firstItemType = event.things[0].type;
 					}
 
-					if (event.contacts.length > 0) {
+					if (event.contacts && event.contacts.length > 0) {
 						event.firstContactHandle = event.contacts[0].handle;
 					}
 
@@ -317,18 +317,18 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 				list: function objectContext$event$listItem(event) {
 					var firstContent, firstThing;
 
-					if (event.contacts.length > 0) {
+					if (event.contacts && event.contacts.length > 0) {
 						event.firstContactHandle = event.contacts[0].handle;
 					}
 
-					if (event.content.length > 0) {
+					if (event.content && event.content.length > 0) {
 						firstContent = event.content[0];
 
 						event.title = firstContent.title;
 						event.firstItemType = firstContent.type;
 						event.itemIcon = icons.getContentFontIcon(firstContent);
 					}
-					else if (event.things.length > 0) {
+					else if (event.things && event.things.length > 0) {
 						firstThing = event.things[0];
 
 						event.title = firstThing.title;
@@ -403,18 +403,18 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 				map: function objectContext$event$mapItem(event) {
 					var firstContent;
 
-					if (event.contacts.length > 0) {
+					if (event.contacts && event.contacts.length > 0) {
 						event.firstContactHandle = event.contacts[0].handle;
 					}
 
-					if (event.content.length > 0) {
+					if (event.content && event.content.length > 0) {
 						firstContent = event.content[0];
 
 						event.title = firstContent.title;
 						event.firstItemType = firstContent.type;
 						event.itemIcon = icons.getContentFontIcon(firstContent);
 					}
-					else if (event.things.length > 0) {
+					else if (event.things && event.things.length > 0) {
 						firstThing = event.things[0];
 
 						event.title = firstThing.title;

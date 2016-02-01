@@ -1,6 +1,10 @@
 {% extends 'core/base.html' %}
 
 
+{% block outer_header %}
+{% endblock %}
+
+
 {% block main %}
 	<form action="{% url 'login' %}" method="POST">
 		<div class="boxed-group">

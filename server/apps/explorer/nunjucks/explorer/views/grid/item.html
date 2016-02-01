@@ -1,5 +1,4 @@
-<div class="mix grid-item" data-object-id="{{ objectType }}.{{ object.id }}" {%
-     if thumbnail %}style="background-image:url({{ thumbnail }}" {% endif %}{% for sortField in sortFields %} data-{{
+<div class="mix grid-item" data-object-id="{{ objectType }}.{{ object.id }}" {% if thumbnail %}style="background-image:url({{ thumbnail }}" {% endif %}{% for sortField in sortFields %} data-{{
      sortField.attr
      }}="{% if object[sortField.property] == undefined %}~{% else %}{{ object[sortField.property] }}{% endif %}" {%
      endfor %}>
@@ -13,6 +12,7 @@
 			<i class="{{ leftIcon }}"></i>
 		</div>
 		{% endif %}
+
 		{% if title %}
 		<div class="title flex-grow align-center">{{ title }}</div>
 		{% elif date %}
@@ -24,7 +24,10 @@
 				<span>{{ time }}</span>
 			</div>
 		</div>
+		{% else %}
+		<div class=flex-grow"></div>
 		{% endif %}
+
 		{% if rightIcon %}
 		<div class="bubble right">
 			<i class="{{ rightIcon }}"></i>

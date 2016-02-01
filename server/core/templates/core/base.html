@@ -21,6 +21,7 @@
 		</script>
 
 		<!-- External fonts -->
+		<link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Quicksand:400,300'/>
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,400,700"/>
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Sans%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese%7CRaleway%3A400%2C400italic%2C700%2C700italic%3Alatin%2Cgreek-ext%2Ccyrillic%2Clatin-ext%2Cgreek%2Ccyrillic-ext%2Cvietnamese&#038;ver=4.3"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -53,10 +54,17 @@
 	<footer>
 		{% block footer %}
 			<div class="bitscoop-footer">
-				<div class="copyright">&copy 2015 BitScoop Labs, Inc. | All Rights Reserved.</div>
+				<div class="copyright">BitScoop Labs &copy 2016</div>
 				<div class="footer-links">
-					<a class="privacy-policy" href="{% url 'privacy' %}">Privacy Policy</a>
-					<a class="terms-of-use" href="{% url 'terms' %}">Terms of Use</a>
+					{% if not request.user.is_authenticated %}
+						<a href="{% url 'login' %}">Log In</a>
+						<span class="spacer"> | </span>
+						<a href="{% url 'signup' %}">Sign Up</a>
+						<span class="spacer"> | </span>
+					{% endif %}
+					<a class="privacy-policy" href="{% url 'privacy' %}">Privacy</a>
+					<span class="spacer"> | </span>
+					<a class="terms-of-use" href="{% url 'terms' %}">Terms</a>
 				</div>
 			</div>
 		{% endblock %}

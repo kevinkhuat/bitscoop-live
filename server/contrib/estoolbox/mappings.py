@@ -153,6 +153,9 @@ EVENT_MAPPING = {
             'contact_interaction_type': {  # Optional
                 'type': 'string'
             },
+            'context': {  # Optional
+                'type': 'string'
+            },
             'contacts': {  # Optional
                 'type': 'object',
                 'properties': {

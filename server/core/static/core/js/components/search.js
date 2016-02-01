@@ -445,7 +445,7 @@ define(['debounce', 'filters', 'jquery', 'jquery-cookie', 'jquery-deserialize'],
 					}
 
 					if (data.to) {
-						operand.gte(new Date(data.from));
+						operand.lte(new Date(data.to));
 					}
 
 					filter = filter.or(operand);

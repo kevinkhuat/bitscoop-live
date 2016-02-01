@@ -6,6 +6,7 @@ require.config({
 		// Tools
 		autoblur: window.staticUrl + 'core/js/tools/autoblur.min',
 		debounce: window.staticUrl + 'core/js/tools/debounce.min',
+		'deferred-debounce': window.staticUrl + 'core/js/tools/deferred-debounce.min',
 		'expand-menu': window.staticUrl + 'core/js/tools/expand-menu.min',
 		filters: window.staticUrl + 'core/js/tools/filters.min',
 		'form-monitor': window.staticUrl + 'core/js/tools/form-monitor.min',
@@ -30,7 +31,6 @@ require.config({
 		// Explorer Utils
 		'embed-content': window.staticUrl + 'explorer/js/embed-content.min',
 		'external-actions': window.staticUrl + 'explorer/js/external-actions.min',
-		scheduleMapper: window.staticUrl + 'explorer/js/scheduleMapper.min',
 
 		// Explorer Components
 		details: window.staticUrl + 'explorer/js/components/details.min',

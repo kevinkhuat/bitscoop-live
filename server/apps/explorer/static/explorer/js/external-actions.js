@@ -1,19 +1,19 @@
-define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks) {
+define(['ga', 'jquery', 'lodash', 'moment', 'nunjucks'], function(ga, $, _, moment, nunjucks) {
 	var TEMPLATES = {
 		defaults: {
-			url: 'https://bitscoop.com',            // the url you'd like to share.
-			title: 'Shared with BitScoop',          // title to be shared alongside your link
-			description: 'Shared with BitScoop',    // text to be shared alongside your link
-			imageURL: 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png',       // image to be shared
-			hashtags: '@BitScoop',
-			via: '@BitScoopLabs'
+			url: 'https://bitscoop.com',  // the url you'd like to share.
+			title: 'Shared via BitScoop',  // title to be shared alongside your link
+			description: 'Search & Explore the Internet of You',  // text to be shared alongside your link
+			imageURL: 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png',  // image to be shared
+			hashtags: 'BitScoop'
+			//via: 'BitScoopLabs'
 		},
 		urls: {
 			share: {
 				facebook: {
 					href: 'http://www.facebook.com/sharer.php?s=100&p[title]={{ title }}&p[summary]={{ description }}&p[url]={{ url }}&p[images][0]={{ imageURL }}',
-					app_id: '',       // Facebook app id for tracking shares. if provided, will use the facebook API
-					caption: '',      // caption to be shared alongside your link to Facebook
+					app_id: '',  // Facebook app id for tracking shares. if provided, will use the facebook API
+					caption: '',  // caption to be shared alongside your link to Facebook
 					after: function() {
 						ga('send', {
 							hitType: 'social',
@@ -24,11 +24,11 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					}
 				},
 				twitter: {
-					href: 'https://twitter.com/intent/tweet?text={{ title }}+{{ description }}&url={{ url }}&hashtags={{ hashtags }}&via={{ via }}',
+					href: 'https://twitter.com/intent/tweet?text={{ title }}&url={{ url }}',
 					after: function() {
 						ga('send', {
 							hitType: 'social',
-							socialNetwork: 'tumblr',
+							socialNetwork: 'twitter',
 							socialAction: 'share',
 							socialTarget: url
 						});
@@ -46,18 +46,18 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					}
 				},
 				tumblr: {
-					href: 'http://www.tumblr.com/share/link?url={{ url }}&name={{ title }}&description={{ description }}',
+					href: 'http://www.tumblr.com/share/link?url={{ url }}&name={{ title }}&description={{ description }}&tags={{ hashtags }}&show-via=true',
 					after: function() {
 						ga('send', {
 							hitType: 'social',
-							socialNetwork: 'Twitter',
+							socialNetwork: 'tumblr',
 							socialAction: 'share',
 							socialTarget: url
 						});
 					}
 				},
 				pinterest: {
-					href: 'http://pinterest.com/pin/create/button/?url={{ url }}&media={{ imageURL }}&description={{ description }}',
+					href: 'http://pinterest.com/pin/create/button/?url={{ url }}&media={{ imageURL }}&description={{ title }}%20-%20{{ description }}',
 					after: function() {
 						ga('send', {
 							hitType: 'social',
@@ -69,6 +69,7 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 				},
 				reddit: {
 					href: 'http://www.reddit.com/submit?url={{ url }}&title={{ title }}',
+					href_text: 'https://www.reddit.com/submit?title={{ title }}&text={{ description }}',
 					after: function() {
 						ga('send', {
 							hitType: 'social',
@@ -90,7 +91,7 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					}
 				},
 				email: {
-					href: 'mailto:?subject={{ url }}&body={{ description }}: {{ url }}',
+					href: 'mailto:%20?subject={{ title }}&body={{ url }}%20-%20{{ description }}',
 					after: function() {
 						ga('send', {
 							hitType: 'social',
@@ -101,7 +102,7 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					}
 				},
 				sms: {
-					href: 'sms:&body={{ title }}+{{ url }}',
+					href: 'sms:%20&body={{ title }}%20-%20{{ url }}%20-%20{{ description }}',
 					after: function() {
 						ga('send', {
 							hitType: 'sms',
@@ -114,11 +115,16 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 			},
 			actions: {
 				wolfram_calc: {
-					// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT
-					// http://www.wolframalpha.com/input/?i=France
-					// http://www.wolframalpha.com/input/?i=December+15+2014+4%3A15+am+PT+weather+Paris
-					// http://www.wolframalpha.com/input/?i=capricorn+one
-					href: 'http://www.wolframalpha.com/input/?i={{ title }}'
+					href: 'http://www.wolframalpha.com/input/?i={{ term }}'
+				},
+				cisi: {
+					href: 'http://www.canistream.it/search/movie/{{ term }}'
+				},
+				amazon: {
+					href: 'https://www.amazon.com/s/field-keywords={{ term }}'
+				},
+				wikipedia: {
+					href: 'https://en.wikipedia.org/w/index.php?search={{ term }}'
 				}
 			},
 			location: {
@@ -132,7 +138,7 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 				},
 				wolfram: {
 					// http://www.wolframalpha.com/input/?i=48.8567+lat+2.3508+long
-					href: 'http://www.wolframalpha.com/input/?i={{ lat }}+latitude,+{{ lng }}+longitude'
+					href: 'http://www.wolframalpha.com/input/?i={{ lat }}%20latitude,%20{{ lng }}%20longitude'
 				},
 				weather: {
 					// http://forecast.weather.gov/MapClick.php?lat=40.781581302919285&lon=-73.96648406982422
@@ -142,83 +148,119 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 		}
 	};
 
+	// Google social interactions
+	// https://developers.google.com/analytics/devguides/collection/analyticsjs/social-interactions
+
 	function _fixedEncodeURIComponent(str) {
 		return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
 			return '%' + c.charCodeAt(0).toString(16);
 		});
 	}
 
-	// Google social interactions
-	// https://developers.google.com/analytics/devguides/collection/analyticsjs/social-interactions
+	function _hydrateShareURL(URLString, url, title, description, imageURL) {
+		return URLString.replace('{{ url }}', _fixedEncodeURIComponent(url === null ? TEMPLATES.defaults.url : url))
+			.replace('{{ title }}', _fixedEncodeURIComponent(title === '' ? TEMPLATES.defaults.title : title))
+			.replace('{{ description }}', _fixedEncodeURIComponent(description === '' ? TEMPLATES.defaults.description : description))
+			.replace('{{ imageURL }}', _fixedEncodeURIComponent(imageURL === '' ? TEMPLATES.defaults.imageURL : imageURL))
+			.replace('{{ hashtags }}', _fixedEncodeURIComponent(TEMPLATES.defaults.hashtags));
+			//.replace('{{ via }}', _fixedEncodeURIComponent(TEMPLATES.defaults.via));
+	}
 
 	function _hydrateLocationURL(URLString, lat, lng) {
 		return URLString.replace('{{ lat }}', _fixedEncodeURIComponent(lat))
 			.replace('{{ lng }}', _fixedEncodeURIComponent(lng));
 	}
 
-	function _hydrateShareURL(URLString, url, title, description, imageURL) {
-		return URLString.replace('{{ url }}', _fixedEncodeURIComponent(url === '' ? TEMPLATES.defaults.url : url))
-			.replace('{{ title }}', _fixedEncodeURIComponent(title === '' ? TEMPLATES.defaults.title : title))
-			.replace('{{ description }}', _fixedEncodeURIComponent(description === '' ? TEMPLATES.defaults.description : description))
-			.replace('{{ imageURL }}', _fixedEncodeURIComponent(imageURL === '' ? TEMPLATES.defaults.imageURL : imageURL))
-			.replace('{{ hashtags }}', _fixedEncodeURIComponent(TEMPLATES.defaults.hashtags))
-			.replace('{{ via }}', _fixedEncodeURIComponent(TEMPLATES.defaults.via));
+	function _hydrateActionURL(URLString, term) {
+		return URLString.replace('{{ term }}', _fixedEncodeURIComponent(term));
+	}
+
+	function _prettyConcat(stringArray) {
+		var result = '';
+		_.forEach(stringArray, function(value) {
+			if (value) {
+				if (result.length > 0) {
+					result += ' - ' + value;
+				}
+				else {
+					result += value;
+				}
+			}
+		});
+		return result;
 	}
 
 	var renderActions = {
 		objects: {
 			contacts: {
 				render: function renderActions$objects$contact(contact) {
-					return nunjucks.render('explorer/components/action/bar.html', {
+					var result = nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
-							action: true
+							location: false,
+							action: contact.name || false
 						}) + renderActions.actions.share(
-							'',
-							contact.source + ' - ' + contact.name + ' - ' + contact.handle + ' - ' + TEMPLATES.defaults.title,
-							contact.source + ' - ' + contact.name + ' - ' + contact.handle + ' - ' + TEMPLATES.defaults.description,
-							''
-						) + renderActions.actions.actions(
-							'',
-							contact.name,
-							contact.name,
+							null,
+							TEMPLATES.defaults.title,
+							_prettyConcat([contact.source, contact.name, contact.handle]),
 							''
 						);
+
+					if (contact.name) {
+						result += renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, contact.name),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, contact.name)
+						});
+					}
+					return result;
 				}
 			},
 			content: {
 				render: function renderActions$objects$content(content) {
-					return nunjucks.render('explorer/components/action/bar.html', {
+					var addActionBar, result;
+					addActionBar = _.includes(['audio', 'video', 'game'], content.type);
+					result = nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
-							action: true
+							location: false,
+							action: addActionBar
 						}) + renderActions.actions.share(
-							content.url === null ? '' : content.url,
-							content.title + ' - ' + TEMPLATES.defaults.title,
-							content.text + ' - ' + TEMPLATES.defaults.description,
-							content.embed_thumbnail === null ? '' : content.embed_thumbnail
-						) + renderActions.actions.actions(
-							content.url === null ? '' : content.url,
-							content.title,
-							content.text,
-							content.embed_thumbnail === null ? '' : content.embed_thumbnail
+							content.url || null,
+							_prettyConcat([content.title, TEMPLATES.defaults.title]),
+							_prettyConcat([content.text || TEMPLATES.defaults.description]),
+							content.embed_thumbnail || ''
 						);
+
+					if (addActionBar) {
+						result += renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, content.title),
+							cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, content.title),
+							amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, content.title),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, content.title)
+						});
+					}
+					return result;
 				}
 			},
 			events: {
 				render: function renderActions$objects$event(event) {
-					return nunjucks.render('explorer/components/action/bar.html', {
+					var result = nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
-							action: true
+							location: false,
+							action: event.datetime || true
 						}) + renderActions.actions.share(
-							'',
-							event.provider_name + ' - ' + event.type + ' - ' + moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz') + ' - ' + TEMPLATES.defaults.description,
-							event.provider_name + ' - ' + event.type + ' - ' + moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz') + ' - ' + TEMPLATES.defaults.description,
-							''
-						) + renderActions.actions.actions(
-							'',
-							moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz'),
-							moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz'),
+							null,
+							_prettyConcat([event.type, TEMPLATES.defaults.title, TEMPLATES.defaults.description]),
+							_prettyConcat([event.provider_name, event.type, moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz')]),
 							''
 						);
+
+					if (event.datetime) {
+						var formattedDateTime = moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz');
+						result += renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, formattedDateTime),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, formattedDateTime)
+						});
+					}
+					return result;
 				}
 			},
 			locations: {
@@ -226,7 +268,7 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					return nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
 							location: true,
-							action: true
+							action: false
 						}) + renderActions.actions.share(
 							_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, location.geolocation[1], location.geolocation[0]),
 							'',
@@ -235,31 +277,24 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 						) + renderActions.actions.location(
 							location.geolocation[1],
 							location.geolocation[0]
-						) + renderActions.actions.actions(
-							'',
-							location.geolocation[1] + ' latitude, ' + location.geolocation[0] + ' longitude ',
-							location.geolocation[1] + ' latitude, ' + location.geolocation[0] + ' longitude ',
-							''
 						);
 				}
 			},
 			organizations: {
 				render: function renderActions$objects$place(organization) {
-					return nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
+					var result = nunjucks.render('explorer/components/action/bar.html', {
+							share: (typeof (organization.url) === 'undefined'),
 							location: false,
 							action: true
-						}) + renderActions.actions.share(
-							organization.url === null ? '' : organization.thumbnail,
-							organization.title + ' - ' + TEMPLATES.defaults.title,
-							organization.text + ' - ' + TEMPLATES.defaults.description,
-							organization.thumbnail === null ? '' : organization.thumbnail
-						) + renderActions.actions.actions(
-							organization.url === null ? '' : organization.thumbnail,
-							organization.title + ' - ' + TEMPLATES.defaults.title,
-							organization.text + ' - ' + TEMPLATES.defaults.description,
-							organization.thumbnail === null ? '' : organization.thumbnail
-						);
+						}) + renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, organization.title),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, organization.title)
+						});
+
+					if (typeof (organization.url) === 'undefined') {
+						result += renderActions.actions.share(organization.title || organization.text);
+					}
+					return result;
 				}
 			},
 			places: {
@@ -276,42 +311,50 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 						) + renderActions.actions.location(
 							place.location.geolocation[1],
 							place.location.geolocation[0]
-						) + renderActions.actions.actions(
-							'',
-							place.location.geolocation[1] + ' latitude, ' + place.location.geolocation[0] + ' longitude ',
-							place.location.geolocation[1] + ' latitude, ' + place.location.geolocation[0] + ' longitude ',
-							''
-						);
+						) + renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, place.name || place.reverse_geolocation),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, place.name || place.reverse_geolocation)
+						});
 				}
 			},
 			things: {
 				render: function renderActions$objects$thing(thing) {
 					return nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
+							location: false,
 							action: true
 						}) + renderActions.actions.share(
-							'',
-							thing.source + ' - ' + thing.name + ' - ' + thing.handle + ' - ' + TEMPLATES.defaults.title,
-							thing.source + ' - ' + thing.name + ' - ' + thing.handle + ' - ' + TEMPLATES.defaults.description,
-							''
-						) + renderActions.actions.actions(
-							'',
-							thing.name,
-							thing.name,
-							''
-						);
+							thing.url || null,
+							_prettyConcat([thing.title, TEMPLATES.defaults.title]),
+							_prettyConcat([thing.text || TEMPLATES.defaults.description]),
+							thing.embed_thumbnail || ''
+						) + renderActions.actions.actions({
+							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, thing.title),
+							cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, thing.title),
+							amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, thing.title),
+							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, thing.title)
+						});
 				}
 			}
 		},
 		actions: {
 			share: function renderActions$actions$share(url, title, description, imageURL) {
+				var facebookHref, googlePlusHref, redditHref;
+				if (url !== null) {
+					facebookHref = _hydrateShareURL(TEMPLATES.urls.share.facebook.href, url, title, description, imageURL);
+					googlePlusHref = _hydrateShareURL(TEMPLATES.urls.share.googlePlus.href, url, title, description, imageURL);
+					redditHref = _hydrateShareURL(TEMPLATES.urls.share.reddit.href, url, title, description, imageURL);
+				}
+				else {
+					redditHref = _hydrateShareURL(TEMPLATES.urls.share.reddit.href_text, url, title, description, imageURL);
+				}
 				return nunjucks.render('explorer/components/action/share.html', {
-					facebook_href: _hydrateShareURL(TEMPLATES.urls.share.facebook.href, url, title, description, imageURL),
-					twitter_href: _hydrateShareURL(TEMPLATES.urls.share.twitter.href, url, title, description, imageURL),
-					googlePlus_href: _hydrateShareURL(TEMPLATES.urls.share.googlePlus.href, url, title, description, imageURL),
+					facebook_href: facebookHref,
+					twitter_href: _hydrateShareURL(TEMPLATES.urls.share.twitter.href, url, title.replace(' - Shared with BitScoop', '').slice(0, 60) + ' - via @BitScoopLabs', description, imageURL),
+					googlePlus_href: googlePlusHref,
 					tumblr_href: _hydrateShareURL(TEMPLATES.urls.share.tumblr.href, url, title, description, imageURL),
 					pinterest_href: _hydrateShareURL(TEMPLATES.urls.share.pinterest.href, url, title, description, imageURL),
-					reddit_href: _hydrateShareURL(TEMPLATES.urls.share.reddit.href, url, title, description, imageURL),
+					reddit_href: redditHref,
 					linkedin_href: _hydrateShareURL(TEMPLATES.urls.share.linkedin.href, url, title, description, imageURL),
 					email_href: _hydrateShareURL(TEMPLATES.urls.share.email.href, url, title, description, imageURL),
 					sms_href: _hydrateShareURL(TEMPLATES.urls.share.sms.href, url, title, description, imageURL)
@@ -325,10 +368,8 @@ define(['ga', 'jquery', 'moment', 'nunjucks'], function(ga, $, moment, nunjucks)
 					wolfram_href: _hydrateLocationURL(TEMPLATES.urls.location.wolfram.href, lat, lng)
 				});
 			},
-			actions: function renderActions$actions$location(url, title, description, imageURL, lat, lng, dateTime) {
-				return nunjucks.render('explorer/components/action/actions.html', {
-					wolfram_calc_href: _hydrateShareURL(TEMPLATES.urls.actions.wolfram_calc.href, url, title, description, imageURL)
-				});
+			actions: function renderActions$actions$location(context) {
+				return nunjucks.render('explorer/components/action/actions.html', context);
 			}
 		}
 	};

@@ -206,6 +206,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'server.contrib.pytoolbox.django.middleware.AcceptMiddleware',  # Parses HTTP-Accept headers.
+    'server.contrib.multiauth.plugins.session.middleware.IpMiddleware',  # Sets the IP address on the request.
     'server.contrib.pytoolbox.django.middleware.SetAnonymousTestCookie',  # Set test cookie for anonymous users.
 )
 

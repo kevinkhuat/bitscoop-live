@@ -1,5 +1,5 @@
-define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'lodash', 'moment', 'nunjucks', 'object-context', 'search', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers'],
-	function(cartano, debounce, embedContent, icons, $, leaflet, _, moment, nunjucks, objectContext, search, viewstate) {
+define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'lodash', 'moment', 'nunjucks', 'object-context', 'search', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers'],
+	function(cartano, debounce, deferredDebounce, embedContent, icons, $, leaflet, _, moment, nunjucks, objectContext, search, viewstate) {
 		var DETAILS_ORDERING, EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults;
 
 		isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
@@ -118,7 +118,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 				//If the event has an actual location, then save that location to searchResults and add a reference
 				//to that event onto the location.
-				if (event.location.id) {
+				if (event.location && event.location.id) {
 					searchResults.locations[event.location.id] = event.location;
 					addEventsToSearchResults$addEventReference(searchResults.locations[event.location.id], event);
 				}
@@ -148,8 +148,12 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			if (object == null) {
 				//Since results are stored in a dictionary, convert the dictionary of the current object type shown
 				//into an array.
-				results = Object.keys(searchResults[explorerState.objectTypeShown]).map(function(val) {
-					return searchResults[explorerState.objectTypeShown][val];
+				results = [];
+
+				_.forEach(Object.keys(searchResults[explorerState.objectTypeShown]), function(val) {
+					if (searchResults[explorerState.objectTypeShown][val].location) {
+						results.push(searchResults[explorerState.objectTypeShown][val]);
+					}
 				});
 			}
 			//If an object is passed in, then the list of objects to be mapped ('results') should be just the object.
@@ -447,11 +451,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 				//Display the view and sort selectors.
 				$viewBar.show();
 				$sortBar.show();
-
-				if (isMobile) {
-					$homeButton.addClass('hidden');
-					$backToResults.removeClass('hidden');
-				}
+				$homeButton.addClass('hidden');
+				$backToResults.removeClass('hidden');
 
 				//Show all the view selectors, then hide the selectors for views that are not applicable to the current object type.
 				$('.view-selector').removeClass('hidden');
@@ -468,11 +469,8 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			else {
 				$viewBar.hide();
 				$sortBar.hide();
-
-				if (isMobile) {
-					$homeButton.removeClass('hidden');
-					$backToResults.addClass('hidden');
-				}
+				$homeButton.removeClass('hidden');
+				$backToResults.addClass('hidden');
 			}
 
 			$('#background').off('scroll');
@@ -497,9 +495,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						addNewResults();
 
 						//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
-						$('#background').on('scroll', debounce(function(e) {
-							checkScrollPagination(e);
-						}, SCROLL_DEBOUNCE));
+						$('#background').on('scroll', deferredDebounce(checkScrollPagination, SCROLL_DEBOUNCE));
 					});
 					break;
 
@@ -540,9 +536,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						$('#left').addClass('expanded');
 
 						//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
-						$('#list').on('scroll', debounce(function(e) {
-							checkScrollPagination(e);
-						}, SCROLL_DEBOUNCE));
+						$('#list').on('scroll', deferredDebounce(checkScrollPagination, SCROLL_DEBOUNCE));
 					});
 					break;
 
@@ -555,9 +549,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						addNewResults();
 
 						//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
-						$('#background').on('scroll', debounce(function(e) {
-							checkScrollPagination(e);
-						}, SCROLL_DEBOUNCE));
+						$('#background').on('scroll', deferredDebounce(checkScrollPagination, SCROLL_DEBOUNCE));
 					});
 					break;
 
@@ -581,7 +573,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 						});
 
 						//Scale all embeddable objects and perform the initial sort.
-						embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img');
+						embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img', [], searchResults.content);
 						initializeSort($list);
 					});
 					break;
@@ -699,10 +691,10 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 					var newPanel;
 
 					//Special case for adding a location
+					//Don't add the location if currently in map view, as the map makes it redundant
+					//(and we don't support multiple maps right now, either).
 					if (objectType === 'locations') {
-						//Don't add the location if currently in map view, as the map makes it redundant
-						//(and we don't support multiple maps right now, either).
-						if (explorerState.currentViewState !== 'map') {
+						if (explorerState.currentViewState !== 'map' && detailsObject.location) {
 							//Render a location details panel and append it to the drawer/details window.
 							newPanel = nunjucks.render(objectTemplateMap.locations, objectContext.locations.details(detailsObject.location, true));
 							$target.append(newPanel);
@@ -725,7 +717,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 				//If not in map view, add the map to $map-container (if no location, this won't occur),
 				// add a marker for the selected object, and remove the unnecessary map controls.
-				if (explorerState.currentViewState !== 'map') {
+				if (explorerState.currentViewState !== 'map' && detailsObject.location) {
 					$('#map-container').html(map.element);
 					addMapMarkers(detailsObject);
 					removeMapControls();
@@ -748,7 +740,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 					//If not in map view, add the map to $map-container (if no location, this won't occur),
 					// add a marker for the selected object, and remove the unnecessary map controls.
-					if (explorerState.currentViewState !== 'map') {
+					if (explorerState.currentViewState !== 'map' && detailsObject.location) {
 						$('#map-container').html(map.element);
 						addMapMarkers(detailsObject);
 						removeMapControls();
@@ -757,7 +749,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			}
 
 			//Re-scale any embeddable content that may have been rendered.
-			embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img');
+			embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img', [], searchResults.content);
 		}
 
 		/**
@@ -801,14 +793,12 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			//Render the object's detail panels in the drawer.
 			_renderObjectDetails($drawer);
 
-			//Scale the embeddable content, and pass the function the embeddablesLoaded array so that the function
-			//will insert any promises into it.
-			embedContent.loadEmbeddablesAndScale($drawer, '.object-details:not(.location) img', embeddablesLoaded);
-
 			//Wait for all of the embeddables to finish loading and rescaling, then render the drawer and make it visible.
 			$.when.apply($, embeddablesLoaded).done(function() {
 				renderDrawer();
 				$drawer.css('visibility', 'initial');
+				//TODO: Figure out a good way to wait for iframes and raw video to be loaded
+				setTimeout(renderDrawer, 1000);
 			});
 		}
 
@@ -978,7 +968,7 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 		}
 
 		function checkScrollPagination(e) {
-			var $lastChild, $list, $target = $(e.target);
+			var deferred, $lastChild, $list, $target = $(e.target);
 
 			$list = $('#list');
 
@@ -987,10 +977,19 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 				$lastChild = $list.children().last();
 
 				if ($target.scrollTop() + $target.height() > $lastChild.position().top + $lastChild.height() - SCROLL_LOAD_LIMIT) {
+					deferred = new $.Deferred();
+
 					$('#search-bar').trigger({
 						type: 'explorer:more',
-						more: explorerState.moreLink
+						more: explorerState.moreLink,
+						deferred: deferred
 					});
+
+					$(document).one('search:results', function() {
+						deferred.resolve();
+					});
+
+					return deferred.promise();
 				}
 			}
 		}
@@ -1122,6 +1121,9 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 			if (e.clearData) {
 				explorerState.currentViewState = 'results';
 				renderState();
+			}
+			else {
+				addNewResults();
 			}
 		}).on('click', '.view-selector:not(.active)', function() {
 			//When the user clicks a view selector for a view other than the one currently being displayed:
@@ -1329,14 +1331,21 @@ define(['cartano', 'debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'l
 
 				$('[data-object-id="' + explorerState.selectedObjectId + '"]').trigger('click');
 			}
-		}).on('click', '#home, #back-to-results', function(e)
-		{
+		}).on('click', '#home, #back-to-results', function(e) {
 			//If not in the Results view, when the user clicks on the home button, they're taken back to the Results view.
 			if (explorerState.currentViewState !== 'results') {
 				explorerState.currentViewState = 'results';
 				renderState();
 
 				return false;
+			}
+		}).on('click', '.object-details-container', function(e) {
+			if ($(e.target).parents('.action-bar-container').length === 0) {
+				$(e.target).parents('.object-details-container').find('.action-bar').toggleClass('hidden');
+			}
+
+			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+				renderDrawer();
 			}
 		}).on('click', '.action-bar .share-action', function(e) {
 			$(e.target).parents('.action-bar-container').find('.share-menu').toggleClass('hidden');

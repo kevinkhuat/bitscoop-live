@@ -7,3 +7,7 @@ path.plugins: ./databases/elasticsearch/plugins
 network.host: 127.0.0.1
 transport.tcp.port: 9300
 http.port: 9200
+
+threadpool:
+  search:
+    queue_size: -1

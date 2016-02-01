@@ -54,6 +54,10 @@ button {
 		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 	}
 
+	&.round {
+		border-radius: 7px;
+	}
+
 	&:disabled,
 	&.disabled {
 		&,
@@ -100,6 +104,47 @@ button {
 		@background: #60b044;
 		@border: #4a993e;
 		@gradient: #8add6d;
+
+		//@background: #009E23;
+		//@border: #00CE2E;
+		//@gradient: #00E432;
+
+		color: #fff;
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+		background-color: @background;
+		background-image: linear-gradient(@gradient, @background);
+		border-color: darken(@background, 2%);
+
+		&:hover {
+			color: #fff;
+			background-color: darken(@background, 5%);
+			background-image: linear-gradient(darken(@gradient, 5%), darken(@background, 5%));
+			border-color: @border;
+		}
+
+		&:active {
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+			background-color: darken(@background, 5%);
+			background-image: none;
+			border-color: darken(@border, 5%);
+		}
+
+		&:disabled,
+		&.disabled {
+			&,
+			&:hover {
+				color: #fefefe;
+				background-color: #add39f;
+				background-image: linear-gradient(#c3ecb4, #add39f);
+				border-color: #b9dcac #b9dcac #a7c89b;
+			}
+		}
+	}
+
+	&.blue {
+		@background: @color1;
+		@border: desaturate(lighten(@color1, 35%), 50%);
+		@gradient: lighten(@color1, 25%);
 
 		//@background: #009E23;
 		//@border: #00CE2E;

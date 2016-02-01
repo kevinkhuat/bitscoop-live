@@ -1,7 +1,16 @@
 .object-details-container {
 	.flex;
 	.flex-column;
+
 	align-items: stretch;
+
+	a {
+		color: @color2;
+
+		&:hover {
+			color: @color1;
+		}
+	}
 
 	.object-details {
 		.flex;
@@ -11,11 +20,8 @@
 
 		max-width: 700px;
 		word-break: break-word;
-		background-color: @light;
 		padding: 1em 1em 2em 1em;
 		margin: 0.5em;
-		border-radius: 0.2em;
-		box-shadow: 0 0 10px fade(@dark, 25%);
 
 		@media @mobile {
 			margin: 0 0 1em 0;
@@ -87,7 +93,9 @@
 			}
 
 			& > .text-area {
-				.text-center;
+				.pt-sans;
+				text-align: left;
+				white-space: pre-wrap;
 			}
 		}
 
@@ -181,7 +189,9 @@
 			}
 
 			& > .text-area {
-				.text-center;
+				.pt-sans;
+				text-align: left;
+				white-space: pre-wrap;
 			}
 
 			& > .icons {
@@ -214,20 +224,3 @@
 		min-height: 250px;
 	}
 }
-//
-//.grid {
-//	.object-details-container {
-//		.flex;
-//		.flex-row;
-//		.flex-start;
-//
-//		.object-details {
-//			padding: 1em 2em 1em 1em;
-//			max-width: 500px;
-//
-//			@media @mobile {
-//				padding: 1em 1em 2em 1em;
-//			}
-//		}
-//	}
-//}

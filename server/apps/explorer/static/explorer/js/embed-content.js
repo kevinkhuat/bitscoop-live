@@ -1,5 +1,5 @@
 define(['jquery'], function($) {
-	var EMBED_FORMAT_TEMPLATE_CONTEXTS, AUDIO_TEMPLATE, IFRAME_TEMPLATE, IMAGE_TEMPLATE, isMobile, MAX_EMBED_WIDTH, VIDEO_TEMPLATE;
+	var EMBED_FORMAT_TEMPLATE_CONTEXTS, AUDIO_TEMPLATE, EMAIL_IFRAME_TEMPLATE, IFRAME_TEMPLATE, IMAGE_TEMPLATE, isMobile, MAX_EMBED_WIDTH, VIDEO_TEMPLATE;
 
 	isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 1080);
 	MAX_EMBED_WIDTH = 475; //px
@@ -50,6 +50,9 @@ define(['jquery'], function($) {
 		webp: {
 			tag: 'image'
 		},
+		email: {
+			tag: 'iframe'
+		},
 		iframe: {
 			tag: 'iframe'
 		},
@@ -59,6 +62,7 @@ define(['jquery'], function($) {
 	};
 
 	AUDIO_TEMPLATE = '<audio controls style="width:100%"><source src="___embed_content___" type="___type___"></audio>';
+	EMAIL_IFRAME_TEMPLATE = '<iframe src="" data-iframe-type="email" data-content-id="___content_id___" frameBorder="0" width="100%" height="400px"/>';
 	IFRAME_TEMPLATE = '<iframe src="___embed_content___" width="100%" height="400px"/>';
 	IMAGE_TEMPLATE = '<img src="___embed_content___" alt="___title___">';
 	VIDEO_TEMPLATE = '<video width="100%" height="100%" controls><source src="___embed_content___" type="___type___"></video>';
@@ -69,10 +73,15 @@ define(['jquery'], function($) {
 	 * TODO: Handle PROXY and API Calls to get protected content
 	 *
 	 * @param {Object} content A single piece of content
+	 * @param {Boolean} iframeContent Whether the provided content needs to be inserted into an iframe
 	 * @returns {String} A template string of the content
 	 */
 	function renderEmbedContent(content) {
 		var context = EMBED_FORMAT_TEMPLATE_CONTEXTS[content.embed_format.toLowerCase()];
+
+		if (content.embed_format.toLowerCase() == 'email') {
+			return _generateEmailIframe(content.id);
+		}
 
 		if (content.embed_format.toLowerCase() == 'link') {
 			return _generateIframe(content.embed_content);
@@ -97,6 +106,10 @@ define(['jquery'], function($) {
 
 	function _generateAudioTag(URL, type) {
 		return AUDIO_TEMPLATE.replace('___embed_content___', URL).replace('___type___', type);
+	}
+
+	function _generateEmailIframe(contentId) {
+		return EMAIL_IFRAME_TEMPLATE.replace('___content_id___', contentId);
 	}
 
 	function _generateIframe(URL) {
@@ -205,8 +218,9 @@ define(['jquery'], function($) {
 	 * @param {string} selector A selector to narrow down the descendants of $container.
 	 * @param {list} [deferredArray] An optional list into which to insert promises for non-iframe embeddables
 	 *                              that will be resolved when those embeddables finish loading.
+	 * @param {object} contentResults The dictionary of content obtained from searching.
 	 */
-	function loadEmbeddablesAndScale($container, selector, deferredArray) {
+	function loadEmbeddablesAndScale($container, selector, deferredArray, contentResults) {
 		var $iframes, $images, $videos;
 
 		$images = $container.find(selector);
@@ -230,7 +244,7 @@ define(['jquery'], function($) {
 		});
 
 		_.forEach($iframes, function(iframe) {
-			var newWidth, oldHeight, oldWidth, scaleRatio, $iframe;
+			var contentId, newWidth, oldHeight, oldWidth, scaleRatio, $iframe;
 
 			$iframe = $(iframe);
 
@@ -246,6 +260,12 @@ define(['jquery'], function($) {
 				$iframe.width('100%');
 				newWidth = $iframe.width();
 				$iframe.height(newWidth * scaleRatio);
+			}
+
+			if ($iframe.attr('data-iframe-type')) {
+				contentId = $iframe.attr('data-content-id');
+
+				$iframe[0].contentDocument.body.innerHTML = contentResults[contentId].embed_content;
 			}
 		});
 

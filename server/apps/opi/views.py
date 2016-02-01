@@ -23,7 +23,8 @@ class ProviderView(MongoAPIListView):
 
     def get(self, request, format=None):
         provider_query = core_api.ProviderApi.get(
-            request.query_filter
+            request.query_filter &
+            MongoAPIView.Meta.Q(enabled=True)
         )
         paginated_data_list = self.Meta.list(self, provider_query)
 
@@ -41,7 +42,8 @@ class ProviderSingleView(MongoAPIView):
     def get(self, request, pk, format=None):
         provider_query = core_api.ProviderApi.get(
             request.query_filter &
-            MongoAPIView.Meta.Q(pk=pk)
+            MongoAPIView.Meta.Q(pk=pk) &
+            MongoAPIView.Meta.Q(enabled=True)
         )
         provider_object = opi_serializer.evaluate(provider_query, self.Meta.QuerySet, many=False)
 

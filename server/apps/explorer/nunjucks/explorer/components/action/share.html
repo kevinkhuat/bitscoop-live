@@ -1,19 +1,23 @@
 <div class="share-menu hidden">
+	{% if facebook_href %}
 	<div class="facebook">
 		<a href="{{ facebook_href }}" target="_blank" title="facebook Share">
 			<i class="fa fa-facebook"></i>
 		</a>
 	</div>
+	{% endif %}
 	<div class="twitter">
 		<a href="{{ twitter_href }}" target="_blank" title="Tweet">
 			<i class="fa fa-twitter"></i>
 		</a>
 	</div>
+	{% if googlePlus_href %}
 	<div class="googlePlus">
 		<a href="{{ googlePlus_href }}" target="_blank" title="Share on Google+">
 			<i class="fa fa-google-plus"></i>
 		</a>
 	</div>
+	{% endif %}
 	<div class="tumblr">
 		<a href="{{ tumblr_href }}" target="_blank" title="Post to Tumblr">
 			<i class="fa fa-tumblr"></i>
@@ -39,7 +43,7 @@
 			<i class="fa fa-envelope"></i>
 		</a>
 	</div>
-	<div class="sms">
+	<div class="sms hidden">
 		<a href="{{ sms_href }}" target="_blank" title="SMS">
 			<i class="fa fa-comment"></i>
 		</a>

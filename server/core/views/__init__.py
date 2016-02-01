@@ -5,9 +5,11 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import TemplateDoesNotExist
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
 
+from server.contrib.multiauth.decorators import login_required
 from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import FormMixin
 from server.core.api import ConnectionApi, ProviderApi, SettingsApi
@@ -16,6 +18,10 @@ from server.core.models import User
 
 
 class BlogView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/blog.html', {
             'title': 'Blog'
@@ -23,6 +29,10 @@ class BlogView(View):
 
 
 class ContactView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         context = {
             'title': 'Contact'
@@ -35,6 +45,10 @@ class ContactView(View):
 
 
 class FaqView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/faq.html', {
             'title': 'FAQ'
@@ -42,6 +56,10 @@ class FaqView(View):
 
 
 class HelpView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request, slug):
         slug = slug.lower()
         template = 'core/help/{0}.html'.format(slug)
@@ -66,6 +84,10 @@ class HomeView(View):
 
 
 class PricingView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/pricing.html', {
             'title': 'Pricing'
@@ -73,6 +95,9 @@ class PricingView(View):
 
 
 class PrivacyView(View):
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/privacy.html', {
             'title': 'Privacy Policy'
@@ -80,6 +105,10 @@ class PrivacyView(View):
 
 
 class ProvidersView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         providers = list(ProviderApi.get())
         connection_by_user = Q(user_id=request.user.id)
@@ -103,6 +132,10 @@ class ProvidersView(View):
 
 
 class SecurityView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/security.html', {
             'title': 'Security'
@@ -181,6 +214,10 @@ class SignupView(View, FormMixin):
 
 
 class TeamView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/team.html', {
             'title': 'Team'
@@ -188,6 +225,9 @@ class TeamView(View):
 
 
 class TermsView(View):
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/terms.html', {
             'title': 'Terms of Use'
@@ -195,6 +235,10 @@ class TermsView(View):
 
 
 class UpcomingView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def get(self, request):
         return render(request, 'core/upcoming.html', {
             'title': 'Upcoming Features'

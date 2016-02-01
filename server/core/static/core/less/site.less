@@ -80,7 +80,7 @@ body {
 header {
 	.raleway;
 
-	a {
+	a:not(.privacy-policy, .terms-of-use) {
 		color: lighten(@font-color, 15%);
 		font-size: 1.2em;
 
@@ -301,36 +301,81 @@ a {
 	}
 }
 
-.bitscoop-footer {
-	.flex;
-	.flex-column;
-	.flex-end;
-	.align-center;
-
-	.footer-links {
-		.flex;
-		.flex-row;
-		.flex-space-between;
-
-		margin: 0.5em;
-	}
-}
-
 #menu {
+	> .menu-footer {
+		> .user-info {
+			.flex;
+			.flex-row;
+			.flex-space-between;
 
-	> .bitscoop-footer {
-		font-size: 0.8em;
+			font-size: 1.2em;
 
-		.footer-links {
-			margin: 5px;
+			> div {
+				margin: 0.5em;
+			}
+
+			> a {
+				margin: 0.5em;
+			}
+		}
+
+		> .bitscoop-footer {
+			.flex;
+			.flex-row;
+			.flex-center;
+
+			margin: 0 0.5em;
+			font-family: 'PT Sans', Arial, Helvetica, sans-serif !important;;
+			font-size: 10px !important;
+			color: lighten(@dark, 45%) !important;
+
+			span.spacer {
+				margin: 0 5px;
+			}
+		}
+
+		a {
+			color: lighten(@dark, 45%) !important;
+
+			&:hover {
+				color: @color1 !important;
+			}
 		}
 	}
 }
 
 footer {
 	> .bitscoop-footer {
+		.flex;
+		.flex-column;
+		.flex-end;
+		.flex-x-center;
+
 		width: 250px;
 		margin: 0 auto;
+		font-family: 'PT Sans', Arial, Helvetica, sans-serif !important;
+		font-size: 10px !important;
+		color: lighten(@dark, 45%) !important;
+
+		.footer-links {
+			.flex;
+			.flex-row;
+			.align-center;
+
+			margin: 0.5em;
+
+			span.spacer {
+				margin: 0 5px;
+			}
+		}
+	}
+
+	a {
+		color: lighten(@dark, 45%) !important;
+
+		&:hover {
+			color: @color1 !important;
+		}
 	}
 }
 
@@ -344,7 +389,11 @@ footer {
 	cursor: pointer;
 	font-size: 3.5em;
 	color: @color1;
-	margin: -5px 10px;
+	margin: -5px 10px -5px 20px;
+
+	@media @mobile {
+		margin: -5px 10px;
+	}
 }
 
 .boxed-group,
