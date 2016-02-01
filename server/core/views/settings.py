@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from mongoengine import Q
+from django.http import Http404
 
 from server.contrib.multiauth import logout
 from server.contrib.multiauth.decorators import login_required
@@ -150,6 +151,8 @@ class BillingView(View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        raise Http404
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
@@ -294,6 +297,8 @@ class EmailsView(View, AcceptedTypesMixin):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        raise Http404
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
@@ -319,6 +324,8 @@ class LocationView(View, FormMixin):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        raise Http404
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
@@ -358,6 +365,8 @@ class NotificationsView(View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        raise Http404
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
@@ -465,6 +474,8 @@ class SecurityView(View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        raise Http404
+
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):

@@ -425,3 +425,5 @@ PASSWORD_REGEXP = r'^(?=.{8,48}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*'
 #############
 
 MULTIAUTH_AUTH_ERROR = 'django.http.Http404'
+MULTIAUTH_HASH_MINLENGTH = 5
+MULTIAUTH_HASH_SECRET = '65-va3nry3g0z_937wguu0$5yyz)*(ko)v7)$letyq%&hii!8u'

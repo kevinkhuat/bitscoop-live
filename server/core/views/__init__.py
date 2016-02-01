@@ -1,5 +1,8 @@
+import django.conf
 from django import forms
 from django.contrib.auth import authenticate, get_user_model, login
+from django.forms import Form as BaseForm, ModelForm
+from django.http import Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.http import Http404, HttpResponseNotAllowed, HttpResponseRedirect
@@ -7,9 +10,11 @@ from django.shortcuts import render
 from django.template.loader import TemplateDoesNotExist
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from hashids import Hashids as Hasher
 from mongoengine import Q
 
 from server.contrib.multiauth.decorators import login_required
+from server.contrib.multiauth.models import SignupCode, SignupRequest
 from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import FormMixin
 from server.core.api import ConnectionApi, ProviderApi, SettingsApi
@@ -45,7 +50,6 @@ class ContactView(View):
 
 
 class FaqView(View):
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -72,7 +76,27 @@ class HelpView(View):
             raise Http404
 
 
-class HomeView(View):
+class HomeView(View, FormMixin):
+    class Form(BaseForm):
+        email = forms.EmailField()
+
+        def clean(self):
+            super().clean()
+
+            user_model = get_user_model()
+            email = self.cleaned_data.get('email')
+
+            if email is not None:
+                email_count = user_model.objects.by_identifier(email).count()
+
+                if email_count > 0:
+                    self.add_error('email', 'Email is in use.')
+
+                email_count = SignupRequest.objects.filter(email__iexact=email).count()
+
+                if email_count > 0:
+                    self.add_error('email', 'Email is in use.')
+
     def get(self, request):
         if request.user.is_authenticated():
             template = 'core/user/home.html'
@@ -84,8 +108,35 @@ class HomeView(View):
             })
 
         else:
-            template = 'core/home.html'
-            return render(request, template)
+            template = 'core/home-hide.html'
+
+        return render(request, template, {
+            'signed_up': request.COOKIES.get('ddfc44b96d0fdd246976ce2d8be2ac4c', False),
+            'thanks': request.COOKIES.get('aa4a9dfb1905655f0ef34cb301f095ea', False)
+        })
+
+    def post(self, request):
+        if request.user.is_authenticated():
+            return HttpResponseNotAllowed()
+
+        form = self.get_filled_form(request)
+
+        if form.is_valid():
+            signup_request = SignupRequest(**{
+                'email': form.cleaned_data.get('email'),
+                'ip': request.ip
+            })
+            signup_request.save()
+
+            response = redirect_by_name('home')
+            response.set_cookie('ddfc44b96d0fdd246976ce2d8be2ac4c', True, max_age=2419000)
+            response.set_cookie('aa4a9dfb1905655f0ef34cb301f095ea', True, max_age=60)
+
+            return response
+        else:
+            return render(request, 'core/home-hide.html', {
+                'form': form
+            })
 
 
 class PricingView(View):
@@ -151,12 +202,40 @@ class SignupView(View, FormMixin):
     class Form(ModelForm):
         password = PasswordField()
         repeated_password = forms.CharField()
+        code = forms.CharField()
 
         class Meta:
             # FIXME: Known 1.7 bug
             # model = get_user_model()
             model = User
             fields = ['email', 'handle', 'first_name', 'last_name']
+
+        def clean_code(self):
+            data = self.cleaned_data.get('code')
+
+            # Ideally we'd like to do:
+            #
+            #      from django.conf import settings
+            #
+            # And then refer to these settings properties less verbosely, but there appears to be a django bug that
+            # prevents this behavior since the direct parent package here is named `settings`. Not sure why.
+
+            hasher = Hasher(
+                min_length=django.conf.settings.MULTIAUTH_HASH_MINLENGTH,
+                salt=django.conf.settings.MULTIAUTH_HASH_SECRET
+            )
+            decoded = hasher.decode(data)
+
+            if len(decoded) > 0:
+                try:
+                    code = SignupCode.objects.get(id=decoded[0])
+
+                    if not code.claimed:
+                        return code
+                except SignupCode.DoesNotExist:
+                    pass
+
+            raise forms.ValidationError('Invalid signup code.')
 
         def clean(self):
             super().clean()
@@ -187,7 +266,8 @@ class SignupView(View, FormMixin):
             return redirect_by_name('home')
 
         return render(request, 'core/signup.html', {
-            'title': 'Sign Up'
+            'title': 'Sign Up',
+            'request_form': True
         })
 
     def post(self, request):
@@ -200,6 +280,7 @@ class SignupView(View, FormMixin):
         if form.is_valid():
             user_model = get_user_model()
             form.cleaned_data.pop('repeated_password')
+            code = form.cleaned_data.pop('code')
             user = user_model(**form.cleaned_data)
             user.set_password(form.cleaned_data['password'])
             user.save()
@@ -210,10 +291,14 @@ class SignupView(View, FormMixin):
             return render(request, 'core/signup.html', {
                 'title': 'Sign Up',
                 'form': form,
-                'autofocus': 'username' in form.cleaned_data
+                'autofocus': 'username' in form.cleaned_data,
+                'request_form': False
             })
         else:
             login(request, user)
+            code.claimed = True
+            code.user_id = user.id
+            code.save()
 
             return redirect_by_name('home')
 

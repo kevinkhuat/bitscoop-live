@@ -7,6 +7,7 @@ elasticsearch==2.2.0
 eventlet==0.17.4
 geopy==1.10.0
 gunicorn==19.3.0
+hashids==1.1.0
 jsonschema==2.5.1
 mongoengine==0.10.0
 msgpack-python==0.4.6

@@ -6,7 +6,9 @@
 
 
 {% block main %}
-	<form action="{% url 'login' %}" method="POST" novalidate="novalidate">
+	{% include 'core/components/beta-splash.html' %}
+
+	<form action="{% url 'login' %}" method="POST">
 		<div class="boxed-group">
 			<div>Login</div>
 

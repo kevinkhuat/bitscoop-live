@@ -1,14 +1,13 @@
 {% extends 'core/base.html' %}
 
 
-{% block static %}
-	{{ block.super }}
-
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+{% block outer_header %}
 {% endblock %}
 
 
 {% block main %}
+	{% include 'core/components/beta-splash.html' %}
+
 	<form action="{% url 'signup' %}" method="POST">
 		<div class="boxed-group">
 			<div>Sign Up</div>
@@ -17,7 +16,14 @@
 				{% csrf_token %}
 
 				<div class="text-box">
-					<input type="text" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
+					<input type="text" name="code" placeholder="Invitation Code" value="{{ form.data.code }}" />
+				</div>
+				<div>
+					{{ form.code.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="email" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
 				</div>
 				<div>
 					{{ form.email.errors }}
@@ -64,7 +70,7 @@
 			</div>
 		</div>
 
-		<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>
+		<!--<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>-->
 
 		<div>
 			<button class="primary" type="submit">Sign Up</button>

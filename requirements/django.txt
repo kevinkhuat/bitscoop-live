@@ -6,6 +6,7 @@ elasticsearch
 eventlet
 geopy
 gunicorn
+hashids
 jsonschema
 mongoengine
 # psycopg2
