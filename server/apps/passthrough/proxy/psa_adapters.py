@@ -40,7 +40,7 @@ def get_psa_backend(connection):
     :return: the PSA backend for the given connection
     """
     redirect_uri = '/'
-    backend_class = get_backend(BACKENDS, connection.provider.backend_name)
+    backend_class = get_backend(BACKENDS, connection.provider.psa_legacy.backend_name)
 
     return backend_class(Strategy(Storage), redirect_uri)
 

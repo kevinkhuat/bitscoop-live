@@ -15,6 +15,7 @@ from mongoengine import Q
 
 from server.contrib.multiauth import logout
 from server.contrib.multiauth.decorators import login_required
+from server.contrib.pytoolbox import initialize_endpoint_data
 from server.contrib.pytoolbox.collections import update
 from server.contrib.pytoolbox.django.forms import AllowEmptyMixin
 from server.contrib.pytoolbox.django.response import redirect_by_name
@@ -173,7 +174,7 @@ class ConnectionsView(View):
             'enabled': {
                 'type': 'boolean'
             },
-            'event_sources': {
+            'sources': {
                 'type': 'object'
             }
         }
@@ -190,12 +191,11 @@ class ConnectionsView(View):
         for connection in connections:
             permissions = []
 
-            for event_source_name, event_source in connection.provider.event_sources.items():
-                name = event_source.name
+            for source_name, source in connection.provider.sources.items():
+                name = source_name
                 permissions.append({
                     'name': name,
-                    'display_name': event_source.display_name,
-                    'description': event_source.description,
+                    'source': source,
                     'enabled': name in connection.permissions and connection.permissions[name].enabled
                 })
 
@@ -221,7 +221,7 @@ class ConnectionsView(View):
         #     "connection_id": "5987293847sdflkjsdf87",
         #     "name": "sample_connection",
         #     "enabled": true,
-        #     "event_sources": {
+        #     "sources": {
         #         "sample_permission": true
         #     }
         # }
@@ -241,14 +241,14 @@ class ConnectionsView(View):
         except jsonschema.ValidationError as err:
             return HttpResponseBadRequest(err.message)
 
-        event_sources = deserialized.get('event_sources')
+        sources = deserialized.get('sources')
 
-        if event_sources:
+        if sources:
             schema = {
                 'type': 'boolean'
             }
 
-            for event_source, enabled in event_sources.items():
+            for source, enabled in sources.items():
                 try:
                     jsonschema.validate(enabled, schema)
                 except jsonschema.ValidationError as err:
@@ -263,37 +263,26 @@ class ConnectionsView(View):
         if 'enabled' in deserialized:
             connection['enabled'] = deserialized.get('enabled')
 
-        if 'event_sources' in deserialized:
-            for event_source_name in event_sources:
+        if 'sources' in deserialized:
+            for source_name in sources:
                 # If the Permission exists, update its enabled status based on what was passed to the server
-                if event_source_name in connection.permissions:
-                    connection['permissions'][event_source_name]['enabled'] = event_sources[event_source_name]
+                if source_name in connection.permissions:
+                    connection['permissions'][source_name]['enabled'] = sources[source_name]
                 # If the Permission does not exist, then create it.  As part of the creation process, endpoint_data
                 # for each endpoint that the associated event source might call also needs to be added to the connection,
                 # and any default parameters for those endpoints need to be hydrated.
                 else:
                     provider = connection.provider
-                    this_event_source = provider['event_sources'][event_source_name]
 
                     new_permission = Permission(
                         enabled=True,
                         frequency=1
                     )
 
-                    connection.permissions[event_source_name] = new_permission
-                    connection.endpoint_data[event_source_name] = {}
+                    connection.permissions[source_name] = new_permission
+                    connection.endpoint_data[source_name] = {}
 
-                    for endpoint in this_event_source['endpoints']:
-                        connection.endpoint_data[event_source_name][endpoint] = {}
-
-                        for parameter in provider['endpoints'][endpoint]['parameter_descriptions']:
-                            this_parameter = provider['endpoints'][endpoint]['parameter_descriptions'][parameter]
-
-                            if 'default' in this_parameter.keys():
-                                if this_parameter['default'] == 'date_now':
-                                    connection.endpoint_data[event_source_name][endpoint][parameter] = datetime.date.today().isoformat().replace('-', '/')
-                                else:
-                                    connection.endpoint_data[event_source_name][endpoint][parameter] = this_parameter['default']
+                    initialize_endpoint_data(provider, connection, source_name, provider['sources'][source_name]['mapping'], provider['sources'][source_name]['population'])
 
         ConnectionApi.put(connection_id, connection)
 

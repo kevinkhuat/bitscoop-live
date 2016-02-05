@@ -40,10 +40,10 @@
 						If you de-select a type from which BitScoop has already collected data, the data already collected will continue to show up in your search results, but new data of that type will not be collected.
 					</div>-->
 					<div>
-						{% for event_source_name, event_source in event_source_dict.items %}
-							<div class="paragraph" name="{{ connection.provider_name }}" data-event-source-name="{{ event_source.name }}" class="event-source-checkbox">
-								<label><input type="checkbox" name="{{ event_source.name }}"{% if event_source.enabled_by_default %} checked{% endif %} />{{ event_source.display_name }}</label>
-								<div class="tooltip" data-for="">{{ event_source.description }}</div>
+						{% for source_name, source in source_dict.items %}
+							<div class="paragraph" name="{{ connection.provider_name }}" data-source-name="{{ source_name }}" class="source-checkbox">
+								<label><input type="checkbox" name="{{ source_name }}"{% if source.enabled_by_default %} checked{% endif %} />{{ source.name }}</label>
+								<div class="tooltip" data-for="">{{ source.description }}</div>
 							</div>
 						{% endfor %}
 					</div>

@@ -29,22 +29,22 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 	$(document).formMonitor('form.auto');
 
 	$(document).on('form-monitor', 'form.auto', debounce(function(e) {
-		var eventSources, formData, id, serialized, $this = $(this);
+		var sources, formData, id, serialized, $this = $(this);
 
 		formData = e.formData;
 
 		serialized = _.pick(formData, ['name', 'enabled']);
 		id = $this.closest('.connection').data('id');
 		serialized.connection_id = id;
-		eventSources = {};
+		sources = {};
 
 		$.each(formData, function(key, value) {
 			if (!serialized.hasOwnProperty(key)) {
-				eventSources[key] = value;
+				sources[key] = value;
 			}
 		});
 
-		serialized.event_sources = eventSources;
+		serialized.sources = sources;
 
 		$.ajax({
 			url: $this.attr('action'),

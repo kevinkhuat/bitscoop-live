@@ -60,15 +60,14 @@ class Provider(motorengine.Document):
     """
     __collection__ = 'providers'
 
-    auth_backend = motorengine.StringField()
     auth_type = motorengine.IntField()
-    backend_name = motorengine.StringField()
     client_callable = motorengine.BooleanField(default=True)
     description = motorengine.StringField()
     domain = motorengine.StringField()
     endpoint_wait_time = motorengine.IntField()
     endpoints = DictField()
-    event_sources = DictField()
+    psa_legacy = DictField()
+    sources = DictField()
     name = motorengine.StringField()
     tags = motorengine.ListField(motorengine.StringField())
 

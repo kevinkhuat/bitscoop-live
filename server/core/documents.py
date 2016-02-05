@@ -55,16 +55,17 @@ class Endpoint(mongoengine.EmbeddedDocument):
     route: The full URL for getting the user's data from this Permission
     """
 
-    additional_path_fields = mongoengine.ListField()
-    call_method = mongoengine.StringField()
-    header_descriptions = mongoengine.DictField()
-    name = mongoengine.StringField()
-    parameter_descriptions = mongoengine.DictField()
-    return_header_descriptions = mongoengine.DictField()
-    route = mongoengine.StringField(required=True)
+    method = mongoengine.StringField()
+    model = mongoengine.DictField()
+    parameters = mongoengine.DictField()
+    routes = mongoengine.DictField()
+
+    meta = {
+        'strict': False,
+    }
 
 
-class EventSource(mongoengine.EmbeddedDocument):
+class Source(mongoengine.EmbeddedDocument):
     """
     The class representing a data source from a provider, e.g. Steam achievements
     Each EventSource pulls data from one or more Endpoints
@@ -81,12 +82,14 @@ class EventSource(mongoengine.EmbeddedDocument):
     """
 
     description = mongoengine.StringField(required=True)
-    display_name = mongoengine.StringField(required=True)
     enabled_by_default = mongoengine.BooleanField(default=True)
-    endpoints = mongoengine.ListField()
-    initial_mapping = mongoengine.StringField()
-    mappings = mongoengine.DictField()
+    mapping = mongoengine.StringField()
     name = mongoengine.StringField(required=True)
+    population = mongoengine.StringField()
+
+    meta = {
+        'strict': False,
+    }
 
 
 class Provider(mongoengine.Document):
@@ -110,21 +113,21 @@ class Provider(mongoengine.Document):
         (2, 'OPENID')
     )
 
-    auth_backend = mongoengine.StringField()
     auth_type = mongoengine.IntField(choices=AUTH_TYPES)
-    backend_name = mongoengine.StringField()
     client_callable = mongoengine.BooleanField(default=True)
     description = mongoengine.StringField()
     domain = mongoengine.StringField()
     endpoint_wait_time = mongoengine.IntField()
     endpoints = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Endpoint))
-    event_sources = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=EventSource))
+    psa_legacy = mongoengine.DictField()
+    sources = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Source))
     name = mongoengine.StringField()
     provider_number = mongoengine.ObjectIdField(primary_key=True)
     tags = mongoengine.ListField(mongoengine.StringField())
 
     meta = {
         'collection': 'providers',
+        'strict': False,
         'indexes': [{
             'name': 'provider_index',
             'fields': ['$id'],

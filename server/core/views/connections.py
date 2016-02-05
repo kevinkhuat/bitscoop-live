@@ -10,6 +10,7 @@ from mongoengine import Q
 from social.apps.django_app.default.models import UserSocialAuth
 
 from server.contrib.multiauth.decorators import login_required
+from server.contrib.pytoolbox import initialize_endpoint_data
 from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.core.api import ConnectionApi, ProviderApi
 from server.core.documents import Connection, Permission
@@ -80,13 +81,13 @@ class ConnectView(View):
     def get(self, request, name):
         expression = Q(name__iexact=name)
         provider = ProviderApi.get(expression).get()
-        event_sources = provider.event_sources
+        sources = provider.sources
 
         return render(request, 'core/connections/connect.html', {
             'title': 'BitScoop - Connect to ' + provider.name,
             'flex_override': True,
             'provider': provider,
-            'event_source_dict': event_sources,
+            'source_dict': sources,
             'postback_url': reverse('connections:authorize')
         })
 
@@ -110,31 +111,22 @@ class ConnectView(View):
             last_run=None
         )
 
-        # Get the event_source dictionary from the request
+        # Get the source dictionary from the request
         permissions_list = json.loads(request.POST['permissions'])
-        event_sources = provider.event_sources
+        sources = provider.sources
 
-        for event_source_name in permissions_list:
-            for event_source in event_sources:
-                if event_source == event_source_name:
+        for source_name in permissions_list:
+            for source in sources:
+                if source == source_name:
                     new_permission = Permission(
                         enabled=True,
                         frequency=1
                     )
-                    connection.permissions[event_source_name] = new_permission
-                    connection.endpoint_data[event_source_name] = {}
+                    connection.permissions[source_name] = new_permission
+                    connection.endpoint_data[source_name] = {}
 
-                    for endpoint in event_sources[event_source]['endpoints']:
-                        connection.endpoint_data[event_source_name][endpoint] = {}
-                        parameter_descriptions = provider['endpoints'][endpoint]['parameter_descriptions']
-
-                        for parameter in provider['endpoints'][endpoint]['parameter_descriptions']:
-                            if 'default' in parameter_descriptions[parameter].keys():
-                                if parameter_descriptions[parameter]['default'] == 'date_now':
-                                    connection.endpoint_data[event_source_name][endpoint][parameter] = datetime.date.today().isoformat().replace('-', '/')
-                                else:
-                                    connection.endpoint_data[event_source_name][endpoint][parameter] = parameter_descriptions[parameter]['default']
+                    initialize_endpoint_data(provider, connection, source, provider['sources'][source]['mapping'], provider['sources'][source]['population'])
 
         ConnectionApi.post(connection)
 
-        return HttpResponse(reverse('social:begin', kwargs={'backend': provider.backend_name}))
+        return HttpResponse(reverse('social:begin', kwargs={'backend': provider.psa_legacy['backend_name']}))

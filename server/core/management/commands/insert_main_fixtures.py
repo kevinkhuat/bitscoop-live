@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from server.core import api as core_api
-from server.core.documents import Endpoint, EventSource, Provider
+from server.core.documents import Endpoint, Source, Provider
 
 
 FIXTURE_DIR = os.path.join(settings.FIXTURE_DIRS[0], 'mongo', 'providers')
@@ -46,14 +46,14 @@ def create_fixture_endpoint(name, value, provider):
     return return_endpoint
 
 
-def create_fixture_event_source(name, value):
-    event_source_endpoint_list = value['endpoints']
+def create_fixture_source(name, value):
+    source_endpoint_list = value['endpoints']
     endpoint_list = []
 
-    for endpoint_name in event_source_endpoint_list:
+    for endpoint_name in source_endpoint_list:
         endpoint_list.append(endpoint_name)
 
-    return EventSource(
+    return Source(
         description=value['description'],
         display_name=value['display_name'],
         enabled_by_default=value['enabled_by_default'],
@@ -64,11 +64,11 @@ def create_fixture_event_source(name, value):
     )
 
 
-def create_fixture_provider(provider, endpoints, event_source_list):
-    event_source_dict = {}
+def create_fixture_provider(provider, endpoints, source_list):
+    source_dict = {}
 
-    for event_source in event_source_list:
-        event_source_dict[event_source['name']] = event_source
+    for source in source_list:
+        source_dict[source['name']] = source
 
     return Provider(
         auth_backend=provider['auth_backend'],
@@ -79,7 +79,7 @@ def create_fixture_provider(provider, endpoints, event_source_list):
         domain=provider['domain'],
         endpoint_wait_time=provider['endpoint_wait_time'],
         endpoints=endpoints,
-        event_sources=event_source_dict,
+        sources=source_dict,
         name=provider['name'],
         provider_number=bson.ObjectId(provider['provider_number']),
         tags=provider['tags']
@@ -90,17 +90,17 @@ def load_fixture(path):
     fixture_data_file = open(path, encoding='utf-8').read()
     fixture_data = json.loads(fixture_data_file)
     endpoints = {}
-    event_source_list = []
+    source_list = []
 
     for name, value in fixture_data['endpoints'].items():
         insert_endpoint = create_fixture_endpoint(name, value, fixture_data['provider'])
         endpoints[insert_endpoint['name']] = insert_endpoint
 
-    for name, value in fixture_data['event_sources'].items():
-        insert_event_source = create_fixture_event_source(name, value)
-        event_source_list.append(insert_event_source)
+    for name, value in fixture_data['sources'].items():
+        insert_source = create_fixture_source(name, value)
+        source_list.append(insert_source)
 
-    insert_provider = create_fixture_provider(fixture_data['provider'], endpoints, event_source_list)
+    insert_provider = create_fixture_provider(fixture_data['provider'], endpoints, source_list)
     provider = core_api.ProviderApi.post(insert_provider)
 
 

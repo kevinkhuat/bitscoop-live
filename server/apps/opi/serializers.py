@@ -73,7 +73,7 @@ class PermissionSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Permission
         fields = (
-            'event_source',
+            'source',
             'enabled',
         )
         depth = 5
@@ -94,12 +94,12 @@ class EndpointSerializer(tasty_serializers.DocumentSerializer):
         depth = 5
 
 
-class EventSource(tasty_serializers.DocumentSerializer):
+class Source(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Endpoint
         fields = (
             'description',
-            'display_name',
+            'name',
             'enabled_by_default',
             'endpoints',
             'mappings',

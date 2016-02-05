@@ -58,13 +58,13 @@
 					<div>
 						<div class="label">What would you like?</div>
 						<div>
-							{% for permission in connection.permissions %}
+							{% for permission in connection.permissions|dictsort:'name.lower' %}
 								<div class="paragraph">
 									<div class="flex flex-x-center">
-										<label><input class="flag" type="checkbox" name="{{ permission.name }}"{% if permission.enabled %} checked{% endif %} />{{ permission.display_name }}</label>
+										<label><input class="flag" type="checkbox" name="{{ permission.name }}"{% if permission.enabled %} checked{% endif %} />{{ permission.source.name }}</label>
 										<i class="fa fa-check-circle flex-grow success-icon" data-for="{{ permission.name }}" data-namespace="{{ connection.id }}"></i>
 									</div>
-									<div class="tooltip" data-for="">{{ permission.description }}</div>
+									<div class="tooltip" data-for="">{{ permission.source.description }}</div>
 								</div>
 							{% endfor %}
 						</div>

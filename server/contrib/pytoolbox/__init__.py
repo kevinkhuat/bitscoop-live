@@ -21,3 +21,15 @@ def strip_invalid_key_characters(input_dict):
             input_dict[key] = strip_invalid_key_characters(input_dict[key])
 
     return input_dict
+
+
+def initialize_endpoint_data(provider, connection, source, endpoint, population):
+    connection['endpoint_data'][source][endpoint] = {}
+
+    for parameter, values in provider['endpoints'][endpoint]['parameters'].items():
+        if 'default' in values.keys():
+            connection['endpoint_data'][source][endpoint][parameter] = values['default']
+
+    for field, values in provider['endpoints'][endpoint]['model']['fields'].items():
+        if isinstance(values, dict) and values['type'] == 'related' and (population == '*' or values['ref'] == population):
+            initialize_endpoint_data(provider, connection, source, values['ref'], '*')
