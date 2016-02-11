@@ -202,6 +202,7 @@ class Connection(mongoengine.Document):
     oauth_token_secret = mongoengine.StringField()
     permissions = mongoengine.MapField(mongoengine.EmbeddedDocumentField(document_type=Permission))
     provider = mongoengine.ReferenceField(Provider, dbref=False)
+    provider_uid = mongoengine.StringField()
     refresh_token = mongoengine.StringField()
     updated = mongoengine.DateTimeField()
     usa_id = mongoengine.IntField()
@@ -211,7 +212,7 @@ class Connection(mongoengine.Document):
         'collection': 'connections',
         'indexes': [{
             'name': 'connection_index',
-            'fields': ['$id', '$auth_status', '$enabled', '$provider', '$user_id'],
+            'fields': ['$id', '$auth_status', '$enabled', '$provider', '$provider_uid', '$user_id'],
             'default_language': 'english'
         }]
     }

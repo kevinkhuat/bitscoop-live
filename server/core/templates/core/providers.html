@@ -45,6 +45,9 @@
 		{% for provider in providers %}
 			<div class="mix {% for tag in provider.tags %}{{ tag }} {% endfor %}{% if provider.associated_connection %}associated{% endif %}" data-id="{{ provider.id }}" data-link="{% url 'connections:connect' name=provider.name|slugify %}">
 				<div>
+					{% if provider.assoc_count > 1 %}
+						<span>{{ provider.assoc_count }}</span>
+					{% endif %}
 					<h1><i class="fa fa-{{ provider.name | lower }}"></i></h1>
 					<p>{{ provider.name }}</p>
 				</div>

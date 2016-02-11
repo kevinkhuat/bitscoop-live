@@ -6,12 +6,7 @@ define(['jquery', 'jquery-mixitup'], function($) {
 	$(document).on('click', '.mix', function() {
 		var $this = $(this);
 
-		if (!($this.hasClass('associated'))) {
-			window.location = $this.data('link');
-		}
-		else {
-			window.location = '/settings/connections?provider=' + $this.data('id');
-		}
+		window.location = $this.data('link');
 	});
 
 	$('#done').on('click', function(e) {

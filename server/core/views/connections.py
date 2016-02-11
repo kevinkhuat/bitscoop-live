@@ -50,7 +50,17 @@ class AuthorizeView(View):
         else:
             connection = unverified_connections[0]
 
-            metadata = UserSocialAuth.objects.filter(user=user.id, id=connection.usa_id).get().extra_data
+            usa_object = UserSocialAuth.objects.filter(user=user.id, id=connection.usa_id).get()
+            metadata = usa_object.extra_data
+
+            # Check for and remove any connections for the user with the same provider account.
+            duplicate_connections = ConnectionApi.get(val=Q(user_id=user.id) & Q(provider_uid=usa_object.uid))
+
+            if len(list(duplicate_connections)) > 0:
+                connection.delete()
+                usa_object.delete()
+
+                return redirect_by_name('providers')
 
             # OAuth1 returns tokens on extra_data.  Connection.connection_data is serialized and sent to the user, and we don't
             # want those tokens available on the client, so delete them from connection.connection_data
@@ -65,10 +75,16 @@ class AuthorizeView(View):
                     connection.auth_data['refresh_token'] = metadata.pop('refresh_token')
 
             connection.metadata = metadata
+            if usa_object.uid is not '':
+                connection.provider_uid = usa_object.uid
+
             connection.auth_status['complete'] = True
             connection.enabled = True
 
             connection.save()
+
+            # Delete the PSA object to clear the process
+            usa_object.delete()
 
             return redirect_by_name('providers')
 
@@ -83,7 +99,18 @@ class ConnectView(View):
         provider = ProviderApi.get(expression).get()
         sources = provider.sources
 
+        connection_by_user = Q(user_id=request.user.id)
+        connections = ConnectionApi.get(val=connection_by_user)
+
+        count = 1
+
+        # FIXME: Make the count happen in the DB
+        for connection in connections:
+            if provider.provider_number == connection.provider.provider_number:
+                count += 1
+
         return render(request, 'core/connections/connect.html', {
+            'count': count,
             'title': 'BitScoop - Connect to ' + provider.name,
             'flex_override': True,
             'provider': provider,

@@ -29,7 +29,7 @@
 		<form action="{% url 'connections:connect' provider.name|lower %}">
 			<div class="padded paragraphed">
 				<div class="align-center">
-					<input class="line-entry align-center" type="text" name="connection-name" placeholder="My {{ provider.name }} Account" style="padding-top: 0;" autofocus />
+					<input class="line-entry align-center" type="text" name="connection-name" placeholder="My {{ provider.name }} Account{% if count > 1 %} #{{ count }}{% endif %}" style="padding-top: 0;" autofocus />
 				</div>
 
 				<div style="margin-top: 25px;">
