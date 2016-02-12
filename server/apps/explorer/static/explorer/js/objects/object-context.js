@@ -1,4 +1,4 @@
-define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedContent, externalActions, icons, moment) {
+define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], function(embedContent, externalActions, icons, moment, twemoji) {
 	var isMobile, objectContextDict;
 
 	isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
@@ -119,10 +119,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 					}
 
 					if (content.title) {
-						title = content.title;
+						title = twemoji.parse(content.title);
 					}
 					else if (content.text) {
-						title = content.text;
+						title = twemoji.parse(content.text);
 					}
 
 					gridItem = {
@@ -146,6 +146,9 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 				},
 				list: function objectContext$content$listItem(content) {
 					content.icon = icons.getContentFontIcon(content);
+
+					content.title = typeof content.title !== 'undefined' ? twemoji.parse(content.title) : content.title;
+					content.text = typeof content.text !== 'undefined' ? twemoji.parse(content.text) : content.text;
 
 					return {
 						objectType: 'content',
@@ -182,6 +185,9 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 					content.icon = icons.getContentFontIcon(content);
 					content.formattedCreated = moment(content.created).format('M/D/YY h:mm A');
 
+					content.title = typeof content.title !== 'undefined' ? twemoji.parse(content.title) : content.title;
+					content.text = typeof content.text !== 'undefined' ? twemoji.parse(content.text) : content.text;
+
 					return {
 						objectType: 'content',
 						columns: [
@@ -206,6 +212,9 @@ define(['embed-content', 'external-actions', 'icons', 'moment'], function(embedC
 				},
 				details: function objectContext$content$details(content, isEventDetail) {
 					content.contentTypeIcon = icons.getContentFontIcon(content);
+
+					content.title = typeof content.title !== 'undefined' ? twemoji.parse(content.title) : content.title;
+					content.text = typeof content.text !== 'undefined' ? twemoji.parse(content.text) : content.text;
 
 					if (content.embed_format) {
 						content.formatted_embed_content = embedContent(content);

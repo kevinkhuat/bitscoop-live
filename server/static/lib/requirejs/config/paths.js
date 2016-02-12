@@ -59,9 +59,10 @@ requirejs.config({
 		mapbox: 'https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox',  // https://github.com/mapbox/mapbox.js
 		moment: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min', //http://momentjs.com/
 		nunjucks: 'https://d1m45eggqhap5f.cloudfront.net/nunjucks/1.3.3/nunjucks-1.3.3.min',  // https://github.com/mozilla/nunjucks
+		twemoji: 'https://twemoji.maxcdn.com/twemoji.min',  // https://github.com/twitter/twemoji
 
 		// Google Analytics Shim
-		ga: '//www.google-analytics.com/analytics',
+		ga: 'https://www.google-analytics.com/analytics',
 
 		// Plugins
 		'jquery-cookie': 'https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min',  // https://github.com/carhartl/jquery-cookie
@@ -124,7 +125,12 @@ requirejs.config({
 
 		'mapbox-directions': {
 			deps: ['mapbox']
+		},
+
+		twemoji: {
+			exports: 'twemoji'
 		}
+
 	}
 });
 
