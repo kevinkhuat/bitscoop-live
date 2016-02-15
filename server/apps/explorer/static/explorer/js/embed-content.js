@@ -62,9 +62,9 @@ define(['jquery'], function($) {
 	};
 
 	AUDIO_TEMPLATE = '<audio controls style="width:100%"><source src="___embed_content___" type="___type___"></audio>';
-	EMAIL_IFRAME_TEMPLATE = '<iframe src="" data-iframe-type="email" data-content-id="___content_id___" frameBorder="0" width="100%" height="400px"/>';
-	IFRAME_TEMPLATE = '<iframe src="___embed_content___" width="100%" height="400px"/>';
-	IMAGE_TEMPLATE = '<img src="___embed_content___" alt="___title___">';
+	EMAIL_IFRAME_TEMPLATE = '<iframe src="" class="email-iframe" data-iframe-type="email" data-content-id="___content_id___" frameBorder="0" width="100%" height="400px"></iframe>';
+	IFRAME_TEMPLATE = '<iframe src="___embed_content___" width="100%" height="400px"></iframe>';
+	IMAGE_TEMPLATE = '<img src="___embed_content___" alt="___title___"/>';
 	VIDEO_TEMPLATE = '<video width="100%" height="100%" controls><source src="___embed_content___" type="___type___"></video>';
 
 	/**
@@ -124,17 +124,22 @@ define(['jquery'], function($) {
 		return VIDEO_TEMPLATE.replace('___embed_content___', URL).replace('___type___', type);
 	}
 
-	//TODO: Fix, broken replace.
 	function _formatIframe(iframeString) {
-		var newHeight, scaleRatio, $iframeString;
+		var scaleRatio, $iframeString;
 
-		//$iframeString = $(iframeString)[0];
-		//scaleRatio = $iframeString.height / $iframeString.width;
-		//
-		//newHeight = $iframeString.width * scaleRatio;
+		$iframeString = $(iframeString);
 
-		//return iframeString.replace(/(width=')\d+'/, '$1100%\'').replace(/(height=')\d+'/, '');
-		return iframeString;
+		scaleRatio = $iframeString.attr('height') / $iframeString.attr('width');
+
+		if (!isMobile && $iframeString.width > MAX_EMBED_WIDTH) {
+			$iframeString.attr('width', MAX_EMBED_WIDTH);
+			$iframeString.attr('height', MAX_EMBED_WIDTH * scaleRatio);
+		}
+		else {
+			$iframeString.attr('width', '100%');
+		}
+
+		return $iframeString.wrap('<div/>').parent().html();
 	}
 
 
@@ -211,81 +216,34 @@ define(['jquery'], function($) {
 	}
 
 	/**
-	 * Re-scales embeddable content (images, iframes, videos, etc.) to fit their containing element.
-	 * If provided with a deferredArray, this will create a promise for each item that is only resolved when that item
-	 * finishes loading. (This is not done for iframes because they usually already have a fixed size)
+	 * Adds email content to enmpty iframes
 	 * @param {object} $container The container whose descendants will be searched for embeddables.
-	 * @param {string} selector A selector to narrow down the descendants of $container.
-	 * @param {list} [deferredArray] An optional list into which to insert promises for non-iframe embeddables
-	 *                              that will be resolved when those embeddables finish loading.
 	 * @param {object} contentResults The dictionary of content obtained from searching.
 	 */
-	function loadEmbeddablesAndScale($container, selector, deferredArray, contentResults) {
-		var $iframes, $images, $videos;
+	function insertEmailContent($container, contentResults) {
+		var $iframes;
 
-		$images = $container.find(selector);
 		$iframes = $container.find('iframe');
-		$videos = $container.find('video');
-
-		_.forEach($images, function(image) {
-			var deferred, $image;
-
-			$image = $(image);
-			deferred = $.Deferred();
-			deferred.promise();
-
-			if (deferredArray) {
-				deferredArray.push(deferred);
-			}
-
-			$image.on('load', function() {
-				deferred.resolve();
-			});
-		});
 
 		_.forEach($iframes, function(iframe) {
-			var contentId, newWidth, oldHeight, oldWidth, scaleRatio, $iframe;
-
+			var contentId, $iframe;
 			$iframe = $(iframe);
 
-			oldHeight = $iframe.height();
-			oldWidth = $iframe.width();
-			scaleRatio = oldHeight / oldWidth;
-
-			if (!isMobile && iframe.width > MAX_EMBED_WIDTH) {
-				$iframe.width(MAX_EMBED_WIDTH);
-				$iframe.height(MAX_EMBED_WIDTH * scaleRatio);
-			}
-			else {
-				$iframe.width('100%');
-				newWidth = $iframe.width();
-				$iframe.height(newWidth * scaleRatio);
-			}
-
-			if ($iframe.attr('data-iframe-type')) {
+			if ($iframe.attr('data-iframe-type') === 'email') {
 				contentId = $iframe.attr('data-content-id');
 
 				$iframe[0].contentDocument.body.innerHTML = contentResults[contentId].embed_content;
+
+				if (isMobile) {
+					$iframe.width($iframe.width() * 2);
+					//$iframe.height($iframe.height() * 2);
+				}
 			}
-		});
-
-		_.forEach($videos, function(video) {
-			var deferred, $video;
-
-			$video = $(video);
-			deferred = $.Deferred();
-			deferred.promise();
-
-			$video.on('canplay', function() {
-				$video.css('width', '100%');
-
-				deferred.resolve();
-			});
 		});
 	}
 
 	renderEmbedContent.handleSpecialCase = handleSpecialCase;
-	renderEmbedContent.loadEmbeddablesAndScale = loadEmbeddablesAndScale;
+	renderEmbedContent.insertEmailContent = insertEmailContent;
 
 	return renderEmbedContent;
 });

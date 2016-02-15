@@ -4,7 +4,18 @@
 	.flex-end;
 	.flex-column;
 
+	@media @mobile {
+		.flex-row;
+
+		width: 95%;
+		height: 6em;
+		margin: 0.25em 0;
+	}
+
 	position: relative;
+
+	word-break: break-all;
+	word-break: break-word;
 
 	border: 3px solid @light;
 
@@ -15,11 +26,11 @@
 
 	box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
 
-	width: 20em;
-	height: 20em;
+	width: 15em;
+	height: 15em;
 
 	padding: 0;
-	margin: 1em;
+	margin: 0.5em;
 
 	cursor: pointer;
 	background-color: @light;
@@ -27,40 +38,80 @@
 	&:hover {
 		border-color: @color1;
 	}
+
 	&.active {
 		background-color: lighten(@color1, 40%);
 		border: 3px solid @color1;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			margin-left: -50px;
+			width: 0;
+			height: 0;
+			border-bottom: solid 50px lighten(@dark, 25%);;
+			border-left: solid 50px transparent;
+			border-right: solid 50px transparent;
+		}
 	}
 
-	& > * {
-		padding: 0.5em;
-	}
+	.mobile-thumbnail {
+		height: 100%;
+		display: none;
 
-	& > :first-child {
-		.flex-grow;
-		.flex-center;
-		.flex-x-center;
+		img {
+			height: 100%;
+		}
+
+		@media @mobile {
+			display: flex;
+		}
 	}
 
 	.type-icon {
-		.flex-grow;
-		.flex-center;
-		.flex-x-center;
-		.align-center;
-
-		font-size: 10em;
+		margin: auto;
+		font-size: 5em;
 		color: fade(darken(@font-color, 10%), 65%);
+
+		@media @mobile {
+			display: none;
+		}
+
 	}
 
 	.title-bar {
+		.flex;
+		.flex-row;
+		.flex-space-between;
+
+		.flex-center;
+		.flex-x-center;
+
 		color: @font-color;
 		background-color: fade(darken(@light, 5%), 85%);
+		width: 100%;
+		padding: 5px;
 
 		.title {
-			white-space: nowrap;
 			font-weight: bold;
-			overflow-x: hidden;
+			text-align: left;
+			overflow-y: hidden;
 			margin: auto 5px;
+			max-height: 75px;
+
+			@media @mobile {
+				max-height: 55px;
+			}
+		}
+
+		.no-thumbnail {
+			display: none;
+
+			@media @mobile {
+				display: flex;
+			}
 		}
 	}
 
@@ -70,10 +121,11 @@
 		.flex-x-center;
 
 		background-color: darken(@light, 10%);
-		width: 32px;
-		height: 32px;
 		position: relative;
 		border-radius: 500px;
-		font-size: 17px;
+
+		width: 32px;
+		height: 32px;
+		font-size: 20px;
 	}
 }

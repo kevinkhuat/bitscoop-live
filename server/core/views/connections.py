@@ -102,15 +102,16 @@ class ConnectView(View):
         connection_by_user = Q(user_id=request.user.id)
         connections = ConnectionApi.get(val=connection_by_user)
 
-        count = 1
+        next_name_count = 1
 
         # FIXME: Make the count happen in the DB
         for connection in connections:
             if provider.provider_number == connection.provider.provider_number:
-                count += 1
+                next_name_count += 1
 
         return render(request, 'core/connections/connect.html', {
-            'count': count,
+            'next_name_count': next_name_count,
+            'current_count': next_name_count - 1,
             'title': 'BitScoop - Connect to ' + provider.name,
             'flex_override': True,
             'provider': provider,

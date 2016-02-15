@@ -1,6 +1,6 @@
 define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'lodash', 'moment', 'nunjucks', 'object-context', 'search', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers'],
 	function(cartano, debounce, deferredDebounce, embedContent, icons, $, leaflet, _, moment, nunjucks, objectContext, search, viewstate) {
-		var DETAILS_ORDERING, EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults, templateMap;
+		var EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_AMOUNT, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults, templateMap;
 
 		isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
 
@@ -13,13 +13,13 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 		resultsView = new viewstate.View('explorer/views/results/base.html');
 
 		//TODO: Explore getting sizes for DOM elements programmatically
-		GRID_ITEM_SIZE = 276; //px
-		MORE_WIDTH = 115; //px
+		GRID_ITEM_SIZE = 195 + 15; //px
+		MORE_WIDTH = 90 + 26 + 52; //px
+		SCROLL_LOAD_AMOUNT = 50;
 		SCROLL_LOAD_LIMIT = 100; //px
 		SCROLL_DEBOUNCE = 250; //ms
 		//TODO: Calculate this by screen size
 		SCROLL_MIN_COUNT = 50;
-		DETAILS_ORDERING = ['events', 'content', 'things', 'contacts', 'places', 'locations', 'organizations'];
 		PREVIEW_ORDERING = ['content', 'events', 'contacts', 'things', 'places', 'locations', 'organizations'];
 		EVENT_MAPPED_RELATED_FIELDS = ['contacts', 'content', 'organizations', 'places', 'locations', 'things'];
 		HIDE_MAP_FACETS = ['contacts', 'content', 'organizations', 'things'];
@@ -77,6 +77,12 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 		function renderCache(objectType, view, object) {
 			var cachedFragment;
 
+			function _fragmentFromString(strHTML) {
+				var temp = document.createElement('template');
+				temp.innerHTML = strHTML;
+				return temp.content;
+			}
+
 			function _renderAndCache(objectType, view, object) {
 				var strHTML, template;
 
@@ -88,7 +94,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 				}
 
 				strHTML = nunjucks.render(template, objectContext[objectType][view](object));
-				return document.createRange().createContextualFragment(strHTML);
+				return _fragmentFromString(strHTML);
 			}
 
 			if (searchResults[objectType][object.id]._render) {
@@ -191,7 +197,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//If no object is passed in, then the list of objects to be mapped ('results') should be all of the ones
 			//of the current object type shown.
-			if (object == null) {
+			if (object === null) {
 				//Since results are stored in a dictionary, convert the dictionary of the current object type shown
 				//into an array.
 				results = [];
@@ -287,8 +293,8 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 			var results, $list = $('#list');
 
 			results = _.values(searchResults[explorerState.objectTypeShown]);
-			explorerState.shownResults.visible = results.slice(0, SCROLL_LOAD_LIMIT);
-			explorerState.shownResults.remaining = results.slice(SCROLL_LOAD_LIMIT);
+			explorerState.shownResults.visible = results.slice(0, SCROLL_LOAD_AMOUNT);
+			explorerState.shownResults.remaining = results.slice(SCROLL_LOAD_AMOUNT);
 
 			//Render items for each object and insert the items into the list, then perform the initial sort.
 			renderResults(explorerState.objectTypeShown, explorerState.currentViewState, explorerState.shownResults.visible, $list);
@@ -320,27 +326,32 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//Create a MixItUp instance.
 			//Tell it to run the selected close function when it's initialized, and to sort using the specified sort field.
-			$list.mixItUp({
-				animation: {
-					duration: 500
-				},
-				callbacks: {
-					onMixStart: onMixStart
-				},
-				layout: {
-					display: 'flex'
-				},
-				load: {
-					sort: initialSort
-				},
-				//Normally MixItUp will do a descending sort when you click a sort selector.
-				//This can cause visual glitches with our system, as clicking on a sort selector first does that
-				//default sort, and then our system tries to do its sort.
-				//The workaround was to point MixItUp to a non-existent sort selector so that only our code will run.
-				selectors: {
-					sort: 'null'
-				}
-			});
+			try {
+				$list.mixItUp({
+					animation: {
+						duration: 500
+					},
+					callbacks: {
+						onMixStart: onMixStart
+					},
+					layout: {
+						display: 'flex'
+					},
+					load: {
+						sort: initialSort
+					},
+					//Normally MixItUp will do a descending sort when you click a sort selector.
+					//This can cause visual glitches with our system, as clicking on a sort selector first does that
+					//default sort, and then our system tries to do its sort.
+					//The workaround was to point MixItUp to a non-existent sort selector so that only our code will run.
+					selectors: {
+						sort: 'null'
+					}
+				});
+			}
+			catch(ex) {
+				console.error('MixItUp Error: ' + ex);
+			}
 
 			explorerState.currentSort = initialSort;
 
@@ -434,7 +445,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 				//On mobile, the header for the sort bar will indicate what object type is being shown
 				//and what view it's being shown in.
-				$sortBar.find('.title').html('Sorting ' + explorerState.objectTypeShown[0].toUpperCase() + explorerState.objectTypeShown.slice(1) + ' in ' + explorerState.currentViewState[0].toUpperCase() + explorerState.currentViewState.slice(1) + ' View');
+				$sortBar.find('.title').html('Sort ' + explorerState.objectTypeShown[0].toUpperCase() + explorerState.objectTypeShown.slice(1));
 			}
 			//If in results view, hide the view and sort selectors.
 			else {
@@ -531,20 +542,26 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 						resultsContainerComponent.insert(feedView);
 
 						$list = $('#list');
-
 						currentObjectContext = searchResults[explorerState.objectTypeShown];
 
-						//Construct a details panel for each object of the current type and insert it into the list.
-						_.forEach(currentObjectContext, function(resultObject) {
-							var newPanel;
-
-							newPanel = renderCache(explorerState.objectTypeShown, 'details', resultObject);
-							$list.append(newPanel);
-						});
+						//If rendering the details for an event:
+						if (explorerState.objectTypeShown === 'events') {
+							//Construct a details panel for each object of the current type and insert it into the list.
+							_.forEach(currentObjectContext, function(resultObject) {
+								$list.append(renderEventDetails(resultObject));
+							});
+						}
+						else {
+							//Construct a details panel for each object of the current type and insert it into the list.
+							_.forEach(currentObjectContext, function(resultObject) {
+								$list.append(renderCache(explorerState.objectTypeShown, 'details', resultObject));
+							});
+						}
 
 						//Scale all embeddable objects and perform the initial sort.
-						embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img', [], searchResults.content);
 						initializeSort($list);
+
+						embedContent.insertEmailContent($('#list'), searchResults.content);
 					});
 					break;
 
@@ -553,7 +570,6 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 					break;
 			}
 		}
-
 
 		/**
 		 * Renders the Result view
@@ -640,7 +656,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//Add a catchy name for the filter, and then trigger a change event so that the name is saved.
 			//As the advanced search controls are still display:none, no events are normally fired.
-			$filterName.find('input[name="name"]').val('Since the Beginning of Time').trigger({
+			$filterName.find('input[name="name"]').val('Everything').trigger({
 				type: 'change'
 			});
 
@@ -705,6 +721,97 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 			}
 		}
 
+		function renderEventDetails(event) {
+			var $eventContainer = $(nunjucks.render('explorer/objects/event-container.html', objectContext.events.details(event)));
+
+			$eventContainer.find('.event-detail').html(renderCache('events', 'details', event));
+
+			if (event.place) {
+				$eventContainer.find('.place-detail').html(renderCache('place', 'details', event.place));
+			}
+
+			//Special case for adding a location
+			//Don't add the location if currently in map view, as the map makes it redundant
+			//(and we don't support multiple maps right now, either).
+			if (explorerState.currentViewState !== 'map' && event.location) {
+				//Render a location details panel and append it to the drawer/details window.
+				$eventContainer.find('.location-detail').html(renderCache('locations', 'details', event.location));
+			}
+
+			if (event.content || event.things) {
+				if (event.content) {
+					_.forEach(event.content, function(content) {
+						$eventContainer.find('.content-detail').append(renderCache('content', 'details', content));
+					});
+				}
+				else {
+					$eventContainer.find('.content-detail').hide();
+				}
+
+				if (event.things) {
+					_.forEach(event.things, function(thing) {
+						$eventContainer.find('.things-detail').append(renderCache('things', 'details', thing));
+					});
+				}
+				else {
+					$eventContainer.find('.things-detail').hide();
+				}
+			}
+			else {
+				$eventContainer.find('.event-center').hide();
+			}
+
+			if (event.contacts || event.people || event.organizations) {
+				if (event.contacts) {
+					_.forEach(event.contacts, function(contact) {
+						$eventContainer.find('.contacts-detail').append(renderCache('contacts', 'details', contact));
+					});
+				}
+				else {
+					$eventContainer.find('.contacts-detail').hide();
+				}
+
+				if (event.people) {
+					_.forEach(event.people, function(person) {
+						$eventContainer.find('.people-detail').append(renderCache('people', 'details', person));
+					});
+				}
+				else {
+					$eventContainer.find('.people-detail').hide();
+				}
+
+				if (event.organizations) {
+					_.forEach(event.organizations, function(organization) {
+						$eventContainer.find('.organizations-detail').append(renderCache('organizations', 'details', organization));
+					});
+				}
+				else {
+					$eventContainer.find('.organizations-detail').hide();
+				}
+			}
+			else {
+				$eventContainer.find('.event-right').hide();
+			}
+
+			return $eventContainer;
+		}
+
+		function renderLocationPlaceDetails($target, detailsObject) {
+			//If rendering a place, also render a location panel for the place's location and add it to the drawer/details window.
+			//TODO: When places have a list of locations, render a bounding box instead of a single marker.
+			if (selectedObjectType === 'places' && explorerState.currentViewState !== 'map') {
+				$target.append(renderCache(selectedObjectType, 'details', detailsObject.location));
+			}
+
+			//If not in map view, add the map to $map-container (if no location, this won't occur),
+			// add a marker for the selected object, and remove the unnecessary map controls.
+			if (explorerState.currentViewState !== 'map' && detailsObject.location) {
+				$('#map-container').html(map.element);
+				addMapMarkers(detailsObject);
+				removeMapControls();
+			}
+		}
+
 		/**
 		 * Renders the details for a selected object.
 		 * @param {object} $target The jQuery-selected DOM element where the rendered detail panels will be inserted.
@@ -718,35 +825,12 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//If rendering the details for an event:
 			if (selectedObjectType === 'events') {
-				//Add details panels in the order specified in DETAILS_ORDERING
-				_.forEach(DETAILS_ORDERING, function(objectType) {
-					//Special case for adding a location
-					//Don't add the location if currently in map view, as the map makes it redundant
-					//(and we don't support multiple maps right now, either).
-					if (objectType === 'locations') {
-						if (explorerState.currentViewState !== 'map' && detailsObject.location) {
-							//Render a location details panel and append it to the drawer/details window.
-							$target.append(renderCache('location', 'details', detailsObject.location));
-						}
-					}
-					//If adding the event details panel, render it and append it to the drawer/details window.
-					else if (objectType === 'events') {
-						$target.append(renderCache('events', 'details', detailsObject));
-					}
-					//If adding any other type of details panel:
-					else {
-						//Iterate through each of that object type and add a new panel of that type to the drawer/details window.
-						_.forEach(detailsObject[objectType], function(singleObject) {
-							$target.append(renderCache(objectType, 'details', singleObject));
-						});
-					}
-				});
-
+				$target.append(renderEventDetails(detailsObject));
 				//If not in map view, add the map to $map-container (if no location, this won't occur),
 				// add a marker for the selected object, and remove the unnecessary map controls.
-				if (explorerState.currentViewState !== 'map' && detailsObject.location) {
+				if (explorerState.currentViewState !== 'map' && event.location) {
 					$('#map-container').html(map.element);
-					addMapMarkers(detailsObject);
+					addMapMarkers(event);
 					removeMapControls();
 				}
 			}
@@ -757,24 +841,13 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 				//Special cases for locations and places.
 				if (selectedObjectType === 'locations' || selectedObjectType === 'places') {
-					//If rendering a place, also render a location panel for the place's location and add it to the drawer/details window.
-					//TODO: When places have a list of locations, render a bounding box instead of a single marker.
-					if (selectedObjectType === 'places' && explorerState.currentViewState !== 'map') {
-						$target.append(renderCache(selectedObjectType, 'details', detailsObject.location));
-					}
-
-					//If not in map view, add the map to $map-container (if no location, this won't occur),
-					// add a marker for the selected object, and remove the unnecessary map controls.
-					if (explorerState.currentViewState !== 'map' && detailsObject.location) {
-						$('#map-container').html(map.element);
-						addMapMarkers(detailsObject);
-						removeMapControls();
-					}
+					renderLocationPlaceDetails($target, detailsObject);
 				}
 			}
 
+			//TODO: Fix insertEmailContent
 			//Re-scale any embeddable content that may have been rendered.
-			embedContent.loadEmbeddablesAndScale($('.object-details:not(.location)'), 'img', [], searchResults.content);
+			embedContent.insertEmailContent($('.object-details'), searchResults.content);
 		}
 
 		/**
@@ -858,7 +931,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 			item.css('margin-bottom', $drawer.height() + itemVerticalMargins);
 
 			//The drawer's height from the top of the containing div is the item's top plus the item's height plus the item's vertical margins.
-			heightDistance = itemPosition.top + itemHeight + itemVerticalMargins;
+			heightDistance = itemPosition.top + itemHeight + itemVerticalMargins + 12;
 
 			//Set the drawer's margin-top to the calculated height.
 			$drawer.css('margin-top', heightDistance + 'px');
@@ -904,10 +977,10 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 		function initializeFacet() {
 			//De-select all of the view selectors and then select the grid view selector.
 			$('.view-selector').removeClass('active');
-			$('[data-selector="grid"]').addClass('active');
+			$('[data-selector="feed"]').addClass('active');
 
-			//Set the current view state to Grid view and render it.
-			explorerState.currentViewState = 'grid';
+			//Set the current view state to Feed view and render it.
+			explorerState.currentViewState = 'feed';
 			renderState();
 			$('.facet').html(explorerState.objectTypeShown !== 'events' ? explorerState.objectTypeShown : 'history');
 		}
@@ -988,7 +1061,11 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 				//The exception is list view, as this was found to be unpleasant, but could be reversed if further
 				//testing determines it's not so unpleasant.
 				//Map view should keep this, however, as you could click on a marker for an item not currently in view.
-				if (explorerState.currentViewState !== 'list') {
+
+				if (explorerState.currentViewState === 'grid') {
+					$this.find('.title-bar')[0].scrollIntoView(true);
+				}
+				else if (explorerState.currentViewState !== 'list') {
 					$this[0].scrollIntoView(true);
 				}
 			}
@@ -997,20 +1074,18 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 		function virtualPaginate(nextFunction) {
 			var results;
 
-			results = explorerState.shownResults.remaining.slice(0, SCROLL_LOAD_LIMIT);
+			results = explorerState.shownResults.remaining.slice(0, SCROLL_LOAD_AMOUNT);
 			explorerState.shownResults.visible += results;
-			explorerState.shownResults.remaining = explorerState.shownResults.remaining.slice(SCROLL_LOAD_LIMIT);
+			explorerState.shownResults.remaining = explorerState.shownResults.remaining.slice(SCROLL_LOAD_AMOUNT);
 
 			//Render items for each object and insert the items into the list, then perform the initial sort.
-			renderResults(explorerState.objectTypeShown, explorerState.currentViewState, results, $list);
+			renderResults(explorerState.objectTypeShown, explorerState.currentViewState, results, $('#list'));
 
 			return nextFunction();
 		}
 
 		function checkScrollPagination(e) {
-			var deferred, $lastChild, $list, $target = $(e.target);
-
-			$list = $('#list');
+			var deferred, $lastChild, $target = $(e.target);
 
 			if (explorerState.shownResults.remaining.length > 0) {
 				return virtualPaginate(function() {
@@ -1020,7 +1095,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//Automatically get the next page of results when you reach the last item.
 			if (explorerState.currentResultCount < explorerState.totalResultCount) {
-				$lastChild = $list.children().last();
+				$lastChild = $('#list').children().last();
 
 				if ($target.scrollTop() + $target.height() > $lastChild.position().top + $lastChild.height() - SCROLL_LOAD_LIMIT) {
 					deferred = new $.Deferred();
@@ -1385,48 +1460,54 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 				return false;
 			}
-		}).on('click', '.object-details-container', function(e) {
-			if ($(e.target).parents('.action-bar-container').length === 0) {
-				$(e.target).parents('.object-details-container').find('.action-bar').toggleClass('hidden');
+		}).on('click', '.object-details', function(e) {
+			if ($(e.target).parents('.object-details').hasClass('contact')) {
+				$(e.target).parents('.object-details').find('.share-menu').toggleClass('hidden');
 			}
-
-			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
-				renderDrawer();
-			}
-		}).on('click', '.action-bar .share-action', function(e) {
-			$(e.target).parents('.action-bar-container').find('.share-menu').toggleClass('hidden');
-
-			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
-				renderDrawer();
-			}
-		}).on('click', '.action-bar .action-action', function(e) {
-			$(e.target).parents('.action-bar-container').find('.action-menu').toggleClass('hidden');
-
-			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
-				renderDrawer();
-			}
-		}).on('click', '.action-bar .location-action', function(e) {
-			$(e.target).parents('.action-bar-container').find('.location-menu').toggleClass('hidden');
-
-			if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
-				renderDrawer();
-			}
+		}).on('click', '.share-action', function(e) {
+			$(e.target).parents('.share-action').addClass('hidden');
+			$(e.target).parents('.action-bar-container').find('.share-menu').removeClass('hidden');
 		});
+        //
+		//	if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+		//		renderDrawer();
+		//	}
+		//}).on('click', '.action-bar .share-action', function(e) {
+		//	$(e.target).parents('.action-bar-container').find('.share-menu').toggleClass('hidden');
+        //
+		//	if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+		//		renderDrawer();
+		//	}
+		//}).on('click', '.action-bar .action-action', function(e) {
+		//	$(e.target).parents('.action-bar-container').find('.action-menu').toggleClass('hidden');
+        //
+		//	if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+		//		renderDrawer();
+		//	}
+		//}).on('click', '.action-bar .location-action', function(e) {
+		//	$(e.target).parents('.action-bar-container').find('.location-menu').toggleClass('hidden');
+        //
+		//	if (explorerState.currentViewState === 'grid' && $('.grid-item.active').length > 0) {
+		//		renderDrawer();
+		//	}
+		//});
 
 		//Bind Results view-specific events.
 		resultsView.on('click', '.grid-item', function() {
 			//When the user clicks on the item for an object, save the objectId of that object,
 			//go to grid view for that object type and then select that object.
-			var gridItem, objectId, $this = $(this);
+			var $feedItem, objectId, objectType, $this = $(this);
 
 			objectId = $this.attr('data-object-id');
-			explorerState.objectTypeShown = objectId.split('.')[0];
+			objectType = objectId.split('.')[0];
+			explorerState.objectTypeShown = objectType;
+			explorerState.selectedObjectType = objectType;
 
 			prepopulateFacet();
 			initializeFacet();
 
-			gridItem = $('[data-object-id="' + objectId + '"]');
-			selectObject(gridItem, 'drawer');
+			$feedItem = $('[data-object-id="' + objectId + '"]');
+			selectObject($feedItem, 'feed');
 		}).on('click', '.more-select, .type-header', function() {
 			//When the user clicks on the more button or header for an object type, just go to grid view for that object type.
 			var $this = $(this);

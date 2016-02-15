@@ -110,7 +110,7 @@ class ProvidersView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        providers = list(ProviderApi.get())
+        providers = list(ProviderApi.get(val=Q(enabled=True)))
         connection_by_user = Q(user_id=request.user.id)
         connections = ConnectionApi.get(val=connection_by_user)
 
@@ -211,6 +211,20 @@ class SignupView(View, FormMixin):
             login(request, user)
 
             return redirect_by_name('home')
+
+
+class SupportView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect('https://docs.google.com/forms/d/1gySynTHyro6Iw3Nl2uiLkDjWF7RHLafr1XimPCXmTGU/viewform?entry.1424639026=' +
+                       request.user.full_name + '&entry.720021372=' + request.user.email
+                       + '&entry.2009129980&entry.2051677317&entry.1098167114&entry.552209439&&entry.640336011=' + request.user.handle)
+        else:
+            return HttpResponseRedirect('https://docs.google.com/forms/d/1gySynTHyro6Iw3Nl2uiLkDjWF7RHLafr1XimPCXmTGU/viewform')
 
 
 class TeamView(View):

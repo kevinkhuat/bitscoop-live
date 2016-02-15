@@ -6,7 +6,7 @@
 
 
 {% block main %}
-	<form action="{% url 'login' %}" method="POST">
+	<form action="{% url 'login' %}" method="POST" novalidate="novalidate">
 		<div class="boxed-group">
 			<div>Login</div>
 
@@ -14,7 +14,7 @@
 				{% csrf_token %}
 
 				<div class="text-box">
-					<input type="text" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>
+					<input type="email" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>
 				</div>
 
 				<div class="text-box">

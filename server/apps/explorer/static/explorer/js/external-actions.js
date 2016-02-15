@@ -194,116 +194,118 @@ define(['ga', 'jquery', 'lodash', 'moment', 'nunjucks'], function(ga, $, _, mome
 		objects: {
 			contacts: {
 				render: function renderActions$objects$contact(contact) {
-					var result = nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
-							location: false,
-							action: contact.name || false
-						}) + renderActions.actions.share(
+					var result =
+						//nunjucks.render('explorer/components/action/bar.html', {
+						//	share: true,
+						//	location: false,
+						//	action: contact.name || false
+						//}) +
+						renderActions.actions.share(
 							null,
 							TEMPLATES.defaults.title,
 							_prettyConcat([contact.source, contact.name, contact.handle]),
 							''
 						);
 
-					if (contact.name) {
-						result += renderActions.actions.actions({
-							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, contact.name),
-							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, contact.name)
-						});
-					}
+					//if (contact.name) {
+					//	result += renderActions.actions.actions({
+					//		wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, contact.name),
+					//		wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, contact.name)
+					//	});
+					//}
 					return result;
 				}
 			},
 			content: {
 				render: function renderActions$objects$content(content) {
 					var addActionBar, result;
-					addActionBar = _.includes(['audio', 'video', 'game'], content.type);
+					//addActionBar = _.includes(['audio', 'video', 'game'], content.type);
 					result = nunjucks.render('explorer/components/action/bar.html', {
 							share: true,
 							location: false,
-							action: addActionBar
-						}) + renderActions.actions.share(
+							action: false //addActionBar
+						}) +
+						renderActions.actions.share(
 							content.url || null,
 							_prettyConcat([content.title, TEMPLATES.defaults.title]),
 							_prettyConcat([content.text || TEMPLATES.defaults.description]),
 							content.embed_thumbnail || ''
 						);
 
-					if (addActionBar) {
-						result += renderActions.actions.actions({
-							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, content.title),
-							cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, content.title),
-							amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, content.title),
-							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, content.title)
-						});
-					}
+					//if (addActionBar) {
+					//	result += renderActions.actions.actions({
+					//		wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, content.title),
+					//		cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, content.title),
+					//		amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, content.title),
+					//		wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, content.title)
+					//	});
+					//}
 					return result;
 				}
 			},
 			events: {
 				render: function renderActions$objects$event(event) {
-					var result = nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
-							location: false,
-							action: event.datetime || true
-						}) + renderActions.actions.share(
-							null,
-							_prettyConcat([event.type, TEMPLATES.defaults.title, TEMPLATES.defaults.description]),
-							_prettyConcat([event.provider_name, event.type, moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz')]),
-							''
-						);
+					var result = '';
+						//nunjucks.render('explorer/components/action/bar.html', {
+						//	share: true,
+						//	location: false,
+						//	action: event.datetime || true
+						//}) + renderActions.actions.share(
+						//	null,
+						//	_prettyConcat([event.type, TEMPLATES.defaults.title, TEMPLATES.defaults.description]),
+						//	_prettyConcat([event.provider_name, event.type, moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz')]),
+						//	''
+						//);
 
-					if (event.datetime) {
-						var formattedDateTime = moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz');
-						result += renderActions.actions.actions({
-							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, formattedDateTime),
-							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, formattedDateTime)
-						});
-					}
+					//if (event.datetime) {
+					//	var formattedDateTime = moment(event.datetime).format('MMMM Do, YYYY HH:mm:ss a zz');
+					//	result += renderActions.actions.actions({
+					//		wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, formattedDateTime),
+					//		wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, formattedDateTime)
+					//	});
+					//}
 					return result;
 				}
 			},
 			locations: {
 				render: function renderActions$objects$location(location) {
-					return nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
-							location: true,
-							action: false
-						}) + renderActions.actions.share(
-							_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, location.geolocation[1], location.geolocation[0]),
-							'',
-							'',
-							''
-						) + renderActions.actions.location(
-							location.geolocation[1],
-							location.geolocation[0]
-						);
+					return renderActions.actions.location(
+						location.geolocation[1],
+						location.geolocation[0]
+					);
+						//nunjucks.render('explorer/components/action/bar.html', {
+						//		share: true,
+						//		location: false,
+						//		action: false
+						//	}) + renderActions.actions.share(
+						//	_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, location.geolocation[1], location.geolocation[0]),
+						//	'',
+						//	'',
+						//	''
+						//)+
 				}
 			},
 			organizations: {
 				render: function renderActions$objects$place(organization) {
-					var result = nunjucks.render('explorer/components/action/bar.html', {
-							share: (typeof (organization.url) === 'undefined'),
-							location: false,
-							action: true
-						}) + renderActions.actions.actions({
-							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, organization.title),
-							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, organization.title)
-						});
-
-					if (typeof (organization.url) === 'undefined') {
-						result += renderActions.actions.share(organization.title || organization.text);
-					}
+					var result = '';
+					//nunjucks.render('explorer/components/action/bar.html', {
+					//	share: (typeof (organization.url) === 'undefined'),
+					//	location: false,
+					//	action: true
+					//}) + renderActions.actions.actions({
+					//		wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, organization.title),
+					//		wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, organization.title)
+					//	});
+                    //
+					//if (typeof (organization.url) === 'undefined') {
+					//	result += renderActions.actions.share(organization.title || organization.text);
+					//}
 					return result;
 				}
 			},
 			places: {
 				render: function renderActions$objects$place(place) {
-					return nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
-							location: true,
-							action: true
-						}) + renderActions.actions.share(
+					return renderActions.actions.share(
 							_hydrateLocationURL(TEMPLATES.urls.location.googleMaps_show.href, place.location.geolocation[1], place.location.geolocation[0]),
 							'',
 							'',
@@ -315,25 +317,32 @@ define(['ga', 'jquery', 'lodash', 'moment', 'nunjucks'], function(ga, $, _, mome
 							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, place.name || place.reverse_geolocation),
 							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, place.name || place.reverse_geolocation)
 						});
+					//nunjucks.render('explorer/components/action/bar.html', {
+					//		share: false, //true
+					//		location: true,
+					//		action: true
+					//	}) +
 				}
 			},
 			things: {
 				render: function renderActions$objects$thing(thing) {
 					return nunjucks.render('explorer/components/action/bar.html', {
-							share: true,
-							location: false,
-							action: true
-						}) + renderActions.actions.share(
-							thing.url || null,
-							_prettyConcat([thing.title, TEMPLATES.defaults.title]),
-							_prettyConcat([thing.text || TEMPLATES.defaults.description]),
-							thing.embed_thumbnail || ''
-						) + renderActions.actions.actions({
-							wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, thing.title),
-							cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, thing.title),
-							amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, thing.title),
-							wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, thing.title)
-						});
+								share: true,
+								location: false,
+								action: false //true
+							}) + renderActions.actions.share(
+								thing.url || null,
+								_prettyConcat([thing.title, TEMPLATES.defaults.title]),
+								_prettyConcat([thing.text || TEMPLATES.defaults.description]),
+								thing.embed_thumbnail || ''
+						);
+						//) + renderActions.actions.actions({
+						//	wolfram_calc_href: _hydrateActionURL(TEMPLATES.urls.actions.wolfram_calc.href, thing.title),
+						//	cisi_href: _hydrateActionURL(TEMPLATES.urls.actions.cisi.href, thing.title),
+						//	amazon_href: _hydrateActionURL(TEMPLATES.urls.actions.amazon.href, thing.title),
+						//	wikipedia_href: _hydrateActionURL(TEMPLATES.urls.actions.wikipedia.href, thing.title)
+						//}
+						//
 				}
 			}
 		},

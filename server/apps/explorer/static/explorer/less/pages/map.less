@@ -34,18 +34,9 @@ body.explorer.map {
 				#details-scroll {
 					box-shadow: inset 0 0 15px fade(@dark, 25%);
 					margin: @control-margin;
-					background-color: @background2;
-					border: 1px solid @input-border-color;
 					overflow-y: auto;
 					max-height: 45%;
 					width: 95%;
-
-					#details {
-						.hide-empty;
-
-						.flex;
-						.flex-column;
-					}
 				}
 			}
 
@@ -59,7 +50,6 @@ body.explorer.map {
 				height: 1.25em;
 
 				font-size: 1.5em;
-				background-color: @light;
 				cursor: pointer;
 
 				.flex;
@@ -103,7 +93,6 @@ body.explorer.map {
 					font-size: 1.2em;
 					width: 100%;
 					cursor: pointer;
-					word-break: break-word;
 
 					&:nth-child(even) {
 						background-color: darken(@light, 5%);

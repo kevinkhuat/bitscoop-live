@@ -1,38 +1,39 @@
-<div class="mix object-details-container" data-object-id="events.{{ event.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{% if event[sortField.property] == undefined %}~{% else %}{{ event[sortField.property] }}{% endif %}" {% endfor %}>
+<div class="mix object-details event">
+    <div class="provider-container">
+        <div class="provider-icon">
+            <i class="{{ event.providerIcon }}"></i>
+        </div>
+        <span class="provider-name">{{ event.provider_name }}</span>
+    </div>
 
-	<div class="object-details event">
-		<div>
-			<div class="icon {{ event.eventTypeIcon }}"></div>
-		{% if event.context %}
-			<div class="event-type">{{ event.context }}</div>
-		{% else %}
-			<div class="event-type">{{ event.type }}</div>
-		{% endif %}
-		</div>
+    <div>
+        <div class="event-type-container icon-text-right">
+            <i class="{{ event.eventTypeIcon }}"></i>
+            {% if event.context %}
+            <span>{{ event.context }}</span>
+            {% else %}
+            <span>{{ event.type }}</span>
+            {% endif %}
+        </div>
 
-		<div>
-			<div class="icon {{ event.providerIcon }}"></div>
-			<div class="provider-name">{{ event.provider_name }}</div>
-		</div>
+        {% if event.date %}
+            <div class="date icon-text-right">
+                <i class="fa fa-calendar"></i>
+                <span>{{ event.date }}</span>
+            </div>
 
-		{% if event.date %}
-			<div class="datetime">
-				{% if event.datetimeEstimated %}
-					<div>Estimated</div>
-				{% endif %}
-				<span class="fa fa-calendar"></span>
-			<span>
-				{{ event.date }}
-			</span>
-				<span class="fa fa-clock-o"></span>
-			<span>
-				{{ event.time }}
-			</span>
-			</div>
-		{% endif %}
-	</div>
+            <div class="time icon-text-right">
+                <i class="fa fa-clock-o"></i>
+                <span>{{ event.time }}</span>
+            </div>
 
-	<div class="action-bar-container">
-		{{ actionBar }}
-	</div>
+            {% if event.datetimeEstimated %}
+            <div class="estimated">Estimated</div>
+            {% endif %}
+        {% endif %}
+
+        <div class="action-bar-container">
+            {{ actionBar }}
+        </div>
+    </div>
 </div>

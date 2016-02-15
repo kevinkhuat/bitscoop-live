@@ -29,7 +29,7 @@
 		<form action="{% url 'connections:connect' provider.name|lower %}">
 			<div class="padded paragraphed">
 				<div class="align-center">
-					<input class="line-entry align-center" type="text" name="connection-name" placeholder="My {{ provider.name }} Account{% if count > 1 %} #{{ count }}{% endif %}" style="padding-top: 0;" autofocus />
+					<input class="line-entry align-center" type="text" name="connection-name" placeholder="My {{ provider.name }} Account{% if next_name_count > 1 %} #{{ next_name_count }}{% endif %}" style="padding-top: 0;" autofocus />
 				</div>
 
 				<div style="margin-top: 25px;">
@@ -64,8 +64,13 @@
 
 				<input type="hidden" name="update-frequency" value="1" />
 
-				<div class="align-center" style="margin-top: 25px;">
+				<div class="action-footer" style="margin-top: 25px;">
 					<button class="primary" type="submit">Connect to {{ provider.name }}</button>
+					{% if current_count = 1 %}
+					<a class="primary" href="{% url 'settings:connections' %}">Manage Connection</a>
+					{% elif current_count > 1 %}
+					<a class="primary" href="{% url 'settings:connections' %}">Manage {{ current_count }} Connections</a>
+					{% endif %}
 				</div>
 			</div>
 		</form>

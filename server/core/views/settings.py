@@ -18,7 +18,6 @@ from server.contrib.multiauth.decorators import login_required
 from server.contrib.pytoolbox import initialize_endpoint_data
 from server.contrib.pytoolbox.collections import update
 from server.contrib.pytoolbox.django.forms import AllowEmptyMixin
-from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import AcceptedTypesMixin, FormMixin
 from server.core.api import ConnectionApi
 from server.core.documents import Connection, Permission, Settings

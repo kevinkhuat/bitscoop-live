@@ -1,43 +1,39 @@
-<div class="mix object-details-container" data-object-id="things.{{ thing.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{{ thing[sortField.property] }}" {% endfor %}>
+<div class="mix object-details thing" data-object-id="things.{{ thing.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{{ thing[sortField.property] }}" {% endfor %}>
 
-	<div class="object-details thing">
-		{% if thing.formatted_embed_content %}
-			{{ thing.formatted_embed_content }}
-		{% elif thing.embed_thumbnail %}
-			{% if not thing.title %}
-				<img src="{{ thing.embed_thumbnail }}"/>
-			{% else %}
-				<a href="{{ thing.url }}" target="_blank">
-					<img src="{{ thing.embed_thumbnail }}"/>
-				</a>
-			{% endif %}
+	{% if thing.formatted_embed_content %}
+		{{ thing.formatted_embed_content }}
+	{% elif thing.embed_thumbnail %}
+		{% if not thing.title %}
+			<img src="{{ thing.embed_thumbnail }}"/>
+		{% else %}
+		<a href="{{ thing.url }}" target="_blank">
+			<img src="{{ thing.embed_thumbnail }}"/>
+		</a>
 		{% endif %}
+	{% endif %}
 
-		{% if thing.url %}
-			<a class="thing-title" href="{{ thing.url }}" target="_blank">{{ thing.title }}</a>
-		{% elif thing.title %}
-			<div class="thing-title">{{ thing.title }}</div>
+	{% if thing.url %}
+		<a class="content-title" href="{{ thing.url }}" target="_blank">{{ thing.title }}</a>
+	{% else %}
+		<div class="content-title">{{ thing.title }}</div>
+	{% endif %}
+
+	{% if thing.text%}
+		{% if thing.url and not thing.title %}
+		<a class="text-area" href="{{ thing.url }}" target="_blank">{{ thing.text }}</a>
+		{% else %}
+		<pre class="text-area">{{ thing.text }}</pre>
 		{% endif %}
+	{% endif %}
 
-		{% if thing.text %}
-			<pre class="text-area">{{ thing.text }}</pre>
-		{% endif %}
-
-		<div class="icons">
-			<div>
-				<i class="{{ thing.thingTypeIcon }}"></i>
-				<span class="thing-type">{{ thing.prettyType }}</span>
-			</div>
-			{% if not isEventDetail %}
-				<div>
-					<i class="{{ thing.providerIcon }}"></i>
-					<span>{{ thing.provider_name }}</span>
-				</div>
-			{% endif %}
+	<div class="content-footer-container">
+		<div class="action-bar-container">
+			{{ actionBar }}
 		</div>
-	</div>
 
-	<div class="action-bar-container">
-		{{ actionBar }}
+		<div class="icon-text-right">
+			<i class="{{ thing.thingTypeIcon }}"></i>
+			<span class="thing-type">{{ thing.prettyType }}</span>
+		</div>
 	</div>
 </div>

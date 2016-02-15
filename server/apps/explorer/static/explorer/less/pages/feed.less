@@ -5,34 +5,31 @@ body.explorer.feed {
 
 	#grid-scroll {
 		#list {
-			width: 80%;
-			margin: 0 auto;
+			.flex;
+			.flex-column;
+			align-items: center;
 
-			@media @mobile {
-				width: 100%;
+			width: 100%;
+
+			> div {
+				min-width: 80%;
+				max-width: 1000px;
+				border-bottom: 1px solid lighten(@dark, 35%);
+
+				@media @mobile {
+					width: 100%;
+					margin: 0.3em 0;
+				}
 			}
-		}
-	}
 
-	.object-details {
-		margin: 0.5em auto;
-		width: 100%;
+			> :first-child {
+				margin-top: 0;
+			}
 
-		@media @mobile {
-			margin: 0 0 1em 0;
-			padding: 1em 0 2em 0;
-		}
-
-		&:first-child {
-			margin-top: 1em;
-		}
-
-		&:last-child {
-			margin-bottom: 1em;
-		}
-
-		@media @mobile {
-			margin: 0 0 1em 0;
+			> :last-child {
+				margin-bottom: 0;
+				border-bottom: none;
+			}
 		}
 	}
 }

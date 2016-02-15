@@ -1,0 +1,20 @@
+<div class="mix event-detail-container" data-object-id="events.{{ event.id }}" {% for sortField in sortFields %}
+     data-{{ sortField.attr
+     }}="{% if event[sortField.property] == undefined %}~{% else %}{{ event[sortField.property] }}{% endif %}" {% endfor
+     %}>
+
+    <div class="event-left">
+        <div class="event-detail"></div>
+        <div class="place-detail"></div>
+        <div class="location-detail"></div>
+    </div>
+    <div class="event-center">
+        <div class="content-detail"></div>
+        <div class="things-detail"></div>
+    </div>
+    <div class="event-right">
+        <div class="contacts-detail"></div>
+        <div class="people-detail"></div>
+        <div class="organizations-detail"></div>
+    </div>
+</div>

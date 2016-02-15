@@ -1,24 +1,23 @@
-<div class="mix object-details-container" data-object-id="organizations.{{ organization.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{{ organization[sortField.property] }}" {% endfor %}>
+<div class="mix object-details organization" data-object-id="organizations.{{ organization.id }}" {% for sortField in sortFields %} data-{{ sortField.attr }}="{{ organization[sortField.property] }}" {% endfor %}>
 
-	<div class="object-details organization">
-		{% if organization.thumbnail %}
-			<img src="{{ organization.thumbnail }}"/>
-		{% else %}
-			<div class="organization-name">
-				<i class="icon-big fa fa-building"></i>
-				<span>{{ organization.name }}</span>
-			</div>
-		{% endif %}
+	{% if organization.thumbnail %}
+		<img src="{{ organization.thumbnail }}"/>
+	{% else %}
+		<div class="organization-name icon-text-right">
+			<i class="icon-big fa fa-building"></i>
+			<span>{{ organization.name }}</span>
+		</div>
+	{% endif %}
 
-		{% if organization.url %}
-			<a class="organization-title" href="{{ organization.url }}" target="_blank">{{ organization.name }}</a>
-		{% else %}
-			<div class="organization-title">{{ organization.title }}</div>
-		{% endif %}
+	{% if organization.url %}
+		<a class="organization-title" href="{{ organization.url }}" target="_blank">{{ organization.name }}</a>
+	{% else %}
+		<span class="organization-title">{{ organization.title }}</span>
+	{% endif %}
 
-		<i class="{{ organization.organizationTypeIcon }} organization-icon"></i>
-
-		<div class="organization-type">{{ organization.type }}</div>
+	<div class="icon-text-right">
+		<i class="{{ organization.organizationTypeIcon }}"></i>
+		<span>{{ organization.type }}</span>
 	</div>
 
 	<div class="action-bar-container">

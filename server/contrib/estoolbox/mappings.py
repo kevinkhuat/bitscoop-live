@@ -8,6 +8,10 @@ CONTACT_MAPPING = {
     'contact': {
         'dynamic': 'false',
         'properties': {
+            'avatar_URL': {
+                'type': 'string',
+                'index': 'not_analyzed'
+            },
             'connection': {  # Optional
                 'type': 'string',
                 'index': 'not_analyzed'
@@ -138,6 +142,10 @@ EVENT_MAPPING = {
             'contacts': {  # Optional
                 'type': 'object',
                 'properties': {
+                    'avatar_URL': {
+                        'type': 'string',
+                        'index': 'not_analyzed'
+                    },
                     'id': {
                         'type': 'string',
                         'index': 'not_analyzed'

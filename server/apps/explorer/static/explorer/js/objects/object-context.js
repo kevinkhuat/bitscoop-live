@@ -26,10 +26,14 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						objectType: 'contacts',
 						object: contact,
 						title: title,
-						largeIcon: icons.getContactFontIcon(),
+						leftIcon: icons.getContactFontIcon(),
 						rightIcon: icons.getProviderFontIcon(contact.events[0].provider_name.toLowerCase()),
 						sortFields: objectContextDict.contacts.sort.fields
 					};
+
+					if (contact.avatar_url) {
+						gridItem.thumbnail = contact.avatar_url;
+					}
 
 					return gridItem;
 				},
@@ -81,11 +85,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.contacts.sort.fields
 					};
 				},
-				details: function objectContext$contact$details(contact, isEventDetail) {
+				details: function objectContext$contact$details(contact) {
 					return {
 						contact:contact,
 						sortFields: objectContextDict.contacts.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.contacts.render(contact)
 					};
 				},
@@ -131,16 +134,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						leaflet_id: 0, //TODO: Fix
 						thumbnail: thumbnail, //TODO: Fix
 						title: title,
+						leftIcon: icons.getContentFontIcon(content),
 						rightIcon: icons.getProviderFontIcon(content.events[0].provider_name.toLowerCase()),
 						sortFields: objectContextDict.content.sort.fields
 					};
-
-					if (thumbnail) {
-						gridItem.leftIcon = icons.getContentFontIcon(content);
-					}
-					else {
-						gridItem.largeIcon = icons.getContentFontIcon(content);
-					}
 
 					return gridItem;
 				},
@@ -210,7 +207,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.content.sort.fields
 					};
 				},
-				details: function objectContext$content$details(content, isEventDetail) {
+				details: function objectContext$content$details(content) {
 					content.contentTypeIcon = icons.getContentFontIcon(content);
 
 					content.title = typeof content.title !== 'undefined' ? twemoji.parse(content.title) : content.title;
@@ -223,7 +220,6 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 					return {
 						content: content,
 						sortFields: objectContextDict.content.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.content.render(content)
 					};
 				},
@@ -255,7 +251,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 			},
 			events: {
 				grid: function objectContext$event$gridItem(event) {
-					var datetime, datetimeEstimated, gridItem, title, thumbnail;
+					var gridItem, title, thumbnail;
 
 					//TODO: Can we do this better?
 					if (event.content && event.content.length > 0) {
@@ -305,21 +301,11 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						date: moment(event.sortDatetime).format('M/D/YY'),
 						time: moment(event.sortDatetime).format('h:mm A'),
 						sortDatetime: event.sortDatetime,
-						datetimeEstimated: event.datetimeEstimated,
-						firstContactHandle: event.firstContactHandle,
-						firstItemType: event.firstItemType,
-						firstPlaceName: event.firsPlaceName,
 						title: title,
+						leftIcon: icons.getEventFontIcon(event),
 						rightIcon: icons.getProviderFontIcon(event.provider_name.toLowerCase()),
 						sortFields: objectContextDict.events.sort.fields
 					};
-
-					if (thumbnail) {
-						gridItem.leftIcon = icons.getEventFontIcon(event);
-					}
-					else {
-						gridItem.largeIcon = icons.getEventFontIcon(event);
-					}
 
 					return gridItem;
 				},
@@ -474,7 +460,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 				},
 				details: function objectContext$event$details(event) {
 					event.eventTypeIcon = icons.getEventFontIcon(event);
-					event.date = moment(event.sortDatetime).format('M/D/YY');
+					event.date = moment(event.sortDatetime).format('ddd MMM D, YYYY');
 					event.time = moment(event.sortDatetime).format('h:mm A');
 					event.providerIcon = icons.getProviderFontIcon(event.provider_name.toLowerCase());
 
@@ -533,7 +519,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						objectType: 'locations',
 						object: location,
 						leaflet_id: 0, //TODO: Fix
-						largeIcon: icons.getLocationFontIcon(),
+						leftIcon: icons.getLocationFontIcon(),
 						sortFields: objectContextDict.locations.sort.fields
 					};
 
@@ -569,14 +555,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.locations.sort.fields
 					};
 				},
-				details: function objectContext$location$details(location, isEventDetail) {
-					location.date = moment(location.datetime).format('M/D/YY');
-					location.time = moment(location.datetime).format('h:mm A');
-
+				details: function objectContext$location$details(location) {
 					return {
 						location: location,
 						sortFields: objectContextDict.locations.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.locations.render(location)
 					};
 				},
@@ -602,12 +584,9 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						leaflet_id: 0, //TODO: Fix
 						thumbnail: thumbnail,
 						title: title,
+						largeIcon: icons.getOrganizationFontIcon(),
 						sortFields: objectContextDict.organizations.sort.fields
 					};
-
-					if (!thumbnail) {
-						gridItem.largeIcon = icons.getOrganizationFontIcon();
-					}
 
 					return gridItem;
 				},
@@ -654,14 +633,13 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.organizations.sort.fields
 					};
 				},
-				details: function objectContext$organization$details(organization, isEventDetail) {
+				details: function objectContext$organization$details(organization) {
 					//TODO: Fix Type Icons
 					organization.organizationTypeIcon = icons.getOrganizationFontIcon();
 
 					return {
 						organization: organization,
 						sortFields: objectContextDict.organizations.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.organizations.render(organization)
 					};
 				},
@@ -698,7 +676,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						object: person,
 						thumbnail: thumbnail,
 						title: title,
-						largeIcon: icons.getPersonFontIcon(),
+						leftIcon: icons.getPersonFontIcon(),
 						sortFields: objectContextDict.people.sort.fields
 					};
 
@@ -759,11 +737,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.people.sort.fields
 					};
 				},
-				details: function objectContext$person$details(person, isEventDetail) {
+				details: function objectContext$person$details(person) {
 					return {
 						person: person,
 						sortFields:  objectContextDict.people.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.people.render(person)
 					};
 				},
@@ -811,12 +788,9 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						leaflet_id: 0, //TODO: Fix
 						thumbnail: thumbnail,
 						title: title,
+						leftIcon: icons.getPlaceFontIcon(),
 						sortFields: objectContextDict.places.sort.fields
 					};
-
-					if (!thumbnail) {
-						gridItem.largeIcon = icons.getPlaceFontIcon();
-					}
 
 					return gridItem;
 				},
@@ -862,11 +836,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.places.sort.fields
 					};
 				},
-				details: function objectContext$place$details(place, isEventDetail) {
+				details: function objectContext$place$details(place) {
 					return {
 						place: place,
 						sortFields: objectContextDict.places.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.places.render(place)
 					};
 				},
@@ -909,16 +882,10 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						leaflet_id: 0, //TODO: Fix
 						thumbnail: thumbnail,
 						title: title,
+						leftIcon: icons.getThingFontIcon(thing),
 						rightIcon: icons.getProviderFontIcon(thing.events[0].provider_name.toLowerCase()),
 						sortFields: objectContextDict.things.sort.fields
 					};
-
-					if (thumbnail) {
-						gridItem.leftIcon = icons.getThingFontIcon(thing);
-					}
-					else {
-						gridItem.largeIcon = icons.getThingFontIcon(thing);
-					}
 
 					return gridItem;
 				},
@@ -977,7 +944,7 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 						sortFields: objectContextDict.things.sort.fields
 					};
 				},
-				details: function objectContext$thing$details(thing, isEventDetail) {
+				details: function objectContext$thing$details(thing) {
 					thing.thingTypeIcon = icons.getThingFontIcon(thing);
 					thing.prettyType = thing.type.replace(/_/g, ' ');
 
@@ -988,7 +955,6 @@ define(['embed-content', 'external-actions', 'icons', 'moment', 'twemoji'], func
 					return {
 						thing: thing,
 						sortFields: objectContextDict.things.sort.fields,
-						isEventDetail: isEventDetail,
 						actionBar: externalActions.objects.things.render(thing)
 					};
 				},

@@ -1,30 +1,10 @@
-<div class="mix object-details-container" data-object-id="locations.{{ location.id }}" {% for sortField in sortFields %}
+<div class="mix object-details location" data-object-id="locations.{{ location.id }}" {% for sortField in sortFields %}
      data-{{ sortField.attr }}="{{ location[sortField.property] }}" {% endfor %}>
 
-	<div class="object-details location">
-		<div id="map-container"></div>
-		{% if location.estimated %}
-			<div class="text-center">Estimated</div>
-		{% endif %}
-		{% if not isEventDetail %}
-			<div class="text-capitalize text-center">
-				<i class="{{ location.providerIcon }}"></i>
-				<span>{{ location.provider_name }}</span>
-			</div>
-			{% if location.date %}
-				<div class="datetime">
-					<span class="fa fa-calendar icon"></span>
-			<span>
-				{{ location.date }}
-			</span>
-					<span class="fa fa-clock-o icon"></span>
-			<span>
-				{{ location.time }}
-			</span>
-				</div>
-			{% endif %}
-		{% endif %}
-	</div>
+	<div id="map-container"></div>
+	{% if location.estimated %}
+		<div class="text-center">Estimated</div>
+	{% endif %}
 
 	<div class="action-bar-container">
 		{{ actionBar }}

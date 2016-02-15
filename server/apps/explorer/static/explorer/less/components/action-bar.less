@@ -1,18 +1,19 @@
 .action-bar-container {
 	.flex;
-	.flex-column;
-	margin: -1.4em auto 0.2em auto;
-	font-size: 1.5em;
+	.flex-row;
 
-	a {
-		margin: 0.2em;
+	* {
+		cursor: hand;
+	}
 
+	a > * {
 		@media @mobile {
-			font-size: 1.5em;
+			font-size: 1.3em;
 		}
+		color: @color1;
 
 		&:hover {
-			color: @color1;
+			color: @color4;
 		}
 	}
 
@@ -20,11 +21,10 @@
 		.flex;
 		.flex-row;
 
-		font-size: 1.5em;
-		color: @light;
-		margin: 0 auto;
+		color: lighten(@dark, 35%);
 
 		i {
+			color: @light;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -33,12 +33,9 @@
 			margin: 0 0.1em;
 			border-radius: 500px;
 			background-color: @color1;
-		    box-shadow: 0 0 10px @dark;
-			border: 3px solid @light;
 
 			&:hover {
 				color: @color4;
-				border-color: @color4;
 			}
 		}
 
@@ -58,7 +55,13 @@
 	.share-menu {
 		.flex;
 		.flex-row;
-		margin: 0.5em auto;
+		.flex-start;
+
+		font-size: 1.3em;
+
+		& div {
+			margin: auto 0.25em;
+		}
 
 		.sms {
 			@media @mobile {
@@ -71,11 +74,14 @@
 		.flex;
 		.flex-row;
 		margin: 0.5em auto;
+
+		font-size: 1.3em;
 	}
 
 	.action-menu {
 		.flex;
 		.flex-row;
-		margin: 0.5em auto;
+
+		font-size: 1.3em;
 	}
 }

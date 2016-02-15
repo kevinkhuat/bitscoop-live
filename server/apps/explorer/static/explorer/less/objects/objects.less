@@ -1,8 +1,13 @@
-.object-details-container {
+.object-details {
 	.flex;
 	.flex-column;
+	.flex-space-around;
 
 	align-items: stretch;
+	word-break: break-all;
+	word-break: break-word;
+
+	margin: 1.5em 0.5em;
 
 	a {
 		color: @color2;
@@ -12,215 +17,225 @@
 		}
 	}
 
-	.object-details {
+	.icon-text-right {
 		.flex;
-		.flex-column;
-		.flex-space-around;
-		align-items: stretch;
+		.flex-row;
+		.flex-start;
+		margin: 0.3em 0;
 
-		max-width: 700px;
-		word-break: break-word;
-		padding: 1em 1em 2em 1em;
-		margin: 0.5em;
-
-		@media @mobile {
-			margin: 0 0 1em 0;
-			width: 100%;
-			max-width: inherit;
-
-			&:first-child {
-				margin-top: 1em;
-			}
+		& i {
+			margin: auto 0.5em auto 0;
+			color: @color1;
 		}
 
-		& > * {
-			margin-bottom: 5px;
-
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-
-		.datetime {
-			.text-center;
-		}
-
-		&.contact {
-			& div {
-				.text-center;
-				font-size: 1.2em;
-			}
-
-			& .icon-big {
-				.text-center;
-				font-size: 5em;
-			}
-		}
-
-		&.content {
-			& > img {
-				margin-left: auto;
-				margin-right: auto;
-				height: auto;
-				width: auto;
-				max-width: 300px;
-				max-height: 300px;
-			}
-
-			& > iframe {
-				margin-left: auto;
-				margin-right: auto;
-			}
-
-			& > .content-title {
-				.text-center;
-				font-size: 1.5em;
-
-				margin-left: auto;
-				margin-right: auto;
-			}
-
-			& > .icons {
-				.flex;
-				.flex-space-between;
-
-				margin-left: auto;
-				margin-right: auto;
-
-				& > div {
-					margin: 0 0.5em;
-				}
-			}
-
-			& > .text-area {
-				.pt-sans;
-				text-align: left;
-				white-space: pre-wrap;
-			}
-		}
-
-		&.event {
-			& .icon {
-				.text-center;
-
-				width: 100%;
-				font-size: 3em;
-			}
-
-			& .provider-name, & .event-type {
-				.text-capitalize;
-				.text-center;
-
-				font-size: 1.5em;
-			}
-		}
-
-		&.location {
-			font-size: 1.2em;
-		}
-
-		&.organization {
-			& > .organization-title {
-				.text-center;
-				font-size: 1.5em;
-			}
-
-			& > .organization-icon, .organization-type {
-				.text-center;
-				text-transform: uppercase;
-			}
-
-			& > .organization-name {
-				margin-left: auto;
-				margin-right: auto;
-
-				font-size: 1.5em;
-			}
-
-			.organization-icon {
-				font-size: 1.5em;
-			}
-
-			& img {
-				margin-left: auto;
-				margin-right: auto;
-				height: auto;
-				width: auto;
-				max-width: 300px;
-				max-height: 300px;
-			}
-
-		}
-
-		&.place {
-			.text-center;
-
-			& > .place-name {
-				font-size: 1.5em;
-			}
-
-			& > i {
-				font-size: 3em;
-			}
-		}
-
-		&.thing {
-			& > iframe {
-				margin-left: auto;
-				margin-right: auto;
-			}
-
-			& > .thing-title {
-				.text-center;
-				font-size: 1.5em;
-
-				margin-left: auto;
-				margin-right: auto;
-
-			}
-
-			& img {
-				margin-left: auto;
-				margin-right: auto;
-				height: auto;
-				width: auto;
-				max-width: 300px;
-				max-height: 300px;
-			}
-
-			& > .text-area {
-				.pt-sans;
-				text-align: left;
-				white-space: pre-wrap;
-			}
-
-			& > .icons {
-				.flex;
-				.flex-space-between;
-
-				margin-left: auto;
-				margin-right: auto;
-
-				& > div {
-					margin: 0 0.5em;
-				}
-
-				& .thing-type {
-					.text-capitalize;
-				}
-			}
-		}
-
-		#map-container {
-			.flex;
-			.flex-grow;
-
-			min-width: 200px;
-			min-height: 200px;
+		& span {
+			margin: auto 0;
+			text-align: left;
 		}
 	}
 
-	.object-details, .event {
-		min-height: 250px;
+	&.contact {
+		.flex;
+		.flex-column;
+		.flex-start;
+
+		@media @mobile {
+			width: 95%;
+		}
+
+		.contact-container {
+			.flex;
+			.flex-row;
+			.flex-start;
+			width: 100%;
+			margin: 0.3em 0;
+
+			.user-image {
+				max-height: 48px;
+				max-width: 48px;
+				margin: auto 0.5em auto 0;
+			}
+
+			.user-image-icon {
+				font-size: 2em;
+				margin: auto 0.5em auto 0;
+				color: @color1;
+			}
+
+			.contact-info {
+				.flex;
+				.flex-column;
+
+				margin: auto 0;
+				text-align: left;
+			}
+		}
+	}
+
+	&.content, &.thing {
+		.flex;
+		.flex-column;
+		.flex-space-between;
+		flex-grow: 1;
+		min-height: 140px;
+
+		align-items: center;
+
+		a {
+			margin: 0 auto;
+		}
+
+		@media @mobile {
+			width: 95%;
+		}
+
+		img {
+			height: auto;
+			width: auto;
+			max-width: 300px;
+			max-height: 300px;
+			margin: 0.3em auto;
+		}
+
+		& > iframe {
+			margin: 0.3em auto;
+		}
+
+		@media @mobile {
+			.email-iframe {
+				transform: scale(0.50);
+				transform-origin: 0 0;
+			}
+		}
+
+		& > .content-title {
+			.text-center;
+			font-size: 1.5em;
+		}
+
+		& > .content-footer-container {
+			.flex;
+			.flex-row;
+			.flex-space-between;
+
+			width: 100%;
+		}
+
+		& > .text-area {
+			.pt-sans;
+			max-width: 600px;
+			text-align: left;
+			white-space: pre-wrap;
+			margin: 0.3em 0;
+		}
+	}
+
+	&.event {
+		text-transform: capitalize;
+		font-size: 1.2em;
+
+		@media @mobile {
+			.flex-row;
+			margin: 0.2em;
+		}
+
+		.provider-container {
+			.flex;
+			.flex-column;
+			.flex-center;
+			justify-content: center;
+			width: 100%;
+
+			@media @mobile {
+				width: inherit;
+			}
+
+			& .provider-icon {
+				.text-center;
+
+				& i {
+					font-size: 2.5em;
+					padding: 0.3em;
+					background-color: darken(@light, 40%);
+					border-radius: 40px;
+					width: 70px;
+					height: 70px;
+
+					@media @mobile {
+						padding: 0.06em 0 0.06em 0.03em;
+						width: 50px;
+						height: 50px;
+					}
+
+					&:before {
+						top: 4px;
+						position: relative;
+					}
+				}
+			}
+
+			& .provider-name {
+				margin: 0.3em 0;
+				font-size: 1.5em;
+				.text-center;
+
+				@media @mobile {
+					margin: 0.1em 0;
+					font-size: 1em;
+				}
+			}
+		}
+
+		> div {
+			.flex;
+			.flex-column;
+
+			.estimated {
+				margin-left: 20px;
+			}
+		}
+	}
+
+	&.location {
+
+		@media @mobile {
+			width: 95%;
+		}
+
+		& #map-container {
+			& > div {
+				width: 100%;
+				height: 100%;
+				min-width: 200px;
+				min-height: 200px;
+			}
+		}
+	}
+
+	&.organization {
+		text-transform: capitalize;
+		font-size: 1.2em;
+
+		@media @mobile {
+			width: 95%;
+		}
+
+		& img {
+			max-width: 200px;
+			margin: 0 auto;
+
+			background-color: darken(@light, 40%);
+			border: 13px darken(@light, 40%) solid;
+		}
+
+		& i {
+			font-size: 1.1em;
+		}
+
+		.organization-title {
+			.text-center;
+			font-size: 1.3em;
+			margin: 0.3em 0;
+		}
 	}
 }

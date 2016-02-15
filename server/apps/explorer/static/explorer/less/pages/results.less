@@ -54,21 +54,27 @@ body.explorer.results {
 		.flex-x-center;
 		.flex-space-between;
 
+		@media @mobile {
+			padding: 0 0.5em;
+		}
+
 		cursor: pointer;
 		background-color: @background1;
-		margin: 0.5em;
 		color: @light;
 
-		padding: 0.25em 0.5em;
+		padding: 4px 0.5em 0 0.5em;
 		font-size: 2em;
 		text-transform: uppercase;
 		font-weight: bold;
 
 		& > .more-select {
-			color: @light;
+			.flex;
 			.flex-row-reverse;
+			align-items: center;
+
 			font-size: 1em;
 			margin: 0;
+			color: @light;
 
 			i {
 				font-size: 2em;
@@ -77,6 +83,10 @@ body.explorer.results {
 
 			div {
 				font-size: 1em;
+			}
+
+			#events-more-count {
+				font-size: 0.8em;
 			}
 		}
 	}

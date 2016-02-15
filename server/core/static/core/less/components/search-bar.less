@@ -45,11 +45,27 @@
 
 			background-color: @light;
 			border: 1px solid @input-border-color;
+
+			@media @mobile {
+				border: none;
+			}
+		}
+
+		@media @mobile {
+			left: -60px;
+			right: -48px;
+			width: auto;
 		}
 
 		#filter-editor {
 			left: -1px;
 			margin-right: 8px;
+
+			@media @mobile {
+				width: 100%;
+				margin-right: 0;
+				padding: 0 0.5em;
+			}
 
 			padding: 0.85 * @padding @padding;
 
@@ -58,6 +74,14 @@
 			#filter-buttons {
 				.flex;
 				.flex-center;
+
+				@media @mobile {
+					font-size: 1.4em;
+
+					div[data-type="where"] {
+						display: none;
+					}
+				}
 
 				.control {
 					font-size: 1.3em;
@@ -110,7 +134,9 @@
 				}
 			}
 
+
 			#filter-values {
+
 				font-size: 0.75em;
 
 				input {
@@ -146,6 +172,10 @@
 				&.where {
 					form.where {
 						display: block;
+					}
+
+					@media @mobile {
+						display: none;
 					}
 				}
 
