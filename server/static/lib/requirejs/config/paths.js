@@ -7,7 +7,7 @@ require.config({
 		autoblur: window.staticUrl + 'core/js/tools/autoblur.min',
 		debounce: window.staticUrl + 'core/js/tools/debounce.min',
 		'deferred-debounce': window.staticUrl + 'core/js/tools/deferred-debounce.min',
-		'expand-menu': window.staticUrl + 'core/js/tools/expand-menu.min',
+		'main-menu': window.staticUrl + 'core/js/tools/main-menu.min',
 		filters: window.staticUrl + 'core/js/tools/filters.min',
 		'form-monitor': window.staticUrl + 'core/js/tools/form-monitor.min',
 		icons: window.staticUrl + 'core/js/tools/icons.min',
@@ -27,6 +27,7 @@ require.config({
 		'location-settings': window.staticUrl + 'core/js/pages/settings/location.min',
 		'profile-settings': window.staticUrl + 'core/js/pages/settings/profile.min',
 		providers: window.staticUrl + 'core/js/pages/providers.min',
+		'user-home': window.staticUrl + 'core/js/pages/user-home.min',
 
 		// Explorer Utils
 		'embed-content': window.staticUrl + 'explorer/js/embed-content.min',

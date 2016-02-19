@@ -5,7 +5,7 @@
 	{% include 'core/components/menu-drawer.html' with mode=mode %}
 	<nav>
 		{% if mode == 'app' %}
-			<img id="home" class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" />
+			<a id="home" href="{% url 'home' %}"><img id="home" class="logo" src="https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png" /></a>
 			<a id="back-to-results" class="hidden"><i class="fa fa-arrow-circle-left"></i></a>
 			{% include 'core/components/search-bar.html' %}
 		{% else %}

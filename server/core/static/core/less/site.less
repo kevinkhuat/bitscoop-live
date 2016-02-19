@@ -217,7 +217,6 @@ a {
 	.menu-header {
 		.flex;
 		.flex-column;
-		.flex-grow;
 
 		a {
 			display: block;
@@ -235,7 +234,7 @@ a {
 		}
 
 		.title {
-			padding: 0.5em;
+			padding: 1.05em 0.5em;
 
 			background-color: darken(@light, 10%);
 			font-weight: bold;
@@ -316,9 +315,65 @@ a {
 			}
 		}
 	}
-}
 
-#menu {
+	> .menu-searches {
+		.flex;
+		.flex-column;
+
+		& .title {
+			padding: 0.5em;
+
+			background-color: darken(@light, 10%);
+			font-weight: bold;
+
+			font-size: 1.2em;
+
+			border-top: none;
+		}
+
+		& input[name="search-name"] {
+			margin-bottom: 0.5em;
+		}
+
+		& #delete-save {
+			.flex;
+			.flex-space-between;
+
+			margin: 0.5em 0;
+
+			& > div {
+				.image-and-text;
+
+				cursor: pointer;
+
+				&:hover {
+					color: @color4;
+				}
+			}
+		}
+
+		& .icon-container {
+			.flex;
+
+			& .icon-preview {
+				.flex;
+				.flex-center;
+				.flex-x-center;
+
+				font-size: 50px;
+				&:not(:empty) {
+					margin: 0 0.5em;
+				}
+			}
+		}
+	}
+
+	> .spacer {
+		.flex;
+		.flex-column;
+		.flex-grow;
+	}
+
 	> .menu-footer {
 		.flex;
 		.flex-column;
@@ -353,7 +408,7 @@ a {
 			.flex-center;
 
 			margin: 0 0.5em;
-			font-family: 'PT Sans', Arial, Helvetica, sans-serif !important;;
+			font-family: 'PT Sans', Arial, Helvetica, sans-serif !important;
 			font-size: 10px !important;
 			color: lighten(@dark, 45%) !important;
 
@@ -399,6 +454,58 @@ footer {
 
 		&:hover {
 			color: @color1 !important;
+		}
+	}
+}
+
+& .selectors {
+	.flex;
+	.flex-grow;
+	.flex-column;
+
+	div {
+		margin-left: 0.5em;
+	}
+
+	select {
+		font-family: FontAwesome, 'PT Sans', Arial, Helvetica, sans-serif !important;
+
+		&[name="color"] {
+			min-width: 100px;
+
+			option[name="gray"] {
+				background-color: #b6bbbf;
+			}
+			option[name="green"] {
+				background-color: #61bd4f;
+			}
+			option[name="yellow"] {
+				background-color: #f2d600;
+			}
+			option[name="orange"] {
+				background-color: #ffab4a;
+			}
+			option[name="red"] {
+				background-color: #eb5a46;
+			}
+			option[name="purple"] {
+				background-color: #a232cb;
+			}
+			option[name="blue"] {
+				background-color: #0079bf;
+			}
+			option[name="light-blue"] {
+				background-color: #00c2e0;
+			}
+			option[name="light-green"] {
+				background-color: #51e898;
+			}
+			option[name="pink"] {
+				background-color: #ff80ce;
+			}
+			option[name="black"] {
+				background-color: #4d4d4d;
+			}
 		}
 	}
 }
@@ -543,5 +650,19 @@ input[type='radio'], input[type='checkbox'] {
 
 	@media @mobile {
 		.flex;
+	}
+}
+
+.image-and-text {
+	.flex;
+	.flex-row;
+	.flex-x-center;
+	.flex-center;
+
+	font-size: 1.2em;
+	margin: 0.2em 0.5em;
+
+	& > .fa {
+		margin-right: 0.3em;
 	}
 }

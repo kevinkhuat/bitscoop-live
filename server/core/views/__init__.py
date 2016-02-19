@@ -75,12 +75,17 @@ class HelpView(View):
 class HomeView(View):
     def get(self, request):
         if request.user.is_authenticated():
-            # template = 'core/user/home.html'
-            return HttpResponseRedirect(reverse('explorer:main'))
+            template = 'core/user/home.html'
+
+            connections = list(ConnectionApi.get(Q(user_id=request.user.id) & Q(auth_status__complete=True)))
+
+            return render(request, template, {
+                'connection_count': len(connections)
+            })
+
         else:
             template = 'core/home.html'
-
-        return render(request, template)
+            return render(request, template)
 
 
 class PricingView(View):

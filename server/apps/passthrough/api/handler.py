@@ -1,7 +1,10 @@
 import datetime
+import hashlib
 import json
 import urllib
+from collections import OrderedDict
 
+import jsonschema
 import tornado.web
 from django.conf import settings
 from tornado import gen
@@ -15,7 +18,6 @@ from server.contrib.estoolbox.security.validators import (
 )
 from server.contrib.estoolbox.tornadoes_bulk import ESBulkConnection
 from server.contrib.locationtoolbox import estimation
-from server.contrib.pytoolbox import strip_invalid_key_characters
 
 
 es_connection = ESBulkConnection(
@@ -26,6 +28,8 @@ es_connection = ESBulkConnection(
 es_connection.client.max_clients = 1000
 es_connection.client.defaults['request_timeout'] = 1000
 es_connection.client.defaults['connect_timeout'] = 1000
+
+schema_json = json.loads(open('server/apps/passthrough/schema.json').read())
 
 
 @gen.coroutine
@@ -147,8 +151,6 @@ class EventHandler(tornado.web.RequestHandler):
             source=query
         )
 
-        object_type = 'search'
-
         cleaned_results = []
         body_decoded = json.loads(response.body.decode('utf-8'))
         result_total = body_decoded['hits']['total']
@@ -208,29 +210,6 @@ class EventHandler(tornado.web.RequestHandler):
             search_response['next'] = next_url
 
         self.write(search_response)
-
-        action_and_metadata = {
-            'index': {
-                '_index': index,
-                '_type': object_type
-            }
-        }
-
-        document = {
-            'datetime': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
-            'search_DSL': strip_invalid_key_characters(query),
-            'tags': [],
-            'user_id': self.request.user.id
-        }
-
-        bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(document) + '\n'
-
-        yield es_connection.bulk_operation(
-            type=object_type,
-            index=index,
-            body=bulk_insert_body
-        )
-
         self.finish()
 
     # Posting Events is a multi-step process that actually involves posting associated Contacts, Content, and Data, and
@@ -476,7 +455,7 @@ class EventHandler(tornado.web.RequestHandler):
             if 'location' not in post_event.keys():
                 # If the Event did not have a datetime, then use the current datetime.
                 if 'datetime' not in post_event.keys():
-                    post_event['datetime'] = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+                    post_event['datetime'] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 
                 # Estimate the Location.
                 post_event['location'] = yield estimation.estimate(post_event['user_id'], post_event['datetime'])
@@ -590,6 +569,806 @@ class EventHandler(tornado.web.RequestHandler):
         self.finish()
 
 
+class SearchHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def put(self):
+        user = self.request.user
+        user_id = user.id
+
+        body = json.loads(self.request.body.decode('utf-8'))
+        filter_types = body['filters']
+
+        if 'query' in body.keys():
+            search_query = body['query']
+        else:
+            search_query = None
+
+        if 'namedFilters' in body.keys():
+            named_filters = body['namedFilters']
+        else:
+            named_filters = None
+
+        structure_schema = schema_json['structure']
+        who_schema = schema_json['who']
+        what_schema = schema_json['what']
+        when_schema = schema_json['when']
+        where_schema = schema_json['where']
+        connector_schema = schema_json['connector']
+
+        jsonschema.validate(filter_types, structure_schema)
+
+        json_valid = True
+
+        for type in filter_types:
+            for filter in filter_types[type]:
+                matched_schema = False
+
+                for schema in [who_schema, what_schema, when_schema, where_schema, connector_schema]:
+                    try:
+                        validate_filter(filter, schema)
+                        matched_schema = True
+                    except jsonschema.ValidationError:
+                        pass
+                    except jsonschema.SchemaError as err:
+                        self.send_error(400, err)
+
+                if not matched_schema:
+                    json_valid = False
+
+        if json_valid:
+            if search_query is not None:
+                query_and_filters = {
+                    'query': search_query,
+                    'filters': filter_types
+                }
+            else:
+                query_and_filters = filter_types
+
+            sorted_dict = sort_dictionary(query_and_filters)
+            hash_id = hashlib.sha512(sorted_dict.encode('utf-8')).hexdigest()
+
+            query = {
+                'query': {
+                    'bool': {
+                        'filter': {
+                            'bool': {
+                                'must': [
+                                    {
+                                        'term': {
+                                            'hash': hash_id
+                                        }
+                                    },
+                                    {
+                                        'term': {
+                                            'user_id': user_id
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+
+            index = 'core'
+            object_type = 'search'
+
+            search_response = yield es_connection.search(
+                index=index,
+                type=object_type,
+                source=query
+            )
+
+            body_decoded = json.loads(search_response.body.decode('utf-8'))
+            result_total = body_decoded['hits']['total']
+            results = body_decoded['hits']['hits']
+
+            if result_total > 0:
+                id = results[0]['_id']
+
+                contents = {
+                    'doc': {
+                        'last_run': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+                        'count': results[0]['_source']['count'] + 1,
+                    }
+                }
+
+                if named_filters is not None:
+                    contents['doc']['named_filters'] = named_filters
+
+                action_and_metadata = {
+                    'update': {
+                        '_index': 'core',
+                        '_type': 'search',
+                        '_id': id
+                    }
+                }
+
+                bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+                yield es_connection.bulk_operation(
+                    type='search',
+                    index='core',
+                    body=bulk_insert_body
+                )
+            else:
+                contents = {
+                    'count': 1,
+                    'filters': filter_types,
+                    'hash': hash_id,
+                    'last_run': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+                    'user_id': user_id
+                }
+
+                if named_filters is not None:
+                    contents['named_filters'] = named_filters
+
+                if search_query is not None:
+                    contents['query'] = search_query
+
+                action_and_metadata = {
+                    'index': {
+                        '_index': 'core',
+                        '_type': 'search'
+                    }
+                }
+
+                bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+                index_response = yield es_connection.bulk_operation(
+                    type='search',
+                    index='core',
+                    body=bulk_insert_body
+                )
+
+                body_decoded = json.loads(index_response.body.decode('utf-8'))
+                id = body_decoded['items'][0]['create']['_id']
+
+            self.write({'searchID': id})
+            self.finish()
+        else:
+            self.send_error(400, mesg='Invalid filter JSON. Please check the documentation')
+
+    @tornado.web.asynchronous
+    def options(self):
+        self.finish()
+
+
+class SearchesHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def get(self):
+        user = self.request.user
+        user_id = user.id
+
+        filters = self.get_arguments('filters')
+        input_query = self.get_arguments('query')
+
+        if len(filters) > 0:
+            filters = json.loads(filters[0])
+        else:
+            filters = None
+
+        if len(input_query) > 0:
+            input_query = input_query[0]
+        else:
+            input_query = None
+
+        if input_query is None and filters is None:
+            search_tab = self.get_arguments('searchTab')[0]
+            size = self.get_arguments('limit')[0]
+            start_from = self.get_arguments('offset')[0]
+
+            query = {
+                'query': {
+                    'bool': {
+                        'filter': {
+                            'bool': {
+                                'must': [
+                                    {
+                                        'term': {
+                                            'user_id': user_id
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                'size': size,
+                'from': start_from
+            }
+
+            if search_tab == 'favorited':
+                query['query']['bool']['filter']['bool']['must'].append({
+                    'term': {
+                        'favorited': True
+                    }
+                })
+                query['sort'] = [{
+                    'name': 'asc',
+                    'last_run': 'desc'
+                }]
+            elif search_tab == 'recent':
+                query['sort'] = [{'last_run': 'desc'}]
+            elif search_tab == 'top':
+                query['sort'] = [{
+                    'count': 'asc',
+                    'last_run': 'desc'
+                }]
+
+            index = 'core'
+            object_type = 'search'
+
+            search_response = yield es_connection.search(
+                index=index,
+                type=object_type,
+                source=query
+            )
+
+            body_decoded = json.loads(search_response.body.decode('utf-8'))
+            results = body_decoded['hits']['hits']
+
+            self.write({
+                'results': results
+            })
+            self.finish()
+        else:
+            structure_schema = schema_json['structure']
+            who_schema = schema_json['who']
+            what_schema = schema_json['what']
+            when_schema = schema_json['when']
+            where_schema = schema_json['where']
+            connector_schema = schema_json['connector']
+
+            jsonschema.validate(filters, structure_schema)
+
+            json_valid = True
+
+            for type in filters:
+                for filter in filters[type]:
+                    matched_schema = False
+
+                    for schema in [who_schema, what_schema, when_schema, where_schema, connector_schema]:
+                        try:
+                            validate_filter(filter, schema)
+                            matched_schema = True
+                        except jsonschema.ValidationError:
+                            pass
+                        except jsonschema.SchemaError as err:
+                            self.send_error(400, err)
+
+                    if not matched_schema:
+                        json_valid = False
+
+            if json_valid:
+                if input_query is not None:
+                    query_and_filters = {
+                        'query': input_query,
+                        'filters': filters
+                    }
+                else:
+                    query_and_filters = filters
+
+                sorted_dict = sort_dictionary(query_and_filters)
+                hash_id = hashlib.sha512(sorted_dict.encode('utf-8')).hexdigest()
+
+                query = {
+                    'query': {
+                        'bool': {
+                            'filter': {
+                                'bool': {
+                                    'must': [
+                                        {
+                                            'term': {
+                                                'hash': hash_id
+                                            }
+                                        },
+                                        {
+                                            'term': {
+                                                'user_id': user_id
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+
+                index = 'core'
+                object_type = 'search'
+
+                search_response = yield es_connection.search(
+                    index=index,
+                    type=object_type,
+                    source=query
+                )
+
+                body_decoded = json.loads(search_response.body.decode('utf-8'))
+                result_total = body_decoded['hits']['total']
+                results = body_decoded['hits']['hits']
+
+                if result_total > 0:
+                    result = results[0]['_source']
+                    result_keys = result.keys()
+                    return_dict = {}
+
+                    if 'name' in result_keys:
+                        return_dict['name'] = result['name']
+
+                    if 'icon' in result_keys:
+                        return_dict['icon'] = result['icon']
+                        return_dict['iconColor'] = result['icon_color']
+
+                    if 'favorited' in result_keys:
+                        return_dict['favorited'] = result['favorited']
+
+                    if 'named_filters' in result_keys:
+                        return_dict['named_filters'] = result['named_filters']
+
+                    return_dict['searchID'] = results[0]['_id']
+
+                    self.write(return_dict)
+                    self.finish()
+                else:
+                    self.write({
+                        'search_not_found': True
+                    })
+                    self.finish()
+            else:
+                self.send_error(400, mesg='Invalid filter JSON. Please check the documentation')
+
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def put(self):
+        user = self.request.user
+        user_id = user.id
+
+        body = json.loads(self.request.body.decode('utf-8'))
+
+        if 'namedFilters' in body.keys():
+            named_filters = body['namedFilters']
+        else:
+            named_filters = None
+
+        filter_types = body['filters']
+
+        if 'query' in body.keys():
+            search_query = body['query']
+        else:
+            search_query = None
+
+        structure_schema = schema_json['structure']
+        who_schema = schema_json['who']
+        what_schema = schema_json['what']
+        when_schema = schema_json['when']
+        where_schema = schema_json['where']
+        connector_schema = schema_json['connector']
+
+        jsonschema.validate(filter_types, structure_schema)
+
+        json_valid = True
+
+        for type in filter_types:
+            for filter in filter_types[type]:
+                matched_schema = False
+
+                for schema in [who_schema, what_schema, when_schema, where_schema, connector_schema]:
+                    try:
+                        validate_filter(filter, schema)
+                        matched_schema = True
+                    except jsonschema.ValidationError:
+                        pass
+                    except jsonschema.SchemaError as err:
+                        self.send_error(400, err)
+
+                if not matched_schema:
+                    json_valid = False
+
+        if json_valid:
+            if search_query is not None:
+                query_and_filters = {
+                    'query': search_query,
+                    'filters': filter_types
+                }
+            else:
+                query_and_filters = filter_types
+
+            sorted_dict = sort_dictionary(query_and_filters)
+            hash_id = hashlib.sha512(sorted_dict.encode('utf-8')).hexdigest()
+
+            contents = {
+                'count': 1,
+                'favorited': True,
+                'filters': filter_types,
+                'hash': hash_id,
+                'last_run': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+                'user_id': user_id
+            }
+
+            if 'name' in body.keys() and body['name'] != '':
+                contents['name'] = body['name']
+
+            if 'icon' in body.keys() and body['icon'] != '':
+                contents['icon'] = body['icon']
+
+                contents['icon_color'] = body['iconColor']
+
+            if search_query is not None:
+                contents['query'] = search_query
+
+            if named_filters is not None:
+                contents['named_filters'] = named_filters
+
+            action_and_metadata = {
+                'index': {
+                    '_index': 'core',
+                    '_type': 'search'
+                }
+            }
+
+            bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+            index_response = yield es_connection.bulk_operation(
+                type='search',
+                index='core',
+                body=bulk_insert_body
+            )
+
+            body_decoded = json.loads(index_response.body.decode('utf-8'))
+            id = body_decoded['items'][0]['create']['_id']
+
+            self.write({'searchID': id})
+            self.finish()
+        else:
+            self.send_error(400, mesg='Invalid filter JSON. Please check the documentation')
+
+    @tornado.web.asynchronous
+    def options(self):
+        self.finish()
+
+
+class SearchesIDHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def get(self, search_id):
+        user = self.request.user
+        user_id = user.id
+
+        query = {
+            'query': {
+                'bool': {
+                    'filter': {
+                        'bool': {
+                            'must': [
+                                {
+                                    'term': {
+                                        '_id': search_id
+                                    }
+                                },
+                                {
+                                    'term': {
+                                        'user_id': user_id
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        index = 'core'
+        object_type = 'search'
+
+        search_response = yield es_connection.search(
+            index=index,
+            type=object_type,
+            source=query
+        )
+
+        body_decoded = json.loads(search_response.body.decode('utf-8'))
+        result_total = body_decoded['hits']['total']
+        results = body_decoded['hits']['hits']
+
+        if result_total > 0:
+            result = results[0]['_source']
+            result_keys = result.keys()
+            return_dict = {}
+
+            if 'query' in result_keys:
+                return_dict['query'] = result['query']
+
+            if 'filters' in result_keys:
+                return_dict['filters'] = result['filters']
+
+            if 'name' in result_keys:
+                return_dict['name'] = result['name']
+
+            if 'icon' in result_keys:
+                return_dict['icon'] = result['icon']
+                return_dict['iconColor'] = result['icon_color']
+
+            if 'favorited' in result_keys:
+                return_dict['favorited'] = result['favorited']
+
+            if 'named_filters' in result_keys:
+                return_dict['named_filters'] = result['named_filters']
+
+            self.write(return_dict)
+            self.finish()
+        else:
+            self.write({
+                'search_not_found': True
+            })
+            self.finish()
+
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def put(self, search_id):
+        user = self.request.user
+        user_id = user.id
+
+        body = json.loads(self.request.body.decode('utf-8'))
+
+        if 'namedFilters' in body.keys():
+            named_filters = body['namedFilters']
+        else:
+            named_filters = None
+
+        query = {
+            'query': {
+                'bool': {
+                    'filter': {
+                        'bool': {
+                            'must': [
+                                {
+                                    'term': {
+                                        '_id': search_id
+                                    }
+                                },
+                                {
+                                    'term': {
+                                        'user_id': user_id
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        index = 'core'
+        object_type = 'search'
+
+        search_response = yield es_connection.search(
+            index=index,
+            type=object_type,
+            source=query
+        )
+
+        body_decoded = json.loads(search_response.body.decode('utf-8'))
+        result_total = body_decoded['hits']['total']
+
+        if result_total > 0:
+            put_body = {}
+
+            if 'name' in body.keys():
+                put_body['name'] = body['name']
+            else:
+                put_body['name'] = ''
+
+            if 'icon' in body.keys():
+                put_body['icon'] = body['icon']
+                put_body['icon_color'] = body['iconColor']
+            else:
+                put_body['icon'] = ''
+                put_body['icon_color'] = ''
+
+            put_body['favorited'] = True
+
+            if named_filters is not None:
+                put_body['named_filters'] = named_filters
+
+            contents = {
+                'doc': put_body
+            }
+
+            action_and_metadata = {
+                'update': {
+                    '_index': 'core',
+                    '_type': 'search',
+                    '_id': search_id
+                }
+            }
+
+            bulk_put_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+            yield es_connection.bulk_operation(
+                type='search',
+                index='core',
+                body=bulk_put_body
+            )
+
+            self.write({'searchID': search_id})
+            self.finish()
+        else:
+            filter_types = body['filters']
+
+            if 'query' in body.keys():
+                search_query = body['query']
+            else:
+                search_query = None
+
+            structure_schema = schema_json['structure']
+            who_schema = schema_json['who']
+            what_schema = schema_json['what']
+            when_schema = schema_json['when']
+            where_schema = schema_json['where']
+            connector_schema = schema_json['connector']
+
+            jsonschema.validate(filter_types, structure_schema)
+
+            json_valid = True
+
+            for type in filter_types:
+                for filter in filter_types[type]:
+                    matched_schema = False
+
+                    for schema in [who_schema, what_schema, when_schema, where_schema, connector_schema]:
+                        try:
+                            validate_filter(filter, schema)
+                            matched_schema = True
+                        except jsonschema.ValidationError:
+                            pass
+                        except jsonschema.SchemaError as err:
+                            self.send_error(400, err)
+
+                    if not matched_schema:
+                        json_valid = False
+
+            if json_valid:
+                if search_query is not None:
+                    query_and_filters = {
+                        'query': search_query,
+                        'filters': filter_types
+                    }
+                else:
+                    query_and_filters = filter_types
+
+                sorted_dict = sort_dictionary(query_and_filters)
+                hash_id = hashlib.sha512(sorted_dict.encode('utf-8')).hexdigest()
+
+                contents = {
+                    'count': 1,
+                    'favorited': True,
+                    'filters': filter_types,
+                    'hash': hash_id,
+                    'last_run': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+                    'user_id': user_id
+                }
+
+                if body['name'] != '':
+                    contents['name'] = body['name']
+
+                if body['icon'] != '':
+                    contents['icon'] = body['icon']
+
+                    contents['icon_color'] = body['iconColor']
+
+                if search_query is not None:
+                    contents['query'] = search_query
+
+                if named_filters is not None:
+                    contents['named_filters'] = named_filters
+
+                action_and_metadata = {
+                    'index': {
+                        '_index': 'core',
+                        '_type': 'search'
+                    }
+                }
+
+                bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+                index_response = yield es_connection.bulk_operation(
+                    type='search',
+                    index='core',
+                    body=bulk_insert_body
+                )
+
+                body_decoded = json.loads(index_response.body.decode('utf-8'))
+                id = body_decoded['items'][0]['create']['_id']
+
+                self.write({'searchID': id})
+                self.finish()
+            else:
+                self.send_error(400, mesg='Invalid filter JSON. Please check the documentation')
+
+    @tornado.web.asynchronous
+    @user_authenticated
+    @gen.coroutine
+    def delete(self, search_id):
+        user = self.request.user
+        user_id = user.id
+
+        query = {
+            'query': {
+                'bool': {
+                    'filter': {
+                        'bool': {
+                            'must': [
+                                {
+                                    'term': {
+                                        '_id': search_id
+                                    }
+                                },
+                                {
+                                    'term': {
+                                        'user_id': user_id
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+        index = 'core'
+        object_type = 'search'
+
+        search_response = yield es_connection.search(
+            index=index,
+            type=object_type,
+            source=query
+        )
+
+        body_decoded = json.loads(search_response.body.decode('utf-8'))
+        result_total = body_decoded['hits']['total']
+
+        if result_total > 0:
+            action_and_metadata = {
+                'update': {
+                    '_index': 'core',
+                    '_type': 'search',
+                    '_id': search_id
+                }
+            }
+
+            contents = {
+                'doc': {
+                    'name': '',
+                    'icon': '',
+                    'icon_color': '',
+                    'favorited': False
+                }
+            }
+
+            bulk_insert_body = json.dumps(action_and_metadata) + '\n' + json.dumps(contents) + '\n'
+
+            index_response = yield es_connection.bulk_operation(
+                type='search',
+                index='core',
+                body=bulk_insert_body
+            )
+
+            self.write({'searchID': search_id})
+            self.finish()
+
+    @tornado.web.asynchronous
+    def options(self, search_id):
+        self.finish()
+
+
 class LocationHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     @user_authenticated
@@ -628,7 +1407,7 @@ class EstimateLocationHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         settings = Settings.objects.get(user_id=self.request.user.id)
         next_estimate_date = settings.last_estimate_all_locations + datetime.timedelta(days=5)
-        new_estimate_allowed = datetime.datetime.now() > next_estimate_date
+        new_estimate_allowed = datetime.datetime.utcnow() > next_estimate_date
 
         if new_estimate_allowed:
             estimation.reestimate_all(self.request.user.id)
@@ -715,3 +1494,38 @@ def delete_user_documents(doc_type, user_id):
     }
 
     es_connection.bulk_delete(index, doc_type, terms)
+
+
+def validate_filter(dict, schema):
+    if 'And' in dict.keys():
+        for single_filter in dict['And']:
+            if single_filter is not None:
+                validate_filter(single_filter, schema)
+    elif 'Or' in dict.keys():
+        for single_filter in dict['Or']:
+            if single_filter is not None:
+                validate_filter(single_filter, schema)
+    else:
+        jsonschema.validate(dict, schema)
+
+
+def sort_dictionary(input):
+    res = OrderedDict()
+
+    for k, v in sorted(input.items()):
+        if isinstance(v, dict):
+            res[k] = sort_dictionary(v)
+        elif isinstance(v, list):
+            sorted_items = []
+
+            for item in v:
+                if isinstance(item, dict):
+                    sorted_items.append(sort_dictionary(item))
+                else:
+                    sorted_items.append(item)
+
+            res[k] = sorted(sorted_items)
+        else:
+            res[k] = v
+
+    return json.dumps(res)

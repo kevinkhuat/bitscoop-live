@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from server.core import api as core_api
-from server.core.documents import Endpoint, Source, Provider
+from server.core.documents import Endpoint, Provider, Source
 
 
 FIXTURE_DIR = os.path.join(settings.FIXTURE_DIRS[0], 'mongo', 'providers')

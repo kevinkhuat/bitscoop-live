@@ -53,12 +53,12 @@ def user_authenticated(fn=None):
     then passes the user's information to the function that this is decorating.
     """
     @wraps(fn)
-    def wrapper(self):
+    def wrapper(self, *args, **kwargs):
         current_user = get_current_user(self)
 
         if is_logged_in_user(current_user):
             self.request.user = current_user
-            fn(self)
+            fn(self, *args, **kwargs)
         else:
             # TODO: Raise a 403 error and make sure 403's are handled
             raise Exception('User not logged in')

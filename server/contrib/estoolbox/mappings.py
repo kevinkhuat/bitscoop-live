@@ -8,7 +8,7 @@ CONTACT_MAPPING = {
     'contact': {
         'dynamic': 'false',
         'properties': {
-            'avatar_URL': {
+            'avatar_url': {
                 'type': 'string',
                 'index': 'not_analyzed'
             },
@@ -142,11 +142,11 @@ EVENT_MAPPING = {
             'contacts': {  # Optional
                 'type': 'object',
                 'properties': {
-                    'avatar_URL': {
+                    'id': {
                         'type': 'string',
                         'index': 'not_analyzed'
                     },
-                    'id': {
+                    'avatar_url': {
                         'type': 'string',
                         'index': 'not_analyzed'
                     },
@@ -636,13 +636,50 @@ SEARCH_MAPPING = {
     'search': {
         'dynamic': 'false',
         'properties': {
-            'datetime': {
+            'count': {
+                'type': 'integer'
+            },
+            'favorited': {
+                'type': 'boolean'
+            },
+            'filters': {
+                'type': 'object',
+                'properties': {
+                    '_must': {
+                        'type': 'object'
+                    },
+                    '_must_not': {
+                        'type': 'object'
+                    },
+                    '_should': {
+                        'type': 'object'
+                    }
+                }
+            },
+            'hash': {
+                'type': 'string'
+            },
+            'icon': {  # Optional
+                'type': 'string'
+            },
+            'icon_color': {  # Optional
+                'type': 'string'
+            },
+            'labels': {  # Optional
+                'type': 'string'
+            },
+            'last_run': {
                 'type': 'date',
                 'format': 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'
             },
-            'search_DSL': {
-                'type': 'object',
-                'dynamic': 'false'
+            'name': {  # Optional
+                'type': 'string'
+            },
+            'named_filters': {  # Optional
+                'type': 'object'
+            },
+            'query': {  # Optional
+                'type': 'string'
             },
             'tags': {  # Optional
                 'type': 'string'

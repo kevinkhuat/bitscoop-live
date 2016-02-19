@@ -1,6 +1,7 @@
 define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'jquery', 'leaflet', 'lodash', 'moment', 'nunjucks', 'object-context', 'search', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers'],
 	function(cartano, debounce, deferredDebounce, embedContent, icons, $, leaflet, _, moment, nunjucks, objectContext, search, viewstate) {
-		var EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_AMOUNT, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchResults, templateMap;
+		var EVENT_MAPPED_RELATED_FIELDS, explorerState, feedView, GRID_ITEM_SIZE, gridView, HIDE_FEED_FACETS, HIDE_LIST_FACETS, HIDE_MAP_FACETS, isMobile, listView, map, mapView, MORE_WIDTH, objectTemplateMap, PREVIEW_ORDERING, resultsView, resultsContainerComponent, SCROLL_DEBOUNCE, SCROLL_LOAD_AMOUNT, SCROLL_LOAD_LIMIT, SCROLL_MIN_COUNT, searchID, searchResults, templateMap;
+
 
 		isMobile = (window.devicePixelRatio >= 1.5 && window.innerWidth <= 768);
 
@@ -11,6 +12,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 		feedView = new viewstate.View('explorer/views/feed/base.html');
 		mapView = new viewstate.View('explorer/views/map/base.html');
 		resultsView = new viewstate.View('explorer/views/results/base.html');
+		searchID = '';
 
 		//TODO: Explore getting sizes for DOM elements programmatically
 		GRID_ITEM_SIZE = 195 + 15; //px
@@ -512,7 +514,10 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 						//Resize the map and fit it so that all markers are visible.
 						map.resize();
-						map.object.fitBounds(map.markers.getBounds());
+
+						if (map.markers.getBounds()._southWest != null) {
+							map.object.fitBounds(map.markers.getBounds());
+						}
 
 						//Show the #left panel and perform the initial sort.
 						$('#left').addClass('expanded');
@@ -656,7 +661,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//Add a catchy name for the filter, and then trigger a change event so that the name is saved.
 			//As the advanced search controls are still display:none, no events are normally fired.
-			$filterName.find('input[name="name"]').val('Everything').trigger({
+			$filterName.find('input[name="name"]').val('Everything before ' + currentDate.format('MM/DD/YYYY')).trigger({
 				type: 'change'
 			});
 
@@ -1136,6 +1141,35 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 			}
 		}
 
+		function triggerInitialSearch() {
+			var searchParams;
+
+			//On mobile, the view and sort selectors are in the menu drawer.  On desktop, they are in the header.
+			//Both will be rendered, and we then disable the one that will not be used.
+			//The disabled class will give that one display: none !important.
+			if (!isMobile) {
+				$('#menu .view-bar').addClass('disabled');
+				$('#menu .sort-bar').addClass('disabled');
+			}
+			else {
+				$('header > nav .view-bar').addClass('disabled');
+				$('header > .sort-bar').addClass('disabled');
+			}
+
+			searchParams = {
+				offset: explorerState.currentResultCount,
+				sort_field: explorerState.currentSort.split(':')[0],
+				sort_order: explorerState.currentSort.split(':')[1]
+			};
+
+			//Perform a query.  By default, it will be with just the initial when filter that was created a few lines back.
+			//In the future, we may have loaded the user's last search, or the search that they selected from their saved searches.
+			$('#query-form').trigger({
+				type: 'submit',
+				paramData: searchParams
+			});
+		}
+
 		//When explorer is loaded, get the Mapbox token.
 		$.ajax({
 			url: '/tokens/mapbox',
@@ -1145,7 +1179,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 				'X-CSRFToken': $.cookie('csrftoken')
 			}
 		}).done(function(data) {
-			var searchParams;
+			var paramData, searchParams;
 
 			//When the Mapbox token has been retrieved, create a new Cartano map with it.
 			map = new cartano.Map(data.MAPBOX_USER_NAME, {
@@ -1180,36 +1214,70 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 			});
 
 			// TODO: Remove everything below and move to a load function
-			//We want to leave a breadcrumb for the users to discover the filters.
-			//Generate a when filter that runs up until tomorrow at midnight (once datetimepicker is implemented, merely
-			//up until now).
-			//Hopefully they will see the when filter, click on it to figure out what it is, and discover all of the filters.
-			addInitialWhenFilter();
+			if (/\/explore\/\w+/g.test(location.pathname)) {
+				$.ajax({
+					url: 'https://p.bitscoop.com/searches/' + location.pathname.split('/explore/')[1],
+					type: 'GET',
+					dataType: 'json',
+					contentType: 'json',
+					headers: {
+						'X-CSRFToken': $.cookie('csrftoken')
+					},
+					xhrFields: {
+						withCredentials: true
+					}
+				}).done(function(data, xhr, response) {
+					var namedFilters, savedFilters, savedQuery, $colorSelect, $iconSelect, $menuSearch, $name;
 
-			//On mobile, the view and sort selectors are in the menu drawer.  On desktop, they are in the header.
-			//Both will be rendered, and we then disable the one that will not be used.
-			//The disabled class will give that one display: none !important.
-			if (!isMobile) {
-				$('#menu .view-bar').addClass('disabled');
-				$('#menu .sort-bar').addClass('disabled');
+					if (data.search_not_found) {
+						addInitialWhenFilter();
+					}
+					else {
+						savedQuery = data.query;
+						savedFilters = data.filters;
+						namedFilters = data.named_filters;
+
+						$('#search-query').val(savedQuery);
+						search.generateFilters(savedFilters, namedFilters);
+						explorerState.currentSort = 'datetime:desc';
+
+						if (data.favorited) {
+							$menuSearch = $('.menu-searches');
+
+							if (data.icon && data.icon != null && data.icon !== '') {
+								$colorSelect = $menuSearch.find('select[name="color"] option[value="' + data.iconColor + '"]');
+								$iconSelect = $menuSearch.find('select[name="icon"] option[value="' + data.icon + '"]');
+
+								$iconSelect.prop('selected', true);
+								$iconSelect.trigger('change');
+								$colorSelect.prop('selected', true);
+								$colorSelect.trigger('change');
+							}
+
+							if (data.name && data.name != null && data.name !== '') {
+								$name = $menuSearch.find('input[name="search-name"]');
+
+								$name.val(data.name);
+							}
+
+							$('#search-favorited').find('i').attr('class', 'fa fa-star');
+						}
+						else {
+							$('#search-favorited').find('i').attr('class', 'fa fa-star-o');
+						}
+					}
+
+					triggerInitialSearch();
+				});
 			}
 			else {
-				$('header > nav .view-bar').addClass('disabled');
-				$('header > .sort-bar').addClass('disabled');
+				//We want to leave a breadcrumb for the users to discover the filters.
+				//Generate a when filter that runs up until tomorrow at midnight (once datetimepicker is implemented, merely
+				//up until now).
+				//Hopefully they will see the when filter, click on it to figure out what it is, and discover all of the filters.
+				addInitialWhenFilter();
+				triggerInitialSearch();
 			}
-
-			searchParams = {
-				offset: explorerState.currentResultCount,
-				sort_field: explorerState.currentSort.split(':')[0],
-				sort_order: explorerState.currentSort.split(':')[1]
-			};
-
-			//Perform a query.  By default, it will be with just the initial when filter that was created a few lines back.
-			//In the future, we may have loaded the user's last search, or the search that they selected from their saved searches.
-			$('#query-form').trigger({
-				type: 'submit',
-				paramData: searchParams
-			});
 		});
 
 		//Bind event listeners that are used in multiple views to document.
@@ -1228,6 +1296,7 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//If this was a new search, as opposed to pagination of an existing search, clear the old search results.
 			if (e.clearData) {
+				searchID = '';
 				clearSearchResults();
 				explorerState.currentResultCount = e.results.results.length;
 			}
@@ -1240,6 +1309,8 @@ define(['cartano', 'debounce', 'deferred-debounce', 'embed-content', 'icons', 'j
 
 			//If this was a new search, then go to Results view and render it.
 			if (e.clearData) {
+				searchID = e.searchID;
+				history.pushState({}, '', '/explore/' + searchID);
 				explorerState.currentViewState = 'results';
 				renderState();
 			}

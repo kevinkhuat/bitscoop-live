@@ -1,5 +1,4 @@
 define(['moment', 'type'], function(moment, type) {
-	// FIXME: This is sensitive to non whole hour time zones.
 	var currentTimezoneOffset = moment().format('Z');
 
 
@@ -27,13 +26,13 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function AndFilter(filter) {
-		this.filters = [filter];
+		this.And = [filter];
 	}
 
 	AndFilter.prototype = new Filter();
 
 	AndFilter.prototype.and = function AndFilter$and(filter) {
-		this.filters.push(filter);
+		this.And.push(filter);
 
 		return this;
 	};
@@ -45,8 +44,8 @@ define(['moment', 'type'], function(moment, type) {
 
 		dsl.and = context = [];
 
-		for (i = 0; i < this.filters.length; i++) {
-			context.push(this.filters[i].toDSL());
+		for (i = 0; i < this.And.length; i++) {
+			context.push(this.And[i].toDSL());
 		}
 
 		return dsl;
@@ -54,13 +53,13 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function OrFilter(filter) {
-		this.filters = [filter];
+		this.Or = [filter];
 	}
 
 	OrFilter.prototype = new Filter();
 
 	OrFilter.prototype.or = function OrFilter$or(filter) {
-		this.filters.push(filter);
+		this.Or.push(filter);
 
 		return this;
 	};
@@ -72,8 +71,8 @@ define(['moment', 'type'], function(moment, type) {
 
 		dsl.or = context = [];
 
-		for (i = 0; i < this.filters.length; i++) {
-			context.push(this.filters[i].toDSL());
+		for (i = 0; i < this.Or.length; i++) {
+			context.push(this.Or[i].toDSL());
 		}
 
 		return dsl;
@@ -81,18 +80,18 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function NotFilter(filter) {
-		this.filter = filter;
+		this.not = filter;
 	}
 
 	NotFilter.prototype = new Filter();
 
 	NotFilter.prototype.not = function NotFilter$not() {
-		return this.filter;
+		return this.not;
 	};
 
 	NotFilter.prototype.toDSL = function NotFilter$toDSL() {
 		return {
-			not: this.filter.toDSL()
+			not: this.not.toDSL()
 		};
 	};
 
@@ -166,7 +165,7 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function GeoFilter(field, distance, point) {
-		this.field = field;
+		this.search_field = field;
 		this.distance = distance;
 		this.points = point;
 	}
@@ -195,11 +194,11 @@ define(['moment', 'type'], function(moment, type) {
 			dsl.geo_distance = context = {
 				distance: this.distance
 			};
-			context[this.field] = this.points;
+			context[this.search_field] = this.points;
 		}
 		else {
 			dsl.geo_polygon = context = {};
-			context[this.field] = {
+			context[this.search_field] = {
 				points: this.points
 			};
 		}
@@ -209,7 +208,7 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function MatchFilter(field, value) {
-		this.field = field;
+		this.search_field = field;
 		this.value = value;
 	}
 
@@ -221,14 +220,14 @@ define(['moment', 'type'], function(moment, type) {
 		dsl = {};
 
 		dsl.match = context = {};
-		context[this.field] = this.value;
+		context[this.search_field] = this.value;
 
 		return dsl;
 	};
 
 
 	function RangeFilter(field) {
-		this.field = field;
+		this.search_field = field;
 	}
 
 	RangeFilter.prototype = new Filter();
@@ -240,7 +239,7 @@ define(['moment', 'type'], function(moment, type) {
 	};
 
 	RangeFilter.prototype.gte = function RangeFilter$gte(value) {
-		this._gte = value;
+		this.gte = value;
 
 		return this;
 	};
@@ -252,7 +251,7 @@ define(['moment', 'type'], function(moment, type) {
 	};
 
 	RangeFilter.prototype.lte = function RangeFilter$lte(value) {
-		this._lte = value;
+		this.lte = value;
 
 		return this;
 	};
@@ -264,7 +263,7 @@ define(['moment', 'type'], function(moment, type) {
 		dateformat = false;
 
 		dsl.range = context = {};
-		context[this.field] = context = {};
+		context[this.search_field] = context = {};
 
 		if (this._lt) {
 			context.lt = this._lt;
@@ -273,10 +272,10 @@ define(['moment', 'type'], function(moment, type) {
 				dateformat = true;
 			}
 		}
-		else if (this._lte) {
-			context.lte = this._lte;
+		else if (this.lte) {
+			context.lte = this.lte;
 
-			if (type(this._lte) === 'date') {
+			if (type(this.lte) === 'date') {
 				dateformat = true;
 			}
 		}
@@ -288,10 +287,10 @@ define(['moment', 'type'], function(moment, type) {
 				dateformat = true;
 			}
 		}
-		else if (this._gte) {
-			context.gte = this._gte;
+		else if (this.gte) {
+			context.gte = this.gte;
 
-			if (type(this._gte) === 'date') {
+			if (type(this.gte) === 'date') {
 				dateformat = true;
 			}
 		}
@@ -307,7 +306,7 @@ define(['moment', 'type'], function(moment, type) {
 
 
 	function TermFilter(field, value) {
-		this.field = field;
+		this.search_field = field;
 		this.value = value;
 	}
 
@@ -319,7 +318,7 @@ define(['moment', 'type'], function(moment, type) {
 		dsl = {};
 
 		dsl.term = context = {};
-		context[this.field] = this.value;
+		context[this.search_field] = this.value;
 
 		return dsl;
 	};

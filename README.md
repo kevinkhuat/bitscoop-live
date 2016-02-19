@@ -1,6 +1,6 @@
 BitScoop requires the following installations.
 
-* ElasticSearch 
+* ElasticSearch
 * MongoDB
 * Nginx
 * NodeJS
@@ -62,7 +62,7 @@ mkdir -p databases/elasticsearch/plugins
 You can then boot the ElasticSearch server with:
 
 ```
-elasticsearch -Des.config=config/elasticsearch/elasticsearch.yml
+elasticsearch --path.conf=config/elasticsearch
 ```
 
 Before this ElasticSearch database can save data, you must create an index. You

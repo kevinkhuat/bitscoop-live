@@ -4,12 +4,10 @@
 {% block static %}
 	{{ block.super }}
 
-	<style type="text/css">
-		#footer {
-			font-size: 0.65em;
-			padding: 15px 30px;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="https://d3buhrktqnvzt8.cloudfront.net/minimodal/0.1.2/minimodal-0.1.2.css" />
+	<script type="text/javascript">
+		require(['user-home']);
+	</script>
 {% endblock %}
 
 
@@ -19,32 +17,44 @@
 
 
 {% block main %}
-	<div class="flex flex-column flex-grow flex-x-center">
-		<div class="align-center" style="margin: 5% 0 3% 0;">
-			<h1>{{ user.first_name }} {{ user.last_name }}</h1>
-			<div><img id="profile-pic-large" src="https://avatars3.githubusercontent.com/u/2207290?v=3&s=460" /></div>
+<div id="home-left">
+	<div class="username-icon">
+		<div><img id="profile-pic-large" src="https://avatars3.githubusercontent.com/u/2207290?v=3&s=460" /></div>
+		<div class="username">{{ user.first_name }} {{ user.last_name }}</div>
+	</div>
+	<div class="stats">
+		<div class="image-and-text" name="events">
+			<div class="fa fa-clock-o"></div>
+			<div class="count"></div>
 		</div>
-
-		<div class="flex-grow">
-			{% include 'core/components/search-bar.html' with placeholder='find yourself' %}
+		<div class="image-and-text" name="connections">
+			<div class="fa fa-plug"></div>
+			<div class="count">{{ connection_count }} Connections</div>
 		</div>
 	</div>
+</div>
+<div id="home-right">
+	<div id="tabs">
+		<div class="tab" name="favorited">
+			<div class="icon fa fa-star"></div>
+			<div>Favorited</div>
+		</div>
+		<div class="tab" name="recent">Recent</div>
+		<div class="tab" name="top">Top</div>
+	</div>
+	<div id="searches-container">
+		<div id="search-scroll">
+			<div id="searches">
+				<div id="drawer-container">
+					<div id="drawer">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 
 {% block outer_footer %}
-	<div id="footer" class="flex flex-space-between align-center">
-		<div>
-			<div><i class="fa fa-star-o fa-3x"></i></div>
-			<div>Featured</div>
-		</div>
-		<div>
-			<div><i class="fa fa-inbox fa-3x inbox" data-count="5"></i></div>
-			<div>Inbox</div>
-		</div>
-		<div>
-			<div><i class="fa fa-heart-o fa-3x"></i></div>
-			<div>Favorites</div>
-		</div>
-	</div>
 {% endblock %}

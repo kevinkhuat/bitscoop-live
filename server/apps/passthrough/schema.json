@@ -1,0 +1,419 @@
+{
+  "structure": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Lists",
+    "description": "The structure of the filter lists",
+    "type": "object",
+    "properties": {
+      "_must": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "oneOf": [
+            {
+              "properties": {
+                "Or": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "properties": {
+                "And": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "_must_not": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "filters": {
+              "type": "array",
+              "items": {
+                "type": ["object", "null"]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "_should": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "filters": {
+              "type": "array",
+              "items": {
+                "type": ["object", "null"]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "_must",
+      "_must_not",
+      "_should"
+    ]
+  },
+  "who": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Who filter",
+    "description": "Valid who filters",
+    "type": "object",
+    "oneOf": [
+      {
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "search_field": {
+            "type": "string",
+            "pattern": "^contacts.name$"
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "search_field": {
+            "type": "string",
+            "pattern": "^contacts.handle$"
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "value": {
+            "type": "string",
+            "oneOf": [
+              {
+                "pattern": "^to$"
+              },
+              {
+                "pattern": "^from$"
+              },
+              {
+                "pattern": "^with$"
+              }
+            ]
+          },
+          "search_field": {
+            "type": "string",
+            "pattern": "^contact_interaction_type$"
+          }
+        },
+        "additionalProperties": false
+      }
+    ]
+  },
+  "what": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "What filter",
+    "description": "Valid what filters",
+    "type": "object",
+    "properties": {
+      "value": {
+        "type": "string",
+        "oneOf": [
+          {
+            "pattern": "^achievement$"
+          },
+          {
+            "pattern": "^audio$"
+          },
+          {
+            "pattern": "^code$"
+          },
+          {
+            "pattern": "^file$"
+          },
+          {
+            "pattern": "^game$"
+          },
+          {
+            "pattern": "^image$"
+          },
+          {
+            "pattern": "^receipt$"
+          },
+          {
+            "pattern": "^software$"
+          },
+          {
+            "pattern": "^text$"
+          },
+          {
+            "pattern": "^video$"
+          },
+          {
+            "pattern": "^web-page$"
+          }
+        ]
+      },
+      "search_field": {
+        "type": "string",
+        "pattern": "^content.type$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "when": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "When filter",
+    "description": "Valid when filters",
+    "type": "object",
+    "oneOf": [
+      {
+        "properties": {
+          "gte": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "search_field": {
+            "type": "string",
+            "oneOf": [
+              {
+                "pattern": "^datetime$"
+              },
+              {
+                "pattern": "^created$"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "lte": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "search_field": {
+            "type": "string",
+            "oneOf": [
+              {
+                "pattern": "^datetime$"
+              },
+              {
+                "pattern": "^created$"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "gte": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lte": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "search_field": {
+            "type": "string",
+            "oneOf": [
+              {
+                "pattern": "^datetime$"
+              },
+              {
+                "pattern": "^created$"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "gte",
+          "lte",
+          "search_field"
+        ]
+      }
+    ]
+  },
+  "where": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Where filter",
+    "description": "Valid where filters",
+    "type": "object",
+    "oneOf": [
+      {
+        "properties": {
+          "distance": {
+            "type": "string",
+            "oneOf": [
+              {
+                "pattern": "^[0-9]+(\\.[0-9]+)?km"
+              },
+              {
+                "pattern": "^[0-9]+(\\.[0-9]+)?mi"
+              }
+            ]
+          },
+          "search_field": {
+            "type": "string",
+            "pattern": "^location.geolocation$"
+          },
+          "points": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lon": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "not": {
+            "type": "object",
+            "properties": {
+              "distance": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "pattern": "^[0-9]+(\\.[0-9]+)?km"
+                  },
+                  {
+                    "pattern": "^[0-9]+(\\.[0-9]+)?mi"
+                  }
+                ]
+              },
+              "search_field": {
+                "type": "string",
+                "pattern": "^location.geolocation$"
+              },
+              "points": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lon": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "search_field": {
+            "type": "string",
+            "pattern": "^location.geolocation$"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "lat": {
+                  "type": "number"
+                },
+                "lon": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "not": {
+            "type": "object",
+            "properties": {
+              "search_field": {
+                "type": "string",
+                "pattern": "^location.geolocation$"
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "lat": {
+                      "type": "number"
+                    },
+                    "lon": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "properties": {
+          "value": {
+            "type": "boolean"
+          },
+          "search_field": {
+            "type": "string",
+            "pattern": "^location.estimated$"
+          }
+        },
+        "additionalProperties": false
+      }
+    ]
+  },
+  "connector": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Who filter",
+    "description": "Valid who filters",
+    "type": "object",
+    "properties": {
+      "value": {
+        "type": "string",
+        "minLength": 24,
+        "maxLength": 24
+      },
+      "search_field": {
+        "type": "string",
+        "pattern": "^connection$"
+      }
+    },
+    "additionalProperties": false
+  }
+}
