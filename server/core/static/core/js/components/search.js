@@ -629,7 +629,7 @@ define(['debounce', 'filters', 'jquery', 'moment', 'jquery-cookie', 'jquery-dese
 			}
 
 			if (data.searchID) {
-				history.pushState({}, '', location.pathname + '/' + data.searchID);
+				history.pushState({}, '', '/explore/' + data.searchID);
 			}
 			else {
 				history.pushState({}, '', '/explore');
