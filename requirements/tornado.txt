@@ -4,6 +4,7 @@ django-redis
 djangorestframework
 elasticsearch
 geopy
+jsonschema
 mongoengine
 motor==0.4.1
 motorengine==0.9.0
