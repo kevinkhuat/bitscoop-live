@@ -40,21 +40,22 @@ Thumbs.db
 #################
 # Build Folders #
 #################
-/artifacts
-/build
+artifacts/
+build/
+deploy/
 
 
 #############
 # Databases #
 #############
-/databases
+databases/
 *.db
 
 
 ##########
 # NodeJS #
 ##########
-node_modules
+node_modules/
 
 
 ###########
@@ -66,17 +67,18 @@ node_modules
 ########
 # Logs #
 ########
-/logs
+logs/
 
 
 ############
 # Symlinks #
 ############
-/server/static/lib/jutsu/jutsu*.js
-/server/static/lib/cartano/cartano*.js
+server/static/lib/jutsu/jutsu*.js
+server/static/lib/cartano/cartano*.js
 
 
 ########
 # Keys #
 ########
-/server/settings/keys.py
+server/settings/keys.py
+server/settings/production/

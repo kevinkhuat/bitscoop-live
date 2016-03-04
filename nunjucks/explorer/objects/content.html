@@ -1,0 +1,49 @@
+<div class="object content">
+	<div class="header">
+		<div class="type">
+			<i class="{{ type.icon }}"></i> {{ type.name }}
+		</div>
+
+		<div class="provider">
+			<i class="{{ provider.icon }}"></i> {{ provider.name }}
+		</div>
+
+		<aside class="action-bar">
+			<div class="share-action">
+				<span>Share</span> <i class="fa fa-share"></i>
+			</div>
+		</aside>
+	</div>
+
+	<div class="content-embed" data-type="content" data-id="{{ id }}"></div>
+
+	{% if embed_thumbnail %}
+		<div class="thumbnail">
+			{% if not title %}
+				<img src="{{ embed_thumbnail }}"/>
+			{% else %}
+				<a href="{{ url }}" target="_blank">
+					<img src="{{ embed_thumbnail }}"/>
+				</a>
+			{% endif %}
+		</div>
+	{% endif %}
+
+	<div class="title">
+		{% if url %}
+			<a href="{{ url }}" target="_blank">{{ title | safe }}</a>
+		{% else %}
+			<span>{{ title }}</span>
+		{% endif %}
+	</div>
+
+	<div class="text">
+		{% if text %}
+			{% if url and not title %}
+				<a href="{{ url }}" target="_blank">{{ text | safe }}</a>
+			{% else %}
+				<pre>{{ text }}</pre>
+			{% endif %}
+		{% endif %}
+	</div>
+</div>

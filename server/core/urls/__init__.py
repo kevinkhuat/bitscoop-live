@@ -28,5 +28,7 @@ urlpatterns = patterns('server.core.views',
     url(r'^settings', include('server.core.urls.settings', namespace='settings')),
     url(r'^connections', include('server.core.urls.connections', namespace='connections')),
 
+    url(r'^explore/?$', views.ExplorerView.as_view(), name='explorer'),
+
     # url(r'^[A-Za-z0-9]/?$', user_views.profile),
 )

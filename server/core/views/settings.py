@@ -19,6 +19,7 @@ from server.contrib.multiauth.decorators import login_required
 from server.contrib.pytoolbox import initialize_endpoint_data
 from server.contrib.pytoolbox.collections import update
 from server.contrib.pytoolbox.django.forms import AllowEmptyMixin
+from server.contrib.pytoolbox.django.response import redirect_by_name
 from server.contrib.pytoolbox.django.views import AcceptedTypesMixin, FormMixin
 from server.core.api import ConnectionApi
 from server.core.documents import Connection, Permission, Settings
@@ -26,7 +27,7 @@ from server.core.fields import PasswordField
 
 
 class AccountView(View):
-    template_name = 'core/settings/account.html'
+    template_name = 'settings/account.html'
     title = 'Account Settings'
 
     @method_decorator(login_required)
@@ -35,7 +36,8 @@ class AccountView(View):
 
     def get(self, request):
         return render(request, self.template_name, {
-            'title': self.title
+            'title': self.title,
+            'settings_type': 'Account'
         })
 
 
@@ -131,8 +133,22 @@ class AccountDeactivateView(View):
         return HttpResponse(status=204)
 
 
+class AccountDeleteView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request):
+        user = request.user
+
+        logout(request)
+        user.delete()
+
+        return HttpResponse(status=204)
+
+
 class BaseView(View):
-    template_name = 'core/settings/base.html'
+    template_name = 'settings/base.html'
     title = 'Settings'
 
     @method_decorator(login_required)
@@ -140,13 +156,11 @@ class BaseView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, self.template_name, {
-            'title': self.title
-        })
+        return redirect_by_name('settings:profile')
 
 
 class BillingView(View):
-    template_name = 'core/settings/billing.html'
+    template_name = 'settings/billing.html'
     title = 'Billing Settings'
 
     @method_decorator(login_required)
@@ -162,7 +176,7 @@ class BillingView(View):
 
 
 class ConnectionsView(View):
-    template_name = 'core/settings/connections.html'
+    template_name = 'settings/connections.html'
     title = 'Connection Settings'
     json_schema = {
         'type': 'object',
@@ -215,7 +229,8 @@ class ConnectionsView(View):
 
         return render(request, self.template_name, {
             'title': self.title,
-            'connections': connection_data
+            'connections': connection_data,
+            'settings_type': 'Connections'
         })
 
     def patch(self, request):
@@ -292,7 +307,7 @@ class ConnectionsView(View):
 
 
 class EmailsView(View, AcceptedTypesMixin):
-    template_name = 'core/settings/emails.html'
+    template_name = 'settings/emails.html'
     title = 'Email Settings'
 
     @method_decorator(login_required)
@@ -308,7 +323,7 @@ class EmailsView(View, AcceptedTypesMixin):
 
 
 class LocationView(View, FormMixin):
-    template_name = 'core/settings/location.html'
+    template_name = 'settings/location.html'
     title = 'Location Settings'
 
     class Form(AllowEmptyMixin, BaseForm):
@@ -360,7 +375,7 @@ class LocationView(View, FormMixin):
 
 
 class NotificationsView(View):
-    template_name = 'core/settings/notifications.html'
+    template_name = 'settings/notifications.html'
     title = 'Notification Settings'
 
     @method_decorator(login_required)
@@ -376,7 +391,7 @@ class NotificationsView(View):
 
 
 class ProfileView(View, AcceptedTypesMixin, FormMixin):
-    template_name = 'core/settings/profile.html'
+    template_name = 'settings/profile.html'
     title = 'Profile Settings'
     accepted_types = {'application/json'}
 
@@ -425,7 +440,8 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
 
         return render(request, self.template_name, {
             'title': self.title,
-            'form': form
+            'form': form,
+            'settings_type': 'Profile'
         })
 
     def put(self, request):
@@ -469,7 +485,7 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
 
 
 class SecurityView(View):
-    template_name = 'core/settings/security.html'
+    template_name = 'settings/security.html'
     title = 'Security Settings'
 
     @method_decorator(login_required)

@@ -1,0 +1,248 @@
+@import 'less/explorer/components/action-bar.less';
+@import 'less/explorer/components/error.less';
+@import 'less/explorer/components/next.less';
+@import 'less/explorer/components/no-results.less';
+@import 'less/explorer/components/waiting.less';
+
+@import 'less/explorer/items/feed.less';
+@import 'less/explorer/items/grid.less';
+@import 'less/explorer/items/list.less';
+
+@import 'less/explorer/objects/contact.less';
+@import 'less/explorer/objects/content.less';
+@import 'less/explorer/objects/event.less';
+@import 'less/explorer/objects/location.less';
+@import 'less/explorer/objects/organization.less';
+@import 'less/explorer/objects/place.less';
+@import 'less/explorer/objects/thing.less';
+
+@import 'less/explorer/views/feed.less';
+@import 'less/explorer/views/grid.less';
+@import 'less/explorer/views/list.less';
+@import 'less/explorer/views/map.less';
+@import 'less/explorer/views/results.less';
+
+
+header {
+	& > #search-bar {
+		width: 50%;
+		min-width: 400px;
+
+		#filter-controls {
+			& > div {
+				top: 20px;
+			}
+
+			@media @mobile {
+				.control[data-type="where"] {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+.leaflet-right {
+	z-index: 20 !important;
+}
+
+body.explorer {
+	#list {
+		position: relative;
+
+		&.loading {
+			padding-bottom: 5em !important;
+
+			@media @mobile {
+				padding-bottom: 4.5em !important;
+			}
+		}
+	}
+
+	.type-grid {
+		.flexbox;
+		.flex-wrap;
+		.flex-x-start;
+
+		height: 100%;
+		max-height: 100%;
+		border: 0;
+	}
+
+	.type-grid:empty, #grid:empty {
+		.flex !important;
+	}
+
+	.leaflet-control-container {
+		a {
+			&.highlight {
+
+			}
+		}
+	}
+
+	.modal {
+		.close-button {
+			padding: 0.1em !important;
+			top: -0.1em !important; right: 0em !important;
+		}
+
+		.body {
+			margin-top: 1.5em;
+		}
+	}
+
+	.mapbox-logo {
+		display: none !important;
+	}
+
+	&.grid, &.results, &.list, &.feed {
+		#background {
+			.flexbox;
+			.flex-grow;
+			flex-direction: column;
+			overflow-y: auto;
+			position: relative;
+
+
+		}
+
+		#grid-scroll, #list-scroll {
+			position: absolute;
+			margin: 0;
+			border: 0;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			max-height: 100%;
+			width: 100%;
+		}
+	}
+
+	&.feed {
+		.event-detail-container {
+			margin: 10px;
+
+
+			@media @mobile {
+				margin: 0;
+			}
+		}
+	}
+
+	.event-detail-container {
+		.flexbox;
+		.flex-row;
+
+		width: 100%;
+
+
+		@media @mobile {
+			flex-flow: column;
+			align-items: center;
+		}
+
+		.event-left {
+			.flexbox;
+			.flex-column;
+			.flex-space-between;
+
+			order: 1;
+			width: 300px;
+
+			@media @mobile {
+				align-content: center;
+				width: 98%;
+			}
+
+		}
+
+		.event-center {
+			.flexbox;
+			.flex-column;
+			flex-grow: 1;
+			align-content: center;
+
+			order: 2;
+
+			width: 100%;
+
+
+			@media @mobile {
+				border: 0;
+				width: 98%;
+			}
+
+			.content-detail, .thing-detail {
+				.flexbox;
+				.flex-column;
+				flex-grow: 1;
+				align-items: center;
+
+				:last-child {
+					border-bottom: none;
+				}
+
+				> div {
+					width: 95%;
+
+				}
+			}
+		}
+
+		.event-right {
+			.flexbox;
+			.flex-column;
+			.flex-space-between;
+			order: 3;
+			width: 400px;
+
+			@media @mobile {
+				width: 98%;
+			}
+		}
+	}
+}
+
+body.explorer.grid {
+	#background {
+
+
+		#grid-scroll {
+			.flexbox;
+			.flex-column;
+		}
+	}
+
+	#list {
+		.flexbox;
+		.flex-wrap;
+		.flex-x-start;
+		border: 0;
+
+		justify-content: center;
+		margin: 0;
+	}
+
+	#map {
+		position: relative;
+		left: 0;
+		bottom: 0;
+		min-height: 20em;
+		width: 25%;
+		border-top: 0;
+
+		@media @mobile {
+			width: 100%;
+		}
+	}
+}
+
+.awesome-marker {
+	cursor: pointer;
+}
+
+.hidden-beta {
+	display: none;
+}

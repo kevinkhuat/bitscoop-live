@@ -1,0 +1,6 @@
+{% for field in fields %}
+	<div data-sort="{{ field.property }}">
+		<div class="sort-arrow fa"></div>
+		<span>{{ field.name }}</span>
+	</div>
+{% endfor %}

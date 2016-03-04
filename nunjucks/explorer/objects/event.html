@@ -1,0 +1,54 @@
+<div class="object event">
+	<aside class="details">
+		<div class="type">
+			<i class="{{ type.icon }}"></i>
+
+			<span>
+				{% if context %}
+					{{ context }}
+				{% else %}
+					{{ type.name }}
+				{% endif %}
+			</span>
+		</div>
+
+		<div class="provider">
+			<i class="{{ provider.icon }}"></i>
+			<span>{{ provider.name }}</span>
+		</div>
+
+		{% if date %}
+			<div class="date">
+				<div>
+					<div>
+						<i class="fa fa-calendar"></i> <span>{{ date | date('date') }}</span>
+					</div>
+
+					{% if date.estimated %}
+						<div class="estimation">
+							<i class="fa fa-flask"></i> <span>Estimated</span>
+						</div>
+					{% endif %}
+
+					{% if not date.estimated %}
+						<div>
+							<i class="fa fa-clock-o"></i> <span>{{ date | date('time') }}</span>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+	</aside>
+
+	{% if content and content.length > 0 %}
+		<section class="content"></section>
+	{% endif %}
+
+	{% if (contacts and contacts.length > 0) or (people and people.length > 0) or (organizations and organizations.length > 0) %}
+		<aside class="interactions">
+			{% if content_interaction_type %}
+				<div>{{ content_interaction_type }}</div>
+			{% endif %}
+		</aside>
+	{% endif %}
+</div>

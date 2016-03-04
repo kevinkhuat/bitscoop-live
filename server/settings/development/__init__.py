@@ -1,18 +1,6 @@
 from server.settings import *  # noqa
 
 
-############
-# DATABASE #
-############
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': get_path(ROOT_PATH, 'databases', 'development.db'),
-    },
-}
-
-
 ########
 # HTTP #
 ########

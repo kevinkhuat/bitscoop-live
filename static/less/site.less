@@ -1,0 +1,307 @@
+@import 'less/animations.less';
+@import 'less/controls.less';
+@import 'less/flexbox.less';
+@import 'less/media.less';
+@import 'less/mixins.less';
+@import 'less/modals.less';
+@import 'less/theme.less';
+@import 'less/components/color-picker.less';
+@import 'less/components/favorite.less';
+@import 'less/components/icon-picker.less';
+@import 'less/components/menu.less';
+@import 'less/components/search.less';
+@import 'less/explorer/explorer.less';
+@import 'less/pages/connections.less';
+@import 'less/pages/errors.less';
+@import 'less/pages/home.less';
+@import 'less/pages/login.less';
+@import 'less/pages/privacy.less';
+@import 'less/pages/providers.less';
+@import 'less/pages/settings.less';
+@import 'less/pages/signup.less';
+@import 'less/pages/terms.less';
+@import 'less/shims/icons.less';
+
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+
+	.roboto(300);
+	font-size: 10px;
+
+	color: @font-color-light;
+
+	pre {
+		.roboto(300);
+	}
+
+	::selection {
+		text-shadow: none;
+		color: @highlight-color !important;
+		background-color: @highlight-background;
+	}
+}
+
+a {
+	.interactive;
+
+	text-decoration: none;
+	color: @green;
+	outline: none;
+}
+
+h1, h2, h3 {
+	font-weight: 700;
+	margin: 1.5em 0 0.5em 0;
+}
+
+h1, h2, h3, p {
+	&:first-child,
+	&.no-first {
+		margin-top: 0;
+	}
+
+	&:last-child,
+	&.no-last {
+		margin-bottom: 0;
+	}
+}
+
+pre {
+	margin: 0;
+}
+
+h1 {
+	font-size: 1.8em;
+}
+
+h2 {
+	font-size: 1.55em;
+}
+
+h3 {
+	font-size: 1.25em;
+}
+
+p {
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+}
+
+footer,
+small {
+	font-size: 0.85em;
+}
+
+b, strong {
+	font-weight: 700 !important;
+}
+
+body {
+	.flexbox;
+	.flex-column;
+
+	font-size: 1.6rem;
+	padding: 0; margin: 0;
+	min-height: 100%;
+	overflow: hidden;
+
+	& > header {
+		@margin-width: 10px;
+
+		.no-select;
+
+		padding: @margin-width / 2;
+		border-bottom: 1px solid @border-color;
+
+		.logo {
+			height: 40px;
+		}
+
+		nav {
+			.flexbox;
+			.flex-x-center;
+
+			a {
+				.no-wrap;
+			}
+
+			& > * {
+				margin: 0 @margin-width;
+			}
+
+			& > :first-child {
+				margin-left: @margin-width * 2;
+
+				@media @mobile {
+					margin-left: @margin-width;
+				}
+			}
+
+			& > :last-child {
+				margin-right: @margin-width * 2;
+
+				@media @mobile {
+					margin-right: @margin-width;
+				}
+			}
+		}
+
+		& > .sort {
+			.flexbox;
+			.flex-center;
+			.flex-x-center;
+
+			@media @maxwidth768, @mobile {
+				display: none !important;
+			}
+
+			& > div:first-child {
+				margin-right: 0.5em;
+			}
+
+			& > div:last-child {
+				.flexbox;
+				.flex-space-around;
+
+				text-transform: capitalize;
+				cursor: pointer;
+
+				& > div {
+					padding: 0.2em 0.5em;
+					.interactive;
+				}
+			}
+
+		}
+
+		.shortcuts {
+			.flexbox;
+			.flex-x-center;
+
+			font-size: 1.2em;
+			margin: 0;
+
+			@media @maxwidth768, @mobile {
+				display: none;
+			}
+
+			a {
+				.interactive;
+
+				padding: 0.35em;
+				color: @font-color;
+			}
+		}
+
+		#menu-button {
+			.flexbox;
+			.interactive;
+			.pointer;
+
+			font-size: 2.5em;
+		}
+	}
+
+	& > main {
+		.flexbox;
+		.flex-grow-scrollable;
+
+		#content {
+			.flexbox;
+			.flex-column;
+			.flex-grow;
+		}
+	}
+
+	& > footer {
+		.align-center;
+
+		padding: 15px;
+
+		& > *:not(:last-child) {
+			margin-bottom: 0.35em;
+		}
+	}
+}
+
+.boxed-group {
+	@border-radius: 2px;
+
+	border: 1px solid darken(@border-color, 10%);
+	border-radius: @border-radius @border-radius 0 0;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	& > * {
+		border-top: 1px solid darken(@border-color, 10%);
+	}
+
+	margin-bottom: 1em;
+
+	& > :first-child {
+		padding: 0.2em 0.5em;
+		font-weight: 700;
+		font-size: 1.1em;
+		border-top: none;
+		background-color: @background-color;
+	}
+}
+
+.g-recaptcha {
+	@margin: 1.5em;
+
+	position: relative;
+	left: -1px;
+
+	margin-top: @margin;
+	margin-bottom: @margin;
+
+	&.centered {
+		& > div > div {
+			.position-center;
+		}
+	}
+}
+
+html.dark {
+	background-color: @background-color-dark;
+
+	@red-override: saturate(@red, 15%);
+	@green-override: saturate(@green, 15%);
+
+	body {
+		color: @font-color-dark;
+	}
+
+	.item {
+		background-color: @item-background-color-dark;
+		border-color: @border-color-dark;
+	}
+
+	.subdue {
+		color: @font-color-subdue-dark;
+	}
+
+	.red {
+		color: @red-override !important;
+	}
+
+	.green {
+		color: @green-override !important;
+	}
+
+	a {
+		color: @green-override;
+
+		&:hover {
+			color: @blue;
+		}
+	}
+}

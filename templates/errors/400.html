@@ -1,0 +1,12 @@
+{% extends 'errors/base.html' %}
+
+{% block title %}Bad Request &middot; BitScoop{% endblock %}
+
+{% block main %}
+	<div>
+		<h3>400 (Bad Request)</h3>
+
+		<p>A bad request was sent to the server.</p>
+		<p>Back to <a href="{% url 'home' %}">bitscoop.com</a>.</p>
+	</div>
+{% endblock %}

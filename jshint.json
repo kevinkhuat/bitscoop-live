@@ -1,0 +1,10 @@
+{
+	"boss": true,
+	"eqnull": true,
+	"evil": true,
+	"expr": true,
+	"funcscope": true,
+	"loopfunc": true,
+	"quotmark": "single",
+	"shadow": true
+}

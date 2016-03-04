@@ -1,0 +1,11 @@
+<div class="item list">
+	{% for column in columns %}
+		<div {% if column.type == 'icon' %}class="icon-column"{% endif %}>
+			{% if column.type == 'icon' %}
+				<i class="{{ object | get(column.icon) }}"></i>
+			{% else %}
+				<span class="{{ column.property }}">{{ object | get(column.property) }}</span>
+			{% endif %}
+		</div>
+	{% endfor %}
+</div>

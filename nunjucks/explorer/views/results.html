@@ -1,0 +1,26 @@
+{% extends 'components/scroller.html' %}
+
+{% block scrollable %}
+	{% if types and types.length > 0 %}
+		{% for type in types %}
+			<div data-mapping="{{ type.mapping }}" data-type="{{ type.type }}">
+				<section class="header">
+					<span>{{ type.name }}</span>
+					<div class="more"></div>
+					<i class="fa fa-chevron-right"></i>
+				</section>
+				<section class="items"></section>
+			</div>
+		{% endfor %}
+	{% else %}
+		<div id="no-results">
+			<div class="prompt">
+				<div class="prompt-text">
+					<h2>No results found.</h2>
+					<div>Try adjusting your search </div>
+					<div>or adding more <a href="/providers">Connections</a>.</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

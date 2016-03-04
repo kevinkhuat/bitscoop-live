@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block outer_header %}
+{% endblock %}
+
+
+{% block main %}
+	{% include 'components/beta-splash.html' with tagline=True %}
+
+	{% if thanks %}
+		<div class="align-center" style="margin-top: 25px; font-size: 1.4em;">
+			<p>Thanks for signing up!</p>
+			<p>We will email you an invitation as space is available.</p>
+		</div>
+	{% elif not signed_up %}
+		<form class="align-center" action="{% url 'home' %}" method="POST">
+			{% csrf_token %}
+
+			<div class="text-box position-center" style="border-radius: 3px;">
+				<input class="align-center" type="email" name="email" placeholder="Email Address" value="{{ form.email.value }}" />
+			</div>
+			<div class="align-center">
+				{{ form.email.errors }}
+			</div>
+
+			<div style="margin: 15px 0;">
+				<button class="round" type="submit">Request Invite</button>
+			</div>
+		</form>
+	{% endif %}
+{% endblock %}
+
+
+{% block footer %}
+	<div id="social" class="flexbox flex-center">
+		<a class="facebook" href="https://facebook.com/bitscooplabs" target="_blank"><i class="fa fa-facebook-official"></i></a>
+		<a class="twitter" href="https://twitter.com/bitscooplabs" target="_blank"><i class="fa fa-twitter"></i></a>
+		<a class="github" href="https://github.com/bitscooplabs" target="_blank"><i class="fa fa-github"></i></a>
+		<a class="instagram" href="https://instagram.com/bitscooplabs" target="_blank"><i class="fa fa-instagram"></i></a>
+	</div>
+
+	{{ block.super }}
+{% endblock %}

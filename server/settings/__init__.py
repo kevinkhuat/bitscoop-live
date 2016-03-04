@@ -20,6 +20,7 @@ CACHES = {
         'LOCATION': 'redis://localhost:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'SERIALIZER': 'django_redis.serializers.json.JSONSerializer'
         },
     },
     'session': {
@@ -27,6 +28,7 @@ CACHES = {
         'LOCATION': 'redis://localhost:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'SERIALIZER': 'django_redis.serializers.json.JSONSerializer'
         },
     }
 }
@@ -41,16 +43,8 @@ CACHE_MIDDLEWARE_ALIAS = 'default'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bitscoop',
-        'USER': 'bitscoop_db_user',
-        'PASSWORD': 'placeholder',
-        'HOST': 'bantam.czrvoafqrgqx.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': get_path(ROOT_PATH, 'pki', 'rds-combined-ca-bundle.pem'),
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': get_path(ROOT_PATH, 'databases', 'development.db'),
     }
 }
 MONGODB = {
@@ -258,7 +252,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'social.apps.django_app.default',
 
-    'server.apps.explorer',
     'server.apps.opi',
     'server.contrib.multiauth',
     'server.core',
@@ -305,7 +298,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 # TEMPLATE_DEBUG = False
 TEMPLATE_DIRS = (
-    get_path(SOURCE_PATH, 'templates'),
+    get_path(ROOT_PATH, 'templates'),
 )
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -378,9 +371,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 ##########
 
 STATIC_ROOT = get_path(ROOT_PATH, 'build', 'static')
-STATIC_URL = get_environ_setting('STATIC_URL', 'https://dxji0l5r1504f.cloudfront.net/static/')
+STATIC_URL = get_environ_setting('STATIC_URL', '/static/')
 STATICFILES_DIRS = (
-    get_path(SOURCE_PATH, 'static'),
     get_path(ROOT_PATH, 'artifacts'),
 )
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'

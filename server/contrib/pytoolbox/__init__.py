@@ -1,4 +1,7 @@
+import json
 import re
+
+from collections import OrderedDict
 
 
 PATTERN = re.compile('[.$]')
@@ -21,6 +24,28 @@ def strip_invalid_key_characters(input_dict):
             input_dict[key] = strip_invalid_key_characters(input_dict[key])
 
     return input_dict
+
+
+def sort_dictionary(input):
+    res = {}
+
+    for k, v in sorted(input.items()):
+        if isinstance(v, dict):
+            res[k] = sort_dictionary(v)
+        elif isinstance(v, list):
+            sorted_items = []
+
+            for item in v:
+                if isinstance(item, dict):
+                    sorted_items.append(sort_dictionary(item))
+                else:
+                    sorted_items.append(item)
+
+            res[k] = sorted(sorted_items)
+        else:
+            res[k] = v
+
+    return json.dumps(res, separators=(',',':'))
 
 
 def initialize_endpoint_data(provider, connection, source, endpoint, population):

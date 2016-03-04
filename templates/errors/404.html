@@ -1,0 +1,12 @@
+{% extends 'errors/base.html' %}
+
+{% block title %}Page Not Found &middot; BitScoop{% endblock %}
+
+{% block main %}
+	<div>
+		<h3>404 (Page Not Found)</h3>
+
+		<p>The requested page could not be found.</p>
+		<p>Back to <a href="{% url 'home' %}">bitscoop.com</a>.</p>
+	</div>
+{% endblock %}

@@ -29,13 +29,14 @@ class ProviderSerializer(tasty_serializers.DocumentSerializer):
     class Meta:
         model = Provider
         fields = (
-            'auth_backend',
             'auth_type',
-            'backend_name',
-            'client_callable',
             'description',
             'domain',
+            'enabled',
             'endpoint_wait_time',
+            'endpoints',
+            'psa_legacy',
+            'sources',
             'name',
             'provider_number',
             'tags',

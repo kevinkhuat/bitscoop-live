@@ -7,7 +7,8 @@ from django.conf import settings
 mongoengine.connect(
     settings.MONGODB['NAME'],
     host=settings.MONGODB['HOST'],
-    port=settings.MONGODB['PORT']
+    port=settings.MONGODB['PORT'],
+    tz_aware=settings.USE_TZ
 )
 
 

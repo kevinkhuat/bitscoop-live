@@ -109,7 +109,7 @@ class ConnectView(View):
             if provider.provider_number == connection.provider.provider_number:
                 next_name_count += 1
 
-        return render(request, 'core/connections/connect.html', {
+        return render(request, 'connections/connect.html', {
             'next_name_count': next_name_count,
             'current_count': next_name_count - 1,
             'title': 'BitScoop - Connect to ' + provider.name,

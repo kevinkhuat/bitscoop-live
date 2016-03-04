@@ -26,9 +26,16 @@ class ProviderView(MongoAPIListView):
             request.query_filter &
             MongoAPIView.Meta.Q(enabled=True)
         )
-        paginated_data_list = self.Meta.list(self, provider_query)
+        provider_list = opi_serializer.evaluate(provider_query, self.Meta.QuerySet)
 
-        return paginated_data_list
+        return Response(self.serialize(
+            provider_list,
+            many=True,
+            context={
+                'request': request,
+                'format': format
+            }
+        ))
 
 
 class ProviderSingleView(MongoAPIView):

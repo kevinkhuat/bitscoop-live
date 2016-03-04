@@ -1,0 +1,57 @@
+{% load staticfiles %}
+
+
+{% if mode == 'app' or mode == 'home' %}
+	<nav>
+		{% if mode == 'app' %}
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /></a>
+			{% include 'components/search.html' %}
+		{% else %}
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /></a>
+			{% include 'components/search.html' with hide_favorite_star=True %}
+		{% endif %}
+
+		<div class="shortcuts">
+			<a href="{% url 'explorer' %}"><i class="fa fa-th-large"></i></a>
+			<a href="{% url 'providers' %}"><i class="fa fa-plus"></i></a>
+			<a href="{% url 'settings:profile' %}"><i class="fa fa-cog"></i></a>
+		</div>
+
+		<div id="menu-button"><div class="fa fa-bars"/></div>
+	</nav>
+
+	{% if mode == 'app' %}
+		<div class="sort hidden">
+			<div class="fields"></div>
+		</div>
+	{% endif %}
+{% elif mode == 'provider' %}
+	<nav>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /></a>
+
+		<span class="flex-grow"></span>
+
+		<div class="flexbox flex-x-center">
+{#			{% include 'components/search.html' with hide_advanced=True hide_filters=True placeholder='Search connections' action='' %}#}
+			<button id="done" class="primary">Done</button>
+		</div>
+
+		<div id="menu-button"><div class="fa fa-bars"/></div>
+	</nav>
+{% else %}
+	<nav>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /></a>
+
+		<span class="flex-grow"></span>
+
+{#		<a href="#">About</a>#}
+{#		<a href="{% url 'providers' %}">Providers</a>#}
+
+		{% if not request.user.is_authenticated %}
+{#			<a href="{% url 'login' %}">Log In</a>#}
+{#			<a href="{% url 'signup' %}">TRY NOW!</a>#}
+		{% else %}
+			<a href="{% url 'explorer' %}">Explore</a>
+		{% endif %}
+	</nav>
+{% endif %}

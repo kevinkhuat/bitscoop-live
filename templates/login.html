@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block description %}
+	<meta name="description" content="Log in to BitScoop, your personal search engine. Connect with your information now!" />
+{% endblock %}
+
+
+{% block outer_header %}
+{% endblock %}
+
+
+{% block main %}
+	{% include 'components/beta-splash.html' %}
+
+	<form action="{% url 'login' %}" method="POST" novalidate>
+		<div class="boxed-group">
+			<div>Login</div>
+
+			<div class="padded">
+				{% csrf_token %}
+
+				<div class="text-box">
+					<input type="email" name="identifier" placeholder="Email or handle" value="{{ form.identifier.value }}" {% if autofocus %}autofocus {% endif %}/>
+				</div>
+
+				<div class="text-box">
+					<input type="password" name="password" placeholder="Password" />
+				</div>
+
+				<div>
+					{{ form.non_field_errors }}
+				</div>
+
+				<div class="input-container">
+					<label><input type="checkbox" name="remember_me" value="1" />Remember me</label>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<button class="primary" type="submit">Login</button>
+		</div>
+	</form>
+{% endblock %}

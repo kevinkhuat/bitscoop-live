@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+
+{% block static %}
+	{{ block.super }}
+
+	<script type="text/javascript">
+		require(['user-home']);
+	</script>
+{% endblock %}
+
+
+{% block header %}
+	{% include 'components/header.html' with mode='home' %}
+{% endblock %}
+
+
+{% block main %}
+	<aside id="profile">
+		<div class="avatar">
+			<a href="{% url 'settings:profile' %}">
+				<i class="fa fa-user"></i>
+			</a>
+		</div>
+
+		{% if user.first_name and user.last_name %}
+			<div class="name">{{ user.first_name }} {{ user.last_name }}</div>
+			{% if user.handle %}
+				<div class="handle">{{ user.handle }}</div>
+			{% else %}
+				<div></div>
+			{% endif %}
+		{% elif user.handle %}
+			<div class="name">{{ user.handle }}</div>
+			<div></div>
+		{% endif %}
+
+		<div class="divider"></div>
+
+		<div class="info">
+			<div>
+				<i class="fa fa-envelope-o"></i>
+				<span>{{ user.email }}</span>
+			</div>
+
+			<div>
+				<i class="fa fa-clock-o"></i>
+				<span>Joined {{ user.date_joined | date }}</span>
+			</div>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="stats">
+			<a class="connections" href="{% url 'settings:connections' %}">
+				<div class="count">{{ connection_count }}</div>
+				<div class="label">Accounts</div>
+			</a>
+
+			<a class="events" href="{% url 'explorer' %}">
+				<div class="count transparent">0</div>
+				<div class="label">Events</div>
+			</a>
+
+			<a class="searches">
+				<div class="count transparent">0</div>
+				<div class="label">Searches</div>
+			</a>
+		</div>
+	</aside>
+
+	<section id="content">
+		<nav id="tabs">
+			<div class="tab" name="favorites">Favorites</div>
+			<div class="tab" name="recent">Recent</div>
+			<div class="tab" name="top">Top</div>
+		</nav>
+
+		<div id="search-container">
+			<div class="scroller">
+				<div id="searches"></div>
+			</div>
+		</div>
+	</section>
+
+	<aside id="favorite" class="modal modal-close">
+		<div class="container">
+			<div class="scroller">
+				<div class="content">
+					<i class="modal-close close-button"></i>
+
+					<div class="body"></div>
+				</div>
+			</div>
+		</div>
+	</aside>
+{% endblock %}
+
+
+{% block outer_footer %}
+{% endblock %}

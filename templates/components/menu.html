@@ -1,0 +1,49 @@
+<header>
+	<div>Menu</div>
+	<i id="close-menu" class="fa fa-times"></i>
+</header>
+
+<section>
+	<div class="views">
+		<div class="active">Views</div>
+		<div>
+			<!--<a data-view="results"><i class="fa fa-chevron-left"></i></a>-->
+			<a data-view="feed"><i class="fa fa-clone"></i></a>
+			<a data-view="grid"><i class="fa fa-th"></i></a>
+			<!--<a data-view="list"><i class="fa fa-list"></i></a>-->
+			<!--<a data-view="map"><i class="fa fa-map-o"></i></a>-->
+		</div>
+	</div>
+
+	<div class="sort">
+		<div>Sort by</div>
+		<div class="fields"></div>
+	</div>
+
+	<a class="explorer" href="{% url 'explorer' %}"><i class="fa fa-th-large"></i> Explorer</a>
+	<a class="providers" href="{% url 'providers' %}"><i class="fa fa-plus"></i> Connections</a>
+	<a class="settings" href="{% url 'settings:profile' %}"><i class="fa fa-cog"></i> Settings</a>
+	<a class="support" target="_blank" href="{% url 'support' %}"><i class="fa fa-question-circle"></i> Support</a>
+</section>
+
+<footer>
+	<div class="user-info">
+		{% if request.user.handle %}
+			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.handle }}</a>
+		{% elif request.user.full_name %}
+			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.full_name }}</a>
+		{% else %}
+			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.email }}</a>
+		{% endif %}
+
+		<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+	</div>
+
+	<div>
+		<span>&copy; 2016 BitScoop Labs, Inc.</span>
+		<span class="spacer">|</span>
+		<a href="{% url 'privacy' %}">Privacy</a>
+		<span class="spacer">|</span>
+		<a href="{% url 'terms' %}">Terms</a>
+	</div>
+</footer>

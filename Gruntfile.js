@@ -1,10 +1,5 @@
 var path = require('path');
 
-var MockBrowser = require('mock-browser').mocks.MockBrowser;
-
-
-global.window = MockBrowser.createWindow();
-
 
 module.exports = function(grunt) {
 	grunt.initConfig({
@@ -14,9 +9,9 @@ module.exports = function(grunt) {
 		clean: {
 			artifacts: 'artifacts',
 			build: 'build',
+			deploy: 'deploy',
 			predeploy: [
 				'artifacts/**/*.{css,js,less}',
-				'artifacts/lib/icomoon/selection.json',
 				'!artifacts/**/*.min.{css,js}'
 			]
 		},
@@ -30,29 +25,42 @@ module.exports = function(grunt) {
 			}
 		},
 
+		compress: {
+			main: {
+				options: {
+					archive: 'deploy/<%= package.name %>.tar.gz'
+				},
+				expand: true,
+				src: [
+					'pki/**/*',
+					'requirements/**/*',
+					'server/**/*',
+					'templates/**/*',
+					'gunicorn_config.py',
+					'manage.py',
+					'package.json',
+					'wsgi.py',
+					'!server/settings/development',
+					'!server/settings/development/**/*',
+					'!**/__pycache__',
+					'!**/*.pyc'
+				],
+				dest: '<%= package.name %>'
+			}
+		},
+
 		copy: {
 			collectstatic: {
 				files: [
 					{
 						expand: true,
-						cwd: 'server/static/',
-						src: '**',
-						dest: 'artifacts/'
-					},
-					{
-						expand: true,
-						cwd: 'server/core/static/',
-						src: '**',
-						dest: 'artifacts/'
-					},
-					{
-						expand: true,
-						cwd: 'server/apps/explorer/static/',
+						cwd: 'static/',
 						src: '**',
 						dest: 'artifacts/'
 					}
 				]
 			},
+
 			deploy: {
 				files: [
 					{
@@ -63,6 +71,7 @@ module.exports = function(grunt) {
 					}
 				]
 			},
+
 			minify: {
 				files: [
 					'<%= cssmin.target.files %>',
@@ -88,12 +97,12 @@ module.exports = function(grunt) {
 		jscs: {
 			all: {
 				options: {
-					config: 'config/jscs.json'
+					config: 'jscs.json'
 				},
 				src: [
 					'Gruntfile.js',
-					'server/**/*.js',
-					'!server/static/lib/**/*.js'
+					'static/**/*.js',
+					'!static/lib/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
 			}
@@ -102,24 +111,26 @@ module.exports = function(grunt) {
 		jshint: {
 			all: {
 				options: {
-					jshintrc: 'config/jshint.json',
+					jshintrc: 'jshint.json',
 					reporter: require('jshint-stylish')
 				},
 				src: [
 					'Gruntfile.js',
-					'server/**/*.js',
-					'!server/static/lib/**/*.js'
+					'static/**/*.js',
+					'!static/lib/**/*.js'
 				]
 			}
 		},
 
 		jsonlint: {
 			jscs: {
-				src: 'config/jscs.json'
+				src: 'jscs.json'
 			},
+
 			jshint: {
-				src: 'config/jslint.json'
+				src: 'jshint.json'
 			},
+
 			package: {
 				src: 'package.json'
 			}
@@ -131,12 +142,12 @@ module.exports = function(grunt) {
 					paths: ['artifacts/'],
 					plugins: [
 						new (require('less-plugin-autoprefix'))({
-							browsers: ['last 2 versions']
+							browsers: ['last 3 versions', 'ie 11', 'ie 10']
 						})
 					]
 				},
 				files: {
-					'artifacts/core/css/site.css': 'artifacts/core/less/site.less'
+					'artifacts/css/site.css': 'artifacts/less/site.less'
 				}
 			}
 		},
@@ -144,12 +155,21 @@ module.exports = function(grunt) {
 		nunjucks: {
 			target: {
 				src: [
-					'server/nunjucks/**/*.html',
-					'server/core/nunjucks/**/*.html',
-					'server/{apps,contrib,lib}/*/nunjucks/**/*.html'
+					'nunjucks/**/*.html'
 				],
-				dest: 'artifacts/core/js/templates.js',
+				dest: 'artifacts/js/templates.js',
 				options: {
+					env: (function(nunjucks) {
+						var environment;
+
+						environment = new nunjucks.Environment();
+
+						environment.addFilter('get', function() {});
+						environment.addFilter('date', function() {});
+
+						return environment;
+					})(require('nunjucks')),
+
 					name: (function() {
 						var delimiter, names;
 
@@ -199,12 +219,7 @@ module.exports = function(grunt) {
 					banner: '<%= banner %>'
 				},
 				files: {
-					src: [
-						'artifacts/**/*.{css,js}',
-						'!artifacts/lib/**/*',
-						'artifacts/lib/{cartano,jutsu}/**/*.{css,js}',
-						'artifacts/lib/requirejs/config/*.js'
-					]
+					src: 'artifacts/**/*.{css,js}'
 				}
 			}
 		},
@@ -214,11 +229,10 @@ module.exports = function(grunt) {
 				files: '<%= nunjucks.target.src %>',
 				tasks: ['nunjucks', 'copy:minify']
 			},
+
 			static: {
 				files: [
-					'server/static/**/*.{js,css,less}',
-					'server/core/static/**/*.{js,css,less}',
-					'server/apps/explorer/static/**/*.{js,css,less}'
+					'static/**/*.{js,css,less}'
 				],
 				tasks: ['copy:collectstatic', 'less', 'copy:minify']
 			}
@@ -229,6 +243,7 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('build', [
+		'clean:artifacts',
 		'copy:collectstatic',
 		'less',
 		'nunjucks',
@@ -241,10 +256,13 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('devel', [
+		'clean:artifacts',
 		'copy:collectstatic',
 		'less',
 		'nunjucks',
-		'copy:minify'
+		'copy:minify',
+		'clean:predeploy',
+		'cleanempty'
 	]);
 
 	grunt.registerTask('lint', [

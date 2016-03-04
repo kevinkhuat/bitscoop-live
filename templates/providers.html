@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{#data-link="{% url 'connections:connect' name=provider.name|slugify %}"#}
+
+
+{% block static %}
+	{{ block.super }}
+
+	<script type="text/javascript">
+		require(['providers']);
+	</script>
+{% endblock %}
+
+
+{% block header %}
+	{% if request.user.is_authenticated %}
+		{% include 'components/header.html' with mode='provider' %}
+	{% else %}
+		{{ block.super }}
+	{% endif %}
+
+	<div class="mobile-selector">
+		<span class="placeholder-text">All</span>
+		<i class="fa fa-caret-down"></i>
+	</div>
+{% endblock %}
+
+
+{% block aside %}
+	<aside class="filters">
+		<div class="scroller">
+			<div id="filters">
+				<div class="filter" data-filter="all">All</div>
+				<div class="filter" data-filter=".collaboration">Collaboration</div>
+				<div class="filter" data-filter=".development">Development</div>
+				<div class="filter" data-filter=".finance">Finance</div>
+				<div class="filter" data-filter=".fitness">Fitness</div>
+				<div class="filter" data-filter=".gaming">Gaming</div>
+				<div class="filter" data-filter=".health">Health</div>
+				<div class="filter" data-filter=".media">Media</div>
+				<div class="filter" data-filter=".music">Music</div>
+				<div class="filter" data-filter=".productivity">Productivity</div>
+				<div class="filter" data-filter=".social">Social</div>
+				<div class="filter" data-filter=".video">Video</div>
+			</div>
+		</div>
+	</aside>
+{% endblock %}
+
+
+{% block main %}
+	<div class="scroller">
+		<div id="provider-grid">
+			{% for provider in providers %}
+			<div class="mix {% for tag in provider.tags %}{{ tag }} {% endfor %}{% if provider.associated_connection %}associated{% endif %}" data-id="{{ provider.id }}" data-link="{% url 'connections:connect' name=provider.name|slugify %}">
+				<div>
+					{% if provider.assoc_count > 1 %}
+					<span>{{ provider.assoc_count }}</span>
+					{% endif %}
+					<h1><i class="fa fa-{{ provider.name | lower }}"></i></h1>
+					<p>{{ provider.name }}</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block outer_footer %}
+{% endblock %}

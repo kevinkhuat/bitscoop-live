@@ -5,7 +5,6 @@ from django.conf.urls import include, patterns, url
 urlpatterns = patterns('',
     url(r'^auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^opi', include('server.apps.opi.urls', namespace='opi')),
-    url(r'^explore', include('server.apps.explorer.urls', namespace='explorer')),
 
     url(r'', include('server.core.urls')),
 )

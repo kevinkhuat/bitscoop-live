@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block static %}
+	{{ block.super }}
+
+	<script type="text/javascript">
+		require(['search']);
+	</script>
+{% endblock %}
+
+
+{% block header %}
+	{% include 'components/header.html' with mode='home' hide_advanced=True %}
+
+	<div class="mobile-selector">
+		<span class="placeholder-text">{{ settings_type }}</span>
+		<i class="fa fa-caret-down"></i>
+	</div>
+{% endblock %}
+
+
+{% block aside %}
+	<aside class="mobile-type-selector">
+		<div class="scroller">
+			<div id="pages">
+				<a href="{% url 'settings:profile' %}">Profile</a>
+				<a href="{% url 'settings:account' %}">Account</a>
+				<a href="{% url 'settings:connections' %}">Connections</a>
+			</div>
+		</div>
+	</aside>
+{% endblock %}
+
+
+{% block main %}
+	<section>
+		<aside id="left">
+			<div id="settings-menu" class="boxed-group">
+				<div>Settings</div>
+
+				<div>
+					<a href="{% url 'settings:profile' %}">Profile</a>
+				</div>
+
+				<div>
+					<a href="{% url 'settings:account' %}">Account</a>
+				</div>
+
+				<div>
+					<a href="{% url 'settings:connections' %}">Connections</a>
+				</div>
+			</div>
+		</aside>
+
+		<section id="settings">
+			{% block settings %}{% endblock %}
+		</section>
+	</section>
+{% endblock %}

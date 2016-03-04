@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{% block description %}
+	<meta name="description" content="Sign up for BitScoop to Search the Internet of You. From your music, video, media & gaming to fitness, purchases, documents & emails. Try it today!" />
+{% endblock %}
+
+
+{% block outer_header %}
+{% endblock %}
+
+
+{% block main %}
+	{% include 'components/beta-splash.html' %}
+
+	<form action="{% url 'signup' %}" method="POST">
+		<div class="boxed-group">
+			<div>Sign Up</div>
+
+			<div class="padded">
+				{% csrf_token %}
+
+				<div class="text-box">
+					<input type="text" name="code" placeholder="Invitation Code" value="{{ form.data.code }}" />
+				</div>
+				<div>
+					{{ form.code.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="email" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" {% if autofocus %}autofocus {% endif %}/>
+				</div>
+				<div>
+					{{ form.email.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="handle" placeholder="Username (optional)" value="{{ form.handle.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.handle.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="first_name" placeholder="First name (optional)" value="{{ form.first_name.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.first_name.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="text" name="last_name" placeholder="Last name (optional)" value="{{ form.last_name.value|default_if_none:'' }}" />
+				</div>
+				<div>
+					{{ form.last_name.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="password" name="password" placeholder="Password" value="{{ form.password.value }}" />
+				</div>
+				<div>
+					{{ form.password.errors }}
+				</div>
+
+				<div class="text-box">
+					<input type="password" name="repeated_password" placeholder="Repeated Password" value="{{ form.repeated_password.value }}" />
+				</div>
+				<div>
+					{{ form.repeated_password.errors }}
+				</div>
+
+				<div>
+					{{ form.non_field_errors }}
+				</div>
+			</div>
+		</div>
+
+		<!--<div class="g-recaptcha centered" data-sitekey="6Ld3Ng0TAAAAAJp-bx-xCX7dMfYLq-5Zf8Cdowod"></div>-->
+
+		<div>
+			<button class="primary" type="submit">Sign Up</button>
+		</div>
+	</form>
+{% endblock %}

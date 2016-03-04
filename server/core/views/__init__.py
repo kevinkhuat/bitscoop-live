@@ -1,9 +1,7 @@
 import django.conf
 from django import forms
 from django.contrib.auth import authenticate, get_user_model, login
-from django.forms import Form as BaseForm, ModelForm
-from django.http import Http404, HttpResponseNotAllowed
-from django.core.urlresolvers import reverse
+from django.forms import Form as BaseForm
 from django.forms import ModelForm
 from django.http import Http404, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import render
@@ -13,6 +11,7 @@ from django.views.generic import View
 from hashids import Hashids as Hasher
 from mongoengine import Q
 
+from server.contrib.estoolbox import searches
 from server.contrib.multiauth.decorators import login_required
 from server.contrib.multiauth.models import SignupCode, SignupRequest
 from server.contrib.pytoolbox.django.response import redirect_by_name
@@ -28,7 +27,7 @@ class BlogView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/blog.html', {
+        return render(request, 'blog.html', {
             'title': 'Blog'
         })
 
@@ -46,7 +45,18 @@ class ContactView(View):
         if request.user.is_authenticated():
             context['email'] = request.user.email
 
-        return render(request, 'core/contact.html', context)
+        return render(request, 'contact.html', context)
+
+
+class ExplorerView(View):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, request):
+        return render(request, 'explore.html', {
+            'title': 'Explore'
+        })
 
 
 class FaqView(View):
@@ -54,7 +64,7 @@ class FaqView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/faq.html', {
+        return render(request, 'faq.html', {
             'title': 'FAQ'
         })
 
@@ -66,7 +76,7 @@ class HelpView(View):
 
     def get(self, request, slug):
         slug = slug.lower()
-        template = 'core/help/{0}.html'.format(slug)
+        template = 'help/{0}.html'.format(slug)
 
         try:
             return render(request, template, {
@@ -99,7 +109,7 @@ class HomeView(View, FormMixin):
 
     def get(self, request):
         if request.user.is_authenticated():
-            template = 'core/user/home.html'
+            template = 'user/home.html'
 
             connections = list(ConnectionApi.get(Q(user_id=request.user.id) & Q(auth_status__complete=True)))
 
@@ -108,7 +118,7 @@ class HomeView(View, FormMixin):
             })
 
         else:
-            template = 'core/home-hide.html'
+            template = 'home-hide.html'
 
         return render(request, template, {
             'signed_up': request.COOKIES.get('ddfc44b96d0fdd246976ce2d8be2ac4c', False),
@@ -134,7 +144,7 @@ class HomeView(View, FormMixin):
 
             return response
         else:
-            return render(request, 'core/home-hide.html', {
+            return render(request, 'home-hide.html', {
                 'form': form
             })
 
@@ -145,7 +155,7 @@ class PricingView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/pricing.html', {
+        return render(request, 'pricing.html', {
             'title': 'Pricing'
         })
 
@@ -155,7 +165,7 @@ class PrivacyView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/privacy.html', {
+        return render(request, 'privacy.html', {
             'title': 'Privacy Policy'
         })
 
@@ -181,7 +191,7 @@ class ProvidersView(View):
                     else:
                         provider.assoc_count = 1
 
-        return render(request, 'core/providers.html', {
+        return render(request, 'providers.html', {
             'title': 'Providers',
             'providers': providers
         })
@@ -193,7 +203,7 @@ class SecurityView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/security.html', {
+        return render(request, 'security.html', {
             'title': 'Security'
         })
 
@@ -265,7 +275,7 @@ class SignupView(View, FormMixin):
         if request.user.is_authenticated():
             return redirect_by_name('home')
 
-        return render(request, 'core/signup.html', {
+        return render(request, 'signup.html', {
             'title': 'Sign Up',
             'request_form': True
         })
@@ -286,9 +296,10 @@ class SignupView(View, FormMixin):
             user.save()
             user = authenticate(identifier=user.email, password=form.cleaned_data.get('password'))
             SettingsApi.post({'user_id': user.id})
+            searches.create_initial_searches(user.id)
 
         if user is None:
-            return render(request, 'core/signup.html', {
+            return render(request, 'signup.html', {
                 'title': 'Sign Up',
                 'form': form,
                 'autofocus': 'username' in form.cleaned_data,
@@ -300,11 +311,10 @@ class SignupView(View, FormMixin):
             code.user_id = user.id
             code.save()
 
-            return redirect_by_name('home')
+            return redirect_by_name('providers')
 
 
 class SupportView(View):
-    @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -323,7 +333,7 @@ class TeamView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/team.html', {
+        return render(request, 'team.html', {
             'title': 'Team'
         })
 
@@ -333,7 +343,7 @@ class TermsView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/terms.html', {
+        return render(request, 'terms.html', {
             'title': 'Terms of Use'
         })
 
@@ -344,6 +354,6 @@ class UpcomingView(View):
         return super().dispatch(*args, **kwargs)
 
     def get(self, request):
-        return render(request, 'core/upcoming.html', {
+        return render(request, 'upcoming.html', {
             'title': 'Upcoming Features'
         })

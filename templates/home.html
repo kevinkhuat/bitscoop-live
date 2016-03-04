@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{% block main %}
+	<section class="flex" style="position: relative; min-height: 500px;">
+		<div class="video-wrapper" style="position: absolute; top: 0; left: 0; z-index: -100; height: 500px; width: 100%; overflow: hidden;">
+			<video id="bgvideo" style="position: absolute; top: 0; left: 0; width: 100%;" poster="https://d233zlhvpze22y.cloudfront.net/1457056861/images/pool-jump.png" muted autoplay loop>
+				<source type="video/webm" src="https://d233zlhvpze22y.cloudfront.net/1457056861/videos/pool-jump.webm" />
+				<source type="video/mp4" src="https://d233zlhvpze22y.cloudfront.net/1457056861/videos/pool-jump.mp4" />
+			</video>
+		</div>
+
+		<div class="flexbox flex-grow flex-column flex-center flex-x-center">
+			<div class="card padded bold align-center" style="font-size: 300%; color: #FFF; background-color: rgba(75, 75, 75, 0.4);">Discover the Internet<br/>of YOU</div>
+			<div class="flexbox">
+				<div>
+					<button>Learn More</button>
+				</div>
+				<div>
+					<button class="primary">Try it Now</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="facets" class="flexbox flex-wrap flex-space-around">
+		<div class="card flexbox flex-column flex-center flex-x-center align-center">
+			<h1>Icon 1</h1>
+			<h3>Search</h3>
+			<p>Connect with your information across platforms.</p>
+			<p>Pictures, videos, texts, social media posts.</p>
+		</div>
+
+		<div class="card flexbox flex-column flex-center flex-x-center align-center">
+			<h1>Icon 2</h1>
+			<h3>Explore</h3>
+			<p>Reveal the richness of your life in your data.</p>
+			<p>A complete view of real-time and history events.</p>
+		</div>
+
+		<div class="card flexbox flex-column flex-center flex-x-center align-center">
+			<h1>Icon 3</h1>
+			<h3>Share</h3>
+			<p>Visualize your connected information.</p>
+			<p>Take ownership and control of your stories.</p>
+		</div>
+	</section>
+{% endblock %}
+
+
+{% block footer %}
+	<div style="margin-bottom: 10px;">
+		<a href="{% url 'team' %}">Team</a>
+		<span style="margin: 5px;">&middot;</span>
+		<a href="{% url 'contact' %}">Contact</a>
+		<span style="margin: 5px;">&middot;</span>
+		<a href="{% url 'terms' %}">Terms</a>
+		<span style="margin: 5px;">&middot;</span>
+		<a href="{% url 'privacy' %}">Privacy</a>
+		<span style="margin: 5px;">&middot;</span>
+		<a href="{% url 'security' %}">Security</a>
+	</div>
+
+	{{ block.super }}
+{% endblock %}

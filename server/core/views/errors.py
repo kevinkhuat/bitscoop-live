@@ -8,7 +8,7 @@ def _gen_error_view(code, template):
     return view
 
 
-view400 = _gen_error_view(400, 'core/errors/400.html')
-view403 = _gen_error_view(403, 'core/errors/403.html')
-view404 = _gen_error_view(404, 'core/errors/404.html')
-view500 = _gen_error_view(500, 'core/errors/500.html')
+view400 = _gen_error_view(400, 'errors/400.html')
+view403 = _gen_error_view(403, 'errors/403.html')
+view404 = _gen_error_view(404, 'errors/404.html')
+view500 = _gen_error_view(500, 'errors/500.html')

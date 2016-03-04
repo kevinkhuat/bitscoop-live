@@ -22,7 +22,7 @@ class LoginView(View, FormMixin):
         if request.user.is_authenticated():
             return redirect_by_name('home')
 
-        return render(request, 'core/login.html', {
+        return render(request, 'login.html', {
             'title': 'Login'
         })
 
@@ -36,7 +36,7 @@ class LoginView(View, FormMixin):
         if user is None:
             form.add_error(None, 'Invalid username or password.')
 
-            return render(request, 'core/login.html', {
+            return render(request, 'login.html', {
                 'title': 'Login',
                 'form': form,
                 'autofocus': 'identifier' in form.cleaned_data
