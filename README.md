@@ -168,6 +168,16 @@ python manage.py insert_main_fixtures
 python manage.py insert_data
 ```
 
+Note that if you're working with PostgreSQL you'll need to run
+
+```
+python manage.py migrate core
+python manage.py migrate
+```
+
+When first creating the database. There's an issue with having a custom user table when not using sqlite that
+necessitates migrating the user table first. The core app has a user table migration which will address this problem.
+
 
 ## Running a Development Server
 You can run a local development server to test changes to the web application.

@@ -9,7 +9,7 @@ gunicorn
 hashids
 jsonschema
 mongoengine
-# psycopg2
+psycopg2
 python-dateutil
 python-social-auth
 requests

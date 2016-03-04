@@ -43,15 +43,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bitscoop',
-        'USER': 'bitscoop',
-        'PASSWORD': 'foxtrot1234',
-        'HOST': 'localhost',
+        'USER': 'bitscoop_db_user',
+        'PASSWORD': 'placeholder',
+        'HOST': 'bantam.czrvoafqrgqx.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
-        # 'OPTIONS': {
-        #     'sslmode': 'verify-ca',
-        #     'sslcert': 'placeholder',
-        #     'sslrootcert': 'placeholder',
-        # }
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': get_path(ROOT_PATH, 'pki', 'rds-combined-ca-bundle.pem'),
+        }
     }
 }
 MONGODB = {
