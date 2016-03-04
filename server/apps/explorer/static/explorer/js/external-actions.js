@@ -4,7 +4,7 @@ define(['ga', 'jquery', 'lodash', 'moment', 'nunjucks'], function(ga, $, _, mome
 			url: 'https://bitscoop.com',  // the url you'd like to share.
 			title: 'Shared via BitScoop',  // title to be shared alongside your link
 			description: 'Search & Explore the Internet of You',  // text to be shared alongside your link
-			imageURL: 'https://d1j1f384sln5mu.cloudfront.net/1443324625/assets/images/logo_240.png',  // image to be shared
+			imageURL: 'https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg',  // image to be shared
 			hashtags: 'BitScoop'
 			//via: 'BitScoopLabs'
 		},
