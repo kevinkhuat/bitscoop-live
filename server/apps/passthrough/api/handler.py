@@ -9,6 +9,7 @@ import tornado.web
 from django.conf import settings
 from tornado import gen
 
+from server import SOURCE_PATH, get_path
 from server.apps.passthrough.auth import user_authenticated
 from server.apps.passthrough.documents import Connection, Settings
 from server.contrib.estoolbox.security import InvalidDSLQueryException, InvalidTagExcpetion, validate_dsl, validate_tags
@@ -29,7 +30,8 @@ es_connection.client.max_clients = 1000
 es_connection.client.defaults['request_timeout'] = 1000
 es_connection.client.defaults['connect_timeout'] = 1000
 
-schema_json = json.loads(open('server/apps/passthrough/schema.json').read())
+schema_path = get_path(SOURCE_PATH, 'apps', 'passthrough', 'schema.json')
+schema_json = json.loads(open(schema_path).read())
 
 
 @gen.coroutine
