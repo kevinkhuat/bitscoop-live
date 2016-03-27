@@ -23,22 +23,13 @@ each of these processes runs without daemonizing and logs to the console.
 
 
 ## Environment Setup
-Create a two virtual environments outide the BitScoop repository folder. You'll
-need one for the Django app and one for the Tornado app since the dependencies
-conflict.
+Create a virtual environment outside the BitScoop repository folder.
 
-Change directory into the bitscoop project folder, activate the Django virtual
+Change directory into the bitscoop project folder, activate the virtual
 environment and install the requirements with:
 
 ```
-pip install -r requirements/django.txt
-```
-
-In a separate terminal activate the Tornado virtual environment and install the
-requirements with:
-
-```
-pip install -r requirments/tornado.txt
+pip install -r requirements/django.freeze.txt
 ```
 
 Install the NodeJS requirements with:
@@ -79,20 +70,12 @@ This HTTP PUT request should return something along the lines of:
 {"acknowledged":true}
 ```
 
-You will then need to create the mappings used by the various front-end
-applications. From either the Django or Tornado virtual environments run:
-
-```
-python manage.py migrate_elasticsearch
-```
-
 If you need to refresh the mappings you can recreate the index without deleting
 the database by running:
 
 ```
 curl -XDELETE http://localhost:9200/core
 curl -XPUT http://localhost:9200/core
-python manage.py migrate_elasticsearch
 ```
 
 
@@ -160,7 +143,7 @@ redis-server config/redis.conf
 ## Insert Initial Data
 
 You'll need to insert the initial data into the development sqlite, MongoDB, and
-ElasticSearch databases. With your Django virtual environment active run:
+ElasticSearch databases. With your virtual environment active run:
 
 ```
 python manage.py migrate
@@ -194,15 +177,7 @@ with:
 grunt watch
 ```
 
-You need to start the tornado auth server after activating the Tornado virtual
-environment from the main project directory with:
-
-```
-export DJANGO_SETTINGS_MODULE=server.settings.development
-python tornado.py
-```
-
-You must also start the main application after activating the Django virtual
+You must also start the main application after activating the virtual
 environment from the main project directory with:
 
 ```
@@ -224,14 +199,7 @@ elasticsearch -Des.config=config/elasticsearch/elasticsearch.yml
 mongod -f config/mongod.conf
 ```
 
-Front-end passthrough run from the Tornado virtual environment.
-
-```
-export DJANGO_SETTINGS_MODULE=server.settings.development
-python run_tornado.py
-```
-
-Front-end web run from the Django virtual environment.
+Front-end web run from the virtual environment.
 
 ```
 python manage.py runserver
