@@ -240,7 +240,7 @@ class SignupView(View, FormMixin):
                 try:
                     code = SignupCode.objects.get(id=decoded[0])
 
-                    if not code.claimed:
+                    if code.uses > 0:
                         return code
                 except SignupCode.DoesNotExist:
                     pass
@@ -285,6 +285,7 @@ class SignupView(View, FormMixin):
             return HttpResponseNotAllowed(['GET', 'HEAD', 'OPTIONS'])
 
         user = None
+        code = None
         form = self.get_filled_form(request)
 
         if form.is_valid():
@@ -294,9 +295,10 @@ class SignupView(View, FormMixin):
             user = user_model(**form.cleaned_data)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            user = authenticate(identifier=user.email, password=form.cleaned_data.get('password'))
-            SettingsApi.post({'user_id': user.id})
-            searches.create_initial_searches(user.id)
+            user = authenticate(
+                identifier=user.email,
+                password=form.cleaned_data.get('password')
+            )
 
         if user is None:
             return render(request, 'signup.html', {
@@ -307,9 +309,15 @@ class SignupView(View, FormMixin):
             })
         else:
             login(request, user)
-            code.claimed = True
-            code.user_id = user.id
+
+            SettingsApi.post({
+                'user_id': user.id
+            })
+            searches.create_initial_searches(user.id)
+
+            code.uses -= 1
             code.save()
+            code.users.add(user)
 
             return redirect_by_name('providers')
 

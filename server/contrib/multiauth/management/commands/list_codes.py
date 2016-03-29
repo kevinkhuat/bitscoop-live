@@ -6,7 +6,7 @@ from server.contrib.multiauth.models import SignupCode
 
 
 class Command(BaseCommand):
-    help = 'Creates an unclaimed signup code.'
+    help = 'Lists all usable, outstanding signup codes.'
 
     def handle(self, *args, **options):
         hasher = Hasher(
@@ -14,8 +14,18 @@ class Command(BaseCommand):
             salt=settings.MULTIAUTH_HASH_SECRET
         )
 
-        qs = SignupCode.objects.filter(claimed__exact=False).all()
+        qs = SignupCode.objects.filter(uses__gt=0).all()
 
-        for code in qs:
-            hash = hasher.encode(code.id)
-            self.stdout.write('{0}\t{1}'.format(code.id, hash))
+        if options['verbosity'] >= 2:
+            self.stdout.write('ID\tHash\tUses\tName')
+
+            for code in qs:
+                self.stdout.write('{id}\t{hash}\t{uses}\t{name}'.format(**{
+                    'id': code.pk,
+                    'hash': hasher.encode(code.id),
+                    'uses': code.uses,
+                    'name': code.name or ''
+                }))
+        else:
+            for code in qs:
+                self.stdout.write(hasher.encode(code.id))

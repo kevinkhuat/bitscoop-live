@@ -15,7 +15,22 @@ class Command(BaseCommand):
             type=int,
             dest='count',
             default=1,
-            help='Number of codes to generate.'
+            help='Number of signup codes to generate.'
+        )
+
+        parser.add_argument(
+            '--uses',
+            type=int,
+            dest='uses',
+            default=1,
+            help='Number of uses for the signup code.'
+        )
+
+        parser.add_argument(
+            '--name',
+            type=str,
+            dest='name',
+            help='The name for the signup code'
         )
 
         parser.add_argument(
@@ -23,14 +38,14 @@ class Command(BaseCommand):
             type=int,
             dest='min_length',
             default=settings.MULTIAUTH_HASH_MINLENGTH,
-            help='Minimum length of signup code.'
+            help='Minimum length of signup code(s).'
         )
 
         parser.add_argument(
             '--salt',
             dest='salt',
             default=settings.MULTIAUTH_HASH_SECRET,
-            help='Minimum length of signup code.'
+            help='Minimum length of signup code(s).'
         )
 
         parser.add_argument(
@@ -39,7 +54,7 @@ class Command(BaseCommand):
             dest='dry_run',
             action='store_true',
             default=False,
-            help='Generate codes without saving to the database.'
+            help='Generate signup codes without saving to the database.'
         )
 
         parser.add_argument(
@@ -63,7 +78,10 @@ class Command(BaseCommand):
                 self.stdout.write('{0}\t{1}'.format(n + 1, hash))
         else:
             for n in range(options['count']):
-                code = SignupCode()
+                code = SignupCode(
+                    uses=options['uses'],
+                    name=options['name']
+                )
                 code.save()
 
                 hash = hasher.encode(code.id)
