@@ -31,6 +31,31 @@
 	</div>
 
 	<div class="boxed-group">
+		<div>Email Settings</div>
+
+		<div class="padded">
+			<form id="email-update-form" action="{% url 'settings:profile' %}" method="PATCH">
+				<div class="label">Email</div>
+				<div class="text-box shrink">
+					<input type="text" name="email" value="{{ request.user.email|default_if_none:'' }}" />
+				</div>
+				<div class="errorlist" data-for="email"></div>
+
+				<div class="label">Current Password</div>
+				<div class="text-box shrink">
+					<input type="password" name="password" />
+				</div>
+				<div class="errorlist" data-for="password"></div>
+
+				<div id="update-email" class="flexbox flex-x-center">
+					<button type="submit">Update Email</button>
+					<i class="fa fa-check-circle flex-grow success-icon" data-for="email"></i>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="boxed-group">
 		<div>Password Settings</div>
 
 		<div class="padded">

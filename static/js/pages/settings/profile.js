@@ -1,4 +1,4 @@
-define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie', 'settings-base'], function(debounce, formMonitor, $) {
+define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie', 'minimodal', 'settings-base'], function(debounce, formMonitor, $) {
 	$(document).formMonitor('form.auto');
 
 	$(document).on('change', 'input[name="gender"]', function(e) {
@@ -13,6 +13,7 @@ define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie', 'settings-base'],
 			$otherGender.val('').closest('div.text-box').hide();
 		}
 	});
+
 
 	$(document).on('form-monitor', 'form.auto', debounce(function(e) {
 		var formData;

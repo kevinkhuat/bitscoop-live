@@ -58,6 +58,36 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'minimo
 		return false;
 	});
 
+	$('#email-update-form').on('submit', function(e) {
+		var $this = $(this);
+
+		e.preventDefault();
+
+		$this.clearFormErrors();
+
+		$.ajax({
+			url: $this.attr('action'),
+			method: $this.attr('method'),
+			data: $this.serialize(),
+			headers: {
+				'X-CSRFToken': $.cookie('csrftoken')
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+		}).always(function() {
+			$this.find('input[type="password"]').val('');
+		}).done(function(data) {
+			formMonitor.done({
+				email: true
+			});
+		}).fail(function(response) {
+			formMonitor.fail(response.responseJSON);
+		});
+
+		return false;
+	});
+
 	$('#deactivate').on('click', function() {
 		$('#deactivate-modal').modal({
 			position: false,

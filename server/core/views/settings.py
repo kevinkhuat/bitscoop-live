@@ -431,6 +431,7 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
         first_name = forms.CharField(max_length=30, required=False)
         last_name = forms.CharField(max_length=30, required=False)
         email = forms.EmailField(max_length=256)
+        password = forms.CharField(max_length=48, required=False)
         gender = forms.CharField(max_length=20, required=False)
         other_gender = forms.CharField(max_length=20, required=False)
         birthday = forms.DateField(required=False)
@@ -455,6 +456,7 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
             cleaned_data = super().clean()
             email = cleaned_data.get('email')
             other_gender = cleaned_data.get('other_gender')
+            password = cleaned_data.pop('password', None)
 
             if email:
                 user_model = get_user_model()
@@ -467,6 +469,9 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
 
                 if email_count > 0:
                     self.add_error('email', 'Email is in use.')
+
+                if not password or not self.current_user.check_password(password):
+                    self.add_error('password', 'Invalid password.')
 
             if other_gender:
                 self.cleaned_data['gender'] = other_gender
@@ -485,6 +490,7 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
             'gender': user.gender
         })
         form.current_user = request.user
+        form.errors.pop('email', None)
 
         return render(request, self.template_name, {
             'title': self.title,
