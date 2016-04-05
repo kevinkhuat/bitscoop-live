@@ -4,10 +4,10 @@
 {% if mode == 'app' or mode == 'home' %}
 	<nav>
 		{% if mode == 'app' %}
-			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /></a>
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /><span>Beta</span></a>
 			{% include 'components/search.html' %}
 		{% else %}
-			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /></a>
+			<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg" /><span>Beta</span></a>
 			{% include 'components/search.html' with hide_favorite_star=True %}
 		{% endif %}
 
@@ -27,7 +27,7 @@
 	{% endif %}
 {% elif mode == 'provider' %}
 	<nav>
-		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /></a>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /><span>Beta</span></a>
 
 		<span class="flex-grow"></span>
 
@@ -40,7 +40,7 @@
 	</nav>
 {% else %}
 	<nav>
-		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /></a>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /><span>Beta</span></a>
 
 		<span class="flex-grow"></span>
 

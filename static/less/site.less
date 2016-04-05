@@ -125,6 +125,7 @@ body {
 		nav {
 			.flexbox;
 			.flex-x-center;
+			.flex-center;
 
 			a {
 				.no-wrap;
@@ -136,6 +137,17 @@ body {
 
 			& > :first-child {
 				margin-left: @margin-width * 2;
+
+				position: relative;
+
+				& > span {
+					position: absolute;
+					bottom: 15px; left: -23px;
+					font-size: 0.8em;
+					color: @blue;
+					text-transform: uppercase;
+					transform: rotate(-90deg);
+				}
 
 				@media @mobile {
 					margin-left: @margin-width;
