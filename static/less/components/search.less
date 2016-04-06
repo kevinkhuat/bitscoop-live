@@ -39,6 +39,8 @@
 		@media @mobile {
 			.flex-column;
 			background-color: @item-background-color;
+			border: 1px solid @input-border-color;
+			font-size: 1.3em;
 		}
 
 		& > div {
@@ -55,13 +57,13 @@
 		}
 
 		@media @mobile {
-			left: -60px;
-			right: -48px;
+			left: -65px;
+			right: -58px;
+			margin-top: 10px;
 			width: auto;
 		}
 
 		#filter-editor {
-			left: -1px;
 			margin-right: 8px;
 
 			@media @mobile {

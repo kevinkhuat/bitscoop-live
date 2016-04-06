@@ -7,9 +7,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 	var paginationSpinner = viewstate.renderSync('explorer/components/next.html');
 	var errorBubble = viewstate.renderSync('explorer/components/error.html');
 
-	//TODO: Explore getting sizes for DOM elements programatically
-	var GRID_ITEM_SIZE = 160 + 16; // px
-	var MIN_GRID_ITEMS = 4;
 	var SCROLL_DEBOUNCE = 500; // ms
 	var SCROLL_EMBED_LEAD_AREA = 700; // px
 	// Virtual scroll "cursor."
@@ -20,15 +17,15 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 	var previewContext = [
 		{
-			mapping: 'content',
-			name: 'Content',
-			type: 'content'
-		},
-
-		{
 			mapping: 'events',
 			name: 'History',
 			type: 'event'
+		},
+
+		{
+			mapping: 'content',
+			name: 'Content',
+			type: 'content'
 		},
 
 		{
@@ -64,9 +61,11 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 	var typeMappings = {};
 	var collectionMappings = {};
+	var nameMappings = {};
 
 	_.each(previewContext, function(item) {
 		typeMappings[item.mapping] = item.type;
+		nameMappings[item.mapping] = item.name;
 		collectionMappings[item.type] = item.mapping;
 	});
 
@@ -82,10 +81,13 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		grid: new viewstate.View('explorer/views/grid.html'),
 		list: new viewstate.View('explorer/views/list.html'),
 		feed: new viewstate.View('explorer/views/feed.html'),
-		map: new viewstate.View('explorer/views/map.html'),
-		results: new viewstate.View('explorer/views/results.html')
+		map: new viewstate.View('explorer/views/map.html')
 	};
 
+	/**
+	 * Checks if the browser is a mobile browser using media queries.
+	 * @returns {Boolean} Function returns whether or not the browser is mobile.
+	 */
 	function isMobile() {
 		if (window.matchMedia) {
 			return window.matchMedia('(max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)').matches;
@@ -96,50 +98,12 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 	}
 
 	/**
-	 * Renders the Result view. This needs to be separated into a function because we have to recalculate the results
-	 * preview on window resize.
-	 *
-	 * @private
-	 * @returns {Promise}
-	 */
-	function renderPreview() {
-		var count, promises;
-
-		// Calculate how many preview items to render based on the window's width, the size of an item,
-		// and how large the DOM element for more results is. Minimum is 4.
-		count = Math.max(MIN_GRID_ITEMS, Math.floor(window.innerWidth / GRID_ITEM_SIZE));
-
-		promises = _.map(objects.collections, function(results, mapping) {
-			var n, humanized;
-
-			n = Math.min(count, results.length);
-
-			// TODO: Put more count for each item type when we can search multiple indices.
-			if (mapping === 'events' && objects.cursor.count > n) {
-				humanized = humanize.compactInteger(objects.cursor.count - n, 1);
-				$('div[data-mapping="' + mapping + '"] .more').text(humanized);
-			}
-
-			return objects.render('grid', results.slice(0, n))
-				.then(function(fragments) {
-					var $el;
-
-					$el = $('div[data-mapping="' + mapping + '"]');
-
-					$el.find('.items').empty().append(fragments);
-				});
-		});
-
-		return Promise.all(promises);
-	}
-
-	/**
 	 * Renders the page for a newly-selected view state.
 	 *
 	 * @returns {Promise} A promise that is resolved when the selected view is rendered.
 	 */
 	function renderState() {
-		var context, html, promise, type, view, $body, $list;
+		var html, humanized, promise, type, view, $count, $control, $list;
 
 		if (!views.hasOwnProperty(state.view)) {
 			return Promise.reject(new Error('Invalid view type.'));
@@ -147,7 +111,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 		promise = Promise.resolve();
 		type = typeMappings[state.mapping];
-		$body = $('body');
 		$list = $('#list');
 
 		// MixItUp can run into problems if there are multiple copies active at once, so destroy any active copies.
@@ -155,133 +118,96 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			$list.mixItUp('destroy', true);
 		}
 
-		resetView();
+		$count = $('.count').empty();
 
-		if (state.view !== 'results') {
-			// TODO: Implement promises for prepopulation and autoscrolling.
-			//function() {
-			//	function inner() {
-			//		return search.more();
-			//
-			//		if (search.results.list[state.type].length < SCROLL_MIN_COUNT && search.results.list.events.length < search.results.count) {
-			//			deferred.resolve();
-			//		}
-			//
-			//	}
-			//
-			//	search.more().then(search.more).then(search.more).then(search.more);
-			//
-			//	while ()
-			//
-			//	if (search.results.list[state.type].length < SCROLL_MIN_COUNT && search.results.list.events.length < search.results.count) {
-			//		return search.more().then(prepopulate);
-			//	}
-			//
-			//	return deferred.promise;
-			//}
-		}
+		if (objects.cursor.count > 0) {
+			$('.controls').show();
+			if (state.mapping === 'events') {
+				humanized = humanize.compactInteger(objects.cursor.count);
+				$count.text(humanized);
+			}
 
-		if (state.view === 'results') {
-			view = views.results;
-			context = {
-				types: _.filter(previewContext, function(type) {
-					return objects.collections[type.mapping].length > 0;
-				})
-			};
+			resetView();
 
-			$('header > .sort').addClass('hidden');
+			if (state.view === 'map') {
+				//$body = $('body');
+				//mapView.render().done(function() {
+				//	var $expandDetails;
+				//
+				//	$body.addClass('map');
+				//	container.insert(mapView);
+				//	$('#background').append(map.element);
+				//	$list = $('#list');
+				//	addResults(objects.collections[state.mapping]);
+				//
+				//	//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
+				//	$list.on('scroll', throttle(checkScroll, SCROLL_DEBOUNCE));
+				//	renderFeedEmbeddables($list);
+				//
+				//	//Prep the expandDetails element for showing the #left panel.
+				//	$expandDetails = $('#expand-details');
+				//	$expandDetails.removeClass('hidden');
+				//	$expandDetails.children('i').removeClass('fa-caret-right').addClass('fa-caret-left');
+				//	$('#details-scroll').addClass('hidden');
+				//
+				//	addMapMarkers();
+				//
+				//	//If not in mobile, put the controls back in.
+				//	if (!isMobile) {
+				//		addMapControls();
+				//	}
+				//
+				//	//Resize the map and fit it so that all markers are visible.
+				//	map.resize();
+				//
+				//	if (map.markers.getBounds()._southWest != null) {
+				//		map.object.fitBounds(map.markers.getBounds());
+				//	}
+				//
+				//	//Show the #left panel and perform the initial sort.
+				//	$('#left').addClass('expanded');
+				//});
+			}
+			else {
+				view = views[state.view];
 
-			promise = promise.then(function() {
-				return view.render(context);
-			}).then(function() {
-				// FIXME: The view is reset too quickly here. Should be waiting until the preview is rendered.
-				resetView();
-				container.insert(view);
+				promise = promise
+					.then(function() {
+						return view.render();
+					})
+					.then(function() {
+						return objects.render(state.view, objects.collections[state.mapping].slice(0, cursor.limit));
+					})
+					.tap(function(fragments) {
+						var $list;
 
-				return renderPreview();
-			});
-		}
-		else if (state.view === 'map') {
-			mapView.render().done(function() {
-				var $expandDetails;
+						resetView();
+						container.insert(view);
 
-				$body.addClass('map');
-				container.insert(mapView);
-				$('#background').append(map.element);
-				$list = $('#list');
-				addResults(objects.collections[state.mapping]);
+						$list = $('#list');
+						cursor.offset = fragments.length;
 
-				//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
-				$list.on('scroll', throttle(checkScroll, SCROLL_DEBOUNCE));
-				renderFeedEmbeddables($list);
+						$list.append(fragments);
+					});
+			}
 
-				//Prep the expandDetails element for showing the #left panel.
-				$expandDetails = $('#expand-details');
-				$expandDetails.removeClass('hidden');
-				$expandDetails.children('i').removeClass('fa-caret-right').addClass('fa-caret-left');
-				$('#details-scroll').addClass('hidden');
-
-				addMapMarkers();
-
-				//If not in mobile, put the controls back in.
-				if (!isMobile) {
-					addMapControls();
-				}
-
-				//Resize the map and fit it so that all markers are visible.
-				map.resize();
-
-				if (map.markers.getBounds()._southWest != null) {
-					map.object.fitBounds(map.markers.getBounds());
-				}
-
-				//Show the #left panel and perform the initial sort.
-				$('#left').addClass('expanded');
-			});
-		}
-		else {
-			view = views[state.view];
-
-			promise = promise
-				.then(function() {
-					return view.render();
-				})
-				.then(function() {
-					return objects.render(state.view, objects.collections[state.mapping].slice(0, cursor.limit));
-				})
-				.tap(function(fragments) {
-					var $list;
-
-					resetView();
-					container.insert(view);
-
+			if (state.view === 'feed') {
+				promise = promise.then(function() {
 					$list = $('#list');
-					cursor.offset = fragments.length;
 
-					$list.append(fragments);
-				});
-		}
+					$list.closest('main').on('scroll', debounce(function() {
+						renderFeedEmbeddables($list.parent());
+					}, SCROLL_DEBOUNCE));
 
-		if (state.view === 'feed') {
-			promise = promise.then(function() {
-				$list = $('#list');
-
-				$list.closest('main').on('scroll', debounce(function() {
+					//render Embeddables the first time
 					renderFeedEmbeddables($list.parent());
-				}, SCROLL_DEBOUNCE));
 
-				//render Embeddables the first time
-				renderFeedEmbeddables($list.parent());
+					return Promise.resolve();
+				});
+			}
 
-				return Promise.resolve();
-			});
-		}
-
-		if (state.view !== 'results') {
 			promise.then(function(result) {
-				var sortContext,  $selectedSort, $sortFields, $sortArrow;
-
-				$('header > .sort').removeClass('hidden');
+				var sortContext, typesContext, $selectedSort, $sortFields, $sortArrow;
 
 				if (type) {
 					sortContext = objects[type[0].toUpperCase() + type.slice(1)].sort;
@@ -292,12 +218,36 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 				$sortFields = $('.sort .fields');
 
+				$('.facets .current .name').text(nameMappings[state.mapping]);
+				$('.views .current .name').text(state.view);
+
 				//Generate the sort selectors for the current object type.
 				html = nunjucks.render('explorer/components/sort.html', sortContext);
 				$sortFields.html(html);
 
+				typesContext = {
+					types: _.filter(previewContext, function(type) {
+						return objects.collections[type.mapping].length > 0;
+					})
+				};
+
+				html = nunjucks.render('explorer/components/facets.html', typesContext);
+				$('.facets .drawer').html(html);
+
+				$control = $('#menu .views a[data-view="' + state.view + '"], .controls .views a[data-view="' + state.view + '"]');
+
+				$control.siblings().removeClass('active');
+				$control.addClass('active');
+
+				$control = $('#menu .facets a[data-type="' + state.mapping + '"], .controls .facets a[data-type="' + state.mapping + '"]');
+
+				$control.siblings().removeClass('active');
+				$control.addClass('active');
+
 				// Update the sort DOM elements.
 				$selectedSort = $sortFields.find('[data-sort="' + objects.cursor.sort.field + '"]');
+
+				$('.sort .current .name').text($selectedSort.data('name'));
 
 				$sortArrow = $selectedSort.find('.fa');
 
@@ -305,88 +255,97 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 					var $sortItem = $(sortItem);
 
 					$sortItem.removeClass('active');
-					$sortItem.find('.sort-arrow').removeClass('fa-caret-up').removeClass('fa-caret-down');
+					$sortItem.find('.sort-arrow').removeClass('fa-chevron-up').removeClass('fa-chevron-down');
 				});
 
 				$selectedSort.addClass('active');
 
 				if (objects.cursor.sort.order === 'asc') {
-					$sortArrow.addClass('fa-caret-up');
+					$sortArrow.addClass('fa-chevron-up');
 				}
 				else {
-					$sortArrow.addClass('fa-caret-down');
+					$sortArrow.addClass('fa-chevron-down');
 				}
 
 				return Promise.resolve(result);
 			});
-		}
 
-		return promise.then(function() {
-			var scroller, $main;
+			return promise.then(function() {
+				var scroller, $main;
 
-			$main = $('#list').closest('main');
+				$main = $('#list').closest('main');
 
-			scroller = throttle(function(e) {
-				var page, promise, scrollBottom, slice, $list;
+				scroller = throttle(function(e) {
+					var page, promise, scrollBottom, slice, $list;
 
-				scrollBottom = e.target.scrollTop + $(e.target).outerHeight();
+					scrollBottom = e.target.scrollTop + $(e.target).outerHeight();
 
-				if (scrollBottom > 0.90 * e.target.scrollHeight) {
-					$list = $('#list');
+					if (scrollBottom > 0.90 * e.target.scrollHeight) {
+						$list = $('#list');
 
-					if (objects.cursor.next || cursor.offset < objects.collections[state.mapping].length) {
-						$list.addClass('loading');
-						$list.append(paginationSpinner);
+						if (objects.cursor.next || cursor.offset < objects.collections[state.mapping].length) {
+							$list.addClass('loading');
+							$list.append(paginationSpinner);
 
-						if (cursor.offset < objects.collections[state.mapping].length) {
-							page = {};
-							slice = objects.collections[state.mapping].slice(cursor.offset, cursor.offset + cursor.limit);
-							page[state.mapping] = slice;
+							if (cursor.offset < objects.collections[state.mapping].length) {
+								page = {};
+								slice = objects.collections[state.mapping].slice(cursor.offset, cursor.offset + cursor.limit);
+								page[state.mapping] = slice;
 
-							cursor.offset += cursor.limit;
+								cursor.offset += cursor.limit;
 
-							promise = Promise.resolve(page);
-						}
-						else {
-							promise = objects.more()
-								.tap(function() {
-									cursor.offset = objects.collections[state.mapping].length;
+								promise = Promise.resolve(page);
+							}
+							else {
+								promise = objects.more()
+									.tap(function() {
+										cursor.offset = objects.collections[state.mapping].length;
+									});
+							}
+
+							return promise
+								.then(function(data) {
+									if (data == null) {
+										$main.off('scroll.more', scroller);
+
+										return Promise.resolve();
+									}
+
+									$list.removeClass('loading');
+									$('#next-icon').remove();
+
+									return objects.render(state.view, data[state.mapping]);
+								})
+								.tap(function(fragments) {
+									$list.append(fragments);
+								})
+								.catch(function(err) {
+									// TODO: Show an error message somehow? Notifications?
+
+									$list.removeClass('loading');
+									$('#next-icon').remove();
 								});
 						}
-
-						return promise
-							.then(function(data) {
-								if (data == null) {
-									$main.off('scroll.more', scroller);
-
-									return Promise.resolve();
-								}
-
-								$list.removeClass('loading');
-								$('#next-icon').remove();
-
-								return objects.render(state.view, data[state.mapping]);
-							})
-							.tap(function(fragments) {
-								$list.append(fragments);
-							})
-							.catch(function(err) {
-								// TODO: Show an error message somehow? Notifications?
-
-								$list.removeClass('loading');
-								$('#next-icon').remove();
-							});
+						else {
+							$main.off('scroll.more', scroller);
+						}
 					}
-					else {
-						$main.off('scroll.more', scroller);
-					}
-				}
+				});
+
+				$main.off('scroll.more').on('scroll.more', scroller);
+
+				return Promise.resolve(view);
 			});
+		}
+		else {
+			return promise.then(function() {
+				container.clear();
+				container.insert(nunjucks.render('explorer/components/no-results.html'));
+				$('.controls').hide();
 
-			$main.off('scroll.more').on('scroll.more', scroller);
-
-			return Promise.resolve(view);
-		});
+				return Promise.resolve();
+			});
+		}
 	}
 
 	/**
@@ -399,8 +358,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		$('body')
 			.removeClass('feed grid list map results')
 			.addClass(state.view);
-		$('#menu .views a[data-view="' + state.view + '"]').addClass('active')
-			.siblings().removeClass('active');
 	}
 
 	/**
@@ -408,26 +365,11 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 	 * @param {object} object The object that has being selected.
 	 */
 	function selectObject(object) {
-		var params, $details;
+		var $details;
 
 		state.object = object;
 
-		if (state.view === 'results') {
-			params = $.deparam(location.search.slice(1));
-			state.view = params.view || sessionStorage.getItem('explorer.view') || 'feed';
-			state.mapping = collectionMappings[objects.type(object)];
-
-			history.param({
-				view: state.view,
-				type: state.mapping
-			});
-
-			renderState()
-				.then(function() {
-					object._viewFragments[state.view].scrollIntoView(true);
-				});
-		}
-		else if (state.view != 'feed') {
+		if (state.view != 'feed') {
 			object._viewFragments[state.view].scrollIntoView(true);
 
 			$details = $('#details');
@@ -461,23 +403,8 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		}
 	}
 
-	//Bind Results view-specific events.
-	views.results.on('click', '.header', throttle(function() {
-		var mapping, view, $this = $(this);
-
-		state.view = view = sessionStorage.getItem('explorer.view') || 'feed';
-		state.mapping = mapping = $this.parent().data('mapping');
-
-		history.param({
-			view: view,
-			type: mapping
-		});
-
-		return renderState();
-	}));
-
 	$(search).on('searching', function(e) {
-		state.view = 'results';
+		state.view = 'feed';
 
 		container.clear();
 		container.insert(spinner);
@@ -519,87 +446,87 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 	 *
 	 * @param {object} [object] If present, then only this object's location will be added to the map
 	 */
-	function addMapMarkers(object) {
-		var coordinates, estimated, icon, results;
-
-		//If no object is passed in, then the list of objects to be mapped ('results') should be all of the ones
-		//of the current object type shown.
-		if (object === null) {
-			//Since results are stored in a dictionary, convert the dictionary of the current object type shown
-			//into an array.
-			results = [];
-
-			_.forEach(Object.keys(searchResults[state.type]), function(val) {
-				if (searchResults[explorerState.objectTypeShown][val].location) {
-					results.push(searchResults[explorerState.objectTypeShown][val]);
-				}
-			});
-		}
-		//If an object is passed in, then the list of objects to be mapped ('results') should be just the object.
-		else {
-			results = [object];
-		}
-
-		//Clear all of the current markers on the map.
-		map.clearData();
-
-		//If currently showing events or places:
-		if (explorerState.objectTypeShown === 'events' || explorerState.objectTypeShown === 'places') {
-			//Add markers to the map using the given callback function on each result item.
-			map.addData(results, function(data) {
-				var icon;
-
-				//Add the event type's icon to the marker if it's an event.
-				if (explorerState.objectTypeShown === 'events') {
-					icon = icons.getEventFontIcon(data);
-				}
-				//Add the place type's icon to the marker if it's a place.
-				//TODO: Pick icons for different place types.
-				else if (explorerState.objectTypeShown === 'places') {
-					icon = icons.getPlaceFontIcon();
-				}
-
-				//Get the coordinates and whether or not this location is estimated.
-				coordinates = data.location.geolocation;
-				estimated = data.location.estimated;
-
-				//Create the icon, with a different color depending on whether the location is estimated.
-				icon = leaflet.AwesomeMarkers.icon({
-					icon: icon,
-					prefix: 'fa',
-					markerColor: estimated ? 'green' : 'blue'
-				});
-
-				//Return a new leaflet marker with some additional information saved on the options dictionary.
-				return leaflet.marker([coordinates[1], coordinates[0]], {
-					estimated: estimated,
-					objectId: data.id,
-					icon: icon
-				});
-			});
-		}
-		//If currently showing locations:
-		else if (explorerState.objectTypeShown === 'locations') {
-			//Add markers to the map using the given callback function on each result item.
-			map.addData(results, function(data) {
-				//Get the coordinates.
-				coordinates = data.geolocation;
-
-				//Create the icon.
-				icon = leaflet.AwesomeMarkers.icon({
-					icon: icons.getLocationFontIcon(),
-					prefix: 'fa',
-					markerColor: 'blue'
-				});
-
-				//Return a new leaflet marker with some additional information saved on the options dictionary.
-				return leaflet.marker([coordinates[1], coordinates[0]], {
-					objectId: data.id,
-					icon: icon
-				});
-			});
-		}
-	}
+	//function addMapMarkers(object) {
+	//	var coordinates, estimated, icon, results;
+	//
+	//	//If no object is passed in, then the list of objects to be mapped ('feed') should be all of the ones
+	//	//of the current object type shown.
+	//	if (object === null) {
+	//		//Since results are stored in a dictionary, convert the dictionary of the current object type shown
+	//		//into an array.
+	//		results = [];
+	//
+	//		_.forEach(Object.keys(searchResults[state.type]), function(val) {
+	//			if (searchResults[explorerState.objectTypeShown][val].location) {
+	//				results.push(searchResults[explorerState.objectTypeShown][val]);
+	//			}
+	//		});
+	//	}
+	//	//If an object is passed in, then the list of objects to be mapped ('feed') should be just the object.
+	//	else {
+	//		results = [object];
+	//	}
+	//
+	//	//Clear all of the current markers on the map.
+	//	map.clearData();
+	//
+	//	//If currently showing events or places:
+	//	if (explorerState.objectTypeShown === 'events' || explorerState.objectTypeShown === 'places') {
+	//		//Add markers to the map using the given callback function on each result item.
+	//		map.addData(results, function(data) {
+	//			var icon;
+	//
+	//			//Add the event type's icon to the marker if it's an event.
+	//			if (explorerState.objectTypeShown === 'events') {
+	//				icon = icons.getEventFontIcon(data);
+	//			}
+	//			//Add the place type's icon to the marker if it's a place.
+	//			//TODO: Pick icons for different place types.
+	//			else if (explorerState.objectTypeShown === 'places') {
+	//				icon = icons.getPlaceFontIcon();
+	//			}
+	//
+	//			//Get the coordinates and whether or not this location is estimated.
+	//			coordinates = data.location.geolocation;
+	//			estimated = data.location.estimated;
+	//
+	//			//Create the icon, with a different color depending on whether the location is estimated.
+	//			icon = leaflet.AwesomeMarkers.icon({
+	//				icon: icon,
+	//				prefix: 'fa',
+	//				markerColor: estimated ? 'green' : 'blue'
+	//			});
+	//
+	//			//Return a new leaflet marker with some additional information saved on the options dictionary.
+	//			return leaflet.marker([coordinates[1], coordinates[0]], {
+	//				estimated: estimated,
+	//				objectId: data.id,
+	//				icon: icon
+	//			});
+	//		});
+	//	}
+	//	//If currently showing locations:
+	//	else if (explorerState.objectTypeShown === 'locations') {
+	//		//Add markers to the map using the given callback function on each result item.
+	//		map.addData(results, function(data) {
+	//			//Get the coordinates.
+	//			coordinates = data.geolocation;
+	//
+	//			//Create the icon.
+	//			icon = leaflet.AwesomeMarkers.icon({
+	//				icon: icons.getLocationFontIcon(),
+	//				prefix: 'fa',
+	//				markerColor: 'blue'
+	//			});
+	//
+	//			//Return a new leaflet marker with some additional information saved on the options dictionary.
+	//			return leaflet.marker([coordinates[1], coordinates[0]], {
+	//				objectId: data.id,
+	//				icon: icon
+	//			});
+	//		});
+	//	}
+	//}
 
 	/**
 	 * Sets the colors of all the markers on the map.
@@ -688,11 +615,13 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			container.insert(spinner);
 
 			params = $.deparam(location.search.slice(1));
-			state.view = params.view || 'results';
-			state.mapping = params.type || null;
+			state.view = params.view || sessionStorage.getItem('view') || 'feed';
+			state.mapping = params.type || sessionStorage.getItem('type') || 'events';
 			qid = params.qid || sessionStorage.getItem('qid');
 
 			sessionStorage.removeItem('qid');
+			sessionStorage.removeItem('view');
+			sessionStorage.removeItem('type');
 
 			return search.load(qid);
 		})()
@@ -753,13 +682,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			});
 		});
 
-		// If the user resizes the window:
-		$(window).resize(function() {
-			if (state.view === 'results') {
-				renderPreview();
-			}
-		});
-
 		// Select the current item when
 		$(document).on('click', '.item', function() {
 			var object, $this = $(this);
@@ -770,8 +692,10 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 
 		// When the user clicks on a sort selector, sort on that field.
-		$(document).on('click', '.sort .fields > div', throttle(function(e) {
+		$(document).on('click', '.sort .fields > a', throttle(function(e) {
 			var sortField, $this = $(this);
+
+			e.preventDefault();
 
 			sortField = $this.attr('data-sort');
 
@@ -825,27 +749,50 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			}
 		});
 
-		$(document).on('click', '#menu .views a:not(.active)', throttle(function(e) {
+		$(document).on('click', '#menu .views a:not(.active), .controls .views a:not(.active)', throttle(function(e) {
 			var view, $this = $(this);
 
 			e.preventDefault();
 
-			$this.addClass('active')
-				.siblings().removeClass('active');
-
 			state.view = view = $this.data('view');
 
-			if (view === 'results') {
-				history.param('view', view);
-				history.replace.delParam('type');
-			}
-			else {
-				sessionStorage.setItem('explorer.view', view);
-				history.replace.param('view', view);
-			}
+			$this.find('.container').addClass('hidden');
+
+			sessionStorage.setItem('explorer.view', view);
+			history.replace.param('view', view);
 
 			return renderState();
 		}));
+
+		$(document).on('click', '#menu .facets a:not(.active), .controls .facets a:not(.active)', throttle(function(e) {
+			var type, $this = $(this);
+
+			e.preventDefault();
+
+			state.mapping = type = $this.data('type');
+
+			$this.find('.container').addClass('hidden');
+
+			sessionStorage.setItem('explorer.type', type);
+			history.replace.param('type', type);
+
+			return renderState();
+		}));
+
+		$(document).on('click', '.controls .facets .current, .controls .views .current', function() {
+			var $caret, $this = $(this);
+
+			$this.siblings().toggleClass('hidden');
+
+			$caret = $this.find('i.fa-caret-down');
+
+			if ($caret.length > 0) {
+				$caret.removeClass('fa-caret-down').addClass('fa-caret-up');
+			}
+			else {
+				$this.find('i.fa-caret-up').removeClass('fa-caret-up').addClass('fa-caret-down');
+			}
+		});
 
 		$(document).on('click', '.share-action', function(e) {
 			var object, $actionBar, $shareMenu, $this = $(this);
@@ -1015,12 +962,8 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			params = $.deparam(location.search);
 			mapping = params.type;
 
-			if (!mapping) {
-				view = 'results';
-			}
-			else {
-				view = params.view || sessionStorage.getItem('explorer.view') || 'feed';
-			}
+			view = params.view || sessionStorage.getItem('explorer.view') || 'feed';
+			// TODO: add facet in session storage
 
 			state.mapping = mapping;
 			state.view = view;

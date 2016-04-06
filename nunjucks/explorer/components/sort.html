@@ -1,6 +1,6 @@
 {% for field in fields %}
-	<div data-sort="{{ field.property }}">
-		<div class="sort-arrow fa"></div>
+	<a data-sort="{{ field.property }}" data-name="{{ field.name }}">
+		<i class="sort-arrow fa"></i>
 		<span>{{ field.name }}</span>
-	</div>
+	</a>
 {% endfor %}

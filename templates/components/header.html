@@ -12,7 +12,7 @@
 		{% endif %}
 
 		<div class="shortcuts">
-			<a href="{% url 'explorer' %}"><i class="fa fa-th-large"></i></a>
+			<a href="{% url 'explorer' %}"><i class="fa fa-rocket"></i></a>
 			<a href="{% url 'providers' %}"><i class="fa fa-plus"></i></a>
 			<a href="{% url 'settings:profile' %}"><i class="fa fa-cog"></i></a>
 		</div>
@@ -21,8 +21,36 @@
 	</nav>
 
 	{% if mode == 'app' %}
-		<div class="sort hidden">
-			<div class="fields"></div>
+		<div class="controls">
+			<div class="views">
+				<a data-view="feed">
+					<i class="fa fa-clone"></i>
+					<span>Feed</span>
+				</a>
+				<a data-view="grid">
+					<i class="fa fa-th"></i>
+					<span>Grid</span>
+				</a>
+			</div>
+
+			<div class="sort">
+				<div class="fields"></div>
+			</div>
+
+			<div class="facets">
+				<div class="current">
+					<i class="fa fa-caret-down"></i>
+				<span class="name">
+				</span>
+				<div class="flex-grow"></div>
+				<span class="count">
+				</span>
+				</div>
+				<div class="container hidden">
+					<div class="drawer">
+					</div>
+				</div>
+			</div>
 		</div>
 	{% endif %}
 {% elif mode == 'provider' %}
