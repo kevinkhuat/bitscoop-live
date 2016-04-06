@@ -225,27 +225,29 @@ class SignupView(View, FormMixin):
         def clean_code(self):
             data = self.cleaned_data.get('code')
 
-            # Ideally we'd like to do:
-            #
-            #      from django.conf import settings
-            #
-            # And then refer to these settings properties less verbosely, but there appears to be a django bug that
-            # prevents this behavior since the direct parent package here is named `settings`. Not sure why.
+            if data:
+                data = data.strip()
+                hasher = Hasher(
+                    min_length=django.conf.settings.MULTIAUTH_HASH_MINLENGTH,
+                    salt=django.conf.settings.MULTIAUTH_HASH_SECRET
+                )
+                decoded = hasher.decode(data)
 
-            hasher = Hasher(
-                min_length=django.conf.settings.MULTIAUTH_HASH_MINLENGTH,
-                salt=django.conf.settings.MULTIAUTH_HASH_SECRET
-            )
-            decoded = hasher.decode(data)
+                # Ideally we'd like to do:
+                #
+                #      from django.conf import settings
+                #
+                # And then refer to these settings properties less verbosely, but there appears to be a django bug that
+                # prevents this behavior since the direct parent package here is named `settings`. Not sure why.
 
-            if len(decoded) > 0:
-                try:
-                    code = SignupCode.objects.get(id=decoded[0])
+                if len(decoded) > 0:
+                    try:
+                        code = SignupCode.objects.get(id=decoded[0])
 
-                    if code.uses > 0:
-                        return code
-                except SignupCode.DoesNotExist:
-                    pass
+                        if code.uses > 0:
+                            return code
+                    except SignupCode.DoesNotExist:
+                        pass
 
             raise forms.ValidationError('Invalid signup code.')
 
