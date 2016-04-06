@@ -1,5 +1,6 @@
 import datetime
 import json
+from datetime import date
 
 import jsonschema
 from django import forms
@@ -433,6 +434,22 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
         gender = forms.CharField(max_length=20, required=False)
         other_gender = forms.CharField(max_length=20, required=False)
         birthday = forms.DateField(required=False)
+
+        def clean_birthday(self):
+            dob = self.cleaned_data.get('birthday')
+
+            if dob:
+                today = date.today()
+
+                try:
+                    cutoff = today.replace(year=today.year - 18)
+                except ValueError:
+                    cutoff = today.replace(year=today.year - 18, day=today.day - 1)
+
+                if dob > cutoff:
+                    raise forms.ValidationError('You must be 18 to use BitScoop.')
+
+            return dob
 
         def clean(self):
             cleaned_data = super().clean()
