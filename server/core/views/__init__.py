@@ -296,6 +296,9 @@ class SignupView(View, FormMixin):
         code = None
         form = self.get_filled_form(request)
 
+        if 'cookieconsent' not in request.COOKIES:
+            form.add_error(None, 'You must accept BitScoop\'s cookie policy to sign up.')
+
         if form.is_valid():
             user_model = get_user_model()
             form.cleaned_data.pop('repeated_password')

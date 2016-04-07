@@ -1,5 +1,14 @@
-define(['ga', 'jquery', 'jquery-regexp-selector'], function(ga, $) {
+define(['ga', 'jquery', 'nunjucks', 'jquery-cookie', 'jquery-regexp-selector'], function(ga, $, nunjucks) {
 	$(document).ready(function() {
+		var cookieConsent, html;
+
+		cookieConsent = $.cookie('cookieconsent');
+
+		if (!cookieConsent) {
+			html = nunjucks.render('components/cookie-consent.html');
+			$('body').append(html);
+		}
+
 		// TODO: Highlight active links?
 		//$('a:regex(href,^' + location.pathname + ')').addClass('active');
 
@@ -13,6 +22,15 @@ define(['ga', 'jquery', 'jquery-regexp-selector'], function(ga, $) {
 
 		$(document).on('modalclose', function() {
 			$('body').removeClass('modal-open');
+		});
+
+		$(document).on('click', '.cookie-consent button', function() {
+			$.cookie('cookieconsent', true, {
+				expires: 365,
+				path: '/'
+			});
+
+			$('.cookie-consent').remove();
 		});
 	});
 

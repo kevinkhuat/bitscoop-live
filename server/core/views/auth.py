@@ -30,6 +30,15 @@ class LoginView(View, FormMixin):
         user = None
         form = self.get_filled_form(request)
 
+        if 'cookieconsent' not in request.COOKIES:
+            form.add_error(None, 'You must accept BitScoop\'s cookie policy to log in.')
+
+            return render(request, 'login.html', {
+                'title': 'Login',
+                'form': form,
+                'autofocus': 'identifier' in form.cleaned_data
+            })
+
         if form.is_valid():
             user = authenticate(**form.cleaned_data)
 
