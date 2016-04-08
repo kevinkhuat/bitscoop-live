@@ -13,6 +13,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	var activeFilter;
 	var exports;
 	var settings = {};
+	var queryChanged = false;
 
 	/**
 	 * A constructor that abstracts serializing search filters.
@@ -34,19 +35,79 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		}
 	}
 
+	Object.defineProperty(Filter.prototype, 'transient', {
+		enumerable: true,
+		get: function() {
+			var transient, type;
+
+			transient = true;
+			type = this.type;
+
+			if (type === 'who') {
+				if (this.data.contact !== '' || this.data.interaction !== '') {
+					transient = false;
+				}
+			}
+			else if (type === 'what') {
+				if (this.data.type !== '') {
+					transient = false;
+				}
+			}
+			else if (type === 'when') {
+				if (this.data.interaction === 'exact') {
+					if (this.data.from !== '' || this.data.to !== '') {
+						transient = false;
+					}
+				}
+				else if (this.data.interaction === 'relative') {
+					if (this.data['relative-number'] !== '') {
+						transient = false;
+					}
+				}
+			}
+			else if (type === 'connector') {
+				if (this.data.type === 'provider') {
+					if (this.data.provider !== '') {
+						transient = false;
+					}
+				}
+				else if (this.data.type === 'connection') {
+					if (this.data.connection !== '') {
+						transient = false;
+					}
+				}
+			}
+			//TODO: Uncomment when where filters are re-integerated
+			//else if (type === 'where') {
+			//	transient = false;
+			//}
+
+			return transient;
+		}
+	});
+
 	/**
 	 * Adds a the filter instance to the DOM.
 	 *
-	 * @param {Boolean} [skipExists] If true, skip performing the search existence check (e.g. for programmatically
-	 *     adding filters).
 	 * @returns {jQuery.fn.init} A jQuery result set containing the newly created DOM element correlating to the new
 	 *     Filter.
 	 */
-	Filter.prototype.add = function Filter$add(skipExists) {
+	Filter.prototype.add = function Filter$add() {
 		var coordinates, distance, newFilter, latlng, layerKeys, layer, layers, response, type, $el, $whereFilter;
 
-		// Save the active filter (if there is one).
-		Filter.save();
+		// You need to deactivate an active where filter regardless of the new filter's type.
+		if (activeFilter && activeFilter.data('filter').type === 'where') {
+			$(activeFilter.data('geofilter').element).attr('fill', PASSIVE_GEO_FILL_COLOR);
+		}
+
+		if (activeFilter && activeFilter.data('filter').transient) {
+			$('.filter.active').remove();
+			activeFilter = null;
+		}
+		else {
+			// Save the active filter (if there is one).
+			Filter.save();
+		}
 
 		// Clear out the filter editor (hide the form inputs and the independent name input).
 		reset();
@@ -66,11 +127,6 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		else {
 			$('#filters').append($el);
 			compactOverflowFilters();
-		}
-
-		// You need to deactivate an active where filter regardless of the new filter's type.
-		if (activeFilter && activeFilter.data('filter').type === 'where') {
-			$(activeFilter.data('geofilter').element).attr('fill', PASSIVE_GEO_FILL_COLOR);
 		}
 
 		// Handle the where filter special case.
@@ -126,10 +182,6 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 			$whereFilter.find('input[name="estimated"]').prop('checked', estimated);
 			$whereFilter.find('input[value="' + insideOutside + '"]').prop('checked', true);
-		}
-
-		if (skipExists !== true) {
-			exists().catch();
 		}
 
 		return $el;
@@ -240,6 +292,22 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	}
 
 	/**
+	 * Clears the search bar completely.
+	 */
+	function clear() {
+		$('#filter-list').empty();
+		$('#filters').empty();
+		reset();
+		shrink();
+
+		currentSearch = null;
+		setQuery(null);
+		setFavorited(false);
+
+		$(exports).triggerHandler('clear');
+	}
+
+	/**
 	 * Reduces the number of fully displayed filters to ensure that search bar still has enough typeable area. The
 	 * compacted filters are represented by an overflow "filter" with the number of filters that are currently hidden.
 	 *
@@ -344,6 +412,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 			});
 		}).tap(function(saved) {
 			updateActiveSearch(saved);
+			queryChanged = false;
+			$(exports).triggerHandler('changed');
 		});
 	}
 
@@ -361,6 +431,9 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		if (activeFilter && activeFilter.data('type') === 'where') {
 			$(activeFilter.data('geofilter').element).attr('fill', ACTIVE_GEO_FILL_COLOR);
 		}
+
+		$(exports).triggerHandler('expand');
+		$('body').addClass('search-expand');
 	}
 
 	/**
@@ -457,15 +530,19 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	 * @returns {Array} A list of all the current filters attached to the search.
 	 */
 	function getFilters() {
-		var i, filters, $set;
+		var i, filter, filters, $set;
 
 		// We're storing the Filter instances on the $.data of the filter bubbles, so iterate over all of them and
 		// return the list.
 		$set = $('#search-bar .filter');
-		filters = new Array($set.length);
+		filters = [];
 
 		for (i = 0; i < $set.length; i++) {
-			filters[i] = $($set[i]).data('filter');
+			filter = $set.eq(i).data('filter');
+
+			if (filter.transient === false) {
+				filters.push(filter);
+			}
 		}
 
 		return filters;
@@ -752,22 +829,19 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		return promise.tap(function(saved) {
 			var i, filter;
 
-			$('#filter-list').empty();
-			$('#filters').empty();
-			reset();
-			shrink();
+			clear();
 
 			if (saved) {
 				for (i = 0; i < saved.filters.length; i++) {
 					filter = Filter.deserialize(saved.filters[i]);
-					filter.add(true);
+					filter.add();
 				}
+
+				currentSearch = saved;
+
+				setQuery(saved.query);
+				setFavorited(saved.favorited);
 			}
-
-			currentSearch = saved;
-
-			setQuery(saved ? saved.query : null);
-			setFavorited(saved ? saved.favorited : false);
 		});
 	}
 
@@ -891,7 +965,16 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	 * Shrinks the search bar by hiding the advanced filter search toolbar. This performs DOM manipulation.
 	 */
 	function shrink() {
-		Filter.save();
+		if (activeFilter && activeFilter.data('filter').transient) {
+			$('.filter.active').remove();
+			activeFilter = null;
+			reset();
+			$('#filter-done').hide();
+		}
+		else {
+			// Save the active filter (if there is one).
+			Filter.save();
+		}
 
 		$('#advanced i').removeClass('fa-caret-up').addClass('fa-caret-down');
 		$('#search-bar').removeClass('expanded');
@@ -902,6 +985,9 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		if (activeFilter && activeFilter.data('type') === 'where') {
 			$(activeFilter.data('geofilter').element).attr('fill', PASSIVE_GEO_FILL_COLOR);
 		}
+
+		$(exports).triggerHandler('shrink');
+		$('body').removeClass('search-expand');
 	}
 
 	/**
@@ -1024,6 +1110,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 			if (activeFilter && $filter.get(0) === activeFilter.get(0)) {
 				reset();
+				activeFilter = null;
+				$('#filter-done').hide();
 			}
 
 			if (filter.type === 'where') {
@@ -1103,6 +1191,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 			// Load the filter associated with the clicked filter bubble into the workflow.
 			activeFilter.data('filter').load();
+			$('#filter-done').show();
 		});
 
 		// Event listener for clicking on one of the five new filter buttons.
@@ -1129,6 +1218,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 				.find('input')
 				.attr('placeholder', type.toUpperCase())
 				.val('');
+
+			$('#filter-done').show();
 		});
 
 		// Prevent filter forms from submitting and/or redirecting the user.
@@ -1237,6 +1328,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		// When a search parameter changes (e.g. the text query or filters), initiate the saved search check workflow.
 		$('#search-bar')
 			.on('change', '#search-query', function() {
+				queryChanged = true;
+
 				exists().catch();
 			})
 			.on('change', '#filter-values form input, #filter-values form select', function() {
@@ -1244,6 +1337,11 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 				exists().catch();
 			});
+
+		$('#search-bar').on('click', '#filter-done > button', function() {
+			shrink();
+			$('#search-button').trigger('click');
+		});
 
 		// Close the filter window if a user clicks on any area that isn't part of the advanced filters including the
 		// empty space that's technically part of the DOM tree.
@@ -1279,13 +1377,22 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 				e.preventDefault();
 
 				return false;
-			}).on('submit', cb);
+			}).on('submit', function() {
+				if (queryChanged === true) {
+					$(exports).one('changed', function() {
+						cb();
+					});
+				}
+				else {
+					cb();
+				}
+			});
 
 			$('#search-button').on('click press', cb);
 		})(throttle(function() {
 			$(exports).triggerHandler('searching');
 
-			return exists().then(save)
+			return save()
 				.then(function(saved) {
 					updateActiveSearch(saved);
 
@@ -1304,6 +1411,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		Filter: Filter,
 
 		check: exists,
+		clear: clear,
 		configure: configure,
 		exists: exists,
 		expand: expand,

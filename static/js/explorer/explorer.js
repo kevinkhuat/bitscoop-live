@@ -122,6 +122,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 		if (objects.cursor.count > 0) {
 			$('.controls').show();
+
 			if (state.mapping === 'events') {
 				humanized = humanize.compactInteger(objects.cursor.count);
 				$count.text(humanized);
@@ -403,43 +404,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		}
 	}
 
-	$(search).on('searching', function(e) {
-		state.view = 'feed';
-
-		container.clear();
-		container.insert(spinner);
-
-		history.replace.delParam(['view', 'type']);
-	});
-
-	$(search).on('search', function(e, done) {
-		objects.search({
-			query: search.query,
-			dsl: search.dsl
-		})
-			.then(renderState)
-			.then(done)
-			.catch(function(err) {
-				container.clear();
-				container.insert(errorBubble);
-				done();
-			});
-	});
-
-	$(search).on('update', function(e, search) {
-		if (search && search.id) {
-			history.replace.param('qid', search.id);
-		}
-		else {
-			history.replace.delParam('qid');
-		}
-	});
-
-	$(search).on('error', function(err) {
-		container.clear();
-		container.insert(errorBubble);
-	});
-
 	/**
 	 * Adds markers to the map. If passed an object, then it just adds a marker for that object. If no object is passed,
 	 * then it adds markers for every one of the current object type being displayed.
@@ -604,6 +568,43 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		var $active;
 
 		$active = $('.item.active');
+	});
+
+	$(search).on('searching', function(e) {
+		state.view = 'feed';
+
+		container.clear();
+		container.insert(spinner);
+
+		history.replace.delParam(['view', 'type']);
+	});
+
+	$(search).on('search', function(e, done) {
+		objects.search({
+				query: search.query,
+				dsl: search.dsl
+			})
+			.then(renderState)
+			.then(done)
+			.catch(function() {
+				container.clear();
+				container.insert(errorBubble);
+				done();
+			});
+	});
+
+	$(search).on('update', function(e, search) {
+		if (search && search.id) {
+			history.replace.param('qid', search.id);
+		}
+		else {
+			history.replace.delParam('qid');
+		}
+	});
+
+	$(search).on('error', function() {
+		container.clear();
+		container.insert(errorBubble);
 	});
 
 	$(document).ready(function() {

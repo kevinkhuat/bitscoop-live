@@ -110,6 +110,12 @@ body {
 	min-height: 100%;
 	overflow: hidden;
 
+	&.modal-open {
+		& > :not(.modal):not(#minimodal-shade) {
+			filter: blur(5px);
+		}
+	}
+
 	& > header {
 		@margin-width: 10px;
 
