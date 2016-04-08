@@ -26,11 +26,11 @@ def strip_invalid_key_characters(input_dict):
 
 
 def sort_dictionary(input):
-    res = {}
+    unsorted_response = {}
 
     for k, v in sorted(input.items()):
         if isinstance(v, dict):
-            res[k] = sort_dictionary(v)
+            unsorted_response[k] = sort_dictionary(v)
         elif isinstance(v, list):
             sorted_items = []
 
@@ -40,11 +40,17 @@ def sort_dictionary(input):
                 else:
                     sorted_items.append(item)
 
-            res[k] = sorted(sorted_items)
+            unsorted_response[k] = sorted(sorted_items)
         else:
-            res[k] = v
+            unsorted_response[k] = v
 
-    return json.dumps(res, separators=(',',':'))
+    keys = sorted(unsorted_response.items())
+    response = OrderedDict()
+
+    for k, v in keys:
+        response[k] = unsorted_response[k]
+
+    return json.dumps(response, separators=(',',':'))
 
 
 def initialize_endpoint_data(provider, connection, source, endpoint, population):

@@ -19,10 +19,15 @@ def create_initial_searches(user_id):
     for search in initial_searches:
         body = copy.deepcopy(search)
 
-        query_and_filters = {}
+        filters = body['filters']
+
+        unnamed_filters = copy.deepcopy(filters)
+
+        for filter in unnamed_filters:
+            del filter['name']
 
         query_and_filters = {
-            'filters': body['filters']
+            'filters': unnamed_filters
         }
 
         if 'query' in body.keys() and body['query'] is not None:
