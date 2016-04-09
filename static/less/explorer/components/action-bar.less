@@ -3,12 +3,23 @@
 	.flex-row;
 	.flex-end;
 	.flex-x-center;
+	.no-select;
+
+	cursor: pointer;
+	position: relative;
+	z-index: 5;
 
 	.share-menu {
 		.flexbox;
 		.flex-row;
 		.flex-end;
 		.flex-x-center;
+
+		position: absolute;
+		right: 0.5em;
+		background-color: @background-color;
+		border-radius: 3px;
+		padding: 0.25em;
 
 		@media @mobile {
 			font-size: 1.5em;
