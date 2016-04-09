@@ -42,6 +42,9 @@ body {
 	}
 
 	#filter-controls {
+		.flexbox;
+		.flex-x-start;
+
 		position: absolute;
 		left: 0;
 		top: 100%;
@@ -49,11 +52,13 @@ body {
 		width: 100%;
 		cursor: auto;
 
-		.flexbox;
-		.flex-x-start;
-
 		@media @mobile {
 			.flex-column;
+
+			left: -65px;
+			right: -58px;
+			margin-top: 10px;
+			width: auto;
 			background-color: @item-background-color;
 			border: 1px solid @input-border-color;
 			font-size: 1.3em;
@@ -70,13 +75,6 @@ body {
 				border: none;
 				top: 0;
 			}
-		}
-
-		@media @mobile {
-			left: -65px;
-			right: -58px;
-			margin-top: 10px;
-			width: auto;
 		}
 
 		#filter-editor {
@@ -231,9 +229,12 @@ body {
 				}
 
 				& .input-container {
+					text-align: center;
+
 					input {
-						top: 0;
-						margin: 0 0.5em;
+						top: -1px;
+						vertical-align: middle;
+						margin: 0 0.2em;
 					}
 
 					label {
@@ -246,12 +247,27 @@ body {
 						margin-left: 0;
 					}
 				}
+
+				.estimated {
+					margin: 0.5em;
+					text-align: center;
+
+					input {
+						top: 2px;
+						margin: 0 0.5em;
+					}
+				}
 			}
 
 			#filter-done {
+				margin: 1em 0 0.5em;
 				font-size: 0.85em;
-				text-align: right;
+				text-align: center;
 				display: none;
+
+				& > button {
+					width: 50%;
+				}
 			}
 		}
 
