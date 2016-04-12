@@ -294,7 +294,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			}).done(function(data, status, req) {
 				var i;
 
-				currentResultCount += data.count;
+				currentResultCount += data.results.length;
 				cursor.next = data.next;
 
 				for (i = 0; i < data.results.length; i++) {
