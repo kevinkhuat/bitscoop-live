@@ -1,14 +1,14 @@
 define(['jquery', 'jquery-mixitup'], function($) {
-	$(document).ready(function() {
-		function flipIcon() {
-			if ($('body').hasClass('ctl-expand')) {
-				$('.mobile-selector i').removeClass('fa-caret-down').addClass('fa-caret-up');
-			}
-			else {
-				$('.mobile-selector i').removeClass('fa-caret-up').addClass('fa-caret-down');
-			}
+	function flipIcon() {
+		if ($('body').hasClass('ctl-expand')) {
+			$('.mobile-selector i').removeClass('fa-caret-down').addClass('fa-caret-up');
 		}
+		else {
+			$('.mobile-selector i').removeClass('fa-caret-up').addClass('fa-caret-down');
+		}
+	}
 
+	$(document).ready(function() {
 		$('#provider-grid').mixItUp();
 
 		$(document).on('click', '.mix', function() {

@@ -13,219 +13,6 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 	totalResultCount = 0;
 	cursor = {};
 
-	$.ajax({
-		url: 'https://api.bitscoop.com/v1/events',
-		type: 'SEARCH',
-		dataType: 'json',
-		contentType: 'application/json',
-		data: JSON.stringify({
-			offset: 0,
-			limit: 1
-		}),
-		xhrFields: {
-			withCredentials: true
-		}
-	}).done(function(data) {
-		var count;
-
-		count = humanize.compactInteger(data.count, 1).toUpperCase();
-
-		$('.stats .events .count')
-			.text(count)
-			.removeClass('transparent');
-
-		$('.tab[name="favorites"]').trigger('click');
-	});
-
-	$.ajax({
-		url: 'https://api.bitscoop.com/v1/searches',
-		type: 'GET',
-		contentType: 'application/json',
-		data: {
-			type: 'recent',
-			offset: 0,
-			limit: 1
-		},
-		xhrFields: {
-			withCredentials: true
-		}
-	}).done(function(data) {
-		var count;
-
-		count = humanize.compactInteger(data.count, 1).toUpperCase();
-
-		$('.stats .searches .count')
-			.text(count)
-			.removeClass('transparent');
-	});
-
-	$document.on('click', '#favorite button', function(e) {
-		var action, icon, id, paramData, promise, $activeSearch, $favorite, $icon, $target;
-
-		$activeSearch = $('#searches > *.active');
-		$target = $(e.target);
-
-		action = $target.closest('[data-action]').data('action');
-		id = $activeSearch.data('id');
-
-		promise = new Promise(function(resolve) {
-			if (action === 'delete') {
-				search.unfavorite(id).then(function() {
-					if ($('.tab.selected').attr('name') === 'favorites') {
-						$activeSearch.remove();
-					}
-					else {
-						$activeSearch.attr('data-favorite', false).attr('data-icon', null).attr('data-icon-color', null).attr('data-name', null);
-						$activeSearch.find('.favorite-edit').replaceWith('<i class="favorite-create fa fa-star-o subdue"></i>');
-						$activeSearch.find('.icon').replaceWith('<i class="icon fa fa-circle-o subdue" style="color: #b6bbbf"></i>');
-						$activeSearch.find('.name').empty();
-						$activeSearch.removeClass('active');
-					}
-
-					resolve(null);
-				});
-			}
-			else if (action === 'save') {
-				$favorite = $('#favorite');
-				$icon = $favorite.find('.data > i');
-
-				paramData = {
-					id: id,
-					favorited: true,
-					icon_color: $('#color-edit').val(),
-					name: $favorite.find('input[name="search-name"]').val()
-				};
-
-				icon = $icon.attr('class');
-
-				if (!icon || $icon.hasClass('transparent')) {
-					paramData.icon = 'none';
-				}
-				else {
-					paramData.icon = icon;
-				}
-
-				search.favorite(paramData).then(function() {
-					if (!$activeSearch.attr('data-favorited')) {
-						$activeSearch.attr('data-favorited', true);
-						$activeSearch.find('i.favorite-create').removeClass('favorite-create').addClass('favorite-edit').removeClass('fa-star-o').addClass('fa-star');
-					}
-
-					$activeSearch.attr('data-name', paramData.name);
-					$activeSearch.find('.name').html(paramData.name);
-
-					if (paramData.icon && paramData.icon !== 'none') {
-						$activeSearch.attr('data-icon', paramData.icon);
-						$activeSearch.attr('data-icon-color', paramData.icon_color);
-						$activeSearch.find('i.icon').removeClass('fa').removeClass(function(index, css) {
-							return (css.match (/fa-[\S-]+/g) || []).join(' ');
-						}).addClass(paramData.icon).css('color', paramData.icon_color);
-					}
-					else {
-						$activeSearch.attr('data-icon', 'none');
-						$activeSearch.attr('data-icon-color', '');
-						$activeSearch.find('i.icon').removeClass('fa').removeClass(function(index, css) {
-							return (css.match (/fa-[\S-]+/g) || []).join(' ');
-						}).addClass('fa fa-circle-o').css('color', '#b6bbbf');
-					}
-
-					$activeSearch.removeClass('active');
-
-					resolve(null);
-				});
-			}
-			else {
-				$activeSearch.removeClass('active');
-
-				resolve(null);
-			}
-		});
-
-		promise.then(function() {
-			$.modal.close();
-		});
-	});
-
-	$document.on('click', '#searches > *', function(e) {
-		var id, $this = $(this);
-
-		if ($(e.target).is('.favorite-edit, .favorite-create')) {
-			e.preventDefault();
-
-			return false;
-		}
-
-		id = $this.attr('data-id');
-
-		sessionStorage.setItem('qid', id);
-	});
-
-	$document.on('click', '.favorite-edit, .favorite-create', function(e) {
-		var html, icon, iconColor, $colorPreview, $favorite, $iconPreview, $name, $search, $this = $(this);
-
-		$favorite = $('#favorite');
-		$search = $this.parents('[data-id]');
-
-		$search.addClass('active');
-
-		html = nunjucks.render('components/favorite.html', {
-			hideDelete: $search.attr('data-favorited') == null
-		});
-
-		$favorite.find('.body').html(html);
-
-		$name = $favorite.find('input[name="search-name"]');
-		$name.val($search.attr('data-name'));
-
-		icon = $search.attr('data-icon');
-
-		if (icon == null || icon.length === 0 || icon === 'none') {
-			icon = 'fa fa-times transparent';
-		}
-
-		iconColor = $search.attr('data-icon-color');
-
-		if (iconColor == null || iconColor.length === 0) {
-			iconColor = '#b6bbbf';
-		}
-
-		$colorPreview = $favorite.find('.color-picker .preview');
-		$iconPreview = $favorite.find('.icon-picker .preview');
-
-		$colorPreview.find('input').val(iconColor);
-		$colorPreview.find('label').css('background-color', iconColor);
-
-		$iconPreview.addClass(icon);
-
-		$favorite.find('.data > i').attr('class', icon).css('color', iconColor);
-
-		$favorite.modal({
-			position: false,
-			postOpen: function() {
-				$(this).css('display', 'flex');
-			}
-		});
-	});
-
-	$document.on('click', '#tabs .tab', function(e) {
-		var $searchContainer, $this = $(this);
-
-		$searchContainer = $('#search-container');
-
-		$('#tabs .tab').removeClass('selected');
-
-		$this.addClass('selected');
-
-		totalResultCount = 0;
-		currentResultCount = 0;
-
-		$('#searches').empty();
-
-		$searchContainer.off('scroll');
-		getSearches($this.attr('name'));
-		$searchContainer.on('scroll', throttle(checkScrollPagination, SCROLL_DEBOUNCE));
-	});
-
 	function getSearches(tab) {
 		var paramData;
 
@@ -398,15 +185,230 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 		}
 	}
 
-	$(window).resize(function() {
-		var $searches;
+	$document.ready(function() {
+		$.ajax({
+			url: 'https://api.bitscoop.com/v1/events',
+			type: 'SEARCH',
+			dataType: 'json',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				offset: 0,
+				limit: 1
+			}),
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data) {
+			var count;
 
-		$searches = $('#searches > *');
+			count = humanize.compactInteger(data.count, 1).toUpperCase();
 
-		_.forEach($searches, function(search) {
-			var $filters, $search;
+			$('.stats .events .count')
+				.text(count)
+				.removeClass('transparent');
 
-			compactOverflowFilters($(search).attr('data-id'));
+			$('.tab[name="favorites"]').trigger('click');
+		});
+
+		$.ajax({
+			url: 'https://api.bitscoop.com/v1/searches',
+			type: 'GET',
+			contentType: 'application/json',
+			data: {
+				type: 'recent',
+				offset: 0,
+				limit: 1
+			},
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data) {
+			var count;
+
+			count = humanize.compactInteger(data.count, 1).toUpperCase();
+
+			$('.stats .searches .count')
+				.text(count)
+				.removeClass('transparent');
+		});
+
+		$document.on('click', '#favorite button', function(e) {
+			var action, icon, id, paramData, promise, $activeSearch, $favorite, $icon, $target;
+
+			$activeSearch = $('#searches > *.active');
+			$target = $(e.target);
+
+			action = $target.closest('[data-action]').data('action');
+			id = $activeSearch.data('id');
+
+			promise = new Promise(function(resolve) {
+				if (action === 'delete') {
+					search.unfavorite(id).then(function() {
+						if ($('.tab.selected').attr('name') === 'favorites') {
+							$activeSearch.remove();
+						}
+						else {
+							$activeSearch.attr('data-favorite', false).attr('data-icon', null).attr('data-icon-color', null).attr('data-name', null);
+							$activeSearch.find('.favorite-edit').replaceWith('<i class="favorite-create fa fa-star-o subdue"></i>');
+							$activeSearch.find('.icon').replaceWith('<i class="icon fa fa-circle-o subdue" style="color: #b6bbbf"></i>');
+							$activeSearch.find('.name').empty();
+							$activeSearch.removeClass('active');
+						}
+
+						resolve(null);
+					});
+				}
+				else if (action === 'save') {
+					$favorite = $('#favorite');
+					$icon = $favorite.find('.data > i');
+
+					paramData = {
+						id: id,
+						favorited: true,
+						icon_color: $('#color-edit').val(),
+						name: $favorite.find('input[name="search-name"]').val()
+					};
+
+					icon = $icon.attr('class');
+
+					if (!icon || $icon.hasClass('transparent')) {
+						paramData.icon = 'none';
+					}
+					else {
+						paramData.icon = icon;
+					}
+
+					search.favorite(paramData).then(function() {
+						if (!$activeSearch.attr('data-favorited')) {
+							$activeSearch.attr('data-favorited', true);
+							$activeSearch.find('i.favorite-create').removeClass('favorite-create').addClass('favorite-edit').removeClass('fa-star-o').addClass('fa-star');
+						}
+
+						$activeSearch.attr('data-name', paramData.name);
+						$activeSearch.find('.name').html(paramData.name);
+
+						if (paramData.icon && paramData.icon !== 'none') {
+							$activeSearch.attr('data-icon', paramData.icon);
+							$activeSearch.attr('data-icon-color', paramData.icon_color);
+							$activeSearch.find('i.icon').removeClass('fa').removeClass(function(index, css) {
+								return (css.match (/fa-[\S-]+/g) || []).join(' ');
+							}).addClass(paramData.icon).css('color', paramData.icon_color);
+						}
+						else {
+							$activeSearch.attr('data-icon', 'none');
+							$activeSearch.attr('data-icon-color', '');
+							$activeSearch.find('i.icon').removeClass('fa').removeClass(function(index, css) {
+								return (css.match (/fa-[\S-]+/g) || []).join(' ');
+							}).addClass('fa fa-circle-o').css('color', '#b6bbbf');
+						}
+
+						$activeSearch.removeClass('active');
+
+						resolve(null);
+					});
+				}
+				else {
+					$activeSearch.removeClass('active');
+
+					resolve(null);
+				}
+			});
+
+			promise.then(function() {
+				$.modal.close();
+			});
+		});
+
+		$document.on('click', '#searches > *', function(e) {
+			var id, $this = $(this);
+
+			if ($(e.target).is('.favorite-edit, .favorite-create')) {
+				e.preventDefault();
+
+				return false;
+			}
+
+			id = $this.attr('data-id');
+
+			sessionStorage.setItem('qid', id);
+		});
+
+		$document.on('click', '.favorite-edit, .favorite-create', function(e) {
+			var html, icon, iconColor, $colorPreview, $favorite, $iconPreview, $name, $search, $this = $(this);
+
+			$favorite = $('#favorite');
+			$search = $this.parents('[data-id]');
+
+			$search.addClass('active');
+
+			html = nunjucks.render('components/favorite.html', {
+				hideDelete: $search.attr('data-favorited') == null
+			});
+
+			$favorite.find('.body').html(html);
+
+			$name = $favorite.find('input[name="search-name"]');
+			$name.val($search.attr('data-name'));
+
+			icon = $search.attr('data-icon');
+
+			if (icon == null || icon.length === 0 || icon === 'none') {
+				icon = 'fa fa-times transparent';
+			}
+
+			iconColor = $search.attr('data-icon-color');
+
+			if (iconColor == null || iconColor.length === 0) {
+				iconColor = '#b6bbbf';
+			}
+
+			$colorPreview = $favorite.find('.color-picker .preview');
+			$iconPreview = $favorite.find('.icon-picker .preview');
+
+			$colorPreview.find('input').val(iconColor);
+			$colorPreview.find('label').css('background-color', iconColor);
+
+			$iconPreview.addClass(icon);
+
+			$favorite.find('.data > i').attr('class', icon).css('color', iconColor);
+
+			$favorite.modal({
+				position: false,
+				postOpen: function() {
+					$(this).css('display', 'flex');
+				}
+			});
+		});
+
+		$document.on('click', '#tabs .tab', function(e) {
+			var $searchContainer, $this = $(this);
+
+			$searchContainer = $('#search-container');
+
+			$('#tabs .tab').removeClass('selected');
+
+			$this.addClass('selected');
+
+			totalResultCount = 0;
+			currentResultCount = 0;
+
+			$('#searches').empty();
+
+			$searchContainer.off('scroll');
+			getSearches($this.attr('name'));
+			$searchContainer.on('scroll', throttle(checkScrollPagination, SCROLL_DEBOUNCE));
+		});
+
+		$(window).resize(function() {
+			var $searches;
+
+			$searches = $('#searches > *');
+
+			_.forEach($searches, function(search) {
+				var $filters, $search;
+
+				compactOverflowFilters($(search).attr('data-id'));
+			});
 		});
 	});
 
