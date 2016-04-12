@@ -624,7 +624,12 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			sessionStorage.removeItem('view');
 			sessionStorage.removeItem('type');
 
-			return search.load(qid);
+			return search.load(qid).then(function(saved) {
+				return search.save()
+					.then(function() {
+						return Promise.resolve(saved);
+					});
+			});
 		})()
 			.then(function(saved) {
 				if (saved && saved.id) {
