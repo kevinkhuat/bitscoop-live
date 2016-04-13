@@ -952,24 +952,5 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 				$.modal.close();
 			});
 		});
-
-		$(window).on('popstate', function(e) {
-			var mapping, params, view;
-
-			// TODO: Cancel existing re-render if it's not done to prevent redundant CPU and pop-in (?).
-			// TODO: Actually use history state to cut down on querystring processing.
-			// FIXME: When the qid changes you need to rerun the search.
-
-			params = $.deparam(location.search);
-			mapping = params.type;
-
-			view = params.view || sessionStorage.getItem('explorer.view') || 'feed';
-			// TODO: add facet in session storage
-
-			state.mapping = mapping;
-			state.view = view;
-
-			renderState();
-		});
 	});
 });
