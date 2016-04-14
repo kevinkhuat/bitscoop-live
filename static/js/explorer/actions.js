@@ -12,8 +12,8 @@ define(['jquery', 'lodash', 'moment', 'nunjucks'], function($, _, moment, nunjuc
 			title: 'Shared via BitScoop',  // title to be shared alongside your link
 			description: 'Search & Explore the Internet of You',  // text to be shared alongside your link
 			imageURL: 'https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg',  // image to be shared
-			hashtags: 'BitScoop',
-			via: 'BitScoopLabs'
+			hashtags: 'BitScoop'
+			//via: 'BitScoopLabs'
 		},
 		urls: {
 			share: {
@@ -300,7 +300,7 @@ define(['jquery', 'lodash', 'moment', 'nunjucks'], function($, _, moment, nunjuc
 			}
 			return nunjucks.render('explorer/components/action/share.html', {
 				facebook_href: facebookHref,
-				twitter_href: _hydrateShareURL(URL_TEMPLATES.urls.share.twitter.href, url, title.replace(' - Shared with BitScoop', '').slice(0, 60) + ' - via @BitScoopLabs', description, imageURL),
+				twitter_href: _hydrateShareURL(URL_TEMPLATES.urls.share.twitter.href, url, title.replace(' - Shared via BitScoop', '').slice(0, 60) + ' (via @BitScoopLabs)', description, imageURL),
 				googlePlus_href: googlePlusHref,
 				tumblr_href: _hydrateShareURL(URL_TEMPLATES.urls.share.tumblr.href, url, title, description, imageURL),
 				pinterest_href: _hydrateShareURL(URL_TEMPLATES.urls.share.pinterest.href, url, title, description, imageURL),
@@ -339,8 +339,8 @@ define(['jquery', 'lodash', 'moment', 'nunjucks'], function($, _, moment, nunjuc
 			.replace('{{ title }}', _fixedEncodeURIComponent(title === '' ? URL_TEMPLATES.defaults.title : title))
 			.replace('{{ description }}', _fixedEncodeURIComponent(description === '' ? URL_TEMPLATES.defaults.description : description))
 			.replace('{{ imageURL }}', _fixedEncodeURIComponent(imageURL === '' ? URL_TEMPLATES.defaults.imageURL : imageURL))
-			.replace('{{ hashtags }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.hashtags))
-			.replace('{{ via }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.via));
+			.replace('{{ hashtags }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.hashtags));
+			//.replace('{{ via }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.via));
 	}
 
 	/**

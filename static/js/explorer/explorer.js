@@ -817,7 +817,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			}
 		});
 
-		$(document).on('click', '.object .contact', function(e) {
+		$(document).on('click', '.object.contact', function(e) {
 			var object, $actionBar, $shareMenu, $this = $(this);
 			$actionBar = $this.find('.action-bar');
 			$shareMenu = $actionBar.find('.share-menu');
@@ -826,9 +826,11 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 				object = $this.data('object');
 				$actionBar.append(externalActions.renderAction(object, 'share'));
 				$actionBar.find('.close').hide();
+				$this.addClass('share-menu-margin-bottom');
 			}
 			else {
 				$actionBar.find('.share-menu').toggle();
+				$this.toggleClass('share-menu-margin-bottom');
 			}
 		});
 

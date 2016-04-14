@@ -25,6 +25,14 @@
 			font-size: 1.5em;
 		}
 
+		.sms {
+			display: none;
+
+			@media @mobile {
+				display: inherit;
+			}
+		}
+
 		& > *:not(:last-child) {
 			margin-right: 0.35em;
 		}

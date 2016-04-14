@@ -1,6 +1,9 @@
 .object.contact {
 	.flexbox;
 	.flex-row;
+	.no-select;
+
+	cursor: pointer;
 
 	.user-avatar {
 		.avatar {
@@ -42,5 +45,15 @@
 		i {
 			margin-right: 0.25em;
 		}
+	}
+
+	& > .action-bar {
+		& > .share-menu {
+			bottom: -1.5em;
+		}
+	}
+
+	&.share-menu-margin-bottom {
+		margin-bottom: 2em;
 	}
 }
