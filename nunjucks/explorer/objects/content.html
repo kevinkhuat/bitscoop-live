@@ -33,7 +33,7 @@
 		{% if url %}
 			<a href="{{ url }}" target="_blank">{{ title | safe }}</a>
 		{% else %}
-			<span>{{ title }}</span>
+			<span>{{ title | safe }}</span>
 		{% endif %}
 	</div>
 
@@ -42,7 +42,7 @@
 			{% if url and not title %}
 				<a href="{{ url }}" target="_blank">{{ text | safe }}</a>
 			{% else %}
-				<pre>{{ text }}</pre>
+				<pre>{{ text | safe }}</pre>
 			{% endif %}
 		{% endif %}
 	</div>
