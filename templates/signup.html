@@ -21,7 +21,7 @@
 				{% csrf_token %}
 
 				<div class="text-box">
-					<input type="text" name="code" placeholder="Invitation Code" value="{{ form.data.code }}" />
+					<input type="text" name="code" placeholder="Invitation Code" value="{% if form.data.code %}{{ form.data.code|default_if_none:'' }}{% else %}{{ code|default_if_none:'' }}{% endif %}" />
 				</div>
 				<div>
 					{{ form.code.errors }}

@@ -285,7 +285,8 @@ class SignupView(View, FormMixin):
 
         return render(request, 'signup.html', {
             'title': 'Sign Up',
-            'request_form': True
+            'request_form': True,
+            'code': request.GET.get('code', None)
         })
 
     def post(self, request):
