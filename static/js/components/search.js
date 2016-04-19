@@ -191,40 +191,60 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	 * Loads the filter instance into the active search filter form.
 	 */
 	Filter.prototype.load = function Filter$load() {
+		var whoType, $connectorForm, $whenForm, $whoForm;
+
 		//Deserialize can't handle unchecked checkboxes, as they are not serialized in the first place.
 		//Uncheck any that are present so that filters where they weren't checked aren't checked by mistake.
 		//If you don't, then if the checkbox on the form was checked from a previous filter, it will remain so
 		//on the newly-selected one.
 		$('#filter-values input[type="checkbox"]').prop('checked', false);
 
+		$connectorForm = $('form.connector');
+		$whenForm = $('form.when');
+		$whoForm = $('form.who');
+
 		// Load the form data into the right form.
 		$('form.' + this.type).deserialize(this.data);
 		// Show the right form.
 		$('#filter-values').attr('class', this.type);
 
+		if (this.type === 'who') {
+			$whoForm.find('.radio.active').removeClass('active');
+			whoType = $whoForm.find('input[type="radio"]:checked').attr('id');
+			$whoForm.find('label[for="' + whoType + '"]').addClass('active');
+		}
+
 		if (this.type === 'when') {
 			if (this.data.interaction === 'exact') {
-				$('#when-exact').prop('checked', true);
-				$('.exact-controls').removeClass('hidden');
-				$('.relative-controls').addClass('hidden');
+				$whenForm.find('#when-exact').prop('checked', true);
+				$whenForm.find('.exact-controls').removeClass('hidden');
+				$whenForm.find('.relative-controls').addClass('hidden');
+				$whenForm.find('label[for="when-exact"]').addClass('active');
+				$whenForm.find('label[for="when-relative"]').removeClass('active');
 			}
 			else {
-				$('#when-relative').prop('checked', true);
-				$('.exact-controls').addClass('hidden');
-				$('.relative-controls').removeClass('hidden');
+				$whenForm.find('#when-relative').prop('checked', true);
+				$whenForm.find('.exact-controls').addClass('hidden');
+				$whenForm.find('.relative-controls').removeClass('hidden');
+				$whenForm.find('label[for="when-exact"]').removeClass('active');
+				$whenForm.find('label[for="when-relative"]').addClass('active');
 			}
 		}
 
 		if (this.type === 'connector') {
 			if (this.data.type === 'provider') {
-				$('#provider').prop('checked', true);
-				$('.provider').removeClass('hidden');
-				$('.connection').addClass('hidden');
+				$connectorForm.find('#provider').prop('checked', true);
+				$connectorForm.find('.provider').removeClass('hidden');
+				$connectorForm.find('.connection').addClass('hidden');
+				$connectorForm.find('label[for="provider"]').addClass('active');
+				$connectorForm.find('label[for="connection"]').removeClass('active');
 			}
 			else {
-				$('#connection').prop('checked', true);
-				$('.provider').addClass('hidden');
-				$('.connection').removeClass('hidden');
+				$connectorForm.find('#connection').prop('checked', true);
+				$connectorForm.find('.provider').addClass('hidden');
+				$connectorForm.find('.connection').removeClass('hidden');
+				$connectorForm.find('label[for="provider"]').removeClass('active');
+				$connectorForm.find('label[for="connection"]').addClass('active');
 			}
 		}
 
@@ -850,7 +870,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	 * class from all filter types.
 	 */
 	function reset() {
-		var $connectorForm, $whenForm;
+		var $connectorForm, $whenForm, $whoForm;
 
 		$('#filter-values form').trigger('reset');
 		$('#filter-values').removeAttr('class');
@@ -860,15 +880,23 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 		$('.control.active').removeClass('active');
 
+		$whoForm = $('#filter-values form.who');
+		$whoForm.find('.radio.active').removeClass('active');
+		$whoForm.find('label[for="who-type-1"]').addClass('active');
+
 		// Handle special cases for when form.
 		$whenForm = $('#filter-values form.when');
 		$whenForm.find('.exact-controls').removeClass('hidden');
 		$whenForm.find('.relative-controls').addClass('hidden');
+		$whenForm.find('label[for="when-exact"]').addClass('active');
+		$whenForm.find('label[for="when-relative"]').removeClass('active');
 
 		// Handle special cases for connector form.
 		$connectorForm = $('#filter-values form.connector');
 		$connectorForm.find('.provider').removeClass('hidden');
 		$connectorForm.find('.connection').addClass('hidden');
+		$connectorForm.find('label[for="provider"]').addClass('active');
+		$connectorForm.find('label[for="connection"]').removeClass('active');
 	}
 
 	/**
@@ -1230,34 +1258,71 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		});
 
 		// When a user clicks the exact when toggle, hide the relative time inputs.
-		$('#search-bar').on('click', '#when-exact', function(e) {
-			$('.exact-controls').removeClass('hidden');
-			$('.relative-controls').addClass('hidden');
-			$('select[name="since-exactly"]').find('option[value="since"]').prop('selected', true);
-			$('input[name="relative-number"]').val('');
-			$('select[name="units"]').find('option[value="days"]').prop('selected', true);
+		$('#search-bar').on('click', 'label[for="when-exact"]', function() {
+			var $whenForm;
+
+			$whenForm = $('form.when');
+
+			$whenForm.find('.exact-controls').removeClass('hidden');
+			$whenForm.find('.relative-controls').addClass('hidden');
+			$whenForm.find('select[name="since-exactly"]').find('option[value="since"]').prop('selected', true);
+			$whenForm.find('input[name="relative-number"]').val('');
+			$whenForm.find('select[name="units"]').find('option[value="days"]').prop('selected', true);
+			$whenForm.find('label[for="when-exact"]').addClass('active');
+			$whenForm.find('label[for="when-relative"]').removeClass('active');
 		});
 
 		// When a user clicks the relative when toggle, hide the exact time inputs.
-		$('#search-bar').on('click', '#when-relative', function(e) {
-			$('.exact-controls').addClass('hidden');
-			$('.relative-controls').removeClass('hidden');
-			$('input[name="from"]').val('');
-			$('input[name="to"]').val('');
+		$('#search-bar').on('click', 'label[for="when-relative"]', function() {
+			var $whenForm;
+
+			$whenForm = $('form.when');
+
+			$whenForm.find('.exact-controls').addClass('hidden');
+			$whenForm.find('.relative-controls').removeClass('hidden');
+			$whenForm.find('input[name="from"]').val('');
+			$whenForm.find('input[name="to"]').val('');
+			$whenForm.find('label[for="when-exact"]').removeClass('active');
+			$whenForm.find('label[for="when-relative"]').addClass('active');
 		});
 
 		// When a user clicks the provider toggle, hide the connection selection.
 		$('#search-bar').on('click', '#provider', function(e) {
-			$('.provider').removeClass('hidden');
-			$('.connection').addClass('hidden');
-			$('select[name="connection"]').find('option:first-child').prop('selected', true);
+			var $connectorForm;
+
+			$connectorForm = $('form.connector');
+
+			$connectorForm.find('.provider').removeClass('hidden');
+			$connectorForm.find('.connection').addClass('hidden');
+			$connectorForm.find('select[name="connection"]').find('option:first-child').prop('selected', true);
+			$connectorForm.find('label[for="provider"]').removeClass('active');
+			$connectorForm.find('label[for="connection"]').addClass('active');
 		});
 
 		// When a user clicks the connection toggle, hide the provider selection.
 		$('#search-bar').on('click', '#connection', function(e) {
-			$('.provider').addClass('hidden');
-			$('.connection').removeClass('hidden');
-			$('select[name="provider"]').find('option:first-child').prop('selected', true);
+			var $connectorForm;
+
+			$connectorForm = $('form.connector');
+
+			$connectorForm.find('.provider').addClass('hidden');
+			$connectorForm.find('.connection').removeClass('hidden');
+			$connectorForm.find('select[name="provider"]').find('option:first-child').prop('selected', true);
+			$connectorForm.find('label[for="provider"]').addClass('active');
+			$connectorForm.find('label[for="connection"]').removeClass('active');
+		});
+
+		$('#search-bar').on('click', 'label.radio', function(e) {
+			var $this = $(this);
+
+			$this.siblings('.radio').removeClass('active');
+			$this.addClass('active');
+		});
+
+		$('#search-bar').on('click', '.estimated > label', function(e) {
+			var $this = $(this);
+
+			$this.toggleClass('active');
 		});
 
 		// Update the filter tag with any changes to the name input.

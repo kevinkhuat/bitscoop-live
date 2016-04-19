@@ -16,7 +16,7 @@
 					</div>
 
 					<div class="control" data-type="when">
-						<i class="fa fa-clock-o"></i>
+						<i class="fa fa-calendar"></i>
 					</div>
 
 					<div class="control" data-type="connector">
@@ -37,22 +37,22 @@
 
 					<form class="who">
 						<div>
+							Interaction:
+						</div>
+
+						<div class="input-container">
+							<label class="radio active" for="who-type-1"><input id="who-type-1" type="radio" name="interaction" value="" checked /><span>Any</span></label>
+							<label class="radio" for="who-type-2"><input id="who-type-2" type="radio" name="interaction" value="to" /><span>To</span></label>
+							<label class="radio" for="who-type-3"><input id="who-type-3" type="radio" name="interaction" value="from" /><span>From</span></label>
+							<label class="radio" for="who-type-4"><input id="who-type-4" type="radio" name="interaction" value="with" /><span>With</span></label>
+						</div>
+
+						<div>
 							Contact:
 						</div>
 
 						<div class="text-box">
 							<input type="text" name="contact"/>
-						</div>
-
-						<div>
-							Interaction:
-						</div>
-
-						<div class="input-container">
-							<label for="who-type-1"><input id="who-type-1" type="radio" name="interaction" value="" checked /><span>Any</span></label>
-							<label for="who-type-2"><input id="who-type-2" type="radio" name="interaction" value="to" /><span>To</span></label>
-							<label for="who-type-3"><input id="who-type-3" type="radio" name="interaction" value="from" /><span>From</span></label>
-							<label for="who-type-4"><input id="who-type-4" type="radio" name="interaction" value="with" /><span>With</span></label>
 						</div>
 					</form>
 
@@ -80,16 +80,9 @@
 					</form>
 
 					<form class="when">
-						<div class="estimated">
-							<label>
-								<input type="checkbox" name="estimated" />
-								<span>Return estimated results?</span>
-							</label>
-						</div>
-
 						<div class="input-container">
-							<label for="when-exact"><input id="when-exact" type="radio" name="interaction" value="exact" checked />Exact date</label>
-							<label for="when-relative"><input id="when-relative" type="radio" name="interaction" value="relative" />Relative date</label>
+							<label class="radio active" for="when-exact"><input id="when-exact" type="radio" name="interaction" value="exact" checked />Exact dates</label>
+							<label class="radio" for="when-relative"><input id="when-relative" type="radio" name="interaction" value="relative" />Relative dates</label>
 						</div>
 
 						<div class="exact-controls">
@@ -131,12 +124,19 @@
 								</select>
 							</div>
 						</div>
+
+						<div class="estimated">
+							<label>
+								<input type="checkbox" name="estimated" />
+								<span>Return estimated results?</span>
+							</label>
+						</div>
 					</form>
 
 					<form class="connector">
 						<div class="input-container">
-							<label for="provider"><input id="provider" type="radio" name="type" value="provider" checked />Connection Type</label>
-							<label for="connection"><input id="connection" type="radio" name="type" value="connection" />Connection</label>
+							<label class="radio active" for="provider"><input id="provider" type="radio" name="type" value="provider" checked />Connection Type</label>
+							<label class="radio" for="connection"><input id="connection" type="radio" name="type" value="connection" />Connection</label>
 						</div>
 
 						<div class="provider">
@@ -173,8 +173,6 @@
 							<input type="text" name="distance" />
 						</div>-->
 
-						<label><input type="checkbox" name="estimated" />Return estimated results?</label>
-
 						<div>
 							Area:
 						</div>
@@ -182,6 +180,13 @@
 						<div class="input-container">
 							<label for="where-type-1"><input id="where-type-1" type="radio" name="geometry" value="inside" checked />Inside</label>
 							<label for="where-type-2"><input id="where-type-2" type="radio" name="geometry" value="outside" />Outside</label>
+						</div>
+
+						<div class="estimated">
+							<label>
+								<input type="checkbox" name="estimated" />
+								<span>Return estimated results?</span>
+							</label>
 						</div>
 					</form>
 				</div>
