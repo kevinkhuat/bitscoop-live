@@ -66,6 +66,14 @@
 
 		<div id="menu-button"><div class="fa fa-bars"/></div>
 	</nav>
+{% elif mode == 'connection' %}
+	<nav>
+		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /><span>Beta</span></a>
+
+		<span class="flex-grow"></span>
+
+		<div id="menu-button"><div class="fa fa-bars"/></div>
+	</nav>
 {% else %}
 	<nav>
 		<a id="home" href="{% url 'home' %}"><img class="logo" src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo-name.svg" /><span>Beta</span></a>
