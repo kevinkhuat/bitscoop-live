@@ -156,7 +156,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				id = $modal.data('connection-id');
 
 				$.ajax({
-					url: 'https://api.bitscoop.com/v1/connections/' + id,
+					url: 'https://api.bitscoop.com/v2/connections/' + id,
 					method: 'DELETE',
 					headers: {
 						'X-CSRFToken': $.cookie('csrftoken')

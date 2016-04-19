@@ -936,8 +936,9 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: cursor.next,
-				type: 'SEARCH',
+				url: cursor.next.url,
+				type: cursor.next.method,
+				data: JSON.stringify(cursor.next.body),
 				headers: {
 					'X-CSRFToken': $.cookie('csrftoken')
 				},
@@ -1233,7 +1234,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		// Execute the search by querying the events with the specified DSL.
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v1/events',
+				url: 'https://api.bitscoop.com/v2/events',
 				type: 'SEARCH',
 				dataType: 'json',
 				contentType: 'application/json',

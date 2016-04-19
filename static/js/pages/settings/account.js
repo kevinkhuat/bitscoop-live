@@ -140,7 +140,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'minimo
 
 			if ($target.is('.confirm')) {
 				$.ajax({
-					url: 'https://api.bitscoop.com/v1/account',
+					url: 'https://api.bitscoop.com/v2/account',
 					method: 'DELETE',
 					headers: {
 						'X-CSRFToken': $.cookie('csrftoken')

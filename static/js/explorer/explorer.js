@@ -84,6 +84,33 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		map: new viewstate.View('explorer/views/map.html')
 	};
 
+	// TODO: Remove this when API v2 is complete and we can query all object types separately.
+	function autofillPaginate() {
+		var promise, minCount;
+
+		// In feed view, you only need a dozen or so contacts to have enough to scroll on a 1080p display.
+		// Contacts are the smallest feed item we have.
+		// In grid view on desktop, you need more than 50 grid items to get that scrolling.
+		// This is overkill for mobile devices, but this is a quick workaround to tide us over until API v2.
+		minCount = state.view === 'feed' ? 12 : 55;
+
+		if (objects.collections[state.mapping].length < minCount && objects.cursor.next) {
+			promise = new Promise(function(resolve, reject) {
+				objects.more()
+					.then(function() {
+						autofillPaginate().then(function() {
+							return resolve();
+						});
+					});
+			});
+		}
+		else {
+			promise = Promise.resolve();
+		}
+
+		return promise;
+	}
+
 	/**
 	 * Checks if the browser is a mobile browser using media queries.
 	 * @returns {Boolean} Function returns whether or not the browser is mobile.
@@ -130,96 +157,98 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 			resetView();
 
-			if (state.view === 'map') {
-				//$body = $('body');
-				//mapView.render().done(function() {
-				//	var $expandDetails;
-				//
-				//	$body.addClass('map');
-				//	container.insert(mapView);
-				//	$('#background').append(map.element);
-				//	$list = $('#list');
-				//	addResults(objects.collections[state.mapping]);
-				//
-				//	//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
-				//	$list.on('scroll', throttle(checkScroll, SCROLL_DEBOUNCE));
-				//	renderFeedEmbeddables($list);
-				//
-				//	//Prep the expandDetails element for showing the #left panel.
-				//	$expandDetails = $('#expand-details');
-				//	$expandDetails.removeClass('hidden');
-				//	$expandDetails.children('i').removeClass('fa-caret-right').addClass('fa-caret-left');
-				//	$('#details-scroll').addClass('hidden');
-				//
-				//	addMapMarkers();
-				//
-				//	//If not in mobile, put the controls back in.
-				//	if (!isMobile) {
-				//		addMapControls();
-				//	}
-				//
-				//	//Resize the map and fit it so that all markers are visible.
-				//	map.resize();
-				//
-				//	if (map.markers.getBounds()._southWest != null) {
-				//		map.object.fitBounds(map.markers.getBounds());
-				//	}
-				//
-				//	//Show the #left panel and perform the initial sort.
-				//	$('#left').addClass('expanded');
-				//});
-			}
-			else {
-				view = views[state.view];
+			// TODO: Remove autofillPaginate when API v2 is complete and we can query all object types separately.
+			autofillPaginate().then(function() {
+				if (state.view === 'map') {
+					//$body = $('body');
+					//mapView.render().done(function() {
+					//	var $expandDetails;
+					//
+					//	$body.addClass('map');
+					//	container.insert(mapView);
+					//	$('#background').append(map.element);
+					//	$list = $('#list');
+					//	addResults(objects.collections[state.mapping]);
+					//
+					//	//TODO: Figure out how to bind scroll event delegation instead of binding directly to #background
+					//	$list.on('scroll', throttle(checkScroll, SCROLL_DEBOUNCE));
+					//	renderFeedEmbeddables($list);
+					//
+					//	//Prep the expandDetails element for showing the #left panel.
+					//	$expandDetails = $('#expand-details');
+					//	$expandDetails.removeClass('hidden');
+					//	$expandDetails.children('i').removeClass('fa-caret-right').addClass('fa-caret-left');
+					//	$('#details-scroll').addClass('hidden');
+					//
+					//	addMapMarkers();
+					//
+					//	//If not in mobile, put the controls back in.
+					//	if (!isMobile) {
+					//		addMapControls();
+					//	}
+					//
+					//	//Resize the map and fit it so that all markers are visible.
+					//	map.resize();
+					//
+					//	if (map.markers.getBounds()._southWest != null) {
+					//		map.object.fitBounds(map.markers.getBounds());
+					//	}
+					//
+					//	//Show the #left panel and perform the initial sort.
+					//	$('#left').addClass('expanded');
+					//});
+				}
+				else {
+					view = views[state.view];
 
-				promise = promise
-					.then(function() {
-						return view.render();
-					})
-					.then(function() {
-						return objects.render(state.view, objects.collections[state.mapping].slice(0, cursor.limit));
-					})
-					.tap(function(fragments) {
-						var $list;
+					promise = promise
+						.then(function() {
+							return view.render();
+						})
+						.then(function() {
+							return objects.render(state.view, objects.collections[state.mapping].slice(0, cursor.limit));
+						})
+						.tap(function(fragments) {
+							var $list;
 
-						resetView();
-						container.insert(view);
+							resetView();
+							container.insert(view);
+
+							$list = $('#list');
+							cursor.offset = fragments.length;
+
+							$list.append(fragments);
+						});
+				}
+
+				if (state.view === 'feed') {
+					promise = promise.then(function() {
+						var i, j, $interaction, $interactions, $item, $textItem, $textItems;
 
 						$list = $('#list');
-						cursor.offset = fragments.length;
 
-						$list.append(fragments);
-					});
-			}
+						$list.closest('main').on('scroll', debounce(function() {
+							renderFeedEmbeddables($list.parent());
+						}, SCROLL_DEBOUNCE));
 
-			if (state.view === 'feed') {
-				promise = promise.then(function() {
-					var i, j, $interaction, $interactions, $item, $textItem, $textItems;
-
-					$list = $('#list');
-
-					$list.closest('main').on('scroll', debounce(function() {
+						//render Embeddables the first time
 						renderFeedEmbeddables($list.parent());
-					}, SCROLL_DEBOUNCE));
 
-					//render Embeddables the first time
-					renderFeedEmbeddables($list.parent());
+						for (i = 0; i < $list.children().length; i++) {
+							$item = $($list.children().get(i));
+							$textItems = $item.find('.text');
+							$interactions = $item.find('.interactions .objects');
 
-					for (i = 0; i < $list.children().length; i++) {
-						$item = $($list.children().get(i));
-						$textItems = $item.find('.text');
-						$interactions = $item.find('.interactions .objects');
+							for (j = 0; j < $textItems.length; j++) {
+								$textItem = $($textItems.get(j));
 
-						for (j = 0; j < $textItems.length; j++) {
-							$textItem = $($textItems.get(j));
-
-							if ($textItem.find('.truncated').length === 0) {
-								$textItem.find('.expand').hide();
+								if ($textItem.find('.truncated').length === 0) {
+									$textItem.find('.expand').hide();
+								}
+								else {
+									$textItem.find('.full').hide();
+								}
 							}
-							else {
-								$textItem.find('.full').hide();
-							}
-						}
 
 							if ($interactions.children().length > 5) {
 								$interactions.children().slice(5).hide();
@@ -229,139 +258,140 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 							}
 						}
 
-					return Promise.resolve();
+						return Promise.resolve();
+					});
+				}
+
+				promise.then(function(result) {
+					var sortContext, typesContext, $selectedSort, $sortFields, $sortArrow;
+
+					if (type) {
+						sortContext = objects[type[0].toUpperCase() + type.slice(1)].sort;
+					}
+					else {
+						sortContext = objects.Event.sort;
+					}
+
+					$sortFields = $('.sort .fields');
+
+					$('.facets .current .name').text(nameMappings[state.mapping]);
+					$('.views .current .name').text(state.view);
+
+					//Generate the sort selectors for the current object type.
+					html = nunjucks.render('explorer/components/sort.html', sortContext);
+					$sortFields.html(html);
+
+					typesContext = {
+						types: _.filter(previewContext, function(type) {
+							return objects.collections[type.mapping].length > 0;
+						})
+					};
+
+					html = nunjucks.render('explorer/components/facets.html', typesContext);
+					$('.facets .drawer').html(html);
+
+					$control = $('#menu .views a[data-view="' + state.view + '"], .controls .views a[data-view="' + state.view + '"]');
+
+					$control.siblings().removeClass('active');
+					$control.addClass('active');
+
+					$control = $('#menu .facets a[data-type="' + state.mapping + '"], .controls .facets a[data-type="' + state.mapping + '"]');
+
+					$control.siblings().removeClass('active');
+					$control.addClass('active');
+
+					// Update the sort DOM elements.
+					$selectedSort = $sortFields.find('[data-sort="' + objects.cursor.sort.field + '"]');
+
+					$('.sort .current .name').text($selectedSort.data('name'));
+
+					$sortArrow = $selectedSort.find('.fa');
+
+					_.forEach($sortFields.children('div'), function(sortItem) {
+						var $sortItem = $(sortItem);
+
+						$sortItem.removeClass('active');
+						$sortItem.find('.sort-arrow').removeClass('fa-chevron-up').removeClass('fa-chevron-down');
+					});
+
+					$selectedSort.addClass('active');
+
+					if (objects.cursor.sort.order === 'asc') {
+						$sortArrow.addClass('fa-chevron-up');
+					}
+					else {
+						$sortArrow.addClass('fa-chevron-down');
+					}
+
+					return Promise.resolve(result);
 				});
-			}
 
-			promise.then(function(result) {
-				var sortContext, typesContext, $selectedSort, $sortFields, $sortArrow;
+				return promise.then(function() {
+					var scroller, $main;
 
-				if (type) {
-					sortContext = objects[type[0].toUpperCase() + type.slice(1)].sort;
-				}
-				else {
-					sortContext = objects.Event.sort;
-				}
+					$main = $('#list').closest('main');
 
-				$sortFields = $('.sort .fields');
+					scroller = throttle(function(e) {
+						var page, promise, scrollBottom, slice, $list;
 
-				$('.facets .current .name').text(nameMappings[state.mapping]);
-				$('.views .current .name').text(state.view);
+						scrollBottom = e.target.scrollTop + $(e.target).outerHeight();
 
-				//Generate the sort selectors for the current object type.
-				html = nunjucks.render('explorer/components/sort.html', sortContext);
-				$sortFields.html(html);
+						if (scrollBottom > 0.90 * e.target.scrollHeight) {
+							$list = $('#list');
 
-				typesContext = {
-					types: _.filter(previewContext, function(type) {
-						return objects.collections[type.mapping].length > 0;
-					})
-				};
+							if (objects.cursor.next || cursor.offset < objects.collections[state.mapping].length) {
+								$list.addClass('loading');
+								$list.append(paginationSpinner);
 
-				html = nunjucks.render('explorer/components/facets.html', typesContext);
-				$('.facets .drawer').html(html);
+								if (cursor.offset < objects.collections[state.mapping].length) {
+									page = {};
+									slice = objects.collections[state.mapping].slice(cursor.offset, cursor.offset + cursor.limit);
+									page[state.mapping] = slice;
 
-				$control = $('#menu .views a[data-view="' + state.view + '"], .controls .views a[data-view="' + state.view + '"]');
+									cursor.offset += cursor.limit;
 
-				$control.siblings().removeClass('active');
-				$control.addClass('active');
+									promise = Promise.resolve(page);
+								}
+								else {
+									promise = objects.more()
+										.tap(function() {
+											cursor.offset = objects.collections[state.mapping].length;
+										});
+								}
 
-				$control = $('#menu .facets a[data-type="' + state.mapping + '"], .controls .facets a[data-type="' + state.mapping + '"]');
+								return promise
+									.then(function(data) {
+										if (data == null) {
+											$main.off('scroll.more', scroller);
 
-				$control.siblings().removeClass('active');
-				$control.addClass('active');
+											return Promise.resolve();
+										}
 
-				// Update the sort DOM elements.
-				$selectedSort = $sortFields.find('[data-sort="' + objects.cursor.sort.field + '"]');
+										$list.removeClass('loading');
+										$('#next-icon').remove();
 
-				$('.sort .current .name').text($selectedSort.data('name'));
+										return objects.render(state.view, data[state.mapping]);
+									})
+									.tap(function(fragments) {
+										$list.append(fragments);
+									})
+									.catch(function(err) {
+										// TODO: Show an error message somehow? Notifications?
 
-				$sortArrow = $selectedSort.find('.fa');
-
-				_.forEach($sortFields.children('div'), function(sortItem) {
-					var $sortItem = $(sortItem);
-
-					$sortItem.removeClass('active');
-					$sortItem.find('.sort-arrow').removeClass('fa-chevron-up').removeClass('fa-chevron-down');
-				});
-
-				$selectedSort.addClass('active');
-
-				if (objects.cursor.sort.order === 'asc') {
-					$sortArrow.addClass('fa-chevron-up');
-				}
-				else {
-					$sortArrow.addClass('fa-chevron-down');
-				}
-
-				return Promise.resolve(result);
-			});
-
-			return promise.then(function() {
-				var scroller, $main;
-
-				$main = $('#list').closest('main');
-
-				scroller = throttle(function(e) {
-					var page, promise, scrollBottom, slice, $list;
-
-					scrollBottom = e.target.scrollTop + $(e.target).outerHeight();
-
-					if (scrollBottom > 0.90 * e.target.scrollHeight) {
-						$list = $('#list');
-
-						if (objects.cursor.next || cursor.offset < objects.collections[state.mapping].length) {
-							$list.addClass('loading');
-							$list.append(paginationSpinner);
-
-							if (cursor.offset < objects.collections[state.mapping].length) {
-								page = {};
-								slice = objects.collections[state.mapping].slice(cursor.offset, cursor.offset + cursor.limit);
-								page[state.mapping] = slice;
-
-								cursor.offset += cursor.limit;
-
-								promise = Promise.resolve(page);
-							}
-							else {
-								promise = objects.more()
-									.tap(function() {
-										cursor.offset = objects.collections[state.mapping].length;
+										$list.removeClass('loading');
+										$('#next-icon').remove();
 									});
 							}
-
-							return promise
-								.then(function(data) {
-									if (data == null) {
-										$main.off('scroll.more', scroller);
-
-										return Promise.resolve();
-									}
-
-									$list.removeClass('loading');
-									$('#next-icon').remove();
-
-									return objects.render(state.view, data[state.mapping]);
-								})
-								.tap(function(fragments) {
-									$list.append(fragments);
-								})
-								.catch(function(err) {
-									// TODO: Show an error message somehow? Notifications?
-
-									$list.removeClass('loading');
-									$('#next-icon').remove();
-								});
+							else {
+								$main.off('scroll.more', scroller);
+							}
 						}
-						else {
-							$main.off('scroll.more', scroller);
-						}
-					}
+					});
+
+					$main.off('scroll.more').on('scroll.more', scroller);
+
+					return Promise.resolve(view);
 				});
-
-				$main.off('scroll.more').on('scroll.more', scroller);
-
-				return Promise.resolve(view);
 			});
 		}
 		else {
@@ -411,7 +441,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		}
 		else {
 			$next.removeClass('hidden');
-			$next.css('left', left  + width - 1);
+			$next.css('left', left + width - 1);
 		}
 	}
 

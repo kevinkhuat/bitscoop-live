@@ -459,7 +459,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v1/searches',
+				url: 'https://api.bitscoop.com/v2/searches',
 				type: 'SEARCH',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -576,7 +576,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v1/searches/' + params.id,
+				url: 'https://api.bitscoop.com/v2/searches/' + params.id,
 				type: 'PATCH',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -853,7 +853,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 				};
 
 				$.ajax({
-					url: 'https://api.bitscoop.com/v1/searches',
+					url: 'https://api.bitscoop.com/v2/searches',
 					type: 'GET',
 					dataType: 'json',
 					contentType: 'application/json',
@@ -881,7 +881,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		else {
 			promise = new Promise(function(resolve, reject) {
 				$.ajax({
-					url: 'https://api.bitscoop.com/v1/searches/' + id,
+					url: 'https://api.bitscoop.com/v2/searches/' + id,
 					type: 'GET',
 					contentType: 'application/json',
 					xhrFields: {
@@ -984,7 +984,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v1/searches',
+				url: 'https://api.bitscoop.com/v2/searches',
 				type: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -1151,7 +1151,15 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		});
 
 		// Queries for the user's connections to populate the connector filter DDL.
-		$.get('/opi/connections').done(function(data) {
+		$.ajax({
+			url: 'https://api.bitscoop.com/v2/connections',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data) {
 			var $select;
 
 			$select = $('form.connector select[name="connection"]');
@@ -1164,10 +1172,25 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 						.appendTo($select);
 				}
 			});
+		}).fail(function(req) {
+			var error;
+
+			error = new Error(req.statusText);
+			error.code = req.status;
+
+			reject(error);
 		});
 
 		// Queries for the current providers to populate the provider filter DDL.
-		$.get('/opi/providers').done(function(data) {
+		$.ajax({
+			url: 'https://api.bitscoop.com/v2/providers',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data) {
 			var $select;
 
 			$select = $('form.connector select[name="provider"]');
@@ -1180,8 +1203,14 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 						.appendTo($select);
 				}
 			});
-		});
+		}).fail(function(req) {
+			var error;
 
+			error = new Error(req.statusText);
+			error.code = req.status;
+
+			reject(error);
+		});
 
 		// Deletes a filter when the "x" in the filter bubble is clicked.
 		$('#search-bar').on('click', '.filter > .fa-close', function(e) {
