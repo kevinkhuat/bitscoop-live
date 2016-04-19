@@ -387,6 +387,34 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			.addClass(state.view);
 	}
 
+	function resizeNextPrev() {
+		var left, width, $content, $next, $prev;
+
+		$content = $('#details').find('.content');
+
+		$next = $content.find('.next');
+		$prev = $content.find('.prev');
+
+		left = $content.offset().left;
+		width = $content.outerWidth();
+
+		if ($('.item.active').prev().length === 0) {
+			$prev.addClass('hidden');
+		}
+		else {
+			$prev.removeClass('hidden');
+			$prev.css('left', left - $prev.outerWidth() + 1);
+		}
+
+		if ($('.item.active').next().length === 0) {
+			$next.addClass('hidden');
+		}
+		else {
+			$next.removeClass('hidden');
+			$next.css('left', left  + width - 1);
+		}
+	}
+
 	/**
 	 * Highlights an object that has been selected, usually by rendering its details.
 	 * @param {object} object The object that has being selected.
@@ -410,7 +438,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 							var $body, $contentEmbedContainers;
 
 							$body = $this.find('.body');
-							$body.empty().append(fragment);
+							$body.empty().html(fragment);
 
 							$contentEmbedContainers = $body.find('.content-embed');
 
@@ -424,7 +452,12 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 							});
 
 							$this.css('display', 'flex');
+
+							resizeNextPrev();
 						});
+				},
+				postClose: function() {
+					$('.item').removeClass('active');
 				}
 			});
 		}
@@ -718,6 +751,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		$(document).on('click', '.item', function() {
 			var object, $this = $(this);
 
+			$this.addClass('active');
 			object = $this.data('object');
 
 			selectObject(object);
@@ -1050,6 +1084,61 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 		$(window).on('resize', function(e) {
 			if ($('#details').length === 0 || $('#details').css('display') === 'none') {
+				return false;
+			}
+
+			resizeNextPrev();
+		});
+
+		$(document).on('click', '#details .content > aside', function() {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			if ($this.hasClass('next')) {
+				$newObject = $currentObject.next();
+			}
+			else {
+				$newObject = $currentObject.prev();
+			}
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(document).on('swipeleft', '#details .content', function(e) {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			$newObject = $currentObject.next();
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(document).on('swiperight', '#details .body', function(e) {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			$newObject = $currentObject.prev();
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(window).on('resize', function(e) {
+			if ($('#details').css('display') === 'none') {
 				return false;
 			}
 

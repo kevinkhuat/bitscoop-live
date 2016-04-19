@@ -83,11 +83,60 @@ body.explorer {
 	.modal {
 		.close-button {
 			padding: 0.1em !important;
-			top: -0.1em !important; right: 0em !important;
+			top: -0.1em !important; right: 0 !important;
 		}
 
-		.body {
-			margin-top: 1.5em;
+		.content {
+			& > aside {
+				display: block;
+				position: fixed;
+				top: 45%;
+				cursor: pointer;
+				font-size: 1.5em;
+				background-color: @background-color;
+				height: 3em;
+				padding: 0 0.5em;
+
+				@media @mobile {
+					position: absolute;
+					background-color: initial;
+					height: initial;
+					padding: 0;
+					top: 8px;
+				}
+
+				&.next {
+					@media @mobile {
+						left: 50px !important;
+					}
+				}
+
+				&.prev {
+					@media @mobile {
+						left: 10px !important;
+					}
+				}
+
+				& > i {
+					position: relative;
+					top: 50%;
+					transform: translateY(-50%);
+					width: 18px;
+
+					@media @mobile {
+						top: 0;
+						transform: initial;
+					}
+				}
+			}
+
+			.body {
+				margin: 1.5em 1.5em 0 1.5em;
+
+				@media @mobile {
+					margin: 1.5em 0 0;
+				}
+			}
 		}
 	}
 
@@ -205,8 +254,6 @@ body.explorer {
 
 body.explorer.grid {
 	#background {
-
-
 		#grid-scroll {
 			.flexbox;
 			.flex-column;
