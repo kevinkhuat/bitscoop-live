@@ -383,6 +383,38 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	}
 
 	/**
+	 * Deletes a search by clearing the name, icon, and icon color.
+	 *
+	 * @param {String} [id] The ID of the search to favorite.
+	 * @returns {Promise} A promise that is resolved when the specified search is unfavorited on the server.
+	 */
+	function del(id) {
+		if (currentSearch && currentSearch.id || id) {
+			return new Promise(function(resolve, reject) {
+				$.ajax({
+					url: 'https://api.bitscoop.com/v2/searches/' + id,
+					method: 'DELETE',
+					xhrFields: {
+						withCredentials: true
+					}
+				}).done(function() {
+					resolve(null);
+				}).fail(function(req) {
+					var error;
+
+					error = new Error(req.statusText);
+					error.code = req.status;
+
+					reject(error);
+				});
+			});
+		}
+		else {
+			return Promise.resolve(null);
+		}
+	}
+
+	/**
 	 * Checks to see if there is a current search that matches the existing search parameters (i.e. filters, query).
 	 *
 	 * @returns {Promise} A promise that is resolved with the search that matches the current filters and query or
@@ -1478,6 +1510,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		check: exists,
 		clear: clear,
 		configure: configure,
+		del: del,
 		exists: exists,
 		expand: expand,
 		favorite: favorite,
@@ -1493,6 +1526,9 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 			enumerable: true,
 			get: function() {
 				return currentSearch;
+			},
+			set: function(val) {
+				currentSearch = val;
 			}
 		},
 

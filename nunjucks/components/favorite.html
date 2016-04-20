@@ -15,11 +15,18 @@
 </div>
 
 <div class="buttons">
-	{% if not hideDelete %}
+	<div>
+		{% if not hideDelete %}
 		<button class="danger" data-action="delete">
 			<span>Delete</span>
 		</button>
-	{% endif %}
+		{% endif %}
+		{% if not hideUnfavorite %}
+			<button data-action="unfavorite">
+				<span>Unfavorite</span>
+			</button>
+		{% endif %}
+	</div>
 
 	<div>
 		<button data-action="cancel">

@@ -24,7 +24,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v1/searches',
+				url: 'https://api.bitscoop.com/v2/searches',
 				type: 'GET',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -70,8 +70,8 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 	function moreSearches() {
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: cursor.next,
-				type: 'GET',
+				url: cursor.next.url,
+				type: cursor.next.method,
 				headers: {
 					'X-CSRFToken': $.cookie('csrftoken')
 				},
@@ -187,7 +187,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 
 	$document.ready(function() {
 		$.ajax({
-			url: 'https://api.bitscoop.com/v1/events',
+			url: 'https://api.bitscoop.com/v2/events',
 			type: 'SEARCH',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -211,7 +211,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 		});
 
 		$.ajax({
-			url: 'https://api.bitscoop.com/v1/searches',
+			url: 'https://api.bitscoop.com/v2/searches',
 			type: 'GET',
 			contentType: 'application/json',
 			data: {
@@ -242,14 +242,14 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			id = $activeSearch.data('id');
 
 			promise = new Promise(function(resolve) {
-				if (action === 'delete') {
+				if (action === 'unfavorite') {
 					search.unfavorite(id).then(function() {
 						if ($('.tab.selected').attr('name') === 'favorites') {
 							$activeSearch.remove();
 						}
 						else {
-							$activeSearch.attr('data-favorite', false).attr('data-icon', null).attr('data-icon-color', null).attr('data-name', null);
-							$activeSearch.find('.favorite-edit').replaceWith('<i class="favorite-create fa fa-star-o subdue"></i>');
+							$activeSearch.attr('data-favorited', false);
+							$activeSearch.find('i.favorite-edit').removeClass('favorite-edit').addClass('favorite-create').removeClass('fa-star').addClass('fa-star-o');
 							$activeSearch.find('.icon').replaceWith('<i class="icon fa fa-circle-o subdue" style="color: #b6bbbf"></i>');
 							$activeSearch.find('.name').empty();
 							$activeSearch.removeClass('active');
@@ -279,10 +279,8 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 					}
 
 					search.favorite(paramData).then(function() {
-						if (!$activeSearch.attr('data-favorited')) {
-							$activeSearch.attr('data-favorited', true);
-							$activeSearch.find('i.favorite-create').removeClass('favorite-create').addClass('favorite-edit').removeClass('fa-star-o').addClass('fa-star');
-						}
+						$activeSearch.attr('data-favorited', true);
+						$activeSearch.find('i.favorite-create').removeClass('favorite-create').addClass('favorite-edit').removeClass('fa-star-o').addClass('fa-star');
 
 						$activeSearch.attr('data-name', paramData.name);
 						$activeSearch.find('.name').html(paramData.name);
@@ -290,7 +288,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 						if (paramData.icon && paramData.icon !== 'none') {
 							$activeSearch.attr('data-icon', paramData.icon);
 							$activeSearch.attr('data-icon-color', paramData.icon_color);
-							$activeSearch.find('i.icon').removeClass('fa').removeClass(function(index, css) {
+							$activeSearch.find('i.icon').removeClass('fa subdue').removeClass(function(index, css) {
 								return (css.match (/fa-[\S-]+/g) || []).join(' ');
 							}).addClass(paramData.icon).css('color', paramData.icon_color);
 						}
@@ -303,6 +301,13 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 						}
 
 						$activeSearch.removeClass('active');
+
+						resolve(null);
+					});
+				}
+				else if (action === 'delete') {
+					search.del(id).then(function() {
+						$activeSearch.remove();
 
 						resolve(null);
 					});
@@ -342,7 +347,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			$search.addClass('active');
 
 			html = nunjucks.render('components/favorite.html', {
-				hideDelete: $search.attr('data-favorited') == null
+				hideUnfavorite: ($search.attr('data-favorited') === 'false' || $search.attr('data-favorited') == null)
 			});
 
 			$favorite.find('.body').html(html);

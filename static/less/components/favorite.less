@@ -39,16 +39,27 @@
 
 		.buttons {
 			.flexbox;
+			.flex-space-between;
 
 			margin-top: 1.5em;
 
+			@media (max-width: 850px) {
+				.flex-column;
+			}
+
 			& > div {
 				.flexbox;
-				.flex-grow;
-				.flex-end;
+
+				@media (max-width: 850px) {
+					.flex-space-between;
+
+					&:last-child {
+						margin-top: 1em;
+					}
+				}
 
 				& > button:first-child {
-					margin-right: 0.3em;
+					margin-right: 0.5em;
 				}
 			}
 		}

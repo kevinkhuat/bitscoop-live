@@ -921,7 +921,8 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			}
 
 			html = nunjucks.render('components/favorite.html', {
-				hideDelete: !favorited
+				hideDelete: search.current == null,
+				hideUnfavorite: !favorited
 			});
 
 			$favorite.find('.body').html(html);
@@ -956,16 +957,15 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 
 		$(document).on('click', '#favorite button', function(e) {
-			var action, icon, id, paramData, promise, $activeSearch, $favorite, $icon, $target;
+			var action, icon, id, paramData, promise, $favorite, $icon, $target;
 
-			$activeSearch = $('#searches > *.active');
 			$target = $(e.target);
 
 			action = $target.closest('[data-action]').data('action');
-			id = $activeSearch.data('id');
+			id = search.current ? search.current.id : null;
 
 			promise = new Promise(function(resolve) {
-				if (action === 'delete') {
+				if (action === 'unfavorite') {
 					search.unfavorite(id).then(function() {
 						$('#search-favorited').removeClass('filled');
 
@@ -1008,9 +1008,18 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 						resolve(null);
 					});
 				}
-				else {
-					$activeSearch.removeClass('active');
+				else if (action === 'delete') {
+					search.del(id).then(function() {
+						$('#search-favorited').removeClass('filled');
 
+						search.current = null;
+
+						history.replace.delParam('qid');
+
+						resolve(null);
+					});
+				}
+				else {
 					resolve(null);
 				}
 			});

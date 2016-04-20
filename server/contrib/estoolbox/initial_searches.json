@@ -104,14 +104,6 @@
   },
   {
     "filters": [
-    ],
-    "icon_color": "#0079bf",
-    "name": "All my stuff",
-    "icon": "fa fa-circle",
-    "favorited": true
-  },
-  {
-    "filters": [
       {
         "name": "Last 7 days",
         "type": "when",
@@ -288,6 +280,14 @@
     "icon_color": "#61bd4f",
     "name": "One year ago today",
     "icon": "fa fa-history",
+    "favorited": true
+  },
+  {
+    "filters": [
+    ],
+    "icon_color": "#0079bf",
+    "name": "All my stuff",
+    "icon": "fa fa-circle",
     "favorited": true
   }
 ]
