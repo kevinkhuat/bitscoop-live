@@ -10,6 +10,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		things: Thing
 	};
 	var RESULT_PAGE_LIMIT = 100;
+	var TEXT_CHAR_LIMIT = 200;
 
 	// The search cursor; keeps track of the current search page.
 	var cursor;
@@ -1004,6 +1005,10 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 					// Create a new sub-type object and cache it.
 					obj = new Constructor(item);
 
+					if (obj.text && obj.text.length > TEXT_CHAR_LIMIT) {
+						obj.text_truncated = obj.text.slice(0, TEXT_CHAR_LIMIT) + '...';
+					}
+
 					// Set up the relations by reference to save memory (and protect the integrity of the cache (e.g.
 					// document fragments associated with a particular item).
 					obj.event = event;
@@ -1180,8 +1185,8 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 				return Promise.all([
 					subobjects('content', 'section.content'),
 					subobjects('things', 'section.content'),
-					subobjects('contacts', 'aside.interactions'),
-					subobjects('organizations', 'aside.interactions')
+					subobjects('contacts', 'aside.interactions .objects'),
+					subobjects('organizations', 'aside.interactions .objects')
 				]).then(function() {
 					return Promise.resolve(fragment);
 				});

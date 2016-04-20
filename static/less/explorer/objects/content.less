@@ -64,12 +64,39 @@
 
 	.text {
 		.flexbox;
+		.flex-column;
 		.flex-center;
 
 		pre {
 			text-align: start;
 			max-width: 100%;
 			white-space: pre-wrap;
+
+			&:empty {
+				display: none;
+			}
 		}
+
+		.expand {
+			display: block;
+			cursor: pointer;
+			width: 50px;
+			margin: 0.5em auto 0 auto;
+			padding: 0.2em;
+			text-transform: uppercase;
+			font-size: 0.85em;
+			background-color: @border-color-light;
+
+			&:hover {
+				color: @blue;
+			}
+		}
+	}
+}
+
+.modal .object.content .text {
+	.expand,
+	.truncated {
+		display: none !important;
 	}
 }

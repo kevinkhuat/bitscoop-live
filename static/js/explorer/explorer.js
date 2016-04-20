@@ -121,7 +121,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		$count = $('.count').empty();
 
 		if (objects.cursor.count > 0) {
-			$('.controls').show();
+			$('.controls').removeClass('hidden');
 
 			if (state.mapping === 'events') {
 				humanized = humanize.compactInteger(objects.cursor.count);
@@ -194,6 +194,8 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 			if (state.view === 'feed') {
 				promise = promise.then(function() {
+					var i, j, $interaction, $interactions, $item, $textItem, $textItems;
+
 					$list = $('#list');
 
 					$list.closest('main').on('scroll', debounce(function() {
@@ -202,6 +204,30 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 					//render Embeddables the first time
 					renderFeedEmbeddables($list.parent());
+
+					for (i = 0; i < $list.children().length; i++) {
+						$item = $($list.children().get(i));
+						$textItems = $item.find('.text');
+						$interactions = $item.find('.interactions .objects');
+
+						for (j = 0; j < $textItems.length; j++) {
+							$textItem = $($textItems.get(j));
+
+							if ($textItem.find('.truncated').length === 0) {
+								$textItem.find('.expand').hide();
+							}
+							else {
+								$textItem.find('.full').hide();
+							}
+						}
+
+							if ($interactions.children().length > 5) {
+								$interactions.children().slice(5).hide();
+							}
+							else {
+								$interactions.siblings('.expand').hide();
+							}
+						}
 
 					return Promise.resolve();
 				});
@@ -342,7 +368,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			return promise.then(function() {
 				container.clear();
 				container.insert(nunjucks.render('explorer/components/no-results.html'));
-				$('.controls').hide();
+				$('.controls').addClass('hidden');
 
 				return Promise.resolve();
 			});
@@ -958,6 +984,76 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			promise.then(function() {
 				$.modal.close();
 			});
+		});
+
+		$(document).on('click', '.object .text .expand', function() {
+			var $this = $(this);
+
+			$this.hide();
+			$this.siblings('.truncated').hide();
+			$this.siblings('.full').show();
+		});
+
+		$(document).on('click', '.object .interactions .expand', function() {
+			var $this = $(this);
+
+			$this.hide();
+			$this.siblings('.objects').children().show();
+		});
+
+		$(document).on('click', '#details .content > aside', function() {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			if ($this.hasClass('next')) {
+				$newObject = $currentObject.next();
+			}
+			else {
+				$newObject = $currentObject.prev();
+			}
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(document).on('swipeleft', '#details .content', function(e) {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			$newObject = $currentObject.next();
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(document).on('swiperight', '#details .body', function(e) {
+			var $currentObject, $newObject, $this = $(this);
+
+			$currentObject = $('.item.active');
+
+			$newObject = $currentObject.prev();
+
+			$.modal.close();
+
+			if ($newObject.length > 0) {
+				$newObject.trigger('click');
+			}
+		});
+
+		$(window).on('resize', function(e) {
+			if ($('#details').length === 0 || $('#details').css('display') === 'none') {
+				return false;
+			}
+
+			resizeNextPrev();
 		});
 	});
 });

@@ -40,10 +40,17 @@
 	<div class="text">
 		{% if text %}
 			{% if url and not title %}
-				<a href="{{ url }}" target="_blank">{{ text | safe }}</a>
+				{% if text_truncated %}
+					<a class="truncated" href="{{ url }}" target="_blank">{{ text_truncated | safe }}</a>
+				{% endif %}
+				<a class="full" href="{{ url }}" target="_blank">{{ text | safe }}</a>
 			{% else %}
-				<pre>{{ text | safe }}</pre>
+				{% if text_truncated %}
+					<pre class="truncated">{{ text_truncated | safe }}</pre>
+				{% endif %}
+				<pre class="full">{{ text | safe }}</pre>
 			{% endif %}
+			<div class="expand">More</div>
 		{% endif %}
 	</div>
 </div>
