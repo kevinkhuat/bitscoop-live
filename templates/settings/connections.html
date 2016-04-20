@@ -25,7 +25,7 @@
 				<div class="last-run">
 					{% if connection.last_run %}
 						<div class="updates">
-							Updated {{ connection.last_run|relative_time }}
+							{% if connection.last_run|is_before %}Updated {% else %} Updating {% endif %}{{ connection.last_run|relative_time }}
 						</div>
 					{% else %}
 						<div class="updates">

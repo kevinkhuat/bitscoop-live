@@ -42,3 +42,13 @@ def relative_time(value):
         text = '{0} ago'.format(text)
 
     return text
+
+
+@register.filter
+def is_before(value):
+    now = timezone.now()
+
+    delta = now - value
+    seconds = delta.total_seconds()
+
+    return seconds > 0
