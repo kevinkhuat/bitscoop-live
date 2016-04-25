@@ -79,15 +79,16 @@ class AccountHandleView(View, FormMixin):
             update(user, form.cleaned_data)
             user.save()
 
-            msg = EmailMessage(to=[user.email])
-            msg.template_name = 'handle-change-confirm'
+            if old_handle != user.handle:
+                msg = EmailMessage(to=[user.email])
+                msg.template_name = 'handle-change-confirm'
 
-            msg.global_merge_vars = {
-                'handle': user.identifier,
-                'old_handle': old_handle
-            }
+                msg.global_merge_vars = {
+                    'handle': user.identifier,
+                    'old_handle': old_handle
+                }
 
-            msg.send()
+                msg.send()
 
             response = JsonResponse(form.cleaned_data)
         else:
@@ -511,27 +512,28 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
             update(user, form.cleaned_data)
             user.save()
 
-            msg = EmailMessage(to=[user.email])
-            msg.template_name = 'email-change-confirm'
+            if old_email != user.email:
+                msg = EmailMessage(to=[user.email])
+                msg.template_name = 'email-change-confirm'
 
-            msg.global_merge_vars = {
-                'handle': user.identifier,
-                'new_email': user.email,
-                'old_email': old_email
-            }
+                msg.global_merge_vars = {
+                    'handle': user.identifier,
+                    'new_email': user.email,
+                    'old_email': old_email
+                }
 
-            msg.send()
+                msg.send()
 
-            msg = EmailMessage(to=[old_email])
-            msg.template_name = 'email-change-confirm'
+                msg = EmailMessage(to=[old_email])
+                msg.template_name = 'email-change-confirm'
 
-            msg.global_merge_vars = {
-                'handle': user.identifier,
-                'new_email': user.email,
-                'old_email': old_email
-            }
+                msg.global_merge_vars = {
+                    'handle': user.identifier,
+                    'new_email': user.email,
+                    'old_email': old_email
+                }
 
-            msg.send()
+                msg.send()
         else:
             code = 422
 
@@ -559,16 +561,28 @@ class ProfileView(View, AcceptedTypesMixin, FormMixin):
             update(user, form.cleaned_data)
             user.save()
 
-            msg = EmailMessage(to=[user.email])
-            msg.template_name = 'email-change-confirm'
+            if old_email != user.email:
+                msg = EmailMessage(to=[user.email])
+                msg.template_name = 'email-change-confirm'
 
-            msg.global_merge_vars = {
-                'handle': user.identifier,
-                'new_email': user.email,
-                'old_email': old_email
-            }
+                msg.global_merge_vars = {
+                    'handle': user.identifier,
+                    'new_email': user.email,
+                    'old_email': old_email
+                }
 
-            msg.send()
+                msg.send()
+
+                msg = EmailMessage(to=[old_email])
+                msg.template_name = 'email-change-confirm'
+
+                msg.global_merge_vars = {
+                    'handle': user.identifier,
+                    'new_email': user.email,
+                    'old_email': old_email
+                }
+
+                msg.send()
 
             response = JsonResponse(form.cleaned_data)
         else:
