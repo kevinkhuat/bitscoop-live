@@ -20,7 +20,7 @@
 
 	<div class="provider">
 		<i class="{{ provider.icon }}"></i>
-		<span>{{ provider.name }}</span>
+		<span>{{ connection.name|truncate(30, True) }}</span>
 	</div>
 
 	<aside class="action-bar"></aside>

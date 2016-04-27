@@ -1,6 +1,69 @@
 define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji', 'viewstate'], function(Promise, icons, $, _, moment, nunjucks, twemoji, viewstate) {
 	var exports;
 
+	var connections = {};
+	var providers = {};
+
+	var connectionPromise = new Promise(function(resolve, reject) {
+		// Queries for the user's connections to populate the connector filter DDL.
+		$.ajax({
+			url: 'https://api.bitscoop.com/v2/connections',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data, status, req) {
+			var i, connection;
+
+			for (i = 0; i < data.length; i++) {
+				connection = data[i];
+
+				connections[connection.id] = connection;
+			}
+
+			resolve();
+		}).fail(function(req) {
+			var error;
+
+			error = new Error(req.statusText);
+			error.code = req.status;
+
+			reject(error);
+		});
+	});
+
+	var providerPromise = new Promise(function(resolve, reject) {
+		// Queries for the current providers to populate the provider filter DDL.
+		$.ajax({
+			url: 'https://api.bitscoop.com/v2/providers',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			xhrFields: {
+				withCredentials: true
+			}
+		}).done(function(data, status, req) {
+			var i, provider;
+
+			for (i = 0; i < data.length; i++) {
+				provider = data[i];
+
+				providers[provider.id] = provider;
+			}
+
+			resolve();
+		}).fail(function(req) {
+			var error;
+
+			error = new Error(req.statusText);
+			error.code = req.status;
+
+			reject(error);
+		});
+	});
+
 	var CONSTRUCTOR_MAPPINGS = {
 		contacts: Contact,
 		content: Content,
@@ -65,9 +128,10 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	 */
 	function Contact(data) {
 		this.id = data.id;
-		this.name = data.name;
-		this.handle = data.handle;
 		this.avatar_url = data.avatar_url;
+		this.connection = connections[data.connection];
+		this.handle = data.handle;
+		this.name = data.name;
 		this.type = {
 			icon: icons.getIcon('contact')
 		};
@@ -161,6 +225,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	 */
 	function Content(data) {
 		this.id = data.id;
+		this.connection = connections[data.connection];
 		this.embed_content = data.embed_content;
 		this.embed_format = data.embed_format;
 		this.embed_thumbnail = data.embed_thumbnail;
@@ -278,10 +343,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			icon: icons.getIcon('event', data.type)
 		};
 
-		this.connection = {
-			id: data.connection
-			// TODO: Hydrate connection name from the DDL of connection filter.
-		};
+		this.connection = connections[data.connection];
 		this.provider = {
 			id: data.provider,
 			icon: icons.getIcon('provider', data.provider_name),
@@ -450,6 +512,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	 */
 	function Location(data) {
 		this.id = data.id;
+		this.connection = connections[data.connection];
 		this.date = moment(data.datetime || data.created);
 		this.geo_format = data.geo_format;
 		this.geolocation = data.geolocation;
@@ -808,6 +871,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	 */
 	function Thing(data) {
 		this.id = data.id;
+		this.connection = connections[data.connection];
 		this.embed_content = data.embed_content;
 		this.embed_format = data.embed_format;
 		this.embed_thumbnail = data.embed_thumbnail;
@@ -1300,7 +1364,11 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		type: type,
 
 		cache: cache,
-		collections: collections
+		collections: collections,
+		connectionPromise: connectionPromise,
+		connections: connections,
+		providerPromise: providerPromise,
+		providers: providers
 	};
 
 	Object.defineProperties(exports, {

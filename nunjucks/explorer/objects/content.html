@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="provider">
-			<i class="{{ provider.icon }}"></i> {{ provider.name }}
+			<i class="{{ provider.icon }}"></i> {{ connection.name|truncate(30, True) }}
 		</div>
 
 		<aside class="action-bar">

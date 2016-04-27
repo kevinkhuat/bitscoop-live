@@ -1151,20 +1151,12 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		});
 
 		// Queries for the user's connections to populate the connector filter DDL.
-		$.ajax({
-			url: 'https://api.bitscoop.com/v2/connections',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			xhrFields: {
-				withCredentials: true
-			}
-		}).done(function(data) {
+		objects.connectionPromise.then(function() {
 			var $select;
 
 			$select = $('form.connector select[name="connection"]');
 
-			$.each(data, function(i, d) {
+			$.each(objects.connections, function(i, d) {
 				if (d.auth_status.connected) {
 					$('<option>')
 						.attr('value', d.id)
@@ -1172,30 +1164,16 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 						.appendTo($select);
 				}
 			});
-		}).fail(function(req) {
-			var error;
-
-			error = new Error(req.statusText);
-			error.code = req.status;
-
-			reject(error);
 		});
 
+
 		// Queries for the current providers to populate the provider filter DDL.
-		$.ajax({
-			url: 'https://api.bitscoop.com/v2/providers',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			xhrFields: {
-				withCredentials: true
-			}
-		}).done(function(data) {
+		objects.providerPromise.then(function() {
 			var $select;
 
 			$select = $('form.connector select[name="provider"]');
 
-			$.each(data, function(i, d) {
+			$.each(objects.providers, function(i, d) {
 				if (d.enabled === true) {
 					$('<option>')
 						.attr('value', d.name.toLowerCase())
@@ -1203,13 +1181,6 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 						.appendTo($select);
 				}
 			});
-		}).fail(function(req) {
-			var error;
-
-			error = new Error(req.statusText);
-			error.code = req.status;
-
-			reject(error);
 		});
 
 		// Deletes a filter when the "x" in the filter bubble is clicked.
