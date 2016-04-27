@@ -63,8 +63,9 @@
 					<i class="fa fa-check-circle flex-grow success-icon" data-for="birthday"></i>
 				</div>
 				<div>
-					<div class="text-box shrink">
-						<input type="date" name="birthday" value="{{ form.birthday.value|default_if_none:''|date:'Y-m-d' }}" />
+					<div class="input-group datetimepicker shrink" id="birthday">
+						<input type="text" class="form-control" name="birthday" value="{{ form.birthday.value|default_if_none:''|date:'Y-m-d' }}"/>
+						<span class="input-group-addon"><span class="fa fa-calendar"></span></span>
 					</div>
 				</div>
 				<div class="errorlist" data-for="birthday">

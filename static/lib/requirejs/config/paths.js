@@ -50,6 +50,9 @@ requirejs.config({
 		jutsu: window.staticUrl + 'lib/jutsu/jutsu.min',  // Custom BitScoop external library.
 
 		bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min',  // https://github.com/petkaantonov/bluebird
+		'bootstrap-collapse': 'https://cdn.rawgit.com/twbs/bootstrap/master/js/collapse', // https://github.com/twbs/bootstrap
+		'bootstrap-transition': 'https://cdn.rawgit.com/twbs/bootstrap/master/js/transition', // https://github.com/twbs/bootstrap
+		datetimepicker: 'https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/master/src/js/bootstrap-datetimepicker', //
 		'deferred-ap': 'https://d1m45eggqhap5f.cloudfront.net/deferred-ap/0.0.1/deferred-ap-0.0.1.min',  // https://github.com/sjberry/deferred-ap
 		humanize: 'https://cdnjs.cloudflare.com/ajax/libs/humanize-plus/1.6.0/humanize.min',  // https://github.com/HubSpot/humanize
 		jquery: 'https://code.jquery.com/jquery-2.1.4.min',  // https://github.com/jquery/jquery

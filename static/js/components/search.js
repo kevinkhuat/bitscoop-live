@@ -1,4 +1,4 @@
-define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throttle', 'jquery-cookie', 'jquery-deparam', 'jquery-deserialize'], function(Promise, debounce, filters, $, _, objects, throttle) {
+define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'objects', 'throttle', 'bootstrap-transition', 'bootstrap-collapse', 'datetimepicker', 'jquery-cookie', 'jquery-deparam', 'jquery-deserialize'], function(Promise, debounce, filters, $, _, moment, objects, throttle) {
 	var filterDefaults = {};
 
 	var ACTIVE_GEO_FILL_COLOR = '#ff9933';
@@ -191,7 +191,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 	 * Loads the filter instance into the active search filter form.
 	 */
 	Filter.prototype.load = function Filter$load() {
-		var whoType, $connectorForm, $whenForm, $whoForm;
+		var tempTime, whoType, $connectorForm, $timeElement, $whenForm, $whoForm;
 
 		//Deserialize can't handle unchecked checkboxes, as they are not serialized in the first place.
 		//Uncheck any that are present so that filters where they weren't checked aren't checked by mistake.
@@ -221,6 +221,18 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 				$whenForm.find('.relative-controls').addClass('hidden');
 				$whenForm.find('label[for="when-exact"]').addClass('active');
 				$whenForm.find('label[for="when-relative"]').removeClass('active');
+
+				if ($whenForm.find('.form-control[name="from"]').val().length > 0) {
+					$timeElement = $whenForm.find('.form-control[name="from"]');
+					tempTime = moment(new Date($timeElement.val())).format('MM/DD/YYYY h:mm A');
+					$('#from').data('DateTimePicker').date(tempTime);
+				}
+
+				if ($whenForm.find('.form-control[name="to"]').val().length > 0) {
+					$timeElement = $whenForm.find('.form-control[name="to"]');
+					tempTime = moment(new Date($timeElement.val())).format('MM/DD/YYYY h:mm A');
+					$('#to').data('DateTimePicker').date(tempTime);
+				}
 			}
 			else {
 				$whenForm.find('#when-relative').prop('checked', true);
@@ -284,6 +296,16 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		$('form.' + type).serializeArray().map(function(d) {
 			data[d.name] = d.value;
 		});
+
+		if (type === 'when') {
+			if (data.to.length > 0) {
+				data.to = moment(new Date(data.to)).utc().toJSON();
+			}
+
+			if (data.from.length > 0) {
+				data.from = moment(new Date(data.from)).utc().toJSON();
+			}
+		}
 
 		return new Filter(name, type, data);
 	};
@@ -920,6 +942,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 		$whenForm = $('#filter-values form.when');
 		$whenForm.find('.exact-controls').removeClass('hidden');
 		$whenForm.find('.relative-controls').addClass('hidden');
+		$whenForm.find('#from').data('DateTimePicker').date(null);
+		$whenForm.find('#to').data('DateTimePicker').date(null);
 		$whenForm.find('label[for="when-exact"]').addClass('active');
 		$whenForm.find('label[for="when-relative"]').removeClass('active');
 
@@ -1312,8 +1336,8 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 
 			$whenForm.find('.exact-controls').addClass('hidden');
 			$whenForm.find('.relative-controls').removeClass('hidden');
-			$whenForm.find('input[name="from"]').val('');
-			$whenForm.find('input[name="to"]').val('');
+			$whenForm.find('#from').data('DateTimePicker').date(null);
+			$whenForm.find('#to').data('DateTimePicker').date(null);
 			$whenForm.find('label[for="when-exact"]').removeClass('active');
 			$whenForm.find('label[for="when-relative"]').addClass('active');
 		});
@@ -1455,6 +1479,58 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'objects', 'throt
 					shrink();
 				}
 			});
+
+		$('#from').datetimepicker({
+			icons: {
+				up: 'fa fa-chevron-up',
+				down: 'fa fa-chevron-down',
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				time: 'fa fa-clock-o',
+				date: 'fa fa-calendar',
+				clear: 'fa fa-trash',
+				close: 'fa fa-times'
+			},
+			showClear: true,
+			showClose: true
+		});
+
+		$('#to').datetimepicker({
+			useCurrent: false,
+			icons: {
+				up: 'fa fa-chevron-up',
+				down: 'fa fa-chevron-down',
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				time: 'fa fa-clock-o',
+				date: 'fa fa-calendar',
+				clear: 'fa fa-trash',
+				close: 'fa fa-times'
+			},
+			showClear: true,
+			showClose: true
+		});
+
+		$('#from').on('dp.change', function(e) {
+			$('#to').data('DateTimePicker').minDate(e.date);
+		});
+
+		$('#to').on('dp.change', function(e) {
+			$('#from').data('DateTimePicker').maxDate(e.date);
+		});
+
+		// The datetimepicker has a stopImmediatePropagation on its input change. This manually triggers a change
+		// on the input in such a way that it will properly bubble up to form-monitor.
+		$('.datetimepicker').on('dp.change', function(e) {
+			var event;
+
+			if (e.date && e.oldDate && (e.oldDate !== e.date)) {
+				event = $.Event('change');
+				event.target = $('.form-control').get(0);
+
+				$('form.when').trigger(event);
+			}
+		});
 
 		// When the window is resized, recalculate the overflowing filters (i.e. fewer or more may fit without being
 		// compacted.

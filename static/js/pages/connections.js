@@ -42,7 +42,6 @@ define(['jquery', 'jquery-cookie'], function($) {
 			}).done(function(data, xhr, response) {
 				window.location.pathname = data;
 			}).fail(function(data, xhr, response) {
-
 			});
 
 			return false;

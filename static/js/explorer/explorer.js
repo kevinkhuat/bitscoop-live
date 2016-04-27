@@ -240,7 +240,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 					sortContext = objects[type[0].toUpperCase() + type.slice(1)].sort;
 				}
 				else {
-					sortContext = objects['Event'].sort;
+					sortContext = objects.Event.sort;
 				}
 
 				$sortFields = $('.sort .fields');
@@ -605,7 +605,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 					$embedContainer.css('height', null);
 					object = $parentContainer.data('object');
 
-					embedContent(object, $embedContainer)
+					embedContent(object, $embedContainer);
 				}
 			}
 			else {

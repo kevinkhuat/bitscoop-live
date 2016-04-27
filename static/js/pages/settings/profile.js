@@ -1,6 +1,31 @@
-define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie', 'minimodal', 'settings-base'], function(debounce, formMonitor, $) {
+define(['debounce', 'form-monitor', 'jquery', 'moment', 'bootstrap-transition', 'bootstrap-collapse', 'datetimepicker', 'jquery-cookie', 'minimodal', 'settings-base'], function(debounce, formMonitor, $, moment) {
 	$(document).ready(function() {
 		$(document).formMonitor('form.auto');
+
+		$('#birthday').datetimepicker({
+			format: 'YYYY-MM-DD',
+			icons: {
+				up: 'fa fa-chevron-up',
+				down: 'fa fa-chevron-down',
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				time: 'fa fa-clock-o',
+				date: 'fa fa-calendar'
+			}
+		});
+
+		// The datetimepicker has a stopImmediatePropagation on its input change. This manually triggers a change
+		// on the input in such a way that it will properly bubble up to form-monitor.
+		$('#birthday').on('dp.change', function(e) {
+			var event;
+
+			if (e.date && e.oldDate && (e.oldDate !== e.date)) {
+				event = $.Event('change');
+				event.target = $('.form-control').get(0);
+
+				$('form.auto').trigger(event);
+			}
+		});
 
 		$(document).on('change', 'input[name="gender"]', function(e) {
 			var $otherGender, $this = $(this);
