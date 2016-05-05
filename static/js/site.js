@@ -34,6 +34,9 @@ define(['ga', 'jquery', 'nunjucks', 'jquery-cookie', 'jquery-regexp-selector'], 
 		});
 	});
 
-	ga('create', 'UA-65896068-1', 'auto');
-	ga('send', 'pageview');
+	// Google Analytics dependency may be undefined if the user is running ad blockers or ghostery.
+	if (ga) {
+		ga('create', 'UA-65896068-1', 'auto');
+		ga('send', 'pageview');
+	}
 });
