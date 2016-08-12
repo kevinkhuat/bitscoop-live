@@ -1,4 +1,6 @@
-define ('location', ['jquery', 'jquery-cookie'], function($) {
+define(['cookies', 'jquery'], function(cookies, $) {
+	var navigator = window.navigator;
+
 	//Used by navigator.geolocation's functions - see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
 	var options = {
 		enableHighAccuracy: true,
@@ -90,7 +92,7 @@ define ('location', ['jquery', 'jquery-cookie'], function($) {
 			data: locationPost,
 			dataType: 'text',
 			headers: {
-				'X-CSRFToken': $.cookie('csrftoken')
+				'X-CSRFToken': cookies.get('csrftoken')
 			},
 			xhrFields: {
 				withCredentials: true
@@ -208,7 +210,7 @@ define ('location', ['jquery', 'jquery-cookie'], function($) {
 			type: 'GET',
 			dataType: 'text',
 			headers: {
-				'X-CSRFToken': $.cookie('csrftoken')
+				'X-CSRFToken': cookies.get('csrftoken')
 			},
 			xhrFields: {
 				withCredentials: true

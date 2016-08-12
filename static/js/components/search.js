@@ -1,4 +1,4 @@
-define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'objects', 'throttle', 'bootstrap-transition', 'bootstrap-collapse', 'datetimepicker', 'jquery-cookie', 'jquery-deparam', 'jquery-deserialize'], function(Promise, debounce, filters, $, _, moment, objects, throttle) {
+define(['bluebird', 'cookies', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'objects', 'throttle', 'datetimepicker', 'jquery-deparam', 'jquery-deserialize'], function(Promise, cookies, debounce, filters, $, _, moment, objects, throttle) {
 	var filterDefaults = {};
 
 	var ACTIVE_GEO_FILL_COLOR = '#ff9933';
@@ -414,10 +414,10 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		if (currentSearch && currentSearch.id || id) {
 			return new Promise(function(resolve, reject) {
 				$.ajax({
-					url: 'https://api.bitscoop.com/v2/searches/' + id,
+					url: 'https://live.bitscoop.com/api/searches/' + id,
 					method: 'DELETE',
-					xhrFields: {
-						withCredentials: true
+					headers: {
+						'X-CSRFToken': cookies.get('csrftoken')
 					}
 				}).done(function() {
 					resolve(null);
@@ -448,10 +448,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		data = {};
 		filters = getFilters();
 		query = getQuery();
-
-		if (filters.length > 0) {
-			data.filters = filters;
-		}
+		data.filters = filters;
 
 		if (query) {
 			data.query = query;
@@ -459,14 +456,11 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v2/searches',
+				url: 'https://live.bitscoop.com/api/searches',
 				type: 'SEARCH',
 				dataType: 'json',
 				contentType: 'application/json',
-				data: JSON.stringify(data),
-				xhrFields: {
-					withCredentials: true
-				}
+				data: JSON.stringify(data)
 			}).done(function(data, status, req) {
 				switch(req.status) {
 					case 200:
@@ -576,13 +570,13 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v2/searches/' + params.id,
+				url: 'https://live.bitscoop.com/api/searches/' + params.id,
 				type: 'PATCH',
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify(data),
-				xhrFields: {
-					withCredentials: true
+				headers: {
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).done(function(data) {
 				resolve(data);
@@ -595,6 +589,17 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 				reject(error);
 			});
 		});
+	}
+
+	/**
+	 *
+	 * @private
+	 * @param type {String} The type of filter to generate
+	 * @param key {String} The key of the filter
+	 * @param value {String} The value of the filter
+	 */
+	function generateFilter(type, key, value) {
+		return new filters.BoolFilter().must(new filters.OrFilter(new filters[type](key, value))).toDSL();
 	}
 
 	/**
@@ -629,11 +634,14 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 	 * @returns {Object}
 	 */
 	function getDSL() {
-		var i, bool, connectorFilters, data, filter, filterList, operand, type, whatFilters, whenFilters, whereFilters,
+		var i, bool, connectorFilters, data, filter, filterList, operand, query, slugifiedTag, tagFilters, tags, type, whatFilters, whenFilters, whereFilters,
 			whoFilters;
 
 		bool = new filters.BoolFilter();
 		filterList = getFilters();
+
+		query = getQuery();
+		tags = query.match(/#[A-Za-z0-9-]+/g);
 
 		for (i = 0; i < filterList.length; i++) {
 			type = filterList[i].type;
@@ -798,8 +806,30 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 			}
 		}
 
+		if (tags != null) {
+			for (i = 0; i < tags.length; i++) {
+				slugifiedTag = tags[i].slice(1).toLowerCase().replace(/[^a-zA-Z0-9-]+/g, '-');
+				filter = new filters.OrFilter(new filters.TermFilter('tags.slugified', slugifiedTag));
+				filter.or(new filters.TermFilter('contacts.tags.slugified', slugifiedTag));
+				filter.or(new filters.TermFilter('content.tags.slugified', slugifiedTag));
+				filter.or(new filters.TermFilter('location.tags.slugified', slugifiedTag));
+				filter.or(new filters.TermFilter('things.tags.slugified', slugifiedTag));
+
+				if (tagFilters) {
+					tagFilters.or(filter);
+				}
+				else {
+					tagFilters = new filters.OrFilter(filter);
+				}
+			}
+		}
+
 		if (connectorFilters != null) {
 			bool.must(connectorFilters);
+		}
+
+		if (tagFilters != null) {
+			bool.must(tagFilters);
 		}
 
 		if (whoFilters != null) {
@@ -853,14 +883,11 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 				};
 
 				$.ajax({
-					url: 'https://api.bitscoop.com/v2/searches',
+					url: 'https://live.bitscoop.com/api/searches',
 					type: 'GET',
 					dataType: 'json',
 					contentType: 'application/json',
-					data: data,
-					xhrFields: {
-						withCredentials: true
-					}
+					data: data
 				}).done(function(data) {
 					if (data && data.results.length > 0) {
 						resolve(data.results[0]);
@@ -881,12 +908,9 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		else {
 			promise = new Promise(function(resolve, reject) {
 				$.ajax({
-					url: 'https://api.bitscoop.com/v2/searches/' + id,
+					url: 'https://live.bitscoop.com/api/searches/' + id,
 					type: 'GET',
-					contentType: 'application/json',
-					xhrFields: {
-						withCredentials: true
-					}
+					contentType: 'application/json'
 				}).done(function(data) {
 					resolve(data);
 				}).fail(function(req) {
@@ -966,10 +990,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		data = {};
 		filters = getFilters();
 		query = getQuery();
-
-		if (filters.length > 0) {
-			data.filters = filters;
-		}
+		data.filters = filters;
 
 		if (query) {
 			data.query = query;
@@ -984,13 +1005,13 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v2/searches',
+				url: 'https://live.bitscoop.com/api/searches',
 				type: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify(data),
-				xhrFields: {
-					withCredentials: true
+				headers: {
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).done(function(data) {
 				resolve(data);
@@ -1150,38 +1171,45 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 			});
 		});
 
-		// Queries for the user's connections to populate the connector filter DDL.
-		objects.connectionPromise.then(function() {
-			var $select;
+		// Queries for the user's connections and BitScoop's providers to populate the connector and provider filter DDL's.
+		// Only providers used by the user's connections are shown.
+		Promise.all([
+			objects.connectionPromise,
+			objects.providerPromise
+		])
+			.then(function() {
+				var usedProviders, $select;
 
-			$select = $('form.connector select[name="connection"]');
+				usedProviders = {};
 
-			$.each(objects.connections, function(i, d) {
-				if (d.auth_status.connected) {
-					$('<option>')
-						.attr('value', d.id)
-						.text(d.name)
-						.appendTo($select);
-				}
+				$select = $('form.connector select[name="connection"]');
+
+				$.each(objects.connections, function(i, d) {
+					var providerName;
+
+					if (d.auth_status.complete) {
+						providerName = _.get(objects.providers, d.provider_id).name;
+
+						$('<option>')
+							.attr('value', d.id)
+							.text(providerName + ' - ' + d.name)
+							.appendTo($select);
+
+						usedProviders[d.provider_id] = true;
+					}
+				});
+
+				$select = $('form.connector select[name="provider"]');
+
+				$.each(objects.providers, function(i, d) {
+					if (usedProviders.hasOwnProperty(d.id)) {
+						$('<option>')
+							.attr('value', d.name.toLowerCase())
+							.text(d.name)
+							.appendTo($select);
+					}
+				});
 			});
-		});
-
-
-		// Queries for the current providers to populate the provider filter DDL.
-		objects.providerPromise.then(function() {
-			var $select;
-
-			$select = $('form.connector select[name="provider"]');
-
-			$.each(objects.providers, function(i, d) {
-				if (d.enabled === true) {
-					$('<option>')
-						.attr('value', d.name.toLowerCase())
-						.text(d.name)
-						.appendTo($select);
-				}
-			});
-		});
 
 		// Deletes a filter when the "x" in the filter bubble is clicked.
 		$('#search-bar').on('click', '.filter > .fa-close', function(e) {
@@ -1590,6 +1618,7 @@ define(['bluebird', 'debounce', 'filters', 'jquery', 'lodash', 'moment', 'object
 		exists: exists,
 		expand: expand,
 		favorite: favorite,
+		generateFilter: generateFilter,
 		load: load,
 		reset: reset,
 		save: save,

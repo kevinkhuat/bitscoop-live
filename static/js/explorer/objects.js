@@ -1,19 +1,18 @@
-define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji', 'viewstate'], function(Promise, icons, $, _, moment, nunjucks, twemoji, viewstate) {
+define(['bluebird', 'cookies', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji', 'viewstate'], function(Promise, cookies, icons, $, _, moment, nunjucks, twemoji, viewstate) {
 	var exports;
 
 	var connections = {};
 	var providers = {};
 
+	var taggedSubtypes = ['contacts', 'content', 'location', 'things'];
+
 	var connectionPromise = new Promise(function(resolve, reject) {
 		// Queries for the user's connections to populate the connector filter DDL.
 		$.ajax({
-			url: 'https://api.bitscoop.com/v2/connections',
+			url: 'https://live.bitscoop.com/api/connections',
 			type: 'GET',
 			dataType: 'json',
-			contentType: 'application/json',
-			xhrFields: {
-				withCredentials: true
-			}
+			contentType: 'application/json'
 		}).done(function(data, status, req) {
 			var i, connection;
 
@@ -37,13 +36,10 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	var providerPromise = new Promise(function(resolve, reject) {
 		// Queries for the current providers to populate the provider filter DDL.
 		$.ajax({
-			url: 'https://api.bitscoop.com/v2/providers',
+			url: 'https://live.bitscoop.com/api/providers',
 			type: 'GET',
 			dataType: 'json',
-			contentType: 'application/json',
-			xhrFields: {
-				withCredentials: true
-			}
+			contentType: 'application/json'
 		}).done(function(data, status, req) {
 			var i, provider;
 
@@ -132,6 +128,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		this.connection = connections[data.connection];
 		this.handle = data.handle;
 		this.name = data.name;
+		this.tagMasks = data.tagMasks;
 		this.type = {
 			icon: icons.getIcon('contact')
 		};
@@ -159,6 +156,41 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			};
 
 			return context;
+		}
+	});
+
+	Object.defineProperties(Contact.prototype, {
+		tags: {
+			enumerable: true,
+			get: function() {
+				var tags;
+
+				tags = [];
+
+				if (this.tagMasks) {
+					_.forEach(this.tagMasks.source, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.added, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.removed, function(tag) {
+						var index = tags.indexOf(tag);
+
+						if (index > -1) {
+							tags.splice(index, 1);
+						}
+					});
+				}
+
+				return tags;
+			}
 		}
 	});
 
@@ -231,6 +263,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		this.embed_thumbnail = data.embed_thumbnail;
 		this.mimetype = data.mimetype;
 		this.owner = data.owner;
+		this.tagMasks = data.tagMasks;
 		this.text = data.text ? twemoji.parse(data.text) : null;
 		this.title = data.title || data.text;
 		this.type = {
@@ -262,6 +295,41 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			};
 
 			return context;
+		}
+	});
+
+	Object.defineProperties(Content.prototype, {
+		tags: {
+			enumerable: true,
+			get: function() {
+				var tags;
+
+				tags = [];
+
+				if (this.tagMasks) {
+					_.forEach(this.tagMasks.source, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.added, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.removed, function(tag) {
+						var index = tags.indexOf(tag);
+
+						if (index > -1) {
+							tags.splice(index, 1);
+						}
+					});
+				}
+
+				return tags;
+			}
 		}
 	});
 
@@ -299,8 +367,8 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			},
 			{
 				type: 'icon',
-				icon: 'icon',
-				property: 'type.icon'
+				icon: 'type.icon',
+				property: 'type'
 			}
 		]
 	};
@@ -338,6 +406,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		this.contact_interaction_type = data.content_interaction_type;
 		this.date = moment(data.datetime || data.created);
 		this.date.estimated = !data.datetime;
+		this.tagMasks = data.tagMasks;
 		this.type = {
 			name: data.type,
 			icon: icons.getIcon('event', data.type)
@@ -361,6 +430,8 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 
 			firstItem = self.firstItem;
 
+			self.sumTags = self.uniqueTags;
+
 			context = {
 				columns: self.constructor.columns[view] || null,
 				icon: {
@@ -369,6 +440,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 				},
 				object: self,
 				sort: self.constructor.sort.fields,
+				sumTags: self.sumTags,
 				thumbnail: firstItem ? firstItem.embed_thumbnail : null,
 				title: firstItem ? firstItem.title : null,
 				type: type(self)
@@ -379,6 +451,76 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	});
 
 	Object.defineProperties(Event.prototype, {
+		allTags: {
+			enumerable: true,
+			get: function() {
+				var allTags, h, index, subType, tags;
+
+				allTags = [];
+
+				for (h = 0; h < taggedSubtypes.length; h++) {
+					subType = taggedSubtypes[h];
+
+					if (subType === 'location' && this.location && this.location.tagMasks) {
+						tags = [];
+
+						_.forEach(this.location.tagMasks.source, function(tag) {
+							if (tags.indexOf(tag) === -1) {
+								tags.push(tag);
+							}
+						});
+
+						_.forEach(this.location.tagMasks.added, function(tag) {
+							if (tags.indexOf(tag) === -1) {
+								tags.push(tag);
+							}
+						});
+
+						_.forEach(this.location.tagMasks.removed, function(tag) {
+							index = tags.indexOf(tag);
+
+							if (index > -1) {
+								tags.splice(index, 1);
+							}
+						});
+
+						allTags.concat(tags);
+					}
+					else if (this[subType]) {
+						_.forEach(this[subType], function(item) {
+							if (item.tagMasks) {
+								tags = [];
+
+								_.forEach(item.tagMasks.source, function(tag) {
+									if (tags.indexOf(tag) === -1) {
+										tags.push(tag);
+									}
+								});
+
+								_.forEach(item.tagMasks.added, function(tag) {
+									if (tags.indexOf(tag) === -1) {
+										tags.push(tag);
+									}
+								});
+
+								_.forEach(item.tagMasks.removed, function(tag) {
+									index = tags.indexOf(tag);
+
+									if (index > -1) {
+										tags.splice(index, 1);
+									}
+								});
+
+								allTags.concat(tags);
+							}
+						});
+					}
+				}
+
+				return allTags;
+			}
+		},
+
 		firstContact: {
 			enumerable: true,
 			get: function() {
@@ -428,6 +570,132 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 
 				return null;
 			}
+		},
+
+		contextOrType: {
+			enumerable: true,
+			get: function() {
+				return this.context ? this.context : this.type.name[0].toUpperCase() + this.type.name.slice(1);
+			}
+		},
+
+		tags: {
+			enumerable: true,
+			get: function() {
+				var tags;
+
+				tags = [];
+
+				if (this.tagMasks) {
+					_.forEach(this.tagMasks.source, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.added, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.removed, function(tag) {
+						var index = tags.indexOf(tag);
+
+						if (index > -1) {
+							tags.splice(index, 1);
+						}
+					});
+				}
+
+				return tags;
+			}
+		},
+
+		uniqueTags: {
+			enumerable: true,
+			get: function() {
+				var h, index, subDocument, subType, tags;
+
+				tags = [];
+
+				for (h = 0; h < taggedSubtypes.length; h++) {
+					subType = taggedSubtypes[h];
+
+					if (subType === 'location' && this.location && this.location.tagMasks) {
+						_.forEach(this.location.tagMasks.source, function(tag) {
+							if (tags.indexOf(tag) === -1) {
+								tags.push(tag);
+							}
+						});
+
+						_.forEach(this.location.tagMasks.added, function(tag) {
+							if (tags.indexOf(tag) === -1) {
+								tags.push(tag);
+							}
+						});
+
+						_.forEach(this.location.tagMasks.removed, function(tag) {
+							index = tags.indexOf(tag);
+
+							if (index > -1) {
+								tags.splice(index, 1);
+							}
+						});
+					}
+					else if (this[subType]) {
+						_.forEach(this[subType], function(item) {
+							subDocument = item;
+
+							if (subDocument.tagMasks) {
+								_.forEach(subDocument.tagMasks.source, function(tag) {
+									if (tags.indexOf(tag) === -1) {
+										tags.push(tag);
+									}
+								});
+
+								_.forEach(subDocument.tagMasks.added, function(tag) {
+									if (tags.indexOf(tag) === -1) {
+										tags.push(tag);
+									}
+								});
+
+								_.forEach(subDocument.tagMasks.removed, function(tag) {
+									index = tags.indexOf(tag);
+
+									if (index > -1) {
+										tags.splice(index, 1);
+									}
+								});
+							}
+						});
+					}
+				}
+
+				if (this.tagMasks) {
+					_.forEach(this.tagMasks.source, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.added, function(tag) {
+						if (tags.indexOf(tag) === -1) {
+							tags.push(tag);
+						}
+					});
+
+					_.forEach(this.tagMasks.removed, function(tag) {
+						index = tags.indexOf(tag);
+
+						if (index > -1) {
+							tags.splice(index, 1);
+						}
+					});
+				}
+
+				return tags;
+			}
 		}
 	});
 
@@ -435,42 +703,37 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		list: [
 			{
 				type: 'text',
-				property: 'title'
+				property: 'firstItem.title'
 			},
 			{
 				type: 'icon',
-				property: 'provider.name'
+				property: 'contextOrType',
+				icon: 'type.icon'
 			},
 			{
 				type: 'icon',
-				property: 'type.name'
-			},
-			{
-				type: 'icon',
-				property: 'firstItem.type.icon'
+				property: 'provider.name',
+				icon: 'provider.icon'
 			},
 			{
 				type: 'text',
-				property: 'firstContact.handle'
+				property: 'firstContact.handle',
+				mobileHide: true
 			},
 			{
 				type: 'text',
 				property: 'date'
-			},
-			{
-				type: 'text',
-				property: 'firstPlace.name'
 			}
 		],
 
 		map: [
 			{
 				type: 'icon',
-				property: 'provider.icon'
+				property: 'type.icon'
 			},
 			{
 				type: 'icon',
-				property: 'type.icon'
+				property: 'provider.icon'
 			},
 			{
 				type: 'icon',
@@ -517,6 +780,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		this.geo_format = data.geo_format;
 		this.geolocation = data.geolocation;
 		this.resolution = data.resolution;
+		this.tagMasks = data.tagMasks;
 		this.type = {
 			icon: icons.getIcon('locations')
 		};
@@ -877,6 +1141,7 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		this.embed_thumbnail = data.embed_thumbnail;
 		this.mimetype = data.mimetype;
 		this.owner = data.owner;
+		this.tagMasks = data.tagMasks;
 		this.text = data.text;
 		this.title = data.title;
 		this.type = {
@@ -1002,12 +1267,11 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			$.ajax({
 				url: cursor.next.url,
 				type: cursor.next.method,
+				dataType: 'json',
+				contentType: 'application/json',
 				data: JSON.stringify(cursor.next.body),
 				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).done(function(data) {
 				var processed;
@@ -1032,8 +1296,8 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 	 * @param {Object} data Raw data from the ElasticSearch API.
 	 * @returns {Object} The data parsed into a page object with lists corresponding to each tracked object type.
 	 */
-	function process(data) {
-		var i, j, Constructor, event, events, list, obj, page, parse, result, type;
+	function process(data, cacheOnly) {
+		var i, Constructor, event, events, list, obj, page, parse, result, type;
 
 		page = {};
 		// Create a new event array, this needs to be outside the loop because "event" is our main data type. The
@@ -1042,7 +1306,6 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 
 		for (i = 0; i < data.length; i++) {
 			result = data[i];
-
 			event = new Event(result);
 
 			// Store the newly created event in the cache.
@@ -1107,34 +1370,40 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 							return !exists;
 						});
 
-						// Add parsed objects to the internal cache.
-						Array.prototype.push.apply(collections[type], list);
+						if (!cacheOnly) {
+							// Add parsed objects to the internal cache.
+							Array.prototype.push.apply(collections[type], list);
 
-						// Add parsed objects to the page.
-						Array.prototype.push.apply(page[type], list);
+							// Add parsed objects to the page.
+							Array.prototype.push.apply(page[type], list);
+						}
 					}
 					else {
 						// Set up the backreference relations by reference.
 						event[type] = obj = parse(result[type]);
 
-						// Add the parsed object to the page.
-						if (!cache[type].hasOwnProperty(item.id)) {
-							collections[type].push(obj);
-						}
+						if (!cacheOnly) {
+							// Add the parsed object to the page.
+							if (!cache[type].hasOwnProperty(obj.id)) {
+								collections[type].push(obj);
+							}
 
-						// Add the parsed object to the page.
-						if (!cache[type].hasOwnProperty(item.id)) {
-							cache[type][item.id] = item;
-							page[type].push(obj);
+							// Add the parsed object to the page.
+							if (!cache[type].hasOwnProperty(obj.id)) {
+								cache[type][obj.id] = obj;
+								page[type].push(obj);
+							}
 						}
 					}
 				}
 			}
 		}
 
-		// Do a single concat on the event internal cache to save some memory (as opposed to many `.push()` calls inside
-		// the loop.
-		Array.prototype.push.apply(collections.events, events);
+		if (!cacheOnly) {
+			// Do a single concat on the event internal cache to save some memory (as opposed to many `.push()` calls inside
+			// the loop.
+			Array.prototype.push.apply(collections.events, events);
+		}
 
 		return page;
 	}
@@ -1221,7 +1490,31 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 			promise = promise.then(function(fragment) {
 				return render('details', object)
 					.then(function(details) {
+						var j, $interactions, $item, $textItem, $textItems;
+
 						fragment.appendChild(details);
+
+						$item = $(fragment);
+						$textItems = $item.find('.text');
+						$interactions = $item.find('.interactions .objects');
+
+						for (j = 0; j < $textItems.length; j++) {
+							$textItem = $($textItems.get(j));
+
+							if ($textItem.find('.truncated').length === 0) {
+								$textItem.find('.expand').hide();
+							}
+							else {
+								$textItem.find('.full').hide();
+							}
+						}
+
+						if ($interactions.children().length > 5) {
+							$interactions.children().slice(5).hide();
+						}
+						else {
+							$interactions.siblings('.expand').hide();
+						}
 
 						return Promise.resolve(fragment);
 					});
@@ -1298,16 +1591,13 @@ define(['bluebird', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks', 'twemoji'
 		// Execute the search by querying the events with the specified DSL.
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v2/events',
+				url: 'https://live.bitscoop.com/api/events',
 				type: 'SEARCH',
 				dataType: 'json',
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).done(function(data) {
 				var processed;

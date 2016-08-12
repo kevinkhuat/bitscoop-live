@@ -1,4 +1,4 @@
-<div class="item grid" {% if thumbnail %} style="background-image: url({{ thumbnail }});"{% endif %}>
+<div class="item grid" data-id="{{ object.id }}" {% if thumbnail %} style="background-image: url({{ thumbnail }});"{% endif %}>
 	{% if thumbnail %}
 		<div class="mobile-thumbnail">
 			<img src="{{ thumbnail }}" />

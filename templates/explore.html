@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
 
 {% block static %}
-	{{ block.super }}
+	{{ super() }}
 
 	{# mapbox #}
 	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css" />
@@ -20,6 +19,8 @@
 	<link rel="stylesheet" type="text/css" href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css'/>
 	{# leaflet-zoomslider #}
 	<link rel="stylesheet" type="text/css" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css" />
+	{# bootstrap-datetimepicker #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 
 	<script type="text/javascript">
 		require(['explorer']);
@@ -28,23 +29,36 @@
 
 
 {% block header %}
-	{% include 'components/header.html' with mode='app' %}
+	{% include 'components/header.html' %}
 {% endblock %}
+
 
 {% block menu %}
-	{% include 'components/menu.html' with mode='app' %}
+	{% include 'components/menu.html' %}
 {% endblock %}
 
-{% block outer_footer %}
-<aside id="favorite" class="modal modal-close">
-	<div class="container">
-		<div class="scroller">
-			<div class="content">
-				<i class="modal-close close-button"></i>
 
-				<div class="body"></div>
+{% block outer_footer %}
+	<aside id="favorite" class="modal modal-close">
+		<div class="container">
+			<div class="scroller">
+				<div class="content">
+					<i class="modal-close close-button"></i>
+
+					<div class="body"></div>
+				</div>
 			</div>
 		</div>
-	</div>
-</aside>
+	</aside>
+	<aside id="action" class="modal modal-close">
+		<div class="container">
+			<div class="scroller">
+				<div class="content">
+					<i class="modal-close close-button"></i>
+
+					<div class="body"></div>
+				</div>
+			</div>
+		</div>
+	</aside>
 {% endblock %}

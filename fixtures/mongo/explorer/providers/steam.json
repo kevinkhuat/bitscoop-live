@@ -1,0 +1,23 @@
+{
+  "_id": "0cbd7b54443545f9bc15f10c923b214a",
+
+  "enabled": true,
+
+  "sources": {
+    "games_owned": {
+      "name": "Games Owned",
+      "description": "Steam games that you own",
+      "enabled_by_default": true,
+      "mapping": "GamesOwned"
+    },
+    "achievements": {
+      "name": "Achievements",
+      "description": "Achievements in Steam games you have played",
+      "enabled_by_default": true,
+      "mapping": "GamesOwned",
+      "population": "*"
+    }
+  },
+
+  "provider_id": "6d060780ab2848f5a17226655525385f"
+}

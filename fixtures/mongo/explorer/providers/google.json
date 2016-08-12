@@ -1,0 +1,59 @@
+{
+  "_id": "0f7a86aad3214134ad134250f1a09510",
+
+  "enabled": true,
+
+  "sources": {
+    "youtube_watch": {
+      "name": "YouTube Videos Watched",
+      "description": "Videos you have watched on YouTube",
+      "enabled_by_default": true,
+      "mapping": "YoutubeChannels",
+      "population": {
+        "watch_history": "oembed"
+      },
+      "scopes": [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/youtube.readonly"
+      ]
+    },
+    "youtube_uploads": {
+      "name": "YouTube Videos Uploaded",
+      "description": "Videos you have uploaded to YouTube",
+      "enabled_by_default": true,
+      "mapping": "YoutubeChannels",
+      "population": {
+        "upload_history": "oembed"
+      },
+      "scopes": [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/youtube.readonly"
+      ]
+    },
+    "gmail_inbox": {
+      "name": "Gmail",
+      "description": "Email you have sent and received via Gmail",
+      "enabled_by_default": true,
+      "mapping": "GmailInbox",
+      "population": "*",
+      "scopes": [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://mail.google.com",
+        "https://www.googleapis.com/auth/gmail.readonly"
+      ]
+    },
+    "drive_changes": {
+      "name": "Google Drive",
+      "description": "Files you have created, edited, and viewed on Google Drive",
+      "enabled_by_default": true,
+      "mapping": "DriveChanges",
+      "population": "*",
+      "scopes": [
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      ]
+    }
+  },
+
+  "provider_id": "121d5a821ab147e2b09b7d4fc710fc58"
+}

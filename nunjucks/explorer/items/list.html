@@ -1,11 +1,10 @@
-<div class="item list">
+<div class="item list" data-id="{{ object.id }}" >
 	{% for column in columns %}
-		<div {% if column.type == 'icon' %}class="icon-column"{% endif %}>
+		<div class="{% if column.type == 'icon' %}icon-column {% endif %}{% if column.mobileHide %} mobile-hide {% endif%}">
 			{% if column.type == 'icon' %}
 				<i class="{{ object | get(column.icon) }}"></i>
-			{% else %}
-				<span class="{{ column.property }}">{{ object | get(column.property) }}</span>
 			{% endif %}
+			<span class="{% if column.type == 'icon' %}mobile-hide {% endif %}{{ column.property }}">{{ object | get(column.property) | date('shortdate') if column.property == 'date' else object | get(column.property) | truncate(30, True) }}</span>
 		</div>
 	{% endfor %}
 </div>

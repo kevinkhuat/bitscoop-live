@@ -1,4 +1,8 @@
 define(['jquery', 'search'], function($, search) {
+	var location = window.location;
+	var sessionStorage = window.sessionStorage;
+
+
 	$(document).ready(function() {
 		$('.mobile-selector').on('click', function(e) {
 			var $i, $pages, $this = $(this);

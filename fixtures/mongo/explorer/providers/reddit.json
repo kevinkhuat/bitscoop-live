@@ -1,0 +1,85 @@
+{
+  "_id": "89494825c6304cec8d479bb81bc059e7",
+
+  "enabled": true,
+
+  "sources": {
+    "comments": {
+      "name": "Comments",
+      "description": "Comments you have made",
+      "enabled_by_default": true,
+      "mapping": "Comments",
+      "population": "*",
+      "scopes": [
+        "history"
+      ]
+    },
+    "submitted": {
+      "name": "Threads created",
+      "description": "Threads you have created",
+      "enabled_by_default": true,
+      "mapping": "ThreadsSubmitted",
+      "scopes": [
+        "history"
+      ]
+    },
+    "threads_upvoted": {
+      "name": "Upvotes",
+      "description": "Threads you have upvoted",
+      "enabled_by_default": true,
+      "mapping": "ThreadsUpvoted",
+      "scopes": [
+        "history"
+      ]
+    },
+    "threads_downvoted": {
+      "name": "Downvotes",
+      "description": "Threads you have downvoted",
+      "enabled_by_default": true,
+      "mapping": "ThreadsDownvoted",
+      "scopes": [
+        "history"
+      ]
+    },
+    "saved_comments": {
+      "name": "Saved comments",
+      "description": "Comments you have saved",
+      "enabled_by_default": true,
+      "mapping": "SavedComments",
+      "scopes": [
+        "history"
+      ]
+    },
+    "gilded_comments": {
+      "name": "Gilded comments",
+      "description": "Comments you have gilded",
+      "enabled_by_default": true,
+      "mapping": "GildedComments",
+      "scopes": [
+        "history"
+      ]
+    },
+    "messages_received": {
+      "name": "Private messages received",
+      "description": "Private messages you have received from other users",
+      "enabled_by_default": true,
+      "mapping": "MessagesReceived",
+      "scopes": [
+        "history",
+        "privatemessages"
+      ]
+    },
+    "messages_sent": {
+      "name": "Private messages sent",
+      "description": "Private messages you have sent to other users",
+      "enabled_by_default": true,
+      "mapping": "MessagesSent",
+      "scopes": [
+        "history",
+        "privatemessages"
+      ]
+    }
+  },
+
+  "provider_id": "286b15f72ab94e2ab9c4e2383127862f"
+}

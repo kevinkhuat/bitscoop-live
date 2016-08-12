@@ -35,8 +35,11 @@
 		}
 
 		.action-bar {
-			text-align: right;
 			color: @blue;
+
+			& > *:not(:last-child) {
+				margin-right: 0.2em;
+			}
 		}
 	}
 

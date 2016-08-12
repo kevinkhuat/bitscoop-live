@@ -56,7 +56,9 @@
 
 	"disallowTrailingComma": true,
 
-	"requireKeywordsOnNewLine": ["else", "catch", "while"],
+	"requireKeywordsOnNewLine": ["else", "while"],
+
+	"disallowKeywordsOnNewLine": ["catch"],
 
 	"disallowYodaConditions": true
 }

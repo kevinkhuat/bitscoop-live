@@ -1,4 +1,4 @@
-define(['jquery', 'jquery-cookie'], function($) {
+define(['cookies', 'jquery'], function(cookies, $) {
 	$(document).ready(function() {
 		$(document).on('submit', function(e) {
 			var data, permissions, serialized, $form;
@@ -37,7 +37,7 @@ define(['jquery', 'jquery-cookie'], function($) {
 				dataType: 'text',
 				data: data,
 				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).done(function(data, xhr, response) {
 				window.location.pathname = data;

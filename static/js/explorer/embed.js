@@ -140,97 +140,6 @@ define(['jquery'], function($) {
 	}
 
 	/**
-	 *
-	 * @param provider
-	 * @param args
-	 */
-	function handleSpecialCase(provider, args) {
-		if (provider === 'Instagram' && window.instgrm) {
-			window.instgrm.Embeds.process();
-		}
-	}
-
-	/**
-	 * TODO: Fix with new API
-	 *
-	 * @param URL
-	 * @param providerName
-	 * @returns {*}
-	 * @private
-	 */
-	function _proxyCall(URL, providerName) {
-		var promise;
-
-		promise = $.Deferred();
-
-		function callback(data) {
-			promise.resolveWith([data]);
-		}
-
-		$.ajax({
-				url: 'https://p.bitscoop.com/proxy',
-				type: 'GET',
-				dataType: 'json',
-				data: {
-					provider_name: providerName,
-					url: URL
-				},
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
-				}
-			})
-			.done(callback)
-			.fail(function() {
-				promise.resolve();
-			});
-
-		return promise;
-	}
-
-	/**
-	 * TODO: Fix with new API
-	 *
-	 * @param URL
-	 * @param providerName
-	 * @returns {*}
-	 * @private
-	 */
-	function _APICall(URL, providerName) {
-		var promise;
-
-		promise = $.Deferred();
-
-		function callback(data) {
-			promise.resolveWith([data]);
-		}
-
-		$.ajax({
-				url: 'https://p.bitscoop.com/preview',
-				type: 'GET',
-				dataType: 'json',
-				data: {
-					provider_name: providerName,
-					url: URL
-				},
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
-				}
-			})
-			.done(callback)
-			.fail(function() {
-				promise.resolve();
-			});
-
-		return promise;
-	}
-
-	/**
 	 * Creates a string containing the HTML tag of the embeded content out of the content object.
 	 *
 	 * TODO: Handle PROXY and API Calls to get protected content.
@@ -310,7 +219,7 @@ define(['jquery'], function($) {
 			}
 
 			if (context.tag == 'video') {
-				HTML = _replaceHeightWidth(_generateVideoTag(content.embed_content), width, height);
+				HTML = _replaceHeightWidth(_generateVideoTag(content.embed_content, context.type), width, height);
 
 				$element.parents('.object').find('.thumbnail').hide();
 

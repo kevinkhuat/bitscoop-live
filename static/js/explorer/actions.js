@@ -8,7 +8,7 @@ define(['jquery', 'lodash', 'moment', 'nunjucks'], function($, _, moment, nunjuc
 	 */
 	var URL_TEMPLATES = {
 		defaults: {
-			url: 'https://bitscoop.com',  // the url you'd like to share.
+			url: 'https://live.bitscoop.com',  // the url you'd like to share.
 			title: 'Shared via BitScoop',  // title to be shared alongside your link
 			description: 'Search & Explore the Internet of You',  // text to be shared alongside your link
 			imageURL: 'https://d233zlhvpze22y.cloudfront.net/1457056861/images/logo/logo.svg',  // image to be shared
@@ -340,7 +340,7 @@ define(['jquery', 'lodash', 'moment', 'nunjucks'], function($, _, moment, nunjuc
 			.replace('{{ description }}', _fixedEncodeURIComponent(description === '' ? URL_TEMPLATES.defaults.description : description))
 			.replace('{{ imageURL }}', _fixedEncodeURIComponent(imageURL === '' ? URL_TEMPLATES.defaults.imageURL : imageURL))
 			.replace('{{ hashtags }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.hashtags));
-			//.replace('{{ via }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.via));
+		//.replace('{{ via }}', _fixedEncodeURIComponent(URL_TEMPLATES.defaults.via));
 	}
 
 	/**

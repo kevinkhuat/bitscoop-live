@@ -1,4 +1,4 @@
-define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery-deparam', 'minimodal', 'settings-base'], function(debounce, formMonitor, $, _) {
+define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-deparam', 'minimodal', 'settings-base'], function(cookies, debounce, formMonitor, $, _) {
 	$(document).ready(function() {
 		var params;
 
@@ -34,7 +34,6 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 
 			serialized = _.pick(formData, ['name', 'enabled']);
 			id = $this.closest('.connection').data('id');
-			serialized.connection_id = id;
 			sources = {};
 
 			$.each(formData, function(key, value) {
@@ -51,10 +50,7 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				data: JSON.stringify(serialized),
 				contentType: 'application/json',
 				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).always(function() {
 				e.clearFormData();
@@ -64,10 +60,14 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				if (formData.hasOwnProperty('name')) {
 					$this.closest('.connection').find('div.name').text(formData.name);
 				}
+
+				if (data.reauthorize) {
+					$this.closest('.connection').find('.reauthorize').removeClass('hidden');
+				}
 			});
 		}, 1000));
 
-		$(document).on('click', 'button.disable,button.delete,button.enable', function(e) {
+		$(document).on('click', 'button.disable, button.delete, button.enable', function(e) {
 			var id, name, $connection, $modal, $this = $(this);
 
 			$connection = $this.closest('.connection');
@@ -76,18 +76,14 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 
 			if ($this.is('.enable')) {
 				$.ajax({
-					url: '/settings/connections',
+					url: '/settings/connections/' + id,
 					method: 'PATCH',
 					data: JSON.stringify({
-						connection_id: id,
 						enabled: true
 					}),
 					contentType: 'application/json',
 					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					},
-					xhrFields: {
-						withCredentials: true
+						'X-CSRFToken': cookies.get('csrftoken')
 					}
 				}).done(function() {
 					$connection.removeClass('disabled');
@@ -109,6 +105,14 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 			}
 		});
 
+		$(document).on('click', '.reauthorize button', function(e) {
+			var id, $this = $(this);
+
+			id = $this.closest('.connection').data('id');
+
+			window.location = 'https://account.bitscoop.com/associate/' + id;
+		});
+
 		$('#disable-modal').on('click', 'button', function(e) {
 			var data, id, $modal;
 
@@ -117,20 +121,16 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				id = $modal.data('connection-id');
 
 				data = {
-					connection_id: id,
 					enabled: false
 				};
 
 				$.ajax({
-					url: '/settings/connections',
+					url: '/settings/connections/' + id,
 					method: 'PATCH',
 					data: JSON.stringify(data),
 					contentType: 'application/json',
 					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					},
-					xhrFields: {
-						withCredentials: true
+						'X-CSRFToken': cookies.get('csrftoken')
 					}
 				}).done(function() {
 					$('.connection[data-id="' + id + '"]')
@@ -156,15 +156,12 @@ define(['debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-cookie', 'jquery
 				id = $modal.data('connection-id');
 
 				$.ajax({
-					url: 'https://api.bitscoop.com/v2/connections/' + id,
+					url: '/settings/connections/' + id,
 					method: 'DELETE',
 					headers: {
-						'X-CSRFToken': $.cookie('csrftoken')
-					},
-					xhrFields: {
-						withCredentials: true
+						'X-CSRFToken': cookies.get('csrftoken')
 					}
-				}).done(function() {
+				}).done(function(data) {
 					$('.connection[data-id="' + id + '"]').remove();
 					$.modal.close();
 				});

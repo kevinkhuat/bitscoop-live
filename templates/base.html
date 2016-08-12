@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>{% load staticfiles %}
+	<head>
 		<meta charset="utf-8"/>
 
 		<title>{% if title %}{{ title }} &middot; {% endif %}BitScoop</title>
@@ -20,22 +20,20 @@
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
 			<script type="text/javascript" src="{% static 'lib/requirejs/config/paths.min.js' %}"></script>
 
-			<script type="text/javascript">
-				require(['menu', 'site']);
-			</script>
-
 			<!-- External fonts -->
 			<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|PT+Sans:400,400italic,700,700italic|Quicksand:400,300|Raleway:400|Roboto:300,400,700|Source+Sans+Pro:300,400,700" />
 			<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 
 			<!-- Styles -->
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-
 			<link rel="stylesheet" type="text/css" href="{% static 'css/site.min.css' %}" />
+
+			<script type="text/javascript">
+				require(['menu', 'site']);
+			</script>
 		{% endblock %}
 	</head>
 
-	<body class="{{ page_name }}">
+	<body class="{% if req.user %}authenticated {% endif %}{{ page_name }}">
 		{% block outer_header %}
 			<header>
 				{% block header %}
@@ -56,38 +54,27 @@
 			</aside>
 		{% endblock %}
 
-		{% block aside %}
-		{% endblock %}
+		{% block aside %}{% endblock %}
 
 		{% block outer_main %}
-		<main>
-			{% block main %}
+			<main>
+				{% block main %}
 					<section id="content" class="scroller">
-						{% block content %}
-
-						{% endblock %}
+						{% block content %}{% endblock %}
 					</section>
-			{% endblock %}
-		</main>
+				{% endblock %}
+			</main>
 		{% endblock %}
+
+		{% if not req.cookies.cookieconsent %}
+			{% include 'components/cookie-consent.html' %}
+		{% endif %}
 
 		{% block outer_footer %}
 			<footer>
 				{% block footer %}
-					<div class="copyright">&copy; 2016 BitScoop Labs, Inc.</div>
-					<div class="footer-links">
-						{% if not request.user.is_authenticated %}
-							<a href="{% url 'login' %}">Log In</a>
-							<span class="spacer"> | </span>
-							<a href="{% url 'signup' %}">Sign Up</a>
-							<span class="spacer"> | </span>
-						{% endif %}
-						<a class="support-link" target="_blank" href="{% url 'support' %}">Support</a>
-						<span class="spacer"> | </span>
-						<a class="privacy-policy" href="{% url 'privacy' %}">Privacy</a>
-						<span class="spacer"> | </span>
-						<a class="terms-of-use" href="{% url 'terms' %}">Terms</a>
-					</div>
+					{% include 'components/copyright.html' %}
+					{% include 'components/footer-links.html' %}
 				{% endblock %}
 			</footer>
 		{% endblock %}

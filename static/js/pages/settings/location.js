@@ -1,4 +1,4 @@
-define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie'], function(debounce, formMonitor, $) {
+define(['cookies', 'debounce', 'form-monitor', 'jquery'], function(cookies, debounce, formMonitor, $) {
 	$(document).ready(function() {
 		$(document).formMonitor('form.auto');
 
@@ -9,10 +9,7 @@ define(['debounce', 'form-monitor', 'jquery', 'jquery-cookie'], function(debounc
 				data: $.param(e.formData),
 				dataType: 'json',
 				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
+					'X-CSRFToken': cookies.get('csrftoken')
 				}
 			}).always(function() {
 				e.clearFormData();

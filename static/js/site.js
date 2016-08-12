@@ -1,8 +1,8 @@
-define(['ga', 'jquery', 'nunjucks', 'jquery-cookie', 'jquery-regexp-selector'], function(ga, $, nunjucks) {
+define(['cookies', 'ga', 'jquery', 'nunjucks', 'jquery-regexp-selector'], function(cookies, ga, $, nunjucks) {
 	$(document).ready(function() {
 		var cookieConsent, html;
 
-		cookieConsent = $.cookie('cookieconsent');
+		cookieConsent = cookies.get('cookieconsent');
 
 		if (!cookieConsent) {
 			html = nunjucks.render('components/cookie-consent.html');
@@ -25,9 +25,10 @@ define(['ga', 'jquery', 'nunjucks', 'jquery-cookie', 'jquery-regexp-selector'], 
 		});
 
 		$(document).on('click', '.cookie-consent button', function() {
-			$.cookie('cookieconsent', true, {
+			cookies.set('cookieconsent', true, {
 				expires: 365,
-				path: '/'
+				path: '/',
+				domain: '.bitscoop.com'
 			});
 
 			$('.cookie-consent').remove();

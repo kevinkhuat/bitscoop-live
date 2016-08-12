@@ -1,13 +1,8 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
-
-
-{#data-link="{% url 'connections:connect' name=provider.name|slugify %}"#}
-
 
 {% block static %}
-	{{ block.super }}
+	{{ super() }}
 
 	<script type="text/javascript">
 		require(['providers']);
@@ -16,10 +11,10 @@
 
 
 {% block header %}
-	{% if request.user.is_authenticated %}
-		{% include 'components/header.html' with mode='provider' %}
+	{% if user %}
+		{% include 'components/header.html'%}
 	{% else %}
-		{{ block.super }}
+		{{ super() }}
 	{% endif %}
 
 	<div class="mobile-selector">
@@ -55,10 +50,10 @@
 	<div class="scroller">
 		<div id="provider-grid">
 			{% for provider in providers %}
-			<div class="mix {% for tag in provider.tags %}{{ tag }} {% endfor %}{% if provider.associated_connection %}associated{% endif %}" data-id="{{ provider.id }}" data-link="{% url 'connections:connect' name=provider.name|slugify %}">
+			<div class="mix {% for tag in provider.tags %}{{ tag }} {% endfor %}{% if provider.assoc_count > 0 %}associated{% endif %}" data-id="{{ provider._id | hex }}" data-assoc-count="{{ provider.assoc_count }}">
 				<div>
 					{% if provider.assoc_count > 1 %}
-					<span>{{ provider.assoc_count }}</span>
+						<span>{{ provider.assoc_count }}</span>
 					{% endif %}
 					<h1><i class="fa fa-{{ provider.name | lower }}"></i></h1>
 					<p>{{ provider.name }}</p>
@@ -67,8 +62,53 @@
 			{% endfor %}
 		</div>
 	</div>
+
+	<aside id="connection-modal" class="modal modal-close">
+		<div class="container">
+			<div class="scroller">
+				<div class="content">
+					<div id="workflow" class="boxed-group" data-provider-id="">
+						<div class="align-center">
+							<div class="flexbox flex-x-center">
+								<i class=""></i>
+								<div class="header flex-grow"></div>
+								<i class="" style="color: transparent;"></i>
+							</div>
+						</div>
+
+						<div class="padded paragraphed">
+							<form action="/connections" method="POST">
+								<input type="hidden" name="csrftoken" value="{{ csrf_token }}" />
+								<input type="hidden" name="provider_id" />
+
+								<div class="align-center">
+									<input class="line-entry align-center" type="text" name="name" placeholder="" style="padding-top: 0;" autofocus />
+								</div>
+
+								<div class="source-container" style="margin-top: 25px;">
+									<div class="label">What would you like?</div>
+									<div class="sources"></div>
+								</div>
+
+								<div class="action">
+									<button class="primary" type="submit">Connect to</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div id="manage">
+						{% if current_count == 1 %}
+							<a class="primary" href="https://account.bitscoop.com/settings/connections?provider={{ provider._id | hex }}">Manage {{ current_count }} {{ provider.name }} Connection</a>
+						{% elif current_count > 1 %}
+							<a class="primary" href="https://account.bitscoop.com/settings/connections?provider={{ provider._id | hex }}">Manage {{ current_count }} {{ provider.name }} Connections</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</aside>
 {% endblock %}
 
 
-{% block outer_footer %}
-{% endblock %}
+{% block outer_footer %}{% endblock %}

@@ -1,4 +1,4 @@
-<div class="object thing">
+<div class="object thing" id="{{ id }}">
 	<div class="header">
 		<div class="type">
 			<i class="{{ type.icon }}"></i> {{ type.name }}
@@ -9,9 +9,8 @@
 		</div>
 
 		<aside class="action-bar">
-			<div class="share-action">
-				<span>Share</span> <i class="fa fa-share"></i>
-			</div>
+			<span>Tag</span><i class="fa fa-hashtag"></i>
+			<span>Share</span><i class="fa fa-share"></i>
 		</aside>
 	</div>
 
@@ -45,5 +44,13 @@
 		<pre>{{ text }}</pre>
 		{% endif %}
 		{% endif %}
+	</div>
+
+	<div class="tagging">
+		<div class="tags">
+			{% for tag in tags %}
+				<span>#{{ tag }}</span>
+			{% endfor %}
+		</div>
 	</div>
 </div>

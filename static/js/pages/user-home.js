@@ -1,17 +1,17 @@
-define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunjucks', 'rgb-to-hex', 'search', 'throttle', 'jquery-cookie', 'minimodal', 'templates'], function(Promise, favorite, humanize, $, _, moment, nunjucks, rgbToHex, search, throttle) {
-	var currentResultCount, cursor, OVERFLOW_COUNT_WIDTH, RESULT_OFFSET, RESULT_PAGE_LIMIT, SCROLL_DEBOUNCE, SCROLL_LOAD_LIMIT, totalResultCount, $document;
+define(['bluebird', 'cookies', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunjucks', 'rgb-to-hex', 'search', 'throttle', 'minimodal', 'templates'], function(Promise, cookies, favorite, humanize, $, _, moment, nunjucks, rgbToHex, search, throttle) {
+	var sessionStorage = window.sessionStorage;
+	var location = window.location;
 
-	RESULT_PAGE_LIMIT = 10;
-	RESULT_OFFSET = 0;
-	OVERFLOW_COUNT_WIDTH = 30;
-	SCROLL_DEBOUNCE = 1000; //ms
-	SCROLL_LOAD_LIMIT = 200; //px
+	var RESULT_PAGE_LIMIT = 10;
+	var RESULT_OFFSET = 0;
+	var OVERFLOW_COUNT_WIDTH = 30;
+	var SCROLL_DEBOUNCE = 1000; //ms
+	var SCROLL_LOAD_LIMIT = 200; //px
+	var $document = $(document);
+	var currentResultCount = 0;
+	var totalResultCount = 0;
+	var cursor = {};
 
-	$document = $(document);
-
-	currentResultCount = 0;
-	totalResultCount = 0;
-	cursor = {};
 
 	function getSearches(tab) {
 		var paramData;
@@ -24,17 +24,11 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://api.bitscoop.com/v2/searches',
+				url: 'https://live.bitscoop.com/api/searches',
 				type: 'GET',
 				dataType: 'json',
 				contentType: 'application/json',
-				data: paramData,
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
-				}
+				data: paramData
 			}).done(function(data) {
 				var i, response;
 
@@ -46,8 +40,47 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 					renderSearch(data.results[i]);
 				}
 
-				if ($('#searches').height() < $('#searches-container').height() && currentResultCount < totalResultCount) {
+				if ($('#searches').height() < $('#search-container').height() && currentResultCount < totalResultCount) {
 					response = moreSearches();
+				}
+				else {
+					response = Promise.resolve(null);
+				}
+
+				response.then(function() {
+					resolve(null);
+				});
+			}).fail(function(req) {
+				var error;
+
+				error = new Error(req.statusText);
+				error.code = req.status;
+
+				reject(error);
+			});
+		});
+	}
+
+	function getTags() {
+		return new Promise(function(resolve, reject) {
+			$.ajax({
+				url: 'https://live.bitscoop.com/api/tags',
+				type: 'GET',
+				dataType: 'json',
+				contentType: 'application/json'
+			}).done(function(data) {
+				var i, response;
+
+				totalResultCount = data.count;
+				currentResultCount = data.results.length;
+				cursor.next = data.next;
+
+				for (i = 0; i < data.results.length; i++) {
+					renderTag(data.results[i]);
+				}
+
+				if ($('#searches').height() < $('#search-container').height() && currentResultCount < totalResultCount) {
+					response = moreTags();
 				}
 				else {
 					response = Promise.resolve(null);
@@ -70,14 +103,8 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 	function moreSearches() {
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: cursor.next.url,
-				type: cursor.next.method,
-				headers: {
-					'X-CSRFToken': $.cookie('csrftoken')
-				},
-				xhrFields: {
-					withCredentials: true
-				}
+				url: cursor.next,
+				type: 'GET'
 			}).done(function(data, status, req) {
 				var i;
 
@@ -86,6 +113,34 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 
 				for (i = 0; i < data.results.length; i++) {
 					renderSearch(data.results[i]);
+				}
+
+				resolve(null);
+			}).fail(function(req) {
+				var error;
+
+				error = new Error(req.statusText);
+				error.code = req.status;
+
+				reject(error);
+			});
+		});
+	}
+
+	function moreTags() {
+		return new Promise(function(resolve, reject) {
+			$.ajax({
+				url: cursor.next.url,
+				type: cursor.next.method,
+				data: JSON.stringify(cursor.next.body)
+			}).done(function(data, status, req) {
+				var i;
+
+				currentResultCount += data.results.length;
+				cursor.next = data.next;
+
+				for (i = 0; i < data.results.length; i++) {
+					renderTag(data.results[i]);
 				}
 
 				resolve(null);
@@ -121,6 +176,17 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 		$('#searches').append(nunjucks.render('components/saved-search.html', context));
 
 		compactOverflowFilters(id);
+	}
+
+	function renderTag(tag) {
+		var context;
+
+		context = {
+			id: tag.id,
+			tag: tag.tag
+		};
+
+		$('#searches').append(nunjucks.render('components/tag.html', context));
 	}
 
 	function compactOverflowFilters(id) {
@@ -167,19 +233,28 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 	}
 
 	function checkScrollPagination(e) {
-		var deferred, $lastChild, $target = $(e.target);
+		var $lastChild, $target = $(e.target);
 
 		//Automatically get the next page of results when you reach the last item.
 		if (currentResultCount < totalResultCount) {
 			$lastChild = $('#searches').children().last();
 
 			if ($target.scrollTop() + $target.height() > $lastChild.position().top + $lastChild.height() - SCROLL_LOAD_LIMIT) {
-				deferred = new $.Deferred();
-
 				return new Promise(function(resolve, reject) {
-					moreSearches($('.tab.selected').attr('name')).then(function() {
-						resolve(null);
-					});
+					var selectedTab;
+
+					selectedTab = $('.tab.selected').attr('name');
+
+					if (selectedTab === 'tags') {
+						moreTags().then(function() {
+							resolve(null);
+						});
+					}
+					else {
+						moreSearches(selectedTab).then(function() {
+							resolve(null);
+						});
+					}
 				});
 			}
 		}
@@ -187,17 +262,14 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 
 	$document.ready(function() {
 		$.ajax({
-			url: 'https://api.bitscoop.com/v2/events',
+			url: 'https://live.bitscoop.com/api/events',
 			type: 'SEARCH',
 			dataType: 'json',
 			contentType: 'application/json',
 			data: JSON.stringify({
 				offset: 0,
 				limit: 1
-			}),
-			xhrFields: {
-				withCredentials: true
-			}
+			})
 		}).done(function(data) {
 			var count;
 
@@ -211,16 +283,13 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 		});
 
 		$.ajax({
-			url: 'https://api.bitscoop.com/v2/searches',
+			url: 'https://live.bitscoop.com/api/searches',
 			type: 'GET',
 			contentType: 'application/json',
 			data: {
 				type: 'recent',
 				offset: 0,
 				limit: 1
-			},
-			xhrFields: {
-				withCredentials: true
 			}
 		}).done(function(data) {
 			var count;
@@ -324,7 +393,7 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			});
 		});
 
-		$document.on('click', '#searches > *', function(e) {
+		$document.on('click', '#searches > .saved-search', function(e) {
 			var id, $this = $(this);
 
 			if ($(e.target).is('.favorite-edit, .favorite-create')) {
@@ -336,6 +405,13 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			id = $this.attr('data-id');
 
 			sessionStorage.setItem('qid', id);
+		});
+
+		$document.on('click', '#searches > .tag', function(e) {
+			var $this = $(this);
+
+			search.query = $this.html();
+			$('#query-form').trigger('submit');
 		});
 
 		$document.on('click', '.favorite-edit, .favorite-create', function(e) {
@@ -400,7 +476,14 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			$('#searches').empty();
 
 			$searchContainer.off('scroll');
-			getSearches($this.attr('name'));
+
+			if ($this.attr('name') === 'tags') {
+				getTags();
+			}
+			else {
+				getSearches($this.attr('name'));
+			}
+
 			$searchContainer.on('scroll', throttle(checkScrollPagination, SCROLL_DEBOUNCE));
 		});
 
@@ -410,8 +493,6 @@ define(['bluebird', 'favorite', 'humanize', 'jquery', 'lodash', 'moment', 'nunju
 			$searches = $('#searches > *');
 
 			_.forEach($searches, function(search) {
-				var $filters, $search;
-
 				compactOverflowFilters($(search).attr('data-id'));
 			});
 		});

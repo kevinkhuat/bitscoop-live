@@ -1,4 +1,6 @@
-var path = require('path');
+'use strict';
+
+const path = require('path');
 
 
 module.exports = function(grunt) {
@@ -8,8 +10,7 @@ module.exports = function(grunt) {
 
 		clean: {
 			artifacts: 'artifacts',
-			build: 'build',
-			deploy: 'deploy',
+			dist: 'dist',
 			predeploy: [
 				'artifacts/**/*.{css,js,less}',
 				'!artifacts/**/*.min.{css,js}'
@@ -28,22 +29,20 @@ module.exports = function(grunt) {
 		compress: {
 			main: {
 				options: {
-					archive: 'deploy/<%= package.name %>.tar.gz'
+					archive: 'dist/<%= package.name %>-<%= package.version %>.tar.gz'
 				},
 				expand: true,
 				src: [
-					'pki/**/*',
-					'requirements/**/*',
-					'server/**/*',
+					'config/**/*',
+					'fixtures/**/*',
+					'lib/**/*',
+					'migrations/**/*',
+					'schemas/**/*',
+					'scripts/**/*',
 					'templates/**/*',
-					'gunicorn_config.py',
-					'manage.py',
+					'LICENSE',
 					'package.json',
-					'wsgi.py',
-					'!server/settings/development',
-					'!server/settings/development/**/*',
-					'!**/__pycache__',
-					'!**/*.pyc'
+					'app.js'
 				],
 				dest: '<%= package.name %>'
 			}
@@ -67,7 +66,7 @@ module.exports = function(grunt) {
 						expand: true,
 						cwd: 'artifacts/',
 						src: '**',
-						dest: 'build/' + new Date().getTime()
+						dest: 'dist/static/' + new Date().getTime()
 					}
 				]
 			},
@@ -101,7 +100,10 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
+					'app.js',
+					'lib/**/*.js',
 					'static/**/*.js',
+					'test/**/*.js',
 					'!static/lib/**/*.js'
 				],
 				gruntfile: 'Gruntfile.js'
@@ -116,19 +118,26 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'Gruntfile.js',
+					'app.js',
+					'lib/**/*.js',
 					'static/**/*.js',
+					'test/**/*.js',
 					'!static/lib/**/*.js'
 				]
 			}
 		},
 
 		jsonlint: {
+			config: {
+				src: 'config/**/*.json'
+			},
+
 			jscs: {
 				src: 'jscs.json'
 			},
 
 			jshint: {
-				src: 'jshint.json'
+				src: 'jslint.json'
 			},
 
 			package: {
@@ -149,6 +158,27 @@ module.exports = function(grunt) {
 				files: {
 					'artifacts/css/site.css': 'artifacts/less/site.less'
 				}
+			}
+		},
+
+		mochaTest: {
+			full: {
+				src: [
+					'test/*.js',
+					'test/*/*.js'
+				]
+			},
+			grid: {
+				options: {
+					reporter: 'dot'
+				},
+				src: '<%= mochaTest.full.src %>'
+			},
+			nyan: {
+				options: {
+					reporter: 'nyan'
+				},
+				src: '<%= mochaTest.full.src %>'
 			}
 		},
 
@@ -243,6 +273,10 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('build', [
+		'jsonlint:package',
+		'jsonlint:config',
+		'lint',
+		'mochaTest:grid',
 		'clean:artifacts',
 		'copy:collectstatic',
 		'less',
@@ -252,7 +286,13 @@ module.exports = function(grunt) {
 		'clean:predeploy',
 		'cleanempty',
 		'usebanner',
-		'copy:deploy'
+		'copy:deploy',
+		'compress'
+	]);
+
+	grunt.registerTask('cleanbuild', [
+		'clean',
+		'build'
 	]);
 
 	grunt.registerTask('devel', [
@@ -272,9 +312,11 @@ module.exports = function(grunt) {
 		'jscs'
 	]);
 
+	grunt.registerTask('test', [
+		'mochaTest:full'
+	]);
+
 	grunt.registerTask('default', [
-		'jsonlint:package',
-		'lint',
 		'build'
 	]);
 };

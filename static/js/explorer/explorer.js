@@ -1,4 +1,4 @@
-define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'history', 'humanize', 'icons', 'jquery', 'leaflet', 'lodash', 'menu', 'moment', 'nunjucks', 'objects', 'search', 'throttle', 'viewstate', 'autoblur', 'jquery-cookie', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers', 'minimodal'], function(externalActions, Promise, cartano, debounce, embedContent, favorite, history, humanize, icons, $, leaflet, _, menu, moment, nunjucks, objects, search, throttle, viewstate) {
+define(['actions', 'bluebird', 'cookies', 'debounce', 'embed', 'favorite', 'history', 'humanize', 'icons', 'jquery', 'leaflet', 'lodash', 'menu', 'moment', 'nunjucks', 'objects', 'search', 'throttle', 'viewstate', 'autoblur', 'jquery-mixitup', 'templates', 'leaflet-awesome-markers', 'minimodal'], function(externalActions, Promise, cookies, debounce, embedContent, favorite, history, humanize, icons, $, leaflet, _, menu, moment, nunjucks, objects, search, throttle, viewstate) {
 	var map;
 
 	// Valid View States: feed, grid, list, map, result
@@ -6,6 +6,8 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 	var spinner = viewstate.renderSync('explorer/components/waiting.html');
 	var paginationSpinner = viewstate.renderSync('explorer/components/next.html');
 	var errorBubble = viewstate.renderSync('explorer/components/error.html');
+	var sessionStorage = window.sessionStorage;
+	var location = window.location;
 
 	var SCROLL_DEBOUNCE = 500; // ms
 	var SCROLL_EMBED_LEAD_AREA = 700; // px
@@ -111,17 +113,127 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		return promise;
 	}
 
-	/**
-	 * Checks if the browser is a mobile browser using media queries.
-	 * @returns {Boolean} Function returns whether or not the browser is mobile.
-	 */
-	function isMobile() {
-		if (window.matchMedia) {
-			return window.matchMedia('(max-device-width: 1080px) and (min-device-pixel-ratio: 1.5)').matches;
-		}
-		else {
-			return false;
-		}
+	function renderActionModal($object) {
+		var object, type, typePlural, $action;
+
+		$action = $('#action');
+
+
+		type = $object.attr('class').replace('object ', '');
+		typePlural = type === 'content' ? 'content' : type + 's';
+
+		object = objects.cache[typePlural][$object.attr('id')];
+
+		$action.modal({
+			position: false,
+			postOpen: function() {
+				var content, scale, shareable, title, $body, $previewImg, $this = $(this);
+
+				$body = $this.find('.body');
+
+				if (type === 'contact') {
+					shareable = true;
+					title = object.handle;
+				}
+				else if (type === 'content') {
+					shareable = true;
+
+					if (object.title) {
+						title = object.title;
+					}
+					else if (object.text) {
+						title = object.text.slice(0, 100);
+					}
+					else {
+						title = object.type;
+					}
+				}
+				else if (type === 'event') {
+					shareable = false;
+
+					if (object.context) {
+						title = object.context;
+					}
+					else {
+						title = object.type;
+					}
+				}
+				else if (type === 'thing') {
+					shareable = true;
+
+					if (object.title) {
+						title = object.title;
+					}
+					else if (object.text) {
+						title = object.text.slice(0, 100);
+					}
+					else {
+						title = object.type;
+					}
+				}
+
+				content = nunjucks.render('explorer/components/action/modal.html', {
+					title: title,
+					shareable: shareable,
+					taggable: true,
+					object: object
+				});
+
+				$body.empty().html(content);
+
+				$('.share-action').append(externalActions.renderAction(object, 'share'));
+
+				if (object.embed_thumbnail) {
+					$body.find('.preview').empty().html('<img src="' + object.embed_thumbnail + '"></img>');
+					$previewImg = $('.preview img');
+
+					if ($previewImg.width() > $('.preview').width()) {
+						scale = $('.preview').width() / $previewImg.width();
+
+						$previewImg.css('width', $previewImg.width() * scale);
+						$previewImg.css('height', $previewImg.height() * scale);
+					}
+				}
+
+				$this.css('display', 'flex');
+			}
+		});
+	}
+
+	function renderFeedEmbeddables($target) {
+		var docViewBottom, docViewTop, elemBottom, elemTop, height, object, width, $contentEmbedContainers, $embedContainer, $parentContainer;
+
+		$contentEmbedContainers = $target.find('.content-embed');
+		docViewTop = $target.scrollTop();
+		docViewBottom = docViewTop + $target.height();
+
+		_.forEach($contentEmbedContainers, function(embedContainer) {
+			$embedContainer = $(embedContainer);
+
+			elemTop = $embedContainer.offset().top;
+			elemBottom = elemTop + $embedContainer.height();
+
+			$parentContainer = $(embedContainer.parentElement);
+
+			if ((elemBottom <= docViewBottom + SCROLL_EMBED_LEAD_AREA) && (elemTop >= docViewTop - SCROLL_EMBED_LEAD_AREA)) {
+				if ($embedContainer.children().length === 0) {
+					$embedContainer.css('height', null);
+					object = $parentContainer.data('object');
+
+					embedContent(object, $embedContainer);
+				}
+			}
+			else {
+				width = $embedContainer.width();
+				height = $embedContainer.height();
+
+				if (height > 0) {
+					$embedContainer.height(height);
+				}
+
+				$embedContainer.empty();
+			}
+		});
 	}
 
 	/**
@@ -223,8 +335,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 				if (state.view === 'feed') {
 					promise = promise.then(function() {
-						var i, j, $interaction, $interactions, $item, $textItem, $textItems;
-
 						$list = $('#list');
 
 						$list.closest('main').on('scroll', debounce(function() {
@@ -233,30 +343,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 						//render Embeddables the first time
 						renderFeedEmbeddables($list.parent());
-
-						for (i = 0; i < $list.children().length; i++) {
-							$item = $($list.children().get(i));
-							$textItems = $item.find('.text');
-							$interactions = $item.find('.interactions .objects');
-
-							for (j = 0; j < $textItems.length; j++) {
-								$textItem = $($textItems.get(j));
-
-								if ($textItem.find('.truncated').length === 0) {
-									$textItem.find('.expand').hide();
-								}
-								else {
-									$textItem.find('.full').hide();
-								}
-							}
-
-							if ($interactions.children().length > 5) {
-								$interactions.children().slice(5).hide();
-							}
-							else {
-								$interactions.siblings('.expand').hide();
-							}
-						}
 
 						return Promise.resolve();
 					});
@@ -458,6 +544,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			object._viewFragments[state.view].scrollIntoView(true);
 
 			$details = $('#details');
+			$details.find('.body').empty();
 			$details.modal({
 				position: false,
 				postOpen: function() {
@@ -615,42 +702,6 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 	}
 
-	function renderFeedEmbeddables($target) {
-		var docViewBottom, docViewTop, elemBottom, elemTop, height, object, width, $contentEmbedContainers, $embedContainer, $parentContainer;
-
-		$contentEmbedContainers = $target.find('.content-embed');
-		docViewTop = $target.scrollTop();
-		docViewBottom = docViewTop + $target.height();
-
-		_.forEach($contentEmbedContainers, function(embedContainer) {
-			$embedContainer = $(embedContainer);
-
-			elemTop = $embedContainer.offset().top;
-			elemBottom = elemTop + $embedContainer.height();
-
-			$parentContainer = $(embedContainer.parentElement);
-
-			if ((elemBottom <= docViewBottom + SCROLL_EMBED_LEAD_AREA) && (elemTop >= docViewTop - SCROLL_EMBED_LEAD_AREA)) {
-				if ($embedContainer.children().length === 0) {
-					$embedContainer.css('height', null);
-					object = $parentContainer.data('object');
-
-					embedContent(object, $embedContainer);
-				}
-			}
-			else {
-				width = $embedContainer.width();
-				height = $embedContainer.height();
-
-				if (height > 0) {
-					$embedContainer.height(height);
-				}
-
-				$embedContainer.empty();
-			}
-		});
-	}
-
 	// Bind Map view-specific events.
 	views.map.on('map:zoom', function() {
 		// When the user zooms the map, de-select any active objects.
@@ -670,12 +721,12 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 
 	$(search).on('search', function(e, done) {
 		objects.search({
-				query: search.query,
+				query: search.query.replace(/#[A-Za-z0-9-]+\s?/g, ''),
 				dsl: search.dsl
 			})
 			.then(renderState)
 			.then(done)
-			.catch(function() {
+			.catch(function(err) {
 				container.clear();
 				container.insert(errorBubble);
 				done();
@@ -691,7 +742,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		}
 	});
 
-	$(search).on('error', function() {
+	$(search).on('error', function(err) {
 		container.clear();
 		container.insert(errorBubble);
 	});
@@ -729,7 +780,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 				}
 
 				return objects.search({
-					query: search.query,
+					query: search.query.replace(/#[A-Za-z0-9-]+/g, ''),
 					dsl: search.dsl
 				});
 			})
@@ -743,10 +794,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		$.ajax({
 			url: '/tokens/mapbox',
 			type: 'GET',
-			dataType: 'json',
-			headers: {
-				'X-CSRFToken': $.cookie('csrftoken')
-			}
+			dataType: 'json'
 		}).done(function(data) {
 			// When the Mapbox token has been retrieved, create a new Cartano map with it.
 
@@ -813,7 +861,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			container.insert(spinner);
 
 			objects.search({
-				query: search.query,
+				query: search.query.replace(/#[A-Za-z0-9]+/g, ''),
 				dsl: search.dsl,
 				sortField: objects.cursor.sort.field,
 				sortOrder: objects.cursor.sort.order
@@ -890,38 +938,10 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			}
 		});
 
-		$(document).on('click', '.share-action', function(e) {
-			var object, $actionBar, $shareMenu, $this = $(this);
-			$actionBar = $this.parents('.action-bar');
-			$shareMenu = $actionBar.find('.share-menu');
+		$(document).on('click', '.action-bar, .object.contact > div:first-child', function() {
+			var $this = $(this);
 
-			if ($shareMenu.length === 0) {
-				$this.hide();
-
-				object = $this.parents('.object').data('object');
-				$actionBar.append(externalActions.renderAction(object, 'share'));
-			}
-			else {
-				$this.hide();
-				$shareMenu.show();
-			}
-		});
-
-		$(document).on('click', '.object.contact', function(e) {
-			var object, $actionBar, $shareMenu, $this = $(this);
-			$actionBar = $this.find('.action-bar');
-			$shareMenu = $actionBar.find('.share-menu');
-
-			if ($shareMenu.length === 0) {
-				object = $this.data('object');
-				$actionBar.append(externalActions.renderAction(object, 'share'));
-				$actionBar.find('.close').hide();
-				$this.addClass('share-menu-margin-bottom');
-			}
-			else {
-				$actionBar.find('.share-menu').toggle();
-				$this.toggleClass('share-menu-margin-bottom');
-			}
+			renderActionModal($($this.closest('.object')));
 		});
 
 		$(document).on('click', '.action-bar .close', function(e) {
@@ -933,7 +953,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 
 		$(document).on('click', '#search-favorited', function(e) {
-			var favorited, html, icon, iconColor, name, $colorPreview, $favorite, $iconPreview, $name, $this = $(this);
+			var favorited, html, icon, iconColor, name, $colorPreview, $favorite, $iconPreview, $name;
 
 			$favorite = $('#favorite');
 
@@ -1094,7 +1114,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 
 		$(document).on('swipeleft', '#details .content', function(e) {
-			var $currentObject, $newObject, $this = $(this);
+			var $currentObject, $newObject;
 
 			$currentObject = $('.item.active');
 
@@ -1108,7 +1128,7 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 		});
 
 		$(document).on('swiperight', '#details .body', function(e) {
-			var $currentObject, $newObject, $this = $(this);
+			var $currentObject, $newObject;
 
 			$currentObject = $('.item.active');
 
@@ -1121,67 +1141,402 @@ define(['actions', 'bluebird', 'cartano', 'debounce', 'embed', 'favorite', 'hist
 			}
 		});
 
+		$(document).on('submit', '.tagging form', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			return false;
+		});
+
+		$(document).on('submit', '.tagging form', function() {
+			var id, input, slugifiedTag, tag, tags, tagMasks, type, $items, $modal, $this = $(this);
+
+			input = $this.find('input');
+			tag = input.val().replace(/[^a-zA-Z0-9\s-]/, '').replace(/\s+/g, ' ');
+			slugifiedTag = tag.toLowerCase().replace(/\s/g, '-');
+			id = $this.closest('.actions').attr('data-id');
+
+			$modal = $('.modal .actions');
+			$items = $('.object[id="' + id + '"]');
+			type = $items.attr('class').replace('object ', '');
+
+			if (tag.length > 0) {
+				$.ajax({
+					url: 'https://live.bitscoop.com/api/' + collectionMappings[type] + '/' + id + '/tag',
+					type: 'POST',
+					dataType: 'json',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						tags: [slugifiedTag]
+					}),
+					headers: {
+						'X-CSRFToken': cookies.get('csrftoken')
+					}
+				})
+					.then(function() {
+						var dataObj, event, events, h, i, index, item, newTag, tagMask, $item;
+
+						newTag = false;
+
+						if (type === 'event') {
+							events = [objects.cache.events[id]];
+						}
+						else {
+							events = _.filter(objects.cache.events, function(event) {
+								return _.find(event[collectionMappings[type]], function(item) {
+									return item.id === id;
+								});
+							});
+						}
+
+						for (h = 0; h < events.length; h++) {
+							event = events[h];
+
+							if (type === 'event') {
+								tagMasks = objects.cache.events[id].tagMasks;
+							}
+							else {
+								for (i = 0; i < objects.cache.events[event.id][collectionMappings[type]].length; i++) {
+									if (objects.cache.events[event.id][collectionMappings[type]][i].id === id) {
+										index = i;
+										tagMasks = objects.cache.events[event.id][collectionMappings[type]][i].tagMasks;
+									}
+								}
+							}
+
+							if (tagMasks == null || tagMasks.added == null || $.inArray(tag, tagMasks) === -1) {
+								newTag = true;
+
+								if (tagMasks == null) {
+									tagMasks = {
+										added: [],
+										removed: [],
+										source: []
+									};
+								}
+
+								if (tagMasks.added == null) {
+									tagMasks.added = [];
+								}
+
+								if (tagMasks.removed == null) {
+									tagMasks.removed = [];
+								}
+
+								if (tagMasks.source == null) {
+									tagMasks.source = [];
+								}
+
+								if ($.inArray(tag, tagMasks.added) === -1) {
+									tagMasks.added.push(tag);
+								}
+
+								if ($.inArray(tag, tagMasks.removed) > -1) {
+									tagMasks.removed.splice($.inArray(tag, tagMasks.removed), 1);
+								}
+
+								tags = _.cloneDeep(tagMasks.source);
+
+								for (i = 0; i < tagMasks.added.length; i++) {
+									tagMask = tagMasks.added[i];
+
+									if ($.inArray(tagMask, tags) === -1) {
+										tags.push(tagMask);
+									}
+								}
+
+								for (i = 0; i < tagMasks.removed.length; i++) {
+									tagMask = tagMasks.removed[i];
+
+									if ($.inArray(tagMask, tags) > -1) {
+										tags.splice($.inArray(tagMask, tags), 1);
+									}
+								}
+
+								if (type !== 'event') {
+									event[collectionMappings[type]][index].tagMasks = tagMasks;
+
+									item = objects.cache.events[event.id];
+									item._renderCache = {};
+
+									if (state.view === 'grid' || state.view === 'list') {
+										$item = $('.item[data-id="' + item.id + '"]');
+										dataObj = $item.data('object');
+
+										dataObj._renderCache = {};
+										dataObj.sumTags = tags;
+										delete dataObj._viewFragments.details;
+
+										$item.data('object', dataObj);
+									}
+								}
+								else {
+									event.tagMasks = tagMasks;
+									event.sumTags = event.uniqueTags;
+
+									item = objects.cache.events[event.id];
+									item._renderCache = {};
+
+									if (state.view === 'grid' || state.view === 'list') {
+										$item = $('.item[data-id="' + item.id + '"]');
+										dataObj = $item.data('object');
+
+										dataObj._renderCache = {};
+										dataObj.sumTags = event.sumTags;
+										delete dataObj._viewFragments.details;
+
+										$item.data('object', dataObj);
+									}
+								}
+
+								objects.cache[collectionMappings[type]][id]._renderCache = {};
+
+								return Promise.resolve(newTag);
+							}
+							else {
+								return Promise.resolve(null);
+							}
+						}
+					})
+					.then(function(newTag) {
+						var i, regExp, tagMatch, $item, $currentTags;
+
+						if (type !== 'event' && state.mapping === 'events') {
+							$items = $items.closest('.event').find('aside.details');
+						}
+
+						if (type === 'event') {
+							$items = $items.find('aside.details');
+						}
+
+						objects.cache[collectionMappings[type]][id].tags = tags;
+						objects.cache[collectionMappings[type]][id].tagMasks = tagMasks;
+
+						if (newTag) {
+							regExp = new RegExp('^#' + tag + '$', 'g');
+
+							$modal.find('.tagging .tags').append('<div><span>#' + tag + '</span><i class="delete fa fa-times"></i></div>');
+							$currentTags = $items.find('.tagging .tags');
+
+							for (i = 0; i < $currentTags.length; i++) {
+								$item = $($currentTags.get(i));
+
+								tagMatch = _.find($item.find('span'), function(span) {
+									return $(span).html().match(regExp) != null;
+								});
+
+								if (!tagMatch) {
+									$item.append('<span>#' + tag + '</span>');
+								}
+							}
+						}
+					});
+			}
+
+			$modal.find('.tagging .add-tag input[type="text"]').val('');
+		});
+
+		$(document).on('click', '.tagging .delete', function() {
+			var id, slugifiedTag, tag, tags, tagMasks, type, $items, $modal, $this = $(this);
+
+			tag = $this.siblings('span').html().slice(1);
+			slugifiedTag = tag.toLowerCase().replace(/\s/g, '-');
+			id = $this.closest('.actions').attr('data-id');
+
+			$modal = $('.modal .actions');
+			$items = $('.object[id="' + id + '"]');
+			type = $items.attr('class').replace('object ', '');
+
+			$.ajax({
+				url: 'https://live.bitscoop.com/api/' + collectionMappings[type] + '/' + id + '/tag',
+				type: 'DELETE',
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					tags: [slugifiedTag]
+				}),
+				headers: {
+					'X-CSRFToken': cookies.get('csrftoken')
+				}
+			})
+				.then(function() {
+					var dataObj, event, events, h, i, index, item, tagMask, $item;
+
+					if (type === 'event') {
+						events = [objects.cache.events[id]];
+					}
+					else {
+						events = _.filter(objects.cache.events, function(event) {
+							return _.find(event[collectionMappings[type]], function(item) {
+								return item.id === id;
+							});
+						});
+					}
+
+					for (h = 0; h < events.length; h++) {
+						event = events[h];
+
+						if (type === 'event') {
+							tagMasks = objects.cache.events[id].tagMasks;
+						}
+						else {
+							for (i = 0; i < objects.cache.events[event.id][collectionMappings[type]].length; i++) {
+								if (objects.cache.events[event.id][collectionMappings[type]][i].id === id) {
+									index = i;
+									tagMasks = objects.cache.events[event.id][collectionMappings[type]][i].tagMasks;
+								}
+							}
+						}
+
+						if (tagMasks == null) {
+							tagMasks = {
+								added: [],
+								removed: [],
+								source: []
+							};
+						}
+
+						if (tagMasks.added == null) {
+							tagMasks.added = [];
+						}
+
+						if (tagMasks.removed == null) {
+							tagMasks.removed = [];
+						}
+
+						if (tagMasks.source == null) {
+							tagMasks.source = [];
+						}
+
+						if ($.inArray(tag, tagMasks.added) > -1) {
+							tagMasks.added.splice($.inArray(tag, tagMasks.added), 1);
+						}
+
+						if ($.inArray(tag, tagMasks.removed) === -1) {
+							tagMasks.removed.push(tag);
+						}
+
+						tags = _.cloneDeep(tagMasks.source);
+
+						for (i = 0; i < tagMasks.added.length; i++) {
+							tagMask = tagMasks.added[i];
+
+							if ($.inArray(tagMask, tags) === -1) {
+								tags.push(tagMask);
+							}
+						}
+
+						for (i = 0; i < tagMasks.removed.length; i++) {
+							tagMask = tagMasks.removed[i];
+
+							if ($.inArray(tagMask, tags) > -1) {
+								tags.splice($.inArray(tagMask, tags), 1);
+							}
+						}
+
+						if (type !== 'event') {
+							event[collectionMappings[type]][index].tagMasks = tagMasks;
+
+							item = objects.cache.events[event.id];
+							item._renderCache = {};
+
+							if (state.view === 'grid' || state.view === 'list') {
+								$item = $('.item[data-id="' + item.id + '"]');
+								dataObj = $item.data('object');
+
+								dataObj._renderCache = {};
+								dataObj.sumTags = tags;
+								delete dataObj._viewFragments.details;
+
+								$item.data('object', dataObj);
+							}
+						}
+						else {
+							event.tagMasks = tagMasks;
+							event.sumTags = event.uniqueTags;
+
+							item = objects.cache.events[event.id];
+							item._renderCache = {};
+
+							if (state.view === 'grid' || state.view === 'list') {
+								$item = $('.item[data-id="' + item.id + '"]');
+								dataObj = $item.data('object');
+
+								dataObj._renderCache = {};
+								dataObj.sumTags = event.sumTags;
+								delete dataObj._viewFragments.details;
+
+								$item.data('object', dataObj);
+							}
+						}
+
+						objects.cache[collectionMappings[type]][id]._renderCache = {};
+					}
+
+					objects.cache[collectionMappings[type]][id].tagMasks = tagMasks;
+
+					return Promise.resolve(null);
+				})
+				.then(function() {
+					var allTags, i, regExp, $event, $events, $itemSpans, $modalSpans;
+
+					regExp = new RegExp('^#' + tag + '$', 'g');
+
+					if (type !== 'event' && state.mapping === 'events') {
+						$items = $events = $items.closest('.event');
+						$items = $items.find('aside.details');
+					}
+
+					if (type === 'event') {
+						$events = $items.closest('.event');
+						$items = $items.find('aside.details');
+					}
+
+					$modalSpans = $modal.find('.tagging .tags span');
+					$itemSpans = $items.find('.tagging .tags span');
+
+					$(_.find($modalSpans, function(span) {
+						return $(span).html().match(regExp) != null;
+					})).closest('div').remove();
+
+					if (state.mapping === 'events') {
+						for (i = 0; i < $events.length; i++) {
+							$event = $($events.get(i));
+							allTags = objects.cache.events[$event.attr('id')].allTags;
+
+							if (allTags.indexOf(tag) === -1) {
+								$(_.find($event.find('.tagging .tags span'), function(span) {
+									return $(span).html().match(regExp) != null;
+								})).remove();
+							}
+						}
+					}
+					else {
+						$(_.find($itemSpans, function(span) {
+							return $(span).html().match(regExp) != null;
+						})).remove();
+					}
+
+					return Promise.resolve(null);
+				});
+		});
+
 		$(window).on('resize', function(e) {
-			if ($('#details').length === 0 || $('#details').css('display') === 'none') {
+			if ($('#details').css('display') === 'none' || $('#details').css('display') == null) {
 				return false;
 			}
 
 			resizeNextPrev();
 		});
 
-		$(document).on('click', '#details .content > aside', function() {
-			var $currentObject, $newObject, $this = $(this);
+		$(window).on('message', function(e) {
+			var type;
 
-			$currentObject = $('.item.active');
+			type = JSON.parse(e.originalEvent.data).type;
 
-			if ($this.hasClass('next')) {
-				$newObject = $currentObject.next();
+			if (type === 'resize.embed') {
+				resizeNextPrev();
 			}
-			else {
-				$newObject = $currentObject.prev();
-			}
-
-			$.modal.close();
-
-			if ($newObject.length > 0) {
-				$newObject.trigger('click');
-			}
-		});
-
-		$(document).on('swipeleft', '#details .content', function(e) {
-			var $currentObject, $newObject, $this = $(this);
-
-			$currentObject = $('.item.active');
-
-			$newObject = $currentObject.next();
-
-			$.modal.close();
-
-			if ($newObject.length > 0) {
-				$newObject.trigger('click');
-			}
-		});
-
-		$(document).on('swiperight', '#details .body', function(e) {
-			var $currentObject, $newObject, $this = $(this);
-
-			$currentObject = $('.item.active');
-
-			$newObject = $currentObject.prev();
-
-			$.modal.close();
-
-			if ($newObject.length > 0) {
-				$newObject.trigger('click');
-			}
-		});
-
-		$(window).on('resize', function(e) {
-			if ($('#details').css('display') === 'none') {
-				return false;
-			}
-
-			resizeNextPrev();
 		});
 	});
 });

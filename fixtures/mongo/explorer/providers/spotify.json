@@ -1,0 +1,46 @@
+{
+  "_id": "e2fe300132c6477b85253110638c4825",
+
+  "enabled": true,
+
+  "sources": {
+    "playlists": {
+      "name": "Playlists",
+      "description": "Playlists you have created",
+      "enabled_by_default": true,
+      "mapping": "Playlists",
+      "population": "*",
+      "scopes": [
+        "playlist-read-private",
+        "playlist-read-collaborative",
+        "user-library-read"
+      ]
+    },
+    "saved_albums": {
+      "name": "Saved Albums",
+      "description": "Albums you have saved",
+      "enabled_by_default": true,
+      "mapping": "SavedAlbums",
+      "population": "*",
+      "scopes": [
+        "playlist-read-private",
+        "playlist-read-collaborative",
+        "user-library-read"
+      ]
+    },
+    "saved_tracks": {
+      "name": "Saved Tracks",
+      "description": "Individual tracks you have saved",
+      "enabled_by_default": true,
+      "mapping": "SavedTracks",
+      "population": "*",
+      "scopes": [
+        "playlist-read-private",
+        "playlist-read-collaborative",
+        "user-library-read"
+      ]
+    }
+  },
+
+  "provider_id": "b31fc6d93f1045279ff38c1f3e3b0b5d"
+}

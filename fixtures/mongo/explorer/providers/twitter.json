@@ -1,0 +1,29 @@
+{
+  "_id": "c3817b27324541d0b8eab46fd92b2b9d",
+
+  "enabled": true,
+
+  "sources": {
+    "tweets": {
+      "name": "Tweets",
+      "description": "Tweets you have sent",
+      "enabled_by_default": true,
+      "mapping": "Tweets",
+      "population": "*"
+    },
+    "direct_messages_received": {
+      "name": "Direct Messages Received",
+      "description": "Direct messages you have received from others",
+      "enabled_by_default": true,
+      "mapping": "DirectMessagesReceived"
+    },
+    "direct_messages_sent": {
+      "name": "Direct Messages Sent",
+      "description": "Direct messages you sent to others",
+      "enabled_by_default": true,
+      "mapping": "DirectMessagesSent"
+    }
+  },
+
+  "provider_id": "d1b32e6074cd455386d5c4d461fe3ad4"
+}

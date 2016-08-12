@@ -159,4 +159,43 @@ body.providers {
 			}
 		}
 	}
+
+	.scroller .content {
+		padding: 0 !important;
+
+		#workflow {
+			border: 0;
+			width: 500px;
+
+			@media @mobile {
+				width: 100%;
+			}
+
+			.action {
+				.flexbox;
+				.flex-center;
+
+				margin-top: 1.5em;
+			}
+
+			label {
+				font-size: 1.2em;
+			}
+
+			.tooltip {
+				margin: 0.35em 0 0 3em;
+				color: @font-color-subdue;
+
+				@media @mobile {
+					margin-top: 0em;
+				}
+			}
+
+			.label {
+				font-weight: 700;
+				font-size: 1.2em;
+				margin-bottom: 1em;
+			}
+		}
+	}
 }

@@ -1,4 +1,5 @@
 @import 'less/explorer/components/action-bar.less';
+@import 'less/explorer/components/action-modal.less';
 @import 'less/explorer/components/error.less';
 @import 'less/explorer/components/next.less';
 @import 'less/explorer/components/no-results.less';
@@ -285,4 +286,67 @@ body.explorer.grid {
 
 .hidden-beta {
 	display: none;
+}
+
+.tagging {
+	margin-top: 1em;
+	text-align: left;
+
+	form > :first-child {
+		text-align: center;
+	}
+
+	.add-tag {
+		.flexbox;
+		.flex-x-center;
+
+		input {
+			margin-left: 0;
+			margin-right: 0;
+
+			&[type='text'] {
+				.flex-grow;
+
+				padding: 0.1em 0.2em;
+				border: 1px solid @border-color;
+				font-size: 1em;
+			}
+
+			&[type='submit'] {
+				padding: 0;
+				border: none;
+				font-size: 1.2em;
+				cursor: pointer;
+
+				&:hover {
+					color: @blue;
+				}
+			}
+		}
+	}
+
+	.tags {
+		.flexbox;
+		.flex-column;
+
+		color: @blue;
+
+		& > div {
+			.flexbox;
+
+			margin: 0.2em 0;
+
+			& > span {
+				.flex-grow;
+			}
+
+			& > i {
+				cursor: pointer;
+
+				&:hover {
+					color: @red;
+				}
+			}
+		}
+	}
 }

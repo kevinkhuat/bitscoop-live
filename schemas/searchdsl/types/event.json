@@ -1,0 +1,258 @@
+{
+  "id": "/searchdsl/types/event",
+  "title": "Event search filter",
+  "description": "The schema for event filters",
+  "type": "object",
+  "properties": {
+    "bool": {
+      "type": "object",
+      "properties": {
+        "must": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "or": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "and": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "$ref": "/searchdsl/fields/match-embedded-contact"
+                              },
+                              {
+                                "$ref": "/searchdsl/fields/contact-interaction-type"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "$ref": "/searchdsl/fields/contact-interaction-type"
+                    },
+                    {
+                      "$ref": "/searchdsl/fields/match-embedded-contact"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "term": {
+                          "type": "object",
+                          "properties": {
+                            "content.type": {
+                              "$ref": "/enums/content-type"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "$ref": "/searchdsl/fields/geo-distance"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "not": {
+                          "$ref": "/searchdsl/fields/geo-distance"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "and": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "$ref": "/searchdsl/fields/location-estimated"
+                              },
+                              {
+                                "$ref": "/searchdsl/fields/geo-distance"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "and": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "$ref": "/searchdsl/fields/location-estimated"
+                              },
+                              {
+                                "properties": {
+                                  "not": {
+                                    "$ref": "/searchdsl/fields/geo-distance"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "$ref": "/searchdsl/fields/geo-polygon"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "not": {
+                          "$ref": "/searchdsl/fields/geo-polygon"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "and": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "$ref": "/searchdsl/fields/location-estimated"
+                              },
+                              {
+                                "$ref": "/searchdsl/fields/geo-polygon"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "and": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "$ref": "/searchdsl/fields/location-estimated"
+                              },
+                              {
+                                "properties": {
+                                  "not": {
+                                    "$ref": "/searchdsl/fields/geo-polygon"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "range": {
+                          "type": "object",
+                          "properties": {
+                            "datetime": {
+                              "$ref": "/types/datetime"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "or": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "oneOf": [
+                              {
+                                "properties": {
+                                  "range": {
+                                    "type": "object",
+                                    "properties": {
+                                      "datetime": {
+                                        "$ref": "/types/datetime"
+                                      }
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              {
+                                "properties": {
+                                  "range": {
+                                    "type": "object",
+                                    "properties": {
+                                      "created": {
+                                        "$ref": "/types/datetime"
+                                      }
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "$ref": "/searchdsl/types/provider"
+                    },
+                    {
+                      "$ref": "/searchdsl/types/connection"
+                    },
+                    {
+                      "$ref": "/searchdsl/types/tag"
+                    }
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "must_not": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "should": {
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

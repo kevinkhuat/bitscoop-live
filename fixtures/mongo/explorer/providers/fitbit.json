@@ -1,0 +1,32 @@
+{
+  "_id": "0d8815ecf0fa46afa24c34ab1b86b8aa",
+
+  "sources": {
+    "food": {
+      "name": "Food consumed",
+      "description": "Food consumption you have logged",
+      "enabled_by_default": true,
+      "mapping": "FoodCaloriesIn",
+      "population": "*",
+      "scopes": []
+    },
+    "sleep": {
+      "name": "Sleep",
+      "description": "Sleep time you have logged",
+      "enabled_by_default": true,
+      "mapping": "SleepStartTime",
+      "population": "*",
+      "scopes": []
+    },
+    "exercise": {
+      "name": "exercise",
+      "description": "Exercise activities you have logged",
+      "enabled_by_default": true,
+      "mapping": "ActivitiesActivityCalories",
+      "population": "*",
+      "scopes": []
+    }
+  },
+
+  "provider_id": null
+}

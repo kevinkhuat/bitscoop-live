@@ -1,11 +1,8 @@
 {% extends 'settings/base.html' %}
 
-{% load staticfiles %}
-{% load core %}
-
 
 {% block static %}
-	{{ block.super }}
+	{{ super() }}
 
 	<script type="text/javascript">
 		require(['connection-settings']);
@@ -14,7 +11,7 @@
 
 
 {% block settings %}
-	{% for connection in connections|dictsort:'provider.name.lower' %}
+	{% for connection in connections|sort(connections, false, false, 'provider.name.lower') %}
 		<div class="connection boxed-group" data-id="{{ connection.id }}" data-provider-id="{{ connection.provider.id }}">
 			<div class="flexbox flex-x-center title">
 				<div class="icon-name">
@@ -39,7 +36,7 @@
 				<i class="fa fa-caret-down expand-indicator"></i>
 			</div>
 
-			<form class="auto" action="{% url 'settings:connections' %}">
+			<form class="auto" action="/settings/connections/{{ connection.id }}">
 				<div class="padded paragraphed">
 					<div>
 						<div class="flexbox flex-x-center label">
@@ -54,7 +51,7 @@
 					<div>
 						<div class="label">What would you like?</div>
 						<div>
-							{% for permission in connection.permissions|dictsort:'name.lower' %}
+							{% for permission in connection.permissions|sort(connection.permissions, false, false, 'name.lower') %}
 								<div class="paragraph">
 									<div class="flexbox flex-x-center">
 										<label><input class="flag" type="checkbox" name="{{ permission.name }}"{% if permission.enabled %} checked{% endif %} />{{ permission.source.name }}</label>
@@ -67,6 +64,14 @@
 					</div>
 
 					<input class="hidden" type="submit" />
+
+					{% if connection.provider.auth_type == 'oauth2' %}
+						<div class="reauthorize {% if connection.auth_status.authorized %}hidden {% endif %}">
+							<button class="primary">Reauthorize</button>
+							<div>The changes you have made require you to re-authorize this connection to {{ connection.provider.name }}.</div>
+							<div>Retrieval of your data may not work properly until you re-authorize.</div>
+						</div>
+					{% endif %}
 
 					<div class="delete-disable">
 						{% if connection.enabled %}
@@ -82,7 +87,7 @@
 		</div>
 	{% endfor %}
 
-	<a id="big-add" class="flexbox flex-center" href="{% url 'providers' %}">
+	<a id="big-add" class="flexbox flex-center" href="https://live.bitscoop.com/providers">
 		<i class="fa fa-plus"></i>
 	</a>
 

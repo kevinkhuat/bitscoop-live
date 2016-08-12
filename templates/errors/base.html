@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>{% load staticfiles %}
+	<head>
 		<meta charset="UTF-8" />
 
 		<title>{% block title %}{% endblock %}</title>
@@ -12,16 +12,16 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'css/site.min.css' %}"/>
 	</head>
 	<body class="errors">
-		{% if not user.is_authenticated %}
+		{% if not user %}
 			<header>
-				<a href="{% url 'login' %}"><button>Login</button></a>
-				<a href="{% url 'signup' %}"><button>Sign Up</button></a>
+				<a href="https://account.bitscoop.com/login?continue=https://bitscoop.com"><button>Login</button></a>
+				<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com/start"><button>Sign Up</button></a>
 			</header>
 		{% endif %}
 
 		<main>
 			<div id="splash">
-				<a href="{% url 'home' %}"><img src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/error-page-bitscoop-logo.png" /></a>
+				<a href="/"><img src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/error-page-bitscoop-logo.png" /></a>
 				<h1>bitScoops...</h1>
 			</div>
 
@@ -32,17 +32,19 @@
 			{% block footer %}
 			<div class="copyright">&copy; 2016 BitScoop Labs, Inc.</div>
 			<div class="footer-links">
-				{% if not request.user.is_authenticated %}
-				<a href="{% url 'login' %}">Log In</a>
-				<span class="spacer"> | </span>
-				<a href="{% url 'signup' %}">Sign Up</a>
-				<span class="spacer"> | </span>
+				{% if not user %}
+					<a href="https://account.bitscoop.com/login?continue=https://bitscoop.com">Log In</a>
+					<span class="spacer"> | </span>
+					<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com/start">Sign Up</a>
+					<span class="spacer"> | </span>
+					<a href="/start">Info</a>
+					<span class="spacer"> | </span>
 				{% endif %}
-				<a class="support-link" target="_blank" href="{% url 'support' %}">Support</a>
+				<a class="support-link" target="_blank" href="https://bitscoop.com/support">Support</a>
 				<span class="spacer"> | </span>
-				<a class="privacy-policy" href="{% url 'privacy' %}">Privacy</a>
+				<a class="privacy-policy" href="https://bitscoop.com/privacy">Privacy</a>
 				<span class="spacer"> | </span>
-				<a class="terms-of-use" href="{% url 'terms' %}">Terms</a>
+				<a class="terms-of-use" href="https://bitscoop.com/terms">Terms</a>
 			</div>
 			{% endblock %}
 		</footer>

@@ -1,0 +1,15 @@
+{
+  "_id": "b78fce47696d4a9886d2d63db28f375b",
+
+  "sources": {
+    "purchases": {
+      "name": "Purchases",
+      "description": "Purchases you have made",
+      "enabled_by_default": true,
+      "mapping": "Purchases",
+      "scopes": []
+    }
+  },
+
+  "provider_id": null
+}

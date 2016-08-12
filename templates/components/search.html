@@ -202,7 +202,7 @@
 		</div>
 	{% endif %}
 
-	<form id="query-form" action="{% if action %}{{ action }}{% else %}{% url 'home' %}{% endif %}" method="POST" class="flex-grow">
+	<form id="query-form" action="{% if action %}{{ action }}{% endif %}" method="POST" class="flex-grow">
 		<div id="search-box" class="text-box">
 			<input id="search-query" type="search" name="search" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %} />
 		</div>

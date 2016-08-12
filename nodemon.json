@@ -1,0 +1,22 @@
+{
+  "ext": "html js json",
+  "ignore": [
+    "dist/",
+    "fixtures/",
+    "migrations/",
+    "nunjucks/",
+    "scripts/",
+    "static/",
+    "test/",
+    ".gitignore",
+    "Gruntfile.js",
+    "jscs.json",
+    "jshint.json",
+    "nodemon.json",
+    "package.json",
+    "README.md"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

@@ -84,6 +84,17 @@
 				}
 			}
 		}
+
+		.action-bar {
+			.flex-grow;
+
+			margin-left: 1em;
+			color: @blue;
+
+			& > *:not(:last-child) {
+				margin-right: 0.2em;
+			}
+		}
 	}
 
 	& > .content {
@@ -101,6 +112,10 @@
 				display: none;
 			}
 		}
+
+		.tagging {
+			display: none;
+		}
 	}
 
 	& > .interactions {
@@ -109,6 +124,10 @@
 
 		.object.contact {
 			margin: 0.25em 0;
+
+			.tagging {
+				display: none;
+			}
 
 			.provider {
 				display: none;

@@ -1,19 +1,11 @@
 body.explorer.list {
-	#list-container {
-		.flexbox;
-		.flex-grow;
-
-		@media @mobile-portrait {
-			.flex-column-reverse;
-		}
-
+	main {
 		#list {
 			display: table !important;
-			table-layout: fixed;
+			//table-layout: fixed;
 			border-collapse: collapse;
 			border: 0;
 
-			height: 100%;
 			width: 100%;
 			margin: 0;
 
@@ -27,10 +19,11 @@ body.explorer.list {
 					}
 				}
 			}
-		}
 
-		#list:empty {
-			.flex !important;
+			.provider\.name,
+			.firstItem\.type\.name {
+				text-transform: capitalize;
+			}
 		}
 
 		#map {

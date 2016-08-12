@@ -235,6 +235,12 @@ body.explorer {
 
 					> a {
 						margin: 0.5em;
+						white-space: nowrap;
+
+						&:first-child {
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
 					}
 				}
 

@@ -1,5 +1,0 @@
-flake8
-flake8-print
-flake8-quotes
-isort
-pep8-naming

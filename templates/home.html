@@ -1,67 +1,102 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
+
+{% block static %}
+	{{ super() }}
+
+	<script type="text/javascript">
+		require(['user-home']);
+	</script>
+{% endblock %}
+
+
+{% block header %}
+	{% include 'components/header.html'%}
+{% endblock %}
 
 
 {% block main %}
-	<section class="flex" style="position: relative; min-height: 500px;">
-		<div class="video-wrapper" style="position: absolute; top: 0; left: 0; z-index: -100; height: 500px; width: 100%; overflow: hidden;">
-			<video id="bgvideo" style="position: absolute; top: 0; left: 0; width: 100%;" poster="https://d233zlhvpze22y.cloudfront.net/1457056861/images/pool-jump.png" muted autoplay loop>
-				<source type="video/webm" src="https://d233zlhvpze22y.cloudfront.net/1457056861/videos/pool-jump.webm" />
-				<source type="video/mp4" src="https://d233zlhvpze22y.cloudfront.net/1457056861/videos/pool-jump.mp4" />
-			</video>
+	<aside id="profile">
+		<div class="avatar">
+			<a href="https://account.bitscoop.com/settings/profile">
+				<i class="fa fa-user"></i>
+			</a>
 		</div>
 
-		<div class="flexbox flex-grow flex-column flex-center flex-x-center">
-			<div class="card padded bold align-center" style="font-size: 300%; color: #FFF; background-color: rgba(75, 75, 75, 0.4);">Discover the Internet<br/>of YOU</div>
-			<div class="flexbox">
-				<div>
-					<button>Learn More</button>
-				</div>
-				<div>
-					<button class="primary">Try it Now</button>
-				</div>
+		{% if req.user.first_name and req.user.last_name %}
+			<div class="name">{{ req.user.first_name }} {{ req.user.last_name }}</div>
+
+			{% if req.user.handle %}
+				<div class="handle">{{ req.user.handle }}</div>
+			{% else %}
+				<div></div>
+			{% endif %}
+		{% elif req.user.handle %}
+			<div class="name">{{ req.user.handle }}</div>
+			<div></div>
+		{% endif %}
+
+		<div class="divider"></div>
+
+		<div class="info">
+			<div>
+				<i class="fa fa-envelope-o"></i>
+				<span>{{ req.user.email }}</span>
+			</div>
+
+			<div>
+				<i class="fa fa-clock-o"></i>
+				<span>Joined {{ req.user.date_joined | date('MMMM DD, YYYY') }}</span>
+			</div>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="stats">
+			<a class="connections" href="https://account.bitscoop.com/settings/connections">
+				<div class="count">{{ counts.connections }}</div>
+				<div class="label">Accounts</div>
+			</a>
+
+			<a class="events" href="/explore">
+				<div class="count">{{ counts.events }}</div>
+				<div class="label">Events</div>
+			</a>
+
+			<a class="searches">
+				<div class="count">{{ counts.searches }}</div>
+				<div class="label">Searches</div>
+			</a>
+		</div>
+	</aside>
+
+	<section id="content">
+		<nav id="tabs">
+			<div class="tab" name="favorites">Favorites</div>
+			<div class="tab" name="recent">Recent</div>
+			<div class="tab" name="top">Top</div>
+			<div class="tab" name="tags">Tags</div>
+		</nav>
+
+		<div id="search-container">
+			<div class="scroller">
+				<div id="searches"></div>
 			</div>
 		</div>
 	</section>
 
-	<section id="facets" class="flexbox flex-wrap flex-space-around">
-		<div class="card flexbox flex-column flex-center flex-x-center align-center">
-			<h1>Icon 1</h1>
-			<h3>Search</h3>
-			<p>Connect with your information across platforms.</p>
-			<p>Pictures, videos, texts, social media posts.</p>
-		</div>
+	<aside id="favorite" class="modal modal-close">
+		<div class="container">
+			<div class="scroller">
+				<div class="content">
+					<i class="modal-close close-button"></i>
 
-		<div class="card flexbox flex-column flex-center flex-x-center align-center">
-			<h1>Icon 2</h1>
-			<h3>Explore</h3>
-			<p>Reveal the richness of your life in your data.</p>
-			<p>A complete view of real-time and history events.</p>
+					<div class="body"></div>
+				</div>
+			</div>
 		</div>
-
-		<div class="card flexbox flex-column flex-center flex-x-center align-center">
-			<h1>Icon 3</h1>
-			<h3>Share</h3>
-			<p>Visualize your connected information.</p>
-			<p>Take ownership and control of your stories.</p>
-		</div>
-	</section>
+	</aside>
 {% endblock %}
 
 
-{% block footer %}
-	<div style="margin-bottom: 10px;">
-		<a href="{% url 'team' %}">Team</a>
-		<span style="margin: 5px;">&middot;</span>
-		<a href="{% url 'contact' %}">Contact</a>
-		<span style="margin: 5px;">&middot;</span>
-		<a href="{% url 'terms' %}">Terms</a>
-		<span style="margin: 5px;">&middot;</span>
-		<a href="{% url 'privacy' %}">Privacy</a>
-		<span style="margin: 5px;">&middot;</span>
-		<a href="{% url 'security' %}">Security</a>
-	</div>
-
-	{{ block.super }}
-{% endblock %}
+{% block outer_footer %}{% endblock %}

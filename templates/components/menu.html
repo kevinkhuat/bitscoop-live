@@ -13,8 +13,8 @@
 		<div class="drawer">
 			<a data-view="feed"><i class="fa fa-clone"></i><span>Feed</span></a>
 			<a data-view="grid"><i class="fa fa-th"></i><span>Grid</span></a>
-			<!--<a data-view="list"><i class="fa fa-list"></i></a>-->
-			<!--<a data-view="map"><i class="fa fa-map-o"></i></a>-->
+			<a data-view="list"><i class="fa fa-list"></i><span>List</span></a>
+			{# <a data-view="map"><i class="fa fa-map-o"></i></a> #}
 		</div>
 	</div>
 
@@ -35,34 +35,34 @@
 			<div class="flex-grow"></div>
 			<span class="count"></span>
 		</div>
-		<div class="drawer hidden">
-		</div>
+		<div class="drawer hidden"></div>
 	</div>
 
-	<a class="explorer" href="{% url 'explorer' %}"><i class="fa fa-rocket"></i> Explorer</a>
-	<a class="providers" href="{% url 'providers' %}"><i class="fa fa-plus"></i> Connections</a>
-	<a class="settings" href="{% url 'settings:profile' %}"><i class="fa fa-cog"></i> Settings</a>
-	<a class="support" target="_blank" href="{% url 'support' %}"><i class="fa fa-question-circle"></i> Support</a>
+	<a class="explorer" href="/explore"><i class="fa fa-rocket"></i> Explorer</a>
+	<a class="providers" href="/providers"><i class="fa fa-plus"></i> Connections</a>
+	<a class="settings" href="/settings"><i class="fa fa-cog"></i> Settings</a>
+	<a class="account-settings" href="https://account.bitscoop.com"><i class="fa fa-user"></i> Account</a>
+	<a class="support" target="_blank" href="https://bitscoop.com/support"><i class="fa fa-question-circle"></i> Support</a>
 </section>
 
 <footer>
 	<div class="user-info">
-		{% if request.user.handle %}
-			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.handle }}</a>
-		{% elif request.user.full_name %}
-			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.full_name }}</a>
+		{% if req.user.handle %}
+			<a href="https://account.bitscoop.com/settings/account"><i class="fa fa-user"></i> {{ req.user.handle }}</a>
+		{% elif req.user.first_name or req.user.last_name %}
+		<a href="/settings/account"><i class="fa fa-user"></i> {{ req.user.first_name }} {{ req.user.last_name }}</a>
 		{% else %}
-			<a href="{% url 'settings:account' %}"><i class="fa fa-user"></i> {{ request.user.email }}</a>
+			<a href="https://account.bitscoop.com/settings/account"><i class="fa fa-user"></i> {{ req.user.email }}</a>
 		{% endif %}
 
-		<a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+		<a href="https://account.bitscoop.com/logout?continue=https://bitscoop.com"><i class="fa fa-sign-out"></i> Logout</a>
 	</div>
 
 	<div>
 		<span>&copy; 2016 BitScoop Labs, Inc.</span>
 		<span class="spacer">|</span>
-		<a href="{% url 'privacy' %}">Privacy</a>
+		<a href="https://bitscoop.com/privacy">Privacy</a>
 		<span class="spacer">|</span>
-		<a href="{% url 'terms' %}">Terms</a>
+		<a href="https://bitscoop.com/terms">Terms</a>
 	</div>
 </footer>

@@ -16,21 +16,17 @@ require.config({
 		'location-settings': window.staticUrl + 'js/pages/settings/location.min',
 		'profile-settings': window.staticUrl + 'js/pages/settings/profile.min',
 		providers: window.staticUrl + 'js/pages/providers.min',
+		start: window.staticUrl + 'js/pages/start.min',
 		'settings-base': window.staticUrl + 'js/pages/settings/base.min',
 		'user-home': window.staticUrl + 'js/pages/user-home.min',
 
 		// Tools
 		autoblur: window.staticUrl + 'js/tools/autoblur.min',
-		debounce: window.staticUrl + 'js/tools/debounce.min',
 		filters: window.staticUrl + 'js/tools/filters.min',
-		'form-monitor': window.staticUrl + 'js/tools/form-monitor.min',
-		history: window.staticUrl + 'js/tools/history.min',
 		icons: window.staticUrl + 'js/tools/icons.min',
 		location: window.staticUrl + 'js/tools/location.min',
 		'rgb-to-hex': window.staticUrl + 'js/tools/rgb-to-hex.min',
-		throttle: window.staticUrl + 'js/tools/throttle.min',
 		type: window.staticUrl + 'js/tools/type.min',
-		viewstate: window.staticUrl + 'js/tools/viewstate.min',
 
 		// Explorer
 		embed: window.staticUrl + 'js/explorer/embed.min',
@@ -46,27 +42,18 @@ require.config({
 
 requirejs.config({
 	paths: {
-		cartano: window.staticUrl + 'lib/cartano/cartano.min',  // Custom BitScoop external library.
-		jutsu: window.staticUrl + 'lib/jutsu/jutsu.min',  // Custom BitScoop external library.
-
 		bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min',  // https://github.com/petkaantonov/bluebird
 		'bootstrap-collapse': 'https://cdn.rawgit.com/twbs/bootstrap/master/js/collapse', // https://github.com/twbs/bootstrap
 		'bootstrap-transition': 'https://cdn.rawgit.com/twbs/bootstrap/master/js/transition', // https://github.com/twbs/bootstrap
+		cartano: 'https://d1m45eggqhap5f.cloudfront.net/cartano/0.2.0/cartano-0.2.0.min',  // https://bitbucket.org/bitscooplabs/cartano
+		cookies: 'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.2/js.cookie.min',  // https://github.com/js-cookie/js-cookie
 		datetimepicker: 'https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/master/src/js/bootstrap-datetimepicker', //
+		debounce: 'https://d1m45eggqhap5f.cloudfront.net/debounce/0.1.0/debounce-0.1.0.min',  // https://bitbucket.org/bitscooplabs/debounce
 		'deferred-ap': 'https://d1m45eggqhap5f.cloudfront.net/deferred-ap/0.0.1/deferred-ap-0.0.1.min',  // https://github.com/sjberry/deferred-ap
+		'form-monitor': 'https://d1m45eggqhap5f.cloudfront.net/form-monitor/0.1.0/form-monitor-0.1.0.min',  // https://bitbucket.org/bitscooplabs/form-monitor
+		history: 'https://d1m45eggqhap5f.cloudfront.net/history/0.1.0/history-0.1.0.min',  // https://bitbucket.org/bitscooplabs/history
 		humanize: 'https://cdnjs.cloudflare.com/ajax/libs/humanize-plus/1.6.0/humanize.min',  // https://github.com/HubSpot/humanize
 		jquery: 'https://code.jquery.com/jquery-2.1.4.min',  // https://github.com/jquery/jquery
-		lodash: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min',  // https://github.com/lodash/lodash
-		mapbox: 'https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox',  // https://github.com/mapbox/mapbox.js
-		moment: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min', //http://momentjs.com/
-		nunjucks: 'https://d1m45eggqhap5f.cloudfront.net/nunjucks/2.4.1/nunjucks-2.4.1.min',  // https://github.com/mozilla/nunjucks
-		twemoji: 'https://twemoji.maxcdn.com/twemoji.min',  // https://github.com/twitter/twemoji
-
-		// Google Analytics Shim
-		ga: 'https://www.google-analytics.com/analytics',
-
-		// Plugins
-		'jquery-cookie': 'https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min',  // https://github.com/carhartl/jquery-cookie
 		'jquery-deparam': 'https://d1m45eggqhap5f.cloudfront.net/jquery-deparam/0.4.2/jquery-deparam-0.4.2.min',  // https://github.com/AceMetrix/jquery-deparam
 		'jquery-deserialize': 'https://d1m45eggqhap5f.cloudfront.net/jquery-deserialize/1.3.2/jquery.deserialize-1.3.2.min',  // https://github.com/kflorence/jquery-deserialize
 		'jquery-mixitup': 'https://cdn.jsdelivr.net/jquery.mixitup/2.1.8/jquery.mixitup.min', //https://github.com/patrickkunka/mixitup
@@ -77,9 +64,18 @@ requirejs.config({
 		'leaflet-fullscreen': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min',  // https://github.com/Leaflet/Leaflet.fullscreen
 		'leaflet-markercluster': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster',  // https://github.com/Leaflet/Leaflet.markercluster
 		'leaflet-zoomslider': 'https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider',  // https://github.com/kartena/Leaflet.zoomslider
+		lodash: 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min',  // https://github.com/lodash/lodash
+		mapbox: 'https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox',  // https://github.com/mapbox/mapbox.js
 		'mapbox-directions': 'https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions', // https://github.com/mapbox/mapbox-directions.js
-		minimodal: 'https://d1m45eggqhap5f.cloudfront.net/minimodal/0.1.3/minimodal-0.1.3.min'  // https://github.com/sjberry/minimodal
+		minimodal: 'https://d1m45eggqhap5f.cloudfront.net/minimodal/0.1.3/minimodal-0.1.3.min',  // https://github.com/sjberry/minimodal
+		moment: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min', //http://momentjs.com/
+		nunjucks: 'https://d1m45eggqhap5f.cloudfront.net/nunjucks/2.4.1/nunjucks-2.4.1.min',  // https://github.com/mozilla/nunjucks
+		throttle: 'https://d1m45eggqhap5f.cloudfront.net/throttle/0.1.0/throttle-0.1.0.min',  // https://bitbucket.org/bitscooplabs/throttle
+		twemoji: 'https://twemoji.maxcdn.com/twemoji.min',  // https://github.com/twitter/twemoji
+		viewstate: 'https://d1m45eggqhap5f.cloudfront.net/viewstate/0.1.0/viewstate-0.1.0.min',  // https://bitbucket.org/bitscooplabs/viewstate
 
+		// Google Analytics Shim
+		ga: 'https://www.google-analytics.com/analytics'
 	},
 
 	map: {
@@ -94,6 +90,18 @@ requirejs.config({
 	},
 
 	shim: {
+		'bootstrap-collapse': {
+			deps: ['jquery']
+		},
+
+		'bootstrap-transition': {
+			deps: ['jquery']
+		},
+
+		datetimepicker: {
+			deps: ['bootstrap-collapse', 'bootstrap-transition']
+		},
+
 		ga: {
 			exports: 'ga'
 		},

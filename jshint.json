@@ -1,10 +1,29 @@
 {
-	"boss": true,
-	"eqnull": true,
-	"evil": true,
-	"expr": true,
-	"funcscope": true,
-	"loopfunc": true,
-	"quotmark": "single",
-	"shadow": true
+  "boss": true,
+  "esnext": true,
+  "eqnull": true,
+  "evil": true,
+  "expr": true,
+  "funcscope": true,
+  "loopfunc": true,
+  "node": true,
+  "quotmark": "single",
+  "shadow": true,
+  "undef": true,
+  "unused": "vars",
+  "validthis": true,
+
+  "globals": {
+    "Promise": true,
+    "after": true,
+    "afterEach": true,
+    "before": true,
+    "beforeEach": true,
+    "define": true,
+    "describe": true,
+    "document": true,
+    "env": true,
+    "it": true,
+    "window": true
+  }
 }

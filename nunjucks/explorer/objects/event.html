@@ -1,4 +1,4 @@
-<div class="object event">
+<div class="object event" id="{{ id }}">
 	<aside class="details">
 		<div class="type">
 			<i class="{{ type.icon }}"></i>
@@ -10,6 +10,10 @@
 					{{ type.name }}
 				{% endif %}
 			</span>
+
+			<aside class="action-bar">
+				<span>Tag</span><i class="fa fa-hashtag"></i>
+			</aside>
 		</div>
 
 		<div class="provider">
@@ -38,6 +42,14 @@
 				</div>
 			</div>
 		{% endif %}
+
+		<div class="tagging">
+			<div class="tags">
+				{% for tag in sumTags %}
+					<span>#{{ tag }}</span>
+				{% endfor %}
+			</div>
+		</div>
 	</aside>
 
 	{% if content and content.length > 0 %}
