@@ -41,6 +41,9 @@ app.disable('x-powered-by');
 
 // Mount middleware.
 app.use([
+	// Relegate incoming requests to a queue if exceeding a specified concurrency rate.
+	require('explorer/lib/middleware/concurrency')(config.concurrency),
+
 	// IP tracking
 	require('explorer/lib/middleware/ip'),
 

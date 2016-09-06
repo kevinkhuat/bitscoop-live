@@ -1,6 +1,6 @@
 {
   "address": "http://localhost:8002",
-
+  "concurrency": 25,
   "objectMaxLimit": 100,
 
   "logging": {
