@@ -8,7 +8,6 @@ const bristolConf = require('bristol-config');
 const config = require('config');
 const elasticsearch = require('elasticsearch');
 const express = require('express');
-const httpErrors = require('http-errors');
 const mongodb = require('mongodb');
 const nunjucks = require('nunjucks');
 const rpctools = require('rpc-tools');
@@ -47,6 +46,9 @@ app.use([
 	// IP tracking
 	require('explorer/lib/middleware/ip'),
 
+	// Add tracking/diagnostic metadata to the request.
+	require('explorer/lib/middleware/meta'),
+
 	// Parse (and possibly respond to) Content-Type
 	require('explorer/lib/middleware/content-type')(),
 
@@ -79,61 +81,15 @@ app.use([
 	// Create initial searches
 	require('explorer/lib/middleware/initial-searches'),
 
-	require('explorer/lib/views')
+	// Mount main views
+	require('explorer/lib/views'),
+
+	// Send a 404 if the route is not otherwise handled.
+	require('explorer/lib/middleware/handle-404'),
+
+	// Send an error code corresponding to a handled application error.
+	require('explorer/lib/middleware/handle-error')
 ]);
-
-
-// Send a 404 if the route is not otherwise handled.
-app.use(function(req, res, next) {
-	res.status(404);
-	res.render('errors/404.html', {
-		code: 404,
-		message: 'Page not found.'
-	});
-});
-
-// Send an error code corresponding to a handled application error.
-app.use(function(err, req, res, next) {
-	let context, template;
-
-	if (err instanceof httpErrors.HttpError) {
-		res.status(err.status);
-
-		context = {
-			code: err.status,
-			message: err.message
-		};
-	}
-	else {
-		res.status(500);
-
-		context = {
-			code: 500,
-			message: 'Internal server error.'
-		};
-	}
-
-	logger.error(err);
-
-	switch(context.code) {
-		case 400:
-			template = 'errors/400.html';
-			break;
-
-		case 403:
-			template = 'errors/403.html';
-			break;
-
-		case 404:
-			template = 'errors/404.html';
-			break;
-
-		default:
-			template = 'errors/500.html';
-	}
-
-	res.render(template, context);
-});
 
 
 // SHUTDOWN
