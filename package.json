@@ -4,7 +4,7 @@
   "private": true,
   "author": "BitScoop Labs, Inc.",
   "scripts": {
-    "preinstall": "npm link forms poolq rpc-tools && rm -f node_modules/explorer",
+    "preinstall": "npm link forms poolq && rm -f node_modules/explorer",
     "postinstall": "cd node_modules && ln -s .. explorer"
   },
   "dependencies": {

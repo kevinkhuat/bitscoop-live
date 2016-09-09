@@ -13,14 +13,6 @@
     ]
   },
 
-  "rpc": {
-    "clients": {
-      "accounts": {
-        "address": "tcp://localhost:5670"
-      }
-    }
-  },
-
   "caches": {
     "jobs": {
       "address": "redis://localhost:6379/0"

@@ -10,7 +10,6 @@ const elasticsearch = require('elasticsearch');
 const express = require('express');
 const mongodb = require('mongodb');
 const nunjucks = require('nunjucks');
-const rpctools = require('rpc-tools');
 const staticfiles = require('nunjucks-staticfiles');
 
 
@@ -154,10 +153,6 @@ Promise.all([
 						return new Deferred(Promise);
 					}
 				})
-			},
-
-			rpc: {
-				accounts: new rpctools.Client(config.rpc.clients.accounts.address)
 			},
 
 			logger: logger,
