@@ -67,7 +67,7 @@ Promise.all([
 								.then(function() {
 									logger.info('Index created for ' + type);
 								});
-						})
+						});
 				});
 
 				return Promise.all(inserts);

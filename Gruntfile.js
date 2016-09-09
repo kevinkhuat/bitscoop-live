@@ -102,6 +102,7 @@ module.exports = function(grunt) {
 					'Gruntfile.js',
 					'app.js',
 					'lib/**/*.js',
+					'migrations/**/*.js',
 					'static/**/*.js',
 					'test/**/*.js',
 					'!static/lib/**/*.js'
@@ -120,6 +121,7 @@ module.exports = function(grunt) {
 					'Gruntfile.js',
 					'app.js',
 					'lib/**/*.js',
+					'migrations/**/*.js',
 					'static/**/*.js',
 					'test/**/*.js',
 					'!static/lib/**/*.js'
