@@ -2,7 +2,6 @@
 
 const Deferred = require('deferred-ap');
 const Promise = require('bluebird');
-const Redis = require('ioredis');
 const URL = require('url-parse');
 const bristolConf = require('bristol-config');
 const config = require('config');
@@ -124,24 +123,10 @@ Promise.all([
 		});
 	}),
 
-	new Promise(function(resolve, reject) {
-		let address = config.caches.sessions.address;
-		let redis = new Redis(address);
-
-		redis.once('error', reject);
-		redis.once('ready', function() {
-			resolve(redis);
-		});
-	}),
-
 	require('explorer/lib/validator').load(config.validationSchemas)
 ])
-	.spread(function(mongo, sessions, validate) {
+	.spread(function(mongo, validate) {
 		global.env = {
-			caches: {
-				sessions: sessions
-			},
-
 			databases: {
 				mongo: mongo,
 				elastic: new elasticsearch.Client({
