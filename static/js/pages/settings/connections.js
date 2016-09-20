@@ -50,7 +50,7 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-depar
 				data: JSON.stringify(serialized),
 				contentType: 'application/json',
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).always(function() {
 				e.clearFormData();
@@ -83,7 +83,7 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-depar
 					}),
 					contentType: 'application/json',
 					headers: {
-						'X-CSRFToken': cookies.get('csrftoken')
+						'X-CSRF-Token': window.csrftoken
 					}
 				}).done(function() {
 					$connection.removeClass('disabled');
@@ -130,7 +130,7 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-depar
 					data: JSON.stringify(data),
 					contentType: 'application/json',
 					headers: {
-						'X-CSRFToken': cookies.get('csrftoken')
+						'X-CSRF-Token': window.csrftoken
 					}
 				}).done(function() {
 					$('.connection[data-id="' + id + '"]')
@@ -159,7 +159,7 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-depar
 					url: '/settings/connections/' + id,
 					method: 'DELETE',
 					headers: {
-						'X-CSRFToken': cookies.get('csrftoken')
+						'X-CSRF-Token': window.csrftoken
 					}
 				}).done(function(data) {
 					$('.connection[data-id="' + id + '"]').remove();

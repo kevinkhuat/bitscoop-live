@@ -9,7 +9,7 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery'], function(cookies, debo
 				data: $.param(e.formData),
 				dataType: 'json',
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).always(function() {
 				e.clearFormData();

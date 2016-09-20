@@ -14,6 +14,7 @@
 		{% block static %}
 			<script type="text/javascript">
 				window.staticUrl = "{% static '' %}";
+				window.csrftoken = "{{ csrf_token }}";
 			</script>
 
 			<!-- RequireJS configuration -->

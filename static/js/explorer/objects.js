@@ -1271,7 +1271,7 @@ define(['bluebird', 'cookies', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks'
 				contentType: 'application/json',
 				data: JSON.stringify(cursor.next.body),
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).done(function(data) {
 				var processed;
@@ -1597,7 +1597,7 @@ define(['bluebird', 'cookies', 'icons', 'jquery', 'lodash', 'moment', 'nunjucks'
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).done(function(data) {
 				var processed;

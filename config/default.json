@@ -26,6 +26,8 @@
     }
   },
 
+  "cookieConsent": "cookieconsent",
+
   "sessions": {
     "cookieName": "sessionid",
     "domain": ".bitscoop.com",
@@ -33,8 +35,6 @@
   },
 
   "csrf": {
-    "cookieName": "csrftoken",
-    "domain": ".bitscoop.com",
     "saltLength": 64,
     "secretLength": 32
   },

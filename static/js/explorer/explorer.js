@@ -1170,7 +1170,7 @@ define(['actions', 'bluebird', 'cookies', 'debounce', 'embed', 'favorite', 'hist
 						tags: [slugifiedTag]
 					}),
 					headers: {
-						'X-CSRFToken': cookies.get('csrftoken')
+						'X-CSRF-Token': window.csrftoken
 					}
 				})
 					.then(function() {
@@ -1356,7 +1356,7 @@ define(['actions', 'bluebird', 'cookies', 'debounce', 'embed', 'favorite', 'hist
 					tags: [slugifiedTag]
 				}),
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			})
 				.then(function() {

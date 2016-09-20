@@ -37,7 +37,7 @@ define(['cookies', 'jquery'], function(cookies, $) {
 				dataType: 'text',
 				data: data,
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).done(function(data, xhr, response) {
 				window.location.pathname = data;

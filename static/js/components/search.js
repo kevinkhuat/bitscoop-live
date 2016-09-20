@@ -417,7 +417,7 @@ define(['bluebird', 'cookies', 'debounce', 'filters', 'jquery', 'lodash', 'momen
 					url: 'https://live.bitscoop.com/api/searches/' + id,
 					method: 'DELETE',
 					headers: {
-						'X-CSRFToken': cookies.get('csrftoken')
+						'X-CSRF-Token': window.csrftoken
 					}
 				}).done(function() {
 					resolve(null);
@@ -576,7 +576,7 @@ define(['bluebird', 'cookies', 'debounce', 'filters', 'jquery', 'lodash', 'momen
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).done(function(data) {
 				resolve(data);
@@ -1011,7 +1011,7 @@ define(['bluebird', 'cookies', 'debounce', 'filters', 'jquery', 'lodash', 'momen
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				headers: {
-					'X-CSRFToken': cookies.get('csrftoken')
+					'X-CSRF-Token': window.csrftoken
 				}
 			}).done(function(data) {
 				resolve(data);
