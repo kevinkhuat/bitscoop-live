@@ -42,6 +42,7 @@
 	<a class="providers" href="/providers"><i class="fa fa-plug"></i> Add Connections</a>
 	<a class="settings" href="/settings"><i class="fa fa-cog"></i> Settings</a>
 	<a class="account-settings" href="https://account.bitscoop.com"><i class="fa fa-user"></i> Account</a>
+	<a class="learn" href="https://www.bitscooplabs.com/learn/live"><i class="fa fa-graduation-cap"></i> Learn</a>
 	<a class="support" target="_blank" href="https://bitscoop.com/support"><i class="fa fa-question-circle"></i> Support</a>
 </section>
 
@@ -50,7 +51,7 @@
 		{% if req.user.handle %}
 			<a href="https://account.bitscoop.com/settings/account"><i class="fa fa-user"></i> {{ req.user.handle }}</a>
 		{% elif req.user.first_name or req.user.last_name %}
-		<a href="/settings/account"><i class="fa fa-user"></i> {{ req.user.first_name }} {{ req.user.last_name }}</a>
+			<a href="/settings/account"><i class="fa fa-user"></i> {{ req.user.first_name }} {{ req.user.last_name }}</a>
 		{% else %}
 			<a href="https://account.bitscoop.com/settings/account"><i class="fa fa-user"></i> {{ req.user.email }}</a>
 		{% endif %}
