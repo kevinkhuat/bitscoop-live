@@ -30,6 +30,30 @@ Promise.all([
 ])
 	.spread(function(db) {
 		return Promise.all([
+			// `connections` collection
+			db.db('explorer').collection('connections').createIndex({
+				connection_id: 1
+			}),
+
+			db.db('explorer').collection('connections').createIndex({
+				user_id: 1
+			}),
+
+			// `events` collection
+			db.db('explorer').collection('events').createIndex({
+				user_id: 1
+			}),
+
+			// `providers` collection
+			db.db('explorer').collection('providers').createIndex({
+				enabled: 1
+			}),
+
+			db.db('explorer').collection('providers').createIndex({
+				provider_id: 1
+			}),
+
+			// `searches` collection
 			db.db('explorer').collection('searches').createIndex({
 				user_id: 1
 			}),
@@ -38,10 +62,7 @@ Promise.all([
 				hash: 1
 			}),
 
-			db.db('explorer').collection('events').createIndex({
-				user_id: 1
-			}),
-
+			// `tags` collection
 			db.db('explorer').collection('tags').createIndex({
 				user_id: 1
 			})

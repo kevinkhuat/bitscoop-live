@@ -7,26 +7,23 @@
       "description": "Food consumption you have logged",
       "enabled_by_default": true,
       "mapping": "FoodCaloriesIn",
-      "population": "*",
-      "scopes": []
+      "population": "*"
     },
     "sleep": {
       "name": "Sleep",
       "description": "Sleep time you have logged",
       "enabled_by_default": true,
       "mapping": "SleepStartTime",
-      "population": "*",
-      "scopes": []
+      "population": "*"
     },
     "exercise": {
       "name": "exercise",
       "description": "Exercise activities you have logged",
       "enabled_by_default": true,
       "mapping": "ActivitiesActivityCalories",
-      "population": "*",
-      "scopes": []
+      "population": "*"
     }
   },
 
-  "provider_id": null
+  "remote_provider_id": null
 }

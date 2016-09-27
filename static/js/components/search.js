@@ -1187,7 +1187,7 @@ define(['bluebird', 'cookies', 'debounce', 'filters', 'jquery', 'lodash', 'momen
 				$.each(objects.connections, function(i, d) {
 					var providerName;
 
-					if (d.auth_status.complete) {
+					if (d.auth.status.complete) {
 						providerName = _.get(objects.providers, d.provider_id).name;
 
 						$('<option>')

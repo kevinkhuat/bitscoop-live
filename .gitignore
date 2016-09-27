@@ -2,5 +2,6 @@ artifacts/
 dist/
 node_modules/
 
+fixtures/mongo/explorer/providers/keys/
 config/production.*
 static/lib/bitscoop-styles

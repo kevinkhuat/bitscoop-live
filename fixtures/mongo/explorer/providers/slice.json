@@ -6,10 +6,9 @@
       "name": "Purchases",
       "description": "Purchases you have made",
       "enabled_by_default": true,
-      "mapping": "Purchases",
-      "scopes": []
+      "mapping": "Purchases"
     }
   },
 
-  "provider_id": null
+  "remote_provider_id": null
 }

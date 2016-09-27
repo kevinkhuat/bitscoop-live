@@ -65,8 +65,8 @@
 
 					<input class="hidden" type="submit" />
 
-					{% if connection.provider.auth_type == 'oauth2' %}
-						<div class="reauthorize {% if connection.auth_status.authorized %}hidden {% endif %}">
+					{% if connection.provider.auth.type == 'oauth2' %}
+					<div class="reauthorize {% if connection.auth.status.authorized %}hidden {% endif %}">
 							<button class="primary">Reauthorize</button>
 							<div>The changes you have made require you to re-authorize this connection to {{ connection.provider.name }}.</div>
 							<div>Retrieval of your data may not work properly until you re-authorize.</div>

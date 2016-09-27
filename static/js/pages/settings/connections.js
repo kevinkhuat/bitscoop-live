@@ -110,7 +110,16 @@ define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-depar
 
 			id = $this.closest('.connection').data('id');
 
-			window.location = 'https://account.bitscoop.com/associate/' + id;
+			$.ajax({
+				url: '/connections/' + id,
+				method: 'PATCH',
+				contentType: 'application/json',
+				headers: {
+					'X-CSRFToken': window.csrftoken
+				}
+			}).done(function(authObj) {
+				window.location.href = authObj.redirectUrl;
+			});
 		});
 
 		$('#disable-modal').on('click', 'button', function(e) {

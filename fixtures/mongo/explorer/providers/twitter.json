@@ -1,8 +1,6 @@
 {
   "_id": "c3817b27324541d0b8eab46fd92b2b9d",
 
-  "enabled": true,
-
   "sources": {
     "tweets": {
       "name": "Tweets",
@@ -25,5 +23,5 @@
     }
   },
 
-  "provider_id": "d1b32e6074cd455386d5c4d461fe3ad4"
+  "remote_provider_id": "d1b32e6074cd455386d5c4d461fe3ad4"
 }

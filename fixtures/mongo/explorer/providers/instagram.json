@@ -1,15 +1,12 @@
 {
   "_id": "3f094b0b24d048938e40452d34d62a46",
 
-  "enabled": true,
-
   "sources": {
     "posts": {
       "name": "Shares",
       "description": "Images and videos you have shared on Instagram",
       "enabled_by_default": true,
-      "mapping": "PublishedMedia",
-      "scopes": ["basic"]
+      "mapping": "PublishedMedia"
     }
   },
 
@@ -18,10 +15,9 @@
       "name": "Likes",
       "description": "Images and videos you have liked on Instagram",
       "enabled_by_default": true,
-      "mapping": "Likes",
-      "scopes": ["public_data"]
+      "mapping": "Likes"
     }
   },
 
-  "provider_id": "7a2409d91bcf45c9bb2d903f76ca525b"
+  "remote_provider_id": "7a2409d91bcf45c9bb2d903f76ca525b"
 }

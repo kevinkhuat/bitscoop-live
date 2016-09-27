@@ -11,6 +11,8 @@ const mongodb = require('mongodb');
 const nunjucks = require('nunjucks');
 const staticfiles = require('nunjucks-staticfiles');
 
+const validator = require('explorer/lib/validator');
+
 
 let app = express();
 let logger = bristolConf(config.logging);
@@ -123,7 +125,7 @@ Promise.all([
 		});
 	}),
 
-	require('explorer/lib/validator').load(config.validationSchemas)
+	validator.load(config.validationSchemas)
 ])
 	.spread(function(mongo, validate) {
 		global.env = {

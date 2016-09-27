@@ -1,8 +1,6 @@
 {
   "_id": "0cbd7b54443545f9bc15f10c923b214a",
 
-  "enabled": true,
-
   "sources": {
     "games_owned": {
       "name": "Games Owned",
@@ -19,5 +17,5 @@
     }
   },
 
-  "provider_id": "6d060780ab2848f5a17226655525385f"
+  "remote_provider_id": "6d060780ab2848f5a17226655525385f"
 }

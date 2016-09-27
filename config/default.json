@@ -12,6 +12,13 @@
       }
     ]
   },
+  "rpc": {
+    "clients": {
+      "account": {
+        "address": "tcp://localhost:5670"
+      }
+    }
+  },
 
   "databases": {
     "mongo": {
@@ -46,6 +53,15 @@
 
   "templates": {
     "directory": "templates"
+  },
+
+  "api": {
+    "key": "f5964ad26fc34484afeff897f67fb844",
+    "address": {
+      "protocol": "http",
+      "hostname": "localhost",
+      "port": "8003"
+    }
   },
 
   "validationSchemas": "schemas/**/*.json"

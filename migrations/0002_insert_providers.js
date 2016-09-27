@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const Bristol = require('bristol').Bristol;
 const Promise = require('bluebird');
 const _ = require('lodash');
@@ -35,18 +37,39 @@ Promise.all([
 ])
 	.spread(function(db, files) {
 		let inserts = _.map(files, function(file) {
-			logger.info('Reading provider information from "' + file + '".');
+			logger.info('Reading Provider information from "' + file + '".');
 
-			return fs.readfile(file)
-				.then(function(json) {
-					let provider = JSON.parse(json);
+			let dirname = path.dirname(file);
+			let basename = path.basename(file);
+			let keyfile = path.join(dirname, 'keys', basename);
+
+			return Promise.all([
+				fs.readfile(file),
+				fs.readfile(keyfile)
+			])
+				.spread(function(providerJson, keyfileJson) {
+					let provider = JSON.parse(providerJson);
+
+					if (provider.remote_provider_id == null) {
+						return Promise.resolve();
+					}
+
+					let key = JSON.parse(keyfileJson);
+
+					_.merge(provider, key);
 
 					provider._id = gid(provider._id);
-					provider.provider_id = gid(provider.provider_id);
+					provider.remote_provider_id = gid(provider.remote_provider_id);
 
-					return db.db('explorer').collection('providers').insert(provider)
+					return db.db('explorer').collection('providers').update({
+						_id: provider._id
+					}, {
+						$setOnInsert: provider
+					}, {
+						upsert: true
+					})
 						.then(function(inserted) {
-							logger.info('New provider <' + provider._id.toString('hex') + '> inserted.');
+							logger.info('New Provider <' + provider._id.toString('hex') + '> inserted.');
 
 							return Promise.resolve(inserted);
 						});
