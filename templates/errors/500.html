@@ -1,12 +1,11 @@
 {% extends 'errors/base.html' %}
 
+
 {% block title %}Runtime Error &middot; BitScoop{% endblock %}
 
-{% block main %}
-	<div>
-		<h3>500 (Runtime Error)</h3>
 
-		<p>The server encountered a runtime error.</p>
-		<p>Back to <a href="/">bitscoop.com</a>.</p>
-	</div>
+{% block error %}
+	<h3>500 (Runtime Error)</h3>
+
+	<p>The server encountered a runtime error.</p>
 {% endblock %}

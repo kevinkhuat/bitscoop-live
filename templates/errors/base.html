@@ -7,45 +7,60 @@
 
 		{% include 'components/metatags.html' %}
 
-		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|PT+Sans:400,400italic,700,700italic|Quicksand:400,300|Raleway:400|Roboto:300,400,700|Source+Sans+Pro:300,400,700" />
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quicksand:400|Roboto:300,400,700|Open+Sans:200,300,400,700" />
 
 		<link rel="stylesheet" type="text/css" href="{% static 'css/site.min.css' %}"/>
 	</head>
+
 	<body class="errors">
-		{% if not user %}
+		{% if not req.user %}
 			<header>
-				<a href="https://account.bitscoop.com/login?continue=https://bitscoop.com"><button>Login</button></a>
-				<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com/start"><button>Sign Up</button></a>
+				<a href="https://account.bitscoop.com/login?continue=https://{{ req.headers.host }}{{ req.originalUrl }}"><button>Login</button></a>
+				<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com"><button>Sign Up</button></a>
 			</header>
 		{% endif %}
 
 		<main>
 			<div id="splash">
-				<a href="/"><img src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/error-page-bitscoop-logo.png" /></a>
+				{% if code != 500 and req.originalUrl == '/' %}
+					<a href="https://bitscoop.com"><img src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/error-page-bitscoop-logo.png" /></a>
+				{% else %}
+					<a href="https://{{ req.headers.host }}"><img src="https://d233zlhvpze22y.cloudfront.net/1457056861/images/error-page-bitscoop-logo.png" /></a>
+				{% endif %}
+
 				<h1>bitScoops...</h1>
 			</div>
 
-			{% block main %}{% endblock %}
+			{% block main %}
+				<div>
+					{% block error %}{% endblock %}
+
+					{% if code != 500 and req.originalUrl == '/' %}
+						<p>Back to <a href="https://bitscoop.com">bitscoop.com</a>.</p>
+					{% else %}
+						<p>Back to <a href="https://{{ req.headers.host }}">{{ req.headers.host }}</a>.</p>
+					{% endif %}
+				</div>
+			{% endblock %}
 		</main>
 
 		<footer>
 			{% block footer %}
-			<div class="copyright">&copy; 2016 BitScoop Labs, Inc.</div>
-			<div class="footer-links">
-				{% if not req.user %}
-					<a href="https://account.bitscoop.com/login?continue=https://bitscoop.com">Log In</a>
+				<div class="copyright">&copy; 2016 BitScoop Labs, Inc.</div>
+				<div class="footer-links">
+					{% if not req.user %}
+						<a href="https://account.bitscoop.com/login?continue=https://{{ req.headers.host }}{{ req.originalUrl }}">Log In</a>
+						<span class="spacer"> | </span>
+						<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com">Sign Up</a>
+						<span class="spacer"> | </span>
+					{% endif %}
+
+					<a class="support-link" target="_blank" href="https://bitscoop.com/support">Support</a>
 					<span class="spacer"> | </span>
-					<a href="https://account.bitscoop.com/signup?continue=https://bitscoop.com/start">Sign Up</a>
+					<a class="privacy-policy" href="https://bitscoop.com/privacy">Privacy</a>
 					<span class="spacer"> | </span>
-					<a href="/start">Info</a>
-					<span class="spacer"> | </span>
-				{% endif %}
-				<a class="support-link" target="_blank" href="https://bitscoop.com/support">Support</a>
-				<span class="spacer"> | </span>
-				<a class="privacy-policy" href="https://bitscoop.com/privacy">Privacy</a>
-				<span class="spacer"> | </span>
-				<a class="terms-of-use" href="https://bitscoop.com/terms">Terms</a>
-			</div>
+					<a class="terms-of-use" href="https://bitscoop.com/terms">Terms</a>
+				</div>
 			{% endblock %}
 		</footer>
 	</body>
