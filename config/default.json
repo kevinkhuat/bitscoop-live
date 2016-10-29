@@ -12,13 +12,6 @@
       }
     ]
   },
-  "rpc": {
-    "clients": {
-      "account": {
-        "address": "tcp://localhost:5670"
-      }
-    }
-  },
 
   "databases": {
     "mongo": {
