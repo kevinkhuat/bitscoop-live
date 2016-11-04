@@ -53,7 +53,8 @@
     "address": {
       "protocol": "http",
       "hostname": "localhost",
-      "port": "8003"
+      "port": "8003",
+      "host_header": "api.bitscoop.com"
     }
   },
 
