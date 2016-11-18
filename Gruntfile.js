@@ -42,7 +42,8 @@ module.exports = function(grunt) {
 					'templates/**/*',
 					'LICENSE',
 					'package.json',
-					'app.js'
+					'app.js',
+					'worker.js'
 				],
 				dest: '<%= package.name %>'
 			}
@@ -101,6 +102,7 @@ module.exports = function(grunt) {
 				src: [
 					'Gruntfile.js',
 					'app.js',
+					'worker.js',
 					'lib/**/*.js',
 					'migrations/**/*.js',
 					'static/**/*.js',
@@ -120,6 +122,7 @@ module.exports = function(grunt) {
 				src: [
 					'Gruntfile.js',
 					'app.js',
+					'worker.js',
 					'lib/**/*.js',
 					'migrations/**/*.js',
 					'static/**/*.js',

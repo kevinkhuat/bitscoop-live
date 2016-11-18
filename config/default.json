@@ -13,6 +13,12 @@
     ]
   },
 
+  "caches": {
+    "jobs": {
+      "address": "redis://localhost:6379/0"
+    }
+  },
+
   "databases": {
     "mongo": {
       "address": "mongodb://localhost:27017",
@@ -24,6 +30,15 @@
     "elastic": {
       "address": "http://localhost:9200"
     }
+  },
+
+  "tasks": {
+    "generators": [
+      "explorer/lib/worker/tasks/generators/fetch-connection-data.js"
+    ],
+    "consumers": [
+      "explorer/lib/worker/tasks/consumers/connection-update.js"
+    ]
   },
 
   "cookieConsent": "cookieconsent",
@@ -54,7 +69,10 @@
       "protocol": "http",
       "hostname": "localhost",
       "port": "8003",
-      "host_header": "api.bitscoop.com"
+      "host_header": {
+        "main": "api.bitscoop.com",
+        "subdomain": "provider.api.bitscoop.com"
+      }
     }
   },
 
