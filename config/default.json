@@ -3,6 +3,12 @@
   "concurrency": 25,
   "objectMaxLimit": 100,
 
+  "domainInfo": {
+    "baseUrl": "www.bitscoop.com",
+    "protocol": "https",
+    "subdomain": "live"
+  },
+
   "logging": {
     "severity": "trace",
     "targets": [
