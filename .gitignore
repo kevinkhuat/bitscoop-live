@@ -4,6 +4,7 @@ node_modules/
 
 fixtures/mongo/explorer/providers/keys/
 config/production.*
+config/local.*
 static/lib/bitscoop-styles
 
 .idea
