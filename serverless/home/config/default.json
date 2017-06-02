@@ -1,0 +1,6 @@
+{
+  "staticfiles": {
+    "directories": ["artifacts"],
+    "path": "/static"
+  }
+}
