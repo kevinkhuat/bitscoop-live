@@ -15,19 +15,19 @@
       "items": {
         "oneOf": [
           {
-            "$ref": "/filters/connector"
+            "$ref": "../filters/connector.json"
           },
           {
-            "$ref": "/filters/what"
+            "$ref": "../filters/what.json"
           },
           {
-            "$ref": "/filters/when"
+            "$ref": "../filters/when.json"
           },
           {
-            "$ref": "/filters/where"
+            "$ref": "../filters/where.json"
           },
           {
-            "$ref": "/filters/who"
+            "$ref": "../filters/who.json"
           }
         ]
       }

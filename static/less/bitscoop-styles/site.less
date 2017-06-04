@@ -1,30 +1,7 @@
-@import './bitscoop-styles/themes/default.less';
-
-@import './bitscoop-styles/components/controls.less';
-@import './bitscoop-styles/components/modals.less';
-@import './bitscoop-styles/mixins/flexbox.less';
-
-@import 'components/color-picker.less';
-@import 'components/cookie-consent.less';
-@import 'components/favorite.less';
-@import 'components/icon-picker.less';
-@import 'components/menu.less';
-@import 'components/search.less';
-@import 'explorer/explorer.less';
-@import 'pages/connections.less';
-@import 'pages/errors.less';
-@import 'pages/home.less';
-@import 'pages/login.less';
-@import 'pages/privacy.less';
-@import 'pages/providers.less';
-@import 'pages/settings.less';
-@import 'pages/signup.less';
-@import 'pages/start.less';
-@import 'pages/terms.less';
-@import 'shims/icons.less';
-
-@import './bitscoop-styles/site.less';
-
+@import 'themes/default.less';
+@import 'media/media.less';
+@import 'mixins/flexbox.less';
+@import 'mixins/generic.less';
 
 * {
 	box-sizing: border-box;
@@ -116,20 +93,6 @@ body {
 	&.modal-open {
 		& > :not(.modal):not(#minimodal-shade) {
 			filter: blur(5px);
-		}
-	}
-
-	& > .stats {
-		& > .connections {
-
-		}
-
-		& > .events {
-
-		}
-
-		& > .searches {
-
 		}
 	}
 

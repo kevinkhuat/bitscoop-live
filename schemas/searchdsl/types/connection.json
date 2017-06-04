@@ -10,7 +10,7 @@
         "connection": {
           "oneOf": [
             {
-              "$ref": "/types/uuid4"
+              "$ref": "../../types/uuid4.json"
             },
             {
               "type": "string",

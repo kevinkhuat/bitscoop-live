@@ -9,9 +9,8 @@
     "static/",
     "test/",
     ".gitignore",
-    "Gruntfile.js",
-    "jscs.json",
-    "jshint.json",
+    "eslint.json",
+    "gulpfile.js",
     "nodemon.json",
     "package.json",
     "README.md"

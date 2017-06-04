@@ -13,7 +13,7 @@
             "or": {
               "type": "array",
               "items": {
-                "$ref": "/searchdsl/fields/match-contact"
+                "$ref": "../fields/match-contact.json"
               }
             }
           },

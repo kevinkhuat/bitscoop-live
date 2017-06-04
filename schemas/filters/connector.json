@@ -19,7 +19,7 @@
           ]
         },
         "provider": {
-          "$ref": "/enums/provider-name"
+          "$ref": "../enums/provider-name.json"
         },
         "connection": {
           "type": "string",
