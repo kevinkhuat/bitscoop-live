@@ -38,13 +38,13 @@ staticfiles.configure(config.staticfiles.directories, {
 // Disable insecure header information.
 app.disable('x-powered-by');
 
+// Allos Express to determine ip from series of proxies
+app.enable('trust proxy');
+
 // Mount middleware.
 app.use([
 	// Relegate incoming requests to a queue if exceeding a specified concurrency rate.
 	require('./lib/middleware/concurrency')(config.concurrency),
-
-	// IP tracking
-	require('./lib/middleware/ip'),
 
 	// Add tracking/diagnostic metadata to the request.
 	require('./lib/middleware/meta'),
