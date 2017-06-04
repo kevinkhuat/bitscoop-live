@@ -11,7 +11,7 @@ const mongodb = require('mongodb');
 const nunjucks = require('nunjucks');
 const staticfiles = require('nunjucks-staticfiles');
 
-const validator = require('explorer/lib/validator');
+const validator = require('./lib/validator');
 
 
 let app = express();
@@ -23,10 +23,10 @@ let renderer = nunjucks.configure(config.templates.directory, {
 });
 
 renderer.addFilter('date', require('nunjucks-date-filter'));
-renderer.addFilter('hex', require('explorer/lib/filters/hex'));
-renderer.addFilter('is_before', require('explorer/lib/filters/is-before'));
-renderer.addFilter('relative_time', require('explorer/lib/filters/relative-time'));
-renderer.addFilter('slugify', require('explorer/lib/filters/slugify'));
+renderer.addFilter('hex', require('./lib/filters/hex'));
+renderer.addFilter('is_before', require('./lib/filters/is-before'));
+renderer.addFilter('relative_time', require('./lib/filters/relative-time'));
+renderer.addFilter('slugify', require('./lib/filters/slugify'));
 
 staticfiles.configure(config.staticfiles.directories, {
 	nunjucks: renderer,
@@ -41,19 +41,19 @@ app.disable('x-powered-by');
 // Mount middleware.
 app.use([
 	// Relegate incoming requests to a queue if exceeding a specified concurrency rate.
-	require('explorer/lib/middleware/concurrency')(config.concurrency),
+	require('./lib/middleware/concurrency')(config.concurrency),
 
 	// IP tracking
-	require('explorer/lib/middleware/ip'),
+	require('./lib/middleware/ip'),
 
 	// Add tracking/diagnostic metadata to the request.
-	require('explorer/lib/middleware/meta'),
+	require('./lib/middleware/meta'),
 
 	// Parse (and possibly respond to) Content-Type
-	require('explorer/lib/middleware/content-type')(),
+	require('./lib/middleware/content-type')(),
 
 	// Context processor
-	require('explorer/lib/middleware/context-processor'),
+	require('./lib/middleware/context-processor'),
 
 	// Parse cookies.
 	require('cookie-parser')(),
@@ -70,25 +70,25 @@ app.use([
 	}),
 
 	// Request logging
-	require('explorer/lib/middleware/logging')(logger),
+	require('./lib/middleware/logging')(logger),
 
 	// Load the current user onto the request
-	require('explorer/lib/middleware/authentication'),
+	require('./lib/middleware/authentication'),
 
 	// CSRF middleware
-	require('explorer/lib/middleware/csrf').create,
+	require('./lib/middleware/csrf').create,
 
 	// Create initial searches
-	require('explorer/lib/middleware/initial-searches'),
+	require('./lib/middleware/initial-searches'),
 
 	// Mount main views
-	require('explorer/lib/views'),
+	require('./lib/views'),
 
 	// Send a 404 if the route is not otherwise handled.
-	require('explorer/lib/middleware/handle-404'),
+	require('./lib/middleware/handle-404'),
 
 	// Send an error code corresponding to a handled application error.
-	require('explorer/lib/middleware/handle-error')
+	require('./lib/middleware/handle-error')
 ]);
 
 

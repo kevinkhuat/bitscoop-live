@@ -3,10 +3,6 @@
   "version": "0.10.1",
   "private": true,
   "author": "BitScoop Labs, Inc.",
-  "scripts": {
-    "preinstall": "npm link forms && rm -f node_modules/explorer",
-    "postinstall": "cd node_modules && ln -s .. explorer"
-  },
   "dependencies": {
     "ajv": "^4.1.3",
     "bluebird": "^3.4.1",

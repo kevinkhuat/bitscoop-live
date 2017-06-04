@@ -8,8 +8,8 @@ const _ = require('lodash');
 const config = require('config');
 const mongodb = require('mongodb');
 
-const fs = require('explorer/lib/util/fs');
-const gid = require('explorer/lib/util/gid');
+const fs = require('../lib/util/fs');
+const gid = require('../lib/util/gid');
 
 let logger = new Bristol();
 

@@ -9,7 +9,7 @@ const _ = require('lodash');
 const config = require('config');
 const elasticsearch = require('elasticsearch');
 
-const fs = require('explorer/lib/util/fs');
+const fs = require('..//lib/util/fs');
 
 
 let logger = new Bristol();
