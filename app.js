@@ -43,14 +43,8 @@ app.enable('trust proxy');
 
 // Mount middleware.
 app.use([
-	// Relegate incoming requests to a queue if exceeding a specified concurrency rate.
-	require('./lib/middleware/concurrency')(config.concurrency),
-
 	// Add tracking/diagnostic metadata to the request.
 	require('./lib/middleware/meta'),
-
-	// Parse (and possibly respond to) Content-Type
-	require('./lib/middleware/content-type')(),
 
 	// Context processor
 	require('./lib/middleware/context-processor'),
