@@ -44,7 +44,6 @@
 
   "sessions": {
     "cookieName": "sessionid",
-    "domain": ".bitscoop.com",
     "expiration": 1209600
   },
 
@@ -72,6 +71,20 @@
         "main": "api.bitscoop.com",
         "subdomain": "provider.api.bitscoop.com"
       }
+    }
+  },
+
+  "spoof" : {
+    "user" : {
+      "handle" : "Foo",
+      "email" : "foo@bar.com",
+      "last_name" : "Foo",
+      "first_name" : "Bar",
+      "last_login" : "",
+      "settings" : ""
+    },
+    "session" : {
+      "csrf_secret": "loremipsum"
     }
   },
 
