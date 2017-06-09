@@ -1,15 +1,16 @@
-define(['jquery'], function($) {
-	var validLabels = /^(data|css):/;
-	var regexFlags = 'ig';
+const $ = require('jquery');
 
-	$.expr[':'].regex = function(elem, index, match) {
-		var matchParams, method, property, re;
 
-		matchParams = match[3].split(',');
-		method = matchParams[0].match(validLabels) ? matchParams[0].split(':')[0] : 'attr';
-		property = matchParams.shift().replace(validLabels, '');
-		re = new RegExp(matchParams.join('').replace(/^s+|s+$/g, ''), regexFlags);
+var validLabels = /^(data|css):/;
+var regexFlags = 'ig';
 
-		return re.test($(elem)[method](property));
-	};
-});
+$.expr[':'].regex = function(elem, index, match) {
+	var matchParams, method, property, re;
+
+	matchParams = match[3].split(',');
+	method = matchParams[0].match(validLabels) ? matchParams[0].split(':')[0] : 'attr';
+	property = matchParams.shift().replace(validLabels, '');
+	re = new RegExp(matchParams.join('').replace(/^s+|s+$/g, ''), regexFlags);
+
+	return re.test($(elem)[method](property));
+};

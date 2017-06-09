@@ -1,183 +1,190 @@
-define(['cookies', 'debounce', 'form-monitor', 'jquery', 'lodash', 'jquery-deparam', 'minimodal', 'settings-base'], function(cookies, debounce, formMonitor, $, _) {
-	$(document).ready(function() {
-		var params;
+const $ = require('jquery');
+const _ = require('lodash');
+const cookies = require('cookies');
+const debounce = require('debounce');
+const formMonitor = require('form-monitor');
+require('jquery-deparam');
+require('minimodal');
 
-		params = $.deparam(window.location.search.slice(1));
 
-		if (params.provider) {
-			$('.connection[data-provider-id="' + params.provider + '"]').addClass('active');
+$(document).ready(function() {
+	var params;
+
+	params = $.deparam(window.location.search.slice(1));
+
+	if (params.provider) {
+		$('.connection[data-provider-id="' + params.provider + '"]').addClass('active');
+	}
+
+	$(document).on('click', '.connection .title', function(e) {
+		var $connection;
+
+		$connection = $(this).closest('.connection');
+
+		if (e.shiftKey) {
+			$connection.toggleClass('active');
 		}
+		else if ($connection.hasClass('active')) {
+			$connection.removeClass('active');
+		}
+		else {
+			$connection.addClass('active')
+				.siblings('.active').removeClass('active');
+		}
+	});
 
-		$(document).on('click', '.connection .title', function(e) {
-			var $connection;
+	$(document).formMonitor('form.auto');
 
-			$connection = $(this).closest('.connection');
+	$(document).on('form-monitor', 'form.auto', debounce(function(e) {
+		var sources, formData, id, serialized, $this = $(this);
 
-			if (e.shiftKey) {
-				$connection.toggleClass('active');
-			}
-			else if ($connection.hasClass('active')) {
-				$connection.removeClass('active');
-			}
-			else {
-				$connection.addClass('active')
-					.siblings('.active').removeClass('active');
+		formData = e.formData;
+
+		serialized = _.pick(formData, ['name', 'enabled']);
+		id = $this.closest('.connection').data('id');
+		sources = {};
+
+		$.each(formData, function(key, value) {
+			if (!serialized.hasOwnProperty(key)) {
+				sources[key] = value;
 			}
 		});
 
-		$(document).formMonitor('form.auto');
+		serialized.sources = sources;
 
-		$(document).on('form-monitor', 'form.auto', debounce(function(e) {
-			var sources, formData, id, serialized, $this = $(this);
+		$.ajax({
+			url: $this.attr('action'),
+			method: 'PATCH',
+			data: JSON.stringify(serialized),
+			contentType: 'application/json',
+			headers: {
+				'X-CSRF-Token': window.csrftoken
+			}
+		}).always(function() {
+			e.clearFormData();
+		}).done(function(data) {
+			formMonitor.done(formData, id);
 
-			formData = e.formData;
+			if (formData.hasOwnProperty('name')) {
+				$this.closest('.connection').find('div.name').text(formData.name);
+			}
 
-			serialized = _.pick(formData, ['name', 'enabled']);
-			id = $this.closest('.connection').data('id');
-			sources = {};
+			if (data.reauthorize) {
+				$this.closest('.connection').find('.reauthorize').removeClass('hidden');
+			}
+		});
+	}, 1000));
 
-			$.each(formData, function(key, value) {
-				if (!serialized.hasOwnProperty(key)) {
-					sources[key] = value;
-				}
-			});
+	$(document).on('click', 'button.disable, button.delete, button.enable', function(e) {
+		var id, name, $connection, $modal, $this = $(this);
 
-			serialized.sources = sources;
+		$connection = $this.closest('.connection');
+		id = $connection.data('id');
+		name = $connection.find('.title .name').text();
 
+		if ($this.is('.enable')) {
 			$.ajax({
-				url: $this.attr('action'),
+				url: '/settings/connections/' + id,
 				method: 'PATCH',
-				data: JSON.stringify(serialized),
+				data: JSON.stringify({
+					enabled: true
+				}),
 				contentType: 'application/json',
 				headers: {
 					'X-CSRF-Token': window.csrftoken
 				}
-			}).always(function() {
-				e.clearFormData();
-			}).done(function(data) {
-				formMonitor.done(formData, id);
+			}).done(function() {
+				$connection.removeClass('disabled');
+				$this.addClass('danger disable')
+					.removeClass('primary enable')
+					.text('Disable');
+			});
+		}
+		else {
+			$modal = $($this.is('.disable') ? '#disable-modal' : '#delete-modal');
 
-				if (formData.hasOwnProperty('name')) {
-					$this.closest('.connection').find('div.name').text(formData.name);
-				}
-
-				if (data.reauthorize) {
-					$this.closest('.connection').find('.reauthorize').removeClass('hidden');
+			$modal.data('connection-id', id).find('span.name').text(name);
+			$modal.modal({
+				position: false,
+				postOpen: function() {
+					$(this).css('display', 'flex');
 				}
 			});
-		}, 1000));
+		}
+	});
 
-		$(document).on('click', 'button.disable, button.delete, button.enable', function(e) {
-			var id, name, $connection, $modal, $this = $(this);
+	$(document).on('click', '.reauthorize button', function(e) {
+		var id, $this = $(this);
 
-			$connection = $this.closest('.connection');
-			id = $connection.data('id');
-			name = $connection.find('.title .name').text();
+		id = $this.closest('.connection').data('id');
 
-			if ($this.is('.enable')) {
-				$.ajax({
-					url: '/settings/connections/' + id,
-					method: 'PATCH',
-					data: JSON.stringify({
-						enabled: true
-					}),
-					contentType: 'application/json',
-					headers: {
-						'X-CSRF-Token': window.csrftoken
-					}
-				}).done(function() {
-					$connection.removeClass('disabled');
-					$this.addClass('danger disable')
-						.removeClass('primary enable')
-						.text('Disable');
-				});
+		$.ajax({
+			url: '/connections/' + id,
+			method: 'PATCH',
+			contentType: 'application/json',
+			headers: {
+				'X-CSRFToken': window.csrftoken
 			}
-			else {
-				$modal = $($this.is('.disable') ? '#disable-modal' : '#delete-modal');
-
-				$modal.data('connection-id', id).find('span.name').text(name);
-				$modal.modal({
-					position: false,
-					postOpen: function() {
-						$(this).css('display', 'flex');
-					}
-				});
-			}
+		}).done(function(authObj) {
+			window.location.href = authObj.redirectUrl;
 		});
+	});
 
-		$(document).on('click', '.reauthorize button', function(e) {
-			var id, $this = $(this);
+	$('#disable-modal').on('click', 'button', function(e) {
+		var data, id, $modal;
 
-			id = $this.closest('.connection').data('id');
+		if ($(this).is('.confirm')) {
+			$modal = $.modal.obj;
+			id = $modal.data('connection-id');
+
+			data = {
+				enabled: false
+			};
 
 			$.ajax({
-				url: '/connections/' + id,
+				url: '/settings/connections/' + id,
 				method: 'PATCH',
+				data: JSON.stringify(data),
 				contentType: 'application/json',
 				headers: {
-					'X-CSRFToken': window.csrftoken
+					'X-CSRF-Token': window.csrftoken
 				}
-			}).done(function(authObj) {
-				window.location.href = authObj.redirectUrl;
+			}).done(function() {
+				$('.connection[data-id="' + id + '"]')
+					.addClass('disabled')
+					.find('button.disable')
+					.removeClass('danger disable')
+					.addClass('primary enable')
+					.text('Enable');
+
+				$.modal.close();
 			});
-		});
+		}
+		else {
+			$.modal.close();
+		}
+	});
 
-		$('#disable-modal').on('click', 'button', function(e) {
-			var data, id, $modal;
+	$('#delete-modal').on('click', 'button', function(e) {
+		var id, $modal;
 
-			if ($(this).is('.confirm')) {
-				$modal = $.modal.obj;
-				id = $modal.data('connection-id');
+		if ($(this).is('.confirm')) {
+			$modal = $.modal.obj;
+			id = $modal.data('connection-id');
 
-				data = {
-					enabled: false
-				};
-
-				$.ajax({
-					url: '/settings/connections/' + id,
-					method: 'PATCH',
-					data: JSON.stringify(data),
-					contentType: 'application/json',
-					headers: {
-						'X-CSRF-Token': window.csrftoken
-					}
-				}).done(function() {
-					$('.connection[data-id="' + id + '"]')
-						.addClass('disabled')
-						.find('button.disable')
-						.removeClass('danger disable')
-						.addClass('primary enable')
-						.text('Enable');
-
-					$.modal.close();
-				});
-			}
-			else {
+			$.ajax({
+				url: '/settings/connections/' + id,
+				method: 'DELETE',
+				headers: {
+					'X-CSRF-Token': window.csrftoken
+				}
+			}).done(function(data) {
+				$('.connection[data-id="' + id + '"]').remove();
 				$.modal.close();
-			}
-		});
-
-		$('#delete-modal').on('click', 'button', function(e) {
-			var id, $modal;
-
-			if ($(this).is('.confirm')) {
-				$modal = $.modal.obj;
-				id = $modal.data('connection-id');
-
-				$.ajax({
-					url: '/settings/connections/' + id,
-					method: 'DELETE',
-					headers: {
-						'X-CSRF-Token': window.csrftoken
-					}
-				}).done(function(data) {
-					$('.connection[data-id="' + id + '"]').remove();
-					$.modal.close();
-				});
-			}
-			else {
-				$.modal.close();
-			}
-		});
+			});
+		}
+		else {
+			$.modal.close();
+		}
 	});
 });
