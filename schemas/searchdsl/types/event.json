@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/types/event",
+  "id": "#/searchdsl/types/event",
   "title": "Event search filter",
   "description": "The schema for event filters",
   "type": "object",

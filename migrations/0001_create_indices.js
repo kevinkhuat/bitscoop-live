@@ -28,7 +28,9 @@ Promise.all([
 		});
 	})
 ])
-	.spread(function(db) {
+	.then(function(result) {
+		let [db] = result;
+
 		return Promise.all([
 			// `connections` collection
 			db.db('explorer').collection('connections').createIndex({

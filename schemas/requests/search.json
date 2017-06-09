@@ -1,5 +1,5 @@
 {
-  "id": "/requests/search",
+  "id": "#/requests/search",
   "title": "SEARCH Request Parameters",
   "description": "Pagination parameters for collection SEARCH requests.",
   "type": "object",

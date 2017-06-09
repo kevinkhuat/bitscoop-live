@@ -1,5 +1,5 @@
 {
-  "id": "/types/webhook-events",
+  "id": "#/types/webhook-events",
   "title": "Webhook events",
   "description": "Schema for valid BitScoop webhook event types",
   "enum": [

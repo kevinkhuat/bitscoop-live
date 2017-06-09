@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/sorts/place",
+  "id": "#/searchdsl/sorts/place",
   "title": "Place sort fields",
   "description": "Valid Place sort fields",
   "type": "string",

@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/fields/geo-distance",
+  "id": "#/searchdsl/fields/geo-distance",
   "title": "Geo distance",
   "description": "Geo distance filter",
   "type": "object",

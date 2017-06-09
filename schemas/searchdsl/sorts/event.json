@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/sorts/event",
+  "id": "#/searchdsl/sorts/event",
   "title": "Event sort fields",
   "description": "Valid event sort fields",
   "type": "string",

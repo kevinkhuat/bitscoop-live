@@ -121,7 +121,9 @@ Promise.all([
 
 	validator.load(config.validationSchemas)
 ])
-	.spread(function(mongo, validate) {
+	.then(function(result) {
+		let [mongo, validate] = result;
+
 		global.env = {
 			databases: {
 				mongo: mongo,
@@ -157,7 +159,9 @@ Promise.all([
 			})
 		]);
 	})
-	.spread(function(http) {
+	.then(function(result) {
+		let [http] = result;
+
 		logger.info('HTTP server listening.', http.address());
 	})
 	.catch(function(err) {

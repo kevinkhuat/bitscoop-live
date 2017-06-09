@@ -1,5 +1,5 @@
 {
-  "id": "/filters/where",
+  "id": "#/filters/where",
   "title": "Where filter",
   "description": "Valid where filters",
   "type": "object",

@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/types/provider",
+  "id": "#/searchdsl/types/provider",
   "title": "Provider filter",
   "description": "Filtering by provider name",
   "type": "object",

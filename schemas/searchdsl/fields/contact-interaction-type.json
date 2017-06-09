@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/fields/contact-interaction-type",
+  "id": "#/searchdsl/fields/contact-interaction-type",
   "title": "Contact interaction type",
   "description": "Valid contact interactions types",
   "type": "object",

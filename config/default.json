@@ -76,6 +76,7 @@
 
   "spoof" : {
     "user" : {
+      "_id": "12345678-12345678-1234-567812345678",
       "handle" : "Foo",
       "email" : "foo@bar.com",
       "last_name" : "Foo",

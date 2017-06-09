@@ -1,5 +1,5 @@
 {
-  "id": "/types/datetime",
+  "id": "#/types/datetime",
   "title": "Datetime field",
   "description": "Range of datetime field",
   "type": "object",

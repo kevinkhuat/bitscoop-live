@@ -1,5 +1,5 @@
 {
-  "id": "/filters/who",
+  "id": "#/filters/who",
   "title": "Who filter",
   "description": "Valid who filters",
   "type": "object",

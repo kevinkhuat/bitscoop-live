@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/types/contact",
+  "id": "#/searchdsl/types/contact",
   "title": "Contact search filter",
   "description": "The schema for Contact filters",
   "type": "object",

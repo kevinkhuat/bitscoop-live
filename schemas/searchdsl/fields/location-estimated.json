@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/fields/location-estimated",
+  "id": "#/searchdsl/fields/location-estimated",
   "title": "Location estimated",
   "description": "Location.estimated is true",
   "type": "object",

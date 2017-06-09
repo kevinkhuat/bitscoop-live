@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/fields/match-contact",
+  "id": "#/searchdsl/fields/match-contact",
   "title": "Match contact",
   "description": "Match a contact's name or handle",
   "type": "object",

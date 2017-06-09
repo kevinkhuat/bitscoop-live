@@ -1,5 +1,5 @@
 {
-  "id": "/objects/connection",
+  "id": "#/objects/connection",
   "title": "Connection schema",
   "description": "Valid Connection schema",
   "type": "object",

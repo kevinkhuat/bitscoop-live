@@ -1,5 +1,5 @@
 {
-  "id": "/enums/content-type",
+  "id": "#/enums/content-type",
   "title": "Content Types",
   "description": "Valid Content types",
   "type": "string",

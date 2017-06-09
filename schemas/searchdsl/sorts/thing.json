@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/sorts/thing",
+  "id": "#/searchdsl/sorts/thing",
   "title": "Thing order types",
   "description": "The different ways in which things can be filtered and ordered during a GET",
   "type": "string",

@@ -60,7 +60,9 @@ Promise.all([
 		});
 	})
 ])
-	.spread(function(mongo, jobs, key) {
+	.then(function(result) {
+		let [mongo, jobs] = result;
+
 		global.env = {
 			caches: {
 				jobs: jobs
@@ -107,7 +109,9 @@ Promise.all([
 
 		return Promise.resolve([consumers, generators]);
 	})
-	.spread(function(consumers, generators) {
+	.then(function(result) {
+		let [consumers, generators] = result;
+
 		if (consumers.length > 0) {
 			for (let i = 0; i < consumers.length; i++) {
 				consumers[i].resume();

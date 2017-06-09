@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/types/connection",
+  "id": "#/searchdsl/types/connection",
   "title": "Connection filter",
   "description": "Filtering by connection ID",
   "type": "object",

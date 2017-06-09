@@ -35,7 +35,9 @@ Promise.all([
 
 	fs.find('fixtures/mongo/explorer/providers/*.json')
 ])
-	.spread(function(db, files) {
+	.then(function(result) {
+		let [db, files] = result;
+
 		let inserts = _.map(files, function(file) {
 			logger.info('Reading Provider information from "' + file + '".');
 
@@ -47,7 +49,9 @@ Promise.all([
 				fs.readfile(file),
 				fs.readfile(keyfile)
 			])
-				.spread(function(providerJson, keyfileJson) {
+				.then(function(result) {
+					let [providerJson, keyfileJson] = result;
+
 					let provider = JSON.parse(providerJson);
 
 					if (provider.remote_provider_id == null) {

@@ -1,5 +1,5 @@
 {
-  "id": "/types/string",
+  "id": "#/types/string",
   "title": "String",
   "description": "A plain string.",
   "type": "string"

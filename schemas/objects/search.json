@@ -1,5 +1,5 @@
 {
-  "id": "/objects/search",
+  "id": "#/objects/search",
   "title": "Contact schema",
   "description": "Valid Contact schema",
   "type": "object",

@@ -1,5 +1,5 @@
 {
-  "id": "/enums/provider-name",
+  "id": "#/enums/provider-name",
   "title": "Provider Name",
   "description": "Valid Provider names",
   "type": "string",

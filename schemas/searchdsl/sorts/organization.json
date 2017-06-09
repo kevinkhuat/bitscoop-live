@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/sorts/organization",
+  "id": "#/searchdsl/sorts/organization",
   "title": "Organization sort fields",
   "description": "Valid Organization sort fields",
   "type": "string",

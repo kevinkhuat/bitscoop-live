@@ -1,5 +1,5 @@
 {
-  "id": "/searchdsl/sorts/content",
+  "id": "#/searchdsl/sorts/content",
   "title": "Content sort fields",
   "description": "Valid content sort fields",
   "type": "string",

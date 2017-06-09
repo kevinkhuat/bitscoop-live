@@ -1,5 +1,5 @@
 {
-  "id": "/filters/when",
+  "id": "#/filters/when",
   "title": "When filter",
   "description": "Valid when filters",
   "type": "object",

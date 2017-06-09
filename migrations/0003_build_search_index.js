@@ -38,7 +38,9 @@ Promise.all([
 
 	fs.find('fixtures/elasticsearch/explorer/mappings/*.json')
 ])
-	.spread(function(elastic, settings, mappings) {
+	.then(function(result) {
+		let [elastic, settings, mappings] = result;
+
 		return elastic.indices.close({
 			index: 'explorer'
 		})

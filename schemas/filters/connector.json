@@ -1,5 +1,5 @@
 {
-  "id": "/filters/connector",
+  "id": "#/filters/connector",
   "title": "Connector filter",
   "description": "Valid connector filters",
   "type": "object",

@@ -1,5 +1,5 @@
 {
-  "id": "/requests/get",
+  "id": "#/requests/get",
   "title": "GET Request Parameters",
   "description": "Pagination parameters for collection GET requests.",
   "type": "object",
