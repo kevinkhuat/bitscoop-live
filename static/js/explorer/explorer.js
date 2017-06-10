@@ -816,39 +816,39 @@ $(document).ready(function() {
 		});
 
 	//When explorer is loaded, get the Mapbox token.
-	$.ajax({
-		url: '/tokens/mapbox',
-		type: 'GET',
-		dataType: 'json'
-	}).done(function(data) {
-		// When the Mapbox token has been retrieved, create a new Cartano map with it.
-
-		map = new cartano.Map(data.MAPBOX_USER_NAME, {
-			accessToken: data.MAPBOX_ACCESS_TOKEN,
-
-			className: 'flex-grow',
-
-			zoomControl: true,
-			drawControl: true,
-			layerControl: true
-		});
-
-		//Bind event listeners to the map.
-		map.object.on('click', function() {
-			//Deselect all events when you click on the map in map view (if you clicked on a marker, that will fire after this occurs).
-			if (explorerState.currentViewState === 'map') {
-				setMarkerColors();
-				$('#details').empty();
-				$('#details-scroll').addClass('hidden');
-				$('.list-item').removeClass('active');
-			}
-		}).on('overlayremove', function() {
-			//If overlays are removed from the map, then trigger a click so that anything currently selected is deselected.
-			$(map.object._container).trigger({
-				type: 'click'
-			});
-		});
-	});
+	//$.ajax({
+	//	url: '/tokens/mapbox',
+	//	type: 'GET',
+	//	dataType: 'json'
+	//}).done(function(data) {
+	//	// When the Mapbox token has been retrieved, create a new Cartano map with it.
+	//
+	//	map = new cartano.Map(data.MAPBOX_USER_NAME, {
+	//		accessToken: data.MAPBOX_ACCESS_TOKEN,
+	//
+	//		className: 'flex-grow',
+	//
+	//		zoomControl: true,
+	//		drawControl: true,
+	//		layerControl: true
+	//	});
+	//
+	//	//Bind event listeners to the map.
+	//	map.object.on('click', function() {
+	//		//Deselect all events when you click on the map in map view (if you clicked on a marker, that will fire after this occurs).
+	//		if (explorerState.currentViewState === 'map') {
+	//			setMarkerColors();
+	//			$('#details').empty();
+	//			$('#details-scroll').addClass('hidden');
+	//			$('.list-item').removeClass('active');
+	//		}
+	//	}).on('overlayremove', function() {
+	//		//If overlays are removed from the map, then trigger a click so that anything currently selected is deselected.
+	//		$(map.object._container).trigger({
+	//			type: 'click'
+	//		});
+	//	});
+	//});
 
 	// Select the current item when
 	$(document).on('click', '.item', function() {
@@ -895,22 +895,22 @@ $(document).ready(function() {
 	}));
 
 	// When the user clicks on a marker or markercluster:
-	$(document).on('marker:click', function(e) {
-		var marker;
-
-		marker = e.marker;
-
-		//If the user clicked on a cluster, then wait until it finishes zooming to fit the clustered markers.
-		if (e.clustered) {
-			map.object.on('zoomend', function() {
-				//If the map is at the maximum zoom level, then what we clicked on couldn't be de-clustered and should be spiderfied.
-				//TODO: Get this spiderfication to actually work.
-				if (map.object.getZoom() === 18) {
-					marker.spiderfy();
-				}
-			});
-		}
-	});
+	//$(document).on('marker:click', function(e) {
+	//	var marker;
+	//
+	//	marker = e.marker;
+	//
+	//	//If the user clicked on a cluster, then wait until it finishes zooming to fit the clustered markers.
+	//	if (e.clustered) {
+	//		map.object.on('zoomend', function() {
+	//			//If the map is at the maximum zoom level, then what we clicked on couldn't be de-clustered and should be spiderfied.
+	//			//TODO: Get this spiderfication to actually work.
+	//			if (map.object.getZoom() === 18) {
+	//				marker.spiderfy();
+	//			}
+	//		});
+	//	}
+	//});
 
 	$(document).on('click', '#menu a.explorer', function(e) {
 		if (/^\/explore/.test(location.pathname)) {
