@@ -53,6 +53,86 @@ gulp.task('bundle', function() {
 });
 
 
+gulp.task('bundle:lambda', function(done) {
+	sequence(['bundle:consumer', 'bundle:generator', 'bundle:worker'], done);
+});
+
+
+gulp.task('bundle:consumer', function() {
+	const path = require('path');
+
+	const zip = require('gulp-zip');
+	const rename = require('gulp-rename');
+
+	let basename = path.basename(process.cwd());
+	let renameExpression = new RegExp('^' + basename);
+
+	return gulp.src([
+		'lambda/consumer/**'
+	], {
+		nodir: true,
+		base: 'lambda/consumer'
+	})
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname.replace(renameExpression, pkg.name);
+
+			return path;
+		}))
+		.pipe(zip(pkg.name + '-consumer-' + pkg.version + '.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
+
+gulp.task('bundle:generator', function() {
+	const path = require('path');
+
+	const zip = require('gulp-zip');
+	const rename = require('gulp-rename');
+
+	let basename = path.basename(process.cwd());
+	let renameExpression = new RegExp('^' + basename);
+
+	return gulp.src([
+		'lambda/generator/**'
+	], {
+		nodir: true,
+		base: 'lambda/generator'
+	})
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname.replace(renameExpression, pkg.name);
+
+			return path;
+		}))
+		.pipe(zip(pkg.name + '-generator-' + pkg.version + '.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
+
+gulp.task('bundle:worker', function() {
+	const path = require('path');
+
+	const zip = require('gulp-zip');
+	const rename = require('gulp-rename');
+
+	let basename = path.basename(process.cwd());
+	let renameExpression = new RegExp('^' + basename);
+
+	return gulp.src([
+		'lambda/worker/**'
+	], {
+		nodir: true,
+		base: 'lambda/worker'
+	})
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname.replace(renameExpression, pkg.name);
+
+			return path;
+		}))
+		.pipe(zip(pkg.name + '-worker-' + pkg.version + '.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
+
 gulp.task('clean', function() {
 	const clean = require('gulp-clean');
 

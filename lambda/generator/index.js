@@ -2,13 +2,12 @@
 
 const assert = require('assert');
 
-const _ = require('lodash');
 const AWS = require('aws-sdk');
-const moment = require('moment');
+const _ = require('lodash');
 const mongodb = require('mongodb');
 
 
-let lambda = new AWS.Lambda();
+let sqs = new AWS.SQS();
 
 
 exports.handler = function(event, context, callback) {
@@ -44,7 +43,19 @@ exports.handler = function(event, context, callback) {
 								enabled: true,
 								provider_id: {
 									$in: ids
-								}
+								},
+								$and: [
+									{
+										$not: {
+											status: 'running'
+										}
+									},
+									{
+										$not: {
+											status: 'queued'
+										}
+									}
+								]
 							},
 							{
 								$or: [
@@ -56,20 +67,6 @@ exports.handler = function(event, context, callback) {
 									{
 										last_run: {
 											$exists: false
-										}
-									}
-								]
-							},
-							{
-								$or: [
-									{
-										run_started: {
-											$gt: new Date(new Date() - 600000)
-										}
-									},
-									{
-										$not: {
-											in_progress: true
 										}
 									}
 								]
@@ -86,33 +83,45 @@ exports.handler = function(event, context, callback) {
 							}
 
 							let jobs = _.map(connections, function(connection) {
-								let payload = {
-									connectionId: connection._id.toString('hex')
+								let attr = {
+									connectionId: {
+										DataType: 'String',
+										StringValue: connection._id.toString('hex')
+									}
 								};
 
 								let params = {
-									FunctionName: process.env.FETCH_FUNCTION_NAME,
-									InvocationType: 'Event',
-									Payload: new Buffer(JSON.stringify(payload))
+									QueueUrl: process.env.QUEUE_URL,
+									MessageBody: 'Connection ready to be run.',
+									MessageAttributes: attr
 								};
 
 								return new Promise(function(resolve, reject) {
-									lambda.invoke(params, function(err, data) {
+									sqs.sendMessage(params, function(err, data) {
 										if (err) {
 											reject(err);
 										}
 										else {
-											resolve(data);
+											resolve();
 										}
 									});
-								});
+								})
+									.then(function() {
+										return mongo.db('live').collection('connections').update({
+											_id: connection._id
+										}, {
+											$set: {
+												status: 'queued'
+											}
+										})
+									});
 							});
 
-							return Promise.resolve(jobs);
+							return Promise.all(jobs);
 						});
 				});
 		})
-		.then(function(data) {
+		.then(function() {
 			console.log('SUCCESSFUL');
 
 			callback(null, null);
