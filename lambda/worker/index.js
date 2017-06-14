@@ -13,6 +13,10 @@ const sources = require('./sources');
 
 let bitscoop = new BitScoop(process.env.BITSCOOP_API_KEY);
 let sqs = new AWS.SQS();
+let address = process.env.MONGO_ADDRESS;
+let options = {
+	poolSize: 5
+};
 
 
 exports.handler = function(event, context, callback) {
@@ -24,6 +28,7 @@ exports.handler = function(event, context, callback) {
 			return new Promise(function(resolve, reject) {
 				mongodb.MongoClient.connect(address, options, function(err, db) {
 					if (err) {
+						console.log(err);
 						reject(err);
 					}
 					else {

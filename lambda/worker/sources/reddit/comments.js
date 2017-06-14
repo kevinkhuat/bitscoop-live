@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const mongoTools = require('../../../util/mongo-tools');
+const mongoTools = require('../../util/mongotools');
 
 
 let tagRegex = /#[^#\s]+/g;
@@ -150,7 +150,7 @@ module.exports = function(data) {
 
 
 
-		return mongoTools.mongoElasticInsert({
+		return mongoTools.mongoInsert({
 			content: content,
 			events: events,
 			tags: tags

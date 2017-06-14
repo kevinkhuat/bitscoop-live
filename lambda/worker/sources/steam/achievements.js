@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-const mongoTools = require('../../../util/mongo-tools');
+const mongoTools = require('../../util/mongotools');
 
 
 module.exports = function(data) {
@@ -72,7 +72,7 @@ module.exports = function(data) {
 		}
 
 		if (events.length > 0) {
-			return mongoTools.mongoElasticInsert({
+			return mongoTools.mongoInsert({
 				content: content,
 				events: events
 			});

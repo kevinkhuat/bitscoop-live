@@ -6,7 +6,7 @@
       "name": "Playlists",
       "description": "Playlists you have created",
       "enabled_by_default": true,
-      "mapping": "Playlists",
+      "mapping": "MyPlaylists",
       "population": "*"
     },
     "saved_albums": {
@@ -25,5 +25,5 @@
     }
   },
 
-  "remote_provider_id": "b31fc6d93f1045279ff38c1f3e3b0b5d"
+  "remote_map_id": "9afc24ce081446419eb04dad49b8f74f"
 }

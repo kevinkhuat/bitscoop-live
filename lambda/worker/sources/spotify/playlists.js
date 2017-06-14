@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-const mongoTools = require('../../../util/mongo-tools');
+const mongoTools = require('../../util/mongotools');
 
 
 let tagRegex = /#[^#\s]+/g;
@@ -75,7 +75,7 @@ module.exports = function(data) {
 			events[i] = newEvent;
 		}
 
-		return mongoTools.mongoElasticInsert({
+		return mongoTools.mongoInsert({
 			content: content,
 			events: events,
 			tags: tags

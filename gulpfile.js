@@ -54,7 +54,7 @@ gulp.task('bundle', function() {
 
 
 gulp.task('bundle:lambda', function(done) {
-	sequence(['bundle:consumer', 'bundle:generator', 'bundle:worker'], done);
+	sequence(['bundle:consumer', 'bundle:generator', 'bundle:migrations', 'bundle:worker'], done);
 });
 
 
@@ -104,6 +104,31 @@ gulp.task('bundle:generator', function() {
 			return path;
 		}))
 		.pipe(zip(pkg.name + '-generator-' + pkg.version + '.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
+
+gulp.task('bundle:migrations', function() {
+	const path = require('path');
+
+	const zip = require('gulp-zip');
+	const rename = require('gulp-rename');
+
+	let basename = path.basename(process.cwd());
+	let renameExpression = new RegExp('^' + basename);
+
+	return gulp.src([
+		'lambda/migrations/**'
+	], {
+		nodir: true,
+		base: 'lambda/migrations'
+	})
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname.replace(renameExpression, pkg.name);
+
+			return path;
+		}))
+		.pipe(zip(pkg.name + '-migrations-' + pkg.version + '.zip'))
 		.pipe(gulp.dest('dist'));
 });
 

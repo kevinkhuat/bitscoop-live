@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const mongoTools = require('../../../util/mongo-tools');
+const mongoTools = require('../../util/mongotools');
 
 
 module.exports = function(data) {
@@ -151,7 +151,7 @@ module.exports = function(data) {
 			events[i] = newEvent;
 		}
 
-		return mongoTools.mongoElasticInsert({
+		return mongoTools.mongoInsert({
 			contacts: contacts,
 			content: content,
 			events: events,

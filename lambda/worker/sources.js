@@ -1,7 +1,6 @@
 'use strict';
 
 
-
 class Source {
 	constructor(schema, connection, api) {
 		if (schema.hasOwnProperty('enabled')) {

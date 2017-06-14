@@ -6,29 +6,42 @@ const AWS = require('aws-sdk');
 const _ = require('lodash');
 const mongodb = require('mongodb');
 
+const gid = require('./util/gid');
+
 
 let sqs = new AWS.SQS();
 let lambda = new AWS.Lambda;
 
 
 exports.handler = function(event, context, callback) {
+	let db;
+
 	return Promise.resolve()
 		.then(function() {
 			return new Promise(function(resolve, reject) {
-				mongodb.MongoClient.connect(address, options, function(err, db) {
+				let address = process.env.MONGO_ADDRESS;
+				let options = {
+					poolSize: 5
+				};
+
+				mongodb.MongoClient.connect(address, options, function(err, database) {
 					if (err) {
 						reject(err);
 					}
 					else {
-						resolve(db);
+						db = database;
+						resolve();
 					}
 				});
 			});
 		})
-		.then(function(mongo) {
+		.then(function() {
 			let params = {
 				QueueUrl: process.env.QUEUE_URL,
-				MaxNumberOfMessages: 10
+				MaxNumberOfMessages: 10,
+				MessageAttributeNames: [
+					'All'
+				]
 			};
 
 			return new Promise(function(resolve, reject) {
@@ -41,20 +54,38 @@ exports.handler = function(event, context, callback) {
 					}
 				});
 			})
-				.then(function(messages) {
+				.then(function(result) {
+					console.log(result);
+
+					let messages = result.Messages;
+
+					if (messages == null) {
+						return Promise.resolve([]);
+					}
+					console.log(messages);
+
 					let ids = _.map(messages, function(message) {
 						let attr = message.MessageAttributes;
+
+						console.log(attr);
 
 						return gid(attr.connectionId.StringValue);
 					});
 
-					return mongo.db('live').collection('connections').find({
+					console.log(ids);
+
+					return db.db('live').collection('connections').find({
 						_id: {
 							$in: ids
 						}
-					});
+					}).toArray();
 				})
 				.then(function(connections) {
+					if (connections.length === 0) {
+						return Promise.resolve();
+					}
+
+					console.log(connections);
 					let jobs = _.map(connections, function(connection) {
 						let payload = {
 							connectionId: connection._id.toString('hex')
@@ -66,36 +97,40 @@ exports.handler = function(event, context, callback) {
 							Payload: new Buffer(JSON.stringify(payload))
 						};
 
-						return new Promise(function(resolve, reject) {
-							lambda.invoke(params, function(err, data) {
-								if (err) {
-									reject(err);
-								}
-								else {
-									resolve(data);
-								}
-							});
-						})
-							.catch(function(err) {
-								let params = {
-									QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
-									MessageBody: 'Connection failed.',
-									MessageAttributes: {
-										error: err
-									}
-								};
+						console.log('Invoking job with params: ');
+						console.log(params);
 
-								return new Promise(function(resolve, reject) {
-									sqs.sendMessage(params, function(err, data) {
-										if (err) {
-											reject(err);
-										}
-										else {
-											resolve();
-										}
-									});
-								});
-							});
+						return Promise.resolve();
+						//return new Promise(function(resolve, reject) {
+						//	lambda.invoke(params, function(err, data) {
+						//		if (err) {
+						//			reject(err);
+						//		}
+						//		else {
+						//			resolve(data);
+						//		}
+						//	});
+						//})
+						//	.catch(function(err) {
+						//		let params = {
+						//			QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
+						//			MessageBody: 'Connection failed.',
+						//			MessageAttributes: {
+						//				error: err
+						//			}
+						//		};
+						//
+						//		return new Promise(function(resolve, reject) {
+						//			sqs.sendMessage(params, function(err, data) {
+						//				if (err) {
+						//					reject(err);
+						//				}
+						//				else {
+						//					resolve();
+						//				}
+						//			});
+						//		});
+						//	});
 					});
 
 					return Promise.all(jobs);
@@ -104,12 +139,20 @@ exports.handler = function(event, context, callback) {
 		.then(function() {
 			console.log('SUCCESSFUL');
 
+			db.close();
+
 			callback(null, null);
 
 			return Promise.resolve();
 		})
 		.catch(function(err) {
 			console.log('UNSUCCESSFUL');
+
+			if (db) {
+				db.close();
+			}
+
+			callback(err, null);
 
 			return Promise.reject(err);
 		});

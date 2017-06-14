@@ -11,21 +11,29 @@ let sqs = new AWS.SQS();
 
 
 exports.handler = function(event, context, callback) {
+	let db;
+
 	return Promise.resolve()
 		.then(function() {
 			return new Promise(function(resolve, reject) {
-				mongodb.MongoClient.connect(address, options, function(err, db) {
+				let address = process.env.MONGO_ADDRESS;
+				let options = {
+					poolSize: 5
+				};
+
+				mongodb.MongoClient.connect(address, options, function(err, database) {
 					if (err) {
 						reject(err);
 					}
 					else {
-						resolve(db);
+						db = database;
+						resolve();
 					}
 				});
 			});
 		})
-		.then(function(mongo) {
-			return mongo.db('live').collection('providers').find({}, {
+		.then(function() {
+			return db.db('live').collection('providers').find({}, {
 				_id: true
 			}).toArray()
 				.then(function(results) {
@@ -46,13 +54,13 @@ exports.handler = function(event, context, callback) {
 								},
 								$and: [
 									{
-										$not: {
-											status: 'running'
+										status: {
+											$ne: 'running'
 										}
 									},
 									{
-										$not: {
-											status: 'queued'
+										status: {
+											$ne: 'queued'
 										}
 									}
 								]
@@ -74,13 +82,15 @@ exports.handler = function(event, context, callback) {
 						]
 					};
 
-					return mongo.db('live').collection('connections').find($match, {
+					return db.db('live').collection('connections').find($match, {
 						_id: true
 					}).toArray()
 						.then(function(connections) {
 							if (!Array.isArray(connections)) {
 								return Promise.resolve([]);
 							}
+
+							console.log('Number of jobs to create: ' + connections.length);
 
 							let jobs = _.map(connections, function(connection) {
 								let attr = {
@@ -107,7 +117,7 @@ exports.handler = function(event, context, callback) {
 									});
 								})
 									.then(function() {
-										return mongo.db('live').collection('connections').update({
+										return db.db('live').collection('connections').update({
 											_id: connection._id
 										}, {
 											$set: {
@@ -124,12 +134,20 @@ exports.handler = function(event, context, callback) {
 		.then(function() {
 			console.log('SUCCESSFUL');
 
+			db.close();
+
 			callback(null, null);
 
 			return Promise.resolve();
 		})
 		.catch(function(err) {
 			console.log('UNSUCCESSFUL');
+
+			if (db) {
+				db.close();
+			}
+
+			callback(err, null);
 
 			return Promise.reject(err);
 		});
