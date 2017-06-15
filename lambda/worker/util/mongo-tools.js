@@ -1,6 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
 const _ = require('lodash');
 const moment = require('moment');
 const uuid = require('uuid');
@@ -11,31 +10,31 @@ const gid = require('./gid');
 const indexActionCache = {
 		contacts: {
 			index: {
-				_index: 'explorer',
+				_index: 'live',
 				_type: 'contacts'
 			}
 		},
 		content: {
 			index: {
-				_index: 'explorer',
+				_index: 'live',
 				_type: 'content'
 			}
 		},
 		events: {
 			index: {
-				_index: 'explorer',
+				_index: 'live',
 				_type: 'events'
 			}
 		},
 		locations: {
 			index: {
-				_index: 'explorer',
+				_index: 'live',
 				_type: 'locations'
 			}
 		},
 		things: {
 			index: {
-				_index: 'explorer',
+				_index: 'live',
 				_type: 'things'
 			}
 		}
@@ -109,10 +108,8 @@ MongoEvent.prototype.toJSON = function() {
 	};
 };
 
-function bulkUpsert(type, dataList) {
-	let mongo = env.databases.mongo;
-
-	let bulk = mongo.db('explorer').collection(type).initializeUnorderedBulkOp();
+function bulkUpsert(type, dataList, db) {
+	let bulk = db.db('live').collection(type).initializeUnorderedBulkOp();
 	let identifiers = new Array(dataList.length);
 
 	for (let i = 0; i < dataList.length; i++) {
@@ -139,7 +136,7 @@ function bulkUpsert(type, dataList) {
 	}
 
 	return bulk.execute().then(function() {
-		return mongo.db('explorer').collection(type).find({
+		return db.db('live').collection(type).find({
 			identifier: {
 				$in: identifiers
 			}
@@ -147,10 +144,8 @@ function bulkUpsert(type, dataList) {
 	});
 }
 
-function bulkTagUpsert(dataList) {
-	let mongo = env.databases.mongo;
-
-	let bulk = mongo.db('explorer').collection('tags').initializeUnorderedBulkOp();
+function bulkTagUpsert(dataList, db) {
+	let bulk = db.db('live').collection('tags').initializeUnorderedBulkOp();
 	let tags = new Array(dataList.length);
 
 	for (let i = 0; i < dataList.length; i++) {
@@ -173,7 +168,7 @@ function bulkTagUpsert(dataList) {
 	}
 
 	return bulk.execute().then(function() {
-		return mongo.db('explorer').collection('tags').find({
+		return db.db('live').collection('tags').find({
 			tag: {
 				$in: tags
 			}
@@ -181,27 +176,27 @@ function bulkTagUpsert(dataList) {
 	});
 }
 
-function mongoInsert(objects) {
+function mongoInsert(objects, db) {
 	var contactsUpsert, contentUpsert, locationsUpsert, tagsUpsert, thingsUpsert;
 
 	if (objects.contacts && objects.contacts.length > 0) {
-		contactsUpsert = bulkUpsert('contacts', objects.contacts);
+		contactsUpsert = bulkUpsert('contacts', objects.contacts, db);
 	}
 
 	if (objects.content && objects.content.length > 0) {
-		contentUpsert = bulkUpsert('content', objects.content);
+		contentUpsert = bulkUpsert('content', objects.content, db);
 	}
 
 	if (objects.locations && objects.locations.length > 0) {
-		locationsUpsert = bulkUpsert('locations', objects.locations);
+		locationsUpsert = bulkUpsert('locations', objects.locations, db);
 	}
 
 	if (objects.tags && objects.tags.length > 0) {
-		tagsUpsert = bulkTagUpsert(objects.tags);
+		tagsUpsert = bulkTagUpsert(objects.tags, db);
 	}
 
 	if (objects.things && objects.things.length > 0) {
-		thingsUpsert = bulkUpsert('things', objects.thing);
+		thingsUpsert = bulkUpsert('things', objects.thing, db);
 	}
 
 	return Promise.all([
@@ -272,7 +267,7 @@ function mongoInsert(objects) {
 				mongoEvents[i] = new MongoEvent(objects.events[i]);
 			}
 
-			return bulkUpsert('events', mongoEvents);
+			return bulkUpsert('events', mongoEvents, db);
 		});
 }
 

@@ -3,13 +3,13 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const mongoTools = require('../../util/mongotools');
+const mongoTools = require('../../util/mongo-tools');
 
 
 let tagRegex = /#[^#\s]+/g;
 
 
-module.exports = function(data) {
+module.exports = function(data, db) {
 	var contacts, content, events, objectCache, tags;
 
 	let bodyTags, descriptionTags, messageTags, newTags, titleTags;
@@ -800,7 +800,7 @@ module.exports = function(data) {
 			content: content,
 			events: events,
 			tags: tags
-		});
+		}, db);
 	}
 	else {
 		return Promise.resolve(null);

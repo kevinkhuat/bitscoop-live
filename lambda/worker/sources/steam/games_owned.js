@@ -1,9 +1,9 @@
 'use strict';
 
-const mongoTools = require('../../util/mongotools');
+const mongoTools = require('../../util/mongo-tools');
 
 
-module.exports = function(data) {
+module.exports = function(data, db) {
 	var content, events;
 
 	content = new Array(data.length);
@@ -41,7 +41,7 @@ module.exports = function(data) {
 		return mongoTools.mongoInsert({
 			content: content,
 			events: events
-		});
+		}, db);
 	}
 	else {
 		return Promise.resolve(null);

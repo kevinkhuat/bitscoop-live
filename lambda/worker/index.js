@@ -8,40 +8,52 @@ const _ = require('lodash');
 const moment = require('moment');
 const mongodb = require('mongodb');
 
+const gid = require('./util/gid');
 const sources = require('./sources');
 
 
 let bitscoop = new BitScoop(process.env.BITSCOOP_API_KEY);
 let sqs = new AWS.SQS();
-let address = process.env.MONGO_ADDRESS;
-let options = {
-	poolSize: 5
-};
 
 
 exports.handler = function(event, context, callback) {
-	let payload = JSON.parse(event.payload);
-	let connectionId = payload.connectionId;
+	let db;
+	let connectionId = event.connectionId;
+	let receiptHandle = event.receiptHandle;
 
 	return Promise.resolve()
 		.then(function() {
+			let address = process.env.MONGO_ADDRESS;
+			let options = {
+				poolSize: 5
+			};
+
+			if (connectionId == null) {
+				return Promise.reject(new Error('Missing Connection ID'));
+			}
+
+			connectionId = gid(connectionId);
+
 			return new Promise(function(resolve, reject) {
-				mongodb.MongoClient.connect(address, options, function(err, db) {
+				mongodb.MongoClient.connect(address, options, function(err, database) {
 					if (err) {
 						console.log(err);
 						reject(err);
 					}
 					else {
-						resolve(db);
+						db = database;
+
+						resolve();
 					}
 				});
 			});
 		})
 		.then(function(mongo) {
-			return mongo.db('live').collection('connections').findOne({
+			return db.db('live').collection('connections').findOne({
 				_id: connectionId
 			})
 				.then(function(connection) {
+
 					if (connection == null) {
 						return Promise.reject(new Error('No connection with ID ' + connectionId.toString('hex')))
 					}
@@ -54,9 +66,14 @@ exports.handler = function(event, context, callback) {
 
 							return Promise.resolve(connection);
 						})
+						.catch(function(err) {
+							console.log(err);
+
+							return promise.reject(err);
+						});
 				})
 				.then(function(connection) {
-					return mongo.db('live').collection('providers').findOne({
+					return db.db('live').collection('providers').findOne({
 						_id: connection.provider_id
 					})
 						.then(function(provider) {
@@ -79,7 +96,7 @@ exports.handler = function(event, context, callback) {
 						});
 				})
 				.then(function(connection) {
-					return mongo.db('live').collection('connections').updateOne({
+					return db.db('live').collection('connections').updateOne({
 						_id: connection._id
 					}, {
 						$set: {
@@ -91,9 +108,14 @@ exports.handler = function(event, context, callback) {
 						});
 				})
 				.then(function(connection) {
-					let api = new bitscoop.api(connection.provider.remote_map_id);
+					let api = bitscoop.api(connection.provider.remote_map_id.toString('hex'));
 
 					let promises = _.map(connection.permissions, function(permission, name) {
+						console.log('Name:');
+						console.log(name);
+						console.log('Permission:');
+						console.log(permission);
+
 						if (permission.enabled) {
 							let source = new sources.Source(connection.provider.sources[name], connection, api);
 
@@ -101,7 +123,7 @@ exports.handler = function(event, context, callback) {
 
 							return source.call(connection.remote_connection_id.toString('hex'))
 								.then(function(data) {
-									return source.parse(data);
+									return source.parse(data, db);
 								});
 						}
 						else {
@@ -111,7 +133,7 @@ exports.handler = function(event, context, callback) {
 
 					return Promise.all(promises)
 						.then(function() {
-							return mongo.db('live').collection('connections').updateOne({
+							return db.db('live').collection('connections').updateOne({
 								_id: connection._id
 							}, {
 								$set: {
@@ -120,10 +142,29 @@ exports.handler = function(event, context, callback) {
 								}
 							});
 						});
+				})
+				.then(function() {
+					let params = {
+						QueueUrl: process.env.QUEUE_URL,
+						ReceiptHandle: receiptHandle
+					};
+
+					return new Promise(function(resolve, reject) {
+						sqs.deleteMessage(params, function(err, data) {
+							if (err) {
+								reject(err);
+							}
+							else {
+								resolve(data);
+							}
+						});
+					});
 				});
 		})
 		.then(function() {
 			console.log('SUCCESSFUL');
+
+			db.close();
 
 			callback(null, null);
 
@@ -131,6 +172,10 @@ exports.handler = function(event, context, callback) {
 		})
 		.catch(function(err) {
 			console.log('UNSUCCESSFUL');
+
+			if (db) {
+				db.close();
+			}
 
 			return Promise.reject(err);
 		});

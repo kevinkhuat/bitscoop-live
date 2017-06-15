@@ -11,6 +11,7 @@ const gid = require('./util/gid');
 
 let sqs = new AWS.SQS();
 let lambda = new AWS.Lambda;
+let receiptHandleMap = {};
 
 
 exports.handler = function(event, context, callback) {
@@ -30,6 +31,7 @@ exports.handler = function(event, context, callback) {
 					}
 					else {
 						db = database;
+
 						resolve();
 					}
 				});
@@ -55,24 +57,22 @@ exports.handler = function(event, context, callback) {
 				});
 			})
 				.then(function(result) {
-					console.log(result);
-
 					let messages = result.Messages;
 
 					if (messages == null) {
 						return Promise.resolve([]);
 					}
-					console.log(messages);
 
 					let ids = _.map(messages, function(message) {
 						let attr = message.MessageAttributes;
 
-						console.log(attr);
+						console.log(message);
+						console.log(message.ReceiptHandle);
+
+						receiptHandleMap[attr.connectionId.StringValue] = message.ReceiptHandle;
 
 						return gid(attr.connectionId.StringValue);
 					});
-
-					console.log(ids);
 
 					return db.db('live').collection('connections').find({
 						_id: {
@@ -85,52 +85,55 @@ exports.handler = function(event, context, callback) {
 						return Promise.resolve();
 					}
 
-					console.log(connections);
 					let jobs = _.map(connections, function(connection) {
+						let stringId = connection._id.toString('hex');
+
 						let payload = {
-							connectionId: connection._id.toString('hex')
+							connectionId: stringId,
+							receiptHandle: receiptHandleMap[stringId]
 						};
 
 						let params = {
 							FunctionName: process.env.WORKER_FUNCTION_NAME,
 							InvocationType: 'Event',
-							Payload: new Buffer(JSON.stringify(payload))
+							Payload: JSON.stringify(payload)
 						};
 
-						console.log('Invoking job with params: ');
-						console.log(params);
+						return new Promise(function(resolve, reject) {
+							console.log('Invoking Lambda');
 
-						return Promise.resolve();
-						//return new Promise(function(resolve, reject) {
-						//	lambda.invoke(params, function(err, data) {
-						//		if (err) {
-						//			reject(err);
-						//		}
-						//		else {
-						//			resolve(data);
-						//		}
-						//	});
-						//})
-						//	.catch(function(err) {
-						//		let params = {
-						//			QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
-						//			MessageBody: 'Connection failed.',
-						//			MessageAttributes: {
-						//				error: err
-						//			}
-						//		};
-						//
-						//		return new Promise(function(resolve, reject) {
-						//			sqs.sendMessage(params, function(err, data) {
-						//				if (err) {
-						//					reject(err);
-						//				}
-						//				else {
-						//					resolve();
-						//				}
-						//			});
-						//		});
-						//	});
+							lambda.invoke(params, function(err, data) {
+								if (err) {
+									reject(err);
+								}
+								else {
+									resolve(data);
+								}
+							});
+						})
+							.catch(function(err) {
+								let params = {
+									QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
+									MessageBody: 'Connection failed.',
+									MessageAttributes: {
+										error: {
+											DataType: 'String',
+											StringValue: JSON.stringify(err)
+										}
+									}
+								};
+
+								return new Promise(function(resolve, reject) {
+									sqs.sendMessage(params, function(err, data) {
+										if (err) {
+											reject(err);
+										}
+										else {
+											resolve();
+										}
+									});
+								});
+							});
 					});
 
 					return Promise.all(jobs);

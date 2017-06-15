@@ -25,12 +25,28 @@ class Source {
 		this.api = api;
 	}
 
-	call() {
+	call(connectionId) {
+		let headers = {
+			'X-Connection-Id': connectionId
+		};
+
+		if (this.population != null) {
+			headers['X-Populate'] = this.population;
+		}
+
 		return this.api.endpoint(this.mapping)({
-			headers: {
-				'X-Populate': this.population
-			}
-		});
+			headers: headers
+		})
+			.then(function(result) {
+				let [data, response] = result;
+
+				if (!(/^2/.test(response.statusCode))) {
+					let body = JSON.parse(response.body);
+
+					return Promise.reject(new Error('Error calling GitHub: ' + body.message));
+				}
+				return Promise.resolve(data);
+			});
 	}
 }
 

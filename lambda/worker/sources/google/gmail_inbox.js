@@ -4,7 +4,7 @@ const _ = require('lodash');
 const emailParse = require('email-addresses');
 const moment = require('moment');
 
-const mongoTools = require('../../util/mongotools');
+const mongoTools = require('../../util/mongo-tools');
 
 
 let tagRegex = /#[^#\s]+/g;
@@ -15,7 +15,7 @@ function atob(inputString) {
 }
 
 
-module.exports = function(data) {
+module.exports = function(data, db) {
 	var contacts, content, events, objectCache, tags;
 
 	objectCache = {
@@ -282,7 +282,7 @@ module.exports = function(data) {
 			content: content,
 			events: events,
 			tags: tags
-		});
+		}, db);
 	}
 	else {
 		return Promise.resolve(null);

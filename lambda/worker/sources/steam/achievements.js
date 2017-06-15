@@ -2,10 +2,10 @@
 
 const _ = require('lodash');
 
-const mongoTools = require('../../util/mongotools');
+const mongoTools = require('../../util/mongo-tools');
 
 
-module.exports = function(data) {
+module.exports = function(data, db) {
 	var content, events, objectCache;
 
 	objectCache = {
@@ -75,7 +75,7 @@ module.exports = function(data) {
 			return mongoTools.mongoInsert({
 				content: content,
 				events: events
-			});
+			}, db);
 		}
 		else {
 			return Promise.resolve(null);

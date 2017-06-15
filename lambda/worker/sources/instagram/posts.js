@@ -3,10 +3,10 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const mongoTools = require('../../util/mongotools');
+const mongoTools = require('../../util/mongo-tools');
 
 
-module.exports = function(data) {
+module.exports = function(data, db) {
 	var contacts, content, events, locations, objectCache, tags;
 
 	objectCache = {
@@ -136,7 +136,7 @@ module.exports = function(data) {
 			events: events,
 			locations: locations,
 			tags: tags
-		});
+		}, db);
 	}
 	else {
 		return Promise.resolve(null);
