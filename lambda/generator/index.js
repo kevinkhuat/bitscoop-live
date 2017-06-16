@@ -86,7 +86,10 @@ exports.handler = function(event, context, callback) {
 						_id: true
 					}).toArray()
 						.then(function(connections) {
-							if (!Array.isArray(connections)) {
+							// The connections parameter is an empty array if
+							// there are no connections returned from the db.
+							// So checking for length to provide the correct response
+							if (connections.length == 0) {
 								return Promise.resolve([]);
 							}
 
