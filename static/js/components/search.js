@@ -28,6 +28,9 @@ var exports;
 var settings = {};
 var queryChanged = false;
 
+var protocol = 'http';
+var domain = 'default-environment.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
+
 /**
  * A constructor that abstracts serializing search filters.
  *
@@ -427,7 +430,7 @@ function del(id) {
 	if (currentSearch && currentSearch.id || id) {
 		return new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://live.bitscoop.com/api/searches/' + id,
+				url: protocol + '://' + domain + '/api/searches/' + id,
 				method: 'DELETE',
 				headers: {
 					'X-CSRF-Token': window.csrftoken
@@ -469,7 +472,7 @@ function exists() {
 
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/searches',
+			url: protocol + '://' + domain + '/api/searches',
 			type: 'SEARCH',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -583,7 +586,7 @@ function favoriteHelper(params) {
 
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/searches/' + params.id,
+			url: protocol + '://' + domain + '/api/searches/' + params.id,
 			type: 'PATCH',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -896,7 +899,7 @@ function load(id) {
 			};
 
 			$.ajax({
-				url: 'https://live.bitscoop.com/api/searches',
+				url: protocol + '://' + domain + '/api/searches',
 				type: 'GET',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -921,7 +924,7 @@ function load(id) {
 	else {
 		promise = new Promise(function(resolve, reject) {
 			$.ajax({
-				url: 'https://live.bitscoop.com/api/searches/' + id,
+				url: protocol + '://' + domain + '/api/searches/' + id,
 				type: 'GET',
 				contentType: 'application/json'
 			}).done(function(data) {
@@ -1018,7 +1021,7 @@ function save() {
 
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/searches',
+			url: protocol + '://' + domain + '/api/searches',
 			type: 'POST',
 			dataType: 'json',
 			contentType: 'application/json',

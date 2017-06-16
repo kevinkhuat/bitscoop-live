@@ -1,5 +1,5 @@
 {
-  "address": "http://localhost:8002",
+  "address": "http://localhost:8081",
   "objectMaxLimit": 100,
 
   "logging": {
@@ -20,7 +20,7 @@
 
   "databases": {
     "mongo": {
-      "address": "mongodb://localhost:27017",
+      "address": "mongodb://kbaran:Foxtrot0196@livedemo-shard-00-00-bmfhd.mongodb.net:27017,livedemo-shard-00-01-bmfhd.mongodb.net:27017,livedemo-shard-00-02-bmfhd.mongodb.net:27017/admin?ssl=true&replicaSet=LiveDemo-shard-0&authSource=admin",
       "options": {
         "poolSize": 5
       }
@@ -29,15 +29,6 @@
     "elastic": {
       "address": "http://localhost:9200"
     }
-  },
-
-  "tasks": {
-    "generators": [
-      "explorer/lib/worker/tasks/generators/fetch-connection-data.js"
-    ],
-    "consumers": [
-      "explorer/lib/worker/tasks/consumers/connection-update.js"
-    ]
   },
 
   "cookieConsent": "cookieconsent",
@@ -54,7 +45,7 @@
 
   "staticfiles": {
     "directories": ["artifacts"],
-    "path": "/static"
+    "path": "http://s3.amazonaws.com/bitscoop-live-test/1497578865769"
   },
 
   "templates": {
@@ -66,7 +57,7 @@
     "address": {
       "protocol": "http",
       "hostname": "localhost",
-      "port": "8003",
+      "port": "8081",
       "host_header": {
         "main": "api.bitscoop.com",
         "subdomain": "provider.api.bitscoop.com"

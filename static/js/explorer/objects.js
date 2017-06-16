@@ -16,10 +16,14 @@ var providers = {};
 
 var taggedSubtypes = ['contacts', 'content', 'location', 'things'];
 
+var protocol = 'http';
+var domain = 'default-environment.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
+
+
 var connectionPromise = new Promise(function(resolve, reject) {
 	// Queries for the user's connections to populate the connector filter DDL.
 	$.ajax({
-		url: 'https://live.bitscoop.com/api/connections',
+		url: protocol + '://' + domain + '/api/connections',
 		type: 'GET',
 		dataType: 'json',
 		contentType: 'application/json'
@@ -46,7 +50,7 @@ var connectionPromise = new Promise(function(resolve, reject) {
 var providerPromise = new Promise(function(resolve, reject) {
 	// Queries for the current providers to populate the provider filter DDL.
 	$.ajax({
-		url: 'https://live.bitscoop.com/api/providers',
+		url: protocol + '://' + domain + '/api/providers',
 		type: 'GET',
 		dataType: 'json',
 		contentType: 'application/json'
@@ -1601,7 +1605,7 @@ function search(options) {
 	// Execute the search by querying the events with the specified DSL.
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/events',
+			url: protocol + '://' + domain + '/api/events',
 			type: 'SEARCH',
 			dataType: 'json',
 			contentType: 'application/json',

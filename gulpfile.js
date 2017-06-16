@@ -53,6 +53,39 @@ gulp.task('bundle', function() {
 });
 
 
+gulp.task('bundle:ebs', function() {
+	const path = require('path');
+
+	const zip = require('gulp-zip');
+	const rename = require('gulp-rename');
+
+	let basename = path.basename(process.cwd());
+	let renameExpression = new RegExp('^' + basename);
+
+	return gulp.src([
+		'config/**',
+		'fixtures/**',
+		'lib/**',
+		'migrations/**',
+		'scripts/**/*',
+		'schemas/**/*',
+		'templates/**/*',
+		'package.json',
+		'app.js'
+	], {
+		nodir: true,
+		base: '.'
+	})
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname.replace(renameExpression, pkg.name);
+
+			return path;
+		}))
+		.pipe(zip(pkg.name + '-ebs-' + pkg.version + '.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
+
 gulp.task('bundle:lambda', function(done) {
 	sequence(['bundle:consumer', 'bundle:generator', 'bundle:migrations', 'bundle:worker'], done);
 });

@@ -111,6 +111,11 @@ var views = {
 	map: new viewstate.View('explorer/views/map.html')
 };
 
+
+var protocol = 'http';
+var domain = 'default-environment.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
+
+
 // TODO: Remove this when API v2 is complete and we can query all object types separately.
 function autofillPaginate() {
 	var promise, minCount;
@@ -1187,7 +1192,7 @@ $(document).ready(function() {
 
 		if (tag.length > 0) {
 			$.ajax({
-				url: 'https://live.bitscoop.com/api/' + collectionMappings[type] + '/' + id + '/tag',
+				url: protocol + '://' + domain + '/api/' + collectionMappings[type] + '/' + id + '/tag',
 				type: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -1373,7 +1378,7 @@ $(document).ready(function() {
 		type = $items.attr('class').replace('object ', '');
 
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/' + collectionMappings[type] + '/' + id + '/tag',
+			url: protocol + '://' + domain + '/api/' + collectionMappings[type] + '/' + id + '/tag',
 			type: 'DELETE',
 			dataType: 'json',
 			contentType: 'application/json',

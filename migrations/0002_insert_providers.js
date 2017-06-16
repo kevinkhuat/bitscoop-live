@@ -65,7 +65,7 @@ Promise.all([
 					provider._id = gid(provider._id);
 					provider.remote_provider_id = gid(provider.remote_provider_id);
 
-					return db.db('explorer').collection('providers').update({
+					return db.db('live').collection('providers').update({
 						_id: provider._id
 					}, {
 						$setOnInsert: provider

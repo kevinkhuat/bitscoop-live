@@ -33,39 +33,39 @@ Promise.all([
 
 		return Promise.all([
 			// `connections` collection
-			db.db('explorer').collection('connections').createIndex({
+			db.db('live').collection('connections').createIndex({
 				connection_id: 1
 			}),
 
-			db.db('explorer').collection('connections').createIndex({
+			db.db('live').collection('connections').createIndex({
 				user_id: 1
 			}),
 
 			// `events` collection
-			db.db('explorer').collection('events').createIndex({
+			db.db('live').collection('events').createIndex({
 				user_id: 1
 			}),
 
 			// `providers` collection
-			db.db('explorer').collection('providers').createIndex({
+			db.db('live').collection('providers').createIndex({
 				enabled: 1
 			}),
 
-			db.db('explorer').collection('providers').createIndex({
+			db.db('live').collection('providers').createIndex({
 				provider_id: 1
 			}),
 
 			// `searches` collection
-			db.db('explorer').collection('searches').createIndex({
+			db.db('live').collection('searches').createIndex({
 				user_id: 1
 			}),
 
-			db.db('explorer').collection('searches').createIndex({
+			db.db('live').collection('searches').createIndex({
 				hash: 1
 			}),
 
 			// `tags` collection
-			db.db('explorer').collection('tags').createIndex({
+			db.db('live').collection('tags').createIndex({
 				user_id: 1
 			})
 		]);

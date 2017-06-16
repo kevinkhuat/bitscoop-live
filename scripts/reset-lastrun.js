@@ -31,7 +31,7 @@ Promise.all([
 	.then(function(result) {
 		let [db] = result;
 
-		return db.db('explorer').collection('connections').update({}, {
+		return db.db('live').collection('connections').update({}, {
 			$unset: {
 				last_run: true
 			}

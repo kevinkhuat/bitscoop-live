@@ -26,6 +26,9 @@ var currentResultCount = 0;
 var totalResultCount = 0;
 var cursor = {};
 
+var protocol = 'http';
+var domain = 'default-environment.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
+
 
 function getSearches(tab) {
 	var paramData;
@@ -38,7 +41,7 @@ function getSearches(tab) {
 
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/searches',
+			url: protocol + '://' + domain + '/api/searches',
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json',
@@ -78,7 +81,7 @@ function getSearches(tab) {
 function getTags() {
 	return new Promise(function(resolve, reject) {
 		$.ajax({
-			url: 'https://live.bitscoop.com/api/tags',
+			url: protocol + '://' + domain + '/api/tags',
 			type: 'GET',
 			dataType: 'json',
 			contentType: 'application/json'
@@ -276,7 +279,7 @@ function checkScrollPagination(e) {
 
 $document.ready(function() {
 	$.ajax({
-		url: 'https://live.bitscoop.com/api/events',
+		url: protocol + '://' + domain + '/api/events',
 		type: 'SEARCH',
 		dataType: 'json',
 		contentType: 'application/json',
@@ -297,7 +300,7 @@ $document.ready(function() {
 	});
 
 	$.ajax({
-		url: 'https://live.bitscoop.com/api/searches',
+		url: protocol + '://' + domain + '/api/searches',
 		type: 'GET',
 		contentType: 'application/json',
 		data: {

@@ -4,6 +4,10 @@ const nunjucks = require('nunjucks');
 require('jquery-mixitup');
 
 
+var protocol = 'http';
+var domain = 'default-environment.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
+
+
 function flipIcon() {
 	if ($('body').hasClass('ctl-expand')) {
 		$('.mobile-selector i').removeClass('fa-caret-down').addClass('fa-caret-up');
@@ -29,7 +33,7 @@ $(document).ready(function() {
 				id = $self.attr('data-id');
 
 				$.ajax({
-					url: 'https://live.bitscoop.com/api/providers/' + id,
+					url: protocol + '://' + domain + '/api/providers/' + id,
 					type: 'GET'
 				})
 					.then(function(provider) {

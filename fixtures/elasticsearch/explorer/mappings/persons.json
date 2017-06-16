@@ -1,0 +1,92 @@
+{
+  "dynamic": "false",
+  "_source": {
+    "enabled": false
+  },
+  "properties": {
+    "age": {
+      "type": "integer"
+    },
+    "connection": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "contacts": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "handle": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        }
+      }
+    },
+    "first_name": {
+      "type": "string",
+      "fields": {
+        "raw": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "gender": {
+      "type": "string",
+      "fields": {
+        "raw": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "last_name": {
+      "type": "string",
+      "fields": {
+        "raw": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "identifier": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "provider_name": {
+      "type": "string",
+      "fields": {
+        "raw": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "text": {
+      "type": "string"
+    },
+    "thumbnail": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "user_id": {
+      "type": "string"
+    }
+  }
+}
