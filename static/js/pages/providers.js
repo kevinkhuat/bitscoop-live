@@ -2,6 +2,7 @@ const $ = require('jquery');
 const _ = require('lodash');
 const nunjucks = require('nunjucks');
 require('jquery-mixitup');
+require('templates');
 
 
 var protocol = 'http';

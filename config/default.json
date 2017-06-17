@@ -2,6 +2,8 @@
   "address": "http://localhost:8081",
   "objectMaxLimit": 100,
 
+  "domain": ".nfbdxbrwed.us-east-1.elasticbeanstalk.com",
+
   "logging": {
     "severity": "trace",
     "targets": [
@@ -45,7 +47,7 @@
 
   "staticfiles": {
     "directories": ["artifacts"],
-    "path": "http://s3.amazonaws.com/bitscoop-live-test/1497578865769"
+    "path": "http://s3.amazonaws.com/bitscoop-live-test"
   },
 
   "templates": {
@@ -53,7 +55,7 @@
   },
 
   "api": {
-    "key": "f5964ad26fc34484afeff897f67fb844",
+    "key": "CCEB0C993F5E41F58C017BA475A9FD98",
     "address": {
       "protocol": "http",
       "hostname": "localhost",

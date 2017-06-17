@@ -2,6 +2,7 @@ const $ = require('jquery');
 const _ = require('lodash');
 const moment = require('moment');
 const nunjucks = require('nunjucks');
+require('templates');
 
 
 /**
