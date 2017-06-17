@@ -3,6 +3,10 @@ const cookies = require('cookies');
 const ga = require('ga');
 const nunjucks = require('nunjucks');
 require('jquery-regexp-selector');
+require('templates');
+
+
+let domain = '.nfbdxbrwed.us-east-1.elasticbeanstalk.com';
 
 
 $(document).ready(function() {
@@ -34,7 +38,7 @@ $(document).ready(function() {
 		cookies.set('cookieconsent', true, {
 			expires: 365,
 			path: '/',
-			domain: '.bitscoop.com'
+			domain: domain
 		});
 
 		$('.cookie-consent').remove();

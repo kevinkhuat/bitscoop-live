@@ -5,6 +5,7 @@
   "author": "BitScoop Labs, Inc.",
   "dependencies": {
     "ajv": "^4.1.3",
+    "bitscoop-sdk": "^0.2.0",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "bristol": "^0.3.3",
