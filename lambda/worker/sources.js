@@ -26,6 +26,8 @@ class Source {
 	}
 
 	call(connectionId) {
+		let self = this;
+
 		let headers = {
 			'X-Connection-Id': connectionId
 		};
@@ -43,8 +45,9 @@ class Source {
 				if (!(/^2/.test(response.statusCode))) {
 					let body = JSON.parse(response.body);
 
-					return Promise.reject(new Error('Error calling GitHub: ' + body.message));
+					return Promise.reject(new Error('Error calling ' + self.name + ': ' + body.message));
 				}
+
 				return Promise.resolve(data);
 			});
 	}

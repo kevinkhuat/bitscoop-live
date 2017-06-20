@@ -111,19 +111,26 @@ exports.handler = function(event, context, callback) {
 					let api = bitscoop.api(connection.provider.remote_map_id.toString('hex'));
 
 					let promises = _.map(connection.permissions, function(permission, name) {
-						console.log('Name:');
-						console.log(name);
-						console.log('Permission:');
-						console.log(permission);
-
 						if (permission.enabled) {
 							let source = new sources.Source(connection.provider.sources[name], connection, api);
 
 							source.parse = require('./sources/' + connection.provider_name.toLowerCase() + '/' + name.toLowerCase());
 
 							return source.call(connection.remote_connection_id.toString('hex'))
+								.catch(function(err) {
+									console.log('ERROR WITH CALL:');
+									console.log(err);
+
+									return Promise.reject(err);
+								})
 								.then(function(data) {
-									return source.parse(data, db);
+									return source.parse(data, db)
+										.catch(function(err) {
+											console.log('ERROR WITH PARSE:');
+											console.log(err);
+
+											return Promise.reject(err);
+										});
 								});
 						}
 						else {
@@ -141,6 +148,42 @@ exports.handler = function(event, context, callback) {
 									status: 'ready'
 								}
 							});
+						})
+						.catch(function(err) {
+							let params = {
+								QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
+								MessageBody: 'Connection failed.',
+								MessageAttributes: {
+									error: {
+										DataType: 'String',
+										StringValue: JSON.stringify(err)
+									}
+								}
+							};
+
+							return Promise.all([
+								new Promise(function(resolve, reject) {
+									sqs.sendMessage(params, function(err, data) {
+										if (err) {
+											reject(err);
+										}
+										else {
+											resolve();
+										}
+									});
+								}),
+
+								db.db('live').collection('connections').update({
+									_id: connection._id
+								}, {
+									$set: {
+										status: 'failed'
+									}
+								})
+							])
+								.then(function() {
+									return Promise.reject(err);
+								});
 						});
 				})
 				.then(function() {
@@ -176,6 +219,8 @@ exports.handler = function(event, context, callback) {
 			if (db) {
 				db.close();
 			}
+
+			callback(err, null);
 
 			return Promise.reject(err);
 		});

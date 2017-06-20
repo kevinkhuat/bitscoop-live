@@ -281,6 +281,7 @@ gulp.task('lint:json', function() {
 	return gulp.src([
 		'*.json',
 		'config/*.json',
+		'lambda/**/*.json',
 		'fixtures/**/*.json',
 		'schemas/**/*.json'
 	])
