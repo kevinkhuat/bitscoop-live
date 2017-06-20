@@ -66,9 +66,6 @@ exports.handler = function(event, context, callback) {
 					let ids = _.map(messages, function(message) {
 						let attr = message.MessageAttributes;
 
-						console.log(message);
-						console.log(message.ReceiptHandle);
-
 						receiptHandleMap[attr.connectionId.StringValue] = message.ReceiptHandle;
 
 						return gid(attr.connectionId.StringValue);
@@ -100,7 +97,7 @@ exports.handler = function(event, context, callback) {
 						};
 
 						return new Promise(function(resolve, reject) {
-							console.log('Invoking Lambda');
+							console.log('Invoking Lambda worker');
 
 							lambda.invoke(params, function(err, data) {
 								if (err) {
@@ -110,30 +107,7 @@ exports.handler = function(event, context, callback) {
 									resolve(data);
 								}
 							});
-						})
-							.catch(function(err) {
-								let params = {
-									QueueUrl: process.env.DEAD_MESSAGE_QUEUE_URL,
-									MessageBody: 'Connection failed.',
-									MessageAttributes: {
-										error: {
-											DataType: 'String',
-											StringValue: JSON.stringify(err)
-										}
-									}
-								};
-
-								return new Promise(function(resolve, reject) {
-									sqs.sendMessage(params, function(err, data) {
-										if (err) {
-											reject(err);
-										}
-										else {
-											resolve();
-										}
-									});
-								});
-							});
+						});
 					});
 
 					return Promise.all(jobs);

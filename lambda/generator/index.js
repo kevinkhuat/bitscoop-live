@@ -48,6 +48,7 @@ exports.handler = function(event, context, callback) {
 						$and: [
 							{
 								'auth.status.complete': true,
+								'auth.status.authorized': true,
 								enabled: true,
 								provider_id: {
 									$in: ids
@@ -61,6 +62,11 @@ exports.handler = function(event, context, callback) {
 									{
 										status: {
 											$ne: 'queued'
+										}
+									},
+									{
+										status: {
+											$ne: 'failed'
 										}
 									}
 								]
